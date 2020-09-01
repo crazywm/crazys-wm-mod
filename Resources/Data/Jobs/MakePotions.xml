@@ -1,0 +1,14 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="MkPt">
+    <Description>
+        She will make various potions.
+    </Description>
+    <Performance Modifier="work.makepotions">
+        <Primary Skill="Brewing"/>
+        <Primary Skill="Herbalism"/>
+        <Secondary Skill="Service" />
+        <Secondary Skill="Magic" />
+        <Secondary Skill="Cooking" />
+    </Performance>
+    <Gains XP="5" Skill="3" />
+</Job>

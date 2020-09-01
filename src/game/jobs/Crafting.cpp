@@ -30,19 +30,21 @@ namespace settings {
 }
 
 bool GenericCraftingJob::DoWork(sGirl& girl, bool is_night) {
+    if (girl.disobey_check(m_CraftingData.Action, job()))            // they refuse to work
+    {
+        ss << "${name} refused to work during the " << (is_night ? "night" : "day") << " shift.";
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        return true;
+    }
+
+    enjoy = 0;
     return WorkCrafting(girl, is_night);
 }
 
 bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
-    Action_Types actiontype = m_CraftingData.Action;
-    if (girl.disobey_check(actiontype, job()))            // they refuse to work
-    {
-        ss << "${name} refused to work during the " << (is_night ? "night" : "day") << " shift.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
-    }
+
     ss << m_CraftingData.MsgWork << "\n \n";
 
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
@@ -82,32 +84,10 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
 
     if (craftpoints > 0)
     {
-        int points_remaining = (int)craftpoints;
-        int numitems = 0;
-
-        while (points_remaining > 0 && numitems < (1 + girl.crafting() / 15))
-        {
-            auto item = g_Game->inventory_manager().GetCraftableItem(girl, job(), points_remaining);
-            if(!item) {
-                // try something easier. Get craftable item does not return items which need less than
-                // points_remaining / 3 crafting points
-                item = g_Game->inventory_manager().GetCraftableItem(girl, job(), points_remaining / 2);
-            }
-            if(!item) {
-                points_remaining -= 10;
-                continue;
-            }
-
-            points_remaining -= item->m_Crafting.craft_cost();
-            girl.mana(-item->m_Crafting.mana_cost());
+        float item_worth = DoCrafting(girl, craftpoints);
+        if(item_worth > 0) {
             msgtype = EVENT_GOODNEWS;
-            if (numitems == 0)    ss << "\n \n" << m_CraftingData.MsgProduce << ":";
-            ss << "\n" << item->m_Name;
-            g_Game->player().add_item(item);
-            numitems++;
-
-            // add item sell worth to wages
-            wages += std::min(g_Game->settings().get_percent(settings::MONEY_SELL_ITEM) * item->m_Cost * girl_pay, 100.f);
+            wages += item_worth * girl_pay;
         }
     }
 
@@ -118,44 +98,44 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     girl.m_Tips = 0;
     girl.m_Pay = std::max(0, wages);
 
-    // Base Improvement and trait modifiers
-    int xp = 5, skill = 3;
-    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
-    // EXP and Libido
-    girl.exp(uniform(1, 1+xp));
-
-    // primary improvement (+2 for single or +1 for multiple)
-    if(m_CraftingData.PrimaryGains.size() == 1) {
-        girl.update_attribute(m_CraftingData.PrimaryGains.front(), uniform(2, 2 + skill));
-    } else {
-        for(auto& att : m_CraftingData.PrimaryGains) {
-            girl.update_attribute(att, uniform(1, skill + 1));
-        }
-    }
-    // secondary improvement (-1 for one then -2 for others)
-    int sub = 1;
-    for(auto& att : m_CraftingData.SecondaryGains) {
-        girl.update_attribute(att, std::max(0,(uniform(0, skill)-sub)));
-        sub = -2;
-    }
+    apply_gains(girl);
 
     // Update Enjoyment
-    girl.upd_Enjoyment(actiontype, enjoy);
-    // Gain Traits
-    // gain simple traits
-    for(auto& trait : m_CraftingData.TraitChanges) {
-        if(trait.Gain) {
-            cGirls::PossiblyGainNewTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
-                                         trait.Message, is_night, trait.EventType);
-        } else {
-            cGirls::PossiblyLoseExistingTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
-                                              trait.Message, is_night);
-        }
-    }
+    girl.upd_Enjoyment(m_CraftingData.Action, enjoy);
 
 #pragma endregion
     return false;
+}
+
+float GenericCraftingJob::DoCrafting(sGirl& girl, int craft_points) {
+    int points_remaining = craft_points;
+    int numitems = 0;
+    float item_worth = 0.f;
+
+    while (points_remaining > 0 && numitems < (1 + girl.crafting() / 15))
+    {
+        auto item = g_Game->inventory_manager().GetCraftableItem(girl, job(), points_remaining);
+        if(!item) {
+            // try something easier. Get craftable item does not return items which need less than
+            // points_remaining / 3 crafting points
+            item = g_Game->inventory_manager().GetCraftableItem(girl, job(), points_remaining / 2);
+        }
+        if(!item) {
+            points_remaining -= 10;
+            continue;
+        }
+
+        points_remaining -= item->m_Crafting.craft_cost();
+        girl.mana(-item->m_Crafting.mana_cost());
+        if (numitems == 0)    ss << "\n \n" << m_CraftingData.MsgProduce << ":";
+        ss << "\n" << item->m_Name;
+        g_Game->player().add_item(item);
+        numitems++;
+
+        // add item sell worth to wages
+        item_worth += std::min(g_Game->settings().get_percent(settings::MONEY_SELL_ITEM) * item->m_Cost, 100.f);
+    }
+    return item_worth;
 }
 
 void GenericCraftingJob::DoWorkEvents(sGirl& girl) {
@@ -211,16 +191,14 @@ struct cBlacksmithJob : GenericCraftingJob {
 };
 
 cBlacksmithJob::cBlacksmithJob() :
-        GenericCraftingJob(JOB_BLACKSMITH,
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS, "work.blacksmith",
-                 {SKILL_CRAFTING, STAT_STRENGTH},
-                 {STAT_CONSTITUTION, SKILL_COMBAT, SKILL_MAGIC, STAT_INTELLIGENCE},
+        GenericCraftingJob(JOB_BLACKSMITH, "Blacksmith.xml",
+                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
                  40,
                  "${name} worked as a blacksmith at the arena.",
                  "She spent some of her time repairing the Arena's equipment instead of making new stuff.",
                  "${name} made:",
-                 {{true, "Tough", 50, ACTION_WORKMAKEITEMS, "Working in the heat of the forge has made ${name} rather Tough."}}
                 }
+
         ) {
 
 }
@@ -295,15 +273,12 @@ struct cCobblerJob : GenericCraftingJob {
 };
 
 cCobblerJob::cCobblerJob() :
-    GenericCraftingJob(JOB_COBBLER,
-            {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS, "work.cobbler",
-             {SKILL_CRAFTING},
-             {SKILL_SERVICE, STAT_INTELLIGENCE, SKILL_MAGIC},
+    GenericCraftingJob(JOB_COBBLER, "Cobbler.xml",
+            {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
              20,
              "${name} worked making shoes and other leather items at the arena.",
              "She spent some of her time repairing the Arena's equipment instead of making new stuff.",
-             "${name} made:",
-             {}
+             "${name} made:"
             }
     ) {
 }
@@ -367,15 +342,12 @@ struct cMakeItemJob : GenericCraftingJob {
 };
 
 cMakeItemJob::cMakeItemJob() :
-        GenericCraftingJob(JOB_MAKEITEM,
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS, "work.makeitem",
-                 {SKILL_CRAFTING},
-                 {SKILL_SERVICE, STAT_INTELLIGENCE, SKILL_MAGIC},
+        GenericCraftingJob(JOB_MAKEITEM, "MakeItem.xml",
+                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
                  20,
                  "${name} was assigned to make items at the farm.",
                  "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
                  "${name} made:",
-                 {}
                 }
         ) {
 }
@@ -427,6 +399,7 @@ void cMakeItemJob::DoWorkEvents(sGirl& girl) {
         ss << "The shift passed uneventfully.";
     }
     ss << "\n \n";
+    girl.tiredness(tired);
 }
 
 struct cMakePotionsJob : GenericCraftingJob {
@@ -437,15 +410,12 @@ struct cMakePotionsJob : GenericCraftingJob {
 
 
 cMakePotionsJob::cMakePotionsJob() :
-        GenericCraftingJob(JOB_MAKEPOTIONS,
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEPOTIONS, "work.makepotions",
-                 {SKILL_BREWING, SKILL_HERBALISM},
-                 {STAT_INTELLIGENCE, SKILL_COOKING, SKILL_MAGIC},
+        GenericCraftingJob(JOB_MAKEPOTIONS, "MakePotions.xml",
+                {IMGTYPE_CRAFT, ACTION_WORKMAKEPOTIONS,
                  20,
                  "${name} worked as a potions maker on the farm.",
                  "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
-                 "${name} made:",
-                 {}
+                 "${name} made:"
                 }
         ) {
 }
@@ -488,15 +458,12 @@ struct cTailorJob : GenericCraftingJob {
 
 
 cTailorJob::cTailorJob() :
-        GenericCraftingJob(JOB_TAILOR,
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS, "work.makepotions",
-                 {SKILL_CRAFTING},
-                 {STAT_INTELLIGENCE, SKILL_SERVICE, SKILL_MAGIC},
+        GenericCraftingJob(JOB_TAILOR, "Tailor.xml",
+                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
                  20,
                  "${name} worked making and mending clothes at the farm.",
                  "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
-                 "${name} made:",
-                 {}
+                 "${name} made:"
                 }
         ) {
 }
@@ -557,15 +524,12 @@ struct cGardenerJob : GenericCraftingJob {
 };
 
 cGardenerJob::cGardenerJob() :
-        GenericCraftingJob(JOB_GARDENER,
-                {IMGTYPE_FARM, ACTION_WORKFARM, "work.gardener",
-                 {SKILL_HERBALISM},
-                 {SKILL_FARMING, STAT_INTELLIGENCE, STAT_CONSTITUTION},
+        GenericCraftingJob(JOB_GARDENER, "Gardener.xml",
+                {IMGTYPE_FARM, ACTION_WORKFARM,
                  20,
                  "${name} worked as a gardener on the farm.",
                  "She spent some of her time repairing the Farm's equipment instead of gardening.",
                  "${name} was able to harvest:",
-                 {}
                 }
         ) {
 }
@@ -576,15 +540,12 @@ struct cJewelerJob : GenericCraftingJob {
 };
 
 cJewelerJob::cJewelerJob() :
-        GenericCraftingJob(JOB_JEWELER,
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS, "work.jeweler",
-                 {SKILL_CRAFTING},
-                 {STAT_AGILITY, STAT_CONFIDENCE, STAT_INTELLIGENCE, SKILL_MAGIC},
+        GenericCraftingJob(JOB_JEWELER, "Jeweler.xml",
+                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
                  40,
                  "worked as a Jeweler at the arena.",
                  "She spent some of her time repairing the Arena's equipment instead of making new stuff.",
-                 "${name} crafted:",
-                 {{true, "Sharp-Eyed", 50, ACTION_WORKMAKEITEMS, "Working on such small items has made ${name} rather Sharp-Eyed."}}
+                 "${name} crafted:"
                 }
         ) {
 }
@@ -655,36 +616,27 @@ void cJewelerJob::DoWorkEvents(sGirl& girl) {
 
 void RegisterCraftingJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<GenericCraftingJob>(
-            JOB_BAKER, sCraftingJobData{
-            IMGTYPE_COOK, ACTION_WORKCOOKING, "work.baker",
-            {SKILL_COOKING},
-            {SKILL_SERVICE, STAT_INTELLIGENCE, SKILL_HERBALISM}, 20,
+            JOB_BAKER, "Baker.xml", sCraftingJobData{
+            IMGTYPE_COOK, ACTION_WORKCOOKING, 20,
             "${name} worked as a baker on the farm.",
             "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
             "${name} made:",
-            {{true, "Chef", 70, ACTION_WORKCOOKING, "${name} has prepared enough food to qualify as a Chef."}}
             }));
     mgr.register_job(std::make_unique<GenericCraftingJob>(
-            JOB_BREWER, sCraftingJobData{
-                 IMGTYPE_COOK, ACTION_WORKCOOKING, "work.brewer",
-                 {SKILL_BREWING},
-                 {SKILL_HERBALISM, SKILL_COOKING, STAT_INTELLIGENCE},
+            JOB_BREWER, "Brewer.xml", sCraftingJobData{
+                 IMGTYPE_COOK, ACTION_WORKCOOKING,
                  20,
                  "${name} worked as a brewer on the farm.",
                  "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
-                 "${name} made:",
-                 {}
+                 "${name} made:"
             }));
     mgr.register_job(std::make_unique<GenericCraftingJob>(
-            JOB_BUTCHER, sCraftingJobData{
-                    IMGTYPE_COOK, ACTION_WORKCOOKING, "work.butcher",
-                    {SKILL_ANIMALHANDLING, STAT_STRENGTH},
-                    {SKILL_MEDICINE, SKILL_COOKING, STAT_INTELLIGENCE},
+            JOB_BUTCHER, "Butcher.xml", sCraftingJobData{
+                    IMGTYPE_COOK, ACTION_WORKCOOKING,
                     20,
                     "${name} worked as a butcher on the farm.",
                     "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
-                    "${name} made:",
-                    {}
+                    "${name} made:"
             }));
     mgr.register_job(std::make_unique<cBlacksmithJob>());
     mgr.register_job(std::make_unique<cCobblerJob>());

@@ -54,21 +54,13 @@ bool cBarJob::DoWork(sGirl& girl, bool is_night) {
     return JobProcessing(girl, *brothel, is_night);
 }
 
-cBarJob::cBarJob(JOBS job, sBarJobData data) : cBasicJob(job), m_Data(data) {
+cBarJob::cBarJob(JOBS job, const char* xml, sBarJobData data) : cBasicJob(job, xml), m_Data(data) {
 
 }
 
 void cBarJob::HandleGains(sGirl& girl, int enjoy, int jobperformance, int fame) {
     // update enjoyment
     girl.upd_Enjoyment(m_Data.Action, enjoy);
-
-    // Improve stats
-    int xp = m_Data.XP, skill = m_Data.Skill;
-
-    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
-
-    girl.exp(uniform(1, xp));
 
     if (girl.fame() < 10 && jobperformance >= 70)        { fame += 1; }
     if (girl.fame() < 20 && jobperformance >= 100)        { fame += 1; }
@@ -77,21 +69,7 @@ void cBarJob::HandleGains(sGirl& girl, int enjoy, int jobperformance, int fame) 
 
     girl.fame(fame);
 
-    if(!get_performance_data().PrimaryGains.empty()) {
-        auto& gains = get_performance_data().PrimaryGains;
-        for(int i = 0; i < skill; ++i) {
-            girl.update_attribute(gains[rng() % gains.size()], 1);
-        }
-    }
-
-    if(!get_performance_data().SecondaryGains.empty()) {
-        auto& gains = get_performance_data().SecondaryGains;
-        for(int i = 0; i < std::max(1, skill/2); ++i) {
-            girl.update_attribute(gains[rng() % gains.size()], 1);
-        }
-    }
-
-    gain_traits(girl);
+    apply_gains(girl);
 }
 
 struct cBarCookJob : public cBarJob {
@@ -99,9 +77,8 @@ struct cBarCookJob : public cBarJob {
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-cBarCookJob::cBarCookJob() : cBarJob(JOB_BARCOOK, {ACTION_WORKBAR, 10, 3, "${name} refused to cook food in the bar"}) {
-    set_performance_data("work.cooking", {SKILL_COOKING}, {STAT_INTELLIGENCE, STAT_CONFIDENCE});
-    add_trait_chance(sTraitChange{false, "Clumsy", 30, m_Data.Action, "It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy."});
+cBarCookJob::cBarCookJob() : cBarJob(JOB_BARCOOK, "BarCook.xml",
+                                     {ACTION_WORKBAR, "${name} refused to cook food in the bar"}) {
 }
 
 bool cBarCookJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
@@ -554,12 +531,8 @@ struct cBarMaidJob : public cBarJob {
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-cBarMaidJob::cBarMaidJob() : cBarJob(JOB_BARMAID, {ACTION_WORKBAR, 10, 3, "${name} refused to work as a barmaid in your bar"}) {
-    set_performance_data("work.barmaid", 
-                         {SKILL_SERVICE, STAT_INTELLIGENCE}, 
-                         {STAT_CHARISMA, SKILL_PERFORMANCE, SKILL_BREWING});
-    add_trait_chance({false, "Nervous", 40, ACTION_WORKBAR, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore."});
-    add_trait_chance({true, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made ${name} more Charismatic."});
+cBarMaidJob::cBarMaidJob() : cBarJob(JOB_BARMAID, "BarMaid.xml",
+                                     {ACTION_WORKBAR, "${name} refused to work as a barmaid in your bar"}) {
 }
 
 bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
@@ -1369,13 +1342,8 @@ struct cBarWaitressJob : public cBarJob {
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-cBarWaitressJob::cBarWaitressJob() : cBarJob(JOB_WAITRESS, {ACTION_WORKBAR, 10, 3, "${name} refused to wait the bar"})
-{
-    set_performance_data("work.waitress",
-                         {SKILL_SERVICE},
-                         {STAT_CHARISMA, STAT_INTELLIGENCE, STAT_AGILITY});
-    add_trait_chance({true, "Charming", 70, m_Data.Action, "${name} has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming."});
-    add_trait_chance({false, "Clumsy", 30, m_Data.Action, "It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy."});
+cBarWaitressJob::cBarWaitressJob() : cBarJob(JOB_WAITRESS, "BarWaitress.xml",
+                                             {ACTION_WORKBAR, "${name} refused to wait the bar"}) {
 }
 
 bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
@@ -1939,10 +1907,8 @@ struct cBarPianoJob : public cBarJob {
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-cBarPianoJob::cBarPianoJob() : cBarJob(JOB_PIANO, {ACTION_WORKMUSIC, 5, 3, "${name} refused to play piano in your bar"}) {
-    set_performance_data("work.piano", {SKILL_PERFORMANCE}, {STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_AGILITY});
-    add_trait_chance({true, "Elegant", 75, ACTION_WORKMUSIC, "Playing the piano has given ${name} an Elegant nature."});
-    add_trait_chance({false, "Nervous", 30, ACTION_WORKMUSIC, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore."});
+cBarPianoJob::cBarPianoJob() : cBarJob(JOB_PIANO, "BarPiano.xml",
+                                       {ACTION_WORKMUSIC, "${name} refused to play piano in your bar"}) {
 }
 
 bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
@@ -1958,7 +1924,6 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     int imagetype = IMGTYPE_PROFILE;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-#pragma endregion
 #pragma region //    Job Performance            //
 
     double jobperformance = girl.job_performance(JOB_PIANO, false);
@@ -2292,11 +2257,8 @@ struct cBarSingerJob : public cBarJob {
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-cBarSingerJob::cBarSingerJob() : cBarJob(JOB_SINGER, {ACTION_WORKMUSIC, 10, 3, "${name} refused to sing in your bar"}) {
-    set_performance_data("work.singer", {SKILL_PERFORMANCE}, {STAT_CHARISMA, STAT_CONFIDENCE, STAT_CONSTITUTION});
-    add_trait_chance({true, "Charismatic", 70, ACTION_WORKMUSIC, "Singing on a daily basis has made ${name} more Charismatic."});
-    add_trait_chance({false, "Nervous", 30, ACTION_WORKMUSIC, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore."});
-    add_trait_chance({false, "Meek", 50, ACTION_WORKMUSIC, "${name}'s having to sing every day has forced her to get over her meekness."});
+cBarSingerJob::cBarSingerJob() : cBarJob(JOB_SINGER, "BarSinger.xml",
+                                         {ACTION_WORKMUSIC, "${name} refused to sing in your bar"}) {
 }
 
 bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 

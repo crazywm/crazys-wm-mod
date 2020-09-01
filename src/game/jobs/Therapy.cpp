@@ -51,7 +51,10 @@ struct sTherapyData {
 
 class TherapyJob : public IGenericJob {
 public:
-    explicit TherapyJob(JOBS id, sTherapyData data) : IGenericJob(id), m_TherapyData(data) {}
+    explicit TherapyJob(JOBS id, const char* short_name, const char* desciption, sTherapyData data) : IGenericJob(id), m_TherapyData(data) {
+        m_Info.ShortName = short_name;
+        m_Info.Description = desciption;
+    }
 
     bool DoWork(sGirl& girl, bool is_night) final;
 protected:
@@ -274,7 +277,9 @@ void Rehab::OnFinish(sGirl& girl) {
 }
 
 void RegisterTherapyJobs(cJobManager& mgr) {
-    mgr.register_job(std::make_unique<AngerManagement>(JOB_ANGER, sTherapyData{
+    mgr.register_job(
+            std::make_unique<AngerManagement>(JOB_ANGER, "AMng","She will go to anger management to get over her anger problems. (Aggressive, Tsundere, Yandere)",
+                                              sTherapyData {
         "${name} underwent therapy for anger issues.",
         "${name} doesn't need anger management so she was sent to the waiting room.",
         "She should stay in anger management to treat her other anger issues.",
@@ -286,7 +291,8 @@ void RegisterTherapyJobs(cJobManager& mgr) {
         {{"Aggressive", "She is no longer Aggressive."},
          {"Tsundere", "She is no longer a Tsundere."},
          {"Yandere", "She is no longer a Yandere."}}}));
-    mgr.register_job(std::make_unique<TherapyJob>(JOB_EXTHERAPY, sTherapyData{
+    mgr.register_job(std::make_unique<TherapyJob>(JOB_EXTHERAPY, "EThr", "She will go to extreme therapy to get over her hardcore mental problems. (Mind Fucked, Broken Will)",
+                                                  sTherapyData{
         "${name} underwent therapy for extreme mental issues.",
         "${name} doesn't need extreme therapy for anything so she was sent to the waiting room.",
         "She should stay in extreme therapy to treat her other disorders.",
@@ -298,7 +304,8 @@ void RegisterTherapyJobs(cJobManager& mgr) {
         {{"Mind Fucked", "She is no longer mind fucked."},
         {"Broken Will", "She is no longer has a broken will."}}
     }));
-    mgr.register_job(std::make_unique<TherapyJob>(JOB_THERAPY, sTherapyData{
+    mgr.register_job(std::make_unique<TherapyJob>(JOB_THERAPY, "Thrp", "She will go to therapy to get over her mental problems. (Nervous, Dependant, Pessimist)",
+                                                  sTherapyData{
         "${name} underwent therapy for mental issues.",
         "${name} doesn't need therapy for anything so she was sent to the waiting room.",
         "She should stay in therapy to treat her other disorders.",
@@ -312,7 +319,8 @@ void RegisterTherapyJobs(cJobManager& mgr) {
          {"Pessimist", "She is no longer a Pessimist about everything."}}
     }));
 
-    mgr.register_job(std::make_unique<Rehab>(JOB_REHAB, sTherapyData{
+    mgr.register_job(std::make_unique<Rehab>(JOB_REHAB, "Rehb", "She will go to rehab to get over her addictions.",
+                                             sTherapyData {
         "${name} underwent rehab for her addiction.",
         "${name} is not addicted to anything so she was sent to the waiting room.",
         "She should stay in rehab to treat her other addictions.",

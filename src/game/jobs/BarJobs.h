@@ -24,15 +24,12 @@
 
 struct sBarJobData {
     Action_Types Action;
-    int XP;
-    int Skill;
-
     const char* Refuse;
 };
 
 class cBarJob : public cBasicJob {
 public:
-    cBarJob(JOBS job, sBarJobData data);
+    cBarJob(JOBS job, const char* xml, sBarJobData data);
     bool DoWork(sGirl& girl, bool is_night) override;
     virtual bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) = 0;
 

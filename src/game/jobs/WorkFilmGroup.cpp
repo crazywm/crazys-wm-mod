@@ -27,9 +27,7 @@ FilmGroup::FilmGroup() : GenericFilmJob(JOB_FILMGROUP, {
     FilmJobData::NORMAL, SKILL_GROUP, "Group",
     "", " refused to do an orgy on film today.",
 }) {
-    add_trait_chance(GainFaker);
-    add_trait_chance(GainSlut);
-    add_trait_chance(GainPornStar);
+    load_from_xml("FilmGroup.xml");
 }
 
 void FilmGroup::DoScene(sGirl& girl) {

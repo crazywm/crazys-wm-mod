@@ -1,0 +1,20 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FBst">
+    <Description>
+        She will film a bestiality scene.
+    </Description>
+    <Performance Modifier="work.film.beast">
+        <Primary Stat="Beauty"/>
+        <Primary Stat="Charisma" />
+        <Secondary Skill="AnimalHandling" />
+        <Secondary Skill="Beastiality" />
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+            She has performed in enough sex scenes that she has become a well known Porn Star.
+        </GainTrait>
+        <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
+            She has become quite the Faker.
+        </GainTrait>
+    </Gains>
+</Job>

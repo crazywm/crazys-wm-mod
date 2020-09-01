@@ -1,0 +1,17 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Brwr">
+    <Description>
+        She will make various beers and wines.
+    </Description>
+    <Performance Modifier="work.brewer">
+        <Primary Skill="Brewing"/>
+        <Secondary Skill="Herbalism" />
+        <Secondary Skill="Cooking" />
+        <Secondary Stat="Intelligence" />
+    </Performance>
+    <Gains XP="5" Skill="3">
+        <GainTrait Trait="Chef" Threshold="70" Action="COOKING">
+            ${name} has prepared enough food to qualify as a Chef.
+        </GainTrait>
+    </Gains>
+</Job>

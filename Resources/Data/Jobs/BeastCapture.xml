@@ -1,0 +1,29 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="BCpt">
+    <Description>
+        She will go out into the wilds to capture beasts.
+    </Description>
+    <Performance Modifier="work.beastcapture">
+        <Primary Skill="AnimalHandling"/>
+        <Primary Skill="Combat"/>
+        <Primary Stat="Strength"/>
+        <Secondary Skill="Beastiality" />
+        <Secondary Skill="Magic" />
+        <Secondary Stat="Agility" />
+        <Secondary Stat="Constitution" />
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <GainTrait Trait="Tough" Threshold="30" Action="COMBAT">
+            She has become pretty Tough from all of the fights she's been in.
+        </GainTrait>
+        <GainTrait Trait="Adventurer" Threshold="40" Action="COMBAT">
+            She has been in enough tough spots to consider herself Adventurer.
+        </GainTrait>
+        <GainTrait Trait="Aggressive" Threshold="50" Action="COMBAT" Event="2">
+            She is getting rather Aggressive from her enjoyment of combat.
+        </GainTrait>
+        <LoseTrait Trait="Fragile" Threshold="15" Action="COMBAT">
+            ${name} has had to heal from so many injuries you can't say she is fragile anymore.
+        </LoseTrait>
+    </Gains>
+</Job>

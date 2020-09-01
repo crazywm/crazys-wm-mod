@@ -1,0 +1,20 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Wtrs">
+    <Description>
+        She will bring drinks and food to customers at the tables.
+    </Description>
+    <Performance Modifier="work.waitress">
+        <Primary Skill="Service"/>
+        <Secondary Stat="Charisma" />
+        <Secondary Stat="Intelligence" />
+        <Secondary Stat="Agility" />
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <LoseTrait Trait="Clumsy" Threshold="30" Action="WORKBAR">
+            It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.
+        </LoseTrait>
+        <GainTrait Trait="Charming" Threshold="70" Action="WORKBAR">
+            ${name} has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.
+        </GainTrait>
+    </Gains>
+</Job>

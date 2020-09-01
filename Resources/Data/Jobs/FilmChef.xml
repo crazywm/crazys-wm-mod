@@ -1,0 +1,20 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FChf">
+    <Description>
+        She will be filmed preparing food. And talking slowly. Sensuously. In sexy outfits. Because no reason.
+    </Description>
+    <Performance Modifier="work.film.chef">
+        <Primary Stat="Charisma" />
+        <Primary Stat="Beauty" />
+        <Primary Stat="Confidence" />
+        <Secondary Skill="Cooking" />
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <GainTrait Trait="Charming" Threshold="80" Action="WORKMOVIE">
+            She has become quite Charming.
+        </GainTrait>
+        <GainTrait Trait="Actress" Threshold="80" Action="WORKMOVIE">
+            Working on camera has improved her acting skills.
+        </GainTrait>
+    </Gains>
+</Job>

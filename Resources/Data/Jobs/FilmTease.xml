@@ -1,0 +1,21 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FTea">
+    <Description>
+        She will flirt and remove her clothes and tease seductively, but won't show all. If you freeze-frame you might just catch a nipple.
+    </Description>
+    <Performance Modifier="work.film.tease">
+        <Primary Stat="Charisma" />
+        <Primary Stat="Beauty" />
+        <Primary Stat="Confidence" />
+        <Secondary Skill="Performance"/>
+        <Secondary Skill="Strip"/>
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <GainTrait Trait="Charming" Threshold="80" Action="WORKMOVIE">
+            Flirting and seducing on film has made her Charming.
+        </GainTrait>
+        <GainTrait Trait="Actress" Threshold="80" Action="WORKSTRIP">
+            All this flirting and teasing with a camera in a studio has improved her acting skills.
+        </GainTrait>
+    </Gains>
+</Job>

@@ -388,7 +388,5 @@ FilmPubBDSM::FilmPubBDSM() : GenericFilmJob(JOB_FILMPUBLICBDSM, {
         FilmJobData::EVIL, SKILL_BDSM, "Public BDSM",
         nullptr, nullptr
 }) {
-    set_performance_data("work.film.publicbdsm", {STAT_CHARISMA, STAT_BEAUTY, STAT_DIGNITY}, {});
-    add_trait_chance(GainPornStar);
-    add_trait_chance(GainMasochist);
+    load_from_xml("FilmPublicBDSM.xml");
 }

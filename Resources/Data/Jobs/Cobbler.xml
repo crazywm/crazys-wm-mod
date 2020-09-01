@@ -1,0 +1,13 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Cblr">
+    <Description>
+        She will make shoes and leather items.
+    </Description>
+    <Performance Modifier="work.cobbler">
+        <Primary Skill="Crafting"/>
+        <Secondary Skill="Service" />
+        <Secondary Skill="Magic" />
+        <Secondary Stat="Intelligence" />
+    </Performance>
+    <Gains XP="5" Skill="3" />
+</Job>

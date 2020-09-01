@@ -26,9 +26,7 @@ FilmBuk::FilmBuk() : GenericFilmJob(JOB_FILMBUKKAKE, {
         " was filmed being splattered with cum in bukkake scenes.",
         nullptr
 }) {
-    set_performance_data("work.film.buk", {STAT_CHARISMA, STAT_BEAUTY}, {});
-    add_trait_chance({true, "Masochist", 75, ACTION_SEX, "${name} has turned into a Masochist from all the degradation."});
-    add_trait_chance({true, "Cum Addict", 80, ACTION_WORKMOVIE, "${name} has become addicted to cum."});
+    load_from_xml("FilmBuk.xml");
 }
 
 //Useful fn

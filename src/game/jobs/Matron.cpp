@@ -28,7 +28,11 @@
 
 class MatronJob : public IGenericJob {
 public:
-    MatronJob(JOBS job, const char* WorkerTitle) : IGenericJob(job), m_WorkerTitle(WorkerTitle) {}
+    MatronJob(JOBS job, const char* WorkerTitle, const char* short_name, const char* description) :
+        IGenericJob(job), m_WorkerTitle(WorkerTitle) {
+        m_Info.Description = description;
+        m_Info.ShortName = short_name;
+    }
     double GetPerformance(const sGirl& girl, bool estimate) const override;
     bool DoWork(sGirl& girl, bool is_night) override;
 protected:
@@ -357,10 +361,10 @@ bool BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
 }
 
 void RegisterManagerJobs(cJobManager& mgr) {
-    mgr.register_job(std::make_unique<BrothelMatronJob>(JOB_MATRON, "Matron"));
-    mgr.register_job(std::make_unique<MatronJob>(JOB_CHAIRMAN, "Clinic Chairman"));
-    mgr.register_job(std::make_unique<MatronJob>(JOB_CENTREMANAGER, "Centre Manager"));
-    mgr.register_job(std::make_unique<MatronJob>(JOB_DOCTORE, "Doctore"));
-    mgr.register_job(std::make_unique<MatronJob>(JOB_FARMMANGER, "Farm Manager"));
-    mgr.register_job(std::make_unique<MatronJob>(JOB_HEADGIRL, "Head Girl"));
+    mgr.register_job(std::make_unique<BrothelMatronJob>(JOB_MATRON, "Matron", "Mtrn", "This girl will look after the other girls. Only non-slave girls can have this position and you must pay them 300 gold per week. Also, it takes up both shifts. (max 1)"));
+    mgr.register_job(std::make_unique<MatronJob>(JOB_CHAIRMAN, "Clinic Chairman", "Crmn", "She will watch over the staff of the clinic"));
+    mgr.register_job(std::make_unique<MatronJob>(JOB_CENTREMANAGER, "Centre Manager", "CMgr", "She will look after the girls working in the centre."));
+    mgr.register_job(std::make_unique<MatronJob>(JOB_DOCTORE, "Doctore", "Dtre", "She will watch over the girls in the arena."));
+    mgr.register_job(std::make_unique<MatronJob>(JOB_FARMMANGER, "Farm Manager", "FMgr", "She will watch over the farm and girls working there."));
+    mgr.register_job(std::make_unique<MatronJob>(JOB_HEADGIRL, "Head Girl", "HGrl", "She takes care of the girls in your house."));
 }

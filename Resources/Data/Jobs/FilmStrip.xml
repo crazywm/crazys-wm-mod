@@ -1,0 +1,12 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FStp">
+    <Description>
+        She will perform in a strip tease scene.
+    </Description>
+    <Performance Modifier="work.farmer">
+        <Primary Skill="Performance" />
+        <Secondary Skill="Strip"/>
+    </Performance>
+    <Gains XP="10" Skill="3">
+    </Gains>
+</Job>

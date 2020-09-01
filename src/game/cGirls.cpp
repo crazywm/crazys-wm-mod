@@ -813,8 +813,8 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
         if (girl.is_resting() && !girl.was_resting() && girl.m_PrevDayJob != 255 && girl.m_PrevNightJob != 255)
         {
             ss << "\n \nOFF WORK, RESTING DUE TO TIREDNESS.";
-            ss << "\nStored Day Job:   " << g_Game->job_manager().JobData[girl.m_PrevDayJob].name;
-            ss << "\nStored Night Job: " << g_Game->job_manager().JobData[girl.m_PrevNightJob].name;
+            ss << "\nStored Day Job:   " << g_Game->job_manager().get_job_name(girl.m_PrevDayJob);
+            ss << "\nStored Night Job: " << g_Game->job_manager().get_job_name(girl.m_PrevNightJob);
             ss << "\n";
         }
         int to_go = girl.get_preg_duration() - girl.m_WeeksPreg;
@@ -991,7 +991,7 @@ namespace {
         for(auto& job : jobs) {
             double value = girl.job_performance(job.job, true);
 
-            jr << JobRatingLetter(value) << "  " << job.mark << "  " << g_Game->job_manager().JobData[job.job].name;
+            jr << JobRatingLetter(value) << "  " << job.mark << "  " << g_Game->job_manager().get_job_name(job.job);
             if (g_Game->settings().get_bool(settings::USER_SHOW_NUMBERS)) jr << "   ( " << (int) value << " )";
             jr << "\n";
         }
@@ -1149,8 +1149,8 @@ string cGirls::GetSimpleDetails(const sGirl& girl)
     if(girl.m_Building)
         ss << girl.m_Building->name();
 
-    ss << "\n" << basestr[10] << g_Game->job_manager().JobData[girl.m_DayJob].name;
-    ss << "\n" << basestr[11] << g_Game->job_manager().JobData[girl.m_NightJob].name;
+    ss << "\n" << basestr[10] << g_Game->job_manager().get_job_name(girl.m_DayJob);
+    ss << "\n" << basestr[11] << g_Game->job_manager().get_job_name(girl.m_NightJob);
     ss << "\n" << basestr[2] << (girl.beauty() + girl.charisma()) / 2;
     ss << "\n" << statstr[0] << girl.charisma();
     ss << "\n" << statstr[1] << girl.beauty();

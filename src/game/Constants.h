@@ -464,6 +464,11 @@ const unsigned int JOB_TRAIN            = ;    // not added yet    // trains the
 
 #endif
 
+const std::array<const char*, NUM_JOBS>& get_job_names();
+const char* get_job_name(JOBS job);
+JOBS get_job_id(const std::string& name);
+
+
 
 // Goon missions
 enum Gang_Missions{

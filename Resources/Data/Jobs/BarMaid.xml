@@ -1,0 +1,21 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="BrMd">
+    <Description>
+        She will staff the bar and serve drinks.
+    </Description>
+    <Performance Modifier="work.barmaid">
+        <Primary Skill="Service"/>
+        <Primary Stat="Intelligence" />
+        <Secondary Stat="Charisma" />
+        <Secondary Skill="Performance" />
+        <Secondary Skill="Brewing" />
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <LoseTrait Trait="Nervous" Threshold="40" Action="WORKBAR">
+            ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
+        </LoseTrait>
+        <GainTrait Trait="Charismatic" Threshold="60" Action="WORKBAR">
+            Dealing with customers at the bar and talking with them about their problems has made ${name} more Charismatic.
+        </GainTrait>
+    </Gains>
+</Job>

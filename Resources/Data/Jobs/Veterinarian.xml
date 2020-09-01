@@ -1,0 +1,14 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Vet">
+    <Description>
+        She will tend to sick animals.
+    </Description>
+    <Performance Modifier="work.veterinarian">
+        <Primary Skill="Medicine"/>
+        <Primary Skill="AnimalHandling"/>
+        <Secondary Stat="Intelligence" />
+        <Secondary Stat="Charisma" />
+        <Secondary Skill="Beastiality" />
+    </Performance>
+    <Gains XP="10" Skill="3" />
+</Job>

@@ -1,0 +1,18 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Jwlr">
+    <Description>
+        She will make jewelery.
+    </Description>
+    <Performance Modifier="work.jeweler">
+        <Primary Skill="Crafting"/>
+        <Secondary Skill="Magic" />
+        <Secondary Stat="Confidence" />
+        <Secondary Stat="Intelligence" />
+        <Secondary Stat="Agility" />
+    </Performance>
+    <Gains XP="5" Skill="3">
+    <GainTrait Trait="Sharp-Eyed" Threshold="50" Action="MAKEITEMS">
+        Working on such small items has made ${name} rather Sharp-Eyed.
+    </GainTrait>
+    </Gains>
+</Job>

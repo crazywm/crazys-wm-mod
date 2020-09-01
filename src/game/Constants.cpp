@@ -161,10 +161,14 @@ STATUS get_status_id(const std::string& name) {
 
 const std::array<const char*, NUM_ACTIONTYPES>& get_action_names() {
     static std::array<const char*, NUM_ACTIONTYPES> names {
-            "COMBAT", "SEX", "WORKESCORT", "WORKCLEANING", "WORKMATRON", "WORKBAR", "WORKHALL", "WORKSHOW", "WORKSECURITY",
-            "WORKADVERTISING", "WORKTORTURER", "WORKCARING", "WORKDOCTOR", "WORKMOVIE", "WORKCUSTSERV", "WORKCENTRE", "WORKCLUB",
-            "WORKHAREM", "WORKRECRUIT", "WORKNURSE", "WORKMECHANIC", "WORKCOUNSELOR", "WORKMUSIC", "WORKSTRIP", "WORKMILK",
-            "WORKMASSEUSE", "WORKFARM", "WORKTRAINING", "WORKREHAB", "MAKEPOTIONS", "MAKEITEMS", "COOKING", "GETTHERAPY",
+            "COMBAT", "SEX", "WORKESCORT", "WORKCLEANING", "WORKMATRON",
+            "WORKBAR", "WORKHALL", "WORKSHOW", "WORKSECURITY",
+            "WORKADVERTISING", "WORKTORTURER", "WORKCARING", "WORKDOCTOR",
+            "WORKMOVIE", "WORKCUSTSERV", "WORKCENTRE", "WORKCLUB",
+            "WORKHAREM", "WORKRECRUIT", "WORKNURSE", "WORKMECHANIC",
+            "WORKCOUNSELOR", "WORKMUSIC", "WORKSTRIP", "WORKMILK",
+            "WORKMASSEUSE", "WORKFARM", "WORKTRAINING", "WORKREHAB",
+            "MAKEPOTIONS", "MAKEITEMS", "COOKING", "GETTHERAPY",
             "WORKHOUSEPET", "GENERAL"
     };
     return names;
@@ -274,4 +278,57 @@ const std::array<const char*, NUM_IMGTYPES>& get_imgtype_names() {
             "pregteacher"
     };
     return names;
+}
+
+const std::array<const char*, NUM_JOBS>& get_job_names() {
+    static std::array<const char*, NUM_JOBS> names {
+            "Free Time", "Practice Skills", "Cleaning", "Security",
+            "Advertising", "Customer Service", "Matron", "Torturer",
+            "Explore Catacombs", "Beast Carer", "Barmaid", "Waitress",
+            "Singer", "Piano", "Escort", "Bar Cook",
+            "Game Dealer", "Entertainer", "XXX Entertainer", "Hall Whore",
+            "Strip Club Barmaid", "Strip Club Waitress", "Strip Club Stripper",
+            "Strip Club Whore", "Masseuse", "Brothel Stripper", "Peep Show",
+            "Brothel Whore", "Whore on Streets", "Time off", "Director",
+            "Promoter", "Camera Mage", "Crystal Purifier", "Fluffer",
+            "Stagehand", "Action", "The Naked Chef", "Music",
+            "Film Masturbation", "Film Strip tease", "Teaser Video",
+            "Film Anal", "Film Foot Job", "Film Hand Job", "Film Lesbian",
+            "Film Oral Sex", "Film Sex", "Film Titty Fuck", "Film Bestiality",
+            "Film Bondage", "Cumslut/Bukkake", "Face-fuck", "Film Group",
+            "Public Torture", "Film a random scene", "Fight Beasts",
+            "Cage Match", "Combat Training", "Time off", "Doctore",
+            "City Guard", "Blacksmith", "Cobbler", "Jeweler",
+            "Grounds Keeper", "Time off", "Centre Manager", "Feed Poor",
+            "Community Service", "Clean Centre", "Counselor", "Rehab",
+            "Therapy", "Extreme Therapy", "Anger Management", "Get Healing",
+            "Get Repaired", "Cure Diseases", "Abortion", "Cosmetic Surgery",
+            "Liposuction", "Breast Reduction Surgery", "Boob Job",
+            "Vaginal Rejuvenation", "Face Lift", "Arse Job", "Tubes Tied",
+            "Fertility Treatment", "Time off", "Chairman", "Doctor",
+            "Nurse", "Mechanic", "Intern", "Janitor", "Time off",
+            "Farm Manager", "Veterinarian", "Marketer", "Researcher",
+            "Farm Hand", "Farmer", "Gardener", "Shepherd",
+            "Rancher", "Catacombs Rancher", "Beast Capture", "Milker",
+            "Get Milked", "Butcher", "Baker", "Brewer",
+            "Tailor", "Make Items", "Make Potions", "Time off",
+            "Head Girl", "Recruiter", "Bed Warmer", "House Cook",
+            "Clean House", "Personal Training", "House Pet",
+            "SO Straight", "SO Bisexual", "SO Lesbian",
+            "Fake Orgasm Expert", "In the Dungeon", "Runaway"
+    };
+    return names;
+}
+
+const char* get_job_name(JOBS job) {
+    return get_job_names()[job];
+}
+
+auto get_job_lookup() -> const auto& {
+    static auto lookup = create_lookup_table<JOBS>(get_job_names());
+    return lookup;
+}
+
+JOBS get_job_id(const std::string& name) {
+    return get_job_lookup().at(name);
 }

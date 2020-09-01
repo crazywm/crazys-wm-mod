@@ -1,0 +1,18 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Bchr">
+    <Description>
+        She will produce food from animals you own.
+    </Description>
+    <Performance Modifier="work.butcher">
+        <Primary Skill="AnimalHandling"/>
+        <Primary Stat="Strength"/>
+        <Secondary Skill="Medicine" />
+        <Secondary Skill="Cooking" />
+        <Secondary Stat="Intelligence" />
+    </Performance>
+    <Gains XP="5" Skill="3">
+        <GainTrait Trait="Chef" Threshold="70" Action="COOKING">
+            ${name} has prepared enough food to qualify as a Chef.
+        </GainTrait>
+    </Gains>
+</Job>

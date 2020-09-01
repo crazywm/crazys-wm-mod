@@ -1,0 +1,20 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FGrp">
+    <Description>
+        She will film a group sex scene.
+    </Description>
+    <Performance Modifier="">
+        <!-- Not implemented -->
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+            She has performed in enough sex scenes that she has become a well known Porn Star.
+        </GainTrait>
+        <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
+            She has become quite the Faker.
+        </GainTrait>
+        <GainTrait Trait="Slut" Threshold="80" Action="SEX" Event="2">
+            ${name} has turned into quite a Slut.
+        </GainTrait>
+    </Gains>
+</Job>

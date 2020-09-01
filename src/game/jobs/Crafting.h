@@ -28,20 +28,16 @@
 struct sCraftingJobData {
     Image_Types  Image;             //!< The image type used in the job event.
     Action_Types Action;            //!< Secondary action (besides WORKMOVIE) that can gain enjoyment. Set to NUM_ACTIONTYPES to disable
-    const char*  TraitMod;          //!< Name of the trait modifier
-    std::vector<StatSkill> PrimaryGains;    // primary skill and stat gains
-    std::vector<StatSkill> SecondaryGains;  // primary skill and stat gains
     int          Wages;             //!< Default wages for that job
     const char*  MsgWork;           //!< Default message for doing the work
     const char*  MsgRepair;         //!< Message for doing repairs
     const char*  MsgProduce;        //!< Message for production
-    std::vector<sTraitChange> TraitChanges;
 };
 
 class GenericCraftingJob : public cBasicJob {
 public:
-    explicit GenericCraftingJob(JOBS id, sCraftingJobData data) : cBasicJob(id), m_CraftingData(std::move(data)) {
-        set_performance_data(m_CraftingData.TraitMod, m_CraftingData.PrimaryGains, m_CraftingData.SecondaryGains);
+    explicit GenericCraftingJob(JOBS id, const char* xml, sCraftingJobData data) :
+        cBasicJob(id, xml), m_CraftingData(std::move(data)) {
     }
 
     bool DoWork(sGirl& girl, bool is_night) final;
@@ -58,6 +54,8 @@ protected:
 private:
     virtual void performance_msg();
     virtual void DoWorkEvents(sGirl& girl);
+
+    float DoCrafting(sGirl& girl, int craft_points);
 };
 
 #endif //WM_JOBS_CRAFTING_H

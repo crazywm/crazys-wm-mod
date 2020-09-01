@@ -1,0 +1,13 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Rancher">
+    <Description>
+        She will tend to larger animals.
+    </Description>
+    <Performance Modifier="work.rancher">
+        <Primary Skill="AnimalHandling"/>
+        <Secondary Stat="Intelligence" />
+        <Secondary Stat="Charisma" />
+        <Secondary Stat="Confidence" />
+    </Performance>
+    <Gains XP="5" Skill="3" />
+</Job>

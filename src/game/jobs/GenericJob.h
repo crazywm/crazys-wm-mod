@@ -36,23 +36,37 @@ class cRng;
 
 struct sTraitChange {
     // explicit constructor needed for mingw
-    constexpr sTraitChange(bool g, const char* tn, int th, Action_Types a, const char* m, EventType e = EVENT_GOODNEWS) :
-            Gain(g), TraitName(tn), Threshold(th), Action(a), Message(m), EventType(e) {}
+    sTraitChange(bool g, std::string trait, int th, Action_Types a, std::string message, EventType e = EVENT_GOODNEWS) :
+            Gain(g), TraitName(std::move(trait)), Threshold(th), Action(a), Message(std::move(message)), EventType(e) {}
     bool Gain;
-    const char* TraitName;
+    std::string TraitName;
     int Threshold;
     Action_Types Action;
-    const char* Message;
+    std::string Message;
     ::EventType EventType = EVENT_GOODNEWS;
+};
+
+struct sJobInfo {
+    JOBS        JobId;
+    std::string Name;
+    std::string ShortName;
+    std::string Description;
 };
 
 class IGenericJob {
 public:
-    IGenericJob(JOBS j) : m_JobId(j) {}
+    IGenericJob(JOBS j);
     virtual ~IGenericJob() noexcept = default;
+
+    // queries
+    const sJobInfo& GetInfo() const { return m_Info; }
+    JOBS job() const { return m_Info.JobId; }
+
+    /// Gets an estimate or actual value of how well the girl performs at this job
     virtual double GetPerformance(const sGirl& girl, bool estimate) const = 0;
+
+    /// Lets the girl do the job
     bool Work(sGirl& girl, bool is_night, cRng& rng);
-    JOBS job() const { return m_JobId; }
 protected:
     std::stringstream ss;
 
@@ -65,13 +79,20 @@ private:
     virtual bool DoWork(sGirl& girl, bool is_night) = 0;
 
     cRng* m_Rng;
-    JOBS m_JobId;
+
+protected:
+    sJobInfo m_Info;
 };
 
 struct sJobPerformance {
-    const char*  TraitMod;          //!< Name of the trait modifier
+    std::string            TraitMod;        //!< Name of the trait modifier
     std::vector<StatSkill> PrimaryGains;    // primary skill and stat gains
     std::vector<StatSkill> SecondaryGains;  // primary skill and stat gains
+};
+
+struct sBasicJobData {
+    int XP;
+    int Skill;
 };
 
 class cBasicJob : public IGenericJob {
@@ -79,17 +100,22 @@ public:
     using IGenericJob::IGenericJob;
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 
+    cBasicJob(JOBS job, const char* xml_file);
+
 protected:
 
-    void set_performance_data(const char* mod, std::vector<StatSkill> primary, std::vector<StatSkill> secondary);
+    void set_performance_data(std::string mod, std::vector<StatSkill> primary, std::vector<StatSkill> secondary);
     const sJobPerformance& get_performance_data() const { return m_PerformanceData; }
 
     void add_trait_chance(sTraitChange c);
-
     void gain_traits(sGirl& girl);
+    void apply_gains(sGirl& girl);
+
+    void load_from_xml(const char* xml_file);
 private:
     sJobPerformance m_PerformanceData;
     std::vector<sTraitChange> m_TraitChanges;
+    sBasicJobData m_Data;
 };
 
 void RegisterCraftingJobs(cJobManager& mgr);

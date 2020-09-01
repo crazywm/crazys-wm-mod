@@ -1,0 +1,13 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="CRnc">
+    <Description>
+        She will tend to strange beasts.
+    </Description>
+    <Performance Modifier="work.catacombranger">
+        <Primary Skill="AnimalHandling"/>
+        <Secondary Stat="Confidence" />
+        <Secondary Stat="Strength" />
+        <Secondary Stat="Constitution" />
+    </Performance>
+    <Gains XP="10" Skill="3" />
+</Job>

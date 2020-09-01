@@ -69,76 +69,18 @@ void cJobManager::Setup()
     JobFilters[JOBFILTER_GENERAL] = sJobFilter{"General", "These are general jobs that work individually in any building."};
     register_filter(JOBFILTER_GENERAL, JOB_RESTING, JOB_BEASTCARER);
 
-    JobData[JOB_RESTING] = sJobData("Free Time", "TOff");
-    JobData[JOB_RESTING].description = "She will take some time off, maybe do some shopping or walk around town. If the girl is unhappy she may try to escape.";
-    JobData[JOB_TRAINING] = sJobData("Practice Skills", "Prtc");
-    JobData[JOB_TRAINING].description = "She will train either alone or with others to improve her skills.";
-    JobData[JOB_CLEANING] = sJobData("Cleaning", "Cln");
-    JobData[JOB_CLEANING].description = "She will clean the building, as filth will put off some customers.";
-    JobData[JOB_SECURITY] = sJobData("Security", "Sec");
-    JobData[JOB_SECURITY].description = "She will patrol the building, stopping mis-deeds.";
-    JobData[JOB_ADVERTISING] = sJobData("Advertising", "Adv");
-    JobData[JOB_ADVERTISING].description = "She will advertise the building's features in the city.";
-    JobData[JOB_CUSTOMERSERVICE] = sJobData("Customer Service", "CS");
-    JobData[JOB_CUSTOMERSERVICE].description = "She will look after customer needs.";
-    JobData[JOB_MATRON] = sJobData("Matron", "Mtrn");
-    JobData[JOB_MATRON].description = "This girl will look after the other girls. Only non-slave girls can have this position and you must pay them 300 gold per week. Also, it takes up both shifts. (max 1)";
-    JobData[JOB_TORTURER] = sJobData("Torturer", "Trtr");
-    JobData[JOB_TORTURER].description = "She will torture the prisoners in addition to your tortures, she will also look after them to ensure they don't die. (max 1 for all brothels)";
-    JobData[JOB_EXPLORECATACOMBS] = sJobData("Explore Catacombs", "ExC");
-    JobData[JOB_EXPLORECATACOMBS].description = "She will explore the catacombs looking for treasure and capturing monsters and monster girls. Needless to say, this is a dangerous job.";
-    JobData[JOB_BEASTCARER] = sJobData("Beast Carer", "BstC");
-    JobData[JOB_BEASTCARER].description = "She will look after the needs of the beasts in your Brothel.";
     // - Bar Jobs
     JobFilters[JOBFILTER_BAR] = sJobFilter{"Bar", "These are jobs for running a bar."};
     register_filter(JOBFILTER_BAR, JOB_BARMAID, JOB_BARCOOK);
-    JobData[JOB_BARMAID] = sJobData("Barmaid", "BrMd");
-    JobData[JOB_BARMAID].description = "She will staff the bar and serve drinks.";
-    JobData[JOB_WAITRESS] = sJobData("Waitress", "Wtrs");
-    JobData[JOB_WAITRESS].description = "She will bring drinks and food to customers at the tables.";
-    JobData[JOB_SINGER] = sJobData("Singer", "Sngr");
-    JobData[JOB_SINGER].description = "She will sing for the customers.";
-    JobData[JOB_PIANO] = sJobData("Piano", "Pno");
-    JobData[JOB_PIANO].description = "She will play the piano for the customers.";
-    JobData[JOB_ESCORT] = sJobData("Escort", "Scrt");
-    JobData[JOB_ESCORT].description = "She will be an escort.";
-    JobData[JOB_BARCOOK] = sJobData("Bar Cook", "BrCk");
-    JobData[JOB_BARCOOK].description = "She will cook food for the bar.";
     // - Gambling Hall Jobs
     JobFilters[JOBFILTER_GAMBHALL] = sJobFilter{"Gambling Hall", "These are jobs for running a gambling hall."};
     register_filter(JOBFILTER_GAMBHALL, JOB_DEALER, JOB_WHOREGAMBHALL);
-    JobData[JOB_DEALER] = sJobData("Game Dealer", "Dlr");
-    JobData[JOB_DEALER].description = "She will manage a game in the gambling hall.";
-    JobData[JOB_ENTERTAINMENT] = sJobData("Entertainer", "Entn");
-    JobData[JOB_ENTERTAINMENT].description = "She will provide entertainment to the customers.";
-    JobData[JOB_XXXENTERTAINMENT] = sJobData("XXX Entertainer", "XXXE");
-    JobData[JOB_XXXENTERTAINMENT].description = "She will provide sexual entertainment to the customers.";
-    JobData[JOB_WHOREGAMBHALL] = sJobData("Hall Whore", "HWhr");
-    JobData[JOB_WHOREGAMBHALL].description = "She will give her sexual favors to the customers.";
     // - Sleazy Bar Jobs        // Changing all references to Strip Club, just sounds better to me and more realistic. -PP
     JobFilters[JOBFILTER_SLEAZYBAR] = sJobFilter{"Strip Club", "These are jobs for running a Strip Club."};
     register_filter(JOBFILTER_SLEAZYBAR, JOB_SLEAZYBARMAID, JOB_BARWHORE);
-    JobData[JOB_SLEAZYBARMAID] = sJobData("Strip Club Barmaid", "SBmd");
-    JobData[JOB_SLEAZYBARMAID].description = "She will staff the bar and serve drinks while dressed in lingerie or fetish costumes.";
-    JobData[JOB_SLEAZYWAITRESS] = sJobData("Strip Club Waitress", "SWtr");
-    JobData[JOB_SLEAZYWAITRESS].description = "She will bring drinks and food to the customers at the tables while dressed in lingerie or fetish costumes.";
-    JobData[JOB_BARSTRIPPER] = sJobData("Strip Club Stripper", "SSrp");
-    JobData[JOB_BARSTRIPPER].description = "She will strip on the tables and stage for the customers.";
-    JobData[JOB_BARWHORE] = sJobData("Strip Club Whore", "SWhr");
-    JobData[JOB_BARWHORE].description = "She will provide sex to the customers.";
     // - Brothel Jobs
     JobFilters[JOBFILTER_BROTHEL] = sJobFilter{"Brothel", "These are jobs for running a brothel."};
     register_filter(JOBFILTER_BROTHEL, JOB_MASSEUSE, JOB_WHORESTREETS);
-    JobData[JOB_MASSEUSE] = sJobData("Masseuse", "Msus");
-    JobData[JOB_MASSEUSE].description = "She will give massages to the customers.";
-    JobData[JOB_BROTHELSTRIPPER] = sJobData("Brothel Stripper", "BStp");
-    JobData[JOB_BROTHELSTRIPPER].description = "She will strip for the customers.";
-    JobData[JOB_PEEP] = sJobData("Peep Show", "Peep");
-    JobData[JOB_PEEP].description = "She will let people watch her change and maybe more...";
-    JobData[JOB_WHOREBROTHEL] = sJobData("Brothel Whore", "BWhr");
-    JobData[JOB_WHOREBROTHEL].description = "She will whore herself to customers within the building's walls. This is safer but a little less profitable.";
-    JobData[JOB_WHORESTREETS] = sJobData("Whore on Streets", "StWr");
-    JobData[JOB_WHORESTREETS].description = "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable.";
 
 
 
@@ -147,22 +89,8 @@ void cJobManager::Setup()
     // Studio Crew
     JobFilters[JOBFILTER_STUDIOCREW] = sJobFilter{"Studio Crew", "These are jobs for running a movie studio."};
     register_filter(JOBFILTER_STUDIOCREW, JOB_FILMFREETIME, JOB_STAGEHAND);
-    JobData[JOB_FILMFREETIME] = sJobData("Time off", "TOff");
-    JobData[JOB_FILMFREETIME].description = "She takes time off resting and recovering.";
-    JobData[JOB_DIRECTOR] = sJobData("Director", "Dir");
-    JobData[JOB_DIRECTOR].description = "She directs the filming, and keeps the girls in line. (max 1)";
-    JobData[JOB_PROMOTER] = sJobData("Promoter", "Prmt");
-    JobData[JOB_PROMOTER].description = "She advertises the movies. (max 1)";
-    JobData[JOB_CAMERAMAGE] = sJobData("Camera Mage", "CM");
-    JobData[JOB_CAMERAMAGE].description = "She will film the scenes. (requires at least 1 to create a scene)";
-    JobData[JOB_CRYSTALPURIFIER] = sJobData("Crystal Purifier", "CP");
-    JobData[JOB_CRYSTALPURIFIER].description = "She will clean up the filmed scenes. (requires at least 1 to create a scene)";
     //JobData[JOB_SOUNDTRACK] = sJobData("Sound Track", "SndT", WorkSoundTrack, JP_SoundTrack);
     //JobData[JOB_SOUNDTRACK].description = ("She will clean up the audio and add music to the scenes. (not required but helpful)");
-    JobData[JOB_FLUFFER] = sJobData("Fluffer", "Fluf");
-    JobData[JOB_FLUFFER].description = "She will keep the porn stars aroused.";
-    JobData[JOB_STAGEHAND] = sJobData("Stagehand", "StgH");
-    JobData[JOB_STAGEHAND].description = "She helps setup equipment, and keeps the studio clean.";
 
 
     // `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cJobManager.cpp > Setup
@@ -170,392 +98,76 @@ void cJobManager::Setup()
     // Studio - Non-Sex Scenes
     JobFilters[JOBFILTER_STUDIONONSEX] = sJobFilter{"Non-Sex Scenes", "These are scenes without sex."};
     register_filter(JOBFILTER_STUDIONONSEX, JOB_FILMACTION, JOB_FILMMUSIC);
-    JobData[JOB_FILMACTION] = sJobData("Action", "FAct");
-    JobData[JOB_FILMACTION].description = "She will be the scantily clad heroine in fighting/magical action scenes.";
-    JobData[JOB_FILMCHEF] = sJobData("The Naked Chef", "FChf");
-    JobData[JOB_FILMCHEF].description = "She will be filmed preparing food. And talking slowly. Sensuously. In sexy outfits. Because no reason.";
-    //JobData[JOB_FILMCOMEDY] = sJobData("Comedy Scene", "FCmd", WorkFilmComedy, JP_FilmComedy);
-    //JobData[JOB_FILMCOMEDY].description = ("She will perform a scene intended to make people laugh.");
-    //JobData[JOB_FILMDRAMA] = sJobData("Drama Scene", "FDrm", WorkFilmDrama, JP_FilmDrama);
-    //JobData[JOB_FILMDRAMA].description = ("She will film a Dramatic scene.");
-    //JobData[JOB_FILMHORROR] = sJobData("Horror Scene", "FHrr", WorkFilmHorror, JP_FilmHorror);
-    //JobData[JOB_FILMHORROR].description = ("She will film a Horror scene.");
-    //JobData[JOB_FILMIDOL] = sJobData("Idol (Aidoru)", "FIdl", WorkFilmIdol, JP_FilmIdol);
-    //JobData[JOB_FILMIDOL].description = ("She will be presented to the public as an idol: a cute, sexy woman.");
-    JobData[JOB_FILMMUSIC] = sJobData("Music", "FMus");
-    JobData[JOB_FILMMUSIC].description = "She will make a music video.";
 
     // Studio - Softcore Porn
     JobFilters[JOBFILTER_STUDIOSOFTCORE] = sJobFilter{"Softcore Scenes", "These are scenes with just the one girl."};
     register_filter(JOBFILTER_STUDIOSOFTCORE, JOB_FILMMAST, JOB_FILMTEASE);
-    JobData[JOB_FILMMAST] = sJobData("Film Masturbation", "FMst");
-    JobData[JOB_FILMMAST].description = "She will perform in a masturbation scene.";
-    JobData[JOB_FILMSTRIP] = sJobData("Film Strip tease", "FStp");
-    JobData[JOB_FILMSTRIP].description = "She will perform in a strip tease scene.";
-    JobData[JOB_FILMTEASE] = sJobData("Teaser Video", "FTea");
-    JobData[JOB_FILMTEASE].description = "She will flirt and remove her clothes and tease seductively, but won't show all. If you freeze-frame you might just catch a nipple.";
 
     // Studio - Porn
     JobFilters[JOBFILTER_STUDIOPORN] = sJobFilter{"Porn Scenes", "These are regular sex scenes."};
     register_filter(JOBFILTER_STUDIOPORN, JOB_FILMANAL, JOB_FILMTITTY);
-    JobData[JOB_FILMANAL] = sJobData("Film Anal", "FAnl");
-    JobData[JOB_FILMANAL].description = "She will film an anal scenes.";
-    JobData[JOB_FILMFOOTJOB] = sJobData("Film Foot Job", "FFJ");
-    JobData[JOB_FILMFOOTJOB].description = "She will perform in a foot job scene.";
-//    JobData[JOB_FILMFUTA] = sJobData("Film Futa Scene", "FFta", WorkFilmFuta, JP_FilmFuta);
-    //    JobData[JOB_FILMFUTA].description = ("She will perform in a Futa scene.");
-    JobData[JOB_FILMHANDJOB] = sJobData("Film Hand Job", "FHJ");
-    JobData[JOB_FILMHANDJOB].description = "She will perform in a hand job scene.";
-    JobData[JOB_FILMLESBIAN] = sJobData("Film Lesbian", "FLes");
-    JobData[JOB_FILMLESBIAN].description = "She will do a lesbian scene.";
-    JobData[JOB_FILMORAL] = sJobData("Film Oral Sex", "FOrl");
-    JobData[JOB_FILMORAL].description = ("She will perform in an oral sex scene.");
-    JobData[JOB_FILMSEX] = sJobData("Film Sex", "FSex");
-    JobData[JOB_FILMSEX].description = "She will film a normal sex scenes.";
-    JobData[JOB_FILMTITTY] = sJobData("Film Titty Fuck", "FTit");
-    JobData[JOB_FILMTITTY].description = "She will perform in a titty fuck scene.";
 
     // Studio - Hardcore porn
     JobFilters[JOBFILTER_STUDIOHARDCORE] = sJobFilter{"Hardcore Scenes", "These are rough scenes that not all girls would be comfortable with."};
     register_filter(JOBFILTER_STUDIOHARDCORE, JOB_FILMBEAST, JOB_FILMPUBLICBDSM);
-    JobData[JOB_FILMBEAST] = sJobData("Film Bestiality", "FBst");
-    JobData[JOB_FILMBEAST].description = ("She will film a bestiality scenes.");
-    JobData[JOB_FILMBONDAGE] = sJobData("Film Bondage", "FBnd");
-    JobData[JOB_FILMBONDAGE].description = ("She will perform a in bondage scenes.");
-    JobData[JOB_FILMBUKKAKE] = sJobData("Cumslut/Bukkake", "FBuk");
-    JobData[JOB_FILMBUKKAKE].description = ("A large group of men will cum on, over and inside her.");
-    JobData[JOB_FILMFACEFUCK] = sJobData("Face-fuck", "FFac");
-    JobData[JOB_FILMFACEFUCK].description = ("She will be used in gag and face-fuck scenes.");
-    JobData[JOB_FILMGROUP] = sJobData("Film Group", "FGrp");
-    JobData[JOB_FILMGROUP].description = ("She will film a group sex scene.");
-    JobData[JOB_FILMPUBLICBDSM] = sJobData("Public Torture", "FTor");
-    JobData[JOB_FILMPUBLICBDSM].description = ("She will be tied up in a public place, where she will be stripped, whipped, tortured and fully-used. On film.");
-
-    //JobData[JOB_FILMDOM].name = ("Film Dominatrix");
-    //JobData[JOB_FILMDOM].brief = "FDom";                                            //update in cGirls.cpp
-    //JobData[JOB_FILMDOM].description = ("She will perform in a Dominatrix scene.");
-    //JobFunc[JOB_FILMDOM] = &WorkFilmDominatrix;
-    //JobPerf[JOB_FILMDOM] = &JP_FilmDom;
 
     // Studio - Random
     JobFilters[JOBFILTER_RANDSTUDIO] = sJobFilter{"Random Scenes", "Let the game choose what scene the girl will film."};
     register_filter(JOBFILTER_RANDSTUDIO, JOB_FILMRANDOM, JOB_FILMRANDOM);
-    JobData[JOB_FILMRANDOM] = sJobData("Film a random scene", "FRnd");
-    // This job is handled different than others, it is in cMovieStudio.cpp UpdateGirls()
-    JobData[JOB_FILMRANDOM].description = "She will perform in a random sex scene.";
 
 
     // - Arena Jobs
     JobFilters[JOBFILTER_ARENA] = sJobFilter{"Arena", "These are jobs for running an arena."};
     register_filter(JOBFILTER_ARENA, JOB_FIGHTBEASTS, JOB_FIGHTTRAIN);
-    JobData[JOB_FIGHTBEASTS] = sJobData("Fight Beasts", "FiBs");
-    JobData[JOB_FIGHTBEASTS].description = ("She will fight to the death against beasts you own. Dangerous.");
-    JobData[JOB_FIGHTARENAGIRLS] = sJobData("Cage Match", "Cage");
-    JobData[JOB_FIGHTARENAGIRLS].description = ("She will fight against other girls. Dangerous.");
-    JobData[JOB_FIGHTTRAIN] = sJobData("Combat Training", "CT");
-    JobData[JOB_FIGHTTRAIN].description = ("She will practice combat.");
-    /*JobData[JOB_JOUSTING] = sJobData("Jousting", "JstM", WorkArenaJousting, JP_ArenaJousting);
-    JobData[JOB_JOUSTING].description = ("She will put on a Jousting match.");*/
     //- Arena Staff
     JobFilters[JOBFILTER_ARENASTAFF] = sJobFilter{"Arena Staff", "These are jobs that help run an arena."};
     register_filter(JOBFILTER_ARENASTAFF, JOB_ARENAREST, JOB_CLEANARENA);
-    JobData[JOB_ARENAREST] = sJobData("Time off", "TOff");
-    JobData[JOB_ARENAREST].description = ("She will rest.");
-    JobData[JOB_DOCTORE] = sJobData("Doctore", "Dtre");
-    JobData[JOB_DOCTORE].description = ("She will watch over the girls in the arena.");
-    JobData[JOB_CITYGUARD] = sJobData("City Guard", "CGrd");
-    JobData[JOB_CITYGUARD].description = ("She will help keep crossgate safe.");
-    JobData[JOB_BLACKSMITH] = sJobData("Blacksmith", "Bksm");
-    JobData[JOB_BLACKSMITH].description = ("She will make weapons and armor.");
-    JobData[JOB_COBBLER] = sJobData("Cobbler", "Cblr");
-    JobData[JOB_COBBLER].description = ("She will make shoes and leather items.");
-    JobData[JOB_JEWELER] = sJobData("Jeweler", "Jwlr");
-    JobData[JOB_JEWELER].description = ("She will make jewelery.");
-    JobData[JOB_CLEANARENA] = sJobData("Grounds Keeper", "GKpr");
-    JobData[JOB_CLEANARENA].description = ("She will clean the arena.");
 
     // - Community Centre Jobs
     JobFilters[JOBFILTER_COMMUNITYCENTRE] = sJobFilter{"Community Centre", "These are jobs for running a community centre."};
     register_filter(JOBFILTER_COMMUNITYCENTRE, JOB_CENTREREST, JOB_CLEANCENTRE);
-    JobData[JOB_CENTREREST] = sJobData("Time off", "TOff");
-    JobData[JOB_CENTREREST].description = ("She will rest.");
-    JobData[JOB_CENTREMANAGER] = sJobData("Centre Manager", "CMgr");
-    JobData[JOB_CENTREMANAGER].description = ("She will look after the girls working in the centre.");
-    JobData[JOB_FEEDPOOR] = sJobData("Feed Poor", "Feed");
-    JobData[JOB_FEEDPOOR].description = ("She will work in a soup kitchen.");
-    JobData[JOB_COMUNITYSERVICE] = sJobData("Community Service", "CmSr");
-    JobData[JOB_COMUNITYSERVICE].description = ("She will go around town and help out where she can.");
-    JobData[JOB_CLEANCENTRE] = sJobData("Clean Centre", "ClnC");
-    JobData[JOB_CLEANCENTRE].description = ("She will clean the centre.");
     // - Counseling Centre Jobs
     JobFilters[JOBFILTER_COUNSELINGCENTRE] = sJobFilter{"Counseling Centre", "These are jobs for running a counseling centre."};
     register_filter(JOBFILTER_COUNSELINGCENTRE, JOB_COUNSELOR, JOB_ANGER);
-    JobData[JOB_COUNSELOR] = sJobData("Counselor", "Cnsl");
-    JobData[JOB_COUNSELOR].description = ("She will help girls get over their addictions and problems.");
-    JobData[JOB_REHAB] = sJobData("Rehab", "Rehb");
-    JobData[JOB_REHAB].description = ("She will go to rehab to get over her addictions.");
-    JobData[JOB_THERAPY] = sJobData("Therapy", "Thrp");
-    JobData[JOB_THERAPY].description = ("She will go to therapy to get over her mental problems. (Nervous, Dependant, Pessimist)");
-    JobData[JOB_EXTHERAPY] = sJobData("Extreme Therapy", "EThr");
-    JobData[JOB_EXTHERAPY].description = ("She will go to extreme therapy to get over her hardcore mental problems. (Mind Fucked, Broken Will)");
-    JobData[JOB_ANGER] = sJobData("Anger Management", "AMng");
-    JobData[JOB_ANGER].description = ("She will go to anger management to get over her anger problems. (Aggressive, Tsundere, Yandere)");
 
     // - Clinic Surgeries
     JobFilters[JOBFILTER_CLINIC] = sJobFilter{"Medical Clinic", "These are procerures the girls can have done in the Medical Clinic."};
     register_filter(JOBFILTER_CLINIC, JOB_GETHEALING, JOB_FERTILITY);
-    JobData[JOB_GETHEALING] = sJobData("Get Healing", "Heal");
-    JobData[JOB_GETHEALING].description = ("She will have her wounds attended.");
-    JobData[JOB_GETREPAIRS] = sJobData("Get Repaired", "Repr");
-    JobData[JOB_GETREPAIRS].description = ("Construct girls will be quickly repaired here.");
-    JobData[JOB_CUREDISEASES] = sJobData("Cure Diseases", "Cure");
-    JobData[JOB_CUREDISEASES].description = ("She will try to get her diseases cured.");
-    JobData[JOB_GETABORT] = sJobData("Abortion", "Abrt");
-    JobData[JOB_GETABORT].description = ("She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)");
-    JobData[JOB_COSMETICSURGERY] = sJobData("Cosmetic Surgery", "CosS");
-    JobData[JOB_COSMETICSURGERY].description = ("She will undergo magical surgery to \"enhance\" her appearance.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-    JobData[JOB_LIPO] = sJobData("Liposuction", "Lipo");
-    JobData[JOB_LIPO].description = ("She will undergo liposuction to \"enhance\" her figure.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-    JobData[JOB_BREASTREDUCTION] = sJobData("Breast Reduction Surgery", "BRS");
-    JobData[JOB_BREASTREDUCTION].description = ("She will undergo breast reduction surgery.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-    JobData[JOB_BOOBJOB] = sJobData("Boob Job", "BbJb");
-    JobData[JOB_BOOBJOB].description = ("She will undergo surgery to \"enhance\" her bust.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-    JobData[JOB_VAGINAREJUV] = sJobData("Vaginal Rejuvenation", "VagR");
-    JobData[JOB_VAGINAREJUV].description = ("She will undergo surgery to make her a virgin again.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-    JobData[JOB_FACELIFT] = sJobData("Face Lift", "FLft");
-    JobData[JOB_FACELIFT].description = ("She will undergo surgery to make her younger.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-    JobData[JOB_ASSJOB] = sJobData("Arse Job", "AssJ");
-    JobData[JOB_ASSJOB].description = ("She will undergo surgery to \"enhance\" her ass.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-    JobData[JOB_TUBESTIED] = sJobData("Tubes Tied", "TTid");
-    JobData[JOB_TUBESTIED].description = ("She will undergo surgery to make her sterile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-    JobData[JOB_FERTILITY] = sJobData("Fertility Treatmeant", "FrtT");
-    JobData[JOB_FERTILITY].description = ("She will undergo surgery to make her fertile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
     // Clinic staff
     JobFilters[JOBFILTER_CLINICSTAFF] = sJobFilter{"Clinic Staff", "These are jobs that help run a medical clinic."};
     register_filter(JOBFILTER_CLINICSTAFF, JOB_CLINICREST, JOB_JANITOR);
-    JobData[JOB_CLINICREST] = sJobData("Time off", "TOff");
-    JobData[JOB_CLINICREST].description = ("She will rest");
-    JobData[JOB_CHAIRMAN] = sJobData("Chairman", "Crmn");
-    JobData[JOB_CHAIRMAN].description = ("She will watch over the staff of the clinic");
-    JobData[JOB_DOCTOR] = sJobData("Doctor", "Doc");
-    JobData[JOB_DOCTOR].description = ("She will become a doctor. Doctors earn extra cash from treating locals. (requires at least 1 to perform surgeries)");
-    JobData[JOB_NURSE] = sJobData("Nurse", "Nurs");
-    JobData[JOB_NURSE].description = ("Will help the doctor and heal sick people.");
-    JobData[JOB_MECHANIC] = sJobData("Mechanic", "Mech");
-    JobData[JOB_MECHANIC].description = ("Will help the doctor and repair Constructs.");
-    JobData[JOB_INTERN] = sJobData("Intern", "Ntrn");
-    JobData[JOB_INTERN].description = ("Will train in how to be a nurse.");
-    JobData[JOB_JANITOR] = sJobData("Janitor", "Jntr");
-    JobData[JOB_JANITOR].description = ("She will clean the clinic");
 
     // - Farm Staff
     JobFilters[JOBFILTER_FARMSTAFF] = sJobFilter{"Farm Staff", "These are jobs for running a farm"};
     register_filter(JOBFILTER_FARMSTAFF, JOB_FARMREST, JOB_FARMHAND);
-    JobData[JOB_FARMREST] = sJobData("Time off", "TOff");
-    JobData[JOB_FARMREST].description = "She will take time off and rest.";
-    JobData[JOB_FARMMANGER] = sJobData("Farm Manager", "FMgr");
-    JobData[JOB_FARMMANGER].description = "She will watch over the farm and girls working there.";
-    JobData[JOB_VETERINARIAN] = sJobData("Veterinarian", "Vet");
-    JobData[JOB_VETERINARIAN].description = "She will tend to sick animals.";
-    JobData[JOB_MARKETER] = sJobData("Marketer", "Mrkt");
-    JobData[JOB_MARKETER].description = "She will buy and sell things.";
-    JobData[JOB_RESEARCH] = sJobData("Researcher", "Rsrc");
-    JobData[JOB_RESEARCH].description = "She will research how to improve various things.";
-    JobData[JOB_FARMHAND] = sJobData("Farm Hand", "FHnd");
-    JobData[JOB_FARMHAND].description = "She will clean up around the farm.";
+
     // - Laborers
     JobFilters[JOBFILTER_LABORERS] = sJobFilter{"Laborers", "These are jobs your girls can do at your farm."};
     register_filter(JOBFILTER_LABORERS, JOB_FARMER, JOB_MILK);
-    JobData[JOB_FARMER] = sJobData("Farmer", "Frmr");
-    JobData[JOB_FARMER].description = ("She will tend to your crops.");
-    JobData[JOB_GARDENER] = sJobData("Gardener", "Grdn");
-    JobData[JOB_GARDENER].description = ("She will produce herbs.");
-    JobData[JOB_SHEPHERD] = sJobData("Shepherd", "SHrd");
-    JobData[JOB_SHEPHERD].description = ("She will tend to food animals.");
-    JobData[JOB_RANCHER] = sJobData("Rancher", "Rncr");
-    JobData[JOB_RANCHER].description = ("She will tend to larger animals.");
-    JobData[JOB_CATACOMBRANCHER] = sJobData("Catacombs Rancher", "CRnc");
-    JobData[JOB_CATACOMBRANCHER].description = ("She will tend to strange beasts.");
-    JobData[JOB_BEASTCAPTURE] = sJobData("Beast Capture", "BCpt");
-    JobData[JOB_BEASTCAPTURE].description = "She will go out into the wilds to capture beasts.";
-    JobData[JOB_MILKER] = sJobData("Milker", "Mlkr");
-    JobData[JOB_MILKER].description = ("She will milk the various animals and girls you own.");
-    JobData[JOB_MILK] = sJobData("Get Milked", "Mlkd");
-    JobData[JOB_MILK].description = "She will have her breasts milked";
     // - Producers
     JobFilters[JOBFILTER_PRODUCERS] = sJobFilter{"Producers", "These are jobs your girls can do at your farm."};
     register_filter(JOBFILTER_PRODUCERS, JOB_BUTCHER, JOB_MAKEPOTIONS);
-    JobData[JOB_BUTCHER] = sJobData("Butcher", "Bchr");
-    JobData[JOB_BUTCHER].description = ("She will produce food from animals you own.");
-    JobData[JOB_BAKER] = sJobData("Baker", "Bkr");
-    JobData[JOB_BAKER].description = ("She will produce food from the crops you own.");
-    JobData[JOB_BREWER] = sJobData("Brewer", "Brwr");
-    JobData[JOB_BREWER].description = ("She will make various beers and wines.");
-    JobData[JOB_TAILOR] = sJobData("Tailor", "Talr");
-    JobData[JOB_TAILOR].description = ("She will make clothes and other items from fabrics.");
-    JobData[JOB_MAKEITEM] = sJobData("Make Items", "MkIt");
-    JobData[JOB_MAKEITEM].description = ("She will make various items.");
-    JobData[JOB_MAKEPOTIONS] = sJobData("Make Potions", "MkPt");
-    JobData[JOB_MAKEPOTIONS].description = ("She will make various potions.");
 
     // - House
     JobFilters[JOBFILTER_HOUSE] = sJobFilter{"Player House", "These are jobs your girls can do at your house."};
     register_filter(JOBFILTER_HOUSE, JOB_HOUSEREST, JOB_CLEANHOUSE);
-    JobData[JOB_HOUSEREST] = sJobData("Time off", "TOff");
-    JobData[JOB_HOUSEREST].description = ("She takes time off resting and recovering.");
-    JobData[JOB_HEADGIRL] = sJobData("Head Girl", "HGrl");
-    JobData[JOB_HEADGIRL].description = ("She takes care of the girls in your house.");
-    JobData[JOB_RECRUITER] = sJobData("Recruiter", "Rcrt");
-JobData[JOB_RECRUITER].description = "She will go out and try and recruit girls for you.";
-    JobData[JOB_PERSONALBEDWARMER] = sJobData("Bed Warmer", "BdWm");
-    JobData[JOB_PERSONALBEDWARMER].description = ("She will stay in your bed at night with you.");
-    JobData[JOB_HOUSECOOK] = sJobData("House Cook", "Hcok");
-    JobData[JOB_HOUSECOOK].description = ("She will cook for your house.");
     //JobData[JOB_PONYGIRL].name = ("Pony Girl");
     //JobData[JOB_PONYGIRL].brief = "PGil";
     //JobData[JOB_PONYGIRL].description = ("She will be trained to become a pony girl.");
     //JobFunc[JOB_PONYGIRL] = &WorkFarmPonyGirl;
-    JobData[JOB_CLEANHOUSE] = sJobData("Clean House", "ClnH");
-    JobData[JOB_CLEANHOUSE].description = ("She will clean your house.");
 
     JobFilters[JOBFILTER_HOUSETTRAINING] = sJobFilter{"Sex Training", "You will take a personal interest in training the girl in sexual matters."};
     register_filter(JOBFILTER_HOUSETTRAINING, JOB_PERSONALTRAINING, JOB_HOUSEPET);
-    JobData[JOB_PERSONALTRAINING] = sJobData("Personal Training", "PTrn");
-    JobData[JOB_PERSONALTRAINING].description = ("You will oversee her training personal.");
-    JobData[JOB_HOUSEPET] = sJobData("House Pet", "Hpet");
-    JobData[JOB_HOUSEPET].description = ("She will be trained to become the house pet.");
-    JobData[JOB_SO_STRAIGHT] = sJobData("SO Straight", "SOSt");
-    JobData[JOB_SO_STRAIGHT].description = ("You will make sure she only likes having sex with men.");
-    JobData[JOB_SO_BISEXUAL] = sJobData("SO Bisexual", "SOBi");
-    JobData[JOB_SO_BISEXUAL].description = ("You will make sure she likes having sex with both men and women.");
-    JobData[JOB_SO_LESBIAN] = sJobData("SO Lesbian", "SOLe");
-    JobData[JOB_SO_LESBIAN].description = ("You will make sure she only likes having sex with women.");
-    JobData[JOB_FAKEORGASM] = sJobData("Fake Orgasm Expert", "FOEx");
-    JobData[JOB_FAKEORGASM].description = ("You will teach her how to fake her orgasms.");
 
 
-
+/*
     JobData[JOB_INDUNGEON].name    = ("In the Dungeon");
     JobData[JOB_INDUNGEON].brief    = "Dngn";
     JobData[JOB_INDUNGEON].description    = ("She is languishing in the dungeon.");
     JobData[JOB_RUNAWAY].name    = ("Runaway");
     JobData[JOB_RUNAWAY].brief    = "RunA";
     JobData[JOB_RUNAWAY].description    = ("She has run away.");
-
-
-
-
-#if 0
-    // - Community Centre
-    JobFunc[JOB_COLLECTDONATIONS] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_ARTISAN] = &WorkMakeItem;    // ************** TODO
-    JobFunc[JOB_SELLITEMS] = &WorkVoid;    // ************** TODO
-    // - Drug Lab (these jobs gain bonus if in same building as a clinic)
-    JobFunc[JOB_VIRASPLANTFUCKER] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_SHROUDGROWER] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_FAIRYDUSTER] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_DRUGDEALER] = &WorkVoid;    // ************** TODO
-    // - Alchemist lab (these jobs gain bonus if in same building as a drug lab)
-    JobFunc[JOB_FINDREGENTS] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_BREWPOTIONS] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_POTIONTESTER] = &WorkVoid;    // ************** TODO
-    // - Arena (these jobs gain bonus if in same building as a clinic)
-    JobFunc[JOB_FIGHTBEASTS] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_WRESTLE] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_FIGHTTODEATH] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_FIGHTVOLUNTEERS] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_COLLECTBETS] = &WorkVoid;    // ************** TODO
-    // - Skills Centre
-    JobFunc[JOB_TEACHBDSM] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_TEACHSEX] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_TEACHBEAST] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_TEACHMAGIC] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_TEACHCOMBAT] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_DAYCARE] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_SCHOOLING] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_TEACHDANCING] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_TEACHSERVICE] = &WorkVoid;    // ************** TODO
-    JobFunc[JOB_TRAIN] = &WorkVoid;    // ************** TODO
-
-#endif
-
-
-
-
-# if 0
-
-    //- Community Centre
-    JobFilterName[JOBFILTER_COMMUNITYCENTRE] = ("Community Centre");
-    JobFilterDesc[JOBFILTER_COMMUNITYCENTRE] = ("These are jobs for running a community centre.");
-    JobFilterIndex[JOBFILTER_COMMUNITYCENTRE] = JOB_COLLECTDONATIONS;
-    JobData[JOB_COLLECTDONATIONS].name = ("Collect Donations");
-    JobData[JOB_COLLECTDONATIONS].description = ("She will collect money to help the poor.");
-    JobData[JOB_ARTISAN].name = ("Make Crafts");
-    JobData[JOB_ARTISAN].description = ("She will craft cheap handmade items.");
-    JobData[JOB_SELLITEMS].name = ("Sell Crafts");
-    JobData[JOB_SELLITEMS].description = ("She will go out and sell previously crafted items.");
-
-    JobFilterName[JOBFILTER_DRUGLAB] = ("Drug Lab");
-    JobFilterDesc[JOBFILTER_DRUGLAB] = ("These are jobs for running a drug lab.");
-    JobFilterIndex[JOBFILTER_DRUGLAB] = JOB_VIRASPLANTFUCKER;
-    JobData[JOB_VIRASPLANTFUCKER].name = ("Fuck Viras Plants");
-    JobData[JOB_VIRASPLANTFUCKER].description = ("She will allow Viras plants to inseminate her, creating Vira Blood.");
-    JobData[JOB_SHROUDGROWER].name = ("Grow Shroud Mushrooms");
-    JobData[JOB_SHROUDGROWER].description = ("She will grow Shroud Mushrooms, which require a lot of care and may explode.");
-    JobData[JOB_FAIRYDUSTER].name = ("Fairy Duster");
-    JobData[JOB_FAIRYDUSTER].description = ("She will capture fairies and grind them into a fine powder known as Fairy Dust.");
-    JobData[JOB_DRUGDEALER].name = ("Drug Dealer");
-    JobData[JOB_DRUGDEALER].description = ("She will go out and sell your drugs on the streets.");
-
-    JobFilterName[JOBFILTER_ALCHEMISTLAB] = ("Alchemist Lab");
-    JobFilterDesc[JOBFILTER_ALCHEMISTLAB] = ("These are jobs for running an alchemist lab.");
-    JobFilterIndex[JOBFILTER_ALCHEMISTLAB] = JOB_FINDREGENTS;
-    JobData[JOB_FINDREGENTS].name = ("Find Reagents");
-    JobData[JOB_FINDREGENTS].description = ("She will go out and look for promising potion ingredients.");
-    JobData[JOB_BREWPOTIONS].name = ("Brew Potions");
-    JobData[JOB_BREWPOTIONS].description = ("She will brew a random potion using available ingredients.");
-    JobData[JOB_POTIONTESTER].name = ("Guinea Pig");
-    JobData[JOB_POTIONTESTER].description = ("She will test out random potions. Who knows what might happen? (requires 1)");
-
-    JobFilterName[JOBFILTER_ARENA] = ("Arena");
-    JobFilterDesc[JOBFILTER_ARENA] = ("These are jobs for running an arena.");
-    JobFilterIndex[JOBFILTER_ARENA] = JOB_FIGHTBEASTS;
-    JobData[JOB_FIGHTBEASTS].name = ("Fight Beasts");
-    JobData[JOB_FIGHTBEASTS].description = ("She will fight to the death against beasts you own. Dangerous.");
-    JobData[JOB_WRESTLE].name = ("Wrestle");
-    JobData[JOB_WRESTLE].description = ("She will take part in a wrestling match. Not dangerous.");
-    JobData[JOB_FIGHTTODEATH].name = ("Cage Match");
-    JobData[JOB_FIGHTTODEATH].description = ("She will fight to the death against other girls. Dangerous.");
-    JobData[JOB_FIGHTVOLUNTEERS].name = ("Fight Volunteers");
-    JobData[JOB_FIGHTVOLUNTEERS].description = ("She will fight against customer volunteers for gold prizes. Not dangerous.");
-    JobData[JOB_COLLECTBETS].name = ("Collect Bets");
-    JobData[JOB_COLLECTBETS].description = ("She will collect bets from the customers. (requires 1)");
-
-    JobFilterName[JOBFILTER_TRAININGCENTRE] = ("Training Centre");
-    JobFilterDesc[JOBFILTER_TRAININGCENTRE] = ("These are jobs for running a training centre.");
-    JobFilterIndex[JOBFILTER_TRAININGCENTRE] = JOB_TEACHBDSM;
-    JobData[JOB_TEACHBDSM].name = ("Teach BDSM");
-    JobData[JOB_TEACHBDSM].description = ("She will teach other girls in BDSM skills.");
-    JobData[JOB_TEACHSEX].name = ("Teach Sex");
-    JobData[JOB_TEACHSEX].description = ("She will teach other girls the ins and outs of regular sex.");
-    JobData[JOB_TEACHBEAST].name = ("Teach Bestiality");
-    JobData[JOB_TEACHBEAST].description = ("She will teach other girls how to safely fuck beasts.");
-    JobData[JOB_TEACHMAGIC].name = ("Teach Magic");
-    JobData[JOB_TEACHMAGIC].description = ("She will teach other girls how to wield magic.");
-    JobData[JOB_TEACHCOMBAT].name = ("Teach Combat");
-    JobData[JOB_TEACHCOMBAT].description = ("She will teach other girls how to fight.");
-    JobData[JOB_DAYCARE].name = ("Daycare");
-    JobData[JOB_DAYCARE].description = ("She will look after local children. (non-sexual)");
-    JobData[JOB_SCHOOLING].name = ("Schooling");
-    JobData[JOB_SCHOOLING].description = ("She will teach the local children. (non-sexual)");
-    JobData[JOB_TEACHDANCING].name = ("Teach Dancing");
-    JobData[JOB_TEACHDANCING].description = ("She will teach other girls dancing and social skills.");
-    JobData[JOB_TEACHSERVICE].name = ("Teach Service");
-    JobData[JOB_TEACHSERVICE].description = ("She will teach other girls a variety of service skills.");
-    JobData[JOB_TRAIN].name = ("Student");
-    JobData[JOB_TRAIN].description = ("She will learn from all of the other girls who are teaching here.");
-
-#endif
+*/
 
     RegisterCraftingJobs(*this);
     RegisterSurgeryJobs(*this);
@@ -1826,10 +1438,6 @@ void cJobManager::customer_rape(sGirl& girl, int numberofattackers)
 }
 
 // MYR: Lots of different ways to say the girl had a bad day
-// doc: let's have this return a string, instead of a stringstream:
-// the caller doesn't need the stream and gcc is giving weird type coercion
-// errors
-
 std::string cJobManager::GetGirlAttackedString(int attacktype)
 {
     int roll1 = 0, roll2 = 0, roll3 = 0, rolla = 0;
@@ -2309,7 +1917,7 @@ std::string cJobManager::GirlPaymentText(IBuilding * brothel, sGirl& girl, int t
     }
     else if (totalGold == 0)    { ss << girlName << " made no money."; }
     else if (totalGold < 0)        {
-        ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << girl.FullName() << "\nJob: " << JobData[(Day0Night1 ? girl.m_NightJob : girl.m_DayJob)].name << "\nPay:     " << girl.m_Pay << "\nTips:   " << girl.m_Tips << "\nTotal: " << totalGold;
+        ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << girl.FullName() << "\nJob: " << get_job_name(Day0Night1 ? girl.m_NightJob : girl.m_DayJob) << "\nPay:     " << girl.m_Pay << "\nTips:   " << girl.m_Tips << "\nTotal: " << totalGold;
     }
     return ss.str();
 }
@@ -2462,6 +2070,23 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
 void cJobManager::register_job(std::unique_ptr<IGenericJob> job) {
     m_OOPJobs[job->job()] = std::move(job);
 }
+
+const IGenericJob* cJobManager::get_job(JOBS job) const {
+    return m_OOPJobs.at(job).get();
+}
+
+const std::string& cJobManager::get_job_name(JOBS job) const {
+    return get_job(job)->GetInfo().Name;
+}
+
+const std::string& cJobManager::get_job_brief(JOBS job) const {
+    return get_job(job)->GetInfo().ShortName;
+}
+
+const std::string& cJobManager::get_job_description(JOBS job) const {
+    return get_job(job)->GetInfo().Description;
+}
+
 
 bool cJobManager::job_filter(int Filter, JOBS job) const {
     auto& filter = JobFilters[Filter];

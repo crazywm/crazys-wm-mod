@@ -1,0 +1,17 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Bkr">
+    <Description>
+        She will produce food from the crops you own.
+    </Description>
+    <Performance Modifier="work.baker">
+        <Primary Skill="Cooking"/>
+        <Secondary Skill="Herbalism" />
+        <Secondary Skill="Service" />
+        <Secondary Stat="Intelligence" />
+    </Performance>
+    <Gains XP="5" Skill="3">
+        <GainTrait Trait="Chef" Threshold="70" Action="COOKING">
+            ${name} has prepared enough food to qualify as a Chef.
+        </GainTrait>
+    </Gains>
+</Job>

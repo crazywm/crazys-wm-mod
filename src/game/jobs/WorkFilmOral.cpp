@@ -87,6 +87,5 @@ FilmOral::FilmOral() : GenericFilmJob(JOB_FILMORAL, {
       " worked as an actress filming oral scenes.",
       " refused to give head on film today."
 }) {
-    set_performance_data("work.film.oral", {STAT_CHARISMA, STAT_BEAUTY}, {SKILL_ORALSEX});
-    add_trait_chance(GainPornStar);
+    load_from_xml("FilmOral.xml");
 }

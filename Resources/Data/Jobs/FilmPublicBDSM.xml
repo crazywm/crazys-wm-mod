@@ -1,0 +1,19 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FTor">
+    <Description>
+        She will be tied up in a public place, where she will be stripped, whipped, tortured and fully-used. On film.
+    </Description>
+    <Performance Modifier="work.film.publicbdsm">
+        <Primary Stat="Beauty"/>
+        <Primary Stat="Charisma" />
+        <Primary Stat="Dignity" />
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+            She has performed in enough sex scenes that she has become a well known Porn Star.
+        </GainTrait>
+        <GainTrait Trait="Masochist" Threshold="65" Action="SEX">
+            ${name} has turned into a Masochist from filming so many BDSM scenes.
+        </GainTrait>
+    </Gains>
+</Job>

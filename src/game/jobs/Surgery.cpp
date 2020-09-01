@@ -39,7 +39,9 @@ struct sSurgeryData {
 
 struct SurgeryJob : public IGenericJob {
 public:
-    explicit SurgeryJob(JOBS id, sSurgeryData data) : IGenericJob(id), m_SurgeryData(data) {}
+    explicit SurgeryJob(JOBS id, const char* short_name, sSurgeryData data) : IGenericJob(id), m_SurgeryData(data) {
+        m_Info.ShortName = short_name;
+    }
 
     bool DoWork(sGirl& girl, bool is_night) final;
 protected:
@@ -183,8 +185,9 @@ struct CosmeticSurgery: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-CosmeticSurgery::CosmeticSurgery() : SurgeryJob(JOB_COSMETICSURGERY, {"${name} is in the Clinic to get general surgery.", 5}) {
-
+CosmeticSurgery::CosmeticSurgery() : SurgeryJob(JOB_COSMETICSURGERY, "CosS",
+                                                {"${name} is in the Clinic to get general surgery.", 5}) {
+    m_Info.Description = "She will undergo magical surgery to \"enhance\" her appearance.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
 double CosmeticSurgery::GetPerformance(const sGirl& girl, bool estimate) const {
@@ -242,8 +245,10 @@ struct Liposuction: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-Liposuction::Liposuction() : SurgeryJob(JOB_LIPO, {"${name} is in the Clinic to get fat removed.", 5,
-                                        {{"Great Figure", "${name} already has a Great Figure so she was sent to the waiting room."}}}) {
+Liposuction::Liposuction() : SurgeryJob(JOB_LIPO, "Lipo", {"${name} is in the Clinic to get fat removed.", 5,
+                                        {{"Great Figure", "${name} already has a Great Figure so she was sent to the waiting room."}}})
+{
+    m_Info.Description = "She will undergo liposuction to \"enhance\" her figure.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
 
@@ -297,8 +302,10 @@ struct BreastReduction: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-BreastReduction::BreastReduction() : SurgeryJob(JOB_BREASTREDUCTION, {"${name} is in the Clinic to get her breasts reduced.", 1,
+BreastReduction::BreastReduction() : SurgeryJob(JOB_BREASTREDUCTION, "BRS",
+                                                {"${name} is in the Clinic to get her breasts reduced.", 1,
                                                  {{"Flat Chest", "${name} already has a Flat Chest so she was sent to the waiting room."}}}) {
+    m_Info.Description = "She will undergo breast reduction surgery.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
 void BreastReduction::success(sGirl& girl) {
@@ -331,9 +338,9 @@ struct BoobJob: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-BoobJob::BoobJob() : SurgeryJob(JOB_BOOBJOB, {"${name} is in the Clinic to get her breasts enlarged.", 1,
+BoobJob::BoobJob() : SurgeryJob(JOB_BOOBJOB, "BbJb", {"${name} is in the Clinic to get her breasts enlarged.", 1,
                                  {{"Titanic Tits", "${name} already has Titanic Tits so she was sent to the waiting room."}}}) {
-
+    m_Info.Description = "She will undergo surgery to \"enhance\" her bust.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
 void BoobJob::success(sGirl& girl) {
@@ -366,8 +373,10 @@ struct VaginalRejuvenation: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-VaginalRejuvenation::VaginalRejuvenation() : SurgeryJob(JOB_VAGINAREJUV, {"${name} is in the Clinic to get her vagina tightened.", 5,
+VaginalRejuvenation::VaginalRejuvenation() : SurgeryJob(JOB_VAGINAREJUV, "VagR",
+                                                        {"${name} is in the Clinic to get her vagina tightened.", 5,
                                                          {{"Virgin", "${name} is already a Virgin so she was sent to the waiting room."}}}) {
+    m_Info.Description = "She will undergo surgery to make her a virgin again.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
 void VaginalRejuvenation::success(sGirl& girl) {
@@ -393,8 +402,8 @@ struct FaceLift: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-FaceLift::FaceLift() : SurgeryJob(JOB_FACELIFT, {"${name} is in the Clinic to get a face lift.", 5}) {
-
+FaceLift::FaceLift() : SurgeryJob(JOB_FACELIFT, "FLft", {"${name} is in the Clinic to get a face lift.", 5}) {
+    m_Info.Description = "She will undergo surgery to make her younger.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
 bool FaceLift::is_valid(sGirl& girl) {
@@ -458,9 +467,10 @@ struct AssJob: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-AssJob::AssJob(): SurgeryJob(JOB_ASSJOB, {"${name} is in the Clinic to get her ass worked on.", 5,
+AssJob::AssJob(): SurgeryJob(JOB_ASSJOB, "AssJ",
+                             {"${name} is in the Clinic to get her ass worked on.", 5,
                               {{"Great Arse", "${name} already has a Great Arse so she was sent to the waiting room."}}}) {
-
+    m_Info.Description = "She will undergo surgery to \"enhance\" her ass.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
 void AssJob::success(sGirl& girl) {
@@ -486,8 +496,9 @@ struct TubesTied : public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-TubesTied::TubesTied(): SurgeryJob(JOB_TUBESTIED, {"${name} is in the Clinic to get her tubes tied.", 5,
+TubesTied::TubesTied(): SurgeryJob(JOB_TUBESTIED, "TTid", {"${name} is in the Clinic to get her tubes tied.", 5,
                                     {{"Sterile", "${name} is already Sterile so she was sent to the waiting room."}}}) {
+    m_Info.Description = "She will undergo surgery to make her sterile.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
 bool TubesTied::is_valid(sGirl& girl) {
@@ -522,9 +533,9 @@ struct Fertility: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-Fertility::Fertility(): SurgeryJob(JOB_FERTILITY, {"${name} is in the Clinic to get fertility treatment.", 5,
+Fertility::Fertility(): SurgeryJob(JOB_FERTILITY, "FrtT", {"${name} is in the Clinic to get fertility treatment.", 5,
                                     {{"Broodmother", "${name} is already as Fertile as she can be so she was sent to the waiting room."}}}) {
-
+    m_Info.Description = "She will undergo surgery to make her fertile.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
 bool Fertility::is_valid(sGirl& girl) {

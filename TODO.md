@@ -5,6 +5,7 @@
 * [ ] libarchive for archive handling
 * [ ] Integrate boost::stacktrace for better debugging
 * [ ] Async loading of animations
+* [ ] for logging? https://github.com/gabime/spdlog
 
 ## Code
 * [ ] Move all remaining game code out of the user interface
@@ -41,7 +42,8 @@
 * [ ] Per building/global anti preg setting
 * [ ] Game-Mode files
 * [ ] separate logical and actual render size and make configurable
-* [ ] Read navigation buttons from xml
+* [x] Read navigation buttons from xml
+* [ ] Active Building Widget
 
 ## Bugs
 * [ ] some parts of the old scripts are still missing

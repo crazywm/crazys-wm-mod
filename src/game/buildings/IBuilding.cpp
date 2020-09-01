@@ -675,7 +675,7 @@ bool IBuilding::SetupMatron(bool is_night, const std::string& title)
             sum = EVENT_DEBUG;
             ss << "ERROR: She has a loss of " << totalGold << " gold.\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n\n";
             ss << "Girl Name: " << matron_candidate->FullName();
-            ss << "\nJob: " << g_Game->job_manager().JobData[(is_night ? matron_candidate->m_NightJob : matron_candidate->m_DayJob)].name;
+            ss << "\nJob: " << g_Game->job_manager().get_job_name((is_night ? matron_candidate->m_NightJob : matron_candidate->m_DayJob));
             ss << "\nPay:     " << matron_candidate->m_Pay << "\nTips:   " << matron_candidate->m_Tips << "\nTotal: " << totalGold;
 
         }

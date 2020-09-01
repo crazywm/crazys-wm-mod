@@ -232,7 +232,5 @@ FilmThroat::FilmThroat() : GenericFilmJob(JOB_FILMFACEFUCK, {
       " worked filming teaser scenes to arouse viewers.",
       " refused to make a teaser clip today.",
 }) {
-    set_performance_data("work.film.throat", {STAT_CHARISMA, STAT_BEAUTY}, {SKILL_ORALSEX});
-    add_trait_chance(GainMasochist);
-    add_trait_chance({true, "Mind Fucked", 90, ACTION_WORKMOVIE, "She has been abused so much she is now completely Mind Fucked."});
+    load_from_xml("FilmFaceFuck.xml");
 }

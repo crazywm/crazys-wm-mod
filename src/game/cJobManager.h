@@ -48,17 +48,6 @@ struct sFilm
     }
 };
 
-struct sJobData {
-    sJobData() = default;
-
-    sJobData(std::string n, std::string b) : name(std::move(n)), brief(std::move(b)) {
-    };
-
-    std::string name;               // short descriptive name of job
-    std::string brief;              // a shorter name of job
-    std::string description;        // longer description of job
-};
-
 struct sJobFilter {
     std::string Name;
     std::string Description;
@@ -75,11 +64,15 @@ public:
     bool do_job(JOBS job, sGirl& girl, bool is_night);
     bool job_filter(int Filter, JOBS jobs) const;
 
+    const IGenericJob* get_job(JOBS job) const;
+    const std::string& get_job_name(JOBS job) const;
+    const std::string& get_job_brief(JOBS job) const;
+    const std::string& get_job_description(JOBS job) const;
+
     // does the whole package of job processing: Runs the job, in case of refusal creates an event, and processes
     // pay for the building.
     void handle_simple_job(sGirl& girl, bool is_night);
 
-    std::array<sJobData, NUM_JOBS> JobData;
     std::array<sJobFilter, NUMJOBTYPES> JobFilters;
 
     // return a job description along with a count of how many girls are on it

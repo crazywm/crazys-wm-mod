@@ -1,0 +1,16 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FOrl">
+    <Description>
+        She will perform in an oral sex scene.
+    </Description>
+    <Performance Modifier="">
+        <Primary Stat="Charisma" />
+        <Primary Stat="Beauty" />
+        <Secondary Skill="OralSex"/>
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+            She has performed in enough sex scenes that she has become a well known Porn Star.
+        </GainTrait>
+    </Gains>
+</Job>

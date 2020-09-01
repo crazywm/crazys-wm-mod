@@ -394,7 +394,7 @@ void sMovieStudio::load_xml(const tinyxml2::XMLElement& root)
              pScene != nullptr;
              pScene = pScene->NextSiblingElement("Scene"))
         {
-            int scenenum; int mscenenum; int job;
+            int scenenum; int mscenenum;;
             int init_quality = 0; int quality = 0; int promo_quality = 0; int money_made = 0; int runweeks = -1;
 
             pScene->QueryIntAttribute("SceneNumber", &scenenum);
@@ -406,7 +406,7 @@ void sMovieStudio::load_xml(const tinyxml2::XMLElement& root)
             string director = (pScene->Attribute("Director") ? pScene->Attribute("Director") : "");
             string cm = (pScene->Attribute("CM") ? pScene->Attribute("CM") : "");
             string cp = (pScene->Attribute("CP") ? pScene->Attribute("CP") : "");
-            job = (pScene->Attribute("Job") ? sGirl::lookup_jobs_code(pScene->Attribute("Job")) : JOB_FILMRANDOM);
+            JOBS job = (pScene->Attribute("Job") ? get_job_id(pScene->Attribute("Job")) : JOB_FILMRANDOM);
             pScene->QueryAttribute("Init_Quality", &init_quality);
             pScene->QueryAttribute("Quality", &quality);
             pScene->QueryAttribute("Promo_Quality", &promo_quality);
@@ -446,7 +446,7 @@ void sMovieStudio::save_additional_xml(tinyxml2::XMLElement& root) const
         elScene.SetAttribute("Director", scene->m_Director.c_str());
         elScene.SetAttribute("CM", scene->m_CM.c_str());
         elScene.SetAttribute("CP", scene->m_CP.c_str());
-        elScene.SetAttribute("Job", g_Game->job_manager().JobData[scene->m_Job].brief.c_str());
+        elScene.SetAttribute("Job", g_Game->job_manager().get_job_name(scene->m_Job).c_str());
         elScene.SetAttribute("Init_Quality", scene->m_Init_Quality);
         elScene.SetAttribute("Quality", scene->m_Quality);
         elScene.SetAttribute("Promo_Quality", scene->m_Promo_Quality);
@@ -462,7 +462,7 @@ void sMovieStudio::save_additional_xml(tinyxml2::XMLElement& root) const
         elScene.SetAttribute("Director", scene->m_Director.c_str());
         elScene.SetAttribute("CM", scene->m_CM.c_str());
         elScene.SetAttribute("CP", scene->m_CP.c_str());
-        elScene.SetAttribute("Job", g_Game->job_manager().JobData[scene->m_Job].brief.c_str());
+        elScene.SetAttribute("Job", g_Game->job_manager().get_job_name(scene->m_Job).c_str());
         elScene.SetAttribute("Init_Quality", scene->m_Init_Quality);
         elScene.SetAttribute("Quality", scene->m_Quality);
         elScene.SetAttribute("Promo_Quality", scene->m_Promo_Quality);
@@ -666,7 +666,7 @@ void sMovieScene::OutputSceneDetailString(string& Data, const string& detailName
     else if (detailName == "Crystal_Purifier")    { ss << m_CP; }
     else if (detailName == "Crystal")            { ss << m_CP; }
     else if (detailName == "CP")                { ss << m_CP; }
-    else if (detailName == "Job")                { ss << g_Game->job_manager().JobData[m_Job].name; }
+    else if (detailName == "Job")                { ss << g_Game->job_manager().get_job_name(m_Job); }
     else if (detailName == "Init_Quality")        { ss << m_Init_Quality; }
     else if (detailName == "Quality")            { ss << m_Quality; }
     else if (detailName == "Promo_Quality")        { ss << m_Promo_Quality; }
@@ -698,7 +698,7 @@ void sMovieStudio::EndMovie()
 }
 
 // ----- Add / remove
-int sMovieStudio::AddScene(sGirl& girl, int Job, int Bonus, int jobType, const char* scene_name)
+int sMovieStudio::AddScene(sGirl& girl, JOBS Job, int Bonus, int jobType, const char* scene_name)
 {
     std::stringstream ss;
     std::string girlName = girl.FullName();
@@ -811,7 +811,7 @@ int sMovieStudio::AddScene(sGirl& girl, int Job, int Bonus, int jobType, const c
         );
     return performance;
 }
-void sMovieStudio::LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks, int m_MovieSceneNum, string m_CM, string m_CP)
+void sMovieStudio::LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, JOBS m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks, int m_MovieSceneNum, string m_CM, string m_CP)
 {
     sMovieScene* newScene = new sMovieScene();
     newScene->m_SceneNum = m_SceneNum;

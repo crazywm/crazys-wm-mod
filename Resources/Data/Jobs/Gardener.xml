@@ -1,0 +1,13 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Grdn">
+    <Description>
+        She will produce herbs.
+    </Description>
+    <Performance Modifier="work.gardener">
+        <Primary Skill="Herbalism"/>
+        <Secondary Skill="Farming" />
+        <Secondary Stat="Constitution" />
+        <Secondary Stat="Intelligence" />
+    </Performance>
+    <Gains XP="5" Skill="3" />
+</Job>

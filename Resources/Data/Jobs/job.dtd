@@ -1,0 +1,18 @@
+<!ELEMENT Job (Description, Performance, Gains)>
+<!ATTLIST Job ShortName CDATA #REQUIRED>
+
+<!ELEMENT Description (#PCDATA)>
+
+<!ELEMENT Performance (Primary|Secondary)*>
+<!ATTLIST Performance Modifier CDATA #IMPLIED>
+<!ELEMENT Primary EMPTY>
+<!ATTLIST Primary Skill CDATA #IMPLIED Stat CDATA #IMPLIED>
+<!ELEMENT Secondary EMPTY>
+<!ATTLIST Secondary Skill CDATA #IMPLIED Stat CDATA #IMPLIED>
+
+<!ELEMENT Gains (GainTrait|LoseTrait)*>
+<!ATTLIST Gains XP CDATA #IMPLIED Skill CDATA #IMPLIED>
+<!ELEMENT GainTrait (#PCDATA)>
+<!ATTLIST GainTrait Trait CDATA #REQUIRED Threshold CDATA #REQUIRED Action CDATA #REQUIRED Event CDATA #IMPLIED>
+<!ELEMENT LoseTrait (#PCDATA)>
+<!ATTLIST LoseTrait Trait CDATA #REQUIRED Threshold CDATA #REQUIRED Action CDATA #REQUIRED Event CDATA #IMPLIED>

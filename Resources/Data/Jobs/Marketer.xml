@@ -1,0 +1,30 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Mrkt">
+    <Description>
+        She will buy and sell things.
+    </Description>
+    <Performance Modifier="work.farmmarketer">
+        <Primary Stat="Charisma"/>
+        <Primary Stat="Confidence"/>
+        <Secondary Stat="Intelligence" />
+        <Secondary Stat="Fame" />
+        <Secondary Skill="Farming" />
+    </Performance>
+    <Gains XP="5" Skill="3">
+        <GainTrait Trait="Charismatic" Threshold="30" Action="WORKCUSTSERV">
+            ${name} has been selling long enough that she has learned to be more Charismatic.
+        </GainTrait>
+        <GainTrait Trait="Psychic" Threshold="90" Action="WORKCUSTSERV">
+            ${name} has learned to size up the buyers so well that you'd almost think she was Psychic.
+        </GainTrait>
+        <LoseTrait Trait="Shy" Threshold="50" Action="WORKCUSTSERV">
+            ${name} has been selling for so long now that her confidence is super high and she is no longer Shy.
+        </LoseTrait>
+        <LoseTrait Trait="Meek" Threshold="40" Action="WORKCUSTSERV">
+            ${name}'s having to work with customers every day has forced her to get over her Meekness.
+        </LoseTrait>
+        <LoseTrait Trait="Nervous" Threshold="70" Action="WORKCUSTSERV">
+            ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
+        </LoseTrait>
+    </Gains>
+</Job>

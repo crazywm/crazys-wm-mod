@@ -1,0 +1,19 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FFac">
+    <Description>
+        She will be used in gag and face-fuck scenes.
+    </Description>
+    <Performance Modifier="work.film.throat">
+        <Primary Stat="Beauty"/>
+        <Primary Stat="Charisma" />
+        <Secondary Skill="OralSex" />
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <GainTrait Trait="Mind Fucked" Threshold="90" Action="WORKMOVIE" Event="2">
+            She has been abused so much she is now completely Mind Fucked.
+        </GainTrait>
+        <GainTrait Trait="Masochist" Threshold="65" Action="SEX">
+            ${name} has turned into a Masochist from filming so many BDSM scenes.
+        </GainTrait>
+    </Gains>
+</Job>

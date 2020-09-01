@@ -1,0 +1,13 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Talr">
+    <Description>
+        She will make clothes and other items from fabrics.
+    </Description>
+    <Performance Modifier="work.tailor">
+        <Primary Skill="Crafting"/>
+        <Secondary Skill="Service" />
+        <Secondary Skill="Magic" />
+        <Secondary Stat="Intelligence" />
+    </Performance>
+    <Gains XP="5" Skill="3" />
+</Job>

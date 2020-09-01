@@ -169,13 +169,19 @@ void GenericFilmJob::Reset() {
 
 struct SimpleFilmJob : public GenericFilmJob
 {
-    using GenericFilmJob::GenericFilmJob;
+    SimpleFilmJob(JOBS job, const char* xml, FilmJobData data);
     void DoScene(sGirl& girl) override;
 
     virtual int handle_events(sGirl& girl) { return 0; }
     virtual void narrate(const sGirl& girl, int roll) = 0;
     double GetPerformance(const sGirl& girl, bool estimate) const override { return 0; }
 };
+
+SimpleFilmJob::SimpleFilmJob(JOBS id, const char* xml, FilmJobData data) :
+    GenericFilmJob(id, data)
+    {
+    load_from_xml(xml);
+}
 
 void SimpleFilmJob::DoScene(sGirl& girl) {
     int roll = d100();
@@ -191,14 +197,13 @@ void SimpleFilmJob::DoScene(sGirl& girl) {
 
 struct FilmTitty : public SimpleFilmJob
 {
-    FilmTitty() : SimpleFilmJob(JOB_FILMTITTY, {
+    FilmTitty() : SimpleFilmJob(JOB_FILMTITTY, "FilmTitty.xml", {
             IMGTYPE_TITTY, ACTION_SEX, SKILL_TITTYSEX, 50, -5,
             FilmJobData::NORMAL, SKILL_TITTYSEX, "Titty",
             " worked as an actress filming titty fucking scenes.",
             " refused to have her titty's fucked on film today.",
     })
     {
-        add_trait_chance(GainPornStar);
     };
 
     void narrate(const sGirl& girl, int roll) override {
@@ -210,7 +215,7 @@ struct FilmTitty : public SimpleFilmJob
 
 struct FilmStrip : public SimpleFilmJob
 {
-    FilmStrip() : SimpleFilmJob(JOB_FILMSTRIP, {
+    FilmStrip() : SimpleFilmJob(JOB_FILMSTRIP, "FilmStrip.xml", {
          IMGTYPE_STRIP, ACTION_WORKSTRIP, SKILL_STRIP, 50, 0,
          FilmJobData::NICE, SKILL_STRIP, "Stripping",
          " worked as an actress filming strip tease scenes",
@@ -233,14 +238,12 @@ struct FilmStrip : public SimpleFilmJob
 
 struct FilmLesbian : public SimpleFilmJob
 {
-    FilmLesbian() : SimpleFilmJob( JOB_FILMLESBIAN, {
+    FilmLesbian() : SimpleFilmJob( JOB_FILMLESBIAN, "FilmLes.xml", {
            IMGTYPE_LESBIAN, ACTION_SEX, SKILL_LESBIAN, 50, 10,
            FilmJobData::NORMAL, SKILL_LESBIAN, "Lesbian",
            " worked as an actress filming lesbian scenes.",
            " refused to film a lesbian scene today.",
     }) {
-        add_trait_chance(GainPornStar);
-        add_trait_chance(GainFaker);
     };
 
     int handle_events(sGirl& girl) override {
@@ -260,13 +263,12 @@ struct FilmLesbian : public SimpleFilmJob
 
 struct FilmHandJob : public SimpleFilmJob
 {
-    FilmHandJob() : SimpleFilmJob(JOB_FILMHANDJOB, {
+    FilmHandJob() : SimpleFilmJob(JOB_FILMHANDJOB, "FilmHand.xml", {
           IMGTYPE_HAND, ACTION_SEX, SKILL_HANDJOB, 50, -5,
           FilmJobData::NORMAL, SKILL_HANDJOB, "Handjob",
           " worked as an actress filming hand job scenes.",
           " refused to churn his butter on film today.",
     }) {
-        add_trait_chance(GainPornStar);
     }
 
     void narrate(const sGirl& girl, int roll) override {
@@ -278,13 +280,12 @@ struct FilmHandJob : public SimpleFilmJob
 
 struct FilmFootJob : public SimpleFilmJob
 {
-    FilmFootJob() : SimpleFilmJob(JOB_FILMFOOTJOB, {
+    FilmFootJob() : SimpleFilmJob(JOB_FILMFOOTJOB, "FilmFoot.xml", {
           IMGTYPE_FOOT, ACTION_SEX, SKILL_FOOTJOB, 50, -5,
           FilmJobData::NORMAL, SKILL_FOOTJOB, "Footjob",
           " worked as an actress filming foot job scenes.",
           " refused to use her feet on film today.",
     }) {
-        add_trait_chance(GainPornStar);
     }
 
     void narrate(const sGirl& girl, int roll) override {
@@ -296,15 +297,12 @@ struct FilmFootJob : public SimpleFilmJob
 
 struct FilmAnal : public SimpleFilmJob
 {
-    FilmAnal() : SimpleFilmJob(JOB_FILMANAL, {
+    FilmAnal() : SimpleFilmJob(JOB_FILMANAL, "FilmAnal.xml", {
            IMGTYPE_ANAL, ACTION_SEX, SKILL_ANAL, 50, 5,
            FilmJobData::NORMAL, SKILL_ANAL, "Anal",
            " worked as an actress filming anal scenes.",
            " refused to do anal on film today.",
     }) {
-        add_trait_chance(GainPornStar);
-        add_trait_chance(GainFaker);
-        add_trait_chance(GainSlut);
     }
 
     int handle_events(sGirl& girl) override {
@@ -324,14 +322,12 @@ struct FilmAnal : public SimpleFilmJob
 
 struct FilmMast : public SimpleFilmJob
 {
-    FilmMast() : SimpleFilmJob(JOB_FILMMAST, {
+    FilmMast() : SimpleFilmJob(JOB_FILMMAST, "FilmMast.xml", {
            IMGTYPE_MAST, ACTION_SEX, SKILL_SERVICE, 50, -10,
            FilmJobData::NICE, SKILL_PERFORMANCE, "Masturbation",
            " worked as an actress filming Masturbation scenes.",
            " refused to masturbate on film today.",
     }) {
-        add_trait_chance(GainFaker);
-        add_trait_chance(GainPornStar);
     }
 
     int handle_events(sGirl& girl) override {

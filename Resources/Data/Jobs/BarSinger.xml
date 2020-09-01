@@ -1,0 +1,23 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Sngr">
+    <Description>
+        She will sing for the customers.
+    </Description>
+    <Performance Modifier="work.singer">
+        <Primary Skill="Performance"/>
+        <Secondary Stat="Confidence" />
+        <Secondary Stat="Charisma" />
+        <Secondary Stat="Constitution" />
+    </Performance>
+    <Gains XP="5" Skill="3">
+        <LoseTrait Trait="Nervous" Threshold="30" Action="WORKMUSIC">
+            ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
+        </LoseTrait>
+        <LoseTrait Trait="Meek" Threshold="50" Action="WORKMUSIC">
+            ${name}'s having to sing every day has forced her to get over her Meekness.
+        </LoseTrait>
+        <GainTrait Trait="Charismatic" Threshold="70" Action="WORKMUSIC">
+            Singing on a daily basis has made ${name} more Charismatic.
+        </GainTrait>
+    </Gains>
+</Job>

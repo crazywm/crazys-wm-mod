@@ -1,0 +1,18 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FMst">
+    <Description>
+        She will perform in a masturbation scene.
+    </Description>
+    <Performance Modifier="">
+        <Primary Skill="Performance" />
+        <Secondary Skill="Service"/>
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+            She has performed in enough sex scenes that she has become a well known Porn Star.
+        </GainTrait>
+        <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
+            She has become quite the Faker.
+        </GainTrait>
+    </Gains>
+</Job>

@@ -41,6 +41,12 @@ cFarmJob::cFarmJob(JOBS job, sFarmJobData data) :
 
 }
 
+cFarmJob::cFarmJob(JOBS job, const char* xml, sFarmJobData data) :
+    cBasicJob(job, xml), m_Data(data) {
+
+}
+
+
 bool cFarmJob::DoWork(sGirl& girl, bool is_night) {
     if (girl.disobey_check(m_Data.Action, job()))
     {
@@ -63,31 +69,9 @@ bool cFarmJob::DoWork(sGirl& girl, bool is_night) {
 void cFarmJob::HandleGains(sGirl& girl, int enjoy) {
     // update enjoyment
     girl.upd_Enjoyment(m_Data.Action, enjoy);
-
-    // Improve stats
-    int xp = m_Data.XP, skill = m_Data.Skill;
-
-    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
-
-    girl.exp(uniform(1, xp));
-
-    if(!get_performance_data().PrimaryGains.empty()) {
-        auto& gains = get_performance_data().PrimaryGains;
-        for(int i = 0; i < skill; ++i) {
-            girl.update_attribute(gains[rng() % gains.size()], 1);
-        }
-    }
-
-    if(!get_performance_data().SecondaryGains.empty()) {
-        auto& gains = get_performance_data().SecondaryGains;
-        for(int i = 0; i < std::max(1, skill/2); ++i) {
-            girl.update_attribute(gains[rng() % gains.size()], 1);
-        }
-    }
-
-    gain_traits(girl);
+    apply_gains(girl);
 }
+
 
 
 class cFarmJobFarmer : public cFarmJob {
@@ -97,12 +81,9 @@ public:
 };
 
 cFarmJobFarmer::cFarmJobFarmer() : cFarmJob(
-        JOB_FARMER, {ACTION_WORKFARM, 5, 3, 20,
+        JOB_FARMER, "Farmer.xml", {ACTION_WORKFARM, 20,
                      "${name} refused to work during the",
                      "${name} worked tending crops on the farm."}) {
-    set_performance_data("work.farmer", {SKILL_FARMING},
-                         {STAT_INTELLIGENCE, STAT_CONSTITUTION, STAT_STRENGTH});
-    add_trait_chance({true, "Tough", 50, ACTION_WORKFARM, "Working in the heat of the sun has made ${name} rather Tough."});
 }
 
 bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -112,7 +93,6 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     int imagetype = IMGTYPE_FARM;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-#pragma endregion
 #pragma region //    Job Performance            //
 
     double foodproduced = performance;
@@ -288,17 +268,10 @@ public:
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-cFarmJobMarketer::cFarmJobMarketer() : cFarmJob(JOB_MARKETER, {ACTION_WORKCUSTSERV, 10, 3, 20,
-                                                               "${name} refused to work during the",
-                                                               "${name} worked as a marketer on the farm."}) {
-    set_performance_data("work.farmmarketer", {STAT_CHARISMA, STAT_CONFIDENCE},
-                         {STAT_INTELLIGENCE, STAT_FAME, SKILL_FARMING});
-    add_trait_chance({true, "Charismatic", 30, ACTION_WORKCUSTSERV, "${name} has been selling long enough that she has learned to be more Charismatic."});
-    add_trait_chance({false, "Shy", 50, ACTION_WORKCUSTSERV, "${name} has been selling for so long now that her confidence is super high and she is no longer Shy."});
-    add_trait_chance({false, "Meek", 40, ACTION_WORKCUSTSERV, "${name}'s having to work with customers every day has forced her to get over her meekness."});
-    add_trait_chance({false, "Nervous", 70, ACTION_WORKCUSTSERV, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore."});
-    add_trait_chance({true, "Psychic", 90, ACTION_WORKCUSTSERV, "${name} has learned to size up the buyers so well that you'd almost think she was Psychic."});
-
+cFarmJobMarketer::cFarmJobMarketer() : cFarmJob(JOB_MARKETER, "Marketer.xml",
+    {ACTION_WORKCUSTSERV, 20,
+     "${name} refused to work during the",
+     "${name} worked as a marketer on the farm."}) {
 }
 
 double cFarmJobMarketer::GetPerformance(const sGirl& girl, bool estimate) const {
@@ -510,24 +483,20 @@ public:
 private:
 };
 
-cFarmJobVeterinarian::cFarmJobVeterinarian() : cFarmJob(JOB_VETERINARIAN, {ACTION_WORKFARM, 10, 3, 20,
-                                                                           "${name} refused to work during the",
-                                                                           "${name} worked as a Veterinarian on the farm."}) {
-    set_performance_data("work.veterinarian", {SKILL_MEDICINE, SKILL_ANIMALHANDLING},
-                         {STAT_INTELLIGENCE, STAT_CHARISMA, SKILL_BEASTIALITY});
-
+cFarmJobVeterinarian::cFarmJobVeterinarian() : cFarmJob(
+        JOB_VETERINARIAN, "Veterinarian.xml",
+        {ACTION_WORKFARM, 20,
+         "${name} refused to work during the",
+         "${name} worked as a Veterinarian on the farm."}) {
 }
 
 bool cFarmJobVeterinarian::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
     int roll_a = d100();
     int enjoy = 0;
 
-#pragma endregion
 #pragma region //    Job Performance            //
 
     int fame = 0;
-
-
     if (performance >= 245)
     {
         wages += 155;    fame += 2;
@@ -613,11 +582,10 @@ public:
 };
 
 cFarmJobShepherd::cFarmJobShepherd() : cFarmJob(
-        JOB_SHEPHERD, {ACTION_WORKFARM, 5, 3, 20,
-                       "${name} refused to work during the ",
-                       "${name} worked as a shepherd in the farm."}){
-    set_performance_data("work.shepherd", {SKILL_ANIMALHANDLING}, 
-                         {STAT_CHARISMA, STAT_INTELLIGENCE, STAT_CONFIDENCE});
+        JOB_SHEPHERD, "Shepherd.xml",
+        {ACTION_WORKFARM, 20,
+         "${name} refused to work during the ",
+         "${name} worked as a shepherd in the farm."}) {
 }
 
 bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -777,11 +745,10 @@ public:
 };
 
 cFarmJobRancher::cFarmJobRancher() : cFarmJob(
-        JOB_RANCHER, {ACTION_WORKFARM, 5, 3, 20,
+        JOB_RANCHER, "Rancher.xml",
+        {ACTION_WORKFARM, 20,
                       "${name} refused to work during the",
-                      "${name} worked as a rancher on the farm."}){
-    set_performance_data("work.rancher", {SKILL_ANIMALHANDLING}, 
-                         {STAT_CONFIDENCE, STAT_CHARISMA, STAT_INTELLIGENCE});
+                      "${name} worked as a rancher on the farm."}) {
 }
 
 bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -942,10 +909,10 @@ public:
 };
 
 cFarmJobMilker::cFarmJobMilker() : cFarmJob(
-        JOB_MILK, {ACTION_WORKFARM, 5, 3, 20,
-                   "${name} refused to work during the",
-                   "${name} worked as a milker on the farm."}) {
-    set_performance_data("work.milker", {SKILL_ANIMALHANDLING, SKILL_HANDJOB}, {SKILL_FARMING, STAT_INTELLIGENCE});
+        JOB_MILK, "Milker.xml",
+        {ACTION_WORKFARM, 20,
+         "${name} refused to work during the",
+         "${name} worked as a milker on the farm."}) {
 }
 
 bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -1147,15 +1114,10 @@ public:
 };
 
 cFarmJobBeastCapture::cFarmJobBeastCapture() : cFarmJob(
-        JOB_BEASTCAPTURE, {ACTION_COMBAT, 10, 3, 40,
-                           "${name} refused to capture beasts during the",
-                           "${name} equipped herself and went out to hunt for exotic beasts and animals."}) {
-    set_performance_data("work.beastcapture", {SKILL_ANIMALHANDLING, SKILL_COMBAT, STAT_STRENGTH}, 
-                         {SKILL_BEASTIALITY, STAT_CONSTITUTION, STAT_AGILITY, SKILL_MAGIC});
-    add_trait_chance({true, "Tough", 30, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in."});
-    add_trait_chance({true, "Adventurer", 40, ACTION_COMBAT, "She has been in enough tough spots to consider herself Adventurer."});
-    add_trait_chance({true, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat."});
-    add_trait_chance({false, "Fragile", 15, ACTION_COMBAT, "${name} has had to heal from so many injuries you can't say she is fragile anymore."});
+        JOB_BEASTCAPTURE, "BeastCapture.xml",
+        {ACTION_COMBAT, 40,
+         "${name} refused to capture beasts during the",
+         "${name} equipped herself and went out to hunt for exotic beasts and animals."}) {
 }
 
 bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -1388,11 +1350,10 @@ private:
 };
 
 cFarmJobGetMilked::cFarmJobGetMilked() : cFarmJob(
-        JOB_MILK, {ACTION_WORKMILK, 5, 3, 0,
+        JOB_MILK, "GetMilked.xml",
+        {ACTION_WORKMILK, 0,
         "${name} refused to let her breasts be milked",
         "${name}'s breasts were milked."}) {
-    // these are fake, only used to get the correct skill gains
-    set_performance_data("", {SKILL_SERVICE}, {});
 }
 
 bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -1923,10 +1884,10 @@ private:
 };
 
 cFarmJobCatacombRancher::cFarmJobCatacombRancher() : cFarmJob(
-        JOB_CATACOMBRANCHER, {ACTION_WORKFARM, 10, 3, 20,
-                              "${name} refused to work during the",
-                              "${name} worked as a catacomb rancher on the farm."}) {
-    set_performance_data("work.catacombranger", {SKILL_ANIMALHANDLING}, {STAT_STRENGTH, STAT_CONFIDENCE, STAT_CONSTITUTION});
+        JOB_CATACOMBRANCHER, "CatacombRancher.xml",
+        {ACTION_WORKFARM, 20,
+              "${name} refused to work during the",
+              "${name} worked as a catacomb rancher on the farm."}) {
 }
 
 bool cFarmJobCatacombRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -2007,10 +1968,11 @@ public:
 };
 
 cFarmJobResearch::cFarmJobResearch() : cFarmJob(
-        JOB_RESEARCH, {ACTION_WORKTRAINING, 0, 0, 20,
+        JOB_RESEARCH, {ACTION_WORKTRAINING, 20,
                        "${name} refused to work during the",
-                       "${name} worked as a researcher on the farm."}){
-
+                       "${name} worked as a researcher on the farm."}) {
+    m_Info.ShortName = "Rsrc";
+    m_Info.Description = "She will research how to improve various things.";
 }
 
 bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {

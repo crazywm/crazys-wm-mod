@@ -119,7 +119,5 @@ FilmBeast::FilmBeast() : GenericFilmJob(JOB_FILMBEAST, {
     IMGTYPE_BEAST, ACTION_SEX, SKILL_BEASTIALITY, 50, 5,
     FilmJobData::EVIL, SKILL_BEASTIALITY, "Beast",
     nullptr, nullptr}) {
-    set_performance_data("work.film.beast", {STAT_CHARISMA, STAT_BEAUTY}, {SKILL_ANIMALHANDLING, SKILL_BEASTIALITY});
-    add_trait_chance(GainPornStar);
-    add_trait_chance(GainFaker);
+    load_from_xml("FilmBeast.xml");
 }

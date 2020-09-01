@@ -250,7 +250,7 @@ void sBrothel::UpdateGirls(bool is_night)
         {
             ss.str("");
             ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << current.FullName()
-               << "\nJob: " << g_Game->job_manager().JobData[(is_night ? current.m_NightJob : current.m_DayJob)].name << "\nPay:     " << current.m_Pay << "\nTips:   " << current.m_Tips << "\nTotal: " << totalGold;
+               << "\nJob: " << g_Game->job_manager().get_job_name((is_night ? current.m_NightJob : current.m_DayJob)) << "\nPay:     " << current.m_Pay << "\nTips:   " << current.m_Tips << "\nTotal: " << totalGold;
             summary += ss.str();
             sum = EVENT_DEBUG;
         }

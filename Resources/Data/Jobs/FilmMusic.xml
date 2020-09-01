@@ -1,0 +1,14 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FMus">
+    <Description>
+        She will make a music video.
+    </Description>
+    <Performance Modifier="work.film.music">
+        <Primary Stat="Charisma" />
+        <Primary Stat="Beauty" />
+        <Primary Stat="Confidence" />
+        <Secondary Skill="Performance" />
+    </Performance>
+    <Gains XP="10" Skill="3">
+    </Gains>
+</Job>

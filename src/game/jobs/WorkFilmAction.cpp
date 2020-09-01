@@ -127,7 +127,9 @@ FilmAction::FilmAction() : GenericFilmJob(JOB_FILMACTION, {
       FilmJobData::NORMAL, SKILL_COMBAT, "Action",
       " worked as an actress in an action scene.",
       " refused to shoot an action scene today."
-}) {}
+}) {
+    load_from_xml("FilmAction.xml");
+}
 
 
 double FilmAction::GetPerformance(const sGirl& girl, bool estimate) const

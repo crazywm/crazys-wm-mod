@@ -1,0 +1,13 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Mlkr">
+    <Description>
+        She will milk the various animals and girls you own.
+    </Description>
+    <Performance Modifier="work.milker">
+        <Primary Skill="AnimalHandling"/>
+        <Primary Skill="Handjob"/>
+        <Secondary Stat="Intelligence" />
+        <Secondary Skill="Farming" />
+    </Performance>
+    <Gains XP="5" Skill="3" />
+</Job>

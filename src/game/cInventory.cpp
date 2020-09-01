@@ -946,10 +946,7 @@ void CraftingData::from_xml(tinyxml2::XMLElement& element) {
     for(auto job = element.FirstChildElement("Job"); job; job = job->NextSiblingElement("Job")) {
         auto job_name = job->Attribute("Name");
         if(job_name) {
-            auto job_id = sGirl::lookup_jobs_code(job_name);
-            if(job_id != -1) {
-                m_CraftableBy.insert((JOBS)job_id);
-            }
+            m_CraftableBy.insert(get_job_id(job_name));
         } else {
             g_LogFile.error("items", "No name given for <Job> tag.");
         }
@@ -958,22 +955,14 @@ void CraftingData::from_xml(tinyxml2::XMLElement& element) {
     for(auto skill = element.FirstChildElement("Skill"); skill; skill = skill->NextSiblingElement("Skill")) {
         auto skill_name = skill->Attribute("Name");
         if(skill_name) {
-            int skill_value = 0;
-            auto skill_id = get_skill_id(skill_name);
-            skill->QueryIntAttribute("Minimum", &skill_value);
-            if(skill_id != -1) {
-                m_SkillRequirements[(SKILLS)skill_id] = skill_value;
-            }
+            m_SkillRequirements[get_skill_id(skill_name)] = skill->IntAttribute("Minimum", 0);
         }
     }
 
     for(auto stat = element.FirstChildElement("Stat"); stat; stat = stat->NextSiblingElement("Stat")) {
         auto stat_name = stat->Attribute("Name");
         if(stat_name) {
-            int stat_value = 0;
-            auto stat_id = get_stat_id(stat_name);
-            stat->QueryIntAttribute("Minimum", &stat_value);
-            m_StatsRequirements[stat_id] = stat_value;
+            m_StatsRequirements[get_stat_id(stat_name)] = stat->IntAttribute("Minimum", 0);
         }
     }
 }

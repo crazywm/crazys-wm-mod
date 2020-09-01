@@ -1,0 +1,13 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Mlkd">
+    <Description>
+        She will have her breasts milked
+    </Description>
+    <!-- GetMilked has a non-trivial performance calculation
+    Service skill is only mentioned here so it will be updated
+    -->
+    <Performance Modifier="work.getmilked">
+        <Primary Skill="Service"/>
+    </Performance>
+    <Gains XP="5" Skill="3" />
+</Job>

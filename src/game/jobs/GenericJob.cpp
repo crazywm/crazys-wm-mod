@@ -19,6 +19,9 @@
 
 #include "GenericJob.h"
 #include <functional>
+#include <CLog.h>
+#include "xml/util.h"
+#include "xml/getattr.h"
 #include "cGirls.h"
 #include "cRng.h"
 #include "character/sGirl.h"
@@ -44,10 +47,16 @@ int IGenericJob::uniform(int min, int max) const {
     return m_Rng->in_range(min, max);
 }
 
+IGenericJob::IGenericJob(JOBS j) : m_Info{j, get_job_name(j)} {}
+
 class cJobWrapper: public IGenericJob {
 public:
-    cJobWrapper(JOBS j, std::function<bool(sGirl&, bool, cRng&)> w, std::function<double(const sGirl&, bool)> p) :
-            IGenericJob(j), m_Work(std::move(w)), m_Perf(std::move(p)) {}
+    cJobWrapper(JOBS j, std::function<bool(sGirl&, bool, cRng&)> w, std::function<double(const sGirl&, bool)> p,
+                std::string brief, std::string desc) :
+            IGenericJob(j), m_Work(std::move(w)), m_Perf(std::move(p)) {
+        m_Info.ShortName = std::move(brief);
+        m_Info.Description = std::move(desc);
+    }
 private:
     double GetPerformance(const sGirl& girl, bool estimate) const override { return m_Perf(girl, estimate); }
     bool DoWork(sGirl& girl, bool is_night) override { return m_Work(girl, is_night, rng()); }
@@ -137,19 +146,7 @@ DECL_JOB(Intern);
 bool WorkJanitor(sGirl& girl, bool Day0Night1, cRng& rng);
 
 // - Farm - Staff
-DECL_JOB(FarmVeterinarian);
-DECL_JOB(FarmMarketer);
-DECL_JOB(FarmResearch);
 DECL_JOB(FarmHand);
-
-// - Farm - Laborers
-DECL_JOB(Farmer);
-DECL_JOB(Shepherd);
-DECL_JOB(Rancher);
-DECL_JOB(CatacombRancher);
-DECL_JOB(BeastCapture);
-DECL_JOB(Milker);
-DECL_JOB(Milk);
 
 // house
 DECL_JOB(Recruiter);
@@ -165,100 +162,100 @@ DECL_JOB(SOBisexual);
 DECL_JOB(SOLesbian);
 DECL_JOB(FakeOrgasm);
 
-#define REGISTER_JOB_MANUAL(J, Wf, Pf) mgr.register_job(std::make_unique<cJobWrapper>(J, Work##Wf, JP_##Pf))
-#define REGISTER_JOB(J, Fn) REGISTER_JOB_MANUAL(J, Fn, Fn)
+#define REGISTER_JOB_MANUAL(J, Wf, Pf, Brief, Desc) mgr.register_job(std::make_unique<cJobWrapper>(J, Work##Wf, JP_##Pf, Brief, Desc))
+#define REGISTER_JOB(J, Fn, Brief, Desc) REGISTER_JOB_MANUAL(J, Fn, Fn, Brief, Desc)
 
 void RegisterWrappedJobs(cJobManager& mgr) {
-    REGISTER_JOB(JOB_RESTING, Freetime);
-    REGISTER_JOB(JOB_CLEANING, Cleaning);
-    REGISTER_JOB(JOB_TRAINING, Training);
-    REGISTER_JOB(JOB_SECURITY, Security);
-    REGISTER_JOB(JOB_ADVERTISING, Advertising);
-    REGISTER_JOB(JOB_CUSTOMERSERVICE, CustService);
-    REGISTER_JOB(JOB_TORTURER, Torturer);
-    REGISTER_JOB(JOB_EXPLORECATACOMBS, ExploreCatacombs);
-    REGISTER_JOB(JOB_BEASTCARER, BeastCare);
+    REGISTER_JOB(JOB_RESTING, Freetime, "TOff", "She will take some time off, maybe do some shopping or walk around town. If the girl is unhappy she may try to escape.");
+    REGISTER_JOB(JOB_CLEANING, Cleaning, "Prtc", "She will train either alone or with others to improve her skills.");
+    REGISTER_JOB(JOB_TRAINING, Training, "Cln", "She will clean the building, as filth will put off some customers.");
+    REGISTER_JOB(JOB_SECURITY, Security, "Sec", "She will patrol the building, stopping mis-deeds.");
+    REGISTER_JOB(JOB_ADVERTISING, Advertising, "Adv", "She will advertise the building's features in the city.");
+    REGISTER_JOB(JOB_CUSTOMERSERVICE, CustService, "CS", "She will look after customer needs.");
+    REGISTER_JOB(JOB_TORTURER, Torturer, "Trtr", "She will torture the prisoners in addition to your tortures, she will also look after them to ensure they don't die. (max 1 for all brothels)");
+    REGISTER_JOB(JOB_EXPLORECATACOMBS, ExploreCatacombs, "ExC", "She will explore the catacombs looking for treasure and capturing monsters and monster girls. Needless to say, this is a dangerous job.");
+    REGISTER_JOB(JOB_BEASTCARER, BeastCare, "BstC", "She will look after the needs of the beasts in your Brothel.");
 
-    REGISTER_JOB(JOB_ESCORT, Escort);
+    REGISTER_JOB(JOB_ESCORT, Escort, "Scrt", "She will be an escort.");
 
-    REGISTER_JOB(JOB_DEALER, HallDealer);
-    REGISTER_JOB(JOB_ENTERTAINMENT, HallEntertainer);
-    REGISTER_JOB(JOB_XXXENTERTAINMENT, HallXXXEntertainer);
+    REGISTER_JOB(JOB_DEALER, HallDealer, "Dlr", "She will manage a game in the gambling hall.");
+    REGISTER_JOB(JOB_ENTERTAINMENT, HallEntertainer, "Entn", "She will provide entertainment to the customers.");
+    REGISTER_JOB(JOB_XXXENTERTAINMENT, HallXXXEntertainer, "XXXE", "She will provide sexual entertainment to the customers.");
 
-    REGISTER_JOB(JOB_SLEAZYBARMAID, SleazyBarmaid);
-    REGISTER_JOB(JOB_SLEAZYWAITRESS, SleazyWaitress);
-    REGISTER_JOB(JOB_BARSTRIPPER, BarStripper);
-    REGISTER_JOB(JOB_MASSEUSE, BrothelMasseuse);
-    REGISTER_JOB(JOB_BROTHELSTRIPPER, BrothelStripper);
-    REGISTER_JOB(JOB_PEEP, PeepShow);
+    REGISTER_JOB(JOB_SLEAZYBARMAID, SleazyBarmaid, "SBmd", "She will staff the bar and serve drinks while dressed in lingerie or fetish costumes.");
+    REGISTER_JOB(JOB_SLEAZYWAITRESS, SleazyWaitress, "SWtr", "She will bring drinks and food to the customers at the tables while dressed in lingerie or fetish costumes.");
+    REGISTER_JOB(JOB_BARSTRIPPER, BarStripper, "SSrp", "She will strip on the tables and stage for the customers.");
+    REGISTER_JOB(JOB_MASSEUSE, BrothelMasseuse, "Msus", "She will give massages to the customers.");
+    REGISTER_JOB(JOB_BROTHELSTRIPPER, BrothelStripper, "BStp", "She will strip for the customers.");
+    REGISTER_JOB(JOB_PEEP, PeepShow, "Peep",  "She will let people watch her change and maybe more...");
 
-    REGISTER_JOB(JOB_WHOREGAMBHALL, Whore);
-    REGISTER_JOB(JOB_BARWHORE, Whore);
-    REGISTER_JOB(JOB_WHOREBROTHEL, Whore);
-    REGISTER_JOB(JOB_WHORESTREETS, Whore);
+    REGISTER_JOB(JOB_WHOREGAMBHALL, Whore, "HWhr", "She will give her sexual favors to the customers.");
+    REGISTER_JOB(JOB_BARWHORE, Whore, "SWhr", "She will provide sex to the customers.");
+    REGISTER_JOB(JOB_WHOREBROTHEL, Whore, "BWhr", "She will whore herself to customers within the building's walls. This is safer but a little less profitable.");
+    REGISTER_JOB(JOB_WHORESTREETS, Whore, "StWr", "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable.");
 
 // - Movie Studio - Crew
-    REGISTER_JOB(JOB_FILMFREETIME, Freetime);
-    REGISTER_JOB(JOB_DIRECTOR, FilmDirector);
-    REGISTER_JOB(JOB_PROMOTER, FilmPromoter);
-    REGISTER_JOB(JOB_CAMERAMAGE, CameraMage);
-    REGISTER_JOB(JOB_CRYSTALPURIFIER, CrystalPurifier);
-    REGISTER_JOB(JOB_FLUFFER, Fluffer);
-    REGISTER_JOB_MANUAL(JOB_STAGEHAND, FilmStagehand, Cleaning);
+    REGISTER_JOB(JOB_FILMFREETIME, Freetime, "TOff", "She takes time off resting and recovering.");
+    REGISTER_JOB(JOB_DIRECTOR, FilmDirector, "Dir", "She directs the filming, and keeps the girls in line. (max 1)");
+    REGISTER_JOB(JOB_PROMOTER, FilmPromoter, "Prmt", "She advertises the movies. (max 1)");
+    REGISTER_JOB(JOB_CAMERAMAGE, CameraMage, "CM", "She will film the scenes. (requires at least 1 to create a scene)");
+    REGISTER_JOB(JOB_CRYSTALPURIFIER, CrystalPurifier, "CP",  "She will clean up the filmed scenes. (requires at least 1 to create a scene)");
+    REGISTER_JOB(JOB_FLUFFER, Fluffer, "Fluf", "She will keep the porn stars aroused.");
+    REGISTER_JOB_MANUAL(JOB_STAGEHAND, FilmStagehand, Cleaning, "StgH", "She helps setup equipment, and keeps the studio clean.");
 
     //Rand
-    REGISTER_JOB(JOB_FILMRANDOM, FilmRandom);
+    REGISTER_JOB(JOB_FILMRANDOM, FilmRandom, "FRnd", "She will perform in a random sex scene.");
 
 // - Arena - Fighting
-    REGISTER_JOB(JOB_FIGHTBEASTS, FightBeast);
-    REGISTER_JOB(JOB_FIGHTARENAGIRLS, FightArenaGirls);
-    REGISTER_JOB(JOB_FIGHTTRAIN, CombatTraining);
+    REGISTER_JOB(JOB_FIGHTBEASTS, FightBeast, "FiBs", "She will fight to the death against beasts you own. Dangerous.");
+    REGISTER_JOB(JOB_FIGHTARENAGIRLS, FightArenaGirls, "Cage", "She will fight against other girls. Dangerous.");
+    REGISTER_JOB(JOB_FIGHTTRAIN, CombatTraining, "CT", "She will practice combat.");
 
 // - Arena - Staff
-    REGISTER_JOB(JOB_ARENAREST, Freetime);
-    REGISTER_JOB(JOB_CITYGUARD, CityGuard);
-    REGISTER_JOB_MANUAL(JOB_CLEANARENA, CleanArena, Cleaning);
+    REGISTER_JOB(JOB_ARENAREST, Freetime, "TOff", "She will rest.");
+    REGISTER_JOB(JOB_CITYGUARD, CityGuard, "CGrd", "She will help keep Crossgate safe.");
+    REGISTER_JOB_MANUAL(JOB_CLEANARENA, CleanArena, Cleaning, "GKpr", "She will clean the arena.");
 
 //Comunity Centre
-    REGISTER_JOB(JOB_CENTREREST, Freetime);
-    REGISTER_JOB(JOB_FEEDPOOR, FeedPoor);
-    REGISTER_JOB(JOB_COMUNITYSERVICE, ComunityService);
-    REGISTER_JOB_MANUAL(JOB_CLEANCENTRE, CleanCentre, Cleaning);
+    REGISTER_JOB(JOB_CENTREREST, Freetime, "TOff", "She will rest.");
+    REGISTER_JOB(JOB_FEEDPOOR, FeedPoor, "Feed", "She will work in a soup kitchen.");
+    REGISTER_JOB(JOB_COMUNITYSERVICE, ComunityService, "CmSr", "She will go around town and help out where she can.");
+    REGISTER_JOB_MANUAL(JOB_CLEANCENTRE, CleanCentre, Cleaning, "ClnC", "She will clean the centre.");
 
 // Counseling Centre
-    REGISTER_JOB(JOB_COUNSELOR, Counselor);
+    REGISTER_JOB(JOB_COUNSELOR, Counselor, "Cnsl", "She will help girls get over their addictions and problems.");
 
 // - Clinic - Surgery
-    REGISTER_JOB(JOB_GETHEALING, Healing);
-    REGISTER_JOB(JOB_GETREPAIRS, RepairShop);
-    REGISTER_JOB(JOB_CUREDISEASES, CureDiseases);
-    REGISTER_JOB(JOB_GETABORT, GetAbort);
+    REGISTER_JOB(JOB_GETHEALING, Healing, "Heal", "She will have her wounds attended.");
+    REGISTER_JOB(JOB_GETREPAIRS, RepairShop, "Repr", "Construct girls will be quickly repaired here.");
+    REGISTER_JOB(JOB_CUREDISEASES, CureDiseases, "Cure", "She will try to get her diseases cured.");
+    REGISTER_JOB(JOB_GETABORT, GetAbort, "Abrt", "She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)");
 
 // - Clinic - Staff
-    REGISTER_JOB(JOB_CLINICREST, Freetime);
-    REGISTER_JOB(JOB_DOCTOR, Doctor);
-    REGISTER_JOB(JOB_NURSE, Nurse);
-    REGISTER_JOB(JOB_MECHANIC, Mechanic);
-    REGISTER_JOB(JOB_INTERN, Intern);
-    REGISTER_JOB_MANUAL(JOB_JANITOR, Janitor, Cleaning);
+    REGISTER_JOB(JOB_CLINICREST, Freetime, "TOff", "She will rest");
+    REGISTER_JOB(JOB_DOCTOR, Doctor, "Doc", "She will become a doctor. Doctors earn extra cash from treating locals. (requires at least 1 to perform surgeries)");
+    REGISTER_JOB(JOB_NURSE, Nurse, "Nurs", "Will help the doctor and heal sick people.");
+    REGISTER_JOB(JOB_MECHANIC, Mechanic, "Mech", "Will help the doctor and repair Constructs.");
+    REGISTER_JOB(JOB_INTERN, Intern, "Ntrn", "Will train in how to be a nurse.");
+    REGISTER_JOB_MANUAL(JOB_JANITOR, Janitor, Cleaning, "Jntr", "She will clean the clinic");
 
 // - Farm - Staff
-    REGISTER_JOB(JOB_FARMREST, Freetime);
-    REGISTER_JOB_MANUAL(JOB_FARMHAND, FarmHand, Cleaning);
+    REGISTER_JOB(JOB_FARMREST, Freetime, "TOff", "She will take time off and rest.");
+    REGISTER_JOB_MANUAL(JOB_FARMHAND, FarmHand, Cleaning, "FHnd", "She will clean up around the farm.");
 
 // house
-    REGISTER_JOB(JOB_HOUSEREST, Freetime);
-    REGISTER_JOB(JOB_RECRUITER, Recruiter);
-    REGISTER_JOB(JOB_PERSONALTRAINING, PersonalTraining);
-    REGISTER_JOB(JOB_PERSONALBEDWARMER, PersonalBedWarmer);
+    REGISTER_JOB(JOB_HOUSEREST, Freetime, "TOff", "She takes time off resting and recovering.");
+    REGISTER_JOB(JOB_RECRUITER, Recruiter, "Rcrt", "She will go out and try and recruit girls for you.");
+    REGISTER_JOB(JOB_PERSONALTRAINING, PersonalTraining, "PTrn", "You will oversee her training personally.");
+    REGISTER_JOB(JOB_PERSONALBEDWARMER, PersonalBedWarmer, "BdWm", "She will stay in your bed at night with you.");
     //REGISTER_JOB(JOB_HOUSEVAC, HouseVacation);
-    REGISTER_JOB_MANUAL(JOB_CLEANHOUSE, CleanHouse, Cleaning);
-    REGISTER_JOB(JOB_HOUSECOOK, HouseCook);
-    REGISTER_JOB(JOB_HOUSEPET, HousePet);
-    REGISTER_JOB(JOB_SO_STRAIGHT, SOStraight);
-    REGISTER_JOB(JOB_SO_BISEXUAL, SOBisexual);
-    REGISTER_JOB(JOB_SO_LESBIAN, SOLesbian);
-    REGISTER_JOB(JOB_FAKEORGASM, FakeOrgasm);
+    REGISTER_JOB_MANUAL(JOB_CLEANHOUSE, CleanHouse, Cleaning, "ClnH", "She will clean your house.");
+    REGISTER_JOB(JOB_HOUSECOOK, HouseCook, "Hcok", "She will cook for your house.");
+    REGISTER_JOB(JOB_HOUSEPET, HousePet, "Hpet", "She will be trained to become the house pet.");
+    REGISTER_JOB(JOB_SO_STRAIGHT, SOStraight, "SOSt", "You will make sure she only likes having sex with men.");
+    REGISTER_JOB(JOB_SO_BISEXUAL, SOBisexual, "SOBi", "You will make sure she likes having sex with both men and women.");
+    REGISTER_JOB(JOB_SO_LESBIAN, SOLesbian, "SOLe", "You will make sure she only likes having sex with women.");
+    REGISTER_JOB(JOB_FAKEORGASM, FakeOrgasm, "FOEx", "You will teach her how to fake her orgasms.");
 }
 
 double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {
@@ -283,13 +280,13 @@ double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {
             jobperformance -= (t + 2) * (t / 3);
     }
 
-    jobperformance += girl.get_trait_modifier(m_PerformanceData.TraitMod);
+    jobperformance += girl.get_trait_modifier(m_PerformanceData.TraitMod.c_str());
 
     return jobperformance;
 }
 
-void cBasicJob::set_performance_data(const char* mod, std::vector<StatSkill> primary, std::vector<StatSkill> secondary) {
-    m_PerformanceData = sJobPerformance{mod, std::move(primary), std::move(secondary)};
+void cBasicJob::set_performance_data(std::string mod, std::vector<StatSkill> primary, std::vector<StatSkill> secondary) {
+    m_PerformanceData = sJobPerformance{std::move(mod), std::move(primary), std::move(secondary)};
 }
 
 void cBasicJob::add_trait_chance(sTraitChange c) {
@@ -305,5 +302,109 @@ void cBasicJob::gain_traits(sGirl& girl) {
             cGirls::PossiblyLoseExistingTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
                                               trait.Message, false);
         }
+    }
+}
+
+cBasicJob::cBasicJob(JOBS job, const char* xml_file) : IGenericJob(job) {
+    load_from_xml(xml_file);
+}
+
+void cBasicJob::apply_gains(sGirl& girl) {
+    // Improve stats
+    int xp = m_Data.XP, skill = m_Data.Skill;
+
+    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
+    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
+
+    girl.exp(uniform(1, xp));
+
+    if(!get_performance_data().PrimaryGains.empty()) {
+        auto& gains = get_performance_data().PrimaryGains;
+        for(int i = 0; i < skill; ++i) {
+            girl.update_attribute(gains[rng() % gains.size()], 1);
+        }
+    }
+
+    if(!get_performance_data().SecondaryGains.empty()) {
+        auto& gains = get_performance_data().SecondaryGains;
+        for(int i = 0; i < std::max(1, skill/2); ++i) {
+            girl.update_attribute(gains[rng() % gains.size()], 1);
+        }
+    }
+
+    gain_traits(girl);
+}
+
+void cBasicJob::load_from_xml(const char* xml_file) {
+    DirPath path = DirPath() << "Resources" << "Data" << "Jobs" << xml_file;
+    auto doc = LoadXMLDocument(path.c_str());
+    auto job_data = doc->FirstChildElement("Job");
+    if(!job_data) {
+        throw std::runtime_error("Job xml does not contain <Job> element!");
+    }
+
+    // Trait changes
+    auto load_trait_change = [&](const tinyxml2::XMLElement& element, bool gain) {
+        std::string trait = GetStringAttribute(element, "Trait");
+        int threshold = GetIntAttribute(element, "Threshold", -100, 100);
+        Action_Types action = get_action_id(GetStringAttribute(element, "Action"));
+        const char* msg_text = element.GetText();
+        std::string message = (gain ? "${name} has gained the trait " : "${name} has lost the trait ") + trait;
+        if(msg_text) {
+            // TODO trim
+            message = msg_text;
+        }
+        EventType event_type = (EventType)job_data->IntAttribute("Event", EVENT_GOODNEWS);
+        add_trait_chance({gain, trait, threshold, action, message, event_type});
+    };
+
+    // Performance Criteria
+    const auto* performance_el = job_data->FirstChildElement("Performance");
+    if(performance_el) {
+
+        auto load_stat_skills = [&](const char* name) {
+            std::vector<StatSkill> loaded_list;
+            for(const auto& stat_skill : IterateChildElements(*performance_el, name)) {
+                if(stat_skill.Attribute("Stat")) {
+                    loaded_list.push_back(get_stat_id(GetStringAttribute(stat_skill, "Stat")));
+                } else {
+                    loaded_list.push_back(get_skill_id(GetStringAttribute(stat_skill, "Skill")));
+                }
+            }
+            return loaded_list;
+        };
+
+        std::vector<StatSkill> primary = load_stat_skills("Primary");
+        std::vector<StatSkill> secondary = load_stat_skills("Secondary");
+        std::string trait_mod = GetDefaultedStringAttribute(*performance_el, "Modifier", "");
+
+        set_performance_data(trait_mod, std::move(primary), std::move(secondary));
+    }
+
+    // Gains
+    const auto* gains_el = job_data->FirstChildElement("Gains");
+    if(gains_el) {
+        m_Data.XP = GetIntAttribute(*gains_el, "XP");
+        m_Data.Skill = GetIntAttribute(*gains_el, "Skill");
+
+        for(const auto& trait_change : IterateChildElements(*gains_el, "GainTrait")) {
+            load_trait_change(trait_change, true);
+        }
+
+        for(const auto& trait_change : IterateChildElements(*gains_el, "LoseTrait")) {
+            load_trait_change(trait_change, false);
+        }
+    }
+
+    // Info
+    m_Info.ShortName = GetStringAttribute(*job_data, "ShortName");
+    if(const auto* desc_el = job_data->FirstChildElement("Description")) {
+        if(const char* description = desc_el->GetText()) {
+            m_Info.Description = description;
+        } else {
+            g_LogFile.error("jobs", "<Description> element does not contain text. File: ", xml_file);
+        }
+    } else {
+        g_LogFile.error("jobs", "<Job> element does not contain <Description>. File: ", xml_file);
     }
 }

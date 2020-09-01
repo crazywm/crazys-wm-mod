@@ -138,5 +138,5 @@ FilmMusic::FilmMusic() : GenericFilmJob(JOB_FILMMUSIC, {
         " worked on a music video showcasing her singing and dancing talent.",
         " refused to shoot a music video scene today."
 }) {
-    set_performance_data("work.film.music", {STAT_CHARISMA, STAT_BEAUTY, STAT_CONFIDENCE}, {SKILL_PERFORMANCE});
+    load_from_xml("FilmMusic.xml");
 }

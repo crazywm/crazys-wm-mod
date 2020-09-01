@@ -1,0 +1,17 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Frmr">
+    <Description>
+        She will tend to your crops.
+    </Description>
+    <Performance Modifier="work.farmer">
+        <Primary Skill="Farming"/>
+        <Secondary Stat="Intelligence" />
+        <Secondary Stat="Constitution" />
+        <Secondary Stat="Strength" />
+    </Performance>
+    <Gains XP="5" Skill="3">
+        <GainTrait Trait="Tough" Threshold="30" Action="WORKFARM">
+            Working in the heat of the sun has made ${name} rather Tough.
+        </GainTrait>
+    </Gains>
+</Job>

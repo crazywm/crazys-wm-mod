@@ -1,0 +1,16 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="BrCk">
+    <Description>
+        She will cook food for the bar.
+    </Description>
+    <Performance Modifier="work.cooking">
+        <Primary Skill="Cooking"/>
+        <Secondary Stat="Confidence" />
+        <Secondary Stat="Intelligence" />
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <LoseTrait Trait="Clumsy" Threshold="30" Action="WORKBAR">
+            It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.
+        </LoseTrait>
+    </Gains>
+</Job>

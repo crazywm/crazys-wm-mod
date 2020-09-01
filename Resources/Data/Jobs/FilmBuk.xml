@@ -1,0 +1,18 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FBuk">
+    <Description>
+        A large group of men will cum on, over and inside her.
+    </Description>
+    <Performance Modifier="work.film.buk">
+        <Primary Stat="Beauty"/>
+        <Primary Stat="Charisma" />
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <GainTrait Trait="Masochist" Threshold="65" Action="SEX">
+            ${name} has turned into a Masochist from all the degradation.
+        </GainTrait>
+        <GainTrait Trait="Cum Addict" Threshold="80" Action="SEX">
+            ${name} has become addicted to cum.
+        </GainTrait>
+    </Gains>
+</Job>

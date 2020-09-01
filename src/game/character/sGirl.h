@@ -194,19 +194,6 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     static const char    *training_jobs[];
     static const char    *children_type_names[];    // `J` added
 
-    /*
-    *    we need to be able to go the other way, too:
-    *    from std::string to number. The maps map stat/skill names
-    *    onto index numbers. The setup flag is so we can initialise
-    *     the maps the first time an sGirl is constructed
-    */
-    static bool        m_maps_setup;
-    static std::map<std::string, unsigned int>    jobs_lookup;
-    static void        setup_maps();
-
-    static JOBS lookup_jobs_code(std::string s);
-
-
     tinyxml2::XMLElement& SaveGirlXML(tinyxml2::XMLElement& elRoot);
     bool LoadGirlXML(const tinyxml2::XMLElement* pGirl);
     static std::shared_ptr<sGirl> LoadFromTemplate(const tinyxml2::XMLElement& root);

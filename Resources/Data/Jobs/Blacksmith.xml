@@ -1,0 +1,19 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Bksm">
+    <Description>
+        She will make weapons and armor.
+    </Description>
+    <Performance Modifier="work.blacksmith">
+        <Primary Skill="Crafting"/>
+        <Primary Stat="Strength"/>
+        <Secondary Skill="Combat" />
+        <Secondary Skill="Magic" />
+        <Secondary Stat="Intelligence" />
+        <Secondary Stat="Constitution" />
+    </Performance>
+    <Gains XP="5" Skill="3">
+        <GainTrait Trait="Tough" Threshold="50" Action="MAKEITEMS">
+            Working in the heat of the forge has made ${name} rather Tough.
+        </GainTrait>
+    </Gains>
+</Job>

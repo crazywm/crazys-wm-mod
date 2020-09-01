@@ -24,8 +24,6 @@
 
 struct sFarmJobData {
     Action_Types Action;
-    int XP;
-    int Skill;
     int BaseWages;
 
     const char* Refuse;
@@ -39,6 +37,7 @@ public:
     virtual bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) = 0;
 
 protected:
+    cFarmJob(JOBS job, const char* xml, sFarmJobData data);
     void HandleGains(sGirl& girl, int enjoy);
     sFarmJobData m_Data;
 

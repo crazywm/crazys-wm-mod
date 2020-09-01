@@ -1,0 +1,13 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="SHrd">
+    <Description>
+        She will tend to food animals.
+    </Description>
+    <Performance Modifier="work.shepherd">
+        <Primary Skill="AnimalHandling"/>
+        <Secondary Stat="Intelligence" />
+        <Secondary Stat="Charisma" />
+        <Secondary Stat="Confidence" />
+    </Performance>
+    <Gains XP="5" Skill="3" />
+</Job>

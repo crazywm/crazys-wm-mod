@@ -315,10 +315,10 @@ void cScreenGirlDetails::on_select_job(int selection, bool fulltime)
     if (old_job != selection)
     {
         std::stringstream text;
-        text << g_Game->job_manager().JobData[old_job].name << " (" << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)old_job, m_EditNightShift) << ")";
+        text << g_Game->job_manager().get_job_name(old_job) << " (" << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)old_job, m_EditNightShift) << ")";
         SetSelectedItemText(joblist_id, old_job, text.str());
         text.str("");
-        text << g_Game->job_manager().JobData[selection].name << " (" << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)selection, m_EditNightShift) << ")";
+        text << g_Game->job_manager().get_job_name((JOBS)selection) << " (" << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)selection, m_EditNightShift) << ")";
     }
     RefreshJobList();
 }
@@ -389,9 +389,9 @@ void cScreenGirlDetails::RefreshJobList()
     // populate Jobs listbox with jobs in the selected category
     for (auto i : g_Game->job_manager().JobFilters[job_filter].Contents)
     {
-        if (g_Game->job_manager().JobData[i].name.empty()) continue;
+        if (g_Game->job_manager().get_job_name(i).empty()) continue;
         std::stringstream btext;
-        btext << g_Game->job_manager().JobData[i].name;
+        btext << g_Game->job_manager().get_job_name(i);
         btext << " (";
         if(m_SelectedGirl->m_Building) {
             btext << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)i, m_EditNightShift);

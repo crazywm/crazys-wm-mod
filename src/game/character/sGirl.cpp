@@ -45,14 +45,6 @@ namespace settings {
     extern const char* PREG_GIRL_CHILD;
 }
 
-/*
-* MOD: DocClox: Stuff for the XML loader code
-*
-* first: static members need declaring
-*/
-bool sGirl::m_maps_setup = false;
-std::map<std::string, unsigned int> sGirl::jobs_lookup;
-
 const char *sGirl::children_type_names[] =
                    {
                            "Total_Births", "Beasts", "All_Girls", "All_Boys", "Customer_Girls",
@@ -202,173 +194,6 @@ bool sGirl::disobey_check(int action, JOBS job)
 
     return !girl_obeys;
 }
-
-
-
-
-// ----- Lookups
-void sGirl::setup_maps()
-{
-    g_LogFile.log(ELogLevel::INFO, "[sGirl::setup_maps] Setting up Stats, Skills and Status codes.");
-    m_maps_setup = true;
-
-    // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cGirls.cpp > jobs_lookup
-    jobs_lookup["Adv"] = JOB_ADVERTISING;
-    jobs_lookup["AMng"] = JOB_ANGER;
-    jobs_lookup["TOff"] = JOB_ARENAREST;
-    jobs_lookup["AssJ"] = JOB_ASSJOB;
-    jobs_lookup["Bkr"] = JOB_BAKER;
-    jobs_lookup["BrCk"] = JOB_BARCOOK;
-    jobs_lookup["BrMd"] = JOB_BARMAID;
-    jobs_lookup["SSrp"] = JOB_BARSTRIPPER;
-    jobs_lookup["SWhr"] = JOB_BARWHORE;
-    jobs_lookup["BCpt"] = JOB_BEASTCAPTURE;
-    jobs_lookup["BstC"] = JOB_BEASTCARER;
-    jobs_lookup["Bksm"] = JOB_BLACKSMITH;
-    jobs_lookup["BbJb"] = JOB_BOOBJOB;
-    jobs_lookup["BRS"] = JOB_BREASTREDUCTION;
-    jobs_lookup["Brwr"] = JOB_BREWER;
-    jobs_lookup["BStp"] = JOB_BROTHELSTRIPPER;
-    jobs_lookup["Bchr"] = JOB_BUTCHER;
-    jobs_lookup["CM"] = JOB_CAMERAMAGE;
-    jobs_lookup["CRnc"] = JOB_CATACOMBRANCHER;
-    jobs_lookup["CMgr"] = JOB_CENTREMANAGER;
-    jobs_lookup["TOff"] = JOB_CENTREREST;
-    jobs_lookup["Crmn"] = JOB_CHAIRMAN;
-    jobs_lookup["CGrd"] = JOB_CITYGUARD;
-    jobs_lookup["GKpr"] = JOB_CLEANARENA;
-    jobs_lookup["ClnC"] = JOB_CLEANCENTRE;
-    jobs_lookup["ClnH"] = JOB_CLEANHOUSE;
-    jobs_lookup["Cln"] = JOB_CLEANING;
-    jobs_lookup["TOff"] = JOB_CLINICREST;
-    jobs_lookup["Cblr"] = JOB_COBBLER;
-    jobs_lookup["CmSr"] = JOB_COMUNITYSERVICE;
-    jobs_lookup["CosS"] = JOB_COSMETICSURGERY;
-    jobs_lookup["Cnsl"] = JOB_COUNSELOR;
-    jobs_lookup["CP"] = JOB_CRYSTALPURIFIER;
-    jobs_lookup["Cure"] = JOB_CUREDISEASES;
-    jobs_lookup["CS"] = JOB_CUSTOMERSERVICE;
-    jobs_lookup["Dlr"] = JOB_DEALER;
-    jobs_lookup["Dir"] = JOB_DIRECTOR;
-    jobs_lookup["Dtre"] = JOB_DOCTORE;
-    jobs_lookup["Doc"] = JOB_DOCTOR;
-    jobs_lookup["Entn"] = JOB_ENTERTAINMENT;
-    jobs_lookup["Scrt"] = JOB_ESCORT;
-    jobs_lookup["ExC"] = JOB_EXPLORECATACOMBS;
-    jobs_lookup["EThr"] = JOB_EXTHERAPY;
-    jobs_lookup["FLft"] = JOB_FACELIFT;
-    jobs_lookup["FOEx"] = JOB_FAKEORGASM;
-    jobs_lookup["Frmr"] = JOB_FARMER;
-    jobs_lookup["FHnd"] = JOB_FARMHAND;
-    jobs_lookup["FMgr"] = JOB_FARMMANGER;
-    jobs_lookup["TOff"] = JOB_FARMREST;
-    jobs_lookup["Feed"] = JOB_FEEDPOOR;
-    jobs_lookup["FrtT"] = JOB_FERTILITY;
-    jobs_lookup["Cage"] = JOB_FIGHTARENAGIRLS;
-    jobs_lookup["FiBs"] = JOB_FIGHTBEASTS;
-    jobs_lookup["CT"] = JOB_FIGHTTRAIN;
-    jobs_lookup["FAct"] = JOB_FILMACTION;
-    jobs_lookup["FAnl"] = JOB_FILMANAL;
-    jobs_lookup["FBst"] = JOB_FILMBEAST;
-    jobs_lookup["FBnd"] = JOB_FILMBONDAGE;
-    jobs_lookup["FBuk"] = JOB_FILMBUKKAKE;
-    jobs_lookup["FChf"] = JOB_FILMCHEF;
-    jobs_lookup["FFac"] = JOB_FILMFACEFUCK;
-    jobs_lookup["FFJ"] = JOB_FILMFOOTJOB;
-    jobs_lookup["TOff"] = JOB_FILMFREETIME;
-    jobs_lookup["FGrp"] = JOB_FILMGROUP;
-    jobs_lookup["FHJ"] = JOB_FILMHANDJOB;
-    jobs_lookup["FLes"] = JOB_FILMLESBIAN;
-    jobs_lookup["FMst"] = JOB_FILMMAST;
-    jobs_lookup["FMus"] = JOB_FILMMUSIC;
-    jobs_lookup["FOrl"] = JOB_FILMORAL;
-    jobs_lookup["FTor"] = JOB_FILMPUBLICBDSM;
-    jobs_lookup["FRnd"] = JOB_FILMRANDOM;
-    jobs_lookup["FSex"] = JOB_FILMSEX;
-    jobs_lookup["FStp"] = JOB_FILMSTRIP;
-    jobs_lookup["FTea"] = JOB_FILMTEASE;
-    jobs_lookup["FTit"] = JOB_FILMTITTY;
-    jobs_lookup["Fluf"] = JOB_FLUFFER;
-    jobs_lookup["Grdn"] = JOB_GARDENER;
-    jobs_lookup["Abrt"] = JOB_GETABORT;
-    jobs_lookup["Heal"] = JOB_GETHEALING;
-    jobs_lookup["Repr"] = JOB_GETREPAIRS;
-    jobs_lookup["HGrl"] = JOB_HEADGIRL;
-    jobs_lookup["Hcok"] = JOB_HOUSECOOK;
-    jobs_lookup["Hpet"] = JOB_HOUSEPET;
-    jobs_lookup["TOff"] = JOB_HOUSEREST;
-    jobs_lookup["Dngn"] = JOB_INDUNGEON;
-    jobs_lookup["Ntrn"] = JOB_INTERN;
-    jobs_lookup["Jntr"] = JOB_JANITOR;
-    jobs_lookup["Jwlr"] = JOB_JEWELER;
-    jobs_lookup["Lipo"] = JOB_LIPO;
-    jobs_lookup["MkIt"] = JOB_MAKEITEM;
-    jobs_lookup["MkPt"] = JOB_MAKEPOTIONS;
-    jobs_lookup["Mrkt"] = JOB_MARKETER;
-    jobs_lookup["Msus"] = JOB_MASSEUSE;
-    jobs_lookup["Mtrn"] = JOB_MATRON;
-    jobs_lookup["Mech"] = JOB_MECHANIC;
-    jobs_lookup["Mlkr"] = JOB_MILKER;
-    jobs_lookup["Mlkd"] = JOB_MILK;
-    jobs_lookup["Nurs"] = JOB_NURSE;
-    jobs_lookup["Peep"] = JOB_PEEP;
-    jobs_lookup["BdWm"] = JOB_PERSONALBEDWARMER;
-    jobs_lookup["PTrn"] = JOB_PERSONALTRAINING;
-    jobs_lookup["Pno"] = JOB_PIANO;
-    jobs_lookup["Prmt"] = JOB_PROMOTER;
-    jobs_lookup["Rncr"] = JOB_RANCHER;
-    jobs_lookup["Rcrt"] = JOB_RECRUITER;
-    jobs_lookup["Rehb"] = JOB_REHAB;
-    jobs_lookup["Rsrc"] = JOB_RESEARCH;
-    jobs_lookup["TOff"] = JOB_RESTING;
-    jobs_lookup["RunA"] = JOB_RUNAWAY;
-    jobs_lookup["Sec"] = JOB_SECURITY;
-    jobs_lookup["SHrd"] = JOB_SHEPHERD;
-    jobs_lookup["Sngr"] = JOB_SINGER;
-    jobs_lookup["SBmd"] = JOB_SLEAZYBARMAID;
-    jobs_lookup["SWtr"] = JOB_SLEAZYWAITRESS;
-    jobs_lookup["SOBi"] = JOB_SO_BISEXUAL;
-    jobs_lookup["SOLe"] = JOB_SO_LESBIAN;
-    jobs_lookup["SOSt"] = JOB_SO_STRAIGHT;
-    jobs_lookup["StgH"] = JOB_STAGEHAND;
-    jobs_lookup["Talr"] = JOB_TAILOR;
-    jobs_lookup["Thrp"] = JOB_THERAPY;
-    jobs_lookup["Trtr"] = JOB_TORTURER;
-    jobs_lookup["Prtc"] = JOB_TRAINING;
-    jobs_lookup["TTid"] = JOB_TUBESTIED;
-    jobs_lookup["VagR"] = JOB_VAGINAREJUV;
-    jobs_lookup["Vet"] = JOB_VETERINARIAN;
-    jobs_lookup["Wtrs"] = JOB_WAITRESS;
-    jobs_lookup["BWhr"] = JOB_WHOREBROTHEL;
-    jobs_lookup["HWhr"] = JOB_WHOREGAMBHALL;
-    jobs_lookup["StWr"] = JOB_WHORESTREETS;
-    jobs_lookup["XXXE"] = JOB_XXXENTERTAINMENT;
-    jobs_lookup["255"] = 255;
-}
-
-JOBS sGirl::lookup_jobs_code(std::string s)
-{
-    if (!m_maps_setup)    // only need to do this once
-        setup_maps();
-
-    // be useful to be able to log unrecognised type names here
-    if (jobs_lookup.find(s) == jobs_lookup.end())
-    {
-        // `J` added check for missing jobs_lookup
-        for (int i = 0; i < NUM_JOBS; i++)
-        {
-            if (g_Game->job_manager().JobData[i].brief == s || g_Game->job_manager().JobData[i].name == s)
-                return static_cast<JOBS>(i);
-        }
-        // if still not found, send original error message
-        g_LogFile.log(ELogLevel::ERROR,  "[sGirl::jobs_enjoy_code] Error: unknown Job: ", s);
-        return static_cast<JOBS>(-1);
-    }
-    return static_cast<JOBS>(jobs_lookup[s]);
-}
-
-// END MOD
-
 
 bool sGirl::equip(const sInventoryItem* item, bool force) {
     if (force || can_equip(item))
@@ -659,12 +484,12 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
     pGirl->QueryIntAttribute("HousePercent", &m_HousePercent);
 
     // `J` changeing jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
-    std::string tempst = pGirl->Attribute("DayJob");            m_DayJob = lookup_jobs_code(tempst);
-    tempst = pGirl->Attribute("NightJob");                m_NightJob = lookup_jobs_code(tempst);
-    tempst = pGirl->Attribute("PrevDayJob");            m_PrevDayJob = lookup_jobs_code(tempst);
-    tempst = pGirl->Attribute("PrevNightJob");            m_PrevNightJob = lookup_jobs_code(tempst);
-    tempst = pGirl->Attribute("YesterDayJob");            m_YesterDayJob = lookup_jobs_code(tempst);
-    tempst = pGirl->Attribute("YesterNightJob");        m_YesterNightJob = lookup_jobs_code(tempst);
+    std::string tempst = pGirl->Attribute("DayJob");            m_DayJob = get_job_id(tempst);
+    tempst = pGirl->Attribute("NightJob");                m_NightJob = get_job_id(tempst);
+    tempst = pGirl->Attribute("PrevDayJob");            m_PrevDayJob = get_job_id(tempst);
+    tempst = pGirl->Attribute("PrevNightJob");            m_PrevNightJob = get_job_id(tempst);
+    tempst = pGirl->Attribute("YesterDayJob");            m_YesterDayJob = get_job_id(tempst);
+    tempst = pGirl->Attribute("YesterNightJob");        m_YesterNightJob = get_job_id(tempst);
 
     if (m_YesterDayJob < 0)        m_YesterDayJob = JOB_UNSET;
     if (m_YesterNightJob < 0)    m_YesterNightJob = JOB_UNSET;
@@ -753,21 +578,21 @@ tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
     // `J` changed jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
     // save day/night jobs
     if (m_DayJob < 0 || m_DayJob > NUM_JOBS) elGirl.SetAttribute("DayJob", "255");
-    else elGirl.SetAttribute("DayJob", g_Game->job_manager().JobData[m_DayJob].brief.c_str());
+    else elGirl.SetAttribute("DayJob", g_Game->job_manager().get_job_name(m_DayJob).c_str());
     if (m_NightJob < 0 || m_NightJob > NUM_JOBS) elGirl.SetAttribute("NightJob", "255");
-    else elGirl.SetAttribute("NightJob", g_Game->job_manager().JobData[m_NightJob].brief.c_str());
+    else elGirl.SetAttribute("NightJob", g_Game->job_manager().get_job_name(m_NightJob).c_str());
 
     // save prev day/night jobs
     if (m_PrevDayJob < 0 || m_PrevDayJob > NUM_JOBS) elGirl.SetAttribute("PrevDayJob", "255");
-    else elGirl.SetAttribute("PrevDayJob", g_Game->job_manager().JobData[m_PrevDayJob].brief.c_str());
+    else elGirl.SetAttribute("PrevDayJob", g_Game->job_manager().get_job_name(m_PrevDayJob).c_str());
     if (m_PrevNightJob < 0 || m_PrevNightJob > NUM_JOBS) elGirl.SetAttribute("PrevNightJob", "255");
-    else elGirl.SetAttribute("PrevNightJob", g_Game->job_manager().JobData[m_PrevNightJob].brief.c_str());
+    else elGirl.SetAttribute("PrevNightJob", g_Game->job_manager().get_job_name(m_PrevNightJob).c_str());
 
     // save prev day/night jobs
     if (m_YesterDayJob < 0 || m_YesterDayJob > NUM_JOBS) elGirl.SetAttribute("YesterDayJob", "255");
-    else elGirl.SetAttribute("YesterDayJob", g_Game->job_manager().JobData[m_YesterDayJob].brief.c_str());
+    else elGirl.SetAttribute("YesterDayJob", g_Game->job_manager().get_job_name(m_YesterDayJob).c_str());
     if (m_YesterNightJob < 0 || m_YesterNightJob > NUM_JOBS) elGirl.SetAttribute("YesterNightJob", "255");
-    else elGirl.SetAttribute("YesterNightJob", g_Game->job_manager().JobData[m_YesterNightJob].brief.c_str());
+    else elGirl.SetAttribute("YesterNightJob", g_Game->job_manager().get_job_name(m_YesterNightJob).c_str());
 
     elGirl.SetAttribute("RunAway", m_RunAway);                    // save runnayway vale
     elGirl.SetAttribute("Spotted", m_Spotted);                    // save spotted
@@ -1075,14 +900,15 @@ void sGirl::OutputGirlDetailString(std::string& Data, const std::string& detailN
         // 'J' Added for .06.03.01
     else if (detailName == "DayJobShort" || detailName == "NightJobShort")
     {
-        ss << g_Game->job_manager().JobData[(detailName == "DayJobShort" ? m_DayJob : m_NightJob)].brief;
+        ss << g_Game->job_manager().get_job_brief(detailName == "DayJobShort" ? m_DayJob : m_NightJob);
     }
 
         // 'J' Girl Table job text
     else if (detailName == "DayJob" || detailName == "NightJob")
     {
         bool DN_Day = detailName == "NightJob";
-        int DN_Job = get_job(DN_Day);
+        JOBS DN_Job = get_job(DN_Day);
+        const std::string& job_name = g_Game->job_manager().get_job_name(DN_Job);
 
         // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
         if (DN_Job >= NUM_JOBS)
@@ -1091,39 +917,39 @@ void sGirl::OutputGirlDetailString(std::string& Data, const std::string& detailN
         }
         else if (DN_Job == JOB_FAKEORGASM || DN_Job == JOB_SO_STRAIGHT || DN_Job == JOB_SO_BISEXUAL || DN_Job == JOB_SO_LESBIAN)
         {
-            ss << g_Game->job_manager().JobData[DN_Job].name << " (" << m_WorkingDay << "%)";
+            ss << job_name << " (" << m_WorkingDay << "%)";
         }
         else if (DN_Job == JOB_CUREDISEASES)
         {
             if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name << " (" << m_WorkingDay << "%)";
+                ss << job_name << " (" << m_WorkingDay << "%)";
             }
             else
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name << " (" << m_WorkingDay << "%) **";
+                ss << job_name << " (" << m_WorkingDay << "%) **";
             }
         }
         else if (DN_Job == JOB_REHAB || DN_Job == JOB_ANGER || DN_Job == JOB_EXTHERAPY || DN_Job == JOB_THERAPY)
         {
             if (m_Building->num_girls_on_job(JOB_COUNSELOR, DN_Day) > 0)
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name << " (" << 3 - m_WorkingDay << ")";
+                ss << job_name << " (" << 3 - m_WorkingDay << ")";
             }
             else
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name << " (?)***";
+                ss << job_name << " (?)***";
             }
         }
         else if (DN_Job == JOB_GETHEALING)
         {
             if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name;
+                ss << job_name;
             }
             else
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name << " ***";
+                ss << job_name << " ***";
             }
         }
         else if (DN_Job == JOB_GETREPAIRS)
@@ -1131,15 +957,15 @@ void sGirl::OutputGirlDetailString(std::string& Data, const std::string& detailN
             if (m_Building->num_girls_on_job(JOB_MECHANIC, DN_Day) > 0 &&
                 (has_active_trait("Construct") || has_active_trait("Half-Construct")))
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name;
+                ss << job_name;
             }
             else if (has_active_trait("Construct"))
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name << " ****";
+                ss << job_name << " ****";
             }
             else
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name << " !!";
+                ss << job_name << " !!";
             }
         }
         else if (DN_Job == JOB_GETABORT)
@@ -1151,11 +977,11 @@ void sGirl::OutputGirlDetailString(std::string& Data, const std::string& detailN
             }
             if (m_Building->num_girls_on_job( JOB_DOCTOR, DN_Day) > 0)
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name << " (" << wdays << ")*";
+                ss << job_name << " (" << wdays << ")*";
             }
             else
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name << " (?)***";
+                ss << job_name << " (?)***";
             }
         }
         else if (cJobManager::is_Surgery_Job(DN_Job))
@@ -1169,25 +995,25 @@ void sGirl::OutputGirlDetailString(std::string& Data, const std::string& detailN
             }
             if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name << " (" << wdays << ")*";
+                ss << job_name << " (" << wdays << ")*";
             }
             else
             {
-                ss << g_Game->job_manager().JobData[DN_Job].name << " (?)***";
+                ss << job_name << " (?)***";
             }
         }
         else if (is_Actress_Job(DN_Job) && CrewNeeded(*m_Building))
         {
-            ss << g_Game->job_manager().JobData[DN_Job].name << " **";
+            ss << job_name << " **";
         }
         else if (is_resting() && !was_resting() && m_PrevDayJob != 255 && m_PrevNightJob != 255)
         {
-            ss << g_Game->job_manager().JobData[DN_Job].name;
-            ss << " (" << g_Game->job_manager().JobData[(DN_Day == 0 ? m_PrevDayJob : m_PrevNightJob)].brief << ")";
+            ss << job_name;
+            ss << " (" << g_Game->job_manager().get_job_brief(DN_Day == 0 ? m_PrevDayJob : m_PrevNightJob) << ")";
         }
         else
         {
-            ss << g_Game->job_manager().JobData[DN_Job].name;
+            ss << job_name;
         }
         if (interrupted)
         {

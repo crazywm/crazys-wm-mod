@@ -54,7 +54,7 @@ struct sMovieScene
     string m_Director;
     string m_CM;
     string m_CP;
-    int m_Job;
+    JOBS m_Job;
     int m_Init_Quality;
     int m_Quality;
     int m_Promo_Quality;
@@ -83,8 +83,8 @@ struct sMovieStudio : public IBuilding
     std::shared_ptr<sGirl> meet_girl() const override;
     std::string meet_no_luck() const override;
 
-    int AddScene(sGirl& girl, int Job, int Bonus, int jobType, const char* scene_name);
-    void LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks, int m_MovieSceneNum, string m_CM = "", string m_CP = "");
+    int AddScene(sGirl& girl, JOBS Job, int Bonus, int jobType, const char* scene_name);
+    void LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, JOBS m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks, int m_MovieSceneNum, string m_CM = "", string m_CP = "");
     void NewMovie(string Name, string Director, string Cast, string Crew, int Init_Quality, int Quality,
                   int Promo_Quality, int Money_Made, int RunWeeks);
     void EndMovie();

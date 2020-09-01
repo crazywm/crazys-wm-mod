@@ -1,0 +1,18 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FLes">
+    <Description>
+        She will do a lesbian scene.
+    </Description>
+    <Performance Modifier="work.farmer">
+        <Primary Skill="Performance" />
+        <Secondary Skill="Lesbian"/>
+    </Performance>
+    <Gains XP="10" Skill="3">
+        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+            She has performed in enough sex scenes that she has become a well known Porn Star.
+        </GainTrait>
+        <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
+            She has become quite the Faker.
+        </GainTrait>
+    </Gains>
+</Job>
