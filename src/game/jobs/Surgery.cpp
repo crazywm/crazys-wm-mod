@@ -41,6 +41,7 @@ struct SurgeryJob : public IGenericJob {
 public:
     explicit SurgeryJob(JOBS id, const char* short_name, sSurgeryData data) : IGenericJob(id), m_SurgeryData(data) {
         m_Info.ShortName = short_name;
+        m_Info.FullTime = true;
     }
 
     bool DoWork(sGirl& girl, bool is_night) final;

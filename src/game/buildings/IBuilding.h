@@ -145,19 +145,19 @@ public:
     // helper functions
     void BeginWeek();
     void EndWeek();
-    void BeginShift();
-    void EndShift(const std::string& matron_title, bool Day0Night1, bool has_matron);
+    void BeginShift(bool is_night);
+    void EndShift(bool is_night);
 
     /// Looks for a matron and decides whether she works.
     /// Returns true if the matron for this shift does work.
-    bool SetupMatron(bool is_night, const std::string& title);
+    bool SetupMatron(bool is_night);
 
     virtual void Update();
     virtual void UpdateGirls(bool is_night) = 0;
 
 
     /// Handles all resting girls.
-    void HandleRestingGirls(bool is_night, bool has_matron, const char * matron_name);
+    void HandleRestingGirls(bool is_night);
 
     /// This function is called for every resting girl that is not on maternity leave. If it returns
     /// true, processing for this girl is assuemd to be finished.
@@ -181,6 +181,9 @@ protected:
     std::string m_Name;
     std::unique_ptr<cGirlPool> m_Girls;
 
+    virtual void GirlBeginShift(sGirl& girl, bool is_night);
+
+    sGirl* get_active_matron() { return m_ActiveMatron; }
 private:
     std::unordered_set<SKILLS> m_ForbiddenSexType;
 
@@ -193,6 +196,8 @@ private:
     // meeting new girls
     virtual std::shared_ptr<sGirl> meet_girl() const;
     virtual std::string meet_no_luck() const;
+
+    sGirl* m_ActiveMatron;
 };
 
 // predicates

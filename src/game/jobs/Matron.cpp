@@ -32,6 +32,8 @@ public:
         IGenericJob(job), m_WorkerTitle(WorkerTitle) {
         m_Info.Description = description;
         m_Info.ShortName = short_name;
+        m_Info.FullTime = true;
+        m_Info.FreeOnly = true;
     }
     double GetPerformance(const sGirl& girl, bool estimate) const override;
     bool DoWork(sGirl& girl, bool is_night) override;

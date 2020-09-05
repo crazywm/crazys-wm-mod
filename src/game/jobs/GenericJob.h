@@ -51,6 +51,15 @@ struct sJobInfo {
     std::string Name;
     std::string ShortName;
     std::string Description;
+
+    bool FullTime = false;
+    bool FreeOnly = false;
+};
+
+struct sJobValidResult {
+    bool IsValid;
+    std::string Reason;
+    operator bool() const { return IsValid; }
 };
 
 class IGenericJob {
@@ -59,11 +68,14 @@ public:
     virtual ~IGenericJob() noexcept = default;
 
     // queries
-    const sJobInfo& GetInfo() const { return m_Info; }
+    const sJobInfo& get_info() const { return m_Info; }
     JOBS job() const { return m_Info.JobId; }
 
     /// Gets an estimate or actual value of how well the girl performs at this job
     virtual double GetPerformance(const sGirl& girl, bool estimate) const = 0;
+
+    /// Checks whether the given girl can do this job.
+    virtual sJobValidResult is_job_valid(const sGirl& girl) const;
 
     /// Lets the girl do the job
     bool Work(sGirl& girl, bool is_night, cRng& rng);

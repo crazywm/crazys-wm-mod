@@ -49,6 +49,14 @@ int IGenericJob::uniform(int min, int max) const {
 
 IGenericJob::IGenericJob(JOBS j) : m_Info{j, get_job_name(j)} {}
 
+sJobValidResult IGenericJob::is_job_valid(const sGirl& girl) const {
+    if(m_Info.FreeOnly && girl.is_slave()) {
+        return {false, "Slaves cannot work as " + m_Info.Name + "!"};
+    }
+
+    return {true, {}};
+};
+
 class cJobWrapper: public IGenericJob {
 public:
     cJobWrapper(JOBS j, std::function<bool(sGirl&, bool, cRng&)> w, std::function<double(const sGirl&, bool)> p,
@@ -57,6 +65,9 @@ public:
         m_Info.ShortName = std::move(brief);
         m_Info.Description = std::move(desc);
     }
+
+    cJobWrapper& full_time() { m_Info.FullTime = true; return *this; } ;
+    cJobWrapper& free_only() { m_Info.FreeOnly = true; return *this; } ;
 private:
     double GetPerformance(const sGirl& girl, bool estimate) const override { return m_Perf(girl, estimate); }
     bool DoWork(sGirl& girl, bool is_night) override { return m_Work(girl, is_night, rng()); }
@@ -162,8 +173,15 @@ DECL_JOB(SOBisexual);
 DECL_JOB(SOLesbian);
 DECL_JOB(FakeOrgasm);
 
-#define REGISTER_JOB_MANUAL(J, Wf, Pf, Brief, Desc) mgr.register_job(std::make_unique<cJobWrapper>(J, Work##Wf, JP_##Pf, Brief, Desc))
+#define REGISTER_JOB_MANUAL(J, Wf, Pf, Brief, Desc)                                     \
+    [&]() -> auto& {                                                                    \
+    auto new_job = std::make_unique<cJobWrapper>(J, Work##Wf, JP_##Pf, Brief, Desc);    \
+    auto ptr = new_job.get();                                                           \
+    mgr.register_job(std::move(new_job));                                               \
+    return *ptr;                                                                        \
+    }()
 #define REGISTER_JOB(J, Fn, Brief, Desc) REGISTER_JOB_MANUAL(J, Fn, Fn, Brief, Desc)
+
 
 void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_RESTING, Freetime, "TOff", "She will take some time off, maybe do some shopping or walk around town. If the girl is unhappy she may try to escape.");
@@ -172,7 +190,7 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_SECURITY, Security, "Sec", "She will patrol the building, stopping mis-deeds.");
     REGISTER_JOB(JOB_ADVERTISING, Advertising, "Adv", "She will advertise the building's features in the city.");
     REGISTER_JOB(JOB_CUSTOMERSERVICE, CustService, "CS", "She will look after customer needs.");
-    REGISTER_JOB(JOB_TORTURER, Torturer, "Trtr", "She will torture the prisoners in addition to your tortures, she will also look after them to ensure they don't die. (max 1 for all brothels)");
+    REGISTER_JOB(JOB_TORTURER, Torturer, "Trtr", "She will torture the prisoners in addition to your tortures, she will also look after them to ensure they don't die. (max 1 for all brothels)").full_time().free_only();
     REGISTER_JOB(JOB_EXPLORECATACOMBS, ExploreCatacombs, "ExC", "She will explore the catacombs looking for treasure and capturing monsters and monster girls. Needless to say, this is a dangerous job.");
     REGISTER_JOB(JOB_BEASTCARER, BeastCare, "BstC", "She will look after the needs of the beasts in your Brothel.");
 
@@ -196,7 +214,7 @@ void RegisterWrappedJobs(cJobManager& mgr) {
 
 // - Movie Studio - Crew
     REGISTER_JOB(JOB_FILMFREETIME, Freetime, "TOff", "She takes time off resting and recovering.");
-    REGISTER_JOB(JOB_DIRECTOR, FilmDirector, "Dir", "She directs the filming, and keeps the girls in line. (max 1)");
+    REGISTER_JOB(JOB_DIRECTOR, FilmDirector, "Dir", "She directs the filming, and keeps the girls in line. (max 1)").free_only();
     REGISTER_JOB(JOB_PROMOTER, FilmPromoter, "Prmt", "She advertises the movies. (max 1)");
     REGISTER_JOB(JOB_CAMERAMAGE, CameraMage, "CM", "She will film the scenes. (requires at least 1 to create a scene)");
     REGISTER_JOB(JOB_CRYSTALPURIFIER, CrystalPurifier, "CP",  "She will clean up the filmed scenes. (requires at least 1 to create a scene)");
@@ -213,7 +231,7 @@ void RegisterWrappedJobs(cJobManager& mgr) {
 
 // - Arena - Staff
     REGISTER_JOB(JOB_ARENAREST, Freetime, "TOff", "She will rest.");
-    REGISTER_JOB(JOB_CITYGUARD, CityGuard, "CGrd", "She will help keep Crossgate safe.");
+    REGISTER_JOB(JOB_CITYGUARD, CityGuard, "CGrd", "She will help keep Crossgate safe.").free_only();
     REGISTER_JOB_MANUAL(JOB_CLEANARENA, CleanArena, Cleaning, "GKpr", "She will clean the arena.");
 
 //Comunity Centre
@@ -223,19 +241,19 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB_MANUAL(JOB_CLEANCENTRE, CleanCentre, Cleaning, "ClnC", "She will clean the centre.");
 
 // Counseling Centre
-    REGISTER_JOB(JOB_COUNSELOR, Counselor, "Cnsl", "She will help girls get over their addictions and problems.");
+    REGISTER_JOB(JOB_COUNSELOR, Counselor, "Cnsl", "She will help girls get over their addictions and problems.").full_time().free_only();
 
 // - Clinic - Surgery
-    REGISTER_JOB(JOB_GETHEALING, Healing, "Heal", "She will have her wounds attended.");
-    REGISTER_JOB(JOB_GETREPAIRS, RepairShop, "Repr", "Construct girls will be quickly repaired here.");
-    REGISTER_JOB(JOB_CUREDISEASES, CureDiseases, "Cure", "She will try to get her diseases cured.");
-    REGISTER_JOB(JOB_GETABORT, GetAbort, "Abrt", "She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)");
+    REGISTER_JOB(JOB_GETHEALING, Healing, "Heal", "She will have her wounds attended.").full_time();
+    REGISTER_JOB(JOB_GETREPAIRS, RepairShop, "Repr", "Construct girls will be quickly repaired here.").full_time();
+    REGISTER_JOB(JOB_CUREDISEASES, CureDiseases, "Cure", "She will try to get her diseases cured.").full_time();
+    REGISTER_JOB(JOB_GETABORT, GetAbort, "Abrt", "She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)").full_time();
 
 // - Clinic - Staff
     REGISTER_JOB(JOB_CLINICREST, Freetime, "TOff", "She will rest");
-    REGISTER_JOB(JOB_DOCTOR, Doctor, "Doc", "She will become a doctor. Doctors earn extra cash from treating locals. (requires at least 1 to perform surgeries)");
-    REGISTER_JOB(JOB_NURSE, Nurse, "Nurs", "Will help the doctor and heal sick people.");
-    REGISTER_JOB(JOB_MECHANIC, Mechanic, "Mech", "Will help the doctor and repair Constructs.");
+    REGISTER_JOB(JOB_DOCTOR, Doctor, "Doc", "She will become a doctor. Doctors earn extra cash from treating locals. (requires at least 1 to perform surgeries)").full_time().free_only();
+    REGISTER_JOB(JOB_NURSE, Nurse, "Nurs", "Will help the doctor and heal sick people.").full_time();
+    REGISTER_JOB(JOB_MECHANIC, Mechanic, "Mech", "Will help the doctor and repair Constructs.").full_time();
     REGISTER_JOB(JOB_INTERN, Intern, "Ntrn", "Will train in how to be a nurse.");
     REGISTER_JOB_MANUAL(JOB_JANITOR, Janitor, Cleaning, "Jntr", "She will clean the clinic");
 
@@ -245,17 +263,17 @@ void RegisterWrappedJobs(cJobManager& mgr) {
 
 // house
     REGISTER_JOB(JOB_HOUSEREST, Freetime, "TOff", "She takes time off resting and recovering.");
-    REGISTER_JOB(JOB_RECRUITER, Recruiter, "Rcrt", "She will go out and try and recruit girls for you.");
+    REGISTER_JOB(JOB_RECRUITER, Recruiter, "Rcrt", "She will go out and try and recruit girls for you.").full_time();
     REGISTER_JOB(JOB_PERSONALTRAINING, PersonalTraining, "PTrn", "You will oversee her training personally.");
     REGISTER_JOB(JOB_PERSONALBEDWARMER, PersonalBedWarmer, "BdWm", "She will stay in your bed at night with you.");
     //REGISTER_JOB(JOB_HOUSEVAC, HouseVacation);
     REGISTER_JOB_MANUAL(JOB_CLEANHOUSE, CleanHouse, Cleaning, "ClnH", "She will clean your house.");
     REGISTER_JOB(JOB_HOUSECOOK, HouseCook, "Hcok", "She will cook for your house.");
-    REGISTER_JOB(JOB_HOUSEPET, HousePet, "Hpet", "She will be trained to become the house pet.");
-    REGISTER_JOB(JOB_SO_STRAIGHT, SOStraight, "SOSt", "You will make sure she only likes having sex with men.");
-    REGISTER_JOB(JOB_SO_BISEXUAL, SOBisexual, "SOBi", "You will make sure she likes having sex with both men and women.");
-    REGISTER_JOB(JOB_SO_LESBIAN, SOLesbian, "SOLe", "You will make sure she only likes having sex with women.");
-    REGISTER_JOB(JOB_FAKEORGASM, FakeOrgasm, "FOEx", "You will teach her how to fake her orgasms.");
+    REGISTER_JOB(JOB_HOUSEPET, HousePet, "Hpet", "She will be trained to become the house pet.").full_time();
+    REGISTER_JOB(JOB_SO_STRAIGHT, SOStraight, "SOSt", "You will make sure she only likes having sex with men.").full_time();
+    REGISTER_JOB(JOB_SO_BISEXUAL, SOBisexual, "SOBi", "You will make sure she likes having sex with both men and women.").full_time();
+    REGISTER_JOB(JOB_SO_LESBIAN, SOLesbian, "SOLe", "You will make sure she only likes having sex with women.").full_time();
+    REGISTER_JOB(JOB_FAKEORGASM, FakeOrgasm, "FOEx", "You will teach her how to fake her orgasms.").full_time();
 }
 
 double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {

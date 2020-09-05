@@ -51,9 +51,10 @@ struct sTherapyData {
 
 class TherapyJob : public IGenericJob {
 public:
-    explicit TherapyJob(JOBS id, const char* short_name, const char* desciption, sTherapyData data) : IGenericJob(id), m_TherapyData(data) {
+    explicit TherapyJob(JOBS id, const char* short_name, const char* description, sTherapyData data) : IGenericJob(id), m_TherapyData(data) {
         m_Info.ShortName = short_name;
-        m_Info.Description = desciption;
+        m_Info.Description = description;
+        m_Info.FullTime = true;
     }
 
     bool DoWork(sGirl& girl, bool is_night) final;

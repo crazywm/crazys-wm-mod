@@ -49,37 +49,7 @@ void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
 
     int numDoctors = 0;
 
-    //////////////////////////////////////////////////////
-    //  Handle the start of shift stuff for all girls.  //
-    //////////////////////////////////////////////////////
-    m_Girls->apply([&](auto& current){
-        if (current.is_dead())        // skip dead girls
-        {
-            return;
-        }
-        auto sum = EVENT_SUMMARY;
-        ss.str("");
-
-        cGirls::UseItems(current);                // Girl uses items she has
-        cGirls::CalculateGirlType(current);        // update the fetish traits
-        cGirls::UpdateAskPrice(current, true);    // Calculate the girls asking price
-
-        if (current.has_active_trait("AIDS") && (
-                is_in((JOBS)current.m_DayJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE}) ||
-                is_in((JOBS)current.m_NightJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE})))
-        {
-            ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
-            current.m_DayJob = current.m_NightJob = JOB_CLINICREST;
-            sum = EVENT_WARNING;
-        }
-        if (ss.str().length() > 0) current.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-    });
-
-    ////////////////////////////////////////////////////////
-    //  Process Matron first incase she refuses to work.  //
-    ////////////////////////////////////////////////////////
-    bool matron = SetupMatron(is_night, "Chairman");
-    HandleRestingGirls(is_night, matron, "Chairman");
+    BeginShift(is_night);
 
     ////////////////////////////////////////////////////////
     //  JOB_DOCTOR needs to be checked before all others  //
@@ -125,7 +95,7 @@ void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
     ////////////////////////////////////////////////////////////////
     //  Interns and Nurses can be promoted to doctor if need be.  //
     ////////////////////////////////////////////////////////////////
-    if(matron)
+    if(get_active_matron())
     {
         if(numDoctors < 1)
             m_Girls->apply([&](sGirl& current){
@@ -175,7 +145,7 @@ void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
         g_Game->job_manager().do_job(current, is_night);
     });
 
-    EndShift("Chairman", is_night, matron);
+    EndShift(is_night);
 }
 
 void sClinic::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)
@@ -205,8 +175,8 @@ void sClinic::auto_assign_job(sGirl& target, std::stringstream& message, bool is
     {
         target.m_DayJob = target.m_NightJob = JOB_CUREDISEASES;
         std::vector<const char*> diseases;
-        if (target.has_active_trait("Herpes"))            diseases.emplace_back("Herpes");
-        if (target.has_active_trait("Chlamydia"))        diseases.emplace_back("Chlamydia");
+        if (target.has_active_trait("Herpes"))          diseases.emplace_back("Herpes");
+        if (target.has_active_trait("Chlamydia"))       diseases.emplace_back("Chlamydia");
         if (target.has_active_trait("Syphilis"))        diseases.emplace_back("Syphilis");
         if (target.has_active_trait("AIDS"))            diseases.emplace_back("AIDS");
         int numdiseases = diseases.size();
@@ -377,4 +347,17 @@ bool sClinic::promote_to_doctor(sGirl& current, JOBS job, bool is_night) {
         return true;
     }
     return false;
+}
+
+void sClinic::GirlBeginShift(sGirl& girl, bool is_night) {
+    IBuilding::GirlBeginShift(girl, is_night);
+
+    if (girl.has_active_trait("AIDS") && (
+            is_in((JOBS)girl.m_DayJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE}) ||
+            is_in((JOBS)girl.m_NightJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE})))
+    {
+        girl.m_DayJob = girl.m_NightJob = JOB_CLINICREST;
+        girl.AddMessage("Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.",
+                        IMGTYPE_PROFILE, EVENT_WARNING);
+    }
 }

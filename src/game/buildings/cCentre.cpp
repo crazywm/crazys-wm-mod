@@ -47,16 +47,8 @@ void sCentre::UpdateGirls(bool is_night)
 
     bool counselor = false;
 
-    //////////////////////////////////////////////////////
     //  Handle the start of shift stuff for all girls.  //
-    //////////////////////////////////////////////////////
-    BeginShift();
-    bool matron = SetupMatron(is_night, "Centre Manager");
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Now If there is a matron and she is not refusing to work, then she can delegate the girls in this building.  //
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    HandleRestingGirls(is_night, matron, "Centre Manager");
+    BeginShift(is_night);
 
     //////////////////////////////////////////////////////////
     //  JOB_COUNSELOR needs to be checked before all others //
@@ -86,7 +78,7 @@ void sCentre::UpdateGirls(bool is_night)
     /////////////////////////////////////////////////////////////////////////////////
     //  Anyone not in the Therapy Cantre can be assigned to counselor if need be.  //
     /////////////////////////////////////////////////////////////////////////////////
-    if(matron && Num_Patients(*this, is_night) > 0) {
+    if(get_active_matron() && Num_Patients(*this, is_night) > 0) {
         /////////////////////////////////////////////////////////////////////////////
         //  Anyone in the Therapy Cantre can be assigned to counselor if need be.  //
         //  Try them in order of who can better go without their therapy.          //
@@ -133,7 +125,7 @@ void sCentre::UpdateGirls(bool is_night)
         g_Game->job_manager().do_job(current, is_night);
     });
 
-    EndShift("Centre Manager", is_night, matron);
+    EndShift(is_night);
 }
 
 void sCentre::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)

@@ -46,39 +46,8 @@ void sFarm::UpdateGirls(bool is_night)        // Start_Building_Process_B
     //////////////////////////////////////////////////////
     //  Handle the start of shift stuff for all girls.  //
     //////////////////////////////////////////////////////
-    BeginShift();
-    bool matron = SetupMatron(is_night, "Farm Manager");
-    HandleRestingGirls(is_night, matron, "Farm Manager");
+    BeginShift(is_night);
 
-    ////////////////////////////////
-    //  Do All Jobs in the Farm.  //
-    ////////////////////////////////
-    /* `J` zzzzzz - Need to split up the jobs
-    Done - JOB_FARMREST, JOB_FARMMANGER
-    Do Last - JOB_MARKETER
-
-    JOB_FARMHAND
-    JOB_VETERINARIAN
-    JOB_RESEARCH
-
-    JOB_FARMER
-    JOB_GARDENER
-    JOB_SHEPHERD
-    JOB_RANCHER
-    JOB_CATACOMBRANCHER
-    JOB_BEASTCAPTURE
-    JOB_MILKER
-    JOB_MILK
-
-    JOB_BUTCHER
-    JOB_BAKER
-    JOB_BREWER
-    JOB_MAKEITEM
-    JOB_MAKEPOTIONS
-
-
-
-    //*/
     m_Girls->apply([&](sGirl& girl) {
         auto sw = girl.get_job(is_night);
         if (girl.is_dead() || sw == m_RestJob || sw == m_MatronJob || sw == JOB_MARKETER)
@@ -100,7 +69,7 @@ void sFarm::UpdateGirls(bool is_night)        // Start_Building_Process_B
         g_Game->job_manager().handle_simple_job(girl, is_night);
     });
 
-    EndShift("Farm Manager", is_night, matron);
+    EndShift(is_night);
 }
 
 void sFarm::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)

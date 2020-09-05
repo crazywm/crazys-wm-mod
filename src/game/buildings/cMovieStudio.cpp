@@ -66,12 +66,8 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
 
     bool camera = false, crystal = false;
 
-    //////////////////////////////////////////////////////
     //  Handle the start of shift stuff for all girls.  //
-    //////////////////////////////////////////////////////
-    BeginShift();
-    bool matron = SetupMatron(SHIFT_NIGHT, "Director");
-    HandleRestingGirls(is_night, matron, "Director");
+    BeginShift(is_night);
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Pre-Process Crew to make sure there is at least one camera mage and crystal purifier. //
@@ -88,7 +84,7 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
         if (current.disobey_check(ACTION_WORKMOVIE, (JOBS)current.m_NightJob))
         {
             // if there is a Director and a camera or crystal refuses to work the director will not be happy.
-            if (matron)
+            if (get_active_matron())
             {
                 int test = 0; 
                 auto sw = JOB_FILMRANDOM;
@@ -152,7 +148,7 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
     // If after the camera and crystal are processed, one of those jobs is vacant, try to have the Director fill it.  //
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     m_Girls->apply([&](sGirl& girl) {
-        if(!(matron && (!camera || !crystal)))
+        if(!(get_active_matron() && (!camera || !crystal)))
             return;
         // skip dead girls, the director and anyone resting (the director would have assigned them a new job already if they were able to work)
         if (girl.is_dead() || girl.m_NightJob == m_MatronJob || girl.m_NightJob == m_RestJob ||
@@ -183,7 +179,7 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
     });
 
     // last check, is there a crew to film?
-    bool readytofilm = (camera && crystal && matron);
+    bool readytofilm = (camera && crystal && get_active_matron());
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // If the filming can not procede even after trying to fill the jobs (or there is no Director to fill the jobs)  //
@@ -234,7 +230,7 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
     }
 
 
-    EndShift("Director", true, matron);
+    EndShift(is_night);
 }
 
 void sMovieStudio::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)

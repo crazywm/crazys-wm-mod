@@ -47,11 +47,7 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
     std::stringstream ss;
 
     //  Handle the start of shift stuff for all girls.  //
-    BeginShift();
-    bool matron = SetupMatron(is_night, "Doctore");
-
-    //  Now If there is a matron and she is not refusing to work, then she can delegate the girls in this building.  //
-    HandleRestingGirls(is_night, matron, "Doctore");
+    BeginShift(is_night);
 
     /////////////////////////////////////////////////////////////////
     //  All other Jobs in the Arena can be done at the same time.  //
@@ -125,7 +121,7 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
         if (ss.str().length() > 0) current.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
     });
 
-    EndShift("Doctore", is_night, matron);
+    EndShift(is_night);
 }
 
 void sArena::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)

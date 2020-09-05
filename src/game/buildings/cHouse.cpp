@@ -43,16 +43,9 @@ void sHouse::UpdateGirls(bool is_night)    // Start_Building_Process_B
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cHouse.cpp
     std::stringstream ss;
 
-    //////////////////////////////////////////////////////
-    //  Handle the start of shift stuff for all girls.  //
-    //////////////////////////////////////////////////////
-    BeginShift();
-    bool matron = SetupMatron(is_night, "Head Girl");
-    HandleRestingGirls(is_night, matron, "Head Girl");
+    BeginShift(is_night);
 
-    /////////////////////////////////////////////
     //  Do all Personal Bed Warmers together.  //
-    /////////////////////////////////////////////
     m_Girls->apply([&](auto& current) {
         auto sw = current.get_job(is_night);
         if (current.is_dead() || sw != JOB_PERSONALBEDWARMER)
@@ -85,7 +78,7 @@ void sHouse::UpdateGirls(bool is_night)    // Start_Building_Process_B
         g_Game->job_manager().handle_simple_job(current, is_night);
     });
 
-    EndShift("Head Girl", is_night, matron);
+    EndShift(is_night);
 }
 
 void sHouse::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)

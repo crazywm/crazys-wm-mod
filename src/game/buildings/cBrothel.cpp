@@ -101,6 +101,10 @@ void sBrothel::save_additional_xml(tinyxml2::XMLElement& root) const
 
 void sBrothel::UpdateGirls(bool is_night)
 {
+    g_Game->job_manager().do_advertising(*this, is_night);
+    g_Game->customers().GenerateCustomers(*this, is_night);
+    m_TotalCustomers += g_Game->GetNumCustomers();
+
     g_Game->job_manager().do_whorejobs(*this, is_night);
     g_Game->job_manager().do_custjobs(*this, is_night);
 
@@ -516,12 +520,7 @@ void sBrothel::Update()
     m_Happiness = m_MiscCustomers = m_TotalCustomers = 0;
     m_RejectCustomersRestrict = m_RejectCustomersDisease = 0;
 
-#pragma region //    Start of Turn Girl Setup    //
-
     BeginWeek();
-
-#pragma endregion
-#pragma region //    Day Shift            //
 
     // Moved to here so Security drops once per day instead of everytime a girl works security -PP
     m_SecurityLevel -= 10;
@@ -529,24 +528,13 @@ void sBrothel::Update()
     // Reducing it's power a lot.
     if (m_SecurityLevel <= 0) m_SecurityLevel = 0;     // crazy added
 
-    // Generate customers for the brothel for the day shift and update girls
-    g_Game->job_manager().do_advertising(*this, false);
-    g_Game->customers().GenerateCustomers(*this, false);
-    m_TotalCustomers += g_Game->GetNumCustomers();
 
+    // Generate customers for the brothel for the day shift and update girls
     UpdateGirls(false);
 
-#pragma endregion
-#pragma region //    Night Shift            //
-
     // update the girls and satisfy the customers for this brothel during the night
-    g_Game->job_manager().do_advertising(*this, true);
-    g_Game->customers().GenerateCustomers(*this, true);
-    m_TotalCustomers += g_Game->GetNumCustomers();
     UpdateGirls(true);
 
-
-#pragma endregion
 #pragma region //    Shift Summary            //
 
     // get the misc customers
