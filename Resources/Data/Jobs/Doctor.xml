@@ -1,0 +1,12 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Doc">
+    <Description>
+        She will become a doctor. Doctors earn extra cash from treating locals. (requires at least 1 to perform surgeries)
+    </Description>
+    <Performance Modifier="work.doctor">
+        <Primary Skill="Medicine"/>
+        <Secondary Stat="Intelligence" />
+    </Performance>
+    <Gains XP="10" Skill="3">
+    </Gains>
+</Job>

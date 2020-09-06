@@ -1,0 +1,14 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Jntr">
+    <Description>
+        She will clean the clinic.
+    </Description>
+    <Performance Modifier="work.cleaning">
+        <Primary Skill="Service" />
+        <Secondary Stat="Morality" />
+        <Secondary Stat="Obedience" />
+        <Secondary Stat="Agility" />
+    </Performance>
+    <Gains XP="0" Skill="0">
+    </Gains>
+</Job>

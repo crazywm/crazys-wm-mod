@@ -149,13 +149,6 @@ DECL_JOB(RepairShop);
 DECL_JOB(CureDiseases);
 DECL_JOB(GetAbort);
 
-// - Clinic - Staff
-DECL_JOB(Doctor);
-DECL_JOB(Nurse);
-DECL_JOB(Mechanic);
-DECL_JOB(Intern);
-bool WorkJanitor(sGirl& girl, bool Day0Night1, cRng& rng);
-
 // - Farm - Staff
 DECL_JOB(FarmHand);
 
@@ -251,11 +244,6 @@ void RegisterWrappedJobs(cJobManager& mgr) {
 
 // - Clinic - Staff
     REGISTER_JOB(JOB_CLINICREST, Freetime, "TOff", "She will rest");
-    REGISTER_JOB(JOB_DOCTOR, Doctor, "Doc", "She will become a doctor. Doctors earn extra cash from treating locals. (requires at least 1 to perform surgeries)").full_time().free_only();
-    REGISTER_JOB(JOB_NURSE, Nurse, "Nurs", "Will help the doctor and heal sick people.").full_time();
-    REGISTER_JOB(JOB_MECHANIC, Mechanic, "Mech", "Will help the doctor and repair Constructs.").full_time();
-    REGISTER_JOB(JOB_INTERN, Intern, "Ntrn", "Will train in how to be a nurse.");
-    REGISTER_JOB_MANUAL(JOB_JANITOR, Janitor, Cleaning, "Jntr", "She will clean the clinic");
 
 // - Farm - Staff
     REGISTER_JOB(JOB_FARMREST, Freetime, "TOff", "She will take time off and rest.");

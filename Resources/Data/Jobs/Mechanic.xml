@@ -1,0 +1,25 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Mech">
+    <Description>
+        Will help the doctor and repair Constructs.
+    </Description>
+    <Performance Modifier="work.mechanic">
+        <Primary Stat="Intelligence" />
+        <Secondary Skill="Medicine"/>
+        <Secondary Skill="Service" />
+    </Performance>
+    <Gains XP="10" Skill="2">
+        <GainTrait Trait="Charismatic" Threshold="60" Action="WORKMECHANIC">
+            Dealing with patients and talking with them about their problems has made ${name} more Charismatic.
+        </GainTrait>
+        <GainTrait Trait="Strong" Threshold="60" Action="WORKMECHANIC">
+            Handling heavy parts and working with heavy tools has made ${name} much Stronger.
+        </GainTrait>
+        <LoseTrait Trait="Nervous" Threshold="20" Action="WORKMECHANIC">
+            ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
+        </LoseTrait>
+        <LoseTrait Trait="Nervous" Threshold="40" Action="WORKMECHANIC">
+            Working with dirty, greasy equipment has damaged ${name}'s hair, skin and nails making her less Elegant.
+        </LoseTrait>
+    </Gains>
+</Job>

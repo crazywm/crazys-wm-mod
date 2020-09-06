@@ -138,5 +138,6 @@ void RegisterFilmJobs(cJobManager& mgr);
 void RegisterTherapyJobs(cJobManager& mgr);
 void RegisterBarJobs(cJobManager& mgr);
 void RegisterFarmJobs(cJobManager& mgr);
+void RegisterClinicJobs(cJobManager& mgr);
 
 #endif //WM_GENERICJOB_H

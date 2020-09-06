@@ -177,6 +177,7 @@ void cJobManager::Setup()
     RegisterTherapyJobs(*this);
     RegisterBarJobs(*this);
     RegisterFarmJobs(*this);
+    RegisterClinicJobs(*this);
 }
 
 sCustomer cJobManager::GetMiscCustomer(IBuilding& brothel)

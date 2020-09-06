@@ -1,0 +1,11 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Ntrn">
+    <Description>
+        Will train in how to be a nurse.
+    </Description>
+    <Performance Modifier="">
+        <!-- unused -->
+    </Performance>
+    <Gains XP="0" Skill="0">
+    </Gains>
+</Job>

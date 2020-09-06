@@ -1,0 +1,19 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Nurs">
+    <Description>
+        Will help the doctor and heal sick people.
+    </Description>
+    <Performance Modifier="work.nurse">
+        <Primary Skill="Medicine"/>
+        <Secondary Stat="Intelligence" />
+        <Secondary Stat="Charisma" />
+    </Performance>
+    <Gains XP="10" Skill="2">
+        <GainTrait Trait="Charismatic" Threshold="60" Action="WORKNURSE">
+            Dealing with patients and talking with them about their problems has made ${name} more Charismatic.
+        </GainTrait>
+        <LoseTrait Trait="Nervous" Threshold="30" Action="WORKNURSE">
+            ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
+        </LoseTrait>
+    </Gains>
+</Job>
