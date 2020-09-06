@@ -25,7 +25,7 @@
   - [ ] Sex Training
   - [ ] Arena
   - [ ] Studio
-  - [ ] Clinic
+  - [x] Clinic
   - [ ] Centre
   - [x] Farm
 
@@ -61,4 +61,5 @@
   - [ ] "your inventory is full", but seems to buy anyway
   - [ ] "your inventory is full" for sell button
 * [ ] gracefully handle missing/corrupt config file
-* [ ] autosave path is messed up now
+* [x] autosave path is messed up now
+* [ ] save game loading crashes when no job was assigned

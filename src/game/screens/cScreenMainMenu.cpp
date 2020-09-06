@@ -40,7 +40,7 @@ void cScreenMainMenu::set_ids()
     SetButtonCallback(continue_id, [this]()
     {
         g_ReturnInt = 0;
-        g_ReturnText = "autosave.gam";
+        g_ReturnText = (DirPath(m_SaveGamesPath.c_str()) << "autosave.gam").str();
         push_window("Preparing Game");
     });
     SetButtonHotKey(continue_id, SDLK_c);
