@@ -46,14 +46,6 @@ bool GenericFilmJob::WorkFilm(sGirl& girl) {
     result.bonus = m_FilmData.Bonus;
     result.performance = GetPerformance(girl, false);
 
-    if(!CheckCanWork(girl)) {
-        return false;
-    }
-
-    if(CheckRefuseWork(girl)) {
-        return true;
-    }
-
     ss << "\n ";
 
     cGirls::UnequipCombat(girl);
@@ -448,3 +440,15 @@ sTraitChange GenericFilmJob::GainPornStar = {true, "Porn Star", 80, ACTION_WORKM
 sTraitChange GenericFilmJob::GainFaker = {true, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker."};
 sTraitChange GenericFilmJob::GainSlut = {true, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", EVENT_WARNING};
 sTraitChange GenericFilmJob::GainMasochist = {true, "Masochist", 65, ACTION_SEX, "${name} has turned into a Masochist from filming so many BDSM scenes."};
+
+IGenericJob::eCheckWorkResult GenericFilmJob::CheckWork(sGirl& girl, bool is_night) {
+    if(!CheckCanWork(girl)) {
+        return IGenericJob::eCheckWorkResult::IMPOSSIBLE;
+    }
+
+    if(CheckRefuseWork(girl)) {
+        return IGenericJob::eCheckWorkResult::REFUSES;
+    }
+    
+    return IGenericJob::eCheckWorkResult::ACCEPTS;
+}

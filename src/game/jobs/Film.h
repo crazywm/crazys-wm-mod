@@ -54,6 +54,7 @@ public:
     explicit GenericFilmJob(JOBS id, FilmJobData data) : cBasicJob(id), m_FilmData(std::move(data)) {}
 
     bool DoWork(sGirl& girl, bool is_night) final;
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     bool WorkFilm(sGirl& girl);
 
 protected:

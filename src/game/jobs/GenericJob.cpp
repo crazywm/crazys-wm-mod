@@ -32,7 +32,19 @@ class sBrothel;
 bool IGenericJob::Work(sGirl& girl, bool is_night, cRng& rng) {
     ss.str("");
     m_Rng = &rng;
-    return DoWork(girl, is_night);
+
+    if(m_Info.FullTime && girl.m_DayJob != girl.m_NightJob) {
+        g_LogFile.error("jobs", "Full time job was assigned for a single shift!");
+    }
+
+    switch (CheckWork(girl, is_night)) {
+        case eCheckWorkResult::ACCEPTS:
+            return DoWork(girl, is_night);
+        case eCheckWorkResult::REFUSES:
+            return true;
+        case eCheckWorkResult::IMPOSSIBLE:
+            return false;
+    }
 }
 
 int IGenericJob::d100() const {
@@ -66,8 +78,15 @@ public:
         m_Info.Description = std::move(desc);
     }
 
-    cJobWrapper& full_time() { m_Info.FullTime = true; return *this; } ;
-    cJobWrapper& free_only() { m_Info.FreeOnly = true; return *this; } ;
+    cJobWrapper& full_time() { m_Info.FullTime = true; return *this; };
+    cJobWrapper& free_only() { m_Info.FreeOnly = true; return *this; };
+
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override {
+        if(!is_job_valid(girl)) {
+            return eCheckWorkResult::IMPOSSIBLE;
+        }
+        return eCheckWorkResult::ACCEPTS;
+    }
 private:
     double GetPerformance(const sGirl& girl, bool estimate) const override { return m_Perf(girl, estimate); }
     bool DoWork(sGirl& girl, bool is_night) override { return m_Work(girl, is_night, rng()); }

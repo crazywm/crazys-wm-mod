@@ -27,30 +27,7 @@
 
 bool cBarJob::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
-
-    if (girl.libido() >= 90 && girl.has_active_trait("Nymphomaniac") && chance(20))
-    {
-        ss << "${name} let lust get the better of her and she ended up missing her " << (is_night ? "night" : "day") << " shift.";
-        girl.upd_temp_stat(STAT_LIBIDO, -20);
-        girl.AddMessage(ss.str(), IMGTYPE_MAST, EVENT_NOWORK);
-        return true;
-    }
-    else if (girl.disobey_check(m_Data.Action, job()))
-    {
-        ss << m_Data.Refuse << " " << (is_night ? "tonight." : "today.");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
-    }
-    else if (brothel->m_TotalCustomers < 1)
-    {
-        ss << "There were no customers in the bar on the " << (is_night ? "night" : "day") << " shift so ${name} just cleaned up a bit.";
-        brothel->m_Filthiness -= 20 + girl.service() * 2;
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return false;
-    }
-
     cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
-
     return JobProcessing(girl, *brothel, is_night);
 }
 
@@ -70,6 +47,31 @@ void cBarJob::HandleGains(sGirl& girl, int enjoy, int jobperformance, int fame) 
     girl.fame(fame);
 
     apply_gains(girl);
+}
+
+IGenericJob::eCheckWorkResult cBarJob::CheckWork(sGirl& girl, bool is_night) {
+    auto brothel = girl.m_Building;
+    if (girl.libido() >= 90 && girl.has_active_trait("Nymphomaniac") && chance(20))
+    {
+        ss << "${name} let lust get the better of her and she ended up missing her " << (is_night ? "night" : "day") << " shift.";
+        girl.upd_temp_stat(STAT_LIBIDO, -20);
+        girl.AddMessage(ss.str(), IMGTYPE_MAST, EVENT_NOWORK);
+        return eCheckWorkResult::REFUSES;
+    }
+    else if (girl.disobey_check(m_Data.Action, job()))
+    {
+        ss << m_Data.Refuse << " " << (is_night ? "tonight." : "today.");
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        return eCheckWorkResult::REFUSES;
+    }
+    else if (brothel->m_TotalCustomers < 1)
+    {
+        ss << "There were no customers in the bar on the " << (is_night ? "night" : "day") << " shift so ${name} just cleaned up a bit.";
+        brothel->m_Filthiness -= 20 + girl.service() * 2;
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        return eCheckWorkResult::IMPOSSIBLE;
+    }
+    return eCheckWorkResult::ACCEPTS;
 }
 
 struct cBarCookJob : public cBarJob {

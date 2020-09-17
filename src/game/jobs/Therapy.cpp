@@ -58,9 +58,12 @@ public:
     }
 
     bool DoWork(sGirl& girl, bool is_night) final;
+    sJobValidResult is_job_valid(const sGirl& girl) const override;
 protected:
     // common data
     sTherapyData m_TherapyData;
+
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 
     virtual void FightEvent(sGirl& girl, bool is_night);
     virtual void OnFinish(sGirl& girl) {}
@@ -74,23 +77,6 @@ bool TherapyJob::DoWork(sGirl& girl, bool is_night) {
     Action_Types actiontype = ACTION_WORKTHERAPY;
     // if she was not in thearpy yesterday, reset working days to 0 before proceding
     if (girl.m_YesterDayJob != job()) { girl.m_WorkingDay = girl.m_PrevWorkingDay = 0; }
-    girl.m_DayJob = girl.m_NightJob = job();    // it is a full time job
-
-    if (!needs_therapy(girl))
-    {
-        ss << m_TherapyData.NoNeedMessage;
-        if (!is_night)    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-        girl.FullJobReset(JOB_CENTREREST);
-        girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
-        return false; // not refusing
-    }
-    bool hasCounselor = brothel->num_girls_on_job(JOB_COUNSELOR, is_night) > 0;
-    if (!hasCounselor)
-    {
-        ss << m_TherapyData.NoCounselorMessage;
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-        return false;    // not refusing
-    }
 
     if (chance(m_TherapyData.BasicFightChance) || girl.disobey_check(actiontype, job()))    // `J` - yes, OR, not and.
     {
@@ -213,6 +199,34 @@ double TherapyJob::GetPerformance(const sGirl& girl, bool estimate) const {
     return p;
 }
 
+IGenericJob::eCheckWorkResult TherapyJob::CheckWork(sGirl& girl, bool is_night) {
+    auto brothel = girl.m_Building;
+    if (!needs_therapy(girl))
+    {
+        std::stringstream msg;
+        msg << m_TherapyData.NoNeedMessage << " She was sent to the waiting room.";
+        if (!is_night)    girl.AddMessage(msg.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.FullJobReset(JOB_CENTREREST);
+        girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
+        return eCheckWorkResult::IMPOSSIBLE; // not refusing
+    }
+    bool hasCounselor = brothel->num_girls_on_job(JOB_COUNSELOR, is_night) > 0;
+    if (!hasCounselor)
+    {
+        girl.AddMessage(m_TherapyData.NoCounselorMessage, IMGTYPE_PROFILE, EVENT_WARNING);
+        return eCheckWorkResult::IMPOSSIBLE;    // not refusing
+    }
+
+    return IGenericJob::eCheckWorkResult::ACCEPTS;
+}
+
+sJobValidResult TherapyJob::is_job_valid(const sGirl& girl) const {
+    if (!needs_therapy(girl)) {
+        return {false, m_TherapyData.NoNeedMessage};
+    }
+    return IGenericJob::is_job_valid(girl);
+}
+
 
 struct AngerManagement : public TherapyJob {
     using TherapyJob::TherapyJob;
@@ -282,7 +296,7 @@ void RegisterTherapyJobs(cJobManager& mgr) {
             std::make_unique<AngerManagement>(JOB_ANGER, "AMng","She will go to anger management to get over her anger problems. (Aggressive, Tsundere, Yandere)",
                                               sTherapyData {
         "${name} underwent therapy for anger issues.",
-        "${name} doesn't need anger management so she was sent to the waiting room.",
+        "${name} doesn't need anger management.",
         "She should stay in anger management to treat her other anger issues.",
         "She died in anger management.",
         "$[name} has no counselor to help her on the ${shift} Shift.",
@@ -295,7 +309,7 @@ void RegisterTherapyJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<TherapyJob>(JOB_EXTHERAPY, "EThr", "She will go to extreme therapy to get over her hardcore mental problems. (Mind Fucked, Broken Will)",
                                                   sTherapyData{
         "${name} underwent therapy for extreme mental issues.",
-        "${name} doesn't need extreme therapy for anything so she was sent to the waiting room.",
+        "${name} doesn't need extreme therapy for anything.",
         "She should stay in extreme therapy to treat her other disorders.",
         "She died in therapy.",
         "$[name} has no counselor to help her on the ${shift} Shift.",
@@ -308,7 +322,7 @@ void RegisterTherapyJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<TherapyJob>(JOB_THERAPY, "Thrp", "She will go to therapy to get over her mental problems. (Nervous, Dependant, Pessimist)",
                                                   sTherapyData{
         "${name} underwent therapy for mental issues.",
-        "${name} doesn't need therapy for anything so she was sent to the waiting room.",
+        "${name} doesn't need therapy for anything.",
         "She should stay in therapy to treat her other disorders.",
         "She died in therapy.",
         "$[name} has no counselor to help her on the ${shift} Shift.",
@@ -323,7 +337,7 @@ void RegisterTherapyJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<Rehab>(JOB_REHAB, "Rehb", "She will go to rehab to get over her addictions.",
                                              sTherapyData {
         "${name} underwent rehab for her addiction.",
-        "${name} is not addicted to anything so she was sent to the waiting room.",
+        "${name} is not addicted to anything.",
         "She should stay in rehab to treat her other addictions.",
         "${name} died in rehab.",
         "${name} sits in rehab doing nothing. You must assign a counselor to treat her.",

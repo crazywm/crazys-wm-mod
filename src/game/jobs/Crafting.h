@@ -43,6 +43,7 @@ public:
     bool DoWork(sGirl& girl, bool is_night) final;
 protected:
     bool WorkCrafting(sGirl& girl, bool is_night);
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night);
 
     // common data
     sCraftingJobData m_CraftingData;

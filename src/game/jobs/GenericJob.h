@@ -87,8 +87,16 @@ protected:
     int d100() const;
     bool chance(float percent) const;
     int uniform(int min, int max) const;
+
+    enum class eCheckWorkResult {
+        REFUSES,
+        ACCEPTS,
+        IMPOSSIBLE
+    };
+
 private:
     virtual bool DoWork(sGirl& girl, bool is_night) = 0;
+    virtual eCheckWorkResult CheckWork(sGirl& girl, bool is_night) = 0;
 
     cRng* m_Rng;
 

@@ -34,6 +34,7 @@ public:
     virtual bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) = 0;
 
 protected:
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     void HandleGains(sGirl& girl, int enjoy, int jobperformance, int fame);
     sBarJobData m_Data;
 };

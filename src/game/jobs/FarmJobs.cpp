@@ -48,12 +48,6 @@ cFarmJob::cFarmJob(JOBS job, const char* xml, sFarmJobData data) :
 
 
 bool cFarmJob::DoWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(m_Data.Action, job()))
-    {
-        ss << m_Data.Refuse << " " << (is_night ? "night" : "day") << " shift.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
-    }
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     ss << m_Data.WorkMsg << "\n \n";
@@ -72,6 +66,15 @@ void cFarmJob::HandleGains(sGirl& girl, int enjoy) {
     apply_gains(girl);
 }
 
+IGenericJob::eCheckWorkResult cFarmJob::CheckWork(sGirl& girl, bool is_night) {
+    if (girl.disobey_check(m_Data.Action, job()))
+    {
+        ss << m_Data.Refuse << " " << (is_night ? "night" : "day") << " shift.";
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        return IGenericJob::eCheckWorkResult::REFUSES;
+    }
+    return IGenericJob::eCheckWorkResult::ACCEPTS;
+}
 
 
 class cFarmJobFarmer : public cFarmJob {
