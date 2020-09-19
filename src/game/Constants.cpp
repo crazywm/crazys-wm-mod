@@ -20,6 +20,7 @@
 #include "Constants.h"
 #include <unordered_map>
 #include "character/sAttribute.h"
+#include <cassert>
 
 template<class T>
 using id_lookup_t = std::unordered_map<std::string, T>;
@@ -29,7 +30,8 @@ id_lookup_t<T> create_lookup_table(const std::array<const char*, N>& names) {
     id_lookup_t<T> lookup;
     // TODO make this case insensitive
     for(std::size_t i = 0; i < N; ++i) {
-        lookup[names[i]] = (T)i;
+        auto inserted = lookup.insert(std::make_pair(names[i], static_cast<T>(i)));
+        assert(inserted.second);
     }
     return std::move(lookup);
 }

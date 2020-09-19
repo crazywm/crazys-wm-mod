@@ -483,22 +483,25 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
     // load house percent
     pGirl->QueryIntAttribute("HousePercent", &m_HousePercent);
 
-    // `J` changeing jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
-    std::string tempst = pGirl->Attribute("DayJob");            m_DayJob = get_job_id(tempst);
-    tempst = pGirl->Attribute("NightJob");                m_NightJob = get_job_id(tempst);
-    tempst = pGirl->Attribute("PrevDayJob");            m_PrevDayJob = get_job_id(tempst);
-    tempst = pGirl->Attribute("PrevNightJob");            m_PrevNightJob = get_job_id(tempst);
-    tempst = pGirl->Attribute("YesterDayJob");            m_YesterDayJob = get_job_id(tempst);
-    tempst = pGirl->Attribute("YesterNightJob");        m_YesterNightJob = get_job_id(tempst);
+    auto load_job = [pGirl](const char* attribute, JOBS& target){
+        std::string tempst = pGirl->Attribute(attribute);
+        if(tempst == "255") {
+            target = JOB_UNSET;
+        } else {
+            target = get_job_id(tempst);
+        }
+    };
 
-    if (m_YesterDayJob < 0)        m_YesterDayJob = JOB_UNSET;
-    if (m_YesterNightJob < 0)    m_YesterNightJob = JOB_UNSET;
+    load_job("DayJob", m_DayJob);
+    load_job("NightJob", m_NightJob);
+    load_job("PrevDayJob", m_PrevDayJob);
+    load_job("PrevNightJob", m_PrevNightJob);
+    load_job("YesterDayJob", m_YesterDayJob);
+    load_job("YesterNightJob", m_YesterNightJob);
 
-    // load runnayway value
-    pGirl->QueryIntAttribute("RunAway", &tempInt); m_RunAway = tempInt; tempInt = 0;
-
-    // load spotted
-    pGirl->QueryIntAttribute("Spotted", &tempInt); m_Spotted = tempInt; tempInt = 0;
+    // load runayway value
+    m_RunAway = pGirl->IntAttribute("RunAway", 0);
+    m_Spotted = pGirl->IntAttribute("Spotted", 0);
 
     // load weeks past, birth day, and pregant time
     pGirl->QueryAttribute("WeeksPast", &m_WeeksPast);
@@ -576,23 +579,18 @@ tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
     elGirl.SetAttribute("ImagePath", GetImageFolder().c_str());
 
     // `J` changed jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
-    // save day/night jobs
-    if (m_DayJob < 0 || m_DayJob > NUM_JOBS) elGirl.SetAttribute("DayJob", "255");
-    else elGirl.SetAttribute("DayJob", g_Game->job_manager().get_job_name(m_DayJob).c_str());
-    if (m_NightJob < 0 || m_NightJob > NUM_JOBS) elGirl.SetAttribute("NightJob", "255");
-    else elGirl.SetAttribute("NightJob", g_Game->job_manager().get_job_name(m_NightJob).c_str());
+    // save jobs
+    auto save_job = [&elGirl](const char* attribute, JOBS job){
+        if (job < 0 || job > NUM_JOBS) elGirl.SetAttribute(attribute, "255");
+        else elGirl.SetAttribute(attribute, g_Game->job_manager().get_job_name(job).c_str());
+    };
 
-    // save prev day/night jobs
-    if (m_PrevDayJob < 0 || m_PrevDayJob > NUM_JOBS) elGirl.SetAttribute("PrevDayJob", "255");
-    else elGirl.SetAttribute("PrevDayJob", g_Game->job_manager().get_job_name(m_PrevDayJob).c_str());
-    if (m_PrevNightJob < 0 || m_PrevNightJob > NUM_JOBS) elGirl.SetAttribute("PrevNightJob", "255");
-    else elGirl.SetAttribute("PrevNightJob", g_Game->job_manager().get_job_name(m_PrevNightJob).c_str());
-
-    // save prev day/night jobs
-    if (m_YesterDayJob < 0 || m_YesterDayJob > NUM_JOBS) elGirl.SetAttribute("YesterDayJob", "255");
-    else elGirl.SetAttribute("YesterDayJob", g_Game->job_manager().get_job_name(m_YesterDayJob).c_str());
-    if (m_YesterNightJob < 0 || m_YesterNightJob > NUM_JOBS) elGirl.SetAttribute("YesterNightJob", "255");
-    else elGirl.SetAttribute("YesterNightJob", g_Game->job_manager().get_job_name(m_YesterNightJob).c_str());
+    save_job("DayJob", m_DayJob);
+    save_job("NightJob", m_NightJob);
+    save_job("PrevDayJob", m_PrevDayJob);
+    save_job("PrevNightJob", m_PrevNightJob);
+    save_job("YesterDayJob", m_YesterDayJob);
+    save_job("YesterNightJob", m_YesterNightJob);
 
     elGirl.SetAttribute("RunAway", m_RunAway);                    // save runnayway vale
     elGirl.SetAttribute("Spotted", m_Spotted);                    // save spotted
