@@ -43,7 +43,6 @@ set(JOBS_SRC
         jobs/WorkCrystalPurifier.cpp
         jobs/WorkCureDiseases.cpp
         jobs/WorkCustService.cpp
-        jobs/WorkDoctor.cpp
         jobs/WorkEscort.cpp
         jobs/WorkExploreCatacombs.cpp
         jobs/WorkFakeOrgasm.cpp
@@ -79,9 +78,6 @@ set(JOBS_SRC
         jobs/WorkHouseCook.cpp
         jobs/WorkHousePet.cpp
         jobs/WorkHouseVacation.cpp
-        jobs/WorkIntern.cpp
-        jobs/WorkMechanic.cpp
-        jobs/WorkNurse.cpp
         jobs/WorkPeepShow.cpp
         jobs/WorkPersonalBedWarmer.cpp
         jobs/WorkPersonalTraining.cpp
@@ -100,7 +96,9 @@ set(JOBS_SRC
         jobs/Matron.cpp
         jobs/Therapy.cpp
         jobs/BarJobs.cpp
-        jobs/FarmJobs.cpp)
+        jobs/FarmJobs.cpp
+        jobs/ClinicJobs.cpp
+        )
 
 set(BUILDINGS_SRC
         buildings/cArena.cpp
@@ -173,8 +171,12 @@ set(SRC cEvents.cpp
 add_executable(WhoreMaster ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${SRC} main.cpp)
 target_link_libraries(WhoreMaster PUBLIC WMEngine pthread)
 set_target_properties(WhoreMaster PROPERTIES CXX_STANDARD 14 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
-
 target_include_directories(WhoreMaster PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_executable(WhoreMasterFuzz ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${SRC} fuzzmain.cpp)
+target_link_libraries(WhoreMasterFuzz PUBLIC WMEngine pthread)
+set_target_properties(WhoreMasterFuzz PROPERTIES CXX_STANDARD 14 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
+target_include_directories(WhoreMasterFuzz PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 
 if (UNIX)
