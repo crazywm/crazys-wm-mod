@@ -117,7 +117,6 @@ public:
     bool is_sex_type_allowed(SKILLS sex_type) const;
     bool nothing_banned() const;
 
-    JOBS m_RestJob;
     JOBS m_FirstJob;
     JOBS m_LastJob;
     JOBS m_MatronJob;

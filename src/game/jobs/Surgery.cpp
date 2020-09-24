@@ -157,7 +157,7 @@ IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) 
     // check validity of the job
     auto valid = is_job_valid(girl);
     if (!valid) {
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
         girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
         ss << valid.Reason << " She was sent to the waiting room.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -242,7 +242,7 @@ void CosmeticSurgery::success(sGirl& girl) {
     if (girl.has_active_trait("Sexy Air") && girl.has_active_trait("Cute") && girl.beauty() > 99)
     {
         ss << "\n \nShe has been released from the Clinic.";
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
     }
 }
 
@@ -292,7 +292,7 @@ void Liposuction::success(sGirl& girl) {
     if (girl.has_active_trait("Great Figure") && !girl.has_active_trait("Plump"))
     {
         ss << "She has been released from the Clinic.\n \n";
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
     }
 }
 
@@ -325,7 +325,7 @@ void BreastReduction::success(sGirl& girl) {
     if (girl.has_active_trait("Flat Chest"))
     {
         ss << "${name}'s breasts are as small as they can get so she was sent to the waiting room.";
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
     }
 }
 
@@ -360,7 +360,7 @@ void BoobJob::success(sGirl& girl) {
     if (girl.has_active_trait("Titanic Tits"))
     {
         ss << "${name}'s breasts are as large as they can get so she was sent to the waiting room.";
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
     }
 }
 
@@ -392,7 +392,7 @@ void VaginalRejuvenation::success(sGirl& girl) {
     EndSurgery(girl);
 
     girl.gain_trait("Virgin");
-    girl.FullJobReset(JOB_CLINICREST);
+    girl.FullJobReset(JOB_RESTING);
     ss << "\n \nShe has been released from the Clinic.";
 }
 
@@ -448,7 +448,7 @@ void FaceLift::success(sGirl& girl) {
     if (girl.age() <= 21)
     {
         ss << "\n \nShe has been released from the Clinic.";
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
     }
 }
 
@@ -486,7 +486,7 @@ void AssJob::success(sGirl& girl) {
     {
         ss << "Thanks to the surgery she now has a Great Arse.\n";
         ss << "\n \nShe has been released from the Clinic.";
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
     }
 }
 
@@ -517,7 +517,7 @@ sJobValidResult TubesTied::is_job_valid(const sGirl& girl) const {
 void TubesTied::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
     EndSurgery(girl);
-    girl.FullJobReset(JOB_CLINICREST);
+    girl.FullJobReset(JOB_RESTING);
     ss << cGirls::AdjustTraitGroupFertility(girl, -10, false);
 }
 
@@ -557,7 +557,7 @@ void Fertility::success(sGirl& girl) {
     if (girl.has_active_trait("Broodmother"))
     {
         ss << "\n \nShe has been released from the Clinic.";
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
     }
 }
 

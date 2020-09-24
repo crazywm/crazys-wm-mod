@@ -46,7 +46,7 @@ bool WorkCrystalPurifier(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
     // `J` added this to allow the Director to assign someone to this job without making it permanent
-    if (girl.m_DayJob == JOB_FILMFREETIME)    // the director sets the old job to dayjob when changing night job
+    if (girl.m_DayJob == JOB_RESTING)    // the director sets the old job to dayjob when changing night job
     {
         ss << "${name} was assigned to work as a crystal purifier";
     }
@@ -63,7 +63,7 @@ bool WorkCrystalPurifier(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         if (roll <= 10 && girl.disobey_check(actiontype, JOB_CRYSTALPURIFIER))
         {
-            if (girl.m_DayJob == JOB_FILMFREETIME)
+            if (girl.m_DayJob == JOB_RESTING)
             {
                 ss << " but she refused to work.";
                 girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);

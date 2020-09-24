@@ -41,7 +41,7 @@ bool WorkFakeOrgasm(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         ss << "${name} is already a \"Fake Orgasm Expert\".";
         if (Day0Night1 == SHIFT_DAY)    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
         girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         return false;    // not refusing
     }
@@ -244,7 +244,7 @@ bool WorkFakeOrgasm(sGirl& girl, bool Day0Night1, cRng& rng)
         msgtype = EVENT_GOODNEWS;
         ss << "With her training complete, she is now a \"Fake Orgasm Expert\".";
         girl.lose_trait("Slow Orgasms");    girl.lose_trait("Fast Orgasms");    girl.gain_trait("Fake Orgasm Expert");
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
         wages = 200;
     }
     else
@@ -252,7 +252,7 @@ bool WorkFakeOrgasm(sGirl& girl, bool Day0Night1, cRng& rng)
         if (girl.m_WorkingDay >= 100)        tired -= (girl.m_WorkingDay - 100) / 2;    // her last day so she rested a bit
         else    ss << "Training in progress (" << girl.m_WorkingDay << "%).\n \n";
         wages = std::min(100, girl.m_WorkingDay);
-        /* */if (girl.m_WorkingDay < 25)    ss << "She has no idea what she sounds like durring sex but it ain't orgasmic.";
+        /* */if (girl.m_WorkingDay < 25)    ss << "She has no idea what she sounds like during sex but it ain't orgasmic.";
         else if (girl.m_WorkingDay < 50)    ss << "When she realizes she should finish, you can see it click in her mind and easily notice her changing things up.";
         else if (girl.m_WorkingDay < 75)    ss << "She is still not getting into rhythm with " << (rng % 3 ? "you" : "her partner") << " but it still seems enjoyable.";
         else/*                         */    ss << "She is almost there but you want her to practice a little more to get it perfect.";

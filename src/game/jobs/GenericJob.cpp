@@ -225,7 +225,6 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_WHORESTREETS, Whore, "StWr", "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable.");
 
 // - Movie Studio - Crew
-    REGISTER_JOB(JOB_FILMFREETIME, Freetime, "TOff", "She takes time off resting and recovering.");
     REGISTER_JOB(JOB_DIRECTOR, FilmDirector, "Dir", "She directs the filming, and keeps the girls in line. (max 1)").free_only();
     REGISTER_JOB(JOB_PROMOTER, FilmPromoter, "Prmt", "She advertises the movies. (max 1)");
     REGISTER_JOB(JOB_CAMERAMAGE, CameraMage, "CM", "She will film the scenes. (requires at least 1 to create a scene)");
@@ -242,12 +241,10 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_FIGHTTRAIN, CombatTraining, "CT", "She will practice combat.");
 
 // - Arena - Staff
-    REGISTER_JOB(JOB_ARENAREST, Freetime, "TOff", "She will rest.");
     REGISTER_JOB(JOB_CITYGUARD, CityGuard, "CGrd", "She will help keep Crossgate safe.").free_only();
     REGISTER_JOB_MANUAL(JOB_CLEANARENA, CleanArena, Cleaning, "GKpr", "She will clean the arena.");
 
 //Comunity Centre
-    REGISTER_JOB(JOB_CENTREREST, Freetime, "TOff", "She will rest.");
     REGISTER_JOB(JOB_FEEDPOOR, FeedPoor, "Feed", "She will work in a soup kitchen.");
     REGISTER_JOB(JOB_COMUNITYSERVICE, ComunityService, "CmSr", "She will go around town and help out where she can.");
     REGISTER_JOB_MANUAL(JOB_CLEANCENTRE, CleanCentre, Cleaning, "ClnC", "She will clean the centre.");
@@ -261,15 +258,10 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_CUREDISEASES, CureDiseases, "Cure", "She will try to get her diseases cured.").full_time();
     REGISTER_JOB(JOB_GETABORT, GetAbort, "Abrt", "She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)").full_time();
 
-// - Clinic - Staff
-    REGISTER_JOB(JOB_CLINICREST, Freetime, "TOff", "She will rest");
-
 // - Farm - Staff
-    REGISTER_JOB(JOB_FARMREST, Freetime, "TOff", "She will take time off and rest.");
     REGISTER_JOB_MANUAL(JOB_FARMHAND, FarmHand, Cleaning, "FHnd", "She will clean up around the farm.");
 
 // house
-    REGISTER_JOB(JOB_HOUSEREST, Freetime, "TOff", "She takes time off resting and recovering.");
     REGISTER_JOB(JOB_RECRUITER, Recruiter, "Rcrt", "She will go out and try and recruit girls for you.").full_time();
     REGISTER_JOB(JOB_PERSONALTRAINING, PersonalTraining, "PTrn", "You will oversee her training personally.");
     REGISTER_JOB(JOB_PERSONALBEDWARMER, PersonalBedWarmer, "BdWm", "She will stay in your bed at night with you.");

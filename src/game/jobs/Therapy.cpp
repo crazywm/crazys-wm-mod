@@ -156,7 +156,7 @@ bool TherapyJob::DoWork(sGirl& girl, bool is_night) {
         else // get out of therapy
         {
             ss << "\n" << m_TherapyData.ReleaseMessage;
-            girl.FullJobReset(JOB_CENTREREST);
+            girl.FullJobReset(JOB_RESTING);
             girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         }
     }
@@ -206,7 +206,7 @@ IGenericJob::eCheckWorkResult TherapyJob::CheckWork(sGirl& girl, bool is_night) 
         std::stringstream msg;
         msg << m_TherapyData.NoNeedMessage << " She was sent to the waiting room.";
         if (!is_night)    girl.AddMessage(msg.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-        girl.FullJobReset(JOB_CENTREREST);
+        girl.FullJobReset(JOB_RESTING);
         girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         return eCheckWorkResult::IMPOSSIBLE; // not refusing
     }

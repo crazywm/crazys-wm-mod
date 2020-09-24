@@ -56,7 +56,7 @@ void cJobManager::Setup()
 {
     m_OOPJobs.resize(NUM_JOBS);
 
-    auto register_filter = [&](JOBFILTER filter, JOBS first, JOBS last) {
+    auto register_filter = [&](JOBFILTER filter, JOBS first, JOBS last, std::initializer_list<JOBS> extra) {
         for(int i = first; i <= last; ++i) {
             JobFilters[filter].Contents.push_back((JOBS)i);
         }
@@ -67,20 +67,20 @@ void cJobManager::Setup()
     // much simplier then trying to get the sJob working with this (plus a smaller memory footprint...?maybe)
     // General Jobs
     JobFilters[JOBFILTER_GENERAL] = sJobFilter{"General", "These are general jobs that work individually in any building."};
-    register_filter(JOBFILTER_GENERAL, JOB_RESTING, JOB_BEASTCARER);
+    register_filter(JOBFILTER_GENERAL, JOB_RESTING, JOB_BEASTCARER, {});
 
     // - Bar Jobs
     JobFilters[JOBFILTER_BAR] = sJobFilter{"Bar", "These are jobs for running a bar."};
-    register_filter(JOBFILTER_BAR, JOB_BARMAID, JOB_BARCOOK);
+    register_filter(JOBFILTER_BAR, JOB_BARMAID, JOB_BARCOOK, {});
     // - Gambling Hall Jobs
     JobFilters[JOBFILTER_GAMBHALL] = sJobFilter{"Gambling Hall", "These are jobs for running a gambling hall."};
-    register_filter(JOBFILTER_GAMBHALL, JOB_DEALER, JOB_WHOREGAMBHALL);
+    register_filter(JOBFILTER_GAMBHALL, JOB_DEALER, JOB_WHOREGAMBHALL, {});
     // - Sleazy Bar Jobs        // Changing all references to Strip Club, just sounds better to me and more realistic. -PP
     JobFilters[JOBFILTER_SLEAZYBAR] = sJobFilter{"Strip Club", "These are jobs for running a Strip Club."};
-    register_filter(JOBFILTER_SLEAZYBAR, JOB_SLEAZYBARMAID, JOB_BARWHORE);
+    register_filter(JOBFILTER_SLEAZYBAR, JOB_SLEAZYBARMAID, JOB_BARWHORE, {});
     // - Brothel Jobs
     JobFilters[JOBFILTER_BROTHEL] = sJobFilter{"Brothel", "These are jobs for running a brothel."};
-    register_filter(JOBFILTER_BROTHEL, JOB_MASSEUSE, JOB_WHORESTREETS);
+    register_filter(JOBFILTER_BROTHEL, JOB_MASSEUSE, JOB_WHORESTREETS, {});
 
 
 
@@ -88,7 +88,7 @@ void cJobManager::Setup()
 
     // Studio Crew
     JobFilters[JOBFILTER_STUDIOCREW] = sJobFilter{"Studio Crew", "These are jobs for running a movie studio."};
-    register_filter(JOBFILTER_STUDIOCREW, JOB_FILMFREETIME, JOB_STAGEHAND);
+    register_filter(JOBFILTER_STUDIOCREW, JOB_DIRECTOR, JOB_STAGEHAND, {JOB_RESTING});
     //JobData[JOB_SOUNDTRACK] = sJobData("Sound Track", "SndT", WorkSoundTrack, JP_SoundTrack);
     //JobData[JOB_SOUNDTRACK].description = ("She will clean up the audio and add music to the scenes. (not required but helpful)");
 
@@ -97,67 +97,67 @@ void cJobManager::Setup()
 
     // Studio - Non-Sex Scenes
     JobFilters[JOBFILTER_STUDIONONSEX] = sJobFilter{"Non-Sex Scenes", "These are scenes without sex."};
-    register_filter(JOBFILTER_STUDIONONSEX, JOB_FILMACTION, JOB_FILMMUSIC);
+    register_filter(JOBFILTER_STUDIONONSEX, JOB_FILMACTION, JOB_FILMMUSIC, {});
 
     // Studio - Softcore Porn
     JobFilters[JOBFILTER_STUDIOSOFTCORE] = sJobFilter{"Softcore Scenes", "These are scenes with just the one girl."};
-    register_filter(JOBFILTER_STUDIOSOFTCORE, JOB_FILMMAST, JOB_FILMTEASE);
+    register_filter(JOBFILTER_STUDIOSOFTCORE, JOB_FILMMAST, JOB_FILMTEASE, {});
 
     // Studio - Porn
     JobFilters[JOBFILTER_STUDIOPORN] = sJobFilter{"Porn Scenes", "These are regular sex scenes."};
-    register_filter(JOBFILTER_STUDIOPORN, JOB_FILMANAL, JOB_FILMTITTY);
+    register_filter(JOBFILTER_STUDIOPORN, JOB_FILMANAL, JOB_FILMTITTY, {});
 
     // Studio - Hardcore porn
     JobFilters[JOBFILTER_STUDIOHARDCORE] = sJobFilter{"Hardcore Scenes", "These are rough scenes that not all girls would be comfortable with."};
-    register_filter(JOBFILTER_STUDIOHARDCORE, JOB_FILMBEAST, JOB_FILMPUBLICBDSM);
+    register_filter(JOBFILTER_STUDIOHARDCORE, JOB_FILMBEAST, JOB_FILMPUBLICBDSM, {});
 
     // Studio - Random
     JobFilters[JOBFILTER_RANDSTUDIO] = sJobFilter{"Random Scenes", "Let the game choose what scene the girl will film."};
-    register_filter(JOBFILTER_RANDSTUDIO, JOB_FILMRANDOM, JOB_FILMRANDOM);
+    register_filter(JOBFILTER_RANDSTUDIO, JOB_FILMRANDOM, JOB_FILMRANDOM, {});
 
 
     // - Arena Jobs
     JobFilters[JOBFILTER_ARENA] = sJobFilter{"Arena", "These are jobs for running an arena."};
-    register_filter(JOBFILTER_ARENA, JOB_FIGHTBEASTS, JOB_FIGHTTRAIN);
+    register_filter(JOBFILTER_ARENA, JOB_FIGHTBEASTS, JOB_FIGHTTRAIN, {});
     //- Arena Staff
     JobFilters[JOBFILTER_ARENASTAFF] = sJobFilter{"Arena Staff", "These are jobs that help run an arena."};
-    register_filter(JOBFILTER_ARENASTAFF, JOB_ARENAREST, JOB_CLEANARENA);
+    register_filter(JOBFILTER_ARENASTAFF, JOB_FIGHTBEASTS, JOB_CLEANARENA, {JOB_RESTING});
 
     // - Community Centre Jobs
     JobFilters[JOBFILTER_COMMUNITYCENTRE] = sJobFilter{"Community Centre", "These are jobs for running a community centre."};
-    register_filter(JOBFILTER_COMMUNITYCENTRE, JOB_CENTREREST, JOB_CLEANCENTRE);
+    register_filter(JOBFILTER_COMMUNITYCENTRE, JOB_CENTREMANAGER, JOB_CLEANCENTRE, {JOB_RESTING});
     // - Counseling Centre Jobs
     JobFilters[JOBFILTER_COUNSELINGCENTRE] = sJobFilter{"Counseling Centre", "These are jobs for running a counseling centre."};
-    register_filter(JOBFILTER_COUNSELINGCENTRE, JOB_COUNSELOR, JOB_ANGER);
+    register_filter(JOBFILTER_COUNSELINGCENTRE, JOB_COUNSELOR, JOB_ANGER, {});
 
     // - Clinic Surgeries
     JobFilters[JOBFILTER_CLINIC] = sJobFilter{"Medical Clinic", "These are procerures the girls can have done in the Medical Clinic."};
-    register_filter(JOBFILTER_CLINIC, JOB_GETHEALING, JOB_FERTILITY);
+    register_filter(JOBFILTER_CLINIC, JOB_GETHEALING, JOB_FERTILITY, {});
     // Clinic staff
     JobFilters[JOBFILTER_CLINICSTAFF] = sJobFilter{"Clinic Staff", "These are jobs that help run a medical clinic."};
-    register_filter(JOBFILTER_CLINICSTAFF, JOB_CLINICREST, JOB_JANITOR);
+    register_filter(JOBFILTER_CLINICSTAFF, JOB_CHAIRMAN, JOB_JANITOR, {JOB_RESTING});
 
     // - Farm Staff
     JobFilters[JOBFILTER_FARMSTAFF] = sJobFilter{"Farm Staff", "These are jobs for running a farm"};
-    register_filter(JOBFILTER_FARMSTAFF, JOB_FARMREST, JOB_FARMHAND);
+    register_filter(JOBFILTER_FARMSTAFF, JOB_FARMMANGER, JOB_FARMHAND, {JOB_RESTING});
 
     // - Laborers
     JobFilters[JOBFILTER_LABORERS] = sJobFilter{"Laborers", "These are jobs your girls can do at your farm."};
-    register_filter(JOBFILTER_LABORERS, JOB_FARMER, JOB_MILK);
+    register_filter(JOBFILTER_LABORERS, JOB_FARMER, JOB_MILK, {});
     // - Producers
     JobFilters[JOBFILTER_PRODUCERS] = sJobFilter{"Producers", "These are jobs your girls can do at your farm."};
-    register_filter(JOBFILTER_PRODUCERS, JOB_BUTCHER, JOB_MAKEPOTIONS);
+    register_filter(JOBFILTER_PRODUCERS, JOB_BUTCHER, JOB_MAKEPOTIONS, {});
 
     // - House
     JobFilters[JOBFILTER_HOUSE] = sJobFilter{"Player House", "These are jobs your girls can do at your house."};
-    register_filter(JOBFILTER_HOUSE, JOB_HOUSEREST, JOB_CLEANHOUSE);
+    register_filter(JOBFILTER_HOUSE, JOB_HEADGIRL, JOB_CLEANHOUSE, {JOB_RESTING});
     //JobData[JOB_PONYGIRL].name = ("Pony Girl");
     //JobData[JOB_PONYGIRL].brief = "PGil";
     //JobData[JOB_PONYGIRL].description = ("She will be trained to become a pony girl.");
     //JobFunc[JOB_PONYGIRL] = &WorkFarmPonyGirl;
 
     JobFilters[JOBFILTER_HOUSETTRAINING] = sJobFilter{"Sex Training", "You will take a personal interest in training the girl in sexual matters."};
-    register_filter(JOBFILTER_HOUSETTRAINING, JOB_PERSONALTRAINING, JOB_HOUSEPET);
+    register_filter(JOBFILTER_HOUSETTRAINING, JOB_PERSONALTRAINING, JOB_HOUSEPET, {});
 
 
 /*
@@ -313,7 +313,6 @@ bool cJobManager::is_job_Paid_Player(JOBS Job)
         Job ==    JOB_CRYSTALPURIFIER        ||    // Post editing to get the best out of the film (requires at least 1)
         Job ==    JOB_FLUFFER                ||    // Keeps the porn stars and animals aroused
         Job ==    JOB_STAGEHAND            ||    // Sets up equipment, and keeps studio clean
-        Job ==    JOB_FILMFREETIME        ||    // Taking a day off
 
         // - Community Centre
         Job ==    JOB_FEEDPOOR            ||    // work in a soup kitchen
@@ -450,7 +449,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     }
     JOBS rest = JOB_RESTING;
     if(Girl.m_Building)
-        rest = Girl.m_Building->m_RestJob;
+        rest = JOB_RESTING;
 
     auto check = m_OOPJobs[JobID]->is_job_valid(Girl);
     if(!check) {
@@ -459,11 +458,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     }
 
     // rest jobs
-    if (JobID == JOB_FILMFREETIME)
-    {
-        Girl.m_NightJob = Girl.m_DayJob = JobID;
-    }
-    else if (JobID == rest)
+    if (JobID == rest)
     {
         /*   */if (fulltime)    Girl.m_NightJob = Girl.m_DayJob = JobID;
         else if (Day0Night1)    Girl.m_NightJob = JobID;

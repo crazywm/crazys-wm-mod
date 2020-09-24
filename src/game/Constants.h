@@ -213,6 +213,7 @@ enum JOBFILTER {
 enum JOBS {
     // `J` Job Brothel - General
     JOB_RESTING = 0,        // relaxes and takes some time off
+
     JOB_TRAINING,            // trains skills at a basic level
     JOB_CLEANING,            // cleans the building
     JOB_SECURITY,            // Protects the building and its occupants
@@ -251,7 +252,6 @@ enum JOBS {
 
 
     // `J` Job Movie Studio - Crew
-    JOB_FILMFREETIME,        // Free time
     JOB_DIRECTOR,            // Does same work as matron plus adds quality to films.
     JOB_PROMOTER,            // Advertising -- This helps film sales after it is created.
     JOB_CAMERAMAGE,            // Uses magic to record the scenes to crystals (requires at least 1)
@@ -318,7 +318,6 @@ enum JOBS {
     //JOB_ATHELETE        = ;
     //JOB_RACING,                //    
     // `J` Job Arena - Staff
-    JOB_ARENAREST,            //free time of arena
     JOB_DOCTORE,            //Matron of arena
     JOB_CITYGUARD,            //
     JOB_BLACKSMITH,            //
@@ -334,7 +333,6 @@ enum JOBS {
     JOB_CLEANARENA,            //
 
     // `J` Job Centre - General
-    JOB_CENTREREST,            // centres free time
     JOB_CENTREMANAGER,        // matron of centre    
     JOB_FEEDPOOR,            // work in a soup kitchen
     JOB_COMUNITYSERVICE,    // Goes around town helping where they can
@@ -364,7 +362,6 @@ enum JOBS {
     JOB_FERTILITY,            // magical plastic surgery (takes 5 days)
 
     // `J` Job Clinic - Staff
-    JOB_CLINICREST,            // Is clinics free time    
     JOB_CHAIRMAN,            // Matron of clinic    
     JOB_DOCTOR,                // becomes a doctor (requires 1) (will make some extra cash for treating locals)
     JOB_NURSE,                // helps girls recover from surgery on healing
@@ -376,7 +373,6 @@ enum JOBS {
     //JOB_DRUGDEALER,    
 
     // `J` Job Farm - Staff
-    JOB_FARMREST,            //farm rest
     JOB_FARMMANGER,            //matron of farm
     JOB_VETERINARIAN,        //tends to the animals to keep them from dying - full time
     JOB_MARKETER,            // buys and sells food - full time
@@ -400,7 +396,6 @@ enum JOBS {
     JOB_MAKEPOTIONS,        // create potions with items gained from the garden
 
     // `J` Job House - General
-    JOB_HOUSEREST,            //
     JOB_HEADGIRL,            //
     JOB_RECRUITER,            //
     JOB_PERSONALBEDWARMER,    //

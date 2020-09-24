@@ -45,8 +45,7 @@ sMovieStudio::sMovieStudio() : IBuilding(BuildingType::STUDIO, "Studio")
     m_CurrFilm = nullptr;
     m_MovieRunTime = 0;
 
-    m_RestJob = JOB_FILMFREETIME;
-    m_FirstJob = JOB_FILMFREETIME;
+    m_FirstJob = JOB_DIRECTOR;
     m_LastJob = JOB_FILMRANDOM;
 }
 
@@ -151,12 +150,12 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
         if(!(get_active_matron() && (!camera || !crystal)))
             return;
         // skip dead girls, the director and anyone resting (the director would have assigned them a new job already if they were able to work)
-        if (girl.is_dead() || girl.m_NightJob == m_MatronJob || girl.m_NightJob == m_RestJob ||
+        if (girl.is_dead() || girl.m_NightJob == m_MatronJob || girl.m_NightJob == JOB_RESTING ||
             // skip JOB_CAMERAMAGE and JOB_CRYSTALPURIFIER if there is only one of them
             (girl.m_NightJob == JOB_CAMERAMAGE && num_girls_on_job(JOB_CAMERAMAGE, 1) < 2) ||
             (girl.m_NightJob == JOB_CRYSTALPURIFIER && num_girls_on_job(JOB_CRYSTALPURIFIER, 1) < 2) ||
             // skip anyone if they have refused already
-            (girl.m_DayJob != m_RestJob))
+            (girl.m_DayJob != JOB_RESTING))
         {
             return;
         }
@@ -186,7 +185,7 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     if(!readytofilm) {
         m_Girls->apply([this](sGirl& girl) {
-            if (girl.is_dead() || girl.m_NightJob == m_RestJob || girl.m_NightJob == m_MatronJob) {    // skip dead girls, resting girls and the director (if there is one)
+            if (girl.is_dead() || girl.m_NightJob == JOB_RESTING || girl.m_NightJob == m_MatronJob) {    // skip dead girls, resting girls and the director (if there is one)
                 return;
             }
             if (girl.m_NightJob == JOB_STAGEHAND || girl.m_NightJob == JOB_PROMOTER) { // these two can still work
@@ -220,7 +219,7 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
         /////////////////////
         m_Girls->apply([&](sGirl& girl) {
             auto sw = girl.m_NightJob;
-            if (girl.is_dead() || sw == m_RestJob || sw == JOB_FLUFFER || sw == JOB_CAMERAMAGE ||
+            if (girl.is_dead() || sw == JOB_RESTING || sw == JOB_FLUFFER || sw == JOB_CAMERAMAGE ||
                 sw == JOB_CRYSTALPURIFIER || sw == JOB_DIRECTOR || sw == JOB_PROMOTER ||
                 sw == JOB_STAGEHAND) {    // skip dead girls and already processed jobs
                 return;
@@ -238,7 +237,7 @@ void sMovieStudio::auto_assign_job(sGirl& target, std::stringstream& message, bo
     std::stringstream& ss = message;
     ss << "The Director assigns " << target.FullName() << " to ";
     bool assign_actress = false;
-    target.m_DayJob = m_RestJob;
+    target.m_DayJob = JOB_RESTING;
 
     // first, if there are not enough girls in the studio to film a scene, put them to work at something else.
     if (num_girls() < 4)    // Director plus only 1 or 2 others

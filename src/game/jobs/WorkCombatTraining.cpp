@@ -33,7 +33,7 @@ bool WorkCombatTraining(sGirl& girl, bool Day0Night1, cRng& rng)
         girl.constitution() + girl.strength() >= 500)
     {
         ss << "There is nothing more she can learn here so ${name} takes the rest of the day off.";
-        girl.m_NightJob = girl.m_DayJob = JOB_ARENAREST;
+        girl.m_NightJob = girl.m_DayJob = JOB_RESTING;
         return false;    // not refusing
     }
     if (girl.disobey_check(actiontype, JOB_FIGHTTRAIN))            // they refuse to work

@@ -41,7 +41,7 @@ bool WorkSOStraight(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         ss << "${name} is already Straight.";
         if (Day0Night1 == SHIFT_DAY)    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-        girl.FullJobReset(JOB_HOUSEREST);
+        girl.FullJobReset(JOB_RESTING);
         girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         return false;    // not refusing
     }
@@ -155,7 +155,7 @@ bool WorkSOStraight(sGirl& girl, bool Day0Night1, cRng& rng)
         msgtype = EVENT_GOODNEWS;
         ss << "Her Sexual Orientation conversion is complete. She is now Straight.\n";
         girl.lose_trait("Lesbian");    girl.gain_trait("Bisexual");    girl.lose_trait("Straight");
-        girl.FullJobReset(JOB_HOUSEREST);
+        girl.FullJobReset(JOB_RESTING);
         wages = 200;
     }
     else

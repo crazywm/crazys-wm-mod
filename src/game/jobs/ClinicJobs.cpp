@@ -119,7 +119,7 @@ IGenericJob::eCheckWorkResult DoctorJob::CheckWork(sGirl& girl, bool is_night) {
     {
         ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-        girl.m_PrevDayJob = girl.m_PrevNightJob = girl.m_DayJob = girl.m_NightJob = JOB_CLINICREST;
+        girl.m_PrevDayJob = girl.m_PrevNightJob = girl.m_DayJob = girl.m_NightJob = JOB_RESTING;
         return eCheckWorkResult::IMPOSSIBLE;
     }
     if (girl.is_slave())
@@ -522,7 +522,7 @@ IGenericJob::eCheckWorkResult NurseJob::CheckWork(sGirl& girl, bool is_night) {
     {
         ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;
     }
 
@@ -898,7 +898,7 @@ IGenericJob::eCheckWorkResult InternJob::CheckWork(sGirl& girl, bool is_night) {
     {
         ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;
     }
     if (girl.medicine() + girl.intelligence() + girl.charisma() >= 300)

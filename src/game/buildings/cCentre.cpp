@@ -31,8 +31,7 @@ extern cRng             g_Dice;
 // // ----- Strut sCentre Create / destroy
 sCentre::sCentre() : IBuilding(BuildingType::CENTRE, "Centre")
 {
-    m_RestJob = JOB_CENTREREST;
-    m_FirstJob = JOB_CENTREREST;
+    m_FirstJob = JOB_CENTREMANAGER;
     m_LastJob = JOB_THERAPY;
 }
 

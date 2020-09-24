@@ -82,7 +82,7 @@ bool WorkGetAbort(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         ss << "${name} is not pregant so she was sent to the waiting room.";
         if (Day0Night1 == SHIFT_DAY)    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
         girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
         return false;    // not refusing
     }
@@ -227,7 +227,7 @@ bool WorkGetAbort(sGirl& girl, bool Day0Night1, cRng& rng)
         girl.m_ChildrenCount[CHILD09_ABORTIONS]++;
         girl.clear_pregnancy();
         girl.m_PregCooldown = g_Game->settings().get_integer(settings::PREG_COOL_DOWN);
-        girl.FullJobReset(JOB_CLINICREST);
+        girl.FullJobReset(JOB_RESTING);
         girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
     }
     else

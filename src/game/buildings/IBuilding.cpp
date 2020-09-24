@@ -125,9 +125,9 @@ void IBuilding::BeginWeek()
             cgirl.m_Pay = cgirl.m_Tips = 0;
 
             // `J` Check for out of building jobs
-            if (cgirl.m_DayJob      < m_FirstJob || cgirl.m_DayJob   > m_LastJob)    cgirl.m_DayJob = m_RestJob;
-            if (cgirl.m_NightJob < m_FirstJob || cgirl.m_NightJob > m_LastJob)    cgirl.m_NightJob = m_RestJob;
-            if (cgirl.m_PrevDayJob    < m_FirstJob || cgirl.m_PrevDayJob > m_LastJob)        cgirl.m_PrevDayJob = JOB_UNSET;
+            if (cgirl.m_DayJob       < m_FirstJob || cgirl.m_DayJob   > m_LastJob)        cgirl.m_DayJob = JOB_RESTING;
+            if (cgirl.m_NightJob     < m_FirstJob || cgirl.m_NightJob > m_LastJob)        cgirl.m_NightJob = JOB_RESTING;
+            if (cgirl.m_PrevDayJob   < m_FirstJob || cgirl.m_PrevDayJob > m_LastJob)      cgirl.m_PrevDayJob = JOB_UNSET;
             if (cgirl.m_PrevNightJob < m_FirstJob || cgirl.m_PrevNightJob > m_LastJob)    cgirl.m_PrevNightJob = JOB_UNSET;
 
             // set yesterday jobs for everyone
@@ -150,9 +150,9 @@ void IBuilding::BeginWeek()
 
             if (cgirl.m_JustGaveBirth)        // if she gave birth, let her rest this week
             {
-                if (cgirl.m_DayJob != m_RestJob)        cgirl.m_PrevDayJob = cgirl.m_DayJob;
-                if (cgirl.m_NightJob != m_RestJob)    cgirl.m_PrevNightJob = cgirl.m_NightJob;
-                cgirl.m_DayJob = cgirl.m_NightJob = m_RestJob;
+                if (cgirl.m_DayJob != JOB_RESTING)        cgirl.m_PrevDayJob = cgirl.m_DayJob;
+                if (cgirl.m_NightJob != JOB_RESTING)    cgirl.m_PrevNightJob = cgirl.m_NightJob;
+                cgirl.m_DayJob = cgirl.m_NightJob = JOB_RESTING;
             }
         }
     });
@@ -175,7 +175,7 @@ void IBuilding::HandleRestingGirls(bool is_night)
     std::stringstream ss;
     m_Girls->apply([&](sGirl& current){
         unsigned int sw = current.get_job(is_night);
-        if (current.is_dead() || sw != m_RestJob)
+        if (current.is_dead() || sw != JOB_RESTING)
         {    // skip dead girls and anyone not resting
             return;
         }
@@ -193,30 +193,30 @@ void IBuilding::HandleRestingGirls(bool is_night)
         }
         else if (current.health() < 80 || current.tiredness() > 20)
         {
-            g_Game->job_manager().do_job(m_RestJob, current, is_night);
+            g_Game->job_manager().do_job(JOB_RESTING, current, is_night);
         }
         else if (m_ActiveMatron)    // send her back to work
         {
             int psw = current.get_job(is_night);
-            if (psw != m_RestJob && psw != 255)
+            if (psw != JOB_RESTING && psw != 255)
             {    // if she had a previous job, put her back to work.
                 if(!handle_back_to_work(current, ss, is_night)) {
                     if (is_night == SHIFT_DAY)
                     {
                         current.m_DayJob = current.m_PrevDayJob;
-                        if (current.m_NightJob == m_RestJob && current.m_PrevNightJob != m_RestJob && current.m_PrevNightJob != 255)
+                        if (current.m_NightJob == JOB_RESTING && current.m_PrevNightJob != JOB_RESTING && current.m_PrevNightJob != 255)
                             current.m_NightJob = current.m_PrevNightJob;
                     }
                     else
                     {
-                        if (current.m_DayJob == m_RestJob && current.m_PrevDayJob != m_RestJob && current.m_PrevDayJob != 255)
+                        if (current.m_DayJob == JOB_RESTING && current.m_PrevDayJob != JOB_RESTING && current.m_PrevDayJob != 255)
                             current.m_DayJob = current.m_PrevDayJob;
                         current.m_NightJob = current.m_PrevNightJob;
                     }
                     ss << "The " << get_job_name(m_MatronJob) << " puts " << girlName << " back to work.\n";
                 }
             }
-            else if (current.m_DayJob == m_RestJob && current.m_NightJob == m_RestJob)
+            else if (current.m_DayJob == JOB_RESTING && current.m_NightJob == JOB_RESTING)
             {
                 auto_assign_job(current, ss, is_night);
             }
@@ -225,7 +225,7 @@ void IBuilding::HandleRestingGirls(bool is_night)
         }
         else if (current.health() < 100 || current.tiredness() > 0)    // if there is no matron to send her somewhere just do resting
         {
-            g_Game->job_manager().do_job(m_RestJob, current, is_night);
+            g_Game->job_manager().do_job(JOB_RESTING, current, is_night);
         }
         else    // no one to send her back to work
         {
@@ -352,7 +352,7 @@ void IBuilding::EndShift(bool Day0Night1)
                 {
                     current.m_PrevDayJob = current.m_DayJob;
                     current.m_PrevNightJob = current.m_NightJob;
-                    current.m_DayJob = current.m_NightJob = m_RestJob;
+                    current.m_DayJob = current.m_NightJob = JOB_RESTING;
                     ss << "The " << get_job_name(m_MatronJob) << " takes ${name} off duty to rest due to her ";
                     if (t > 80 && h < 40)    ss << "exhaustion.\n";
                     else if (t > 80)        ss << "tiredness.\n";
@@ -407,7 +407,7 @@ void IBuilding::add_girl(std::shared_ptr<sGirl> girl, bool keep_job)
 {
     girl->m_Building = this;
     if (!keep_job) {
-        girl->m_DayJob = girl->m_NightJob = m_RestJob;
+        girl->m_DayJob = girl->m_NightJob = JOB_RESTING;
     }
     girl->FixFreeTimeJobs();
     m_Girls->AddGirl(std::move(girl));

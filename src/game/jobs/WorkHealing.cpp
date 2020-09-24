@@ -102,10 +102,10 @@ bool WorkHealing(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         if (numdocs + numnurse < 1)    ss << "\n \nShe wanders out of the Clinic when she is feeling better.";
         else                        ss << "\n \nShe has been released from the Clinic.";
-        if (girl.m_DayJob == JOB_GETHEALING)    girl.m_DayJob = JOB_CLINICREST;
-        if (girl.m_NightJob == JOB_GETHEALING)    girl.m_NightJob = JOB_CLINICREST;
-        if (girl.m_DayJob == JOB_GETREPAIRS)    girl.m_DayJob = JOB_CLINICREST;
-        if (girl.m_NightJob == JOB_GETREPAIRS)    girl.m_NightJob = JOB_CLINICREST;
+        if (girl.m_DayJob == JOB_GETHEALING)    girl.m_DayJob = JOB_RESTING;
+        if (girl.m_NightJob == JOB_GETHEALING)    girl.m_NightJob = JOB_RESTING;
+        if (girl.m_DayJob == JOB_GETREPAIRS)    girl.m_DayJob = JOB_RESTING;
+        if (girl.m_NightJob == JOB_GETREPAIRS)    girl.m_NightJob = JOB_RESTING;
     }
 
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);

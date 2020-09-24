@@ -33,7 +33,6 @@ extern cRng             g_Dice;
 // // ----- Strut sArena Create / destroy
 sArena::sArena() : IBuilding(BuildingType::ARENA, "Arena")
 {
-    m_RestJob = JOB_ARENAREST;
     m_FirstJob = JOB_FIGHTBEASTS;
     m_LastJob = JOB_CLEANARENA;
 }
@@ -65,7 +64,7 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
     //*/
     m_Girls->apply([&](auto& current){
         auto sw = (is_night ? current.m_NightJob : current.m_DayJob);
-        if (current.is_dead() || sw == m_RestJob || sw == m_MatronJob)// || sw == JOB_RACING)
+        if (current.is_dead() || sw == JOB_RESTING || sw == m_MatronJob)// || sw == JOB_RACING)
         {    // skip dead girls, resting girls and the matron and racers
             return;
         }
@@ -80,7 +79,7 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
             if (current.health() < 50)
             {
                 ssc << "rest and heal";
-                sw = m_RestJob;
+                sw = JOB_RESTING;
             }
             else if (current.combat() > 90 && current.magic() > 90 && current.agility() > 90 && current.constitution() > 90 && current.health() > 90)
             {

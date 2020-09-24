@@ -220,10 +220,7 @@ int cScreenTransfer::checkjobcolor(const sGirl& temp)
         || temp.m_DayJob == JOB_HEADGIRL || temp.m_NightJob == JOB_HEADGIRL || temp.m_DayJob == JOB_MATRON || temp.m_NightJob == JOB_MATRON
         || temp.m_NightJob == JOB_DIRECTOR)
         return COLOR_RED;
-    else if ((temp.m_DayJob == JOB_ARENAREST && temp.m_NightJob == JOB_ARENAREST) || (temp.m_DayJob == JOB_CENTREREST && temp.m_NightJob == JOB_CENTREREST)
-        || (temp.m_DayJob == JOB_CLINICREST && temp.m_NightJob == JOB_CLINICREST) || (temp.m_DayJob == JOB_FARMREST && temp.m_NightJob == JOB_FARMREST)
-        || (temp.m_DayJob == JOB_HOUSEREST && temp.m_NightJob == JOB_HOUSEREST) || (temp.m_DayJob == JOB_RESTING && temp.m_NightJob == JOB_RESTING)
-        || (temp.m_NightJob == JOB_FILMFREETIME))
+    else if ((temp.m_DayJob == JOB_RESTING && temp.m_NightJob == JOB_RESTING))
         return COLOR_GREEN;
     else if (temp.m_DayJob == JOB_COUNSELOR || temp.m_NightJob == JOB_COUNSELOR)
     {

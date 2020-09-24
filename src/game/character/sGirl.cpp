@@ -794,13 +794,7 @@ bool sGirl::is_fighter(bool canbehelped) const
 
 bool sGirl::is_resting() const
 {
-    return ((m_DayJob == JOB_FILMFREETIME    && m_NightJob == JOB_FILMFREETIME) ||
-            (m_DayJob == JOB_ARENAREST        && m_NightJob == JOB_ARENAREST) ||
-            (m_DayJob == JOB_CENTREREST        && m_NightJob == JOB_CENTREREST) ||
-            (m_DayJob == JOB_CLINICREST        && m_NightJob == JOB_CLINICREST) ||
-            (m_DayJob == JOB_HOUSEREST        && m_NightJob == JOB_HOUSEREST) ||
-            (m_DayJob == JOB_FARMREST        && m_NightJob == JOB_FARMREST) ||
-            (m_DayJob == JOB_RESTING        && m_NightJob == JOB_RESTING));
+    return m_DayJob == JOB_RESTING && m_NightJob == JOB_RESTING;
 }
 bool sGirl::is_havingsex() const
 {
@@ -836,13 +830,7 @@ bool sGirl::is_havingsex() const
 }
 bool sGirl::was_resting() const
 {
-    return ((m_PrevDayJob == JOB_FILMFREETIME    && m_PrevNightJob == JOB_FILMFREETIME) ||
-            (m_PrevDayJob == JOB_ARENAREST        && m_PrevNightJob == JOB_ARENAREST) ||
-            (m_PrevDayJob == JOB_CENTREREST        && m_PrevNightJob == JOB_CENTREREST) ||
-            (m_PrevDayJob == JOB_CLINICREST        && m_PrevNightJob == JOB_CLINICREST) ||
-            (m_PrevDayJob == JOB_HOUSEREST        && m_PrevNightJob == JOB_HOUSEREST) ||
-            (m_PrevDayJob == JOB_FARMREST        && m_PrevNightJob == JOB_FARMREST) ||
-            (m_PrevDayJob == JOB_RESTING        && m_PrevNightJob == JOB_RESTING));
+    return m_PrevDayJob == JOB_RESTING    && m_PrevNightJob == JOB_RESTING;
 }
 
 void sGirl::OutputGirlDetailString(std::string& Data, const std::string& detailName) const
@@ -1152,30 +1140,17 @@ bool sGirl::FixFreeTimeJobs()
     bool fixedD = false;
     bool fixedN = false;
     unsigned int dj = m_DayJob;
-    if (dj == JOB_FILMFREETIME || dj == JOB_ARENAREST || dj == JOB_CENTREREST || dj == JOB_CLINICREST ||
-        dj == JOB_HOUSEREST || dj == JOB_FARMREST || dj == JOB_RESTING || dj == 255)
+    if (dj == JOB_RESTING || dj == 255)
     {
         auto old_job = m_DayJob;
-        if(m_Building) {
-            m_DayJob = m_Building->m_RestJob;
-        } else {
-            m_DayJob = JOB_RESTING;
-        }
-
-
+        m_DayJob = JOB_RESTING;
         fixedD = old_job != m_DayJob;
     }
     unsigned int nj = m_NightJob;
-    if (nj == JOB_FILMFREETIME || nj == JOB_ARENAREST || nj == JOB_CENTREREST || nj == JOB_CLINICREST ||
-        nj == JOB_HOUSEREST || nj == JOB_FARMREST || nj == JOB_RESTING || nj == 255)
+    if (nj == JOB_RESTING || nj == 255)
     {
         auto old_job = m_NightJob;
-        if(m_Building) {
-            m_NightJob = m_Building->m_RestJob;
-        } else {
-            m_NightJob = JOB_RESTING;
-        }
-
+        m_NightJob = JOB_RESTING;
         fixedN = old_job != m_DayJob;
     }
 

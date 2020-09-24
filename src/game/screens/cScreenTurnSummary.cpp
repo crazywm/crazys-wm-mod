@@ -531,7 +531,7 @@ EventRating studio_rating_job(const sGirl& g)
         return {4.0, COLOR_DARKBLUE};
     } else if (g.m_NightJob == JOB_PROMOTER || g.m_NightJob == JOB_FLUFFER || g.m_NightJob == JOB_STAGEHAND) {
         return {3.0, COLOR_BLUE};
-    } else if (g.m_NightJob == JOB_FILMFREETIME) {
+    } else if (g.m_NightJob == JOB_RESTING) {
         return {0.0, COLOR_RED};
     }
     return {0.0, COLOR_GREEN};

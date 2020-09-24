@@ -52,7 +52,6 @@ sBrothel::sBrothel() :
     //movie
     m_ShowTime = m_ShowQuality = 0;
 
-    m_RestJob = JOB_RESTING;
     m_FirstJob = JOB_RESTING;
     m_LastJob = JOB_WHORESTREETS;
 }
@@ -133,7 +132,7 @@ void sBrothel::UpdateGirls(bool is_night)
         if (is_night == SHIFT_DAY)
         {
             // Back to work
-            if (current.m_NightJob == m_RestJob && current.m_DayJob == m_RestJob && current.m_PregCooldown < g_Game->settings().get_integer(settings::PREG_COOL_DOWN) &&
+            if (current.m_NightJob == JOB_RESTING && current.m_DayJob == JOB_RESTING && current.m_PregCooldown < g_Game->settings().get_integer(settings::PREG_COOL_DOWN) &&
                 current.health() >= 80 && current.tiredness() <= 20)
             {
                 if ((matron || current.m_PrevDayJob == m_MatronJob)                    // do we have a director, or was she the director and made herself rest?
@@ -143,7 +142,7 @@ void sBrothel::UpdateGirls(bool is_night)
                     if (current.m_DayJob == current.m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
                         current.m_NightJob = current.m_PrevNightJob;
                     else
-                        current.m_NightJob = m_RestJob;
+                        current.m_NightJob = JOB_RESTING;
                     current.m_PrevDayJob = current.m_PrevNightJob = JOB_UNSET;
                     current.AddMessage("The Matron puts ${name} back to work.\n", IMGTYPE_PROFILE, EVENT_BACKTOWORK);
                 }

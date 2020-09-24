@@ -29,8 +29,7 @@ extern cRng             g_Dice;
 // // ----- Strut sFarm Create / destroy
 sFarm::sFarm() : IBuilding(BuildingType::FARM, "Farm")
 {
-    m_RestJob = JOB_FARMREST;
-    m_FirstJob = JOB_FARMREST;
+    m_FirstJob = JOB_FARMMANGER;
     m_LastJob = JOB_MAKEPOTIONS;
 }
 
@@ -50,7 +49,7 @@ void sFarm::UpdateGirls(bool is_night)        // Start_Building_Process_B
 
     m_Girls->apply([&](sGirl& girl) {
         auto sw = girl.get_job(is_night);
-        if (girl.is_dead() || sw == m_RestJob || sw == m_MatronJob || sw == JOB_MARKETER)
+        if (girl.is_dead() || sw == JOB_RESTING || sw == m_MatronJob || sw == JOB_MARKETER)
         {    // skip dead girls, resting girls and the matron
             return;
         }

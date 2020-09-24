@@ -30,8 +30,7 @@ extern cRng             g_Dice;
 // // ----- Strut sHouse Create / destroy
 sHouse::sHouse() : IBuilding(BuildingType::HOUSE, "House")
 {
-    m_RestJob = JOB_HOUSEREST;
-    m_FirstJob = JOB_HOUSEREST;
+    m_FirstJob = JOB_HEADGIRL;
     m_LastJob = JOB_HOUSEPET;
 }
 
@@ -68,7 +67,7 @@ void sHouse::UpdateGirls(bool is_night)    // Start_Building_Process_B
     //*/
     m_Girls->apply([&](auto& current) {
         auto sw = current.get_job(is_night);;
-        if (current.is_dead() || sw == m_RestJob || sw == m_MatronJob ||    // skip dead girls, resting girls and the matron
+        if (current.is_dead() || sw == JOB_RESTING || sw == m_MatronJob ||    // skip dead girls, resting girls and the matron
             sw == JOB_PERSONALBEDWARMER ||
             (is_night && sw == JOB_RECRUITER))                            // skip recruiters on the night shift
         {

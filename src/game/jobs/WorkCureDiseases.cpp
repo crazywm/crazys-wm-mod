@@ -41,7 +41,7 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
     if (!has_disease(girl))
     {
         ss << "${name} has no diseases";
-        JOBS newjob = JOB_CLINICREST;
+        JOBS newjob = JOB_RESTING;
         if (girl.health() < 80 || girl.tiredness() > 20)
         {
             ss << ". She was not feeling well so she ";
@@ -265,7 +265,7 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
         if (!has_disease(girl))
         {
             ss << "She has been released from the Clinic";
-            girl.FullJobReset(JOB_CLINICREST);
+            girl.FullJobReset(JOB_RESTING);
         }
         else
         {

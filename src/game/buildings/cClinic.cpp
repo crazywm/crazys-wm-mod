@@ -33,7 +33,6 @@ extern cRng    g_Dice;
 // // ----- Strut sClinic Create / destroy
 sClinic::sClinic() : IBuilding(BuildingType::CLINIC, "Clinic")
 {
-    m_RestJob = JOB_CLINICREST;
     m_FirstJob = JOB_GETHEALING;
     m_LastJob = JOB_JANITOR;
 }
@@ -227,7 +226,7 @@ bool sClinic::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_ni
     {
         if (girl.has_active_trait("AIDS"))
         {
-            girl.m_DayJob = girl.m_NightJob = m_RestJob;
+            girl.m_DayJob = girl.m_NightJob = JOB_RESTING;
             ss << girl.FullName() << " could not go back to work as a";
             if (psw == JOB_DOCTOR)    ss << " Doctor";
             if (psw == JOB_NURSE)    ss << " Nurse";
@@ -236,7 +235,7 @@ bool sClinic::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_ni
         }
         else if (psw == JOB_DOCTOR && girl.is_slave())
         {
-            girl.m_DayJob = girl.m_NightJob = m_RestJob;
+            girl.m_DayJob = girl.m_NightJob = JOB_RESTING;
             ss << girl.FullName() << " could not go back to work as a Doctor because she is a slave. Instead ";
         }
         else if (psw == JOB_INTERN)        // intern is a part time job
@@ -251,7 +250,7 @@ bool sClinic::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_ni
             backtowork = true;
         }
     }
-    else if (psw != m_RestJob && psw >= firstjob && psw<=lastjob)
+    else if (psw != JOB_RESTING && psw >= firstjob && psw<=lastjob)
     {    // if she had a previous job that shift, put her back to work.
         if (g_Game->job_manager().FullTimeJob(psw))
         {
@@ -259,14 +258,14 @@ bool sClinic::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_ni
         }
         else if (is_night)    // checking night job
         {
-            if (girl.m_DayJob == m_RestJob && girl.m_PrevDayJob != m_RestJob && girl.m_PrevDayJob != 255)
+            if (girl.m_DayJob == JOB_RESTING && girl.m_PrevDayJob != JOB_RESTING && girl.m_PrevDayJob != 255)
                 girl.m_DayJob = girl.m_PrevDayJob;
             girl.m_NightJob = psw;
         }
         else                    // checking day job
         {
             girl.m_DayJob = psw;
-            if (girl.m_NightJob == m_RestJob && girl.m_PrevNightJob != m_RestJob && girl.m_PrevNightJob != 255)
+            if (girl.m_NightJob == JOB_RESTING && girl.m_PrevNightJob != JOB_RESTING && girl.m_PrevNightJob != 255)
                 girl.m_NightJob = girl.m_PrevNightJob;
         }
         backtowork = true;
@@ -356,7 +355,7 @@ void sClinic::GirlBeginShift(sGirl& girl, bool is_night) {
             is_in((JOBS)girl.m_DayJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE}) ||
             is_in((JOBS)girl.m_NightJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE})))
     {
-        girl.m_DayJob = girl.m_NightJob = JOB_CLINICREST;
+        girl.m_DayJob = girl.m_NightJob = JOB_RESTING;
         girl.AddMessage("Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.",
                         IMGTYPE_PROFILE, EVENT_WARNING);
     }
