@@ -64,4 +64,4 @@
   - [ ] "your inventory is full" for sell button
 * [ ] gracefully handle missing/corrupt config file
 * [x] autosave path is messed up now
-* [ ] save game loading crashes when no job was assigned
+* [x] save game loading crashes when no job was assigned

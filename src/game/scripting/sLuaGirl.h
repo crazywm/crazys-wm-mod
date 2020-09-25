@@ -47,6 +47,7 @@ struct sLuaGirl : public sCharacter<sLuaGirl>{
     static int lose_virginity(lua_State* L);
 
     static int obey_check(lua_State* L);
+    static int trigger_event(lua_State* L);
 
     static int calc_player_pregnancy(lua_State* L);
     static int clear_pregnancy(lua_State* L);

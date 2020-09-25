@@ -16,7 +16,7 @@ function DungeonInteractChoice(girl)
         girl:torture()
         wm.UpdateImage(wm.IMG.TORTURE)
     elseif choice == 1 then
-        Chat(girl)
+        return girl:trigger("girl:chat.dungeon")
     elseif choice == 2 then
         ScoldGirl(girl)
     elseif choice == 3 then
@@ -194,52 +194,6 @@ function DungeonInteractChoice(girl)
 end
 
 
-function Chat(girl)
-    local choice = ChoiceBox("", "About general stuff", "About how she feels about her life",
-            "About how she feels towards you", "Go Back")
-    if choice == 0 then
-        Dialog("You both sit and chat about all manner of things")
-        girl:happiness(2)
-        girl:pcfear(-1)
-        girl:pchate(-1)
-        girl:pclove(1)
-    elseif choice == 1 then
-        if girl:happiness() > 50 then
-            Dialog("She tells you she is happy with her life.")
-        else
-            Dialog("She says she is unhappy and would like more free time.")
-        end
-        girl:happiness(2)
-        girl:pcfear(-1)
-        girl:pclove(2)
-    elseif choice == 2 then
-        if girl:pclove() < 30 then
-            Dialog("She tells you she has no romantic feelings towards you")
-        elseif girl:pclove() < 50 then
-            Dialog("She likes the you as a friend but nothing more then that")
-        elseif girl:pclove() < 70 then
-            Dialog("She tells you she has some strong feelings towards you.")
-        else
-            Dialog("She tells you she is deeply in love with you and every moment together is like a dream.")
-        end
-
-        if girl:pcfear() < 50 then
-            Dialog("She then tells you she doesn't find you intimidating.")
-        else
-            Dialog("She then says you are a little scary to be around.")
-        end
-
-        if girl:pchate() < 50 then
-            Dialog("She lastly tells you that she doesn't hate anything about you.")
-        else
-            Dialog("She lastly tells you that despite all her other feelings, she feels some hatred towards you.")
-        end
-    else
-        return DungeonInteractChoice(girl)
-    end
-end
-
-
 function BrothelInteractChoice(girl)
     local choice = ChoiceBox("What would you like to do?", "Reward " .. girl:name(),
             "Chat with " .. girl:name(), "Visit " .. girl:name() .. "'s Bedroom",
@@ -254,77 +208,7 @@ function BrothelInteractChoice(girl)
         girl:pclove(1)
         girl:pchate(-1)
     elseif choice == 1 then
-        Dialog("Lets take a moment to talk.")
-        choice = ChoiceBox("Topic?", "Casual Conversation", "Discuss her", "Talk about you", "<Go Back>")
-        if choice == 0 then
-            Dialog("After some small talk, your conversation turns to several subjects. She seems to enjoy the chance to chat.")
-            girl:happiness(wm.Range(0, 4))
-            girl:pcfear(wm.Range(-3, 0))
-            girl:pclove(wm.Range(0, 2))
-            girl:pchate(wm.Range(-3, 0))
-        elseif choice == 1 then
-            Dialog("How are you feeling my dear? Are you happy? Are you healthy?")
-            if girl:happiness() >= 80 then
-                Dialog("She giggles a bit and proclaims \"I'm happier than I have ever been\"")
-            elseif girl:happiness() >= 50 then
-                Dialog("She stifles a sob and tells you all the things that have been going wrong around her.")
-            elseif girl:happiness() >= 16 then
-                Dialog("She doesn't respond and stares ahead blankly")
-            end
-            Dialog("As you talk to her you take a few moments to look her over")
-            if girl:tiredness() <= 10 then
-                Dialog("The girl is so full of energy she is almost bouncing in her seat.")
-            elseif girl:tiredness() <= 50 then
-                Dialog("Looking closely she doesn't seem either tired or energetic.")
-            elseif girl:tiredness() <= 80 then
-                Dialog("As you look at her you can see that her duties are starting to take their toll.")
-            else
-                Dialog("It is clear that she can barely keep her eyes open!")
-            end
-
-            if girl:health() > 75 then
-                Dialog("She seems to be in good health.")
-            elseif girl:health() > 50 then
-                Dialog("You can see some scrapes and bruises.")
-            elseif girl:health() > 15 then
-                Dialog("This girl has several bandages and large bruises all over her body.")
-            else
-                Dialog("She is covered in bloodied bandages and several open wounds. She will surely die without the services of a cleric.")
-            end
-        elseif choice == 2 then
-            Dialog("How do you feel about me?")
-            Dialog("Do I frighten you?")
-            if girl:pcfear() > 80 then
-                Dialog("She can't even bring herself to look at you and she trembles uncontrollably in her seat.")
-            elseif girl:pcfear() > 50 then
-                Dialog("Timidly she nods her head.")
-            elseif girl:pcfear() > 15 then
-                Dialog("She says there isn't anything particularly scary about you.")
-            else
-                Dialog("She laughs. \"You're about as scary as a bunny rabbit, boss.\"")
-            end
-
-            Dialog("Do you hate me?")
-            if girl:pclove() > 90 then
-                Dialog("She giggles to herself thinking about the question. Stifling a chuckle: \"Well, I do have very strong feelings toward you.\" she pauses...")
-                Dialog("\"In truth, I am in love with you.\" she blushes.")
-            elseif girl:pclove() > 60 then
-                Dialog("She smiles a bit at the question.  \"I don't hate you.  I think you're the perfect gentlemen.\"")
-            elseif girl:pchate() > 95 then
-                Dialog("She spits at you and screams \"I hope you fucking die with a dick in your ass!\"")
-                Dialog("She grabs the nearest object and leaps at you, swinging wildly.  You quickly master your surprise and with a hard backhand you knock her to the ground.")
-                Dialog("Your bodyguards rush into the room.  Seeing the girl lying on the floor they ask. \"What do you want us to do with her , boss?\"")
-                girl:pchate(wm.Range(2, 5))
-                girl:health(wm.Range(-5, -1))
-                Punish(girl)
-            elseif girl:pchate() > 50 then
-                Dialog("She glares at you before she responds. \"You're a sick, perverted asshole.\"")
-            elseif girl:pchate() > 30 then
-                Dialog("She rolls her eyes, \"No more than the average whore hates her pimp.\"")
-            else
-                Dialog("She tells you she doesn't hate you and that you have been a good, kind employer")
-            end
-        end
+        return girl:trigger("girl:chat.brothel")
     elseif choice == 2 then
         local have_sex = "To have sex"
         if girl:pclove() > 90 then
@@ -350,7 +234,7 @@ function BrothelInteractChoice(girl)
                 end
             else
                 Dialog("She refuses to have sex; mumbling some half hearted excuse.")
-                RefusedSexAct(girl)
+                return girl:trigger("girl:refuse")
             end
         elseif choice == 1 then
             Dialog("She notices that you have not come alone.  Following her gaze you speak \"Ah I see you noticed.  I'd like you two girls to get to know each other better and...  :you wink slyly:  I'd like to watch.\"")
@@ -373,7 +257,7 @@ function BrothelInteractChoice(girl)
                 end
             else
                 Dialog("She wrinkles her nose in disgust and refuses.")
-                RefusedSexAct(girl)
+                return girl:trigger("girl:refuse")
             end
         elseif choice == 2 then
             Dialog("I wonder if you would cheer up my pet Malboro. He's been down lately and could really use a good fucking.")
@@ -399,7 +283,7 @@ function BrothelInteractChoice(girl)
                 end
             else
                 Dialog("She refuses to have sex with a beast.")
-                RefusedSexAct(girl)
+                return girl:trigger("girl:refuse")
             end
         elseif choice == 3 then
             Dialog("As you enter her room you accidently jostle the crate you're carrying.  Hearing the clinking and clanging she eyes the crate.  \"What do you have got in the crate?\" She asks.")
@@ -426,7 +310,7 @@ function BrothelInteractChoice(girl)
                 end
             else
                 Dialog("She refuses to let you tie her up.")
-                RefusedSexAct(girl)
+                return girl:trigger("girl:refuse")
             end
         elseif choice == 4 then
             Dialog("You almost trip over her as you enter the room. \"My Dear, what are you doing kneeling on the floor?\"  Seeing her kneeling before you gives you an idea...")
@@ -453,7 +337,7 @@ function BrothelInteractChoice(girl)
                     end
                 else
                     Dialog("She closes her mouth tight and turns her head way from your penis.")
-                    RefusedSexAct(girl)
+                    return girl:trigger("girl:refuse")
                 end
             elseif choice == 1 then
                 Dialog("\"I want to see how much of this you can fit in your mouth.\"")
@@ -475,7 +359,7 @@ function BrothelInteractChoice(girl)
                     end
                 else
                     Dialog("She closes her mouth tight and shakes her head refusingly.")
-                    RefusedSexAct(girl)
+                    return girl:trigger("girl:refuse")
                 end
             elseif choice == 2 then
                 Dialog("You sit down on a stool beside her. \"Why don't you use your tits and your mouth this time?\"")
@@ -509,7 +393,7 @@ function BrothelInteractChoice(girl)
                     end
                 else
                     Dialog("She stands up quickly and turns her back to you defiantly.")
-                    RefusedSexAct(girl)
+                    return girl:trigger("girl:refuse")
                 end
 
             end
@@ -540,7 +424,7 @@ function BrothelInteractChoice(girl)
                 end
             else
                 Dialog("She quickly stands up and turns around.  \"I know what your thinking and the answer is NO.\"")
-                RefusedSexAct(girl)
+                return girl:trigger("girl:refuse")
             end
         elseif choice == 6 then
             Dialog("Her back is toward you as you enter the room.  You notice that one of her hands  is between her legs.")
@@ -570,7 +454,7 @@ function BrothelInteractChoice(girl)
                     Dialog("She blushes to a deep red and pushes you out of the room without ever making eye contact.")
                 else
                     Dialog("She immediately covers herself and demands you leave her room.")
-                    RefusedSexAct(girl)
+                    return girl:trigger("girl:refuse")
                 end
             end
         elseif choice == 7 then
@@ -606,7 +490,7 @@ function BrothelInteractChoice(girl)
                 end
             else
                 Dialog("She refuses to be gangbanged like some dirty beggar on the streets.")
-                RefusedSexAct(girl)
+                return girl:trigger("girl:refuse")
             end
         elseif choice == 8 then
             Dialog("\"Good evening, my dear.  I stopped by because I wanted to see how well you've learned to work the pole.\"")
@@ -642,171 +526,65 @@ function BrothelInteractChoice(girl)
                     end
                 else
                     Dialog("She refuses to perform a striptease for you.")
-                    RefusedSexAct(girl)
+                    return girl:trigger("girl:refuse")
                 end
             end
         elseif choice == 9 then
             Dialog("Go Back")
-            return BrothelInteractChoice(girl)
+            return girl:trigger("girl:interact.brothel")
         end
     elseif choice == 3  then -- Office
-        InteractOffice(girl)
+        return girl:trigger("girl:interact.office")
     elseif choice == 4 then
         Dialog("\"Hello My Dear, I wanted to ask you to come by my private quarters this evening.  Perhaps, we can get to know each other better.\" ")
         if girl:obey_check(wm.ACTIONS.SEX) then
-            Dialog("She smiles slightly and nods her agreement.")
-            local event = ChoiceBox("", "Cocktails", "Dinner")
-            -- GOTO 70 // 5
+            return girl:trigger("girl:interact.private")
         else
             Dialog("She declines your invitation.")
-            RefusedSexAct(girl)
+            return girl:trigger("girl:refuse")
         end
     elseif choice == 5 then
-        local action = ChoiceBox("",
-                "Send her to the Arcane Citadel for Magic Lessons. COST: 500 gold",
-                "Have her do Agility training with the local street acrobats.  Cost: 250 gold",
-                "Work with the stevedore's at the shipyard to improve her Strength and Stamina.  COST: 300 gold",
-                "Spend the day with a veteran adventurer for combat training. COST: 500 gold",
-                "Go Back"
-        )
-        -- GOTO 80 // 6
+        return girl:trigger("girl:training")
     end
 end
 
-function InteractOffice(girl)
-    local choice = ChoiceBox("", "Instruct her to tidy up your office", "Review her performance",
-            "Send her on a mission", "Personal instruction", "Inspect her", "Go Back")
-    if choice == 0 then
-        if girl:obey_check(wm.ACTIONS.WORKCLEANING) then
-            wm.UpdateImage(wm.IMG.MAID)
-            Dialog("She puts on her maid's attire and sets about tidying up your office.  You always enjoy being around a women in a maid's outfit .")
-        else
-            Dialog("She refuses to clean your office.")
-            RefusedSexAct(girl) -- TODO this is no sex act
-        end
-    elseif choice == 1 then
-        Dialog("You glance down at the parchment before you. \"Now, lets see...\"")
-        if wm.Percent(girl:charisma()) then
-            Dialog("\"You do an excellent job of maintaining your personal appearance and you make the customer's feel welcome....\"")
-        else
-            Dialog("Hmm...You could put a little more effort into you appearance and You make the customers uncomfortable...")
-        end
-
-        if wm.Percent(girl:obedience()) then
-            Dialog("I will say, you do an excellent job of following direction...")
-        else
-            Dialog("I've had to repeat my commands to you in the past; Don't let this become a habit...")
-        end
-
-        if wm.Percent(girl:normalsex()) then
-            Dialog("Your clients all seem to be very satisfied with your abilities...")
-        else
-            Dialog("I have noticed more than once that your clients leave with a dissatisfied look,  That's bad for business...")
-        end
-
-        if wm.Percent(girl:service()) then
-            Dialog("You've been very diligent at helping with the household tasks...")
-        else
-            Dialog("I don't think I have seen you chipping in with the housework very often;  every girl needs to do her part...")
-        end
-
-        Dialog("Well,  That is where things stand for now.  Remember, there is always room for improvement.")
-    elseif choice == 2 then
-        GoOnMission(girl)
-        -- GOTO 41 // 7
-    elseif choice == 3 then
-        Dialog("\"After observing your work these past couple days, I've noticed some things that could use improvement.  I think you will benefit from my personal instruction in these areas\"  *You wink at her slyly*")
-        if girl:obey_check(wm.ACTIONS.SEX) then
-            Dialog("\"Please, join me on my office couch there and we will begin....\"")
-            local action = wm.Range(1, 4)
-            if action == 1 then
-                Dialog("You lay back on your leather couch and pull your erect member from your trousers.   \"Now my dear, I'm going to teach you the right way to suck a cock...\"")
-                -- TODO ORAL SEX
-            elseif action == 2 then
-                Dialog("You gently help her remove her clothing and lay her down on the sofa.  As you position yourself on top of her you begin explaining the finer points of vaginal sex.")
-                -- TODO Normal Sex
-            elseif action == 3 then
-                Dialog("You chat with her a few moments on the merits of pain and pleasure sex.  She listens intently and doesn't notice as you bind her with the hidden couch restraints.  She notices as you cinch the last strap and looks up at you inquiringly.  \"No lesson is complete without a demonstration\"  You explain. \"Now be mindful of what I told you, as I demonstrate....\"")
-                -- TODO BDSM sex
-            else
-                Dialog("You instruct her to kneel on the couch, facing away from you.  You admire her ass for a moment as you ask her to pull her dress up.  Reaching out, you slowly pull down her panties.  As you stimulate her clitoris and rub her juices on her anus, You explain some techniques to help her relax her muscles during anal sex.  You continue your lesson with a practical demonstration and you easily slide your penis into her ass...")
-                -- TODO ANAL SEX
-            end
-        else
-            Dialog("She refuses your offer of instruction.")
-            RefusedSexAct(girl)
-        end
-    elseif choice == 4 then
-        if girl:has_trait("Lolita") then
-            Dialog("You look up at her, \"Are you sure this parchment is correct?  You barely look of legal age.\"")
-        elseif girl:age() > 30 then
-            Dialog("Looking down the parchment:  \"Hmm, a little older than most perhaps...\"")
-        else
-            Dialog("You seem to be the right age for our needs.")
-        end
-
-        Dialog("Remove your clothing.  I want to get a better look my investment.")
-
-        if girl:obey_check(wm.ACTIONS.WORKSTRIP) then
-            -- TODO strip
-            Dialog("She removes her clothing and stands nervously before you.")
-            if girl:has_trait("Futanari") then
-                Dialog("Oh! Hmm...I didn't realize you were a dick girl...")
-            end
-
-            if girl:beauty() >= 50 then
-                Dialog("I see you put a lot of effort into you appearance....Yes, quite beautiful.")
-            else
-                Dialog("You're not much to look at are you.")
-            end
-
-            Dialog("You stand up and begin to slowly circle her.")
-            if girl:has_trait("Great Figure") then
-                Dialog("Ahh, you do have a nice figure don't you.  Very nicely proportioned.")
-            end
-            if girl:has_trait("Long Legs") then
-                Dialog("Wow, those legs certainly do go all the way up, don't they.")
-            end
-            if girl:has_trait("Great Arse") then
-                Dialog("You stop circling directly behind her and gently pressing between her shoulder blades until she is bent over with her hands on your desk.  Your eyes are glued to her ass.  Now, that is truly a magnificent ass.")
-            end
-
-            if girl:has_trait("Abnormally Large Boobs") then
-                Dialog("Oh My Goddess!  Those are some gigantic breasts.  How do you even stand up straight?")
-            elseif girl:has_trait("Big Boobs") then
-                Dialog("You stare a moment at her tits.  You have truly been blessed with some healthy breasts.")
-            elseif girl:has_trait("Small Boobs") then
-                Dialog("You reach out to her chest and try to cup one of her breasts in your hand.  \"Well, a little less than a handful, but on you my dear they seem right.\"")
-            end
-
-            if girl:has_trait("Perky Nipples") then
-                Dialog("You run your palms across her perky nipples.  You give them a little pinch.")
-            elseif girl:has_trait("Puffy Nipples") then
-                Dialog("Running your hands over her breasts you take a moment to admire her soft, puffy nipples.")
-            end
-
-            if girl:has_trait("Strong") then
-                Dialog("You examine her finely toned muscles.  Squeezing her biceps you feel the strength there.  \"You are strong. That is good.\"")
-            end
-
-            if girl:has_trait("Horrific Scars") then
-                Dialog("You have noticed them the entire time, but you debate whether or not to comment on the awful scars covering large portions of her body.")
-            end
-
-            Dialog("You sit back down and allow her to get dressed and leave your office.")
-        else
-            Dialog("She refuses to be inspected like some prize heffer.")
-            RefusedSexAct(girl)
-        end
-    elseif choice == 5 then
-        Dialog("Go Back")
-        
-    end
-end
-
-function RefusedSexAct(girl)
+function Refuse(girl)
     local choice = ChoiceBox("", "Allow Her to Refuse.", "Scold Her", "Spank Her", "Take Her Clothing.",
         "Force Sex")
+    if choice == 0 then
+        Dialog("You say nothing and go about your other business.")
+        wm.SetPlayerDisposition(3)
+    elseif choice == 1 then
+        ScoldGirl(girl)
+    elseif choice == 2 then
+        Dialog("\"You will learn to obey me!\" You yell as you grab her arm and drag her across your knees.")
+        Dialog("She begins to cry as you pull her clothing and expose her ass.  \"Perhaps this will teach you some discipline.\" ")
+        Dialog("You smack her ass until her cheeks are rosy red and send her away sobbing.")
+        wm.SetPlayerDisposition(-3)
+        girl:happiness(-3)
+        girl:health(-1)
+        girl:obedience(3)
+    elseif choice == 3 then
+        Dialog("\"Oh I see.  You feel you have no need to obey me?\"  You ask calmly.  \"Perhaps then you also have no need for the things I have given you?\" ")
+        Dialog("\"I'll just be taking a few things back then.\"  You order your guards to strip her naked and make her stand in front of the brothel all day and night.")
+        Dialog("As she is lead outside you remark. \"Perhaps next time you will be more mindful of who it is that takes care of you.\"")
+        -- TODO Nude
+        wm.SetPlayerDisposition(-3)
+        girl:happiness(-3)
+        girl:pchate(5)
+        girl:pclove(-5)
+        girl:obedience(5)
+    elseif choice == 4 then
+        Dialog("Your eyes flash with rage. \"You dare refuse? I'll show you what happens to whores that refuse to do their master's bidding\"")
+        Dialog("You knock her down and begin to tear away her clothing.  She cries out as you force yourself inside her.")
+        Dialog("You release you semen deep inside her and leave her sobbing on the floor.")
+        PlayerRapeGirl(girl)
+        girl:happiness(-5)
+        girl:obedience(5)
+        girl:pchate(10)
+        girl:pclove(-10)
+        girl:pcfear(10)
+    end
 end
 
 ---@param girl wm.Girl
@@ -884,523 +662,3 @@ function Punish(girl)
     end
 end
 
----@param girl wm.Girl
-function GoOnMission(girl)
-    local action = ChoiceBox("",
-        "Assassinate a troublesome politician    COST: 1000 gold",
-        "Sneak into the Hall of Records   COST: 750 gold",
-        "Seduce/Bribe a government official    COST: 500 to 4000 gold",
-        "Duel a Rival Brothel Girl  ENTRY FEE: 100 gold  PRIZE MONEY: 500 gold",
-        "Accompany you into the catacombs",
-        "Send her on a Quest",
-        "Go Back"
-    )
-    if action == 0 then
-        AssassinatePolitician(girl)
-    elseif action == 1 then
-        Dialog("Mission start")
-        if girl:obey_check() then  -- TODO select action
-            Dialog("Mission text")
-            Dialog("Expenses/Cost   ")
-            wm.AddPlayerGold(-750)
-            if girl:has_trait("Incorporeal") then
-                Dialog("Incorporeal mission success")
-            elseif girl:has_trait("Fleet of Foot") then
-                Dialog("Fleet of Foot")
-            elseif girl:has_trait("Strong Magic") then
-                Dialog("magic success")
-            elseif girl:has_trait("Assassin") then
-                Dialog("assassin")
-            elseif girl:has_trait("Adventurer") then
-                Dialog("Adventurer success")
-            elseif girl:combat() > 60 then
-                if wm.Percent(girl:combat()) then
-                    Dialog("combat pass")
-                else
-                    Dialog("combat fail")
-                end
-            elseif wm.Percent(50) then
-                Dialog("generic success")
-            else
-                Dialog("Generic fail")
-            end
-        else
-            Dialog("mission refuse")
-            RefusedSexAct(girl)
-        end
-    elseif action == 2 then
-        Dialog("Seduce/Bribe Mission Start")
-        if girl:obey_check() then  -- TODO select action
-            Dialog("Seduce/Bribe Mission accept")
-            if girl:charisma() > 50 and girl:beauty() > 60 then
-                if wm.Percent(girl:charisma()) then
-                    Dialog("Seduce pass")
-                    -- TODO normal sex
-                    wm.AddPlayerGold(100, 200)
-                    wm.SetPlayerSuspicion(-20)
-                else
-                    Dialog("Seduce fail")
-                    wm.AddPlayerGold(-500)
-                    wm.SetPlayerSuspicion(10)
-                end
-            else
-                Dialog("Bribery")
-                if wm.Percent(50) then
-                    Dialog("Bribery success")
-                    wm.AddPlayerGold(-wm.Range(2000, 4000))
-                    wm.SetPlayerSuspicion(-30)
-                else
-                    Dialog("Bribery fail")
-                    wm.AddPlayerGold(-wm.Range(2000, 4000))
-                    wm.SetPlayerSuspicion(10)
-                end
-            end
-        else
-            Dialog("Refuse seduce/bribe mission")
-            RefusedSexAct(girl)
-        end
-    elseif action == 3 then
-        Dialog("Duel Mission Start")
-        if girl:obey_check() then  -- TODO select action
-            wm.AddPlayerGold(-100)
-            if wm.Percent(girl:confidence()) then
-                Dialog("Confidence Pass Accept")
-            else
-                Dialog("Confidence Fail Accept")
-            end
-            Dialog("Duel start")
-            if girl:combat() > 50 then
-                if wm.Percent(girl:combat()) then
-                    Dialog("Combat win")
-                    wm.AddPlayerGold(500)
-                else
-                    Dialog("Combat lose")
-                end
-            elseif girl:magic() > 50 then
-                if wm.Percent(girl:magic()) then
-                    Dialog("Combat win")
-                    wm.AddPlayerGold(500)
-                else
-                    Dialog("Combat lose")
-                end
-            elseif girl:lesbian() > 30 then
-                -- TODO lesbian sex
-                Dialog("Lesbian Attack")
-                if wm.Percent(girl:lesbian()) then
-                    Dialog("Lesbian Win")
-                    wm.AddPlayerGold(500)
-                else
-                    Dialog("Lesbian lose")
-                end
-            else
-                Dialog("Generic duel / random var test")
-                if wm.Percent(50) then
-                    Dialog("generic duel win")
-                    wm.AddPlayerGold(500)
-                else
-                    Dialog("generic duel lose")
-                end
-            end
-        else
-            Dialog("Refuse duel")
-            RefusedSexAct(girl)
-        end
-    elseif action == 4 then
-        Dialog("Catacombs Start")
-        if girl:health() < 40 then
-            Dialog("You notice that she does not seem to be healthy enough for an adventure right now.")
-            Dialog("\"On second thought lets take you down to the clerics instead.\"  You see to it that she receives some minor healing and escort her back to her room.")
-            girl:happiness(-2)
-            girl:health(10)
-            girl:tiredness(-10)
-        elseif girl:obey_check() then -- TODO select action
-            Dialog("Catacombs accept")
-            if girl:has_trait("Adventurer") then
-                Dialog("Adventurer start")
-                local success = wm.Range(1, 100)
-                if success >= 95 then
-                    Dialog("Adventurer Critical success")
-                    -- TODO AddRandomGirlToDungeon(Captured, 17, 50, true, false, false, false)
-                    -- TODO GivePlayerRandomSpecialItem
-                    wm.AddPlayerGold(wm.Range(500, 2000))
-                elseif success > 60 then
-                    Dialog("adventurer success")
-                    wm.AddPlayerGold(wm.Range(200, 1000))
-                    -- TODO GivePlayerRandomSpecialItem
-                elseif success > 15 then
-                    Dialog("adventurer moderate success")
-                    wm.AddPlayerGold(wm.Range(50, 100))
-                else
-                    Dialog("Adventurer critical fail")
-                    -- TODO Beast Sex
-                    girl:confidence(-5)
-                    girl:charisma(-3)
-                    girl:health(-60)
-                end
-            elseif girl:combat() > 30 then
-                Dialog("Regular combat start")
-                local success = wm.Range(1, 100)
-                if success >= 98 then
-                    Dialog("Regular combat success")
-                    -- TODO GivePlayerRandomSpecialItem
-                    wm.AddPlayerGold(wm.Range(400, 1500))
-                elseif success > 60 then
-                    Dialog("Regular Combat Success.")
-                    wm.AddPlayerGold(wm.Range(200, 1000))
-                elseif success > 15 then
-                    Dialog("Regular Combat Failure")
-                    wm.AddPlayerGold(wm.Range(100, 300))
-                    girl:health(-50)
-                else
-                    Dialog("Regular Combat Critical Failure")
-                    -- TODO Beast Sex
-                    girl:confidence(-5)
-                    girl:charisma(-3)
-                    girl:health(-90)
-                end
-            elseif girl:magic() > 30 then
-                Dialog("Regular combat start")
-                local success = wm.Range(1, 100)
-                if success >= 95 then
-                    Dialog("Magic critical success")
-                elseif success > 60 then
-                    Dialog("magic success")
-                elseif success > 15 then
-                    Dialog("magic failure")
-                else
-                    Dialog("Regular Combat Critical Failure")
-                    -- TODO Beast Sex
-                end
-            else
-                Dialog("As you enter the labyrinth, she loses her nerve and flees for the safety of the brothel..  \"Very Well,\" you think to yourself.\"If she wants to show her ass to the enemy...\"")
-                Dialog("You find her in her room. Face down with her head under a pillow.  You climb onto the bed behind her and pull down her knickers.  As you remove your belt,  You tell her to stick her ass up in the air and keep her face down.")
-                Dialog("The spanking starts slowly; forceful but not abusive.  Stopping a moment you take a second to admire those lovely cheeks now turning a bright pink.  A different punishment comes to mind and the next thing she feels is not a sting but the stab of your cock entering her anus.  You enjoy the feeling of your cock moving back and forth in her tight ass.  You come hard and deep inside her.  \"Next time you want to turn tail and run, My Dear,  I shall have your tail again.\"")
-                -- TODO anal sex
-            end
-        else
-            Dialog("catacombs refuse")
-            RefusedSexAct(girl)
-        end
-    elseif action == 5 then
-        Dialog("Stealing mission start")
-        if girl:obey_check() then -- TOOD action
-            Dialog("Stealing accept")
-            local success = wm.Range(1, 100)
-            if success >= 95 then
-                if girl:has_trait("Nymphomaniac") then
-                    Dialog("Nympho stealing critical success")
-                    -- TODO group sex
-                elseif girl:has_trait("Aggressive") then
-                    Dialog("Aggressive stealing critical success.  beat up young couple and take girl")
-                    -- TODO AddRandomGirlToDungeon Kidnapped 17 21 false false false false
-                elseif girl:has_trait("Fleet of Foot") then
-                    Dialog("Fleet of Foot critical success")
-                end
-                Dialog("normal Stealing Critical Success")
-                wm.AddPlayerGold(wm.Range(500, 1500))
-                -- GivePlayerRandomSpecialItem
-            elseif success > 55 then
-                if girl:has_trait("Fleet of Foot") then
-                    Dialog("Fleet of foot stealing success")
-                end
-                Dialog("Stealing success")
-                wm.AddPlayerGold(wm.Range(250, 1000))
-            elseif success > 15 then
-                Dialog("Stealing fail")
-                wm.SetPlayerSuspicion(10)
-            else
-                Dialog("Regular Combat Critical Failure")
-                -- TODO Bondage Sex
-                if girl:has_trait("Nymphomaniac") then
-                    girl:libido(15)
-                end
-                Dialog("Stealing Critical fail")
-                girl:health(-5)
-                girl:happiness(-6)
-                wm.SetPlayerSuspicion(20)
-            end
-        else
-            Dialog("Stealing refuse")
-            RefusedSexAct(girl)
-        end
-    elseif choice == 6 then
-        GoOnQuest(girl)
-    end
-end
-
-function AssassinatePolitician(girl)
-    Dialog("I have a new target for you.")
-    if girl:obey_check() then  -- TODO select action
-        Dialog("\"A particular political figure has been starting a crusade to outlaw brothels within the city limits.\"  *You hand her the dossier*  \"Of course this is just a smoke screen for his true goal of raising the taxes on brothels everywhere.\"")
-        Dialog("\"What's worse is he is using evidence gathered about me as his leverage to push this all through.\"  *You give her a hard look* \"I don't want him to wake up tomorrow.\"")
-        wm.SetPlayerDisposition(-20)
-        if girl:has_trait("Sadistic") then
-            Dialog("I will enjoy using his entrails for lingerie...")
-        end
-
-        Dialog("Before she moves to leave your office you hand her a bag of gold to cover expenses.")
-        wm.AddPlayerGold(-1000)
-        if girl:has_trait("Assassin") then
-            Dialog("She vanishes from view before she even makes it to the door.")
-            Dialog("Moving silently amongst the shadows of the city, She stalks her prey.  Patience is her tool and she waits for her moment.")
-            Dialog("Her prey turns down a crowded street, choked with the evenings drunken revellers.  She moves to strike.  Effortlessly she slithers through the crowd and falls in step with the mark.")
-            Dialog("Her thin, long blade slides quickly and cleanly through the ribs beneath his shoulder blades. The second blade slices the arteries in his neck.  He staggers a moment before falling silently to the ground.")
-            Dialog("The bodyguards who had been busy deflecting drunks turn back around to find their client lying dead in a large pool of blood.  They search the area for the killer, but find nothing.")
-            Dialog("She returns to your office several hours later and places the evidence against you and the politician's signet ring on your desk.")
-            wm.SetPlayerSuspicion(-40)
-        elseif girl:has_trait("Sadistic") then
-            Dialog("The politician, carrying his latest bribe, enters his home from the servant's entrance to avoid prying eyes.  As the lamps illuminate the room he notices the droplets of blood.  Following the trail to the sitting room  he doesn't notice the bodies at first as his attention was on the floor and the now massive pool of blood.  He looks up.")
-            Dialog("He sees them now.  His wife, children, and servants are arranged around the room in a macabre tea party.  The bodies are so broken and bloody he almost can't recognize them.  Terror grips his heart and he turns to run.")
-            Dialog("He stops immediately as a woman blocks his path.  She is naked save for the coating of blood from her head to her feet.  \"Leaving the party so soon?\" she inquires.  He strikes at her with wild abandon, but he counters and knocks him to the floor. She picks up the bag of gold. \"Looks like the boss gets a bonus.\"")
-            Dialog("He awakes as a steel rod strikes him across his face.  He locks eyes with her.  There is a demonic fire in her eyes as she speaks \"Now, the party can start for real....\"")
-            Dialog("You walk into your office the next morning to find your obsessive little killer still naked, bloody and balled up on your couch sleeping soundly.  You find the bag of gold, the politicians head, and the evidence on your desk.")
-            wm.SetPlayerSuspicion(-25)
-            wm.AddPlayerGold(wm.Range(200, 800))
-        elseif girl:has_trait("Nymphomaniac") then
-            Dialog("She finds the Politician sitting at the bar of an upscale establishment.  She sits down next to him and strikes up a conversation.")
-            if wm.Percent(girl:charisma()) then
-                wm.UpdateImage(wm.IMG.ORAL)
-                Dialog("She uses her talent for seduction to lure the man back to a secluded room of the bar.  She begins by sucking his dick, before asking him to lick her pussy as she continues to give him head.  She enjoys the sensation of his tongue on her clitoris.  She sits up and begins to ride his face.  She presses down hard as she grinds her pussy.  He tries to scream as his breathing becomes difficult but to no avail.  She writhes and rides him hard  long after he has suffocated.")
-                Dialog("She had heard that a man's erection gets bigger and harder after he suffocates.  To her delight, she finds it to be true and she rides the dead man's dick for hours.")
-                Dialog("She returns to you office exhausted and with her clothes in disarray.  she doesn't speak as she places the signet ring on your desk and walks back to her room.")
-                wm.SetPlayerSuspicion(-15)
-            else
-                Dialog("She attempts to seduce the mark, but continues to fail throughout the night.  She manages to annoy him to the point that he leaves the bar quickly out the back entrance.")
-                Dialog("She angrily follows him down the alley and attempts to catch up with him.  He begins to run and she chases him down streets and alleys.")
-                Dialog("Fleeing wildly what he assumes a crazy person he doesn't notice the steep ledge until it's too late.  She looks over the edge at his lifeless body, but some of the city guard has caught up to her now and after some questioning they bring her back to your office.")
-                Dialog("The guardsmen tell you her story.  \"It appears that the gentlemen in question tried to skip out on paying your whore and she chased him attempting to get her money.  It appears to be an accident but he took a bad fall and died.  You should keep your eye on this girl she has a temper.\"  As they turn to leave they add \"Oh, and  you will be fined 200 gold for tonight's disturbance.\"")
-                wm.AddPlayerGold(-200)
-            end
-        elseif girl:has_trait("Strong Magic") then
-            Dialog("She whispers a few incantations and disappears from your office.")
-            Dialog("She reappears on a rooftop overlooking the Politician's residence.  She begins preparing her components as she waits for him to return home.")
-            Dialog("She watches as he walks into his home and greets his family.  She waits until he is alone in his study and teleports into the room.")
-            Dialog("He jumps as the mage appears before him.  He tries to scream as she begins casting another spell but he is paralysed.  She walks over to him and removes his signet ring and takes the evidence from his desk.")
-            if girl:has_trait("Aggressive") then
-                Dialog("She teleports back to her vantage point and begins casting the Inferno spell.  She can still see the man paralysed in place as the flames begin to consume the room and his flesh.")
-                Dialog("The man's family and servants can be see fleeing the home as the inferno quickly devours the building.  They call back at the house for the master of the house, but he will never answer...")
-            else
-                Dialog("She releases his body from the paralysis but before he can call out she paralyses his heart and lungs.")
-                Dialog("He pounds on his chest but to no avail and falls to the floor and expires.")
-            end
-            Dialog("She teleports back to your office and hands you the ring and papers.  She looks tired from the night of conjuring and you dismiss her back to her room.")
-            wm.SetPlayerSuspicion(-30)
-        elseif girl:combat() > 60 then
-            wm.UpdateImage(wm.IMG.COMBAT)
-            Dialog("She adorns her weapons and armor and heads to her chosen ambush location.")
-            Dialog("As the man and his bodyguards round the corner she takes a moment to evaluate their abilities.")
-            if wm.Percent(girl:combat()) then
-                Dialog("She locks her eyes on the large barbarian walking beside her target.  That one first.  As they move within her striking distance she leaps down on the big bodyguard and plunges her sword through past his collar bone and into his vitals.")
-                Dialog("The Barbarian staggers and falls dead.  Before his body hits the ground she runs her sword through the point man's spine.  Alert and swords drawn she squares off against the remaining two guarding the politician.")
-                Dialog("The guard on her left makes the first move.  he swings high trying to  strike over her shield.  She drops herself low allowing the blade to pass overhead, while striking him in the abdomen with  her shield. He collapses in a heap. The remaining guard tries to take advantage of her supposed weakness and charges.")
-                Dialog("In one fluid motion she rises, cutting the guards throat, and bringing her blade to bear on the defenseless politician.  He begins to plead \"Please don't kill me! I'll *gurk* before he can finish his cowards talk she disembowels him.")
-                Dialog("She returns to your office with the signet ring and documents.  She places them on your desk and you hear her say something about washing off coward.")
-            else
-                wm.UpdateImage(wm.IMG.ANAL)
-                Dialog("As she leaps from her perch her foot catches on a bit of string and she lands splayed out on the ground before the group.  The two brutes in front grab her arms and drag her to stand before the boss.")
-                Dialog("\"What have we here? A whore who would be an assassin?\"  A big barbarian guard speaks \"No, boss.  From the look of her gear. I'd say she fancies herself a fighter.\"  The Boss replies \"very well Ass Crusher. See if she can fight.\"")
-                Dialog("The two holding her let go and the big man steps forward. \"Come on little girl. Let's see what you got.\"  She swings hard but the Barbarian merely catches the blade in his bare hand.")
-                Dialog("He pulls a tiny dagger from his belt and blocks each of her swings, but as he does he makes small cuts on her armor.  Her armor begins to fall from her body and before long she stands naked before the huge man.")
-                Dialog("\"Now I will use my sword.\" and he pulls his massive erection from his loincloth.  Angered, She swings at the dick but his hands catch her by the arms.  Her spins her around and rams his cock into her ass.")
-                Dialog("He releases a huge load into her anal cavity and leaves her sprawled out on the street.  The men walk away laughing.")
-            end
-        else
-            Dialog("She positions herself across the street with a high powered magic crossbow and wait for her target to arrive at his office.")
-            if wm.Percent(50) then
-                Dialog("generic success")
-            else
-                Dialog("generic fail")
-            end
-        end
-    else
-        Dialog("She refuses to kill anyone.")
-        RefusedSexAct(girl)
-    end
-end
-
-function GoOnQuest(girl)
-    Dialog("I want you to go on a Quest for me.  You needn't go far.  Try to make the world a little better. Oh, One more thing.  Be sure to wear the tabard of my house so every knows who you work for.")
-    if girl:tiredness() > 30 then
-        Dialog("She is not rested enough to start a quest.")
-    elseif girl:health() < 50 then
-        Dialog("She is not healthy enough to start a quest.")
-    elseif girl:obey_check() then -- TODO select action
-        Dialog("Quest accept")
-        wm.SetPlayerDisposition(10)
-        girl:tiredness(50)
-        Dialog("where")
-        local where = wm.Range(1, 10)
-        if where == 1 then  -- Tavern
-            local what = wm.Range(1, 4)
-            if what == 1 then
-                Dialog("Tavern Owner quest gangster issues")
-                if girl:has_trait("Adventurer") then
-                    Dialog("Tavern Owner Adventurer Attempt to defeat entire gang.")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("Tavern Owner. Adventurer. Critical Success.")
-                    elseif result > 60 then
-                        Dialog("Tavern Owner. Adventurer. success")
-                    elseif result > 10 then
-                        Dialog("Tavern Owner. adventuer. failure.")
-                    else
-                        Dialog("Tavern Owner. adventurer. critical failure. it was a trap. girl gets fucked.")
-                        -- TODO group sex
-                    end
-                elseif girl:has_trait("Assassin") then
-                    Dialog("Tavern Owner Assassin Attempt to kill gang boss.")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("Tavern Owner. Assassin. Critical success.")
-                    elseif result > 60 then
-                        Dialog("Tavern Owner. Assassin. success.")
-                    elseif result > 10 then
-                        Dialog("tavern owner. assassin. failure.")
-                    else
-                        Dialog("tavern owner. assassin. critical failure.")
-                        -- TODO group sex
-                    end
-                elseif girl:has_trait("Charismatic") then
-                    Dialog("Tavern Owner Charismatic Attempt to convince gang boss to ease off.")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("tavern owner. charismatic. critical success.")
-                    elseif result > 60 then
-                        Dialog("tavern owner. charismatic. success.")
-                    elseif result > 10 then
-                        Dialog("tavern owner. charismatic. failure.")
-                    else
-                        Dialog("Tavern owner. charismatic. critical failure.  Negotiations fail so she must use her mouth another way.")
-                        -- TODO oral sex
-                    end
-                else
-                    Dialog("Tavern Owner Generic Attempt. Involve authorities.")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("tavern owner. generic. critical success.")
-                    elseif result > 60 then
-                        Dialog("tavern owner. generic success.")
-                    elseif result > 10 then
-                        Dialog("tavern owner. generic. failure.")
-                    else
-                        Dialog("tavern owner. generic. critical failure")
-                        -- TODO group sex
-                    end
-                end
-            elseif what == 2 then
-                Dialog("Tavern Barmaid quest domestic trouble")
-
-                if girl:has_trait("Nymphomaniac") then
-                    Dialog("Barmaid Domestic Troubles Nymphomaniac attempt to spice up the couples marriage.")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("Tavern barmaid. nympho critical success.")
-                    elseif result > 60 then
-                        Dialog("tavern barmaid. nympho. success.")
-                    elseif result > 10 then
-                        Dialog("tavern barmaid. nympho. failure.")
-                    else
-                        Dialog("tavern barmaid. nympho. critical failure.  husband divorces wife and swears to never marry again.")
-                    end
-                elseif girl:has_trait("Adventurer") then
-                    Dialog("Barmaid Domestic troubles Adventurer attempt to recover the lost important item.")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("Tavern barmaid. adventurer. critical success.")
-                    elseif result > 60 then
-                        Dialog("tavern barmaid. adventurer. success.")
-                    elseif result > 10 then
-                        Dialog("tavern barmaid. adventurer. failure.")
-                    else
-                        Dialog("Tavern barmaid. adventurer. critical failure")
-                    end
-                elseif girl:has_trait("Assassin") then
-                    Dialog("Barmaid domestic troubles Assassin attempt to kill abusive husband")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("tavern barmaid. assassin. critical success.")
-                    elseif result > 60 then
-                        Dialog("tavern barmaid. assassin. success.")
-                    elseif result > 10 then
-                        Dialog("tavern barmaid. assassin. failure.")
-                    else
-                        Dialog("tavern barmaid. assassin. critical failure.")
-                    end
-                else
-                    Dialog("Barmaid Domestic troubles Generic attempt to comfort her")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("tavern barmaid. generic. critical success")
-                        -- TODO lesbian sex
-                    elseif result > 60 then
-                        Dialog("tavern barmaid. generic. success.")
-                    elseif result > 10 then
-                        Dialog("tavern barmaid. generic. failure.")
-                    else
-                        Dialog("Tavern barmaid. generic. critical failure")
-                    end
-                end
-            elseif what == 3 then
-                Dialog("Tavern wizard quest broken wand")
-                Dialog("Tavern Barmaid quest domestic trouble")
-
-                if girl:has_trait("Nymphomaniac") then
-                    Dialog("Broken wand Nympho attempt to fix his limp \"wand\"")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("tavern wizard. nympho critical success. wand is penis.  she revitalises the wizard and lets him try her ass.")
-                        -- TODO anal sex
-                    elseif result > 60 then
-                        Dialog("tavern barmaid. nympho. success.")
-                    elseif result > 10 then
-                        Dialog("tavern barmaid. nympho. failure.")
-                    else
-                        Dialog("tavern barmaid. nympho. critical failure.  husband divorces wife and swears to never marry again.")
-                    end
-                elseif girl:has_trait("Adventurer") then
-                    Dialog("Broken wand Adventurer attempt to find a new wand")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("tavern wizard. adventurer. critical success. get bonus item.")
-                        -- TODO give player random special item
-                    elseif result > 60 then
-                        Dialog("tavern wizard. nympho success.  Wand is magical sex toy. she helps test and improve it for the wizard.")
-                        -- TODO strip
-                    elseif result > 10 then
-                        Dialog("taven wizard. nympho. failure.  Wand is magical sex toy. she breaks it completely.")
-                    else
-                        Dialog("tavern wizard. nympho critical failure.  Wand is penis.  she realizes that the wand is his penis. she manages to excite him but rides him too hard and severely injures the wizards manhood.")
-                        -- TODO normal sex
-                    end
-                elseif girl:has_trait("Strong Magic") then
-                    Dialog("Tavern. Wizard's Wand. Strong Magic attempt to repair wand.")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("tavern wizard. strong magic critical success.  fixes both of the wizards wands.")
-                        -- TODO sex
-                    elseif result > 60 then
-                        Dialog("tavern wizard. strong magic. success. fix wizards wand.")
-                    elseif result > 10 then
-                        Dialog("tavern wizard. strong magic. failure.  destroys wand. fee of 250 gold.")
-                    else
-                        Dialog("tavern wizard. strong  magic. critical failure.  accidentally transforms wand into sex beast.")
-                        -- TODO beast sex
-                    end
-                else
-                    Dialog("broken wand. generic attempt to locate a wand repair shop.")
-                    local result = wm.Range(1, 100)
-                    if result >= 95 then
-                        Dialog("tavern wizard. generic critical success.  repair shop remembers wand and that it was warranteed.")
-                    elseif result > 60 then
-                        Dialog("tavern wizard. generic. success. find a local repair shop for the wizard.")
-                    elseif result > 10 then
-                        Dialog("tavern wizard. generic. failure. only repair shop is in a far away land.")
-                    else
-                        Dialog("tavern wizard. generic. critical failure.  wizard set a trap as she searched city. gang-banged by wizard and his students.")
-                        -- TODO group sex
-                    end
-                end
-            end
-        end
-    end
-end

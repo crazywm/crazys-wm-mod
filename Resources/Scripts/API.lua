@@ -28,13 +28,13 @@ function PlayerRapeGirl(girl)
     girl:pchate(3);
 
     if wm.Percent(2) then
-        girl:add_trait("Broken Will");
+        girl:add_trait("Broken Will")
     end
-    if (girl:check_virginity()) then
-        girl:lose_virginity();
+    if girl:check_virginity() then
+        girl:lose_virginity()
     end -- `J` updated for trait/status
 
-    local preg = girl:calc_player_pregnancy(false, 1.0);
+    local preg = girl:calc_player_pregnancy(false, 1.0)
     if preg then Dialog(girl:name() .. " has gotten pregnant") end
     -- set image if possible
     wm.UpdateImage(wm.IMG.SEX)

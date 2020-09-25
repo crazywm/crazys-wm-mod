@@ -55,6 +55,7 @@ void sLuaGirl::init(lua_State* L) {
             {"add_message", sLuaGirl::add_message},
             {"give_money", sLuaGirl::give_money},
             {"torture", sLuaGirl::torture},
+            {"trigger", sLuaGirl::trigger_event},
             {"__gc", sLuaGirl::finalize},
             {nullptr, nullptr}
     };
@@ -408,6 +409,18 @@ int sLuaGirl::obey_check(lua_State * L)
 int sLuaGirl::torture(lua_State* L) {
     auto& girl = check_type(L, 1);
     cGirlTorture gt(&girl);
+    return 0;
+}
+
+int sLuaGirl::trigger_event(lua_State* L) {
+    auto& girl = check_type(L, 1);
+    const char* event = luaL_checkstring(L, 2);
+    auto async_script_handle = girl.m_EventMapping->RunAsync(event, girl);
+    async_script_handle->SetDoneCallback([L](const sScriptValue& val){
+        sLuaThread* thread = sLuaThread::get_active_thread(L);
+        thread->resume(0);
+    });
+    lua_yield(L, 0);
     return 0;
 }
 

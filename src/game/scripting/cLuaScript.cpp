@@ -260,7 +260,7 @@ int cLuaScript::Percent(lua_State* state) {
 int cLuaScript::Range(lua_State *state) {
     long lower = luaL_checkinteger(state, 1);
     long upper = luaL_checkinteger(state, 2);
-    bool result = g_Dice.in_range(lower, upper);
+    int result = g_Dice.in_range(lower, upper);
     lua_pushinteger(state, result);
     return 1;
 }

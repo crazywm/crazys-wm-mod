@@ -5,8 +5,7 @@
     <Event Name="girl:meet:clinic" Script="MeetClinicTry.lua" Function="MeetClinic" />
     <Event Name="girl:gambling-lost.own" Script="GirlLostGamble.lua" Function="LostOwnGamble" />
     <Event Name="girl:gambling-lost.rival" Script="GirlLostGamble.lua" Function="LostRivalGamble" />
-    <Event Name="girl:interact.dungeon" Script="DefaultInteract.lua" Function="InteractDungeon" />
-    <Event Name="girl:interact.brothel" Script="DefaultInteract.lua" Function="InteractBrothel" />
+
     <Event Name="girl:sex:anal" Script="SexText.lua" Function="GetAnalMessage" />
     <Event Name="girl:sex:group" Script="SexText.lua" Function="GetGroupMessage" />
     <Event Name="girl:sex:bdsm" Script="SexText.lua" Function="GetBDSMMessage" />
@@ -18,4 +17,16 @@
     <Event Name="girl:sex:titty" Script="SexText.lua" Function="GetTittyMessage" />
     <Event Name="girl:sex:oral" Script="SexText.lua" Function="GetOralMessage" />
     <Event Name="girl:sex:foot" Script="SexText.lua" Function="GetFootMessage" />
+
+    <!-- Interaction -->
+    <Event Name="girl:interact.dungeon" Script="DefaultInteract.lua" Function="InteractDungeon" />
+    <Event Name="girl:interact.brothel" Script="DefaultInteract.lua" Function="InteractBrothel" />
+    <Event Name="girl:interact.office" Script="Office.lua" Function="InteractOffice" />
+    <Event Name="girl:interact.private" Script="PrivateChambers.lua" Function="PrivateChambers" />
+    <Event Name="girl:chat.dungeon" Script="Chat.lua" Function="ChatDungeon" />
+    <Event Name="girl:chat.brothel" Script="Chat.lua" Function="ChatBrothel" />
+    <Event Name="girl:refuse" Script="DefaultInteract.lua" Function="Refuse" />
+    <Event Name="girl:mission" Script="Mission.lua" Function="GoOnMission" />
+    <Event Name="girl:quest" Script="Mission.lua" Function="Quest" />
+    <Event Name="girl:training" Script="Training.lua" Function="Training" />
 </EventMapping>

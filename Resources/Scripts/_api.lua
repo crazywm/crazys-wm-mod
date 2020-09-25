@@ -8,6 +8,7 @@ function g:skill(skill, change) end
 function g:name() end
 function g:torture() end
 function g:give_money() end
+function g:trigger(event) end
 
 -- shortcuts
 function g:anal(change) end
