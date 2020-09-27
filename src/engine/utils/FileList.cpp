@@ -74,7 +74,7 @@ void FileList::add(const char *pattern)
      *    open the directory. Print an error to the console if it fails
      */
     if ((dpt = opendir(base_path)) == nullptr) {
-        g_LogFile.error("engine", "Could not open directory '", base_path, "' (", errno, ")");
+        g_LogFile.error("engine", "Could not open directory '", base_path, "': ", strerror(errno),  "(", errno, ")");
         return;
     }
 
@@ -126,14 +126,14 @@ std::vector<std::string> FileList::ListSubdirs(std::string path) {
      *    open the directory. Print an error to the console if it fails
      */
     if ((dpt = opendir(base_path)) == nullptr) {
-        g_LogFile.error("engine", "Could not open directory '", base_path, "' (", errno, ")");
+        g_LogFile.error("engine", "Could not open directory '", base_path, "': ", strerror(errno),  "(", errno, ")");
         return {};
     }
 
     struct stat buf{};
     while ((dent = readdir(dpt)) != nullptr) {
         if(stat((path + "/" + dent->d_name).c_str(), &buf) == -1) {
-            g_LogFile.error("engine", "Could calling stat on '", path, "/", dent->d_name, "' (", errno, ")");
+            g_LogFile.error("engine", "Could calling stat on '", path, "/", dent->d_name, "': ", strerror(errno),  "(", errno, ")");
             continue;
         };
         if(S_ISDIR(buf.st_mode)) {
@@ -144,6 +144,7 @@ std::vector<std::string> FileList::ListSubdirs(std::string path) {
             }
         }
     }
+    closedir(dpt);
     return std::move(result);
 }
 

@@ -84,7 +84,7 @@ cSurface cImageCache::CreateSurface(int width, int height, sColor color, bool tr
     return AddToCache(std::move(key), std::move(sf), std::move(fake_name));
 }
 
-cSurface cImageCache::LoadImage(std::string filename, int width, int height, bool transparency, bool keep_ratio, SDL_Rect* clip)
+cSurface cImageCache::LoadImage(std::string filename, int width, int height, bool transparency, bool keep_ratio)
 {
     sImageCacheKey key{filename, width, height, transparency, keep_ratio};
     auto           lookup = m_SurfaceCache.find(key);
@@ -97,7 +97,7 @@ cSurface cImageCache::LoadImage(std::string filename, int width, int height, boo
     // not cached, need to load
     auto loaded = surface_ptr_t{IMG_Load(filename.c_str())};
     if (!loaded) {
-        throw std::runtime_error("Could not load image " + filename + ": " + IMG_GetError());
+        throw std::runtime_error("Could not load image '" + filename + "': " + IMG_GetError());
     }
 
     ++m_ImageLoadCount;

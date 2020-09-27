@@ -86,7 +86,7 @@ public:
 
     // Generating new surfaces.
     cSurface CreateSurface(int width, int height, sColor color, bool make_unique=false) noexcept(false);
-    cSurface LoadImage(std::string filename, int width=-1, int height=-1, bool transparency=false, bool keep_ratio=true, SDL_Rect* clip=nullptr);
+    cSurface LoadImage(std::string filename, int width=-1, int height=-1, bool transparency=false, bool keep_ratio=true);
 
     cSurface CreateTextSurface(TTF_Font* font, std::string text, sColor color, bool antialias);
 
