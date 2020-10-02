@@ -44,6 +44,8 @@
 * [ ] separate logical and actual render size and make configurable
 * [x] Read navigation buttons from xml
 * [ ] Active Building Widget
+* [ ] LoadGame delete button
+* [ ] LoadGame more info
 
 ## Bugs
 * [ ] some parts of the old scripts are still missing

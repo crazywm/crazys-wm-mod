@@ -168,9 +168,6 @@ DECL_JOB(RepairShop);
 DECL_JOB(CureDiseases);
 DECL_JOB(GetAbort);
 
-// - Farm - Staff
-DECL_JOB(FarmHand);
-
 // house
 DECL_JOB(Recruiter);
 DECL_JOB(PersonalTraining);
@@ -257,9 +254,6 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_GETREPAIRS, RepairShop, "Repr", "Construct girls will be quickly repaired here.").full_time();
     REGISTER_JOB(JOB_CUREDISEASES, CureDiseases, "Cure", "She will try to get her diseases cured.").full_time();
     REGISTER_JOB(JOB_GETABORT, GetAbort, "Abrt", "She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)").full_time();
-
-// - Farm - Staff
-    REGISTER_JOB_MANUAL(JOB_FARMHAND, FarmHand, Cleaning, "FHnd", "She will clean up around the farm.");
 
 // house
     REGISTER_JOB(JOB_RECRUITER, Recruiter, "Rcrt", "She will go out and try and recruit girls for you.").full_time();
