@@ -25,14 +25,11 @@
   - [ ] Sex Training
   - [ ] Arena
   - [ ] Studio
-  - [x] Clinic
   - [ ] Centre
-  - [x] Farm
 
 ## Scripting
 * [ ] Extend lua scripting to cover everything the old scripts did
 * [ ] New Commands:
-  - [x] Take gold
   - [ ] Player inventory
 * [ ] New Triggers:
   - [ ] OnBought
@@ -42,7 +39,6 @@
 * [ ] Per building/global anti preg setting
 * [ ] Game-Mode files
 * [ ] separate logical and actual render size and make configurable
-* [x] Read navigation buttons from xml
 * [ ] Active Building Widget
 * [ ] LoadGame delete button
 * [ ] LoadGame more info
@@ -63,5 +59,3 @@
   - [ ] "your inventory is full", but seems to buy anyway
   - [ ] "your inventory is full" for sell button
 * [ ] gracefully handle missing/corrupt config file
-* [x] autosave path is messed up now
-* [x] save game loading crashes when no job was assigned
