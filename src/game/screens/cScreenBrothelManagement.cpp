@@ -77,9 +77,9 @@ void IBuildingScreen::set_ids()
         push_message("Game Saved", COLOR_GREEN);
     });
     SetButtonCallback(quit_id, [this]() {
-        /*input_confirm([this]() {
+        input_confirm([this]() {
             pop_to_window("Main Menu");
-        });*/
+        });
     });
 }
 
