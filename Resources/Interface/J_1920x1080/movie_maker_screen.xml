@@ -24,17 +24,17 @@
 </ListBox>                                                                                                                  
 
 
-<Button     Name="ScrapScene"           Image="minus_24x24"                 XPos="1293"      YPos="352"      Width="34"      Height="34"     Transparency="true" Scale="true"  />
-<Button     Name="AddScene"             Image="ShiftDown"                   XPos="1293"      YPos="456"      Width="67"      Height="68"     Transparency="true" Scale="true"  />
-<Button     Name="RemoveScene"          Image="ShiftUp"                     XPos="1293"      YPos="553"      Width="67"      Height="68"     Transparency="true" Scale="true"  />
-<Button     Name="MoveUp"               Image="ShiftUp"                     XPos="1293"      YPos="733"      Width="45"      Height="45"     Transparency="true" Scale="true"  />
-<Button     Name="MoveDown"             Image="ShiftDown"                   XPos="1293"      YPos="792"      Width="45"      Height="45"     Transparency="true" Scale="true"  />
+<Button     Name="ScrapScene"           Image="minus_24x24"                 XPos="1293"      YPos="352"      Width="34"      Height="34"     Transparency="true"/>
+<Button     Name="AddScene"             Image="ShiftDown"                   XPos="1293"      YPos="456"      Width="67"      Height="68"     Transparency="true"/>
+<Button     Name="RemoveScene"          Image="ShiftUp"                     XPos="1293"      YPos="553"      Width="67"      Height="68"     Transparency="true"/>
+<Button     Name="MoveUp"               Image="ShiftUp"                     XPos="1293"      YPos="733"      Width="45"      Height="45"     Transparency="true"/>
+<Button     Name="MoveDown"             Image="ShiftDown"                   XPos="1293"      YPos="792"      Width="45"      Height="45"     Transparency="true"/>
 
 <Text       Name="SceneDetails"         Text=""                             XPos="1363"      YPos="49"       Width="506"     Height="418"    FontSize="14"  />
 <Text       Name="MovieDetails"         Text=""                             XPos="1363"      YPos="553"      Width="506"     Height="418"    FontSize="14"  />
 
 
-<Button     Name="ReleaseMovieButton"   Image="ReleaseMovie"                XPos="1293"      YPos="982"      Width="225"     Height="45"     Transparency="true" Scale="true"            />           
-<Button     Name="BackButton"           Image="Back"                        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true" Scale="true"  />
+<Button     Name="ReleaseMovieButton"   Image="ReleaseMovie"                XPos="1293"      YPos="982"      Width="225"     Height="45"     Transparency="true" />
+<Button     Name="BackButton"           Image="Back"                        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true" PushWindow="<back>"/>
 
 </Screen>

@@ -3,11 +3,11 @@
 <Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="600"     Height="600"  />
 <Text       Name="WhoreMaster"          Text="Whore Master"                 XPos="145"      YPos="0"        Width="600"     Height="86"  FontSize="48"  Red="200"   Green="30"  Blue="30"    />
 <Text       Name="Version"              Text="Version"                      XPos="240"      YPos="80"       Width="600"     Height="40"  FontSize="7"  />
-<Button     Name="Continue"             Image="Continue"                    XPos="210"      YPos="100"      Width="192"     Height="64"  Transparency="true" Scale="true"  />
-<Button     Name="Load Game"            Image="LoadGame"                    XPos="210"      YPos="194"      Width="192"     Height="64"  Transparency="true" Scale="true"  />
-<Button     Name="New Game"             Image="NewGame"                     XPos="210"      YPos="288"      Width="192"     Height="64"  Transparency="true" Scale="true"  />
-<Button     Name="Settings"             Image="Settings"                    XPos="210"      YPos="382"      Width="192"     Height="64"  Transparency="true" Scale="true"  />
-<Button     Name="Quit Game"            Image="QuitGame"                    XPos="210"      YPos="476"      Width="192"     Height="64"  Transparency="true" Scale="true"  />
+<Button     Name="Continue"             Image="Continue"                    XPos="210"      YPos="100"      Width="192"     Height="64"  Transparency="true"/>
+<Button     Name="Load Game"            Image="LoadGame"                    XPos="210"      YPos="194"      Width="192"     Height="64"  Transparency="true" PushWindow="Load Game"/>
+<Button     Name="New Game"             Image="NewGame"                     XPos="210"      YPos="288"      Width="192"     Height="64"  Transparency="true" PushWindow="New Game"/>
+<Button     Name="Settings"             Image="Settings"                    XPos="210"      YPos="382"      Width="192"     Height="64"  Transparency="true" PushWindow="Settings"/>
+<Button     Name="Quit Game"            Image="QuitGame"                    XPos="210"      YPos="476"      Width="192"     Height="64"  Transparency="true"/>
 <Text       Name="ReadMe"       Text="Please read the readme.html"          XPos="7"       YPos="570"      Width="300"     Height="40"  FontSize="7"  />
 <Text       Name="VisitUs"      Text="Visit us at PinkPetal.org"            XPos="487"      YPos="570"      Width="300"     Height="40"  FontSize="7"  />
 </Screen>

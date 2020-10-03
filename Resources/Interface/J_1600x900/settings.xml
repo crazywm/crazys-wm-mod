@@ -1,9 +1,9 @@
 <Screen>
 <Window     Name="Settings"                                                 XPos="214"       YPos="16"       Width="1171"    Height="867"    Border="1"  />
 <Text       Name="ScreenHeader"             Text="Settings"                 XPos="2"        YPos="0"        Width="234"     Height="70"     FontSize="47"  />
-<Button     Name="OkButton"                 Image="Ok"                      XPos="551"      YPos="818"      Width="150"     Height="38"     Transparency="true"                  Scale="true"      />
-<Button     Name="RevertButton"             Image="Revert"                  XPos="777"      YPos="818"      Width="84"      Height="38"     Transparency="true"                  Scale="true"      />
-<Button     Name="BackButton"               Image="Back"                    XPos="937"      YPos="811"      Width="223"     Height="45"     Transparency="true" Scale="true"  />
+<Button     Name="OkButton"                 Image="Ok"                      XPos="551"      YPos="818"      Width="150"     Height="38"     Transparency="true"/>
+<Button     Name="RevertButton"             Image="Revert"                  XPos="777"      YPos="818"      Width="84"      Height="38"     Transparency="true"/>
+<Button     Name="BackButton"               Image="Back"                    XPos="937"      YPos="811"      Width="223"     Height="45"     Transparency="true" ReplaceWindow="Main Menu"/>
 
 <Text       Name="CharactersLabel"          Text="Characters"               XPos="12"       YPos="96"       Width="117"     Height="23"     FontSize="14"  />
 <Text       Name="SavesLabel"               Text="Saves"                    XPos="12"       YPos="120"      Width="117"     Height="23"     FontSize="14"  />

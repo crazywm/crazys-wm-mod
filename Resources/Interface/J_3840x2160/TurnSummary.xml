@@ -11,9 +11,9 @@
 <Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="590"      YPos="28"       Width="2586"     Height="2025"  />
 
 <Text       Name="LabelDesc"            Text=""                             XPos="3177"     YPos="141"       Width="562"     Height="1547"    FontSize="34"  />
-<Button     Name="NextWeek"             Image="NextWeek"                    XPos="3233"     YPos="28"       Width="450"     Height="90"     Transparency="true"     Scale="true"     />
-<Button     Name="PrevButton"           Image="Prev"                        XPos="3227"     YPos="1828"      Width="202"      Height="90"     Transparency="true"     Scale="true"     />
-<Button     Name="NextButton"           Image="Next"                        XPos="3486"     YPos="1828"      Width="202"      Height="90"     Transparency="true"     Scale="true"     />
-<Button     Name="GoTo"                 Image="GoTo"                        XPos="3233"     YPos="1688"      Width="450"     Height="90"     Transparency="true" Scale="true"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="3177"     YPos="1941"      Width="562"     Height="112"     Transparency="true" Scale="true"  />
+<Button     Name="NextWeek"             Image="NextWeek"                    XPos="3233"     YPos="28"       Width="450"     Height="90"     Transparency="true" />
+<Button     Name="PrevButton"           Image="Prev"                        XPos="3227"     YPos="1828"      Width="202"      Height="90"     Transparency="true" />
+<Button     Name="NextButton"           Image="Next"                        XPos="3486"     YPos="1828"      Width="202"      Height="90"     Transparency="true" />
+<Button     Name="GoTo"                 Image="GoTo"                        XPos="3233"     YPos="1688"      Width="450"     Height="90"     Transparency="true" />
+<Button     Name="BackButton"           Image="Back"                        XPos="3177"     YPos="1941"      Width="562"     Height="112"     Transparency="true" PushWindow="<back>"/>
 </Screen>

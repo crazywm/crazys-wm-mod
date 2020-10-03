@@ -3,13 +3,13 @@
 <Text       Name="CurrentBrothel"       Text=""                             XPos="14"       YPos="3"        Width="703"     Height="45"     FontSize="34"  />
 <Text       Name="Gold"                 Text="Player Gold: 0"               XPos="1124"      YPos="3"        Width="422"     Height="45"     FontSize="34"  />
 <Image      Name="GirlImage"            File="blank.png"                    XPos="1448"     YPos="14"       Width="422"     Height="422"     />
-<Button     Name="ViewDetailsButton"    Image="ViewDetails"                 XPos="1546"     YPos="450"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
+<Button     Name="ViewDetailsButton"    Image="ViewDetails"                 XPos="1546"     YPos="450"      Width="225"     Height="45"     Transparency="true" />
 <Text       Name="GirlDescription"      Text=""                             XPos="1448"     YPos="506"      Width="436"     Height="338"    FontSize="14"  />
-<Button     Name="TransferButton"       Image="TransferGirls"               XPos="1616"     YPos="844"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
-<Button     Name="FreeSlaveButton"      Image="FreeSlave"                   XPos="1265"      YPos="844"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
-<Button     Name="SellSlaveButton"      Image="SellSlave"                   XPos="1265"      YPos="914"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
-<Button     Name="FireButton"           Image="FireGirl"                    XPos="1265"      YPos="982"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true" Scale="true"  />
+<Button     Name="TransferButton"       Image="TransferGirls"               XPos="1616"     YPos="844"      Width="225"     Height="45"     Transparency="true" ReplaceWindow="Transfer Screen"/>
+<Button     Name="FreeSlaveButton"      Image="FreeSlave"                   XPos="1265"      YPos="844"      Width="225"     Height="45"     Transparency="true" />
+<Button     Name="SellSlaveButton"      Image="SellSlave"                   XPos="1265"      YPos="914"      Width="225"     Height="45"     Transparency="true" />
+<Button     Name="FireButton"           Image="FireGirl"                    XPos="1265"      YPos="982"      Width="225"     Height="45"     Transparency="true" />
+<Button     Name="BackButton"           Image="Back"                        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true" PushWindow="<back>"/>
 
 <Text       Name="JobTypeHeader"        Text="Job Types"                    XPos="14"       YPos="827"      Width="281"     Height="45"     FontSize="28"  />
 <ListBox    Name="JobTypeList"                                              XPos="14"       YPos="869"      Width="281"     Height="158"    FontSize="17"       RowHeight="31"      Border="1"          Events="true"  />

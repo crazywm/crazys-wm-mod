@@ -4,9 +4,9 @@
 <Text       Name="ScreenHeader"         Text="Town Bank"                    XPos="197"       YPos="28"       Width="900"     Height="90"                  FontSize="56"                   />
 <Text       Name="BankDetails"          Text=" "                            XPos="28"       YPos="169"       Width="1068"     Height="281"                 FontSize="37"                   />
 
-<Button     Name="DepositButton"        Image="Deposit"                     XPos="28"       YPos="872"      Width="450"     Height="90"                  Transparency="true"                  Scale="true"                   />
-<Button     Name="DepositAllButton"     Image="DepositAll"                  XPos="28"       YPos="1007"      Width="450"     Height="90"                  Transparency="true"                  Scale="true"                   />
-<Button     Name="WithdrawButton"       Image="Withdraw"                    XPos="647"      YPos="872"      Width="450"     Height="90"                  Transparency="true"                  Scale="true"                   />
-<Button     Name="WithdrawAllButton"    Image="WithdrawAll"                 XPos="647"      YPos="1007"      Width="450"     Height="90"                  Transparency="true"                  Scale="true"                   />
-<Button     Name="BackButton"           Image="Back"                        XPos="1439"      YPos="1508"      Width="534"     Height="107"  Transparency="true"    Scale="true"  />
+<Button     Name="DepositButton"        Image="Deposit"                     XPos="28"       YPos="872"      Width="450"     Height="90"                  Transparency="true"    />
+<Button     Name="DepositAllButton"     Image="DepositAll"                  XPos="28"       YPos="1007"      Width="450"     Height="90"                  Transparency="true"    />
+<Button     Name="WithdrawButton"       Image="Withdraw"                    XPos="647"      YPos="872"      Width="450"     Height="90"                  Transparency="true"    />
+<Button     Name="WithdrawAllButton"    Image="WithdrawAll"                 XPos="647"      YPos="1007"      Width="450"     Height="90"                  Transparency="true"    />
+<Button     Name="BackButton"           Image="Back"                        XPos="1439"      YPos="1508"      Width="534"     Height="107"  Transparency="true"     PushWindow="<back>"  />
 </Screen>

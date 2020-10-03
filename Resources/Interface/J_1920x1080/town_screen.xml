@@ -1,27 +1,27 @@
 <Screen>
 <Window     Name="Town Screen Window"                                       XPos="18"       YPos="20"       Width="1883"    Height="1041"    Border="1"  />
 <Image      Name="TownMap"              File="townmap.png"                  XPos="14"       YPos="14"       Width="1451"    Height="1012"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true" Scale="true"  />
-<Button     Name="WalkButton"           Image="WalkAround"                  XPos="1616"     YPos="844"      Width="225"     Height="45"     Transparency="true"     Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true"  PushWindow="<back>"/>
+<Button     Name="WalkButton"           Image="WalkAround"                  XPos="1616"     YPos="844"      Width="225"     Height="45"     Transparency="true" />
 
 <Text       Name="CurrentBrothel"       Text=""                             XPos="1462"     YPos="14"       Width="422"     Height="45"  FontSize="22"  />
-<Button     Name="SlaveMarket"          Image="SlaveMarket"     Disabled="" XPos="770"      YPos="608"      Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="Shop"                 Image="Shop"            Disabled="" XPos="1006"      YPos="518"      Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="MayorsOffice"         Image="MayorsOffice"    Disabled="" XPos="992"      YPos="30"       Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="Bank"                 Image="Bank"            Disabled="" XPos="1169"      YPos="134"       Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="House"                Image="House"           Disabled="" XPos="399"      YPos="592"      Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="Prison"               Image="Prison"          Disabled="" XPos="1228"      YPos="266"      Width="67"      Height="68"  Transparency="true" Scale="true"  />      
-<Button     Name="Clinic"               Image="Clinic"          Disabled="" XPos="725"      YPos="104"       Width="67"      Height="68"  Transparency="true" Scale="true"  />      
-<Button     Name="Studio"               Image="Studio"          Disabled="" XPos="207"      YPos="356"      Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="Arena"                Image="Arena"           Disabled="" XPos="741"      YPos="769"      Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="Centre"               Image="Centre"          Disabled="" XPos="873"      YPos="326"      Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="Farm"                 Image="Farm"            Disabled="" XPos="1214"      YPos="844"      Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="Brothel0"             Image="Brothel"         Disabled="" XPos="680"      YPos="415"      Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="Brothel1"             Image="Brothel2"        Disabled="" XPos="992"      YPos="637"      Width="67"      Height="68"  Transparency="true" Scale="true"  />      
-<Button     Name="Brothel2"             Image="Brothel3"        Disabled="" XPos="696"      YPos="281"      Width="67"      Height="68"  Transparency="true" Scale="true"  />      
-<Button     Name="Brothel3"             Image="Brothel4"        Disabled="" XPos="843"      YPos="207"      Width="67"      Height="68"  Transparency="true" Scale="true"  />      
-<Button     Name="Brothel4"             Image="Brothel5"        Disabled="" XPos="1051"      YPos="326"      Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="Brothel5"             Image="Brothel6"        Disabled="" XPos="1332"      YPos="89"       Width="67"      Height="68"  Transparency="true" Scale="true"  />
-<Button     Name="Brothel6"             Image="Brothel7"        Disabled="" XPos="592"      YPos="45"       Width="67"      Height="68"  Transparency="true" Scale="true"  />
+<Button     Name="SlaveMarket"          Image="SlaveMarket"     Disabled="" XPos="770"      YPos="608"      Width="67"      Height="68"  Transparency="true" PushWindow="Slave Market"/>
+<Button     Name="Shop"                 Image="Shop"            Disabled="" XPos="1006"      YPos="518"      Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="MayorsOffice"         Image="MayorsOffice"    Disabled="" XPos="992"      YPos="30"       Width="67"      Height="68"  Transparency="true" PushWindow="Mayor"/>
+<Button     Name="Bank"                 Image="Bank"            Disabled="" XPos="1169"      YPos="134"       Width="67"      Height="68"  Transparency="true" PushWindow="Bank"/>
+<Button     Name="House"                Image="House"           Disabled="" XPos="399"      YPos="592"      Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Prison"               Image="Prison"          Disabled="" XPos="1228"      YPos="266"      Width="67"      Height="68"  Transparency="true" PushWindow="Prison"/>
+<Button     Name="Clinic"               Image="Clinic"          Disabled="" XPos="725"      YPos="104"       Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Studio"               Image="Studio"          Disabled="" XPos="207"      YPos="356"      Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Arena"                Image="Arena"           Disabled="" XPos="741"      YPos="769"      Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Centre"               Image="Centre"          Disabled="" XPos="873"      YPos="326"      Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Farm"                 Image="Farm"            Disabled="" XPos="1214"      YPos="844"      Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Brothel0"             Image="Brothel"         Disabled="" XPos="680"      YPos="415"      Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Brothel1"             Image="Brothel2"        Disabled="" XPos="992"      YPos="637"      Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Brothel2"             Image="Brothel3"        Disabled="" XPos="696"      YPos="281"      Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Brothel3"             Image="Brothel4"        Disabled="" XPos="843"      YPos="207"      Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Brothel4"             Image="Brothel5"        Disabled="" XPos="1051"      YPos="326"      Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Brothel5"             Image="Brothel6"        Disabled="" XPos="1332"      YPos="89"       Width="67"      Height="68"  Transparency="true"/>
+<Button     Name="Brothel6"             Image="Brothel7"        Disabled="" XPos="592"      YPos="45"       Width="67"      Height="68"  Transparency="true"/>
 <Image      Name="GirlImage"            File="blank.png"                    XPos="1462"     YPos="70"       Width="408"     Height="562" Hidden="true"  />
 </Screen>

@@ -2,32 +2,32 @@
 <Window     Name="Slave Market Window"                                      XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
 <Text       Name="SlaveMarket"          Text="Slave Market"                 XPos="7"       YPos="2"        Width="150"     Height="32"     FontSize="18"   Red="128"          />
 <Text       Name="SlaveDetails"         Text=""                             XPos="7"       YPos="35"       Width="150"     Height="600"    FontSize="7"          />
-<Button     Name="ShowMoreButton"       Image="ShowMore"                    XPos="34"       YPos="640"      Width="90"     Height="24"     Transparency="true"         Scale="true"          />
+<Button     Name="ShowMoreButton"       Image="ShowMore"                    XPos="34"       YPos="640"      Width="90"     Height="24"     Transparency="true"/>
 <Text       Name="TraitListT"           Text="Traits"                       XPos="7"       YPos="670"      Width="187"     Height="100"    FontSize="7"          />
 
 <Image      Name="GirlImage"            File="blank.png"                    XPos="157"      YPos="10"       Width="690"     Height="650"  />
 
 <Text       Name="Gold"                 Text="Gold: 0"                      XPos="847"     YPos="2"        Width="157"     Height="32"     FontSize="15"          />
 <ListBox    Name="SlaveList"                                                XPos="847"     YPos="35"       Width="150"     Height="255" FontSize="9" RowHeight="19" Border="1"         Events="true"         Multi="true"          />
-<Button     Name="BuySlaveButton"       Image="BuySlave"                    XPos="862"     YPos="300"      Width="120"     Height="32"  Transparency="true"         Scale="true"          />
+<Button     Name="BuySlaveButton"       Image="BuySlave"                    XPos="862"     YPos="300"      Width="120"     Height="32"  Transparency="true"/>
 <Text       Name="GirlDesc"             Text=""                             XPos="847"     YPos="340"      Width="150"     Height="200" FontSize="7"          />
 
 <Text       Name="ReleaseTo"            Text="Send Girl to: Brothel 0"      XPos="276"      YPos="670"      Width="262"     Height="24"  FontSize="12"  />
 <Text       Name="RoomsFree"            Text="Room for # more girls."       XPos="562"      YPos="670"      Width="150"     Height="24"  FontSize="12"  />
-<Button     Name="Brothel0"             Image="Brothel"         Disabled="" XPos="244"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Brothel1"             Image="Brothel2"        Disabled="" XPos="281"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />      
-<Button     Name="Brothel2"             Image="Brothel3"        Disabled="" XPos="319"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />      
-<Button     Name="Brothel3"             Image="Brothel4"        Disabled="" XPos="356"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />      
-<Button     Name="Brothel4"             Image="Brothel5"        Disabled="" XPos="394"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Brothel5"             Image="Brothel6"        Disabled="" XPos="431"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Brothel6"             Image="Brothel7"        Disabled="" XPos="469"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Studio"               Image="Studio"          Disabled="" XPos="506"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Arena"                Image="Arena"           Disabled="" XPos="543"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Centre"               Image="Centre"          Disabled="" XPos="581"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />      
-<Button     Name="Clinic"               Image="Clinic"          Disabled="" XPos="618"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Farm"                 Image="Farm"            Disabled="" XPos="656"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="House"                Image="House"           Disabled="" XPos="693"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Dungeon"              Image="SlaveMarket"     Disabled="" XPos="731"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
+<Button     Name="Brothel0"             Image="Brothel"         Disabled="" XPos="244"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Brothel1"             Image="Brothel2"        Disabled="" XPos="281"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Brothel2"             Image="Brothel3"        Disabled="" XPos="319"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Brothel3"             Image="Brothel4"        Disabled="" XPos="356"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Brothel4"             Image="Brothel5"        Disabled="" XPos="394"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Brothel5"             Image="Brothel6"        Disabled="" XPos="431"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Brothel6"             Image="Brothel7"        Disabled="" XPos="469"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Studio"               Image="Studio"          Disabled="" XPos="506"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Arena"                Image="Arena"           Disabled="" XPos="543"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Centre"               Image="Centre"          Disabled="" XPos="581"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Clinic"               Image="Clinic"          Disabled="" XPos="618"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Farm"                 Image="Farm"            Disabled="" XPos="656"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="House"                Image="House"           Disabled="" XPos="693"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
+<Button     Name="Dungeon"              Image="SlaveMarket"     Disabled="" XPos="731"      YPos="692"      Width="28"      Height="38"  Transparency="true" />
 
-<Button     Name="BackButton"           Image="Back"                        XPos="847"      YPos="690"      Width="150"     Height="40"     Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="847"      YPos="690"      Width="150"     Height="40"     Transparency="true"  PushWindow="<back>"/>
 </Screen>

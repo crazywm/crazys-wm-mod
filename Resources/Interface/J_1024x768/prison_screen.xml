@@ -6,8 +6,8 @@
 <ListBox    Name="PrisonList"                                               XPos="7"       YPos="60"       Width="157"     Height="330"  FontSize="9" RowHeight="19"                 Border="1"                  Events="true"                  Multi="false"                   />
 
 <Text       Name="GirlDescription"      Text="None Selected"                XPos="172"      YPos="10"       Width="120"     Height="300"                  FontSize="7"                   />
-<Button     Name="ShowMoreButton"       Image="ShowMore"                    XPos="172"      YPos="310"      Width="120"     Height="32"                  Transparency="true"                  Scale="true"                   />
-<Button     Name="ReleaseButton"        Image="Release"                     XPos="172"      YPos="358"      Width="120"     Height="32"                  Transparency="true"                  Scale="true"                   />
+<Button     Name="ShowMoreButton"       Image="ShowMore"                    XPos="172"      YPos="310"      Width="120"     Height="32"  Transparency="true"/>
+<Button     Name="ReleaseButton"        Image="Release"                     XPos="172"      YPos="358"      Width="120"     Height="32"  Transparency="true"/>
 
-<Button     Name="BackButton"           Image="Back"                        XPos="384"      YPos="536"      Width="142"     Height="38"  Transparency="true"    Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="384"      YPos="536"      Width="142"     Height="38"  Transparency="true" PushWindow="<back>"/>
 </Screen>

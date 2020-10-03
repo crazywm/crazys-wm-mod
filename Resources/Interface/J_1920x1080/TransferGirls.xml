@@ -18,8 +18,8 @@
 <Column     Name="Name"                 Header="Girl Name"                  Offset="0" />
 </ListBox>
 <ListBox    Name="BrothelRight"                                             XPos="1588"      YPos="49"       Width="281"     Height="366"    FontSize="17" RowHeight="27" Border="1"  Multi="false"   Events="true" />
-<Button     Name="ShiftRight"           Image="ShiftRight"                  XPos="1223"      YPos="422"      Width="70"      Height="70"     Transparency="true" Scale="true"  />
-<Button     Name="ShiftLeft"            Image="ShiftLeft"                   XPos="1223"      YPos="562"      Width="70"      Height="70"     Transparency="true" Scale="true"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="1588"      YPos="970"      Width="281"     Height="56"     Transparency="true" Scale="true"  />
+<Button     Name="ShiftRight"           Image="ShiftRight"                  XPos="1223"      YPos="422"      Width="70"      Height="70"     Transparency="true"/>
+<Button     Name="ShiftLeft"            Image="ShiftLeft"                   XPos="1223"      YPos="562"      Width="70"      Height="70"     Transparency="true"/>
+<Button     Name="BackButton"           Image="Back"                        XPos="1588"      YPos="970"      Width="281"     Height="56"     Transparency="true" PushWindow="<back>" />
 
 </Screen>

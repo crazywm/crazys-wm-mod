@@ -20,9 +20,9 @@
 </ListBox>
 
 <Image      Name="FireArrow"            File="imgArrowDown.png"             XPos="37"       YPos="425"      Width="45"      Height="44"  />
-<Button     Name="GangFireButton"       Image="Fire"                        XPos="30"       YPos="470"      Width="60"      Height="32"  Transparency="true" Scale="true"  />
+<Button     Name="GangFireButton"       Image="Fire"                        XPos="30"       YPos="470"      Width="60"      Height="32"  Transparency="true"/>
 <Image      Name="HireArrow"            File="imgArrowLeft.png"             XPos="145"      YPos="495"      Width="24"      Height="80"  />
-<Button     Name="GangHireButton"       Image="Hire"                        XPos="87"      YPos="520"      Width="60"      Height="32"  Transparency="true" Scale="true"  />
+<Button     Name="GangHireButton"       Image="Hire"                        XPos="87"      YPos="520"      Width="60"      Height="32"  Transparency="true"/>
 
 <ListBox    Name="RecruitList"                                              XPos="157"      YPos="450"      Width="675"     Height="182" FontSize="9" RowHeight="19" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
 <Column     Name="GangName"             Header="Recruitable Gang"           Offset="0"  />
@@ -42,18 +42,18 @@
 <Text       Name="MissionDescription"   Text=""                             XPos="847"     YPos="280"      Width="150"     Height="115" FontSize="9"  />
 
 <Text       Name="WeaponDescription"    Text="Weapon Level: 0"              XPos="600"      YPos="675"      Width="225"     Height="32" FontSize="10"  />
-<Button     Name="WeaponUpButton"       Image="UpAds"                       XPos="637"     YPos="698"      Width="60"      Height="32" Transparency="true" Scale="true"  />
+<Button     Name="WeaponUpButton"       Image="UpAds"                       XPos="637"     YPos="698"      Width="60"      Height="32" Transparency="true" />
 
 <Text       Name="HealPotDescription"   Text="Heal Potions (10g each): 0"   XPos="847"      YPos="400"      Width="150"     Height="32" FontSize="10"  />
-<Button     Name="BuyHealPotButton"     Image="Buy"                         XPos="858"      YPos="420"      Width="54"      Height="32" Transparency="true" Scale="true"  />
-<Button     Name="BuyHealPotButton10"   Image="Buy10"                       XPos="858"      YPos="460"      Width="54"      Height="32" Transparency="true" Scale="true"  />
-<Button     Name="BuyHealPotButton20"   Image="Buy20"                       XPos="924"      YPos="460"      Width="54"      Height="32" Transparency="true" Scale="true"  />
+<Button     Name="BuyHealPotButton"     Image="Buy"                         XPos="858"      YPos="420"      Width="54"      Height="32" Transparency="true" />
+<Button     Name="BuyHealPotButton10"   Image="Buy10"                       XPos="858"      YPos="460"      Width="54"      Height="32" Transparency="true" />
+<Button     Name="BuyHealPotButton20"   Image="Buy20"                       XPos="924"      YPos="460"      Width="54"      Height="32" Transparency="true" />
 <Checkbox   Name="AutoBuyHealToggle"    Text="Auto Buy"                     XPos="922"      YPos="427"      Width="12"      Height="16" FontSize="9"  />
 
 <Text       Name="NetDescription"       Text="Nets (5g each): 0"            XPos="847"      YPos="550"      Width="150"     Height="32" FontSize="10"  />
-<Button     Name="BuyNetsButton"        Image="Buy"                         XPos="858"      YPos="570"      Width="54"      Height="32" Transparency="true" Scale="true"  />
-<Button     Name="BuyNetsButton10"      Image="Buy10"                       XPos="858"      YPos="610"      Width="54"      Height="32" Transparency="true" Scale="true"  />
-<Button     Name="BuyNetsButton20"      Image="Buy20"                       XPos="924"      YPos="610"      Width="54"      Height="32" Transparency="true" Scale="true"  />
+<Button     Name="BuyNetsButton"        Image="Buy"                         XPos="858"      YPos="570"      Width="54"      Height="32" Transparency="true" />
+<Button     Name="BuyNetsButton10"      Image="Buy10"                       XPos="858"      YPos="610"      Width="54"      Height="32" Transparency="true" />
+<Button     Name="BuyNetsButton20"      Image="Buy20"                       XPos="924"      YPos="610"      Width="54"      Height="32" Transparency="true" />
 <Checkbox   Name="AutoBuyNetsToggle"    Text="Auto Buy"                     XPos="922"      YPos="577"      Width="12"      Height="16" FontSize="9"  />
 
 
@@ -65,5 +65,5 @@
 <Text       Name="GangGetsBeast"        Text="Beast : 33%"                  XPos="319"      YPos="688"      Width="112"     Height="16" FontSize="10"  />
 <Slider     Name="ItemsPercSlider"                                          XPos="94"       YPos="715"      Width="337"     MinValue="0"        MaxValue="100" Value="0" Increment="10" LiveUpdate="true" Hidden="false" Disabled="false"  />
 
-<Button     Name="BackButton"           Image="Back"                        XPos="847"      YPos="690"      Width="150"     Height="40"     Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="847"      YPos="690"      Width="150"     Height="40"     Transparency="true"  PushWindow="<back>" />
 </Screen>

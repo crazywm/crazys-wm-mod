@@ -8,21 +8,21 @@
 <Text       Name="JobTypeHeader"        Text="Job Types"                    XPos="847"     YPos="11"       Width="150"     Height="24"     FontSize="12"  />
 <ListBox    Name="JobTypeList"                                              XPos="847"     YPos="35"       Width="150"     Height="102"    FontSize="9" RowHeight="19" Border="1"          Events="true"  />
 <Text       Name="JobHeader"            Text="Jobs"                         XPos="847"     YPos="146"      Width="150"     Height="24"     FontSize="12"  />
-<Button     Name="DayButton"            Image="DayToggle"                   XPos="894"     YPos="138"      Width="40"      Height="32"     Transparency="true" Scale="true"  />
-<Button     Name="NightButton"          Image="NightToggle"                 XPos="935"     YPos="138"      Width="51"      Height="32"     Transparency="true" Scale="true"  />
+<Button     Name="DayButton"            Image="DayToggle"                   XPos="894"     YPos="138"      Width="40"      Height="32"     Transparency="true"/>
+<Button     Name="NightButton"          Image="NightToggle"                 XPos="935"     YPos="138"      Width="51"      Height="32"     Transparency="true"/>
 <ListBox    Name="JobList"                                                  XPos="847"     YPos="170"      Width="150"     Height="102"    FontSize="9" RowHeight="19" Border="1"          Events="true"  />
 <Text       Name="TraitHeader"          Text="Traits"                       XPos="847"     YPos="281"      Width="150"     Height="24"     FontSize="12"  />
 <ListBox    Name="TraitList"                                                XPos="847"     YPos="305"      Width="150"     Height="202"    FontSize="9" RowHeight="19" Border="1"          Events="true"  />
 <Text       Name="TraitDescription"     Text="Trait Description"            XPos="847"     YPos="510"      Width="150"     Height="90"     FontSize="7"  />
-<Button     Name="InteractButton"       Image="Talk"                        XPos="862"     YPos="600"      Width="120"     Height="32"     Transparency="true" Scale="true"  />
+<Button     Name="InteractButton"       Image="Talk"                        XPos="862"     YPos="600"      Width="120"     Height="32"     Transparency="true"/>
 <Text       Name="InteractCount"        Text="Interactions Left: 0"         XPos="847"     YPos="632"      Width="150"     Height="15"     FontSize="6"  />
 
-<Button     Name="PrevButton"           Image="Prev"                        XPos="861"      YPos="650"      Width="54"      Height="32"     Transparency="true"     Scale="true"     />
-<Button     Name="NextButton"           Image="Next"                        XPos="930"      YPos="650"      Width="54"      Height="32"     Transparency="true"     Scale="true"     />
+<Button     Name="PrevButton"           Image="Prev"                        XPos="861"      YPos="650"      Width="54"      Height="32"     Transparency="true"/>
+<Button     Name="NextButton"           Image="Next"                        XPos="930"      YPos="650"      Width="54"      Height="32"     Transparency="true"/>
 
 
-<Button     Name="MoreButton"           Image="ShowMore"                    XPos="187"       YPos="670"      Width="90"     Height="24"     Transparency="true"         Scale="true"          />
-<Button     Name="GalleryButton"        Image="Gallery"                     XPos="187"       YPos="698"      Width="120"     Height="32"     Transparency="true" Scale="true"  />
+<Button     Name="MoreButton"           Image="ShowMore"                    XPos="187"       YPos="670"      Width="90"     Height="24"     Transparency="true"/>
+<Button     Name="GalleryButton"        Image="Gallery"                     XPos="187"       YPos="698"      Width="120"     Height="32"     Transparency="true" PushWindow="Gallery"/>
 
 
 <Slider     Name="AccomSlider"                                              XPos="300"      YPos="670"      Width="195"     MinValue="0"    MaxValue="9" Value="1" Increment="1" LiveUpdate="true" Hidden="false" Disabled="false"  />
@@ -35,14 +35,14 @@
 <Slider     Name="HousePercSlider"                                          XPos="510"      YPos="670"      Width="195"     MinValue="0"    MaxValue="100" Value="0" Increment="10" LiveUpdate="true" Hidden="false" Disabled="false"  />
 <Text       Name="HousePercValue"       Text="House Percentage: 100%"       XPos="525"      YPos="685"      Width="135"     Height="21"     FontSize="8"  />
 
-<Button     Name="SendDungeonButton"    Image="SendDungeon"                 XPos="382"      YPos="706"      Width="90"     Height="24"     Transparency="true" Scale="true" Disabled=""  />
-<Button     Name="ReleaseDungeonButton" Image="Release"                     XPos="382"      YPos="706"      Width="90"     Height="24"     Transparency="true" Scale="true" Disabled=""  />
-<Button     Name="TakeGoldButton"       Image="TakeGold"                    XPos="532"      YPos="706"      Width="90"     Height="24"     Transparency="true" Scale="true"  />
+<Button     Name="SendDungeonButton"    Image="SendDungeon"                 XPos="382"      YPos="706"      Width="90"     Height="24"     Transparency="true" Disabled=""  />
+<Button     Name="ReleaseDungeonButton" Image="Release"                     XPos="382"      YPos="706"      Width="90"     Height="24"     Transparency="true" Disabled=""  />
+<Button     Name="TakeGoldButton"       Image="TakeGold"                    XPos="532"      YPos="706"      Width="90"     Height="24"     Transparency="true"/>
 
 <Checkbox   Name="UseAntiPregToggle"    Text="Use Anti-Preg"                XPos="742"      YPos="670"      Width="12"      Height="16"     FontSize="8" />
-<Button     Name="InventoryButton"      Image="GiveGift"                    XPos="697"      YPos="698"      Width="120"     Height="32"     Transparency="true" Scale="true"  />
+<Button     Name="InventoryButton"      Image="GiveGift"                    XPos="697"      YPos="698"      Width="120"     Height="32"     Transparency="true" />
 
 
 
-<Button     Name="BackButton"           Image="Back"                        XPos="847"      YPos="690"      Width="150"     Height="40"     Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="847"      YPos="690"      Width="150"     Height="40"     Transparency="true"  PushWindow="<back>"/>
 </Screen>

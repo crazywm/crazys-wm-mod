@@ -11,9 +11,9 @@
 <Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="157"      YPos="10"       Width="690"     Height="720"  />
 
 <Text       Name="LabelDesc"            Text=""                             XPos="847"     YPos="50"       Width="150"     Height="550"    FontSize="9"  />
-<Button     Name="NextWeek"             Image="NextWeek"                    XPos="862"     YPos="10"       Width="120"     Height="32"     Transparency="true"     Scale="true"     />
-<Button     Name="PrevButton"           Image="Prev"                        XPos="861"     YPos="650"      Width="54"      Height="32"     Transparency="true"     Scale="true"     />
-<Button     Name="NextButton"           Image="Next"                        XPos="930"     YPos="650"      Width="54"      Height="32"     Transparency="true"     Scale="true"     />
-<Button     Name="GoTo"                 Image="GoTo"                        XPos="862"     YPos="600"      Width="120"     Height="32"     Transparency="true" Scale="true"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="847"     YPos="690"      Width="150"     Height="40"     Transparency="true" Scale="true"  />
+<Button     Name="NextWeek"             Image="NextWeek"                    XPos="862"     YPos="10"       Width="120"     Height="32"     Transparency="true" />
+<Button     Name="PrevButton"           Image="Prev"                        XPos="861"     YPos="650"      Width="54"      Height="32"     Transparency="true" />
+<Button     Name="NextButton"           Image="Next"                        XPos="930"     YPos="650"      Width="54"      Height="32"     Transparency="true" />
+<Button     Name="GoTo"                 Image="GoTo"                        XPos="862"     YPos="600"      Width="120"     Height="32"     Transparency="true" />
+<Button     Name="BackButton"           Image="Back"                        XPos="847"     YPos="690"      Width="150"     Height="40"     Transparency="true" PushWindow="<back>"/>
 </Screen>

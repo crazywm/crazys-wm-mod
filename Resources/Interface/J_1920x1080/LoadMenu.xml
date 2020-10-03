@@ -3,6 +3,6 @@
 <Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="1124"     Height="844"  />
 <Text       Name="WhoreMaster"          Text="Whore Master"                 XPos="273"      YPos="0"        Width="1124"     Height="121"  FontSize="90"  Red="200"   Green="30"  Blue="30"    />
 <ListBox    Name="FileName"                                                 XPos="363"      YPos="141"      Width="422"     Height="562" FontSize="17" RowHeight="27" Border="1"  />
-<Button     Name="LoadGame"             Image="Load"                        XPos="281"      YPos="745"      Width="225"     Height="45"  Transparency="true" Scale="true"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="618"      YPos="745"      Width="225"     Height="45"  Transparency="true" Scale="true"  />
+<Button     Name="LoadGame"             Image="Load"                        XPos="281"      YPos="745"      Width="225"     Height="45"  Transparency="true" />
+<Button     Name="BackButton"           Image="Back"                        XPos="618"      YPos="745"      Width="225"     Height="45"  Transparency="true" ReplaceWindow="Main Menu"/>
 </Screen>

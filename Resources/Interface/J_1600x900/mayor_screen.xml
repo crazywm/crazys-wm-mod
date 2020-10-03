@@ -6,6 +6,6 @@
 <Text       Name="MayorDetails"         Text=""                             XPos="12"       YPos="70"       Width="445"     Height="340"                  FontSize="16"                   />
 
 
-<Button     Name="BribeButton"          Image="Bribe"                       XPos="141"      YPos="420"      Width="187"     Height="38"                  Transparency="true"                  Scale="true"                   />
-<Button     Name="BackButton"           Image="Back"                        XPos="600"      YPos="628"      Width="223"     Height="45"  Transparency="true"    Scale="true"  />
+<Button     Name="BribeButton"          Image="Bribe"                       XPos="141"      YPos="420"      Width="187"     Height="38"                  Transparency="true"/>
+<Button     Name="BackButton"           Image="Back"                        XPos="600"      YPos="628"      Width="223"     Height="45"  Transparency="true"    PushWindow="<back>"/>
 </Screen>

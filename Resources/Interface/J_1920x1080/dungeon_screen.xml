@@ -3,20 +3,20 @@
 <Text       Name="DungeonHeader"        Text="Dungeon Screen"               XPos="14"       YPos="3"        Width="703"     Height="45"     FontSize="34"  />
 <Text       Name="Gold"                 Text="Player Gold: 0"               XPos="1124"      YPos="3"        Width="422"     Height="45"     FontSize="34"  />
 <Image      Name="GirlImage"            File="blank.png"                    XPos="1448"     YPos="14"       Width="422"     Height="422"     />
-<Button     Name="DetailsButton"        Image="ViewDetails"                 XPos="1546"     YPos="450"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
+<Button     Name="DetailsButton"        Image="ViewDetails"                 XPos="1546"     YPos="450"      Width="225"     Height="45"     Transparency="true" />
 
-<Button     Name="StopFeedingButton"    Image="NoFeed"                      XPos="1476"     YPos="703"      Width="169"     Height="34"     Transparency="true" Scale="true"  />
-<Button     Name="AllowFoodButton"      Image="Feed"                        XPos="1673"     YPos="703"      Width="169"     Height="34"     Transparency="true" Scale="true"  />
-<Button     Name="BrandSlaveButton"     Image="ForceSlave"                  XPos="1476"     YPos="773"      Width="169"     Height="34"     Transparency="true" Scale="true"  />
-<Button     Name="SellButton"           Image="SellSlave"                   XPos="1673"     YPos="773"      Width="169"     Height="34"     Transparency="true" Scale="true"  />
-<Button     Name="TortureButton"        Image="Torture"                     XPos="1546"     YPos="844"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
-<Button     Name="InteractButton"       Image="Talk"                        XPos="1546"     YPos="562"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
+<Button     Name="StopFeedingButton"    Image="NoFeed"                      XPos="1476"     YPos="703"      Width="169"     Height="34"     Transparency="true" />
+<Button     Name="AllowFoodButton"      Image="Feed"                        XPos="1673"     YPos="703"      Width="169"     Height="34"     Transparency="true" />
+<Button     Name="BrandSlaveButton"     Image="ForceSlave"                  XPos="1476"     YPos="773"      Width="169"     Height="34"     Transparency="true" />
+<Button     Name="SellButton"           Image="SellSlave"                   XPos="1673"     YPos="773"      Width="169"     Height="34"     Transparency="true" />
+<Button     Name="TortureButton"        Image="Torture"                     XPos="1546"     YPos="844"      Width="225"     Height="45"     Transparency="true" />
+<Button     Name="InteractButton"       Image="Talk"                        XPos="1546"     YPos="562"      Width="225"     Height="45"     Transparency="true" />
 <Text       Name="InteractCount"        Text="Interactions Left: 0"         XPos="1546"     YPos="608"      Width="225"     Height="21"     FontSize="11"  />
 
-<Button     Name="ReleaseCustButton"    Image="ReleaseAllCustomers"         XPos="14"       YPos="942"      Width="169"     Height="34"     Transparency="true" Scale="true"  />
-<Button     Name="ReleaseButton"        Image="Release"                     XPos="211"      YPos="965"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
-<Button     Name="ReleaseAllButton"     Image="ReleaseAllGirls"             XPos="14"       YPos="993"      Width="169"     Height="34"     Transparency="true" Scale="true"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true" Scale="true"  />
+<Button     Name="ReleaseCustButton"    Image="ReleaseAllCustomers"         XPos="14"       YPos="942"      Width="169"     Height="34"     Transparency="true" />
+<Button     Name="ReleaseButton"        Image="Release"                     XPos="211"      YPos="965"      Width="225"     Height="45"     Transparency="true" />
+<Button     Name="ReleaseAllButton"     Image="ReleaseAllGirls"             XPos="14"       YPos="993"      Width="169"     Height="34"     Transparency="true" />
+<Button     Name="BackButton"           Image="Back"                        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true" PushWindow="<back>"/>
 
 <ListBox    Name="GirlList"                                                 XPos="14"       YPos="49"       Width="1434"     Height="889"    FontSize="17"       RowHeight="30"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column     Name="Name"                 Header="Girl Name"                  Offset="0"  />                                   

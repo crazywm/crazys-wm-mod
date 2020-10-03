@@ -31,7 +31,7 @@
 <Checkbox   Name="ProhibitFootJobToggle"    Text="Prohibit Footjob"         XPos="277"  YPos="110"  Width="12"      Height="16"     FontSize="9" LeftOrRight="false"/>
 </Define>   
 <Widget     Definition="Restrictions"       Seq="Res"                       XPos="37"   YPos="250"/>
-<Button     Name="BackButton"           Image="Back"                        XPos="459"  YPos="536"      Width="142"     Height="38"     Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="459"  YPos="536"      Width="142"     Height="38"     Transparency="true"  PushWindow="<back>" />
 
 <!--
 <Image   Name="Shader"    File="FacilityBG.png"    XPos="0"    YPos="0"    Width="390"    Height="86"/>

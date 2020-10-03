@@ -18,25 +18,25 @@
 <ListBox    Name="ItemsRightList"                                           XPos="2277"      YPos="922"      Width="843"     Height="1131"    FontSize="34" RowHeight="53" Border="1"          Events="true" Multi="true"  />
 <Text       Name="CurrentBrothel"       Text=""                             XPos="1479"      YPos="0"        Width="1406"     Height="90"     FontSize="34"  />
 <ListBox    Name="FilterList"                                               XPos="1687"      YPos="56"       Width="365"     Height="681"    FontSize="34" RowHeight="53" Border="1"          Events="true" Multi="false"  />
-<Button     Name="Sell10LeftButton"     Image="Sell10"                      XPos="1507"      YPos="84"       Width="135"      Height="62"     Transparency="true" Scale="true"  />
-<Button     Name="Sell10RightButton"    Image="Sell10"                      XPos="2097"      YPos="84"       Width="135"      Height="62"     Transparency="true" Scale="true"  />
-<Button     Name="SellAllLeftButton"    Image="SellAll"                     XPos="1507"      YPos="155"       Width="135"      Height="62"     Transparency="true" Scale="true"  />
-<Button     Name="SellAllRightButton"   Image="SellAll"                     XPos="2097"      YPos="155"       Width="135"      Height="62"     Transparency="true" Scale="true"  />
-<Button     Name="Buy10LeftButton"      Image="Buy10"                       XPos="1507"      YPos="492"      Width="135"      Height="62"     Transparency="true" Scale="true"  />
-<Button     Name="Buy10RightButton"     Image="Buy10"                       XPos="2097"      YPos="492"      Width="135"      Height="62"     Transparency="true" Scale="true"  />
-<Button     Name="ShiftLeftButton"      Image="ShiftLeft"                   XPos="1507"      YPos="703"      Width="135"      Height="135"     Transparency="true" Scale="true"  />
-<Button     Name="ShiftRightButton"     Image="ShiftRight"                  XPos="2097"      YPos="703"      Width="135"      Height="135"     Transparency="true" Scale="true"  />
+<Button     Name="Sell10LeftButton"     Image="Sell10"                      XPos="1507"      YPos="84"       Width="135"      Height="62"     Transparency="true"/>
+<Button     Name="Sell10RightButton"    Image="Sell10"                      XPos="2097"      YPos="84"       Width="135"      Height="62"     Transparency="true"/>
+<Button     Name="SellAllLeftButton"    Image="SellAll"                     XPos="1507"      YPos="155"       Width="135"      Height="62"     Transparency="true"/>
+<Button     Name="SellAllRightButton"   Image="SellAll"                     XPos="2097"      YPos="155"       Width="135"      Height="62"     Transparency="true"/>
+<Button     Name="Buy10LeftButton"      Image="Buy10"                       XPos="1507"      YPos="492"      Width="135"      Height="62"     Transparency="true"/>
+<Button     Name="Buy10RightButton"     Image="Buy10"                       XPos="2097"      YPos="492"      Width="135"      Height="62"     Transparency="true"/>
+<Button     Name="ShiftLeftButton"      Image="ShiftLeft"                   XPos="1507"      YPos="703"      Width="135"      Height="135"     Transparency="true"/>
+<Button     Name="ShiftRightButton"     Image="ShiftRight"                  XPos="2097"      YPos="703"      Width="135"      Height="135"     Transparency="true"/>
 <Text       Name="ShiftHeader"          Text="Transfer Item(s)"             XPos="1687"      YPos="737"      Width="422"     Height="70"     FontSize="45"  />
 <Text       Name="PlayerGold"           Text="Your Gold"                    XPos="1546"      YPos="858"      Width="703"     Height="90"     FontSize="45"  />
 <Text       Name="ItemDesc"             Text=""                             XPos="1476"      YPos="984"      Width="787"     Height="703"    FontSize="28"  />
 <Image      Name="IndicateLeft"         File="imgArrowLeft.png"             XPos="1465"      YPos="1749"      Width="124"      Height="169"     />
-<Button     Name="EquipLeftButton"      Image="Equip"                       XPos="1512"      YPos="1744"      Width="225"      Height="90"     Transparency="true" Scale="true"  />
-<Button     Name="UnequipLeftButton"    Image="Unequip"                     XPos="1512"      YPos="1834"      Width="225"      Height="90"     Transparency="true" Scale="true"  />
+<Button     Name="EquipLeftButton"      Image="Equip"                       XPos="1512"      YPos="1744"      Width="225"      Height="90"     Transparency="true" />
+<Button     Name="UnequipLeftButton"    Image="Unequip"                     XPos="1512"      YPos="1834"      Width="225"      Height="90"     Transparency="true" />
 <Image      Name="IndicateRight"        File="imgArrowRight.png"            XPos="2151"      YPos="1749"      Width="124"      Height="169"     />
-<Button     Name="EquipRightButton"     Image="Equip"                       XPos="2002"      YPos="1744"      Width="225"      Height="90"     Transparency="true" Scale="true"  />
-<Button     Name="UnequipRightButton"   Image="Unequip"                     XPos="2002"      YPos="1834"      Width="225"      Height="90"     Transparency="true" Scale="true"  />
+<Button     Name="EquipRightButton"     Image="Equip"                       XPos="2002"      YPos="1744"      Width="225"      Height="90"     Transparency="true" />
+<Button     Name="UnequipRightButton"   Image="Unequip"                     XPos="2002"      YPos="1834"      Width="225"      Height="90"     Transparency="true" />
 <Checkbox   Name="AutoUseItems"         Text="Autouse Consumables"          XPos="1661"      YPos="1969"      Width="45"      Height="45"     FontSize="34" />
 <Text       Name="OwnersLeftDetails"    Text=" "                            XPos="28"       YPos="28"       Width="562"     Height="2025"    FontSize="25" />
 <Text       Name="OwnersRightDetails"   Text=" "                            XPos="3148"     YPos="28"       Width="562"     Height="2025"    FontSize="25" />
-<Button     Name="BackButton"           Image="Back"                        XPos="3177"     YPos="1941"      Width="562"     Height="112"     Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="3177"     YPos="1941"      Width="562"     Height="112"     Transparency="true"  PushWindow="<back>"/>
 </Screen>
