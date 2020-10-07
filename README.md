@@ -28,7 +28,29 @@ WM comes with a CMake build file that should make building relatively easy on li
 On Ubuntu-based distributions, the required dependencies can be obtained using
 ```sh
 apt install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libboost-all-dev
+apt install libavformat-dev libswscale-dev libpng-dev libjpeg-dev libtiff-dev libwebp-dev
 ```
+
+Then configure, build, and run with
+```sh
+mkdir build ; cd build
+cmake ..
+cmake --build .
+cd .. ; ./build/WhoreMaster
+```
+
+By doing an out-of-source build like this, you can easily wipe your
+build by deleting the build directory. If you just want to keep your
+configuration and just rebuild, delete all build output with the
+command
+```sh
+make clean
+```
+
+To run the WhoreMaster binary, you need to be at the top of your
+working tree (where this file can be found), otherwise a number of
+hardcoded paths will be wrong.
+
 Note that the code uses C++14 features, and as such requires a relatively 
 recent version of GCC (>=7). If you get compile errors using a newer compiler,
 please submit a bug report or pull request.
