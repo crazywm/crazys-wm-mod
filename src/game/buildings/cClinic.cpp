@@ -35,6 +35,7 @@ sClinic::sClinic() : IBuilding(BuildingType::CLINIC, "Clinic")
 {
     m_FirstJob = JOB_GETHEALING;
     m_LastJob = JOB_JANITOR;
+    m_MatronJob = JOB_CHAIRMAN;
 }
 
 sClinic::~sClinic()    = default;

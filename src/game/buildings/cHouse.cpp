@@ -32,6 +32,7 @@ sHouse::sHouse() : IBuilding(BuildingType::HOUSE, "House")
 {
     m_FirstJob = JOB_HEADGIRL;
     m_LastJob = JOB_HOUSEPET;
+    m_MatronJob = JOB_HEADGIRL;
 }
 
 sHouse::~sHouse() = default;

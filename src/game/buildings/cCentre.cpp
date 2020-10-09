@@ -33,6 +33,7 @@ sCentre::sCentre() : IBuilding(BuildingType::CENTRE, "Centre")
 {
     m_FirstJob = JOB_CENTREMANAGER;
     m_LastJob = JOB_THERAPY;
+    m_MatronJob = JOB_DIRECTOR;
 }
 
 sCentre::~sCentre()    = default;

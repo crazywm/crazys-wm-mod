@@ -35,6 +35,7 @@ sArena::sArena() : IBuilding(BuildingType::ARENA, "Arena")
 {
     m_FirstJob = JOB_FIGHTBEASTS;
     m_LastJob = JOB_CLEANARENA;
+    m_MatronJob = JOB_DOCTORE;
 }
 
 sArena::~sArena() = default;

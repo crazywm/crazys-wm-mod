@@ -31,6 +31,7 @@ sFarm::sFarm() : IBuilding(BuildingType::FARM, "Farm")
 {
     m_FirstJob = JOB_FARMMANGER;
     m_LastJob = JOB_MAKEPOTIONS;
+    m_MatronJob = JOB_FARMMANGER;
 }
 
 sFarm::~sFarm()    = default;

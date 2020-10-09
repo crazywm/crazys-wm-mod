@@ -599,8 +599,9 @@ bool IBuilding::SetupMatron(bool is_night)
     
     sGirl* matron_candidate = m_Girls->get_first_girl([&](const sGirl& current){
         if (current.is_dead() ||
-            (has_matron && (current.m_DayJob != m_MatronJob || current.m_NightJob != m_MatronJob)) ||
-            (!has_matron && (current.m_PrevDayJob != m_MatronJob || current.m_PrevNightJob != m_MatronJob)))
+        // matron is a full-time job, so it is enough to check just one shift. we need to use night, since that is used for the movie studio
+            (has_matron && (current.m_NightJob != m_MatronJob)) ||
+            (!has_matron && (current.m_PrevNightJob != m_MatronJob)))
         {    // Sanity check! Don't process dead girls and only process those with matron jobs
             return false;
         }

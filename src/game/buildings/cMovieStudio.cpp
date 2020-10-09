@@ -47,6 +47,7 @@ sMovieStudio::sMovieStudio() : IBuilding(BuildingType::STUDIO, "Studio")
 
     m_FirstJob = JOB_DIRECTOR;
     m_LastJob = JOB_FILMRANDOM;
+    m_MatronJob = JOB_DIRECTOR;
 }
 
 sMovieStudio::~sMovieStudio()            // destructor
