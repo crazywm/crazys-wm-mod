@@ -182,6 +182,11 @@ DECL_JOB(SOBisexual);
 DECL_JOB(SOLesbian);
 DECL_JOB(FakeOrgasm);
 
+namespace {
+  bool WorkNullJob(sGirl&, bool, cRng&) { return false; }
+  double JP_NullJob(const sGirl&, bool) { return 0.0; }
+}
+
 #define REGISTER_JOB_MANUAL(J, Wf, Pf, Brief, Desc)                                     \
     [&]() -> auto& {                                                                    \
     auto new_job = std::make_unique<cJobWrapper>(J, Work##Wf, JP_##Pf, Brief, Desc);    \
@@ -267,6 +272,10 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_SO_BISEXUAL, SOBisexual, "SOBi", "You will make sure she likes having sex with both men and women.").full_time();
     REGISTER_JOB(JOB_SO_LESBIAN, SOLesbian, "SOLe", "You will make sure she only likes having sex with women.").full_time();
     REGISTER_JOB(JOB_FAKEORGASM, FakeOrgasm, "FOEx", "You will teach her how to fake her orgasms.").full_time();
+
+    // Some pseudo-jobs
+    REGISTER_JOB(JOB_INDUNGEON, NullJob, "", "She is languishing in the dungeon.");
+    REGISTER_JOB(JOB_RUNAWAY, NullJob, "", "She has escaped.");
 }
 
 double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {

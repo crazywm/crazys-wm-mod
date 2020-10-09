@@ -251,6 +251,7 @@ void cJobManager::do_custjobs(IBuilding& brothel, bool Day0Night1)
 
 bool cJobManager::FullTimeJob(JOBS Job)
 {
+    assert(m_OOPJobs.at(Job) != nullptr);
     return m_OOPJobs.at(Job)->get_info().FullTime;
 }
 
@@ -451,6 +452,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     if(Girl.m_Building)
         rest = JOB_RESTING;
 
+    assert(m_OOPJobs[JobID] != nullptr);
     auto check = m_OOPJobs[JobID]->is_job_valid(Girl);
     if(!check) {
         g_Game->push_message(check.Reason, 0);
@@ -1868,6 +1870,7 @@ bool cJobManager::do_job(sGirl& girl, bool is_night)
 
 bool cJobManager::do_job(JOBS job_id, sGirl& girl, bool is_night)
 {
+    assert(m_OOPJobs[job_id] != nullptr);
     auto refused = m_OOPJobs[job_id]->Work(girl, is_night, g_Dice);
     if(is_night) {
         girl.m_Refused_To_Work_Night = refused;
@@ -1977,22 +1980,39 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
 }
 
 void cJobManager::register_job(std::unique_ptr<IGenericJob> job) {
+    assert(job != nullptr);
     m_OOPJobs[job->job()] = std::move(job);
 }
 
 const IGenericJob* cJobManager::get_job(JOBS job) const {
-    return m_OOPJobs.at(job).get();
+    if(job < 0 || job >= m_OOPJobs.size()) {
+      g_LogFile.error("jobmgr",
+		      "Job ", job, " is outside the (0..", m_OOPJobs.size(), "( range.");
+      throw std::out_of_range("cJobManager::get_job()");
+    }
+
+    auto& ptr = m_OOPJobs[job];
+    if(!ptr) {
+      g_LogFile.error("jobmgr",
+		      "Job ", job, " has not been registered.");
+      throw std::invalid_argument("cJobManager::get_job()");
+    }
+
+    return ptr.get();
 }
 
 const std::string& cJobManager::get_job_name(JOBS job) const {
+    assert(get_job(job) != nullptr);
     return get_job(job)->get_info().Name;
 }
 
 const std::string& cJobManager::get_job_brief(JOBS job) const {
+    assert(get_job(job) != nullptr);
     return get_job(job)->get_info().ShortName;
 }
 
 const std::string& cJobManager::get_job_description(JOBS job) const {
+    assert(get_job(job) != nullptr);
     return get_job(job)->get_info().Description;
 }
 
