@@ -57,16 +57,16 @@ bool cFont::LoadFont(const std::string& font, int size)
 
 std::string cFont::UpdateLineEndings(std::string text)
 {
-#ifndef LINUX
-    // for Windows, double "\n \n" newline characters were showing up as one newline and a boxy (bad) character...
-    // so, here's a cheap-ass workaround to add a "\r" carriage return in front of each "\n" for Windows
+    // Double "\n \n" newline characters were showing up as one
+    // newline and a boxy (bad) character...  so, here's a cheap-ass
+    // workaround to add a "\r" carriage return in front of each "\n".
     int pos = text.find("\n", 0);
     while (pos != std::string::npos)
     {
         text.insert(pos, "\r");
         pos = text.find("\n", pos + 2);
     }
-#endif
+
     return std::move(text);
 }
 
