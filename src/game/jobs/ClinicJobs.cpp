@@ -155,7 +155,7 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
     Action_Types actiontype = ACTION_WORKNURSE;
     std::stringstream ss;
     int roll_a = d100(), roll_b = d100();
-    ss << "${name} worked as a nurse.\n \n";
+    ss << get_text("work") << "\n \n";
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the patients!
 
     int wages = 25, tips = 0;
@@ -564,7 +564,7 @@ bool MechanicJob::DoWork(sGirl& girl, bool is_night) {
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return true;
     }
-    ss << "${name} worked as a mechanic.\n \n";
+    ss << get_text("work") << "\n \n";
 
 
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
@@ -750,7 +750,7 @@ bool InternJob::DoWork(sGirl& girl, bool is_night) {
 
     Action_Types actiontype = ACTION_WORKTRAINING;
     std::stringstream ss;
-    ss << "${name} trains in the Medical field.\n \n";
+    ss << get_text("work") << "\n \n";
 
     cGirls::UnequipCombat(girl);    // put that shit away
 

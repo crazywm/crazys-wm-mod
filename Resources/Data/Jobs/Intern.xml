@@ -4,8 +4,14 @@
         Will train in how to be a nurse.
     </Description>
     <Performance Modifier="">
-        <!-- unused -->
+        <!-- unused: Intern job is a training job -->
     </Performance>
     <Gains XP="0" Skill="0">
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} trains in the Medical field.</Text>
+        </Entry>
+    </Messages>
 </Job>

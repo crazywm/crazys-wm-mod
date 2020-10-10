@@ -30,7 +30,6 @@ struct FilmAction : public GenericFilmJob {
     FilmAction();
     void DoScene(sGirl& girl) override;
     void GainTraits(sGirl& girl, int performance) const override;
-    void AddStory();
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 

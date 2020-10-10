@@ -66,12 +66,11 @@ bool FilmPubBDSM::CheckRefuseWork(sGirl& girl) {
     }
     else if (roll <= 10 && girl.disobey_check(ACTION_WORKMOVIE, JOB_FILMPUBLICBDSM))
     {
-        ss << "${name} refused to have any part in this";
         if (girl.is_slave())
         {
             if (g_Game->player().disposition() > 30)  // nice
             {
-                ss << " \"monstrous\" scene. She was clearly horrified at the thought so you allowed her the day off.";
+                ss << get_text("disobey.slave.nice");
                 girl.pclove(2);
                 girl.pchate(-1);
                 girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -79,7 +78,7 @@ bool FilmPubBDSM::CheckRefuseWork(sGirl& girl) {
             }
             else if (g_Game->player().disposition() > -30) //pragmatic
             {
-                ss << " \"monstrous\" scene. She was clearly horrified so you had your men drug her before stripping her down for action.";
+                ss << get_text("disobey.slave.neutral");
                 girl.pclove(-1);
                 girl.pchate(2);
                 girl.pcfear(2);
@@ -88,7 +87,7 @@ bool FilmPubBDSM::CheckRefuseWork(sGirl& girl) {
             }
             else
             {
-                ss << " \"monstrous\" scene.\nShe was clearly horrified so you had your men strip her, drag her outside and ";
+                ss << "${name} refused to have any part in this \"monstrous\" scene.\nShe was clearly horrified so you had your men strip her, drag her outside and ";
                 /**/ if (girl.has_active_trait("Pierced Clit"))            ss << "whip her clitoral piercing";
                 else if (girl.has_active_trait("Pierced Nipples"))        ss << "whip her nipple piercings";
                 else ss << "whip some humility into her";
@@ -102,12 +101,12 @@ bool FilmPubBDSM::CheckRefuseWork(sGirl& girl) {
         }
         else // not a slave
         {
-            ss << " \"monstrous\" scene today and left.";
+            ss << get_text("disobey.free");
             girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
             return true;
         }
     }
-    else ss << "${name} was taken for filming in public bondage and torture scenes.";
+    else ss << get_text("work");
     ss << "\n \n";
     return false;
 }
@@ -385,8 +384,7 @@ void FilmPubBDSM::Reset() {
 
 FilmPubBDSM::FilmPubBDSM() : GenericFilmJob(JOB_FILMPUBLICBDSM, {
         IMGTYPE_BDSM, ACTION_SEX, SKILL_BDSM, 50, 10,
-        FilmJobData::EVIL, SKILL_BDSM, "Public BDSM",
-        nullptr, nullptr
+        FilmJobData::EVIL, SKILL_BDSM, "Public BDSM"
 }) {
     load_from_xml("FilmPublicBDSM.xml");
 }

@@ -9,6 +9,7 @@
         <Secondary Skill="AnimalHandling" />
         <Secondary Skill="Beastiality" />
     </Performance>
+
     <Gains XP="10" Skill="3">
         <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
             She has performed in enough sex scenes that she has become a well known Porn Star.
@@ -17,4 +18,10 @@
             She has become quite the Faker.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} was filmed being fucked by animals.</Text>
+        </Entry>
+    </Messages>
 </Job>

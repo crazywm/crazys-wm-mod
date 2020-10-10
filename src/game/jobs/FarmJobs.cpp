@@ -50,7 +50,7 @@ cFarmJob::cFarmJob(JOBS job, const char* xml, sFarmJobData data) :
 bool cFarmJob::DoWork(sGirl& girl, bool is_night) {
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
-    ss << m_Data.WorkMsg << "\n \n";
+    ss << get_text("work") << "\n \n";
 
     // farm jobs are generally not tipping jobs
     girl.m_Tips = 0;
@@ -69,7 +69,7 @@ void cFarmJob::HandleGains(sGirl& girl, int enjoy) {
 IGenericJob::eCheckWorkResult cFarmJob::CheckWork(sGirl& girl, bool is_night) {
     if (girl.disobey_check(m_Data.Action, job()))
     {
-        ss << m_Data.Refuse << " " << (is_night ? "night" : "day") << " shift.";
+        ss << get_text("refuse") << " " << (is_night ? "night" : "day") << " shift.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return IGenericJob::eCheckWorkResult::REFUSES;
     }
@@ -84,9 +84,7 @@ public:
 };
 
 cFarmJobFarmer::cFarmJobFarmer() : cFarmJob(
-        JOB_FARMER, "Farmer.xml", {ACTION_WORKFARM, 20,
-                     "${name} refused to work during the",
-                     "${name} worked tending crops on the farm."}) {
+        JOB_FARMER, "Farmer.xml", {ACTION_WORKFARM, 20}) {
 }
 
 bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -272,9 +270,7 @@ public:
 };
 
 cFarmJobMarketer::cFarmJobMarketer() : cFarmJob(JOB_MARKETER, "Marketer.xml",
-    {ACTION_WORKCUSTSERV, 20,
-     "${name} refused to work during the",
-     "${name} worked as a marketer on the farm."}) {
+    {ACTION_WORKCUSTSERV, 20}) {
 }
 
 double cFarmJobMarketer::GetPerformance(const sGirl& girl, bool estimate) const {
@@ -487,10 +483,7 @@ private:
 };
 
 cFarmJobVeterinarian::cFarmJobVeterinarian() : cFarmJob(
-        JOB_VETERINARIAN, "Veterinarian.xml",
-        {ACTION_WORKFARM, 20,
-         "${name} refused to work during the",
-         "${name} worked as a Veterinarian on the farm."}) {
+        JOB_VETERINARIAN, "Veterinarian.xml", {ACTION_WORKFARM, 20}) {
 }
 
 bool cFarmJobVeterinarian::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -585,10 +578,7 @@ public:
 };
 
 cFarmJobShepherd::cFarmJobShepherd() : cFarmJob(
-        JOB_SHEPHERD, "Shepherd.xml",
-        {ACTION_WORKFARM, 20,
-         "${name} refused to work during the ",
-         "${name} worked as a shepherd in the farm."}) {
+        JOB_SHEPHERD, "Shepherd.xml", {ACTION_WORKFARM, 20}) {
 }
 
 bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -748,10 +738,7 @@ public:
 };
 
 cFarmJobRancher::cFarmJobRancher() : cFarmJob(
-        JOB_RANCHER, "Rancher.xml",
-        {ACTION_WORKFARM, 20,
-                      "${name} refused to work during the",
-                      "${name} worked as a rancher on the farm."}) {
+        JOB_RANCHER, "Rancher.xml", {ACTION_WORKFARM, 20}) {
 }
 
 bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -912,10 +899,7 @@ public:
 };
 
 cFarmJobMilker::cFarmJobMilker() : cFarmJob(
-        JOB_MILK, "Milker.xml",
-        {ACTION_WORKFARM, 20,
-         "${name} refused to work during the",
-         "${name} worked as a milker on the farm."}) {
+        JOB_MILK, "Milker.xml", {ACTION_WORKFARM, 20}) {
 }
 
 bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -1117,10 +1101,7 @@ public:
 };
 
 cFarmJobBeastCapture::cFarmJobBeastCapture() : cFarmJob(
-        JOB_BEASTCAPTURE, "BeastCapture.xml",
-        {ACTION_COMBAT, 40,
-         "${name} refused to capture beasts during the",
-         "${name} equipped herself and went out to hunt for exotic beasts and animals."}) {
+        JOB_BEASTCAPTURE, "BeastCapture.xml", {ACTION_COMBAT, 40}) {
 }
 
 bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -1353,10 +1334,7 @@ private:
 };
 
 cFarmJobGetMilked::cFarmJobGetMilked() : cFarmJob(
-        JOB_MILK, "GetMilked.xml",
-        {ACTION_WORKMILK, 0,
-        "${name} refused to let her breasts be milked",
-        "${name}'s breasts were milked."}) {
+        JOB_MILK, "GetMilked.xml", {ACTION_WORKMILK, 0}) {
 }
 
 bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -1887,10 +1865,7 @@ private:
 };
 
 cFarmJobCatacombRancher::cFarmJobCatacombRancher() : cFarmJob(
-        JOB_CATACOMBRANCHER, "CatacombRancher.xml",
-        {ACTION_WORKFARM, 20,
-              "${name} refused to work during the",
-              "${name} worked as a catacomb rancher on the farm."}) {
+        JOB_CATACOMBRANCHER, "CatacombRancher.xml", {ACTION_WORKFARM, 20}) {
 }
 
 bool cFarmJobCatacombRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -1970,12 +1945,8 @@ public:
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-cFarmJobResearch::cFarmJobResearch() : cFarmJob(
-        JOB_RESEARCH, {ACTION_WORKTRAINING, 20,
-                       "${name} refused to work during the",
-                       "${name} worked as a researcher on the farm."}) {
-    m_Info.ShortName = "Rsrc";
-    m_Info.Description = "She will research how to improve various things.";
+cFarmJobResearch::cFarmJobResearch() : cFarmJob(JOB_RESEARCH, {ACTION_WORKTRAINING, 20}) {
+    load_from_xml("FarmResearch.xml");
 }
 
 bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
@@ -2307,10 +2278,7 @@ public:
 };
 
 cFarmJobFarmHand::cFarmJobFarmHand() : cFarmJob(
-        JOB_FARMHAND, "FarmHand.xml",
-        {ACTION_WORKFARM, 20,
-         "${name} refused to work on the farm during the",
-         "${name} worked cleaning and repairing the farm."}) {
+        JOB_FARMHAND, "FarmHand.xml", {ACTION_WORKFARM, 20}) {
 }
 
 bool cFarmJobFarmHand::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {

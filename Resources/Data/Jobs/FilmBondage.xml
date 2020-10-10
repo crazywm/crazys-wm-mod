@@ -3,11 +3,13 @@
     <Description>
         She will perform in a bondage scene.
     </Description>
+
     <Performance Modifier="work.film.bondage">
         <Primary Stat="Beauty"/>
         <Primary Stat="Charisma" />
         <Primary Stat="Dignity" />
     </Performance>
+
     <Gains XP="10" Skill="3">
         <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
             She has performed in enough sex scenes that she has become a well known Porn Star.
@@ -22,4 +24,23 @@
             ${name} has turned into a Masochist from filming so many BDSM scenes.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} was taken for bondage and torture scenes in your dungeon.</Text>
+        </Entry>
+
+        <Entry Name="disobey.free">
+            <Text>${name} was horrified and refused to be beaten and sexually tortured in this "monstrous" place.</Text>
+        </Entry>
+        <Entry Name="disobey.slave.nice">
+            <Text>${name} was horrified and refused to be beaten and sexually tortured in this "monstrous" place.
+                She was starting to panic, so you ordered your men to grab her and bind her for action.
+                </Text>
+        </Entry>
+        <Entry Name="disobey.slave.neutral">
+            <Text>${name} refused to have any part in this "monstrous" scene.
+                She was clearly horrified so you had your men drug her before stripping her down for action.</Text>
+        </Entry>
+    </Messages>
 </Job>

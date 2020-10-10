@@ -13,4 +13,13 @@
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as an actress filming oral scenes.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to give head on film today.</Text>
+        </Entry>
+    </Messages>
 </Job>

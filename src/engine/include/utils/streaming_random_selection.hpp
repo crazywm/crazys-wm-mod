@@ -34,6 +34,11 @@ public:
     T* selection() const {
         return m_CurrentSelection;
     }
+
+    void reset() {
+        m_TotalWeight = 0;
+        m_CurrentSelection = nullptr;
+    }
 private:
     float m_TotalWeight    = 0.0;
     T* m_CurrentSelection  = nullptr;

@@ -25,6 +25,7 @@
 #include "cGirls.h"
 #include "cRng.h"
 #include "character/sGirl.h"
+#include "TextRepo.h"
 
 class sBrothel;
 
@@ -32,6 +33,7 @@ class sBrothel;
 bool IGenericJob::Work(sGirl& girl, bool is_night, cRng& rng) {
     ss.str("");
     m_Rng = &rng;
+    m_ActiveGirl = &girl;
 
     if(m_Info.FullTime && girl.m_DayJob != girl.m_NightJob) {
         g_LogFile.error("jobs", "Full time job was assigned for a single shift!");
@@ -67,6 +69,16 @@ sJobValidResult IGenericJob::is_job_valid(const sGirl& girl) const {
     }
 
     return {true, {}};
+}
+
+void IGenericJob::OnRegisterJobManager(const cJobManager& manager) {
+    assert(m_JobManager == nullptr);
+    m_JobManager = &manager;
+}
+
+const sGirl& IGenericJob::active_girl() const {
+    assert(m_ActiveGirl);
+    return *m_ActiveGirl;
 };
 
 class cJobWrapper: public IGenericJob {
@@ -356,6 +368,15 @@ void cBasicJob::apply_gains(sGirl& girl) {
 }
 
 void cBasicJob::load_from_xml(const char* xml_file) {
+    try {
+        load_from_xml_internal(xml_file);
+    } catch (std::exception& error) {
+        g_LogFile.error("job", "Error loading job xml '", xml_file, "': ", error.what());
+        throw;
+    }
+}
+
+void cBasicJob::load_from_xml_internal(const char* xml_file) {
     DirPath path = DirPath() << "Resources" << "Data" << "Jobs" << xml_file;
     auto doc = LoadXMLDocument(path.c_str());
     auto job_data = doc->FirstChildElement("Job");
@@ -427,4 +448,18 @@ void cBasicJob::load_from_xml(const char* xml_file) {
     } else {
         g_LogFile.error("jobs", "<Job> element does not contain <Description>. File: ", xml_file);
     }
+
+    // Texts
+    const auto* text_el = job_data->FirstChildElement("Messages");
+    if(text_el) {
+        m_TextRepo = std::make_unique<cTextRepository>();
+        m_TextRepo->load(*text_el);
+    }
+}
+
+const std::string& cBasicJob::get_text(const std::string& prompt) const {
+    assert(m_TextRepo);
+    return m_TextRepo->get_text(prompt, [this](const std::string& c) -> bool {
+        return active_girl().has_active_trait(c.c_str());
+    });
 }

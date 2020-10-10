@@ -60,7 +60,7 @@ IGenericJob::eCheckWorkResult cBarJob::CheckWork(sGirl& girl, bool is_night) {
     }
     else if (girl.disobey_check(m_Data.Action, job()))
     {
-        ss << m_Data.Refuse << " " << (is_night ? "tonight." : "today.");
+        ss << get_text("refuse") << " " << (is_night ? "tonight." : "today.");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
     }
@@ -79,42 +79,16 @@ struct cBarCookJob : public cBarJob {
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-cBarCookJob::cBarCookJob() : cBarJob(JOB_BARCOOK, "BarCook.xml",
-                                     {ACTION_WORKBAR, "${name} refused to cook food in the bar"}) {
+cBarCookJob::cBarCookJob() : cBarJob(JOB_BARCOOK, "BarCook.xml", {ACTION_WORKBAR}) {
 }
 
 bool cBarCookJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
 {
     int roll_a = d100(), roll_b = d100();
 
-    if (girl.has_active_trait("No Arms") || girl.has_active_trait("No Hands"))
-    {
-        ss << "You have assigned ${name} to work as a cook in the kitchens this week. She stares at the kitchen, with all the pots and pans and utensils, "
-              "and then back at you, and then down at her own body, as if trying to draw your attention to the fact that she has no hands. "
-              "After silently waiting for a response that you never give, "
-              "she turns her gaze back to the kitchen and contemplates how she will even begin with this impossible task.\n \n";
-    }
-    else if (girl.has_active_trait("Retarded"))
-    {
-        ss << "${name} beams like a small child when you tell her that she is cooking today. "
-              "You witness as she throws all the nearby ingredients into the same bowl, places the bowl on the stove, "
-              "and then starts punching the mixture as if that is an approved cooking technique. \"I cook food good!\" she exclaims. "
-              "Whatever possessed you to make a retarded girl into a cook, now you know that you are committed to seeing this through until the end.\n \n";
-    }
-    else if (girl.has_active_trait("Assassin"))// Impact unknown; randomly very bad, maybe?
-    {
-        ss << "${name}'s skills as an assassin have left her with a slightly skewed view towards food, which she casually refers to as \"poison masking.\" "
-              "You are not sure whether you should have the waitresses serve what she cooks, "
-              "and you definitely are not going to allow her to re-cook a meal that an angry customer sends back. "
-              "Actually, there are a lot of knives in kitchens! You had not noticed that until right now. So many knives.\n \n";
-    }
-    else
-    {
-        ss << "${name} is assigned to work as a cook in the kitchen, preparing food for the customers.\n \n";
-    }
+    ss << get_text("work") << "\n \n";
 
     cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
-
 
     const sGirl* barmaidonduty = random_girl_on_job(brothel, JOB_BARMAID, is_night);
     std::string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid");
@@ -134,79 +108,14 @@ bool cBarCookJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     //a little pre-game randomness
     if (chance(10))
     {
-        if (girl.has_active_trait("Chef"))
-        {
-            ss << "${name} understands the difference between a \"Cook\" and a \"Chef.\" She ventures away from the recipe book occasionally, "
-                  "spicing each dish to her own concept of perfection. It is usually a great improvement.\n";
-            jobperformance += 15;
-        }
-        else if (girl.has_active_trait("Agile"))
-        {
-            ss << "${name} looks like she is handling a dozen pots and pans at the same time without any problems! She is certainly efficient.";
-            jobperformance += 5;
-        }
-        else if (girl.has_active_trait("Mind Fucked"))
-        {
-            ss << "${name} works efficiently, but stares off into space with that vacant mindfucked expression of hers. "
-                  "You would think there was nobody inside her brain at all, but sometimes, when she finishes cooking a dish, "
-                  "she beams a maniacal grin and starts muttering about being a \"good girl.\" \"And good girls,\" she smiles as she jams the end of the spatula into her asshole, \"get dessert!\" "
-                  "She giggles, removes the spatula, and then starts using it for the next dish. That cannot be hygienic.";
-            jobperformance -= 10;
-        }
-        else if (girl.has_active_trait("One Hand"))
-        {
-            ss << "${name} struggles with only having one hand in the kitchen, but makes the best of it.";
-            jobperformance -= 15;
-        }
+        ss << get_text("pre-work-text");
     }
-
 
     if (jobperformance >= 245)
     {
         ss << "  She must be the perfect at this.\n \n";
         wages += 155;
-
-        if (girl.has_active_trait("No Arms") || girl.has_active_trait("No Hands"))
-        {
-            ss << "The food is incredible! But how?! How in hell did she do it without any hands? It just.. it just boggles your mind. "
-                  "Maybe she carries the pots with her mouth? How does she plate the food? Honestly, this whole thing, while very impressive, "
-                  "has left you with far more questions than answers.\n";
-        }
-        else if (roll_b >= 50)
-        {
-            if (girl.has_active_trait("Chef"))
-            {
-                ss << "${name} circulates briefly among the tables, talking to the patrons and asking their preferences so she can customize the menu for each of them. "
-                      "They are amazed by her abilities, as she not only lovingly prepares each dish, but plates every morsel like an artist. "
-                      "She circulates again after they eat, asking how they enjoyed their courses, and taking notes to improve them the next time. "
-                      "Somehow, even with all this time out of the kitchen talking with the customers, she manages to ensure that each dish arrives just in time, "
-                      "perfectly prepared and at the ideal temperature.\n";
-                //tips here
-            }
-            else
-            {
-                ss << "She is an absolute frenzy of culinary activity, diving from plate to plate and stove to stove with expert grace. "
-                      "The food always appears right on time, just the right temperature, and elegantly plated.\n";
-            }
-        }
-        else
-        {
-            if (girl.has_active_trait("Retarded"))
-            {
-                ss << "There is no telling how she did it, whether by blind luck or through hidden idiot savant abilities, but ${name} actually made good food. "
-                      "Great food, really. Truly surprisingly great food. She does not seem to understand the science of cooking, or which ingredients are which, "
-                      "but somehow the final product is fit for any master chef. \"I did good cooking, yes?\" she exclaims to you before grabbing a turnip and repeatedly bashing it "
-                      "against the table to \"make softer.\" While you have never seen this particular method of vegetable preparation before, you cannot argue with the results. "
-                      "For reasons which should be obvious, you opt against introducing her to those customers that ask for the privilege of thanking the chef.\n";
-                //tips here
-            }
-            else
-            {
-                ss << "She is a master chef, and she leaves the traditional menu far behind as she prepares individualized tasting plates for each patron. "
-                      "${name} carefully prepares an appetizer of delicate quail eggs for one customer while drizzling rich chocolate on a raspberry tart for another. "
-                      "You only receive high compliments from the patrons, who promise to come back for more.\n";
-            }
-        }
+        ss << get_text("work.perfect") << "\n";
     }
     else if (jobperformance >= 185)
     {
@@ -533,8 +442,7 @@ struct cBarMaidJob : public cBarJob {
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-cBarMaidJob::cBarMaidJob() : cBarJob(JOB_BARMAID, "BarMaid.xml",
-                                     {ACTION_WORKBAR, "${name} refused to work as a barmaid in your bar"}) {
+cBarMaidJob::cBarMaidJob() : cBarJob(JOB_BARMAID, "BarMaid.xml", {ACTION_WORKBAR}) {
 }
 
 bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
@@ -542,7 +450,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     Action_Types actiontype = ACTION_WORKBAR;
     std::stringstream ss;
     int roll_jp = d100(), roll_e = d100(), roll_c = d100();
-    ss << "${name} worked as a barmaid.\n \n";
+    ss << get_text("work") << "\n \n";
 
     int wages = 0;
     double tips = 0;
@@ -1347,13 +1255,12 @@ struct cBarWaitressJob : public cBarJob {
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-cBarWaitressJob::cBarWaitressJob() : cBarJob(JOB_WAITRESS, "BarWaitress.xml",
-                                             {ACTION_WORKBAR, "${name} refused to wait the bar"}) {
+cBarWaitressJob::cBarWaitressJob() : cBarJob(JOB_WAITRESS, "BarWaitress.xml",{ACTION_WORKBAR}) {
 }
 
 bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100(), roll_c = d100();
-    ss << "${name} has been assigned to work as a waitress at your restaurant. She is informed that this is a genteel and conservative establishment, and she should focus on providing timely and efficient service.\n";
+    ss << get_text("work") << "\n";
     if (girl.has_active_trait("Mind Fucked"))
     {
         ss << "${name} nods in understanding, but she also has a hand down her skirt, absent-mindedly rubbing her pussy as she listens. You are not entirely sure that she understands what \"genteel and conservative\" means here.. ${name}'s mind fucked state may make this a more interesting shift than you anticipated.\n \n";
@@ -1912,14 +1819,13 @@ struct cBarPianoJob : public cBarJob {
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-cBarPianoJob::cBarPianoJob() : cBarJob(JOB_PIANO, "BarPiano.xml",
-                                       {ACTION_WORKMUSIC, "${name} refused to play piano in your bar"}) {
+cBarPianoJob::cBarPianoJob() : cBarJob(JOB_PIANO, "BarPiano.xml", {ACTION_WORKMUSIC}) {
 }
 
 bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
     
-    ss << "${name} played the piano in the bar.";
+    ss << get_text("work");
 
     const sGirl* singeronduty = random_girl_on_job(brothel, JOB_SINGER, is_night);
     std::string singername = (singeronduty ? "Singer " + singeronduty->FullName() + "" : "the Singer");
@@ -2262,14 +2168,13 @@ struct cBarSingerJob : public cBarJob {
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-cBarSingerJob::cBarSingerJob() : cBarJob(JOB_SINGER, "BarSinger.xml",
-                                         {ACTION_WORKMUSIC, "${name} refused to sing in your bar"}) {
+cBarSingerJob::cBarSingerJob() : cBarJob(JOB_SINGER, "BarSinger.xml",{ACTION_WORKMUSIC}) {
 }
 
 bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
 {
     int roll_a = d100(), roll_b = d100();
-    ss << "${name} worked as a singer in the bar.\n \n";
+    ss << get_text("work") << "\n \n";
 
     int wages = 20, tips = 0;
     int enjoy = 0, happy = 0, fame = 0;

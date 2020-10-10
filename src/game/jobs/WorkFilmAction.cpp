@@ -23,39 +23,34 @@ void FilmAction::DoScene(sGirl& girl) {
     //JOB
     if (result.performance >= 350)
     {
-        ss << "${name} made an outstanding action scene,";
-        AddStory();
+        ss << "${name} made an outstanding action scene, " << get_text("story");
         ss << " It will definitely win her some fans.";
         girl.fame(3);
         result.bonus = 12;
     }
     else if (result.performance >= 245)
     {
-        ss << "${name} made a great action scene,";
-        AddStory();
+        ss << "${name} made a great action scene, " << get_text("story");
         ss << " It should win her some fans.";
         girl.fame(2);
         result.bonus = 6;
     }
     else if (result.performance >= 185)
     {
-        ss << "${name} made a fairly good action scene,";
-        AddStory();
+        ss << "${name} made a fairly good action scene, " << get_text("story");
         ss << " Her fans will enjoy it.";
         result.bonus = 4;
         girl.fame(1);
     }
     else if (result.performance >= 145)
     {
-        ss << "${name} made an uninspired action scene,";
-        AddStory();
+        ss << "${name} made an uninspired action scene, " << get_text("story");
         ss << " Her diehard fans might enjoy it.";
         result.bonus = 2;
     }
     else if (result.performance >= 100)
     {
-        ss << "${name} made a weak action scene,";
-        AddStory();
+        ss << "${name} made a weak action scene, " << get_text("story");
         result.bonus = 1;
         ss << "\nThe CamerMage advised ${name} how to improve her performance";
         if (chance(40))
@@ -70,8 +65,7 @@ void FilmAction::DoScene(sGirl& girl) {
     }
     else
     {
-        ss << "${name} made an awful action scene,";
-        AddStory();
+        ss << "${name} made an awful action scene, " << get_text("story");
         ss << " Even her fans will hate it.";
         girl.fame(-1);
     }
@@ -100,33 +94,9 @@ void FilmAction::GainTraits(sGirl& girl, int performance) const {
     }
 }
 
-void FilmAction::AddStory()
-{
-    ss << " in which she ";
-    ss << rng().select_text({
-        "battles a gang of demons.",
-        "defends a village against twisted, raping marauders.",
-        "avenges her mentor and defends her family's honour.",
-        "battles her evil step-brother for control of the Crimson Sceptre.",
-        "saves a twisted nunnery from the evil within.",
-        "opens hella whup-ass.",
-        "protects the Elven Princess from the Orc Prince's evil magics.",
-        "struggles to survive an island deathmatch sponsored by a corrupt state.",
-        "dies unfairly, and is forced to beat the Challenge of the Eight Divines to earn back her place among the living.",
-        "protects a handsome, kindly slave-master from his slaves' vicious mutiny.",
-        "is a bounty hunter, hunting down desperate criminals and dangerous escaped slaves.",
-        "battles her older sister who has been corrupted by the dark power of the Ninth Ward of Amocles.",
-        "is the last of a race of female warriors, taking vengeance against a dark Prince.",
-        "stars as a female monk defending a mountain temple from marauding Centaurs.",
-        "hunts down the sadistic pirate gang who kidnapped her sister."
-    });
-}
-
 FilmAction::FilmAction() : GenericFilmJob(JOB_FILMACTION, {
       IMGTYPE_COMBAT, ACTION_COMBAT, SKILL_COMBAT, 50, -8,
-      FilmJobData::NORMAL, SKILL_COMBAT, "Action",
-      " worked as an actress in an action scene.",
-      " refused to shoot an action scene today."
+      FilmJobData::NORMAL, SKILL_COMBAT, "Action"
 }) {
     load_from_xml("FilmAction.xml");
 }

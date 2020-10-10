@@ -3,6 +3,7 @@
     <Description>
         She will make weapons and armor.
     </Description>
+
     <Performance Modifier="work.blacksmith">
         <Primary Skill="Crafting"/>
         <Primary Stat="Strength"/>
@@ -11,9 +12,22 @@
         <Secondary Stat="Intelligence" />
         <Secondary Stat="Constitution" />
     </Performance>
+
     <Gains XP="5" Skill="3">
         <GainTrait Trait="Tough" Threshold="50" Action="MAKEITEMS">
             Working in the heat of the forge has made ${name} rather Tough.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as a blacksmith at the arena.</Text>
+        </Entry>
+        <Entry Name="repair">
+            <Text>She spent some of her time repairing the Arena's equipment instead of making new stuff.</Text>
+        </Entry>
+        <Entry Name="produce">
+            <Text>${name} made:</Text>
+        </Entry>
+    </Messages>
 </Job>

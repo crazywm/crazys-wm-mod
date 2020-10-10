@@ -3,11 +3,13 @@
     <Description>
         Will help the doctor and repair Constructs.
     </Description>
+
     <Performance Modifier="work.mechanic">
         <Primary Stat="Intelligence" />
         <Secondary Skill="Medicine"/>
         <Secondary Skill="Service" />
     </Performance>
+
     <Gains XP="10" Skill="2">
         <GainTrait Trait="Charismatic" Threshold="60" Action="WORKMECHANIC">
             Dealing with patients and talking with them about their problems has made ${name} more Charismatic.
@@ -22,4 +24,10 @@
             Working with dirty, greasy equipment has damaged ${name}'s hair, skin and nails making her less Elegant.
         </LoseTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as a mechanic.</Text>
+        </Entry>
+    </Messages>
 </Job>

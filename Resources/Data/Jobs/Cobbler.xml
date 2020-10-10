@@ -3,11 +3,25 @@
     <Description>
         She will make shoes and leather items.
     </Description>
+
     <Performance Modifier="work.cobbler">
         <Primary Skill="Crafting"/>
         <Secondary Skill="Service" />
         <Secondary Skill="Magic" />
         <Secondary Stat="Intelligence" />
     </Performance>
+
     <Gains XP="5" Skill="3" />
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked making shoes and other leather items at the arena.</Text>
+        </Entry>
+        <Entry Name="repair">
+            <Text>"She spent some of her time repairing the Arena's equipment instead of making new stuff.</Text>
+        </Entry>
+        <Entry Name="produce">
+            <Text>${name} made:</Text>
+        </Entry>
+    </Messages>
 </Job>

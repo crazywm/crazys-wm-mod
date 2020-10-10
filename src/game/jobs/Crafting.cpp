@@ -196,10 +196,7 @@ struct cBlacksmithJob : GenericCraftingJob {
 cBlacksmithJob::cBlacksmithJob() :
         GenericCraftingJob(JOB_BLACKSMITH, "Blacksmith.xml",
                 {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
-                 40,
-                 "${name} worked as a blacksmith at the arena.",
-                 "She spent some of her time repairing the Arena's equipment instead of making new stuff.",
-                 "${name} made:",
+                 40
                 }
 
         ) {
@@ -277,13 +274,7 @@ struct cCobblerJob : GenericCraftingJob {
 
 cCobblerJob::cCobblerJob() :
     GenericCraftingJob(JOB_COBBLER, "Cobbler.xml",
-            {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
-             20,
-             "${name} worked making shoes and other leather items at the arena.",
-             "She spent some of her time repairing the Arena's equipment instead of making new stuff.",
-             "${name} made:"
-            }
-    ) {
+            {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,20}) {
 }
 
 void cCobblerJob::DoWorkEvents(sGirl& girl) {
@@ -346,13 +337,7 @@ struct cMakeItemJob : GenericCraftingJob {
 
 cMakeItemJob::cMakeItemJob() :
         GenericCraftingJob(JOB_MAKEITEM, "MakeItem.xml",
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
-                 20,
-                 "${name} was assigned to make items at the farm.",
-                 "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
-                 "${name} made:",
-                }
-        ) {
+                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,20}) {
 }
 
 void cMakeItemJob::DoWorkEvents(sGirl& girl) {
@@ -414,13 +399,7 @@ struct cMakePotionsJob : GenericCraftingJob {
 
 cMakePotionsJob::cMakePotionsJob() :
         GenericCraftingJob(JOB_MAKEPOTIONS, "MakePotions.xml",
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEPOTIONS,
-                 20,
-                 "${name} worked as a potions maker on the farm.",
-                 "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
-                 "${name} made:"
-                }
-        ) {
+                {IMGTYPE_CRAFT, ACTION_WORKMAKEPOTIONS,20}) {
 }
 
 void cMakePotionsJob::DoWorkEvents(sGirl& girl) {
@@ -462,13 +441,7 @@ struct cTailorJob : GenericCraftingJob {
 
 cTailorJob::cTailorJob() :
         GenericCraftingJob(JOB_TAILOR, "Tailor.xml",
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
-                 20,
-                 "${name} worked making and mending clothes at the farm.",
-                 "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
-                 "${name} made:"
-                }
-        ) {
+                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,20}) {
 }
 
 void cTailorJob::DoWorkEvents(sGirl& girl) {
@@ -545,11 +518,7 @@ struct cJewelerJob : GenericCraftingJob {
 cJewelerJob::cJewelerJob() :
         GenericCraftingJob(JOB_JEWELER, "Jeweler.xml",
                 {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
-                 40,
-                 "worked as a Jeweler at the arena.",
-                 "She spent some of her time repairing the Arena's equipment instead of making new stuff.",
-                 "${name} crafted:"
-                }
+                 40}
         ) {
 }
 
@@ -620,26 +589,17 @@ void cJewelerJob::DoWorkEvents(sGirl& girl) {
 void RegisterCraftingJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<GenericCraftingJob>(
             JOB_BAKER, "Baker.xml", sCraftingJobData{
-            IMGTYPE_COOK, ACTION_WORKCOOKING, 20,
-            "${name} worked as a baker on the farm.",
-            "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
-            "${name} made:",
+            IMGTYPE_COOK, ACTION_WORKCOOKING, 20
             }));
     mgr.register_job(std::make_unique<GenericCraftingJob>(
             JOB_BREWER, "Brewer.xml", sCraftingJobData{
                  IMGTYPE_COOK, ACTION_WORKCOOKING,
-                 20,
-                 "${name} worked as a brewer on the farm.",
-                 "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
-                 "${name} made:"
+                 20
             }));
     mgr.register_job(std::make_unique<GenericCraftingJob>(
             JOB_BUTCHER, "Butcher.xml", sCraftingJobData{
                     IMGTYPE_COOK, ACTION_WORKCOOKING,
-                    20,
-                    "${name} worked as a butcher on the farm.",
-                    "She spent some of her time repairing the Farm's equipment instead of making new stuff.",
-                    "${name} made:"
+                    20
             }));
     mgr.register_job(std::make_unique<cBlacksmithJob>());
     mgr.register_job(std::make_unique<cCobblerJob>());

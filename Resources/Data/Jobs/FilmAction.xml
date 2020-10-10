@@ -3,9 +3,37 @@
     <Description>
         She will be the scantily clad heroine in fighting/magical action scenes.
     </Description>
+
     <Performance Modifier="work.film.action">
         <!-- This is currently handled on the C++ side -->
     </Performance>
+
     <Gains XP="10" Skill="3">
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as an actress in an action scene.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to shoot an action scene today.</Text>
+        </Entry>
+        <Entry Name="story">
+            <Text>in which she battles a gang of demons.</Text>
+            <Text>in which she defends a village against twisted, raping marauders.</Text>
+            <Text>in which she avenges her mentor and defends her family's honour.</Text>
+            <Text>in which she battles her evil step-brother for control of the Crimson Sceptre.</Text>
+            <Text>in which she saves a twisted nunnery from the evil within.</Text>
+            <Text>in which she opens hella whup-ass.</Text>
+            <Text>in which she protects the Elven Princess from the Orc Prince's evil magics.</Text>
+            <Text>in which she struggles to survive an island deathmatch sponsored by a corrupt state.</Text>
+            <Text>in which she dies unfairly, and is forced to beat the Challenge of the Eight Divines to earn back her place among the living.</Text>
+            <Text>in which she protects a handsome, kindly slave-master from his slaves' vicious mutiny.</Text>
+            <Text>in which she is a bounty hunter, hunting down desperate criminals and dangerous escaped slaves.</Text>
+            <Text>in which she battles her older sister who has been corrupted by the dark power of the Ninth Ward of Amocles.</Text>
+            <Text>in which she is the last of a race of female warriors, taking vengeance against a dark Prince.</Text>
+            <Text>in which she stars as a female monk defending a mountain temple from marauding Centaurs.</Text>
+            <Text>in which she hunts down the sadistic pirate gang who kidnapped her sister.</Text>
+        </Entry>
+    </Messages>
 </Job>

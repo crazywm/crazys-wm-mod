@@ -3,11 +3,13 @@
     <Description>
         Will help the doctor and heal sick people.
     </Description>
+
     <Performance Modifier="work.nurse">
         <Primary Skill="Medicine"/>
         <Secondary Stat="Intelligence" />
         <Secondary Stat="Charisma" />
     </Performance>
+
     <Gains XP="10" Skill="2">
         <GainTrait Trait="Charismatic" Threshold="60" Action="WORKNURSE">
             Dealing with patients and talking with them about their problems has made ${name} more Charismatic.
@@ -16,4 +18,10 @@
             ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
         </LoseTrait>
     </Gains>
+    
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as a nurse.</Text>
+        </Entry>
+    </Messages>
 </Job>

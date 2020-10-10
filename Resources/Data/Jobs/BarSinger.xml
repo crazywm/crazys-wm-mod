@@ -3,12 +3,14 @@
     <Description>
         She will sing for the customers.
     </Description>
+
     <Performance Modifier="work.singer">
         <Primary Skill="Performance"/>
         <Secondary Stat="Confidence" />
         <Secondary Stat="Charisma" />
         <Secondary Stat="Constitution" />
     </Performance>
+
     <Gains XP="5" Skill="3">
         <LoseTrait Trait="Nervous" Threshold="30" Action="WORKMUSIC">
             ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
@@ -20,4 +22,13 @@
             Singing on a daily basis has made ${name} more Charismatic.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as a singer in the bar.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to sing in your bar</Text>
+        </Entry>
+    </Messages>
 </Job>

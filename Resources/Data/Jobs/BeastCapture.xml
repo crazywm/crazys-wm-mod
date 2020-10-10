@@ -12,6 +12,7 @@
         <Secondary Stat="Agility" />
         <Secondary Stat="Constitution" />
     </Performance>
+
     <Gains XP="10" Skill="3">
         <GainTrait Trait="Tough" Threshold="30" Action="COMBAT">
             She has become pretty Tough from all of the fights she's been in.
@@ -26,4 +27,13 @@
             ${name} has had to heal from so many injuries you can't say she is fragile anymore.
         </LoseTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} equipped herself and went out to hunt for exotic beasts and animals.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to capture beasts during the</Text>
+        </Entry>
+    </Messages>
 </Job>

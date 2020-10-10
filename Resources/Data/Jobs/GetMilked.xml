@@ -9,5 +9,15 @@
     <Performance Modifier="work.getmilked">
         <Primary Skill="Service"/>
     </Performance>
+
     <Gains XP="5" Skill="3" />
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name}'s breasts were milked.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to let her breasts be milked</Text>
+        </Entry>
+    </Messages>
 </Job>

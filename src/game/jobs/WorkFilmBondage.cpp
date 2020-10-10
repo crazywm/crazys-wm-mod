@@ -25,8 +25,7 @@
 
 FilmBdsm::FilmBdsm() : GenericFilmJob(JOB_FILMBONDAGE, {
     IMGTYPE_BDSM, ACTION_SEX, SKILL_BDSM, 50, 8,
-    FilmJobData::EVIL, SKILL_BDSM, "Bondage",
-    nullptr, nullptr
+    FilmJobData::EVIL, SKILL_BDSM, "Bondage"
 }) {
     load_from_xml("FilmBondage.xml");
 }
@@ -128,12 +127,11 @@ bool FilmBdsm::CheckRefuseWork(sGirl& girl) {
     }
     else if (roll <= 10 && girl.disobey_check(ACTION_WORKMOVIE, JOB_FILMBONDAGE))
     {
-        ss << "${name} was horrified and refused to be beaten and sexually tortured in this ";
         if (girl.is_slave())
         {
             if (g_Game->player().disposition() > 30)  // nice
             {
-                ss << "\"monstrous\" place.\nShe was starting to panic, so you allowed her the day off.\n";
+                ss << get_text("disobey.slave.nice");
                 girl.pclove(2);
                 girl.pchate(-1);
                 girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -141,7 +139,7 @@ bool FilmBdsm::CheckRefuseWork(sGirl& girl) {
             }
             else if (g_Game->player().disposition() > -30) //pragmatic
             {
-                ss << "\"monstrous\" place.\nShe was starting to panic, so you ordered your men to grab her and bind her for action.\n";
+                ss << get_text("disobey.slave.neutral");
                 girl.pclove(-1);
                 girl.pchate(2);
                 girl.pcfear(2);
@@ -150,7 +148,7 @@ bool FilmBdsm::CheckRefuseWork(sGirl& girl) {
             }
             else
             {
-                ss << "\"monstrous\" place.\nShe was starting to panic so you ordered your men to quickly grab, strip and bind her. Finally, ";
+                ss << "${name} was horrified and refused to be beaten and sexually tortured in this \"monstrous\" place.\nShe was starting to panic so you ordered your men to quickly grab, strip and bind her. Finally, ";
                 if (girl.has_active_trait("Pierced Nipples"))
                 {
                     ss << "noticing her pierced nipples";
@@ -171,11 +169,11 @@ bool FilmBdsm::CheckRefuseWork(sGirl& girl) {
         }
         else // not a slave
         {
-            ss << " \"monstrous\" place.\n";
+            ss << get_text("disobey.free");
             girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
             return true;
         }
     }
-    else ss << "${name} was taken for bondage and torture scenes in your dungeon.\n \n";
+    else ss << get_text("work") << "\n \n";
     return false;
 }

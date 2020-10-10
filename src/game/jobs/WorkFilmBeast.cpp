@@ -101,7 +101,7 @@ bool FilmBeast::CheckRefuseWork(sGirl& girl) {
             return true;
         }
     }
-    else ss << "${name} was filmed being fucked by animals.\n \n";
+    else ss << get_text("work") << "\n \n";
     return false;
 }
 
@@ -117,7 +117,6 @@ void FilmBeast::Reset() {
 
 FilmBeast::FilmBeast() : GenericFilmJob(JOB_FILMBEAST, {
     IMGTYPE_BEAST, ACTION_SEX, SKILL_BEASTIALITY, 50, 5,
-    FilmJobData::EVIL, SKILL_BEASTIALITY, "Beast",
-    nullptr, nullptr}) {
+    FilmJobData::EVIL, SKILL_BEASTIALITY, "Beast"}) {
     load_from_xml("FilmBeast.xml");
 }

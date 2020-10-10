@@ -120,9 +120,7 @@ void FilmTease::GainTraits(sGirl& girl, int performance) const {
 
 FilmTease::FilmTease() : GenericFilmJob(JOB_FILMTEASE, {
         IMGTYPE_ECCHI, ACTION_WORKSTRIP, SKILL_STRIP, 40, 0,
-        FilmJobData::NICE, SKILL_STRIP, "Teaser",
-        " worked filming teaser scenes to arouse viewers.",
-        " refused to make a teaser clip today.",
+        FilmJobData::NICE, SKILL_STRIP, "Teaser"
 }) {
     load_from_xml("FilmTease.xml");
 }

@@ -21,8 +21,6 @@
 FilmChef::FilmChef() : GenericFilmJob(JOB_FILMCHEF, {
       IMGTYPE_COOK, ACTION_WORKCOOKING, SKILL_COOKING, 40, -8,
       FilmJobData::NICE, SKILL_COOKING, "Cooking",
-      " worked filming sexy chef scenes to educate and entertain viewers.",
-      " refused to make a kitchen show today.",
 }) {
     load_from_xml("FilmChef.xml");
 }

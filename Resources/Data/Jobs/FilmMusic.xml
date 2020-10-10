@@ -11,4 +11,13 @@
     </Performance>
     <Gains XP="10" Skill="3">
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked on a music video showcasing her singing and dancing talent.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to shoot a music video scene today.</Text>
+        </Entry>
+    </Messages>
 </Job>

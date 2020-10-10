@@ -24,8 +24,7 @@
 
 FilmGroup::FilmGroup() : GenericFilmJob(JOB_FILMGROUP, {
     IMGTYPE_GROUP, ACTION_SEX, SKILL_GROUP, 50, 5,
-    FilmJobData::NORMAL, SKILL_GROUP, "Group",
-    "", " refused to do an orgy on film today.",
+    FilmJobData::NORMAL, SKILL_GROUP, "Group"
 }) {
     load_from_xml("FilmGroup.xml");
 }

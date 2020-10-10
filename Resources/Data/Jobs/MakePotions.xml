@@ -3,6 +3,7 @@
     <Description>
         She will make various potions.
     </Description>
+
     <Performance Modifier="work.makepotions">
         <Primary Skill="Brewing"/>
         <Primary Skill="Herbalism"/>
@@ -10,5 +11,18 @@
         <Secondary Skill="Magic" />
         <Secondary Skill="Cooking" />
     </Performance>
+
     <Gains XP="5" Skill="3" />
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as a potions maker on the farm.</Text>
+        </Entry>
+        <Entry Name="repair">
+            <Text>She spent some of her time repairing the Farm's equipment instead of making new stuff.</Text>
+        </Entry>
+        <Entry Name="produce">
+            <Text>${name} made:</Text>
+        </Entry>
+    </Messages>
 </Job>

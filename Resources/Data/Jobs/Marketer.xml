@@ -3,6 +3,7 @@
     <Description>
         She will buy and sell things.
     </Description>
+
     <Performance Modifier="work.farmmarketer">
         <Primary Stat="Charisma"/>
         <Primary Stat="Confidence"/>
@@ -10,6 +11,7 @@
         <Secondary Stat="Fame" />
         <Secondary Skill="Farming" />
     </Performance>
+
     <Gains XP="5" Skill="3">
         <GainTrait Trait="Charismatic" Threshold="30" Action="WORKCUSTSERV">
             ${name} has been selling long enough that she has learned to be more Charismatic.
@@ -27,4 +29,13 @@
             ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
         </LoseTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as a marketer on the farm.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to work during the</Text>
+        </Entry>
+    </Messages>
 </Job>

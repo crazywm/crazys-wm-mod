@@ -3,10 +3,12 @@
     <Description>
         She will film an anal scene.
     </Description>
+
     <Performance Modifier="">
         <Primary Skill="Performance" />
         <Secondary Skill="Anal"/>
     </Performance>
+
     <Gains XP="10" Skill="3">
         <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
             She has performed in enough sex scenes that she has become a well known Porn Star.
@@ -18,4 +20,13 @@
             ${name} has turned into quite a Slut.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as an actress filming anal scenes.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to do anal on film today.</Text>
+        </Entry>
+    </Messages>
 </Job>

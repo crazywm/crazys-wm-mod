@@ -25,9 +25,6 @@
 struct sFarmJobData {
     Action_Types Action;
     int BaseWages;
-
-    const char* Refuse;
-    const char* WorkMsg;
 };
 
 class cFarmJob : public cBasicJob {

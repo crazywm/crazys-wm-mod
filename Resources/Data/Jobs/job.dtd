@@ -1,4 +1,4 @@
-<!ELEMENT Job (Description, Performance, Gains)>
+<!ELEMENT Job (Description, Performance, Gains, Messages?)>
 <!ATTLIST Job ShortName CDATA #REQUIRED>
 
 <!ELEMENT Description (#PCDATA)>
@@ -16,3 +16,9 @@
 <!ATTLIST GainTrait Trait CDATA #REQUIRED Threshold CDATA #REQUIRED Action CDATA #REQUIRED Event CDATA #IMPLIED>
 <!ELEMENT LoseTrait (#PCDATA)>
 <!ATTLIST LoseTrait Trait CDATA #REQUIRED Threshold CDATA #REQUIRED Action CDATA #REQUIRED Event CDATA #IMPLIED>
+
+
+<!ELEMENT Messages (Entry)>
+<!ELEMENT Entry (Text*)>
+<!ATTLIST Entry Name CDATA>
+<!ELEMENT Text (#PCDATA)>

@@ -3,6 +3,7 @@
     <Description>
         She will tend to sick animals.
     </Description>
+
     <Performance Modifier="work.veterinarian">
         <Primary Skill="Medicine"/>
         <Primary Skill="AnimalHandling"/>
@@ -10,5 +11,15 @@
         <Secondary Stat="Charisma" />
         <Secondary Skill="Beastiality" />
     </Performance>
+
     <Gains XP="10" Skill="3" />
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as a Veterinarian on the farm.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to work during the</Text>
+        </Entry>
+    </Messages>
 </Job>

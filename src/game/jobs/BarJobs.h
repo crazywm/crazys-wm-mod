@@ -24,7 +24,6 @@
 
 struct sBarJobData {
     Action_Types Action;
-    const char* Refuse;
 };
 
 class cBarJob : public cBasicJob {

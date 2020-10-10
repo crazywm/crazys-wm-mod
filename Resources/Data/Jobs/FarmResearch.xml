@@ -1,0 +1,21 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Rsrc">
+    <Description>
+        She will research how to improve various things.
+    </Description>
+
+    <Performance Modifier="work.veterinarian">
+    </Performance>
+
+    <Gains XP="10" Skill="3">
+    </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as a researcher on the farm.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to work during the</Text>
+        </Entry>
+    </Messages>
+</Job>

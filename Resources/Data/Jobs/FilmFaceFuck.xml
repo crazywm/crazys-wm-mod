@@ -3,11 +3,13 @@
     <Description>
         She will be used in gag and face-fuck scenes.
     </Description>
+
     <Performance Modifier="work.film.throat">
         <Primary Stat="Beauty"/>
         <Primary Stat="Charisma" />
         <Secondary Skill="OralSex" />
     </Performance>
+
     <Gains XP="10" Skill="3">
         <GainTrait Trait="Mind Fucked" Threshold="90" Action="WORKMOVIE" Event="2">
             She has been abused so much she is now completely Mind Fucked.
@@ -16,4 +18,10 @@
             ${name} has turned into a Masochist from filming so many BDSM scenes.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} was filmed in facefucking scenes.</Text>
+        </Entry>
+    </Messages>
 </Job>

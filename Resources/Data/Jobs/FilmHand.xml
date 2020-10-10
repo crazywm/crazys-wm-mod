@@ -7,9 +7,19 @@
         <Primary Skill="Performance" />
         <Secondary Skill="Handjob"/>
     </Performance>
+
     <Gains XP="10" Skill="3">
         <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as an actress filming hand job scenes.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to film a handjob scene today.</Text>
+        </Entry>
+    </Messages>
 </Job>

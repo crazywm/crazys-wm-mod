@@ -3,11 +3,22 @@
     <Description>
         She will tend to larger animals.
     </Description>
+
     <Performance Modifier="work.rancher">
         <Primary Skill="AnimalHandling"/>
         <Secondary Stat="Intelligence" />
         <Secondary Stat="Charisma" />
         <Secondary Stat="Confidence" />
     </Performance>
+
     <Gains XP="5" Skill="3" />
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as a rancher on the farm.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to work during the</Text>
+        </Entry>
+    </Messages>
 </Job>

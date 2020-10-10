@@ -3,11 +3,25 @@
     <Description>
         She will make various items.
     </Description>
+
     <Performance Modifier="work.makeitem">
         <Primary Skill="Crafting"/>
         <Secondary Skill="Service" />
         <Secondary Skill="Magic" />
         <Secondary Stat="Intelligence" />
     </Performance>
+
     <Gains XP="5" Skill="3" />
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} was assigned to make items at the farm.</Text>
+        </Entry>
+        <Entry Name="repair">
+            <Text>She spent some of her time repairing the Farm's equipment instead of making new stuff.</Text>
+        </Entry>
+        <Entry Name="produce">
+            <Text>${name} made:</Text>
+        </Entry>
+    </Messages>
 </Job>

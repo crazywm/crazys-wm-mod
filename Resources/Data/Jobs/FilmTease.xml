@@ -3,6 +3,7 @@
     <Description>
         She will flirt and remove her clothes and tease seductively, but won't show all. If you freeze-frame you might just catch a nipple.
     </Description>
+
     <Performance Modifier="work.film.tease">
         <Primary Stat="Charisma" />
         <Primary Stat="Beauty" />
@@ -10,6 +11,7 @@
         <Secondary Skill="Performance"/>
         <Secondary Skill="Strip"/>
     </Performance>
+
     <Gains XP="10" Skill="3">
         <GainTrait Trait="Charming" Threshold="80" Action="WORKMOVIE">
             Flirting and seducing on film has made her Charming.
@@ -18,4 +20,13 @@
             All this flirting and teasing with a camera in a studio has improved her acting skills.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked filming teaser scenes to arouse viewers.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to make a teaser clip today.</Text>
+        </Entry>
+    </Messages>
 </Job>

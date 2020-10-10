@@ -115,11 +115,11 @@ bool GenericFilmJob::CheckCanWork(sGirl& girl) {
 bool GenericFilmJob::CheckRefuseWork(sGirl& girl) {
     if (girl.disobey_check(ACTION_WORKMOVIE, job()))
     {
-        ss << girl.FullName() << m_FilmData.MsgRefuse;
+        ss << get_text("refuse");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return true;
     } else {
-        ss << girl.FullName() << m_FilmData.MsgWork << "\n ";
+        ss << get_text("work") << "\n ";
         return false;
     }
 }
@@ -191,9 +191,7 @@ struct FilmTitty : public SimpleFilmJob
 {
     FilmTitty() : SimpleFilmJob(JOB_FILMTITTY, "FilmTitty.xml", {
             IMGTYPE_TITTY, ACTION_SEX, SKILL_TITTYSEX, 50, -5,
-            FilmJobData::NORMAL, SKILL_TITTYSEX, "Titty",
-            " worked as an actress filming titty fucking scenes.",
-            " refused to have her titty's fucked on film today.",
+            FilmJobData::NORMAL, SKILL_TITTYSEX, "Titty"
     })
     {
     };
@@ -209,9 +207,7 @@ struct FilmStrip : public SimpleFilmJob
 {
     FilmStrip() : SimpleFilmJob(JOB_FILMSTRIP, "FilmStrip.xml", {
          IMGTYPE_STRIP, ACTION_WORKSTRIP, SKILL_STRIP, 50, 0,
-         FilmJobData::NICE, SKILL_STRIP, "Stripping",
-         " worked as an actress filming strip tease scenes",
-         " refused to strip on film today."})
+         FilmJobData::NICE, SKILL_STRIP, "Stripping"})
          {};
 
     void GainTraits(sGirl& girl, int performance) const override {
@@ -232,9 +228,7 @@ struct FilmLesbian : public SimpleFilmJob
 {
     FilmLesbian() : SimpleFilmJob( JOB_FILMLESBIAN, "FilmLes.xml", {
            IMGTYPE_LESBIAN, ACTION_SEX, SKILL_LESBIAN, 50, 10,
-           FilmJobData::NORMAL, SKILL_LESBIAN, "Lesbian",
-           " worked as an actress filming lesbian scenes.",
-           " refused to film a lesbian scene today.",
+           FilmJobData::NORMAL, SKILL_LESBIAN, "Lesbian"
     }) {
     };
 
@@ -257,9 +251,7 @@ struct FilmHandJob : public SimpleFilmJob
 {
     FilmHandJob() : SimpleFilmJob(JOB_FILMHANDJOB, "FilmHand.xml", {
           IMGTYPE_HAND, ACTION_SEX, SKILL_HANDJOB, 50, -5,
-          FilmJobData::NORMAL, SKILL_HANDJOB, "Handjob",
-          " worked as an actress filming hand job scenes.",
-          " refused to churn his butter on film today.",
+          FilmJobData::NORMAL, SKILL_HANDJOB, "Handjob"
     }) {
     }
 
@@ -275,8 +267,6 @@ struct FilmFootJob : public SimpleFilmJob
     FilmFootJob() : SimpleFilmJob(JOB_FILMFOOTJOB, "FilmFoot.xml", {
           IMGTYPE_FOOT, ACTION_SEX, SKILL_FOOTJOB, 50, -5,
           FilmJobData::NORMAL, SKILL_FOOTJOB, "Footjob",
-          " worked as an actress filming foot job scenes.",
-          " refused to use her feet on film today.",
     }) {
     }
 
@@ -291,9 +281,7 @@ struct FilmAnal : public SimpleFilmJob
 {
     FilmAnal() : SimpleFilmJob(JOB_FILMANAL, "FilmAnal.xml", {
            IMGTYPE_ANAL, ACTION_SEX, SKILL_ANAL, 50, 5,
-           FilmJobData::NORMAL, SKILL_ANAL, "Anal",
-           " worked as an actress filming anal scenes.",
-           " refused to do anal on film today.",
+           FilmJobData::NORMAL, SKILL_ANAL, "Anal"
     }) {
     }
 
@@ -316,9 +304,7 @@ struct FilmMast : public SimpleFilmJob
 {
     FilmMast() : SimpleFilmJob(JOB_FILMMAST, "FilmMast.xml", {
            IMGTYPE_MAST, ACTION_SEX, SKILL_SERVICE, 50, -10,
-           FilmJobData::NICE, SKILL_PERFORMANCE, "Masturbation",
-           " worked as an actress filming Masturbation scenes.",
-           " refused to masturbate on film today.",
+           FilmJobData::NICE, SKILL_PERFORMANCE, "Masturbation"
     }) {
     }
 

@@ -22,9 +22,7 @@
 
 FilmBuk::FilmBuk() : GenericFilmJob(JOB_FILMBUKKAKE, {
         IMGTYPE_ORAL, Action_Types::NUM_ACTIONTYPES, SKILL_BDSM, 50, 5,
-        FilmJobData::EVIL, SKILL_GROUP, "Bukkake",
-        " was filmed being splattered with cum in bukkake scenes.",
-        nullptr
+        FilmJobData::EVIL, SKILL_GROUP, "Bukkake"
 }) {
     load_from_xml("FilmBuk.xml");
 }
@@ -92,12 +90,11 @@ bool FilmBuk::CheckRefuseWork(sGirl& girl) {
     }
     else if (roll <= 10 && !girl.has_active_trait("Mind Fucked") && girl.disobey_check(ACTION_WORKMOVIE, JOB_FILMBUKKAKE))
     {
-        ss << "${name} refused to have any part in this";
         if (girl.is_slave())
         {
             if (g_Game->player().disposition() > 30)  // nice
             {
-                ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you allowed her the day off.";
+                ss << get_text("disobey.slave.nice");
                 girl.pclove(2);
                 girl.pchate(-1);
                 girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -105,7 +102,7 @@ bool FilmBuk::CheckRefuseWork(sGirl& girl) {
             }
             else if (g_Game->player().disposition() > -30) //pragmatic
             {
-                ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you had your men drug her and tie her down for action.";
+                ss << get_text("disobey.slave.neutral");
                 girl.pclove(-1);
                 girl.pchate(1);
                 girl.pcfear(+1);
@@ -115,7 +112,7 @@ bool FilmBuk::CheckRefuseWork(sGirl& girl) {
             }
             else if (g_Game->player().disposition() > -30)
             {
-                ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you had your men whip some sense into her before the scene and tie her down for action.";
+                ss << get_text("disobey.slave.evil");
                 girl.pclove(-2);
                 girl.pchate(+2);
                 girl.pcfear(+4);
@@ -126,12 +123,12 @@ bool FilmBuk::CheckRefuseWork(sGirl& girl) {
         }
         else // not a slave
         {
-            ss << " \"disgusting\" bukkake scene and left the set.";
+            ss << get_text("disobey.free");
             girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
             return true;
         }
     }
-    else ss << girl.FullName() << m_FilmData.MsgWork << "\n \n";
+    else ss << get_text("work") << "\n \n";
     return false;
 }
 
@@ -142,7 +139,7 @@ void FilmBuk::Reset() {
 
 void AndAction(std::stringstream *TheAction, const std::string& TheHo, bool TiedUp)
 {
-    *TheAction << TheHo << " was ";
+    *TheAction << "${name} was ";
     *TheAction << g_Dice.select_text({ "dutifully gangbanged", "deeply probed", "effectively raped",
                                     "uncomfortably filled", "clumsily penetrated", "roughly used"});
     *TheAction << " by ";

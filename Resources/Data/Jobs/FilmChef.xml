@@ -9,6 +9,7 @@
         <Primary Stat="Confidence" />
         <Secondary Skill="Cooking" />
     </Performance>
+
     <Gains XP="10" Skill="3">
         <GainTrait Trait="Charming" Threshold="80" Action="WORKMOVIE">
             She has become quite Charming.
@@ -17,4 +18,13 @@
             Working on camera has improved her acting skills.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked filming sexy chef scenes to educate and entertain viewers.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to make a kitchen show today.</Text>
+        </Entry>
+    </Messages>
 </Job>

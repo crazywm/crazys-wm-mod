@@ -26,6 +26,7 @@
 #include <sstream>
 #include <cJobManager.h>
 #include "Constants.h"
+#include "TextRepo.h"
 #include <boost/variant.hpp>
 
 
@@ -79,6 +80,9 @@ public:
 
     /// Lets the girl do the job
     bool Work(sGirl& girl, bool is_night, cRng& rng);
+
+    /// called by the job manager when the job gets registered.
+    void OnRegisterJobManager(const cJobManager& manager);
 protected:
     std::stringstream ss;
 
@@ -94,11 +98,15 @@ protected:
         IMPOSSIBLE
     };
 
+    const sGirl& active_girl() const;
+
 private:
     virtual bool DoWork(sGirl& girl, bool is_night) = 0;
     virtual eCheckWorkResult CheckWork(sGirl& girl, bool is_night) = 0;
 
     cRng* m_Rng;
+    sGirl* m_ActiveGirl;
+    const cJobManager* m_JobManager;
 
 protected:
     sJobInfo m_Info;
@@ -132,10 +140,15 @@ protected:
     void apply_gains(sGirl& girl);
 
     void load_from_xml(const char* xml_file);
+    const std::string& get_text(const std::string& prompt) const;
 private:
     sJobPerformance m_PerformanceData;
     std::vector<sTraitChange> m_TraitChanges;
     sBasicJobData m_Data;
+
+    std::unique_ptr<cTextRepository> m_TextRepo;
+
+    void load_from_xml_internal(const char* xml_file);
 };
 
 void RegisterCraftingJobs(cJobManager& mgr);

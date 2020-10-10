@@ -38,8 +38,6 @@ struct FilmJobData {
     SceneType    Type;              //!< The type of the scene. NICE scenes give bonuses to the girl, evil ones give mali
     SKILLS       SceneSkill;        //!< Skill that influences scene quality
     const char*  SceneName;         //!< Display name for a scene of this type.
-    const char*  MsgWork;           //!< Default message for doing the work
-    const char*  MsgRefuse;         //!< Default message refusing to work
 };
 
 struct SceneResult {

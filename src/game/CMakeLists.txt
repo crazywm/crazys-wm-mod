@@ -144,6 +144,7 @@ set(SRC cEvents.cpp
         cGold.cpp
         cInventory.cpp
         cJobManager.cpp
+        jobs/TextRepo.cpp
         cNameList.cpp
         cObjectiveManager.cpp
         Constants.cpp

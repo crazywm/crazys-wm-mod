@@ -3,16 +3,35 @@
     <Description>
         She will make jewelery.
     </Description>
+
     <Performance Modifier="work.jeweler">
-        <Primary Skill="Crafting"/>
-        <Secondary Skill="Magic" />
-        <Secondary Stat="Confidence" />
-        <Secondary Stat="Intelligence" />
-        <Secondary Stat="Agility" />
+        <Factor Skill="Crafting" Weight="4"/>
+        <Factor Skill="Magic" Weight="1"/>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Stat="Intelligence" Weight="1"/>
+        <Factor Stat="Agility" Weight="1"/>
     </Performance>
+
     <Gains XP="5" Skill="3">
-    <GainTrait Trait="Sharp-Eyed" Threshold="50" Action="MAKEITEMS">
-        Working on such small items has made ${name} rather Sharp-Eyed.
-    </GainTrait>
+        <Skill Name="Crafting" Weight="4"/>
+        <Skill Name="Magic" Weight="1"/>
+        <Stat Name="Confidence" Weight="1"/>
+        <Stat Name="Intelligence" Weight="1"/>
+        <Stat Name="Agility" Weight="1"/>
+        <GainTrait Trait="Sharp-Eyed" Threshold="50" Action="MAKEITEMS">
+            Working on such small items has made ${name} rather Sharp-Eyed.
+        </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as a Jeweler at the arena.</Text>
+        </Entry>
+        <Entry Name="repair">
+            <Text>She spent some of her time repairing the Arena's equipment instead of making new stuff.</Text>
+        </Entry>
+        <Entry Name="produce">
+            <Text>${name} crafted:</Text>
+        </Entry>
+    </Messages>
 </Job>

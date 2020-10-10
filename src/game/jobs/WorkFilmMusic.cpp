@@ -134,9 +134,7 @@ void FilmMusic::GainTraits(sGirl& girl, int performance) const {
 
 FilmMusic::FilmMusic() : GenericFilmJob(JOB_FILMMUSIC, {
         IMGTYPE_ORAL, ACTION_WORKMOVIE, SKILL_STRIP, 40, -3,
-        FilmJobData::NICE, SKILL_PERFORMANCE, "Music",
-        " worked on a music video showcasing her singing and dancing talent.",
-        " refused to shoot a music video scene today."
+        FilmJobData::NICE, SKILL_PERFORMANCE, "Music"
 }) {
     load_from_xml("FilmMusic.xml");
 }

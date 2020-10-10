@@ -3,12 +3,14 @@
     <Description>
         She will bring drinks and food to customers at the tables.
     </Description>
+
     <Performance Modifier="work.waitress">
         <Primary Skill="Service"/>
         <Secondary Stat="Charisma" />
         <Secondary Stat="Intelligence" />
         <Secondary Stat="Agility" />
     </Performance>
+
     <Gains XP="10" Skill="3">
         <LoseTrait Trait="Clumsy" Threshold="30" Action="WORKBAR">
             It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.
@@ -17,4 +19,15 @@
             ${name} has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} has been assigned to work as a waitress at your restaurant.
+                She is informed that this is a genteel and conservative establishment,
+                and she should focus on providing timely and efficient service.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to wait the bar</Text>
+        </Entry>
+    </Messages>
 </Job>

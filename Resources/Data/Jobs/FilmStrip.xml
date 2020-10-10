@@ -3,10 +3,21 @@
     <Description>
         She will perform in a strip tease scene.
     </Description>
+
     <Performance Modifier="work.farmer">
         <Primary Skill="Performance" />
         <Secondary Skill="Strip"/>
     </Performance>
+
     <Gains XP="10" Skill="3">
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as an actress filming strip tease scenes.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to strip on film today.</Text>
+        </Entry>
+    </Messages>
 </Job>

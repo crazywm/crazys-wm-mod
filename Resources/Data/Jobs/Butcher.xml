@@ -3,6 +3,7 @@
     <Description>
         She will produce food from animals you own.
     </Description>
+
     <Performance Modifier="work.butcher">
         <Primary Skill="AnimalHandling"/>
         <Primary Stat="Strength"/>
@@ -10,9 +11,22 @@
         <Secondary Skill="Cooking" />
         <Secondary Stat="Intelligence" />
     </Performance>
+
     <Gains XP="5" Skill="3">
         <GainTrait Trait="Chef" Threshold="70" Action="COOKING">
             ${name} has prepared enough food to qualify as a Chef.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as a butcher on the farm.</Text>
+        </Entry>
+        <Entry Name="repair">
+            <Text>She spent some of her time repairing the Farm's equipment instead of making new stuff.</Text>
+        </Entry>
+        <Entry Name="produce">
+            <Text>${name} made:</Text>
+        </Entry>
+    </Messages>
 </Job>

@@ -3,11 +3,13 @@
     <Description>
         She will be tied up in a public place, where she will be stripped, whipped, tortured and fully-used. On film.
     </Description>
+
     <Performance Modifier="work.film.publicbdsm">
         <Primary Stat="Beauty"/>
         <Primary Stat="Charisma" />
         <Primary Stat="Dignity" />
     </Performance>
+
     <Gains XP="10" Skill="3">
         <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
             She has performed in enough sex scenes that she has become a well known Porn Star.
@@ -16,4 +18,22 @@
             ${name} has turned into a Masochist from filming so many BDSM scenes.
         </GainTrait>
     </Gains>
+    
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} was taken for filming in public bondage and torture scenes.</Text>
+        </Entry>
+        <Entry Name="disobey.free">
+            <Text>${name} refused to have any part in this "monstrous" scene today and left.</Text>
+        </Entry>
+        <Entry Name="disobey.slave.nice">
+            <Text>${name} refused to have any part in this "monstrous" scene.
+                She was clearly horrified at the thought so you allowed her the day off.</Text>
+        </Entry>
+        <Entry Name="disobey.slave.neutral">
+            <Text>${name} refused to have any part in this "monstrous" scene.
+                She was clearly horrified so you had your men drug her before stripping her down for action.</Text>
+        </Entry>
+        <!-- Evil is handled by C++ -->
+    </Messages>
 </Job>

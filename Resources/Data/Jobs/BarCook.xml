@@ -3,14 +3,117 @@
     <Description>
         She will cook food for the bar.
     </Description>
+
     <Performance Modifier="work.cooking">
         <Primary Skill="Cooking"/>
         <Secondary Stat="Confidence" />
         <Secondary Stat="Intelligence" />
     </Performance>
+
     <Gains XP="10" Skill="3">
         <LoseTrait Trait="Clumsy" Threshold="30" Action="WORKBAR">
             It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.
         </LoseTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} is assigned to work as a cook in the kitchen, preparing food for the customers.</Text>
+            <Text Condition="Retarded">
+                ${name} beams like a small child when you tell her that she is cooking today. You witness as she throws
+                all the nearby ingredients into the same bowl, places the bowl on the stove, and then starts punching
+                the mixture as if that is an approved cooking technique. "I cook food good!" she exclaims. Whatever
+                possessed you to make a retarded girl into a cook, now you know that you are committed to seeing this
+                through until the end.
+            </Text>
+            <Text Condition="Assassin">
+                ${name}'s skills as an assassin have left her with a slightly skewed view towards food, which she
+                casually refers to as "poison masking. You are not sure whether you should have the waitresses serve
+                what she cooks, and you definitely are not going to allow her to re-cook a meal that an angry customer
+                sends back. Actually, there are a lot of knives in kitchens! You had not noticed that until right now.
+                So many knives.
+            </Text>
+            <Text Condition="No Arms">
+                You have assigned ${name} to work as a cook in the kitchens this week. She stares at the kitchen, with
+                all the pots and pans and utensils, and then back at you, and then down at her own body, as if trying to
+                draw your attention to the fact that she has no hands. After silently waiting for a response that you
+                never give, she turns her gaze back to the kitchen and contemplates how she will even begin with this
+                impossible task.
+            </Text>
+            <Text Condition="No Hands">
+                You have assigned ${name} to work as a cook in the kitchens this week. She stares at the kitchen, with
+                all the pots and pans and utensils, and then back at you, and then down at her own body, as if trying to
+                draw your attention to the fact that she has no hands. After silently waiting for a response that you
+                never give, she turns her gaze back to the kitchen and contemplates how she will even begin with this
+                impossible task.
+            </Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to cook food in the bar</Text>
+        </Entry>
+
+        <!-- In the old version, these had an influence on the job performance -->
+        <Entry Name="pre-work-text">
+            <Text Condition="Chef">
+                ${name} understands the difference between a "Cook" and a "Chef."
+                She ventures away from the recipe book occasionally, spicing each dish to her own concept of perfection.
+                It is usually a great improvement.
+            </Text>
+            <Text Condition="Agile">
+                ${name} looks like she is handling a dozen pots and pans at the same time without any problems!
+                She is certainly efficient.
+            </Text>
+            <Text Condition="Mind Fucked">
+                ${name} works efficiently, but stares off into space with that vacant mindfucked expression of hers.
+                You would think there was nobody inside her brain at all, but sometimes, when she finishes cooking a dish,
+                she beams a maniacal grin and starts muttering about being a "good girl." "And good girls," she
+                smiles as she jams the end of the spatula into her asshole, "get dessert!"
+                She giggles, removes the spatula, and then starts using it for the next dish. That cannot be hygienic.
+            </Text>
+            <Text Condition="One Hand">
+                ${name} struggles with only having one hand in the kitchen, but makes the best of it.
+            </Text>
+        </Entry>
+
+        <Entry Name="work.perfect">
+            <Text Condition="No Arms">
+                The food is incredible! But how?! How in hell did she do it without any hands? It just.. it just boggles
+                your mind. Maybe she carries the pots with her mouth? How does she plate the food? Honestly, this whole
+                thing, while very impressive, has left you with far more questions than answers.
+            </Text>
+            <Text Condition="No Hands">
+                The food is incredible! But how?! How in hell did she do it without any hands? It just.. it just boggles
+                your mind. Maybe she carries the pots with her mouth? How does she plate the food? Honestly, this whole
+                thing, while very impressive, has left you with far more questions than answers.
+            </Text>
+            <Text Condition="Chef">
+                ${name} circulates briefly among the tables, talking to the patrons and asking their preferences so she
+                can customize the menu for each of them. They are amazed by her abilities, as she not only lovingly
+                prepares each dish, but plates every morsel like an artist. She circulates again after they eat, asking
+                how they enjoyed their courses, and taking notes to improve them the next time. Somehow, even with all
+                this time out of the kitchen talking with the customers, she manages to ensure that each dish arrives
+                just in time, perfectly prepared and at the ideal temperature.
+            </Text>
+            <Text Condition="Retarded">
+                There is no telling how she did it, whether by blind luck or through hidden idiot savant abilities, but
+                ${name} actually made good food. Great food, really. Truly surprisingly great food. She does not seem to
+                understand the science of cooking, or which ingredients are which, but somehow the final product is fit
+                for any master chef. "I did good cooking, yes?" she exclaims to you before grabbing a turnip and
+                repeatedly bashing it against the table to "make softer." While you have never seen this particular
+                method of vegetable preparation before, you cannot argue with the results. For reasons which should be
+                obvious, you opt against introducing her to those customers that ask for the privilege of thanking the
+                chef.
+            </Text>
+            <Text>
+                She is an absolute frenzy of culinary activity, diving from plate to plate and stove to stove with
+                expert grace. The food always appears right on time, just the right temperature, and elegantly plated.
+            </Text>
+            <Text>
+                She is a master chef, and she leaves the traditional menu far behind as she prepares individualized
+                tasting plates for each patron. ${name} carefully prepares an appetizer of delicate quail eggs for one
+                customer while drizzling rich chocolate on a raspberry tart for another. You only receive high
+                compliments from the patrons, who promise to come back for more.
+            </Text>
+        </Entry>
+    </Messages>
 </Job>

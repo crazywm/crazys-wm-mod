@@ -3,10 +3,12 @@
     <Description>
         She will do a lesbian scene.
     </Description>
+
     <Performance Modifier="work.farmer">
         <Primary Skill="Performance" />
         <Secondary Skill="Lesbian"/>
     </Performance>
+
     <Gains XP="10" Skill="3">
         <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
             She has performed in enough sex scenes that she has become a well known Porn Star.
@@ -15,4 +17,13 @@
             She has become quite the Faker.
         </GainTrait>
     </Gains>
+
+    <Messages>
+        <Entry Name="work">
+            <Text>${name} worked as an actress filming lesbian scenes.</Text>
+        </Entry>
+        <Entry Name="refuse">
+            <Text>${name} refused to film a lesbian scene today.</Text>
+        </Entry>
+    </Messages>
 </Job>
