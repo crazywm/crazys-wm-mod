@@ -24,6 +24,7 @@
 #include <vector>
 #include <numeric>
 #include <cassert>
+#include <algorithm>
 #include "interface/cColor.h"
 
 cFont::cFont(CGraphics* gfx) : m_GFX(gfx), m_TextColor(0, 0, 0)
@@ -55,21 +56,6 @@ bool cFont::LoadFont(const std::string& font, int size)
     return true;
 }
 
-std::string cFont::UpdateLineEndings(std::string text)
-{
-    // Double "\n \n" newline characters were showing up as one
-    // newline and a boxy (bad) character...  so, here's a cheap-ass
-    // workaround to add a "\r" carriage return in front of each "\n".
-    int pos = text.find("\n", 0);
-    while (pos != std::string::npos)
-    {
-        text.insert(pos, "\r");
-        pos = text.find("\n", pos + 2);
-    }
-
-    return std::move(text);
-}
-
 int cFont::GetFontHeight()
 {
     return TTF_FontHeight(m_Font.get());
@@ -99,78 +85,117 @@ cSurface cFont::RenderText(std::string text) const
 
 cSurface cFont::RenderMultilineText(std::string text, int max_width) const
 {
-    text = UpdateLineEndings(std::move(text));
+    // pad the sides a bit, it was otherwise slightly overflowing
+    max_width = max_width - 10;
 
-    // first separate into lines according to width
-    std::vector<std::string> lines;
-    std::string temp(text);    // current line of text
-    temp += " ";    // makes sure that all the text will be displayed
-    int next_word_boundary = 0;    // current index into the string
-    int next_newline = 0;    // the next \n int the string
-    int last_split_point = 0;    // holds the previous index into the string
-    max_width = max_width - 10;  // pad the sides a bit, it was otherwise slightly overflowing
+    return render_lines(max_width, break_lines(std::move(text), max_width));
+}
 
-    // -- Get until either ' ', '/' or '\n'
-    while (next_word_boundary != -1)
+// Break up a string into individual lines at newlines.
+std::vector<std::string> hard_linebreaks(std::string const& text)
+{
+  std::vector<std::string> lines;
+  std::string line;
+
+  for(size_t i = 0; i < text.size(); ++i)
     {
-        std::string strSub;
-        next_word_boundary = temp.find(' ', last_split_point + 1);        // -- Find the next " "
-        next_newline = temp.find('\n', last_split_point + 1);        // -- Find the next "\n"
-        if (next_newline < next_word_boundary && next_newline != -1)
+      if(text[i] == '\n')       // \n -- Unix style
         {
-            int charwidth, charheight;
-            strSub = temp.substr(0, next_newline);
-            GetSize(strSub, charwidth, charheight);
-            // if the text until the next newline is too long, we split lines
-            if (charwidth >= max_width)
-            {
-                strSub = temp.substr(0, last_split_point);
-                lines.push_back(strSub);
-                temp = temp.substr(last_split_point + 1, std::string::npos);
-                last_split_point = 0;
-            }
-            // otherwise, next line is until newline
-            else
-            {
-                strSub = temp.substr(0, next_newline);
-                lines.push_back(strSub);
-                temp = temp.substr(next_newline + 1, std::string::npos);
-                last_split_point = 0;
-            }
+          lines.emplace_back(std::move(line));
+          line.clear();
         }
-        else    // word boundary before newline
+      else if(text[i] == '\r') // \r -- Mac style
         {
-            strSub = temp.substr(0, next_word_boundary);
-            int charwidth, charheight;
-            GetSize(strSub, charwidth, charheight);
-            // of we exceed the line, or this is the last word, use the last split point as split position
-            if (charwidth >= max_width || next_word_boundary == -1)
-            {
-                // if we don't have any preceeding words, there is no point in splitting
-                if(last_split_point == 0) {
-                    lines.push_back(strSub);  // put this long word into a signle line
-                    if (next_word_boundary != -1)
-                        temp = temp.substr(next_word_boundary + 1, std::string::npos);
-                    last_split_point = 0;
-                } else {
-                    strSub = temp.substr(0, last_split_point);
-                    lines.push_back(strSub);    // -- Puts strSub into the lines vector
-                    if (next_word_boundary != -1) temp = temp.substr(last_split_point + 1, std::string::npos);
-                    last_split_point = 0;
-                }
-            }
-            else
-                // if it fits, include this word in the next segment
-                last_split_point = next_word_boundary;
+          lines.emplace_back(std::move(line));
+          line.clear();
+          if(i+1 < text.size() && text[i+1] == '\n') // \r\n -- Windows style
+            ++i;
         }
+      else
+        line.push_back(text[i]);
     }
 
+  assert(std::none_of(line.begin(), line.end(),
+                      [](char ch) {return ch == '\n' || ch == '\r';}));
+
+  lines.emplace_back(std::move(line));
+
+  return lines;
+}
+
+// Break up a string into lines to fit in a column `max_width` pixels
+// wide. 
+//
+// To keep things simple we break at the last end-of-word that doesn't
+// overfill the line. (There are more advanced algorithms out there.)
+//
+// Hard line breaks ('\n' etc) are assumed to have been dealt with.
+std::vector<std::string>
+cFont::find_soft_linebreaks(std::string const& text, int max_width) const
+{
+  // first separate into lines according to width
+  std::vector<std::string> lines;
+  std::string temp(text);    // current line of text
+  temp += " ";    // makes sure that all the text will be displayed
+  int next_word_boundary = 0;    // current index into the string
+  int last_split_point = 0;    // holds the previous index into the string
+
+  constexpr const auto npos = std::string::npos;
+  
+  // -- Get until ' '
+  while (next_word_boundary != -1)
+    {
+      std::string strSub;
+      next_word_boundary = temp.find(' ', last_split_point + 1);        // -- Find the next " "
+
+      // word boundary
+      strSub = temp.substr(0, next_word_boundary);
+      int charwidth, charheight;
+      GetSize(strSub, charwidth, charheight);
+      // of we exceed the line, or this is the last word, use the last split point as split position
+      if (charwidth >= max_width || next_word_boundary == -1)
+        {
+          // if we don't have any preceeding words, there is no point in splitting
+          if(last_split_point == 0) {
+            lines.push_back(strSub);  // put this long word into a signle line
+            if (next_word_boundary != -1)
+              temp = temp.substr(next_word_boundary + 1, npos);
+            last_split_point = 0;
+          } else {
+            strSub = temp.substr(0, last_split_point);
+            lines.push_back(strSub);    // -- Puts strSub into the lines vector
+            if (next_word_boundary != -1) temp = temp.substr(last_split_point + 1, npos);
+            last_split_point = 0;
+          }
+        }
+      else
+        // if it fits, include this word in the next segment
+        last_split_point = next_word_boundary;
+    }
+  return lines;
+};
+
+std::vector<std::string>
+cFont::break_lines(std::string text, int max_width) const
+{
+  std::vector<std::string> lines;
+
+  for(auto const& line : hard_linebreaks(std::move(text)))
+    for(auto l : find_soft_linebreaks(line, max_width))
+      lines.emplace_back(std::move(l));
+
+  return lines;
+}
+
+cSurface
+cFont::render_lines(int max_width, std::vector<std::string> const& lines) const
+{
     int lineskip = GetFontLineSkip();
     int height = lines.size()*lineskip;
 
-    // create a surface to render all the text too
-    auto message = m_GFX->CreateSurface(max_width, height, m_TextColor, true);
-    assert(message);
+    // create a surface to render all the text to
+    auto surface = m_GFX->CreateSurface(max_width, height, m_TextColor, true);
+    assert(surface);
 
     for (unsigned int i = 0; i < lines.size(); i++)
     {
@@ -181,10 +206,10 @@ cSurface cFont::RenderMultilineText(std::string text, int max_width) const
                 continue;
             SDL_Rect dst = {0, static_cast<Sint16>(i * lineskip),
                             static_cast<Uint16>(line.GetWidth()), static_cast<Uint16>(line.GetHeight())};
-            message = message.BlitOther(line, nullptr, &dst);
+            surface = surface.BlitOther(line, nullptr, &dst);
         }
     }
-    return std::move(message);
+    return surface;
 }
 
 cSurface cFont::RenderTable(const std::string& text, int max_width) const {

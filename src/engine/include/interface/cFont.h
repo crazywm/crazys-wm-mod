@@ -20,6 +20,8 @@
 
 #include <string>
 #include <memory>
+#include <vector>
+
 #include "interface/fwd.hpp"
 #include "interface/cSurface.h"
 #include "cColor.h"
@@ -47,6 +49,12 @@ public:
     cSurface RenderText(std::string text) const;
     cSurface RenderMultilineText(std::string text, int max_width) const;
     cSurface RenderTable(const std::string& text, int width) const;
+
+    std::vector<std::string> break_lines(std::string text, int max_width) const;
+    std::vector<std::string> find_soft_linebreaks(std::string const& text,
+                                                  int max_width) const;
+    cSurface render_lines(int max_width,
+                          std::vector<std::string> const& lines) const;
 private:
     ttf_font_ptr m_Font    = nullptr;
     sColor m_TextColor;
