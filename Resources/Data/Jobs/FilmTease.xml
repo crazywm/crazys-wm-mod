@@ -5,14 +5,16 @@
     </Description>
 
     <Performance Modifier="work.film.tease">
-        <Primary Stat="Charisma" />
-        <Primary Stat="Beauty" />
-        <Primary Stat="Confidence" />
-        <Secondary Skill="Performance"/>
-        <Secondary Skill="Strip"/>
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Skill="Performance" Weight="2"/>
+        <Factor Skill="Strip" Weight="1"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="Strip" Weight="1" />
         <GainTrait Trait="Charming" Threshold="80" Action="WORKMOVIE">
             Flirting and seducing on film has made her Charming.
         </GainTrait>

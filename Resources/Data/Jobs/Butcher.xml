@@ -5,14 +5,18 @@
     </Description>
 
     <Performance Modifier="work.butcher">
-        <Primary Skill="AnimalHandling"/>
-        <Primary Stat="Strength"/>
-        <Secondary Skill="Medicine" />
-        <Secondary Skill="Cooking" />
-        <Secondary Stat="Intelligence" />
+        <Factor Skill="AnimalHandling" Weight="2"/>
+        <Factor Stat="Strength" Weight="2"/>
+        <Factor Skill="Medicine" Weight="1"/>
+        <Factor Skill="Cooking" Weight="1"/>
+        <Factor Stat="Intelligence" Weight="1"/>
     </Performance>
 
     <Gains XP="5" Skill="3">
+        <Skill Name="AnimalHandling" Weight="2" />
+        <Stat Name="Strength" Weight="2" />
+        <Skill Name="Medicine" Weight="1" Max="33" />
+        <Skill Name="Cooking" Weight="1" />
         <GainTrait Trait="Chef" Threshold="70" Action="COOKING">
             ${name} has prepared enough food to qualify as a Chef.
         </GainTrait>

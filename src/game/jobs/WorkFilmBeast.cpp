@@ -116,7 +116,7 @@ void FilmBeast::Reset() {
 }
 
 FilmBeast::FilmBeast() : GenericFilmJob(JOB_FILMBEAST, {
-    IMGTYPE_BEAST, ACTION_SEX, SKILL_BEASTIALITY, 50, 5,
+    IMGTYPE_BEAST, ACTION_SEX, 50, 5,
     FilmJobData::EVIL, SKILL_BEASTIALITY, "Beast"}) {
     load_from_xml("FilmBeast.xml");
 }

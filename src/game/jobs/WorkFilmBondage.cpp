@@ -24,7 +24,7 @@
 
 
 FilmBdsm::FilmBdsm() : GenericFilmJob(JOB_FILMBONDAGE, {
-    IMGTYPE_BDSM, ACTION_SEX, SKILL_BDSM, 50, 8,
+    IMGTYPE_BDSM, ACTION_SEX, 50, 8,
     FilmJobData::EVIL, SKILL_BDSM, "Bondage"
 }) {
     load_from_xml("FilmBondage.xml");

@@ -27,6 +27,7 @@
 #include <cJobManager.h>
 #include "Constants.h"
 #include "TextRepo.h"
+#include "JobData.h"
 #include <boost/variant.hpp>
 
 
@@ -34,18 +35,6 @@ using StatSkill = boost::variant<STATS, SKILLS>;
 
 class sGirl;
 class cRng;
-
-struct sTraitChange {
-    // explicit constructor needed for mingw
-    sTraitChange(bool g, std::string trait, int th, Action_Types a, std::string message, EventType e = EVENT_GOODNEWS) :
-            Gain(g), TraitName(std::move(trait)), Threshold(th), Action(a), Message(std::move(message)), EventType(e) {}
-    bool Gain;
-    std::string TraitName;
-    int Threshold;
-    Action_Types Action;
-    std::string Message;
-    ::EventType EventType = EVENT_GOODNEWS;
-};
 
 struct sJobInfo {
     JOBS        JobId;
@@ -112,12 +101,6 @@ protected:
     sJobInfo m_Info;
 };
 
-struct sJobPerformance {
-    std::string            TraitMod;        //!< Name of the trait modifier
-    std::vector<StatSkill> PrimaryGains;    // primary skill and stat gains
-    std::vector<StatSkill> SecondaryGains;  // primary skill and stat gains
-};
-
 struct sBasicJobData {
     int XP;
     int Skill;
@@ -131,20 +114,14 @@ public:
     cBasicJob(JOBS job, const char* xml_file);
 
 protected:
-
-    void set_performance_data(std::string mod, std::vector<StatSkill> primary, std::vector<StatSkill> secondary);
-    const sJobPerformance& get_performance_data() const { return m_PerformanceData; }
-
-    void add_trait_chance(sTraitChange c);
-    void gain_traits(sGirl& girl);
     void apply_gains(sGirl& girl);
 
     void load_from_xml(const char* xml_file);
     const std::string& get_text(const std::string& prompt) const;
 private:
-    sJobPerformance m_PerformanceData;
-    std::vector<sTraitChange> m_TraitChanges;
-    sBasicJobData m_Data;
+    cJobPerformance m_PerformanceData;
+    cJobGains       m_Gains;
+    sBasicJobData   m_Data;
 
     std::unique_ptr<cTextRepository> m_TextRepo;
 

@@ -97,6 +97,7 @@ set(JOBS_SRC
         jobs/BarJobs.cpp
         jobs/FarmJobs.cpp
         jobs/ClinicJobs.cpp
+        jobs/JobData.cpp
         )
 
 set(BUILDINGS_SRC

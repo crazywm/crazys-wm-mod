@@ -5,10 +5,10 @@
     </Description>
 
     <Performance Modifier="work.piano">
-        <Primary Skill="Performance"/>
-        <Secondary Stat="Confidence" />
-        <Secondary Stat="Intelligence" />
-        <Secondary Stat="Agility" />
+        <Factor Skill="Performance" Weight="3"/>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Stat="Intelligence" Weight="1"/>
+        <Factor Stat="Agility" Weight="1"/>
     </Performance>
 
     <Gains XP="5" Skill="3">
@@ -18,6 +18,9 @@
         <GainTrait Trait="Elegant" Threshold="75" Action="WORKMUSIC">
             Playing the piano has given ${name} an Elegant nature.
         </GainTrait>
+        <Skill Name="Performance" Weight="3" />
+        <Stat Name="Confidence" Weight="1" />
+        <Stat Name="Agility" Weight="1" />
     </Gains>
 
     <Messages>

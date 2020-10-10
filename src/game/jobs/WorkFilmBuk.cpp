@@ -21,7 +21,7 @@
 #include "character/cPlayer.h"
 
 FilmBuk::FilmBuk() : GenericFilmJob(JOB_FILMBUKKAKE, {
-        IMGTYPE_ORAL, Action_Types::NUM_ACTIONTYPES, SKILL_BDSM, 50, 5,
+        IMGTYPE_ORAL, Action_Types::NUM_ACTIONTYPES, 50, 5,
         FilmJobData::EVIL, SKILL_GROUP, "Bukkake"
 }) {
     load_from_xml("FilmBuk.xml");

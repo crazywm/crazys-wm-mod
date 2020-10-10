@@ -82,7 +82,7 @@ void FilmOral::GainTraits(sGirl& girl, int performance) const {
 }
 
 FilmOral::FilmOral() : GenericFilmJob(JOB_FILMORAL, {
-      IMGTYPE_ORAL, ACTION_SEX, SKILL_ORALSEX, 50, -5,
+      IMGTYPE_ORAL, ACTION_SEX, 50, -5,
       FilmJobData::NORMAL, SKILL_ORALSEX, "Oral"
 }) {
     load_from_xml("FilmOral.xml");

@@ -383,7 +383,7 @@ void FilmPubBDSM::Reset() {
 }
 
 FilmPubBDSM::FilmPubBDSM() : GenericFilmJob(JOB_FILMPUBLICBDSM, {
-        IMGTYPE_BDSM, ACTION_SEX, SKILL_BDSM, 50, 10,
+        IMGTYPE_BDSM, ACTION_SEX, 50, 10,
         FilmJobData::EVIL, SKILL_BDSM, "Public BDSM"
 }) {
     load_from_xml("FilmPublicBDSM.xml");

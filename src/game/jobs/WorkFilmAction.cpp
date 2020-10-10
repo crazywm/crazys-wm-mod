@@ -95,7 +95,7 @@ void FilmAction::GainTraits(sGirl& girl, int performance) const {
 }
 
 FilmAction::FilmAction() : GenericFilmJob(JOB_FILMACTION, {
-      IMGTYPE_COMBAT, ACTION_COMBAT, SKILL_COMBAT, 50, -8,
+      IMGTYPE_COMBAT, ACTION_COMBAT, 50, -8,
       FilmJobData::NORMAL, SKILL_COMBAT, "Action"
 }) {
     load_from_xml("FilmAction.xml");

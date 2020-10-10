@@ -72,22 +72,13 @@ bool GenericFilmJob::WorkFilm(sGirl& girl) {
     girl.m_Pay = std::max(0, result.wages);
 
     // Improve stats
-    int xp = 10, skill = 3;
-
-    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
-
-    girl.exp(xp);
-    girl.performance(uniform(0, skill));
-    girl.upd_skill(m_FilmData.TrainSkill, uniform(0, skill + 1));
+    apply_gains(girl);
 
     if(m_FilmData.Action != Action_Types::NUM_ACTIONTYPES)
         girl.upd_Enjoyment(m_FilmData.Action, result.enjoy);
 
     girl.upd_Enjoyment(ACTION_WORKMOVIE, result.enjoy);
 
-    // gain simple traits
-    gain_traits(girl);
 
     if(m_FilmData.Type == FilmJobData::EVIL) {
         EvilMovieGirlUpdate(girl);
@@ -190,7 +181,7 @@ void SimpleFilmJob::DoScene(sGirl& girl) {
 struct FilmTitty : public SimpleFilmJob
 {
     FilmTitty() : SimpleFilmJob(JOB_FILMTITTY, "FilmTitty.xml", {
-            IMGTYPE_TITTY, ACTION_SEX, SKILL_TITTYSEX, 50, -5,
+            IMGTYPE_TITTY, ACTION_SEX, 50, -5,
             FilmJobData::NORMAL, SKILL_TITTYSEX, "Titty"
     })
     {
@@ -206,7 +197,7 @@ struct FilmTitty : public SimpleFilmJob
 struct FilmStrip : public SimpleFilmJob
 {
     FilmStrip() : SimpleFilmJob(JOB_FILMSTRIP, "FilmStrip.xml", {
-         IMGTYPE_STRIP, ACTION_WORKSTRIP, SKILL_STRIP, 50, 0,
+         IMGTYPE_STRIP, ACTION_WORKSTRIP, 50, 0,
          FilmJobData::NICE, SKILL_STRIP, "Stripping"})
          {};
 
@@ -227,7 +218,7 @@ struct FilmStrip : public SimpleFilmJob
 struct FilmLesbian : public SimpleFilmJob
 {
     FilmLesbian() : SimpleFilmJob( JOB_FILMLESBIAN, "FilmLes.xml", {
-           IMGTYPE_LESBIAN, ACTION_SEX, SKILL_LESBIAN, 50, 10,
+           IMGTYPE_LESBIAN, ACTION_SEX, 50, 10,
            FilmJobData::NORMAL, SKILL_LESBIAN, "Lesbian"
     }) {
     };
@@ -250,7 +241,7 @@ struct FilmLesbian : public SimpleFilmJob
 struct FilmHandJob : public SimpleFilmJob
 {
     FilmHandJob() : SimpleFilmJob(JOB_FILMHANDJOB, "FilmHand.xml", {
-          IMGTYPE_HAND, ACTION_SEX, SKILL_HANDJOB, 50, -5,
+          IMGTYPE_HAND, ACTION_SEX, 50, -5,
           FilmJobData::NORMAL, SKILL_HANDJOB, "Handjob"
     }) {
     }
@@ -265,7 +256,7 @@ struct FilmHandJob : public SimpleFilmJob
 struct FilmFootJob : public SimpleFilmJob
 {
     FilmFootJob() : SimpleFilmJob(JOB_FILMFOOTJOB, "FilmFoot.xml", {
-          IMGTYPE_FOOT, ACTION_SEX, SKILL_FOOTJOB, 50, -5,
+          IMGTYPE_FOOT, ACTION_SEX, 50, -5,
           FilmJobData::NORMAL, SKILL_FOOTJOB, "Footjob",
     }) {
     }
@@ -280,7 +271,7 @@ struct FilmFootJob : public SimpleFilmJob
 struct FilmAnal : public SimpleFilmJob
 {
     FilmAnal() : SimpleFilmJob(JOB_FILMANAL, "FilmAnal.xml", {
-           IMGTYPE_ANAL, ACTION_SEX, SKILL_ANAL, 50, 5,
+           IMGTYPE_ANAL, ACTION_SEX, 50, 5,
            FilmJobData::NORMAL, SKILL_ANAL, "Anal"
     }) {
     }
@@ -303,7 +294,7 @@ struct FilmAnal : public SimpleFilmJob
 struct FilmMast : public SimpleFilmJob
 {
     FilmMast() : SimpleFilmJob(JOB_FILMMAST, "FilmMast.xml", {
-           IMGTYPE_MAST, ACTION_SEX, SKILL_SERVICE, 50, -10,
+           IMGTYPE_MAST, ACTION_SEX, 50, -10,
            FilmJobData::NICE, SKILL_PERFORMANCE, "Masturbation"
     }) {
     }

@@ -4,11 +4,14 @@
         A large group of men will cum on, over and inside her.
     </Description>
     <Performance Modifier="work.film.buk">
-        <Primary Stat="Beauty"/>
-        <Primary Stat="Charisma" />
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Charisma" Weight="1"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="BDSM" Weight="1" />
+
         <GainTrait Trait="Masochist" Threshold="65" Action="SEX">
             ${name} has turned into a Masochist from all the degradation.
         </GainTrait>

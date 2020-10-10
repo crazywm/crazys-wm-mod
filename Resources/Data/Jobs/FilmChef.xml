@@ -4,13 +4,16 @@
         She will be filmed preparing food. And talking slowly. Sensuously. In sexy outfits. Because no reason.
     </Description>
     <Performance Modifier="work.film.chef">
-        <Primary Stat="Charisma" />
-        <Primary Stat="Beauty" />
-        <Primary Stat="Confidence" />
-        <Secondary Skill="Cooking" />
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Skill="Cooking" Weight="1"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="Cooking" Weight="1" />
+
         <GainTrait Trait="Charming" Threshold="80" Action="WORKMOVIE">
             She has become quite Charming.
         </GainTrait>

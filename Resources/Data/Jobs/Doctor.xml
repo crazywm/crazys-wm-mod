@@ -10,5 +10,7 @@
     </Performance>
 
     <Gains XP="10" Skill="3">
+        <Skill Name="Medicine" Weight="2" />
+        <Stat Name="Intelligence" Weight="1" />
     </Gains>
 </Job>

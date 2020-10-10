@@ -32,7 +32,6 @@ struct FilmJobData {
     enum SceneType { NICE=0, NORMAL=1, EVIL=2 };
     Image_Types  Image;             //!< The image type used in the job event.
     Action_Types Action;            //!< Secondary action (besides WORKMOVIE) that can gain enjoyment. Set to NUM_ACTIONTYPES to disable
-    SKILLS       TrainSkill;        //!< Skill that gets increased, alongside SKILL_PERFORMANCE
     int          Wages;             //!< Default wages for that job
     int          Bonus;             //!< Default bonus of the scene
     SceneType    Type;              //!< The type of the scene. NICE scenes give bonuses to the girl, evil ones give mali

@@ -5,15 +5,18 @@
     </Description>
 
     <Performance Modifier="work.cooking">
-        <Primary Skill="Cooking"/>
-        <Secondary Stat="Confidence" />
-        <Secondary Stat="Intelligence" />
+        <Factor Skill="Cooking" Weight="2"/>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Stat="Intelligence" Weight="1" />
     </Performance>
 
     <Gains XP="10" Skill="3">
         <LoseTrait Trait="Clumsy" Threshold="30" Action="WORKBAR">
             It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.
         </LoseTrait>
+        <Skill Name="Cooking" Weight="2"/>
+        <Stat Name="Confidence" Weight="1" Max="50"/>
+        <Stat Name="Intelligence" Weight="1" Max="50"/>
     </Gains>
 
     <Messages>

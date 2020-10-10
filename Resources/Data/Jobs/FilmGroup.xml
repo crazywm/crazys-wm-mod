@@ -5,10 +5,13 @@
     </Description>
 
     <Performance Modifier="">
-        <!-- Not implemented -->
+        <Factor Skill="Performance" Weight="2"/>
+        <Factor Skill="Group" Weight="1"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="Group" Weight="1" />
         <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>

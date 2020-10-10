@@ -4,12 +4,13 @@
         She will make a music video.
     </Description>
     <Performance Modifier="work.film.music">
-        <Primary Stat="Charisma" />
-        <Primary Stat="Beauty" />
-        <Primary Stat="Confidence" />
-        <Secondary Skill="Performance" />
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Skill="Performance" Weight="1"/>
     </Performance>
     <Gains XP="10" Skill="3">
+        <Skill Name="Performance"/>
     </Gains>
 
     <Messages>

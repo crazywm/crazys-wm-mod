@@ -5,12 +5,15 @@
     </Description>
 
     <Performance Modifier="work.film.throat">
-        <Primary Stat="Beauty"/>
-        <Primary Stat="Charisma" />
-        <Secondary Skill="OralSex" />
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Skill="OralSex" Weight="1"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="OralSex" Weight="1" />
+
         <GainTrait Trait="Mind Fucked" Threshold="90" Action="WORKMOVIE" Event="2">
             She has been abused so much she is now completely Mind Fucked.
         </GainTrait>

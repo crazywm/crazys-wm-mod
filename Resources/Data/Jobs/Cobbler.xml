@@ -5,13 +5,17 @@
     </Description>
 
     <Performance Modifier="work.cobbler">
-        <Primary Skill="Crafting"/>
-        <Secondary Skill="Service" />
-        <Secondary Skill="Magic" />
-        <Secondary Stat="Intelligence" />
+        <Factor Skill="Crafting" Weight="3"/>
+        <Factor Skill="Service" Weight="1"/>
+        <Factor Skill="Magic" Weight="1"/>
+        <Factor Stat="Intelligence" Weight="1"/>
     </Performance>
 
-    <Gains XP="5" Skill="3" />
+    <Gains XP="5" Skill="3">
+        <Skill Name="Crafting" Weight="3"/>
+        <Skill Name="Service" Weight="1"/>
+        <Skill Name="Magic" Weight="1"/>
+    </Gains>
 
     <Messages>
         <Entry Name="work">

@@ -5,10 +5,10 @@
     </Description>
 
     <Performance Modifier="work.waitress">
-        <Primary Skill="Service"/>
-        <Secondary Stat="Charisma" />
-        <Secondary Stat="Intelligence" />
-        <Secondary Stat="Agility" />
+        <Factor Skill="Service" Weight="3"/>
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Intelligence" Weight="1"/>
+        <Factor Stat="Agility" Weight="1"/>
     </Performance>
 
     <Gains XP="10" Skill="3">

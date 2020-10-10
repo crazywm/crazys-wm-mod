@@ -227,7 +227,7 @@ void FilmThroat::GainTraits(sGirl& girl, int performance) const {
 }
 
 FilmThroat::FilmThroat() : GenericFilmJob(JOB_FILMFACEFUCK, {
-      IMGTYPE_ORAL, ACTION_SEX, SKILL_ORALSEX, 50, 5,
+      IMGTYPE_ORAL, ACTION_SEX, 50, 5,
       FilmJobData::EVIL, SKILL_ORALSEX, "Facefucking"
 }) {
     load_from_xml("FilmFaceFuck.xml");

@@ -291,50 +291,7 @@ void RegisterWrappedJobs(cJobManager& mgr) {
 }
 
 double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {
-    double jobperformance = 0.0;
-    for(auto& att : m_PerformanceData.PrimaryGains) {
-        jobperformance += girl.get_attribute(att) / (double)m_PerformanceData.PrimaryGains.size();
-    }
-
-    for(auto& att : m_PerformanceData.SecondaryGains) {
-        jobperformance += girl.get_attribute(att) / (double)m_PerformanceData.SecondaryGains.size();
-    }
-
-    if(m_PerformanceData.PrimaryGains.size() == 0 || m_PerformanceData.SecondaryGains.size() == 0)
-        jobperformance *= 2;
-
-    jobperformance += girl.level();
-
-    if (!estimate)
-    {
-        int t = girl.tiredness() - 80;
-        if (t > 0)
-            jobperformance -= (t + 2) * (t / 3);
-    }
-
-    jobperformance += girl.get_trait_modifier(m_PerformanceData.TraitMod.c_str());
-
-    return jobperformance;
-}
-
-void cBasicJob::set_performance_data(std::string mod, std::vector<StatSkill> primary, std::vector<StatSkill> secondary) {
-    m_PerformanceData = sJobPerformance{std::move(mod), std::move(primary), std::move(secondary)};
-}
-
-void cBasicJob::add_trait_chance(sTraitChange c) {
-    m_TraitChanges.push_back(c);
-}
-
-void cBasicJob::gain_traits(sGirl& girl) {
-    for(auto& trait : m_TraitChanges) {
-        if(trait.Gain) {
-            cGirls::PossiblyGainNewTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
-                                         trait.Message, false, trait.EventType);
-        } else {
-            cGirls::PossiblyLoseExistingTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
-                                              trait.Message, false);
-        }
-    }
+    return m_PerformanceData.eval(girl, estimate);
 }
 
 cBasicJob::cBasicJob(JOBS job, const char* xml_file) : IGenericJob(job) {
@@ -342,29 +299,7 @@ cBasicJob::cBasicJob(JOBS job, const char* xml_file) : IGenericJob(job) {
 }
 
 void cBasicJob::apply_gains(sGirl& girl) {
-    // Improve stats
-    int xp = m_Data.XP, skill = m_Data.Skill;
-
-    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
-
-    girl.exp(uniform(1, xp));
-
-    if(!get_performance_data().PrimaryGains.empty()) {
-        auto& gains = get_performance_data().PrimaryGains;
-        for(int i = 0; i < skill; ++i) {
-            girl.update_attribute(gains[rng() % gains.size()], 1);
-        }
-    }
-
-    if(!get_performance_data().SecondaryGains.empty()) {
-        auto& gains = get_performance_data().SecondaryGains;
-        for(int i = 0; i < std::max(1, skill/2); ++i) {
-            girl.update_attribute(gains[rng() % gains.size()], 1);
-        }
-    }
-
-    gain_traits(girl);
+    m_Gains.apply(girl);
 }
 
 void cBasicJob::load_from_xml(const char* xml_file) {
@@ -384,57 +319,16 @@ void cBasicJob::load_from_xml_internal(const char* xml_file) {
         throw std::runtime_error("Job xml does not contain <Job> element!");
     }
 
-    // Trait changes
-    auto load_trait_change = [&](const tinyxml2::XMLElement& element, bool gain) {
-        std::string trait = GetStringAttribute(element, "Trait");
-        int threshold = GetIntAttribute(element, "Threshold", -100, 100);
-        Action_Types action = get_action_id(GetStringAttribute(element, "Action"));
-        const char* msg_text = element.GetText();
-        std::string message = (gain ? "${name} has gained the trait " : "${name} has lost the trait ") + trait;
-        if(msg_text) {
-            // TODO trim
-            message = msg_text;
-        }
-        EventType event_type = (EventType)job_data->IntAttribute("Event", EVENT_GOODNEWS);
-        add_trait_chance({gain, trait, threshold, action, message, event_type});
-    };
-
     // Performance Criteria
     const auto* performance_el = job_data->FirstChildElement("Performance");
     if(performance_el) {
-
-        auto load_stat_skills = [&](const char* name) {
-            std::vector<StatSkill> loaded_list;
-            for(const auto& stat_skill : IterateChildElements(*performance_el, name)) {
-                if(stat_skill.Attribute("Stat")) {
-                    loaded_list.push_back(get_stat_id(GetStringAttribute(stat_skill, "Stat")));
-                } else {
-                    loaded_list.push_back(get_skill_id(GetStringAttribute(stat_skill, "Skill")));
-                }
-            }
-            return loaded_list;
-        };
-
-        std::vector<StatSkill> primary = load_stat_skills("Primary");
-        std::vector<StatSkill> secondary = load_stat_skills("Secondary");
-        std::string trait_mod = GetDefaultedStringAttribute(*performance_el, "Modifier", "");
-
-        set_performance_data(trait_mod, std::move(primary), std::move(secondary));
+        m_PerformanceData.load(*performance_el);
     }
 
     // Gains
     const auto* gains_el = job_data->FirstChildElement("Gains");
     if(gains_el) {
-        m_Data.XP = GetIntAttribute(*gains_el, "XP");
-        m_Data.Skill = GetIntAttribute(*gains_el, "Skill");
-
-        for(const auto& trait_change : IterateChildElements(*gains_el, "GainTrait")) {
-            load_trait_change(trait_change, true);
-        }
-
-        for(const auto& trait_change : IterateChildElements(*gains_el, "LoseTrait")) {
-            load_trait_change(trait_change, false);
-        }
+        m_Gains.load(*gains_el);
     }
 
     // Info

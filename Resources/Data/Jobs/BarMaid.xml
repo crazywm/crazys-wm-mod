@@ -5,11 +5,11 @@
     </Description>
 
     <Performance Modifier="work.barmaid">
-        <Primary Skill="Service"/>
-        <Primary Stat="Intelligence" />
-        <Secondary Stat="Charisma" />
-        <Secondary Skill="Performance" />
-        <Secondary Skill="Brewing" />
+        <Factor Skill="Service" Weight="3"/>
+        <Factor Stat="Intelligence" Weight="3"/>
+        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Skill="Performance" Weight="2"/>
+        <Factor Skill="Brewing" Weight="2"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
@@ -19,6 +19,10 @@
         <GainTrait Trait="Charismatic" Threshold="60" Action="WORKBAR">
             Dealing with customers at the bar and talking with them about their problems has made ${name} more Charismatic.
         </GainTrait>
+        <Skill Name="Service" Weight="3" />
+        <Stat Name="Charisma" Weight="2"/>
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="Brewing" Weight="1" />
     </Gains>
 
     <Messages>

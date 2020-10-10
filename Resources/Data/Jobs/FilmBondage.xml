@@ -5,12 +5,15 @@
     </Description>
 
     <Performance Modifier="work.film.bondage">
-        <Primary Stat="Beauty"/>
-        <Primary Stat="Charisma" />
-        <Primary Stat="Dignity" />
+        <Factor Stat="Beauty" Weight="2"/>
+        <Factor Stat="Charisma" Weight="1" />
+        <Factor Stat="Dignity" Weight="1"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="BDSM" Weight="1" />
+
         <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>

@@ -5,13 +5,17 @@
     </Description>
 
     <Performance Modifier="work.gardener">
-        <Primary Skill="Herbalism"/>
-        <Secondary Skill="Farming" />
-        <Secondary Stat="Constitution" />
-        <Secondary Stat="Intelligence" />
+        <Factor Skill="Herbalism"/>
+        <Factor Skill="Farming" />
+        <Factor Stat="Constitution" />
+        <Factor Stat="Intelligence" />
     </Performance>
 
-    <Gains XP="5" Skill="3" />
+    <Gains XP="5" Skill="3">
+        <Skill Name="Herbalism" Weight="2"/>
+        <Skill Name="Farming" Weight="2"/>
+        <Stat Name="Constitution" Weight="1"/>
+    </Gains>
 
     <Messages>
         <Entry Name="work">

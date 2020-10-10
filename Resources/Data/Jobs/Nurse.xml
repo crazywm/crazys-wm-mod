@@ -5,12 +5,15 @@
     </Description>
 
     <Performance Modifier="work.nurse">
-        <Primary Skill="Medicine"/>
-        <Secondary Stat="Intelligence" />
-        <Secondary Stat="Charisma" />
+        <Factor Skill="Medicine" Weight="3"/>
+        <Factor Stat="Intelligence" Weight="1"/>
+        <Factor Stat="Charisma" Weight="1"/>
     </Performance>
 
     <Gains XP="10" Skill="2">
+        <Skill Name="Medicine" Weight="2"/>
+        <Stat Name="Charisma" Weight="1" />
+        <Stat Name="Intelligence" Weight="1" />
         <GainTrait Trait="Charismatic" Threshold="60" Action="WORKNURSE">
             Dealing with patients and talking with them about their problems has made ${name} more Charismatic.
         </GainTrait>

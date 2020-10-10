@@ -47,12 +47,9 @@ void FilmSex::GainTraits(sGirl& girl, int performance) const {
 }
 
 FilmSex::FilmSex() : GenericFilmJob(JOB_FILMSEX, {
-        IMGTYPE_SEX, ACTION_SEX, SKILL_NORMALSEX, 50, 0,
+        IMGTYPE_SEX, ACTION_SEX, 50, 0,
         FilmJobData::NORMAL, SKILL_NORMALSEX, "Sex"
 }) {
-    add_trait_chance(GainFaker);
-    add_trait_chance(GainPornStar);
-    add_trait_chance(GainSlut);
 }
 
 double FilmSex::GetPerformance(const sGirl& girl, bool estimate) const

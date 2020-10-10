@@ -19,7 +19,7 @@
 #include "Films.h"
 
 FilmChef::FilmChef() : GenericFilmJob(JOB_FILMCHEF, {
-      IMGTYPE_COOK, ACTION_WORKCOOKING, SKILL_COOKING, 40, -8,
+      IMGTYPE_COOK, ACTION_WORKCOOKING, 40, -8,
       FilmJobData::NICE, SKILL_COOKING, "Cooking",
 }) {
     load_from_xml("FilmChef.xml");

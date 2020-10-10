@@ -4,10 +4,10 @@
         She will clean the clinic.
     </Description>
     <Performance Modifier="work.cleaning">
-        <Primary Skill="Service" />
-        <Secondary Stat="Morality" />
-        <Secondary Stat="Obedience" />
-        <Secondary Stat="Agility" />
+        <Factor Skill="Service" Weight="3"/>
+        <Factor Stat="Morality" Weight="1"/>
+        <Factor Stat="Obedience" Weight="1"/>
+        <Factor Stat="Agility" Weight="1"/>
     </Performance>
     <Gains XP="0" Skill="0">
     </Gains>

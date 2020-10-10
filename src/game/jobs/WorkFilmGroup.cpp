@@ -23,7 +23,7 @@
 #include "character/predicates.h"
 
 FilmGroup::FilmGroup() : GenericFilmJob(JOB_FILMGROUP, {
-    IMGTYPE_GROUP, ACTION_SEX, SKILL_GROUP, 50, 5,
+    IMGTYPE_GROUP, ACTION_SEX, 50, 5,
     FilmJobData::NORMAL, SKILL_GROUP, "Group"
 }) {
     load_from_xml("FilmGroup.xml");

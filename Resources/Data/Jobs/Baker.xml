@@ -5,16 +5,19 @@
     </Description>
 
     <Performance Modifier="work.baker">
-        <Primary Skill="Cooking"/>
-        <Secondary Skill="Herbalism" />
-        <Secondary Skill="Service" />
-        <Secondary Stat="Intelligence" />
+        <Factor Skill="Cooking" Weight="3"/>
+        <Factor Skill="Herbalism" Weight="1"/>
+        <Factor Skill="Service" Weight="1"/>
+        <Factor Stat="Intelligence" Weight="1"/>
     </Performance>
 
     <Gains XP="5" Skill="3">
         <GainTrait Trait="Chef" Threshold="70" Action="COOKING">
             ${name} has prepared enough food to qualify as a Chef.
         </GainTrait>
+        <Skill Name="Cooking" Weight="3" Max="80"/>
+        <Skill Name="Herbalism" Weight="1" Max="50"/>
+        <Skill Name="Service" Weight="1" Max="50"/>
     </Gains>
 
     <Messages>

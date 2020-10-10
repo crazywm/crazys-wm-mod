@@ -4,13 +4,16 @@
         She will film a bestiality scene.
     </Description>
     <Performance Modifier="work.film.beast">
-        <Primary Stat="Beauty"/>
-        <Primary Stat="Charisma" />
-        <Secondary Skill="AnimalHandling" />
-        <Secondary Skill="Beastiality" />
+        <Factor Stat="Beauty" Weight="2"/>
+        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Skill="AnimalHandling" />
+        <Factor Skill="Beastiality" />
     </Performance>
 
     <Gains XP="10" Skill="3">
+        <Skill Name="Performance" Weight="4" />
+        <Skill Name="Beastiality" Weight="1" />
+        <Skill Name="AnimalHandling" Weight="1" />
         <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>

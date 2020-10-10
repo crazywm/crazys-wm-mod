@@ -9,6 +9,8 @@
     </Performance>
 
     <Gains XP="10" Skill="3">
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="Combat" Weight="1" />
     </Gains>
 
     <Messages>

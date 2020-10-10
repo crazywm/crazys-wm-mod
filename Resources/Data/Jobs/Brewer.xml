@@ -5,13 +5,17 @@
     </Description>
 
     <Performance Modifier="work.brewer">
-        <Primary Skill="Brewing"/>
-        <Secondary Skill="Herbalism" />
-        <Secondary Skill="Cooking" />
-        <Secondary Stat="Intelligence" />
+        <Factor Skill="Brewing" Weight="3"/>
+        <Factor Skill="Herbalism" Weight="1"/>
+        <Factor Skill="Cooking" Weight="1"/>
+        <Factor Stat="Intelligence" Weight="1"/>
     </Performance>
 
     <Gains XP="5" Skill="3">
+        <Skill Name="Brewing" Weight="3"/>
+        <Skill Name="Herbalism" Weight="1"/>
+        <Skill Name="Cooking" Weight="1"/>
+
         <GainTrait Trait="Chef" Threshold="70" Action="COOKING">
             ${name} has prepared enough food to qualify as a Chef.
         </GainTrait>

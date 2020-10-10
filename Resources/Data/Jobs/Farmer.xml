@@ -5,16 +5,19 @@
     </Description>
 
     <Performance Modifier="work.farmer">
-        <Primary Skill="Farming"/>
-        <Secondary Stat="Intelligence" />
-        <Secondary Stat="Constitution" />
-        <Secondary Stat="Strength" />
+        <Factor Skill="Farming" Weight="3"/>
+        <Factor Stat="Intelligence" Weight="1"/>
+        <Factor Stat="Constitution" Weight="1"/>
+        <Factor Stat="Strength" Weight="1"/>
     </Performance>
 
     <Gains XP="5" Skill="3">
         <GainTrait Trait="Tough" Threshold="30" Action="WORKFARM">
             Working in the heat of the sun has made ${name} rather Tough.
         </GainTrait>
+        <Skill Name="Farming" Weight="2" />
+        <Stat Name="Constitution" Weight="1" />
+        <Stat Name="Strength" Weight="1" />
     </Gains>
 
     <Messages>

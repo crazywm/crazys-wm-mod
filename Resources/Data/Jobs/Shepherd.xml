@@ -5,13 +5,16 @@
     </Description>
 
     <Performance Modifier="work.shepherd">
-        <Primary Skill="AnimalHandling"/>
-        <Secondary Stat="Intelligence" />
-        <Secondary Stat="Charisma" />
-        <Secondary Stat="Confidence" />
+        <Factor Skill="AnimalHandling" Weight="3"/>
+        <Factor Stat="Intelligence" Weight="1"/>
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Confidence" Weight="1"/>
     </Performance>
 
-    <Gains XP="5" Skill="3" />
+    <Gains XP="5" Skill="3">
+        <Skill Name="AnimalHandling" Weight="2"/>
+        <Stat Name="Confidence" Weight="1" />
+    </Gains>
 
     <Messages>
         <Entry Name="work">

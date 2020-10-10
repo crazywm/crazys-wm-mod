@@ -5,14 +5,17 @@
     </Description>
 
     <Performance Modifier="work.farmmarketer">
-        <Primary Stat="Charisma"/>
-        <Primary Stat="Confidence"/>
-        <Secondary Stat="Intelligence" />
-        <Secondary Stat="Fame" />
-        <Secondary Skill="Farming" />
+        <Factor Stat="Charisma" Weight="3"/>
+        <Factor Stat="Confidence" Weight="3"/>
+        <Factor Stat="Intelligence" Weight="2"/>
+        <Factor Stat="Fame" Weight="2"/>
+        <Factor Skill="Farming" Weight="2"/>
     </Performance>
 
     <Gains XP="5" Skill="3">
+        <Stat Name="Charisma" Weight="1" />
+        <Stat Name="Confidence" Weight="1" />
+        <Stat Name="Fame" Weight="1" />
         <GainTrait Trait="Charismatic" Threshold="30" Action="WORKCUSTSERV">
             ${name} has been selling long enough that she has learned to be more Charismatic.
         </GainTrait>
