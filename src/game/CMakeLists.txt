@@ -172,10 +172,10 @@ target_link_libraries(WhoreMaster PUBLIC WMEngine pthread)
 set_target_properties(WhoreMaster PROPERTIES CXX_STANDARD 14 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
 target_include_directories(WhoreMaster PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-# add_executable(WhoreMasterFuzz ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${SRC} fuzzmain.cpp)
-# target_link_libraries(WhoreMasterFuzz PUBLIC WMEngine pthread)
-# set_target_properties(WhoreMasterFuzz PROPERTIES CXX_STANDARD 14 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
-# target_include_directories(WhoreMasterFuzz PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+add_executable(WhoreMasterFuzz ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${SRC} fuzzmain.cpp)
+target_link_libraries(WhoreMasterFuzz PUBLIC WMEngine pthread)
+set_target_properties(WhoreMasterFuzz PROPERTIES CXX_STANDARD 14 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
+target_include_directories(WhoreMasterFuzz PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 
 if (UNIX)
