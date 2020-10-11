@@ -50,7 +50,7 @@ public:
     void log(const char* channel, ELogLevel ll, Args&&... data) {
         write_log_level(ll, channel);
         using expand_type = int[];
-        expand_type{0, (log_raw(ll, std::forward<Args>(data)), 0)...};
+        (void)expand_type{0, (log_raw(ll, std::forward<Args>(data)), 0)...};
         end_log_entry(ll);
     }
 
@@ -59,7 +59,7 @@ public:
     void log(ELogLevel ll, Args&&... data) {
         write_log_level(ll, nullptr);
         using expand_type = int[];
-        expand_type{0, (log_raw(ll, std::forward<Args>(data)), 0)...};
+        (void)expand_type{0, (log_raw(ll, std::forward<Args>(data)), 0)...};
         end_log_entry(ll);
     }
 
