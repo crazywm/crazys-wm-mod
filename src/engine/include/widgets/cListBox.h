@@ -43,9 +43,29 @@ struct cListItem
     std::vector<cSurface> m_PreRendered;
 };
 
+enum class ColumnType {
+                       String = 0, // also the fallback choice
+                       Numeric,
+                       Age,     // numeric, or '???'
+};
+
+inline
+ColumnType from_string(std::string const& str)
+{
+  if(str == "String")
+    return ColumnType::String;
+  else if(str == "Numeric")
+    return ColumnType::Numeric;
+  else if(str == "Age")
+    return ColumnType::Age;
+  else
+    return ColumnType{};
+}
+
 struct sColumnData {
     std::string name;           // internal name of the column
     std::string header;         // displayed header of the column
+    ColumnType type;            // type of the column (chooses sorting order)
     int offset = -1;            // draw offset
     int width = -1;             // width of the column
     int sort;                   // sorting index, in case display order does not correspond to internal data order.
@@ -106,7 +126,7 @@ public:
 
     std::string m_HeaderClicked;                    // set to m_ColumnName value of a header that has just been clicked; otherwise empty
 
-    void DefineColumns(std::vector<std::string> name, std::vector<std::string> header, std::vector<int> offset, std::vector<bool> skip);  // define column layout
+    void DefineColumns(std::vector<std::string> name, std::vector<std::string> header, std::vector<ColumnType> types, std::vector<int> offset, std::vector<bool> skip);  // define column layout
     void SetColumnSort(const std::vector<std::string>& column_name);    // Update column sorting based on expected default order
     void AddElement(int ID, std::vector<std::string> data, int color);
     void SetElementText(int ID, std::string data[], int columns);

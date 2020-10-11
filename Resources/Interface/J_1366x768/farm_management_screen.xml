@@ -21,18 +21,18 @@
 <Text       Name="JobDescription"       Text=""                             XPos="430"      YPos="650"      Width="370"     Height="90"     FontSize="10"  />    
 
 <ListBox    Name="GirlList"                                                 XPos="10"       YPos="35"       Width="1020"     Height="548"    FontSize="12"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
-<Column     Name="Name"                 Header="Girl Name"                  Offset="0" />
-<Column     Name="Health"               Header="Health"                     Offset="200" /> 
-<Column     Name="Happiness"            Header="Happy"                      Offset="250" />
-<Column     Name="Tiredness"            Header="Tired"                      Offset="300" />
-<Column     Name="DayJob"               Header="Day Job"                    Offset="350" />
-<Column     Name="NightJob"             Header="Night Job"                  Offset="500" />
-<Column     Name="is_pregnant"          Header="Preg"                       Offset="650" />
-<Column     Name="is_slave"             Header="Slave"                      Offset="700" />
-<Column     Name="Rebel"                Header="Rebel"                      Offset="750" />
-<Column     Name="Age"                  Header="Age"                        Offset="800" />
-<Column     Name="SKILL_Farming"        Header="Farm"                       Offset="850" />
-<Column     Name="SKILL_Crafting"       Header="Craft"                      Offset="900" />
-<Column     Name="SKILL_AnimalHandling" Header="Anm.Hnd."                   Offset="950" />
+<Column     Name="Name"                 Type="String"  Header="Girl Name"                  Offset="0" />
+<Column     Name="Health"               Type="Numeric" Header="Health"                     Offset="200" /> 
+<Column     Name="Happiness"            Type="Numeric" Header="Happy"                      Offset="250" />
+<Column     Name="Tiredness"            Type="Numeric" Header="Tired"                      Offset="300" />
+<Column     Name="DayJob"               Type="String"  Header="Day Job"                    Offset="350" />
+<Column     Name="NightJob"             Type="String"  Header="Night Job"                  Offset="500" />
+<Column     Name="is_pregnant"          Type="String"  Header="Preg"                       Offset="650" />
+<Column     Name="is_slave"             Type="String"  Header="Slave"                      Offset="700" />
+<Column     Name="Rebel"                Type="Numeric" Header="Rebel"                      Offset="750" />
+<Column     Name="Age"                  Type="Numeric" Header="Age"                        Offset="800" />
+<Column     Name="SKILL_Farming"        Type="Numeric" Header="Farm"                       Offset="850" />
+<Column     Name="SKILL_Crafting"       Type="Numeric" Header="Craft"                      Offset="900" />
+<Column     Name="SKILL_AnimalHandling" Type="Numeric" Header="Anm.Hnd."                   Offset="950" />
 </ListBox>
 </Screen>

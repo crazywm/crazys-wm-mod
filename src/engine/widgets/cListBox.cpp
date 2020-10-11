@@ -17,6 +17,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <algorithm>
+#include <map>
+
 #include <SDL_timer.h>              // needed to detect double clicks
 #include "utils/DirPath.h"
 #include "widgets/cListBox.h"
@@ -50,7 +52,9 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
 
     m_LastSelected = m_Items.end();
 
-    DefineColumns(std::vector<std::string>(1), std::vector<std::string>(1), std::vector<int>(1), std::vector<bool>(1));
+    DefineColumns(std::vector<std::string>(1), std::vector<std::string>(1),
+                  std::vector<ColumnType>(1),
+                  std::vector<int>(1), std::vector<bool>(1));
     SDL_Rect dest_rect;
 
     m_RowHeight = (rowheight == 0 ? LISTBOX_ITEMHEIGHT : rowheight);
@@ -634,7 +638,7 @@ void cListBox::AddElement(int ID, std::vector<std::string> data, int color)
         m_ScrollBar->m_ItemsTotal = m_NumElements;
 }
 
-void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::string> header, std::vector<int> offset, std::vector<bool> skip)
+void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::string> header, std::vector<ColumnType> types, std::vector<int> offset, std::vector<bool> skip)
 {
     m_Columns.clear();
 
@@ -646,7 +650,7 @@ void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::str
         int left = offset[i];
         int right = i == name.size() - 1 ? m_eWidth : offset[i + 1];
         auto gfx = m_Font.RenderText(header[i]);
-        m_Columns.emplace_back(sColumnData{std::move(name[i]), std::move(header[i]), left, right - left, i, skip[i], gfx});
+        m_Columns.emplace_back(sColumnData{std::move(name[i]), std::move(header[i]), types[i], left, right - left, i, skip[i], gfx});
     }
     m_Font.SetFontBold(false);
 
@@ -777,6 +781,60 @@ void cListBox::UnSortList()
     UpdatePositionsAfterSort();
 }
 
+namespace {
+  enum class Direction { Ascending, Descending };
+
+  // Fetches the value of `item` at column `col_id`, and returns it as
+  // some type with an `operator<()` that gives us the sorting order
+  // we want.
+  template<ColumnType>
+  auto get_value(cListItem const& item, int col_id);
+
+  template<>
+  auto get_value<ColumnType::Numeric>(cListItem const& item, int col_id)
+  {
+    return std::stoi(item.m_Data[col_id]);
+  }
+
+  template<>
+  auto get_value<ColumnType::Age>(cListItem const& item, int col_id)
+  {
+    if(item.m_Data[col_id] == "???")
+      return std::numeric_limits<int>::max();
+    else
+      return std::stoi(item.m_Data[col_id]);
+  }
+
+  template<>
+  auto get_value<ColumnType::String>(cListItem const& item, int col_id)
+  {
+    return item.m_Data[col_id];
+  }
+
+  // Sorts `list` by column `col_id` of type `col_type`.
+  template<ColumnType col_type>
+  void do_sort(cListBox::item_list_t& list, int col_id, Direction dir)
+  {
+    auto less_than
+      = [col_id](cListItem const& a, cListItem const& b) {
+	  return get_value<col_type>(a, col_id) < get_value<col_type>(b, col_id);
+	};
+
+    switch(dir) {
+    case Direction::Ascending:
+      list.sort([less_than](const cListItem& a, const cListItem& b) {
+		  return less_than(a, b);
+		});
+      break;
+    case Direction::Descending:
+      list.sort([less_than](const cListItem& a, const cListItem& b) {
+		  return less_than(b, a);
+		});
+      break;
+    }
+  }
+}
+
 void cListBox::SortByColumn(std::string ColumnName, bool Descending)
 {
     if (m_Items.empty())  // any items in list?
@@ -796,11 +854,23 @@ void cListBox::SortByColumn(std::string ColumnName, bool Descending)
         return;
 
     // Sort the list
-    m_Items.sort([col_id, Descending](const cListItem& a, const cListItem& b) {
-        // TODO use a comparison function adequate for the column type
-        bool cmp = a.m_Data[col_id].compare(b.m_Data[col_id]) > 0;
-        return Descending == cmp;
-    });
+    //
+    // Note: std::list<>::sort() preserves all iterators; so
+    // `m_LastSelected` will effectively be carried along to the
+    // target element's new position.
+
+    auto direction = Descending ? Direction::Descending : Direction::Ascending;
+    switch(m_Columns[col_ref].type) {
+    case ColumnType::Numeric:
+      do_sort<ColumnType::Numeric>(m_Items, col_id, direction);
+      break;
+    case ColumnType::Age:
+      do_sort<ColumnType::Age>(m_Items, col_id, direction);
+      break;
+    case ColumnType::String:
+      do_sort<ColumnType::String>(m_Items, col_id, direction);
+      break;
+    }
 
     UpdatePositionsAfterSort();
 

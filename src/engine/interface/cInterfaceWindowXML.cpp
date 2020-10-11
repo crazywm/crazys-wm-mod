@@ -268,6 +268,7 @@ void cInterfaceWindowXML::read_listbox_definition(tinyxml2::XMLElement& el)
     std::vector<int> column_offset;
     std::vector<bool> column_skip;
     std::vector<std::string> column_name, column_header;
+    std::vector<ColumnType> column_type;
     for (auto& sub_el : IterateChildElements(el))
     {
         std::string tag = sub_el.Value();
@@ -279,8 +280,11 @@ void cInterfaceWindowXML::read_listbox_definition(tinyxml2::XMLElement& el)
             int offset = sub_el.IntAttribute("Offset", 0);
             bool skip = sub_el.BoolAttribute("Skip", false);
             std::string header = GetDefaultedStringAttribute(sub_el, "Header", name.c_str());
+            auto type = from_string(GetDefaultedStringAttribute(sub_el, "Type", "(default)"));
+
             column_name.push_back(std::move(name));
             column_header.push_back(std::move(header));
+            column_type.push_back(type);
             column_offset.push_back(offset);
             column_skip.push_back(skip);
         }
@@ -290,7 +294,9 @@ void cInterfaceWindowXML::read_listbox_definition(tinyxml2::XMLElement& el)
         }
     }
     // If we have columns defined, go ahead and give the listbox all the gory details
-    if (!column_name.empty())    box->DefineColumns(column_name, column_header, column_offset, column_skip);
+    if (!column_name.empty())
+      box->DefineColumns(column_name, column_header, column_type,
+                         column_offset, column_skip);
 }
 
 

@@ -21,18 +21,18 @@
 <Text       Name="JobDescription"       Text=""                             XPos="504"      YPos="762"      Width="433"     Height="105"     FontSize="12"  />
 <Button     Name="CreateMovieButton"    Image="CreateMovie"                 XPos="1347"     YPos="762"      Width="187"     Height="38"     Transparency="true" PushWindow="Movie Maker"/>
 <ListBox    Name="GirlList"                                                 XPos="12"       YPos="41"       Width="1195"     Height="642"    FontSize="14"       RowHeight="25"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
-<Column     Name="Name"                 Header="Girl Name"                  Offset="0" />
-<Column     Name="Health"               Header="Health"                     Offset="234" /> 
-<Column     Name="Happiness"            Header="Happy"                      Offset="293" />
-<Column     Name="Tiredness"            Header="Tired"                      Offset="352" />
-<Column     Name="DayJob"               Header="Day Job"                    Offset="411" />
-<Column     Name="NightJob"             Header="Night Job"                  Offset="587" />
-<Column     Name="is_pregnant"          Header="Preg"                       Offset="763" />
-<Column     Name="is_slave"             Header="Slave"                      Offset="822" />
-<Column     Name="Rebel"                Header="Rebel"                      Offset="881" />
-<Column     Name="Age"                  Header="Age"                        Offset="940" />
-<Column     Name="Looks"                Header="Looks"                      Offset="999" />
-<Column     Name="STAT_Fame"            Header="Fame"                       Offset="1058" />
-<Column     Name="SKILL_Performance"    Header="Perform"                    Offset="1117" />
+<Column     Name="Name"              Type="String"    Header="Girl Name"                  Offset="0" />
+<Column     Name="Health"            Type="Numeric"   Header="Health"                     Offset="234" /> 
+<Column     Name="Happiness"         Type="Numeric"   Header="Happy"                      Offset="293" />
+<Column     Name="Tiredness"         Type="Numeric"   Header="Tired"                      Offset="352" />
+<Column     Name="DayJob"            Type="String"    Header="Day Job"                    Offset="411" />
+<Column     Name="NightJob"          Type="String"    Header="Night Job"                  Offset="587" />
+<Column     Name="is_pregnant"       Type="String"    Header="Preg"                       Offset="763" />
+<Column     Name="is_slave"          Type="String"    Header="Slave"                      Offset="822" />
+<Column     Name="Rebel"             Type="Numeric"   Header="Rebel"                      Offset="881" />
+<Column     Name="Age"               Type="Numeric"   Header="Age"                        Offset="940" />
+<Column     Name="Looks"             Type="Numeric"   Header="Looks"                      Offset="999" />
+<Column     Name="STAT_Fame"         Type="Numeric"   Header="Fame"                       Offset="1058" />
+<Column     Name="SKILL_Performance" Type="Numeric"   Header="Perform"                    Offset="1117" />
 </ListBox>
 </Screen>

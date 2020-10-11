@@ -6,17 +6,17 @@
 
 
 <ListBox    Name="GangList"                                                 XPos="14"       YPos="49"       Width="1546"     Height="565" FontSize="17" RowHeight="27" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
-<Column     Name="GangName"             Header="Gang Name"                  Offset="0"  />
-<Column     Name="Mission"              Header="Mission"                    Offset="351"  />
-<Column     Name="Number"               Header="Men"                        Offset="562"  />
-<Column     Name="Combat"               Header="Combat"                     Offset="667"  />
-<Column     Name="Magic"                Header="Magic"                      Offset="772"  />
-<Column     Name="Intelligence"         Header="Intel."                     Offset="877"  />
-<Column     Name="Agility"              Header="Agility"                    Offset="982"  />
-<Column     Name="Constitution"         Header="Tough"                      Offset="1087"  />
-<Column     Name="Strength"             Header="Strength"                   Offset="1192"  />
-<Column     Name="Service"              Header="Service"                    Offset="1297"  />
-<Column     Name="Charisma"             Header="Charisma"                   Offset="1402"  />
+<Column     Name="GangName"     Type="String"         Header="Gang Name"                  Offset="0"  />
+<Column     Name="Mission"      Type="String"         Header="Mission"                    Offset="351"  />
+<Column     Name="Number"       Type="Numeric"        Header="Men"                        Offset="562"  />
+<Column     Name="Combat"       Type="Numeric"        Header="Combat"                     Offset="667"  />
+<Column     Name="Magic"        Type="Numeric"        Header="Magic"                      Offset="772"  />
+<Column     Name="Intelligence" Type="Numeric"        Header="Intel."                     Offset="877"  />
+<Column     Name="Agility"      Type="Numeric"        Header="Agility"                    Offset="982"  />
+<Column     Name="Constitution" Type="Numeric"        Header="Tough"                      Offset="1087"  />
+<Column     Name="Strength"     Type="Numeric"        Header="Strength"                   Offset="1192"  />
+<Column     Name="Service"      Type="Numeric"        Header="Service"                    Offset="1297"  />
+<Column     Name="Charisma"     Type="Numeric"        Header="Charisma"                   Offset="1402"  />
 </ListBox>
 
 <Image      Name="FireArrow"            File="imgArrowDown.png"             XPos="70"       YPos="598"      Width="84"      Height="62"  />
@@ -25,16 +25,16 @@
 <Button     Name="GangHireButton"       Image="Hire"                        XPos="163"      YPos="731"      Width="112"      Height="45"  Transparency="true"/>
 
 <ListBox    Name="RecruitList"                                              XPos="295"      YPos="633"      Width="1265"     Height="256" FontSize="17" RowHeight="27" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
-<Column     Name="GangName"             Header="Recruitable Gang"           Offset="0"  />
-<Column     Name="Number"               Header="Men"                        Offset="281"  />
-<Column     Name="Combat"               Header="Combat"                     Offset="386"  />
-<Column     Name="Magic"                Header="Magic"                      Offset="491"  />
-<Column     Name="Intelligence"         Header="Intel."                     Offset="596"  />
-<Column     Name="Agility"              Header="Agility"                    Offset="701"  />
-<Column     Name="Constitution"         Header="Tough"                      Offset="806"  />
-<Column     Name="Strength"             Header="Strength"                   Offset="911"  />
-<Column     Name="Service"              Header="Service"                    Offset="1016"  />
-<Column     Name="Charisma"             Header="Charisma"                   Offset="1121"  />
+<Column     Name="GangName"     Type="String"         Header="Recruitable Gang"           Offset="0"  />
+<Column     Name="Number"       Type="Numeric"        Header="Men"                        Offset="281"  />
+<Column     Name="Combat"       Type="Numeric"        Header="Combat"                     Offset="386"  />
+<Column     Name="Magic"        Type="Numeric"        Header="Magic"                      Offset="491"  />
+<Column     Name="Intelligence" Type="Numeric"        Header="Intel."                     Offset="596"  />
+<Column     Name="Agility"      Type="Numeric"        Header="Agility"                    Offset="701"  />
+<Column     Name="Constitution" Type="Numeric"        Header="Tough"                      Offset="806"  />
+<Column     Name="Strength"     Type="Numeric"        Header="Strength"                   Offset="911"  />
+<Column     Name="Service"      Type="Numeric"        Header="Service"                    Offset="1016"  />
+<Column     Name="Charisma"     Type="Numeric"        Header="Charisma"                   Offset="1121"  />
 </ListBox>
 
 <Text       Name="txtMissions"          Text="Available Missions"           XPos="1588"     YPos="11"        Width="281"     Height="45"  FontSize="25"  />
