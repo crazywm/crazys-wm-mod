@@ -2159,10 +2159,16 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
                 }break;
                 case 11:
                 {
-                    // Noble, Princess and Queen needs 40, everyone else needs 60 to make this
+                    // Noble, Princess and Queen needs 40 in all the
+                    // three stats, everyone else needs 60 in one stat
+                    // of the three to make this
                     if (girl.has_active_trait("Noble") || girl.has_active_trait("Princess") || girl.has_active_trait("Queen"))
-                        if (girl.refinement() < 40 || girl.service() < 40 || girl.intelligence() < 40)        break;
-                        else if (girl.refinement() < 60 && girl.service() < 60 && girl.intelligence() < 60)        break;
+                    {
+                        if (girl.refinement() < 40 || girl.service() < 40 || girl.intelligence() < 40)
+                            break;
+                        else if (girl.refinement() < 60 && girl.service() < 60 && girl.intelligence() < 60)
+                            break;
+                    }
                     // she can make it, now does she?
                     if (chance((girl.refinement() + girl.service() + girl.intelligence()) / 30))
                         itemname = "Codex of the Courtesan";        // (+20 Serv/Strip/Refin, +10 Mor/Dig/Cha/Int/Lib/Conf/Oral)

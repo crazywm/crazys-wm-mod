@@ -266,7 +266,7 @@ void PhysicalAttack::do_act(Combatant& self, Combatant& target) const {
 
     // surrender?
     if(self.get_party()->aim == ECombatObjective::CAPTURE) {
-        double surrender = 1 - should_parry ? parry : evade;
+        double surrender = 1 - (should_parry ? parry : evade);
         // TODO modulate this based on the targets `SPIRIT` stat
         if(rng().percent(100 * surrender ) && expected_damage(self, target) > target.get_hitpoints()) {
             narration() << " surrenders.";
