@@ -336,6 +336,9 @@ void cScreenTurnSummary::goto_selected()
     std::string selectedName = GetSelectedTextFromList(item_id);
     switch (m_ActiveCategory)
     {
+    case Summary_RIVALS:
+        break;
+
     case Summary_GANGS:
         push_window("Gangs");
         break;

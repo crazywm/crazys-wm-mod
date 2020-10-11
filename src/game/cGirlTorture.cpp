@@ -414,6 +414,10 @@ bool cGirlTorture::girl_escapes()
         case EGirlEscapeAttemptResult::STOPPED_BY_PLAYER:
             m_Message += "She puts up a fight";
             m_Fight = true;
+            break;
+        case EGirlEscapeAttemptResult::STOPPED_BY_GOONS:
+        case EGirlEscapeAttemptResult::SUCCESS:
+            break;
     }
 
     switch (result) {

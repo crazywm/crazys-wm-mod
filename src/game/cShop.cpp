@@ -37,6 +37,7 @@ bool cShop::GirlWantsItem(const sGirl& girl, const sInventoryItem& item) const {
         return false;
 
     switch (item.m_Type) {
+        default: return true;
         case sInventoryItem::Armband:
         case sInventoryItem::SmWeapon:
             if(is_warrior(girl)) {
@@ -61,6 +62,9 @@ bool cShop::GirlBuyItem(sGirl& girl, const sInventoryItem& item) {
     int MaxItems = 1;
     bool AutoEquip = true;
     switch (item.m_Type) {
+        default:
+            MaxItems = 1;
+            break;
         case sInventoryItem::Ring:
             MaxItems = 8;
             break;

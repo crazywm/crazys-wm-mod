@@ -2635,6 +2635,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     case SKILL_GROUP:       event = EDefaultEvent::GIRL_SEX_GROUP; break;
     case SKILL_LESBIAN:     event = EDefaultEvent::GIRL_SEX_LESBIAN; break;
     case SKILL_STRIP:       event = EDefaultEvent::GIRL_SEX_STRIP; break;
+    default: /* did some non-sex skill sneak in? */ break;
     }    //end switch
 
     auto result = girl->CallScriptFunction(event, customer);
