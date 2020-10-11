@@ -40,7 +40,7 @@ public:
 protected:
     void MatronGains(sGirl& girl, bool Day0Night1, int conf);
     void HandleMatronResult(sGirl& girl, int &conf);
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) {
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override {
         return eCheckWorkResult::ACCEPTS;
     }
 

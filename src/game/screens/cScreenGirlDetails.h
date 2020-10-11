@@ -81,5 +81,5 @@ public:
     void set_house_percentage(int value);
     void set_accomodation(int value);
 
-    void UpdateImage(int imagetype);
+    void UpdateImage(int imagetype) override;
 };
