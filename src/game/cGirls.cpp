@@ -946,7 +946,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
         int tricount = 0;
         for (int i = 0; i < NUM_TRAININGTYPES; ++i)
         {
-            if (sGirl::training_jobs[i] == "")            continue;
+            if (strcmp(sGirl::training_jobs[i], "") == 0)            continue;
             int e = girl.get_training(i);
             /* */if (e < 0)    { text = " hasn't started "; }
             // if she's indifferent, why specify it? Let's instead skip it.
