@@ -53,7 +53,13 @@
 cScreenGetInput*          g_GetInput          = nullptr;
 
 template<class T, class... Args>
-T* load_window(const char* name, bool nonav=false, Args&&... args);
+T* load_window(const char* name, bool nonav /* = false*/, Args&&... args);
+
+template<class T>
+T* load_window(const char* name)
+{
+  return load_window<T>(name, false);
+}
 
 sColor& LookupThemeColor(const std::string& name);
 
