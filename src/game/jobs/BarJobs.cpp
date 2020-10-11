@@ -575,6 +575,9 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
 
     if (chance(20))
     {
+        // FIXME: We *know* that `actiontype == ACTION_WORKBAR ==
+        // 5`. Figure out a condition here that makes sense and isn't
+        // too swingy.
         if (actiontype >= 75)
         {
             ss << "Excited to get to work ${name} brings her 'A' game " << (is_night ? "tonight." : "today.");
