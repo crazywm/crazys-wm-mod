@@ -29,21 +29,21 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} was taken for bondage and torture scenes in your dungeon.</Text>
-        </Entry>
+        </Message>
 
-        <Entry Name="disobey.free">
+        <Message Name="disobey.free">
             <Text>${name} was horrified and refused to be beaten and sexually tortured in this "monstrous" place.</Text>
-        </Entry>
-        <Entry Name="disobey.slave.nice">
+        </Message>
+        <Message Name="disobey.slave.nice">
             <Text>${name} was horrified and refused to be beaten and sexually tortured in this "monstrous" place.
                 She was starting to panic, so you ordered your men to grab her and bind her for action.
                 </Text>
-        </Entry>
-        <Entry Name="disobey.slave.neutral">
+        </Message>
+        <Message Name="disobey.slave.neutral">
             <Text>${name} refused to have any part in this "monstrous" scene.
                 She was clearly horrified so you had your men drug her before stripping her down for action.</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

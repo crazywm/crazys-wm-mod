@@ -17,11 +17,11 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} worked as a shepherd in the farm.</Text>
-        </Entry>
-        <Entry Name="refuse">
-            <Text>${name} refused to work during the </Text>
-        </Entry>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to work during the ${shift} shift.</Text>
+        </Message>
     </Messages>
 </Job>

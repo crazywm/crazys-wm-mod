@@ -21,11 +21,11 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} worked as an actress filming lesbian scenes.</Text>
-        </Entry>
-        <Entry Name="refuse">
+        </Message>
+        <Message Name="refuse">
             <Text>${name} refused to film a lesbian scene today.</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

@@ -30,9 +30,12 @@ namespace tinyxml2 {
 }
 
 struct sTextRecord {
-    sTextRecord(std::string c, std::string t) : Condition(std::move(c)), Text(std::move(t)) {}
-    std::string Condition;
+    sTextRecord(std::string text, std::vector<std::string> conds, int priority, int chance) :
+            Conditions(std::move(conds)), Text(std::move(text)), Priority(priority), Chance(chance) {}
+    std::vector<std::string> Conditions;
     std::string Text;
+    int         Priority;
+    int         Chance;
 };
 
 class cTextRepository {

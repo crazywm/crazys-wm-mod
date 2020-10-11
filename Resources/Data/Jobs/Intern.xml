@@ -10,8 +10,8 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} trains in the Medical field.</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

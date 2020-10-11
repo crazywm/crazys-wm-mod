@@ -23,11 +23,11 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} worked filming sexy chef scenes to educate and entertain viewers.</Text>
-        </Entry>
-        <Entry Name="refuse">
+        </Message>
+        <Message Name="refuse">
             <Text>${name} refused to make a kitchen show today.</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

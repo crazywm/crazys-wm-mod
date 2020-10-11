@@ -22,6 +22,7 @@
 #include <CLog.h>
 #include "xml/util.h"
 #include "xml/getattr.h"
+#include "utils/string.hpp"
 #include "cGirls.h"
 #include "cRng.h"
 #include "character/sGirl.h"
@@ -34,6 +35,7 @@ bool IGenericJob::Work(sGirl& girl, bool is_night, cRng& rng) {
     ss.str("");
     m_Rng = &rng;
     m_ActiveGirl = &girl;
+    m_CurrentShift = is_night;
 
     if(m_Info.FullTime && girl.m_DayJob != girl.m_NightJob) {
         g_LogFile.error("jobs", "Full time job was assigned for a single shift!");
@@ -79,6 +81,10 @@ void IGenericJob::OnRegisterJobManager(const cJobManager& manager) {
 const sGirl& IGenericJob::active_girl() const {
     assert(m_ActiveGirl);
     return *m_ActiveGirl;
+}
+
+bool IGenericJob::is_night_shift() const {
+    return m_CurrentShift;
 };
 
 class cJobWrapper: public IGenericJob {
@@ -356,4 +362,17 @@ const std::string& cBasicJob::get_text(const std::string& prompt) const {
     return m_TextRepo->get_text(prompt, [this](const std::string& c) -> bool {
         return active_girl().has_active_trait(c.c_str());
     });
+}
+
+std::stringstream& cBasicJob::add_text(const std::string& prompt) {
+    auto& tpl = get_text(prompt);
+    interpolate_string(ss, tpl, [&](const std::string& var) -> std::string {
+        if(var == "name") {
+            return active_girl().FullName();
+        } else if (var == "shift") {
+            return is_night_shift() ? "night" : "day";
+        }
+        assert(false);
+        }, rng());
+    return ss;
 }

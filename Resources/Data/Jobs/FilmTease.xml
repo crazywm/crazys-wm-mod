@@ -24,11 +24,11 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} worked filming teaser scenes to arouse viewers.</Text>
-        </Entry>
-        <Entry Name="refuse">
+        </Message>
+        <Message Name="refuse">
             <Text>${name} refused to make a teaser clip today.</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

@@ -22,9 +22,13 @@
 #include "xml/util.h"
 #include "xml/getattr.h"
 #include <tinyxml2.h>
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/trim_all.hpp>
 #include "utils/streaming_random_selection.hpp"
 
-extern cRng g_Dice;
+namespace {
+    std::string empty_string;
+}
 
 const std::string& cTextRepository::get_text(const std::string& prompt,
                                              const std::function<bool(const std::string&)>& check) {
@@ -34,35 +38,66 @@ const std::string& cTextRepository::get_text(const std::string& prompt,
     }
 
     // this tracks whether we have found a constrained candidate
-    bool constraint = false;
+    int priority = 0;
 
     RandomSelector<const std::string> choice;
     for(auto& candidate : texts) {
-        // if we are looking for constrained candidates, we skip all without a condition
-        if(constraint && candidate.Condition.empty())
+        // skip all candidates with lower priority than what we have already found
+        if(candidate.Priority < priority)
+            continue;
+
+        // skip randomly disabled candidates
+        if(candidate.Chance < 100 && !g_Dice.percent(candidate.Chance))
             continue;
 
         // otherwise, we check those with a condition
-        if(!candidate.Condition.empty()) {
-            if(!check(candidate.Condition))
-                continue;
-            // first time that condition was true -- reset
-            if(!constraint) {
-                choice.reset();
+        if(!candidate.Conditions.empty()) {
+            bool passed = false;
+            for(auto& cond : candidate.Conditions) {
+                passed |= check(cond);
             }
-            constraint = true;
+            if(!passed)
+                continue;
         }
+
+        // if we've found a new element with higher priority, reset the selection process
+        if(candidate.Priority > priority)
+            choice.reset();
+
         choice.process(&candidate.Text);
     }
-    return *choice.selection();
+
+    if(choice.selection())
+        return *choice.selection();
+    return empty_string;
+}
+
+namespace {
+    std::vector<std::string> parse_condition(const char* source) {
+        if(!source)
+            return {};
+        std::vector<std::string> conditions;
+        boost::split(conditions, source, [](const char c){ return c == '|';});
+        return conditions;
+    };
 }
 
 void cTextRepository::load(const tinyxml2::XMLElement& root) {
-    for(auto& entry : IterateChildElements(root, "Entry")) {
+    for(auto& entry : IterateChildElements(root, "Message")) {
         std::string name = GetStringAttribute(entry, "Name");
         auto result = m_Texts.emplace(name, std::vector<sTextRecord>{});
         for(auto& text : IterateChildElements(entry, "Text")) {
-            result.first->second.emplace_back(GetDefaultedStringAttribute(text, "Condition", ""), text.GetText());
+            int priority = text.IntAttribute("Priority", -1);
+            if(priority == -1) {
+                priority = text.Attribute("Condition") ? 1 : 0;
+            }
+            int chance = text.IntAttribute("Chance", 100);
+            std::string content = text.GetText();
+            // TODO this does not convert \n -> ' '
+            boost::algorithm::trim_all(content);
+            result.first->second.emplace_back(std::move(content),
+                                              parse_condition(text.Attribute("Condition")),
+                                              priority, chance);
         }
     }
 }

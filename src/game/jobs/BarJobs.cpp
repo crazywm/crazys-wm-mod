@@ -60,7 +60,7 @@ IGenericJob::eCheckWorkResult cBarJob::CheckWork(sGirl& girl, bool is_night) {
     }
     else if (girl.disobey_check(m_Data.Action, job()))
     {
-        ss << get_text("refuse") << " " << (is_night ? "tonight." : "today.");
+        add_text("refuse");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
     }
@@ -85,8 +85,7 @@ cBarCookJob::cBarCookJob() : cBarJob(JOB_BARCOOK, "BarCook.xml", {ACTION_WORKBAR
 bool cBarCookJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
 {
     int roll_a = d100(), roll_b = d100();
-
-    ss << get_text("work") << "\n \n";
+    add_text("work") << "\n \n";
 
     cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
 
@@ -108,261 +107,44 @@ bool cBarCookJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     //a little pre-game randomness
     if (chance(10))
     {
-        ss << get_text("pre-work-text");
+        add_text("pre-work-text");
     }
 
     if (jobperformance >= 245)
     {
         ss << "  She must be the perfect at this.\n \n";
         wages += 155;
-        ss << get_text("work.perfect") << "\n";
+        add_text("work.perfect") << "\n";
     }
     else if (jobperformance >= 185)
     {
         ss << " She's unbelievable at this.\n \n";
         wages += 95;
-
-        if (girl.has_active_trait("No Arms") || girl.has_active_trait("No Hands"))
-        {
-            ss << "You are at a loss as to how she made such satisfying food without the use of her hands, "
-                  "but hardly one to look a gift horse in the mouth, you accept it and move on.\n";
-        }
-        else if (roll_b >= 66)
-        {
-            ss << "${name} does very well today, and receives a number of compliments on her cooking. "
-                  "She improves on the traditional menu in a number of small but appreciable ways, "
-                  "perhaps by taking a minute to sear the meat just a bit longer, or chopping the vegetables into attractive florets. "
-                  "All in all, there are certainly no complaints.\n";
-        }
-        else if (roll_b >= 33)
-        {
-            if (girl.has_active_trait("Chef"))
-            {
-                ss << "${name} circulates briefly among the tables, talking to the patrons and asking their preferences so she can customize the menu for each of them. "
-                      "She considers this personal touch to be important, and while her skills are not sufficiently masterful to amaze each customer, "
-                      "they are all satisfied with the results. She loses some time cooking while she makes the rounds, "
-                      "meaning that some dishes arrive a few minutes later than would be ideal, but everyone seems to enjoy the personal touch.\n";
-                //tips here
-            }
-            else
-            {
-                ss << "${name} attempts something completely new today. She places chicken meat into the cavity of a duck, "
-                      "which she then stuffs into the cavity of a turkey, and then roasts all three together in some kind of perverse poultry centipede. "
-                      "You have your doubts about this lunacy, but actually, it tastes delicious! You are not so sure about her name for it, \"Fowl Play,\" but the customers love it.\n";
-            }
-        }
-        else
-        {
-            if (girl.has_active_trait("Retarded"))
-            {
-                ss << "Despite her mental limitations, ${name} manages to whip up some truly satisfying food. "
-                      "Nobody knows how she does it, as she seems to just randomly throw various ingredients into each dish, but it serendipitously just works. "
-                      "You have some reservations about her penchant to throw kale into everything, "
-                      "and her repeated exclamations that it helps \"make poopy come on time\" for the customers are not overly persuasive. "
-                      "Nevertheless, the food tastes really good, so why fight it?\n";
-            }
-            else
-            {
-                ss << "${name} shows her skills today with a seven-course tasting menu for the patrons, replete with saffron trout, "
-                      "roasted beef joints, and bone-marrow soup. While you have enjoyed better food in your life, you have done so only rarely. "
-                      "${name} is well on her way to becoming a master chef.\n";
-            }
-        }
+        add_text("work.great") << "\n";
     }
     else if (jobperformance >= 145)
     {
         ss << " She's good at this job.\n \n";
         wages += 55;
-
-        if (girl.has_active_trait("No Arms") || girl.has_active_trait("No Hands"))
-        {
-            ss << "${name}'s final products are surprisingly acceptable, given her lack of hands, but you can say nothing more positive about the dishes. "
-                  "Merely satisfactory. Perhaps the patrons would be more appreciative if they knew the herculean efforts that went into their food.\n";
-        }
-        else if (roll_b >= 66)
-        {
-            if (girl.has_active_trait("Retarded"))
-            {
-                ss << "For a retarded girl, ${name} is actually not that bad. Not great, and only bordering on good, "
-                      "but at least not as bad as you would have anticipated. She tends to put meat in everything and has for no explicable reason forsworn all wheat products, "
-                      "claiming that it is \"better for strong person eat like caveman,\" but this does not generate as many complaints as you would have imagined.\n";
-            }
-            else
-            {
-                ss << "${name} is an acceptable cook, and manages every item on the menu without disappointment. "
-                      "She is not as fast as she could be, and some of the greens are occasionally wilted and the chicken rubbery, "
-                      "but all in all, the customers are satisfied with her performance.\n";
-            }
-        }
-        else if (roll_b >= 33)
-        {
-            ss << "${name} is still experimenting with some more advanced culinary concepts. The frog-leg milkshake is a dubious creation, "
-                  "but surprisingly, the few customers with enough temerity to order it have largely positive reviews. "
-                  "She is not a great cook yet, but with more practice, she very well could become one.\n";
-        }
-        else
-        {
-            if (girl.has_active_trait("Chef"))
-            {
-                ss << "${name} considers herself a chef, and tries to deviate from the menu with some additional spices or plating styles. "
-                      "She clearly would like her efforts to be noticed, but with the final product being merely satisfactory, "
-                      "nobody asks to meet and thank the cook. She resolves to try harder next time.\n";
-            }
-            else
-            {
-                ss << "${name} sticks to the menu today, showing no originality or culinary ambition. "
-                      "Nevertheless, the food is satisfactory, timely, and generally well-received. "
-                      "Perhaps ${name} will show more skill and experimentation as she becomes more comfortable with cooking.\n";
-            }
-        }
+        add_text("work.great") << "\n";
     }
     else if (jobperformance >= 100)
     {
         ss << " She made a few mistakes but overall she is okay at this.\n \n";
         wages += 15;
-
-        if (girl.has_active_trait("No Arms") || girl.has_active_trait("No Hands"))
-        {
-            ss << "${name} does about as well as you could hope for someone with no hands in a kitchen. "
-                  "The food is acceptable enough to be served, and honestly, you are not sure you can ever expect any better than that from her.\n";
-        }
-        else if (roll_b >= 66)
-        {
-            if (girl.has_active_trait("Retarded"))
-            {
-                ss << "The results are better than you would expect, but only because the bar was so low. "
-                      "This food is edible, and at times even acceptable, but not good. Someone at some point must have told ${name} that gluten is bad for people, "
-                      "and since she has no idea what gluten is, this leads to some interesting additions and omissions in her meals. "
-                      "The burger has a wheat bun, for instance, but she refused to use potatoes for the fries and opted instead for turnips. "
-                      "You contemplate explaining to her what gluten is, but conclude that it would be a pointless effort.\n";
-            }
-            else
-            {
-                ss << "${name} is able to follow the routine recipe instructions, but only barely. She works step-by-step through each dish, "
-                      "without imagination or experimentation, and produces acceptable results. She is a long way from a quiche, but at least she can fry onion rings.\n";
-            }
-        }
-        else if (roll_b >= 33)
-        {
-            ss << "${name}'s cooking abilities are merely okay, and she knows it. She wisely avoids the more expensive ingredients, "
-                  "knowing that she does not have the experience to cook them without ruining the dish, and focuses on the basics. "
-                  "The customers enjoy some simple and basic fare. They may want something more refined, but if you can keep them sufficiently liquored up, "
-                  "maybe they will not even notice.\n";
-        }
-        else
-        {
-            if (girl.has_active_trait("Chef"))
-            {
-                ss << "You are not sure what culinary academy decided to make ${name} a chef, "
-                      "but you suspect that it was in a foreign country with radically different concepts of what constitutes edible food. "
-                      "She is at best an acceptable cook, and her efforts at floretting vegetables and drizzling sauce reductions onto her plates "
-                      "would be adorable if they were not so sad. Her efforts at difficult dishes are disasters, and most patrons wisely stick to simple pork chops.\n";
-            }
-            else {
-                ss << "${name} tried something new, which is not a great idea for someone still mastering the basics of cooking. "
-                      "The pork blood pudding she made was an ambitious undertaking, but when the customers saw the gelatinous mess, "
-                      "they all opted for a simple hamburger. ${name} was disappointed, but resolved to try harder next time.\n";
-            }
-        }
+        add_text("work.ok") << "\n";
     }
     else if (jobperformance >= 70)
     {
         ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
         wages -= 5;
-
-        if (girl.has_active_trait("No Arms") || girl.has_active_trait("No Hands"))
-        {
-            ss << "${name} heroically lifts a pot from the burner with her mouth, setting it to cook on the counter. "
-                  "She bites down on a knife handle and bobs her head back and forth to cut the vegetables. "
-                  "The end result is barely edible, but who would have the heart to tell her that?\n";
-        }
-        else if (roll_b >= 66)
-        {
-            ss << "The results are not good. ${name} may be able to boil water without setting the kitchen on fire, but those are the limits of her abilities. "
-                  "She is able to produce some of the most simple items on the menu, like assembling the hamburgers, and is able to satisfy a few customers. "
-                  "The remainder of her food is either sent back or thrown away.\n";
-        }
-        else if (roll_b >= 33)
-        {
-            if (girl.has_active_trait("Chef"))
-            {
-                ss << "Somebody, at some point, convinced ${name} that she was a chef. This person was a terrible liar. "
-                      "She pours \"wine reductions,\" which is basically just slightly-heated wine from your cellars, all over dishes that do not benefit from her efforts. "
-                      "Actually, they mostly just turn into a soupy mess. The patrons are not as upset as you would expect, though, "
-                      "since ${name} did not heat the wine enough to burn away the alcohol, and they all essentially got a free drink.\n";
-            }
-            else
-            {
-                ss << "${name} wants to experiment with some new dishes for the menu, but her cooking is still so bad that every time she cooks could be considered an experiment. "
-                      "Stewed pig's ears are a disaster. Nobody takes her up on her turnip dumplings. Maybe she will stumble onto an exciting new recipe one day, "
-                      "but today is not that day.\n";
-            }
-        }
-        else
-        {
-            if (girl.has_active_trait("Retarded"))
-            {
-                ss << "The results are bad. You had to know this when you assigned her. She is, after all, retarded, and combining ingredients based "
-                      "solely on their colors is not a prudent way of cooking. Not that she cares, of course. This is just amazing fun for her. "
-                      "You instruct the staff to keep the most expensive ingredients out of her reach, "
-                      "because that kobe beef will almost certainly be ground together with ketchup and bananas into a barely palatable milkshake.\n";
-            }
-            else
-            {
-                ss << "${name} is not very good at this. She is terrified of half the items on the menu, which are well beyond her skills, "
-                      "and barely scrapes by with the other half. The fries are soggy, the onion rings are basically raw, and the pork chops are cooked black. "
-                      "She does not even attempt the more complicated dishes, either diverting those orders to other cooks or leaving those customers waiting.\n";
-            }
-        }
+        add_text("work.bad") << "\n";
     }
     else
     {
         ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
         wages -= 15;
-
-        if (girl.has_active_trait("No Arms") || girl.has_active_trait("No Hands"))
-        {
-            ss << "The results are what you would expect for a girl who has to carry, cut, cook, and plate everything with her mouth. It is awful. "
-                  "You consider telling the staff to 'give her a hand, but conclude that the remark would be considered in poor taste. "
-                  "Not as poor taste as ${name}'s cooking, of course, but pretty close.\n";
-        }
-        else if (roll_b >= 66)
-        {
-            if (girl.has_active_trait("Retarded"))
-            {
-                ss << "The food is terrible, of course. Seriously. Of course it is. Did you know that she was retarded? Raw eggs and pork rinds do not mix well with coconut milk. "
-                      "${name} had just a magical time throwing everything together, and she is smiling from ear to ear, but she is the only one. Honestly, what did you expect?\n";
-            }
-            else
-            {
-                ss << "Eyeing the aftermath, you doubt whether this could have gone much worse. "
-                      "The kitchen is a disaster area, and pots and pans are strewn across the countertops with aborted efforts rotting inside. "
-                      "The customers were repulsed by everything that she cooked, and even the dogs outside are turning up their noses at the massive piles you are forced to throw away. "
-                      "This is not cooking, this is mad science.\n";
-            }
-        }
-        else if (roll_b >= 33)
-        {
-            if (girl.has_active_trait("Chef"))
-            {
-                ss << "It seems that just about anybody can be called a \"chef\" these days. ${name}'s food edible the way that roots and leaves might be considered edible, "
-                      "but nobody actually wants to order this trash. She painstakingly labored on floretting a baby tomato to place on top of a soupy, "
-                      "vomit-like substance that she is calling a bisque, but the tomato ends up looking like a little mashed ketchup stain. Today could certainly have gone better.\n";
-            }
-            else
-            {
-                ss << "${name} is not a cook. She has no idea what she is doing. The stove baffles her, and the smoking blackened chunks of \"bread\" that come out baffle the customers. "
-                      "A pot still lies on a burner, the water long since burned away, glowing orange and smelling like death. "
-                      "She sheepishly turns off the burner and turns her head away from your gaze. This was an unmitigated disaster.\n";
-            }
-        }
-        else
-        {
-            ss << "The kitchen did not burn down today. That is the only positive thing you can draw from the whole experience. "
-                  "Customers were disgusted by everything ${name} cooked, if \"cooking\" is the right word for it, and not a few walked away shaking their heads. "
-                  "Any profits were destroyed by all of the wasted ingredients. At least the rats will eat well tonight, "
-                  "because ${name} has to throw away practically everything she attempted.\n";
-        }
+        add_text("work.worst") << "\n";
     }
 
     //try and add randomness here
@@ -450,7 +232,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     Action_Types actiontype = ACTION_WORKBAR;
     std::stringstream ss;
     int roll_jp = d100(), roll_e = d100(), roll_c = d100();
-    ss << get_text("work") << "\n \n";
+    add_text("work") << "\n \n";
 
     int wages = 0;
     double tips = 0;
@@ -1260,7 +1042,7 @@ cBarWaitressJob::cBarWaitressJob() : cBarJob(JOB_WAITRESS, "BarWaitress.xml",{AC
 
 bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100(), roll_c = d100();
-    ss << get_text("work") << "\n";
+    add_text("work") << "\n";
     if (girl.has_active_trait("Mind Fucked"))
     {
         ss << "${name} nods in understanding, but she also has a hand down her skirt, absent-mindedly rubbing her pussy as she listens. You are not entirely sure that she understands what \"genteel and conservative\" means here.. ${name}'s mind fucked state may make this a more interesting shift than you anticipated.\n \n";
@@ -1825,7 +1607,7 @@ cBarPianoJob::cBarPianoJob() : cBarJob(JOB_PIANO, "BarPiano.xml", {ACTION_WORKMU
 bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
     
-    ss << get_text("work");
+    add_text("work");
 
     const sGirl* singeronduty = random_girl_on_job(brothel, JOB_SINGER, is_night);
     std::string singername = (singeronduty ? "Singer " + singeronduty->FullName() + "" : "the Singer");
@@ -2174,7 +1956,7 @@ cBarSingerJob::cBarSingerJob() : cBarJob(JOB_SINGER, "BarSinger.xml",{ACTION_WOR
 bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
 {
     int roll_a = d100(), roll_b = d100();
-    ss << get_text("work") << "\n \n";
+    add_text("work") << "\n \n";
 
     int wages = 20, tips = 0;
     int enjoy = 0, happy = 0, fame = 0;

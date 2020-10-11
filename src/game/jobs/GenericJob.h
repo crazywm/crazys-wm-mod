@@ -88,6 +88,7 @@ protected:
     };
 
     const sGirl& active_girl() const;
+    bool is_night_shift() const;
 
 private:
     virtual bool DoWork(sGirl& girl, bool is_night) = 0;
@@ -95,6 +96,7 @@ private:
 
     cRng* m_Rng;
     sGirl* m_ActiveGirl;
+    bool m_CurrentShift;
     const cJobManager* m_JobManager;
 
 protected:
@@ -118,6 +120,7 @@ protected:
 
     void load_from_xml(const char* xml_file);
     const std::string& get_text(const std::string& prompt) const;
+    std::stringstream& add_text(const std::string& prompt);
 private:
     cJobPerformance m_PerformanceData;
     cJobGains       m_Gains;

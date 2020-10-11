@@ -19,8 +19,8 @@
 <!ELEMENT Stat (EMPTY)>
 <!ATTLIST Stat Name CDATA #REQUIRED Weight CDATA Min CDATA Max CDATA>
 
-<!ELEMENT Messages (Entry)>
-<!ELEMENT Entry (Text+)>
-<!ATTLIST Entry Name CDATA #REQUIRED>
+<!ELEMENT Messages (Message*)>
+<!ELEMENT Message (Text+)>
+<!ATTLIST Message Name CDATA #REQUIRED>
 <!ELEMENT Text (#PCDATA)>
-<!ATTLIST Text Condition CDATA #IMPLIED>
+<!ATTLIST Text Condition CDATA #IMPLIED Priority CDATA #IMPLIED Chance CDATA #IMPLIED>

@@ -22,20 +22,20 @@
     </Gains>
     
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} was taken for filming in public bondage and torture scenes.</Text>
-        </Entry>
-        <Entry Name="disobey.free">
+        </Message>
+        <Message Name="disobey.free">
             <Text>${name} refused to have any part in this "monstrous" scene today and left.</Text>
-        </Entry>
-        <Entry Name="disobey.slave.nice">
+        </Message>
+        <Message Name="disobey.slave.nice">
             <Text>${name} refused to have any part in this "monstrous" scene.
                 She was clearly horrified at the thought so you allowed her the day off.</Text>
-        </Entry>
-        <Entry Name="disobey.slave.neutral">
+        </Message>
+        <Message Name="disobey.slave.neutral">
             <Text>${name} refused to have any part in this "monstrous" scene.
                 She was clearly horrified so you had your men drug her before stripping her down for action.</Text>
-        </Entry>
+        </Message>
         <!-- Evil is handled by C++ -->
     </Messages>
 </Job>

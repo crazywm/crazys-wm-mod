@@ -14,13 +14,13 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} worked as an actress in an action scene.</Text>
-        </Entry>
-        <Entry Name="refuse">
+        </Message>
+        <Message Name="refuse">
             <Text>${name} refused to shoot an action scene today.</Text>
-        </Entry>
-        <Entry Name="story">
+        </Message>
+        <Message Name="story">
             <Text>in which she battles a gang of demons.</Text>
             <Text>in which she defends a village against twisted, raping marauders.</Text>
             <Text>in which she avenges her mentor and defends her family's honour.</Text>
@@ -36,6 +36,6 @@
             <Text>in which she is the last of a race of female warriors, taking vengeance against a dark Prince.</Text>
             <Text>in which she stars as a female monk defending a mountain temple from marauding Centaurs.</Text>
             <Text>in which she hunts down the sadistic pirate gang who kidnapped her sister.</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

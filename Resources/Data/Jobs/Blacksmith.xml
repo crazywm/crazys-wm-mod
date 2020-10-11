@@ -25,14 +25,14 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} worked as a blacksmith at the arena.</Text>
-        </Entry>
-        <Entry Name="repair">
+        </Message>
+        <Message Name="repair">
             <Text>She spent some of her time repairing the Arena's equipment instead of making new stuff.</Text>
-        </Entry>
-        <Entry Name="produce">
+        </Message>
+        <Message Name="produce">
             <Text>${name} made:</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

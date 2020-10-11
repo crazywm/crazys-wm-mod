@@ -29,8 +29,8 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} worked as a mechanic.</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

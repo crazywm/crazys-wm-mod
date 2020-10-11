@@ -24,8 +24,8 @@
     </Gains>
 
     <Messages>
-        <Entry Name="refuse">
+        <Message Name="refuse">
             <Text>${name} refused to do an orgy on film today.</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

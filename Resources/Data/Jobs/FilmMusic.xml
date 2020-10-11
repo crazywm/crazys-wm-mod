@@ -14,11 +14,11 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} worked on a music video showcasing her singing and dancing talent.</Text>
-        </Entry>
-        <Entry Name="refuse">
+        </Message>
+        <Message Name="refuse">
             <Text>${name} refused to shoot a music video scene today.</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

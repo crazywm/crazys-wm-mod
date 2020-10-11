@@ -18,11 +18,11 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} worked as an actress filming titty fucking scenes.</Text>
-        </Entry>
-        <Entry Name="refuse">
+        </Message>
+        <Message Name="refuse">
             <Text>${name} refused to have her titty's fucked on film today.</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

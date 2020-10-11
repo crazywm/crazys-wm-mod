@@ -23,8 +23,8 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} was filmed being fucked by animals.</Text>
-        </Entry>
+        </Message>
     </Messages>
 </Job>

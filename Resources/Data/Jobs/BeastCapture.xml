@@ -35,11 +35,11 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} equipped herself and went out to hunt for exotic beasts and animals.</Text>
-        </Entry>
-        <Entry Name="refuse">
-            <Text>${name} refused to capture beasts during the</Text>
-        </Entry>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to capture beasts during the ${shift} shift.</Text>
+        </Message>
     </Messages>
 </Job>

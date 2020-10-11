@@ -21,13 +21,13 @@
     </Gains>
 
     <Messages>
-        <Entry Name="work">
+        <Message Name="work">
             <Text>${name} has been assigned to work as a waitress at your restaurant.
                 She is informed that this is a genteel and conservative establishment,
                 and she should focus on providing timely and efficient service.</Text>
-        </Entry>
-        <Entry Name="refuse">
-            <Text>${name} refused to wait the bar</Text>
-        </Entry>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to wait the bar to${shift}.</Text>
+        </Message>
     </Messages>
 </Job>
