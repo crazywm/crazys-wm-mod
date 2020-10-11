@@ -1264,12 +1264,24 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
     /// TODO fix name handling here!
     girl->m_FullName = girl->m_Name;
 
-    if (root.QueryStringAttribute("Desc", &pt))            girl->m_Desc = pt;
+    auto set_statebit
+      = [&](int bitnum, char const* attr) {
+         if(auto pt = root.Attribute(attr))
+         {
+           if(strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
+             girl->m_States |= (1u << bitnum);
+         }
+       };
+
+    if (root.QueryStringAttribute("Desc", &pt))
+      girl->m_Desc = pt;
     girl->m_Money = root.IntAttribute("Gold", 0);
-    if (pt = root.Attribute("Catacombs"))        girl->m_States |= (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? (1u << STATUS_CATACOMBS) : (0u << STATUS_CATACOMBS);
-    if (pt = root.Attribute("Slave"))            girl->m_States |= (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? (1u << STATUS_SLAVE) : (0u << STATUS_SLAVE);
-    if (pt = root.Attribute("Arena"))            girl->m_States |= (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? (1u << STATUS_ARENA) : (0u << STATUS_ARENA);
-    if (pt = root.Attribute("IsDaughter"))    girl->m_States |= (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? (1u << STATUS_ISDAUGHTER) : (0u << STATUS_ISDAUGHTER);
+
+    girl->m_States = 0;
+    set_statebit(STATUS_CATACOMBS,  "Catacombs");
+    set_statebit(STATUS_SLAVE,      "Slave");
+    set_statebit(STATUS_ARENA,      "Arena");
+    set_statebit(STATUS_ISDAUGHTER, "IsDaughter");
 
     for (int i = 0; i < NUM_STATS; i++) // loop through stats
     {
@@ -1289,7 +1301,7 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
         root.QueryAttribute(get_skill_name((SKILLS)i), &girl->m_Skills[i].m_Value);
     }
 
-    if (pt = root.Attribute("Status"))
+    if (auto pt = root.Attribute("Status"))
     {
         /* */if (strcmp(pt, "Catacombs") == 0)        girl->m_States |= (1u << STATUS_CATACOMBS);
         else if (strcmp(pt, "Slave") == 0)            girl->m_States |= (1u << STATUS_SLAVE);

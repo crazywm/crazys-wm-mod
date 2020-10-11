@@ -85,18 +85,21 @@ sRandomGirl::~sRandomGirl() = default;
 
 void sRandomGirl::load_from_xml(tinyxml2::XMLElement *el)
 {
-    const char *pt;
     // name and description are easy
-    if (pt = el->Attribute("Name"))         m_Name = pt;
-    g_LogFile.log(ELogLevel::INFO, "Loading Rgirl : ", pt);
-    if (pt = el->Attribute("Desc"))            m_Desc = pt;
+    if (auto pt = el->Attribute("Name"))
+    {
+      m_Name = pt;
+      g_LogFile.log(ELogLevel::INFO, "Loading Rgirl : ", pt);
+    }
+
+    if (auto pt = el->Attribute("Desc"))            m_Desc = pt;
 
     // DQ - new random type ...
-    if (pt = el->Attribute("Human"))            m_Human = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-    if (pt = el->Attribute("Catacomb"))            m_Catacomb = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-    if (pt = el->Attribute("Arena"))            m_Arena = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-    if (pt = el->Attribute("Your Daughter"))    m_YourDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-    if (pt = el->Attribute("Is Daughter"))        m_IsDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+    if (auto pt = el->Attribute("Human"))           m_Human = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+    if (auto pt = el->Attribute("Catacomb"))        m_Catacomb = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+    if (auto pt = el->Attribute("Arena"))           m_Arena = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+    if (auto pt = el->Attribute("Your Daughter"))   m_YourDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+    if (auto pt = el->Attribute("Is Daughter"))     m_IsDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
 
     // loop through children
     tinyxml2::XMLElement *child;

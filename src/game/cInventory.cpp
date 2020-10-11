@@ -85,12 +85,11 @@ void cInventory::GivePlayerAllItems()
  */
 static void do_effects(tinyxml2::XMLElement *parent, sInventoryItem *item)
 {
-    const char *pt;
     for (auto el = parent->FirstChildElement("Effect"); el; el = el->NextSiblingElement("Effect"))
     {
         sEffect eff;
-        if (pt = el->Attribute("What")) eff.set_what(pt);
-        if (pt = el->Attribute("Name"))
+        if (auto pt = el->Attribute("What")) eff.set_what(pt);
+        if (auto pt = el->Attribute("Name"))
         {
             switch (eff.m_Affects)
             {
@@ -730,16 +729,15 @@ void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
 
 static sInventoryItem* handle_element(tinyxml2::XMLElement& el)
 {
-    const char *pt;
     sInventoryItem* item = new sInventoryItem();
     item->m_Name = GetStringAttribute(el, "Name");
-    if (pt = el.Attribute("Desc"))                        item->m_Desc = pt; else cout << "no desc attribute found" << endl;
-    if (pt = el.Attribute("Type"))                        item->set_type(pt);
+    if (auto pt = el.Attribute("Desc"))                        item->m_Desc = pt; else cout << "no desc attribute found" << endl;
+    if (auto pt = el.Attribute("Type"))                        item->set_type(pt);
     item->m_Badness = el.IntAttribute("Badness", 0);
     item->m_GirlBuyChance = el.IntAttribute("GirlBuyChance", (item->m_Badness < 20) ? (100 - (item->m_Badness * 5)) : 0);
-    if (pt = el.Attribute("Special"))                    item->set_special(pt);
+    if (auto pt = el.Attribute("Special"))                    item->set_special(pt);
     item->m_Cost = el.IntAttribute("Cost", 0);
-    if (pt = el.Attribute("Rarity"))                    item->set_rarity(pt);
+    if (auto pt = el.Attribute("Rarity"))                    item->set_rarity(pt);
     item->m_Infinite = el.BoolAttribute("Infinite", false);
 
     auto crafting = el.FirstChildElement("Crafting");
