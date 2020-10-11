@@ -2071,7 +2071,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         //does she get knocked up?
         bool antiPregStatus = girl->m_UseAntiPreg;
         girl->m_UseAntiPreg = false;                    //won't have access to this
-        girl->calc_group_pregnancy(*customer, false, 2);
+        girl->calc_group_pregnancy(*customer, 2);
         girl->m_UseAntiPreg = antiPregStatus;            //afterwards she'll go back to normal
 
         // player has 6 weeks to retrieve

@@ -150,7 +150,7 @@ void FilmGroup::DoScene(sGirl& girl) {
 
     sCustomer Cust = g_Game->GetCustomer(*girl.m_Building);
     Cust.m_Amount = guys;
-    if (!girl.calc_group_pregnancy(Cust, false, 1.0))
+    if (!girl.calc_group_pregnancy(Cust, 1.0))
     {
         g_Game->push_message(girl.FullName() + " has gotten pregnant", 0);
     }

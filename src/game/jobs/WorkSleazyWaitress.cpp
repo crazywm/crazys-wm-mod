@@ -576,7 +576,7 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
         }
         sCustomer Cust = g_Game->GetCustomer(*brothel);
         Cust.m_Amount = std::min(1, rng % 11);
-        if (!girl.calc_group_pregnancy(Cust, false, 1.0))
+        if (!girl.calc_group_pregnancy(Cust, 1.0))
         {
             g_Game->push_message(girl.FullName() + " has gotten pregnant.", 0);
         }

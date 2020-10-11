@@ -723,7 +723,7 @@ bool sGirl::calc_pregnancy(cPlayer *player, double factor, bool nomessage)
     return result;
 }
 
-bool sGirl::calc_group_pregnancy(const sCustomer& cust, bool good, double factor)
+bool sGirl::calc_group_pregnancy(const sCustomer& cust, double factor)
 {
     double girl_chance = fertility(*this);
     sPercent guy_chance = g_Game->settings().get_percent(settings::PREG_CHANCE_CUST);
@@ -742,7 +742,7 @@ bool sGirl::calc_pregnancy(const sCustomer& cust, double factor)
     return calc_pregnancy(int(chance), STATUS_PREGNANT, cust);
 }
 
-bool sGirl::calc_insemination(const sCustomer& cust, bool good, double factor)
+bool sGirl::calc_insemination(const sCustomer& cust, double factor)
 {
     double girl_chance = fertility(*this);
     sPercent guy_chance = g_Game->settings().get_percent(settings::PREG_CHANCE_BEAST);
