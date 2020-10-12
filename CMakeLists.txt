@@ -8,6 +8,7 @@ find_package(SDL2Image REQUIRED)
 find_package(SDL2TTF REQUIRED)
 
 add_subdirectory(deps/tinyxml)
+add_subdirectory(deps/doctest)
 add_subdirectory(deps/lua)
 add_subdirectory(src/engine)
 add_subdirectory(src/game)

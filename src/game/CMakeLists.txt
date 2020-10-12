@@ -180,3 +180,7 @@ target_link_libraries(WhoreMaster PUBLIC WmGameObjects)
 
 add_executable(WhoreMasterFuzz $<TARGET_OBJECTS:WmGameObjects> fuzzmain.cpp)
 target_link_libraries(WhoreMasterFuzz PUBLIC WmGameObjects)
+
+add_executable(WhoreMasterTest $<TARGET_OBJECTS:WmGameObjects> unittest.cpp)
+target_link_libraries(WhoreMasterTest PUBLIC WmGameObjects)
+

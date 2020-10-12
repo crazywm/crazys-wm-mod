@@ -51,3 +51,6 @@ target_include_directories(WMEngineObjects PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/in
 
 add_library(WMEngine STATIC $<TARGET_OBJECTS:WMEngineObjects>)
 target_link_libraries(WMEngine PUBLIC WMEngineObjects)
+
+add_executable(WMEngineTest $<TARGET_OBJECTS:WMEngineObjects> unittest.cpp)
+target_link_libraries(WMEngineTest WMEngineObjects doctest::doctest)

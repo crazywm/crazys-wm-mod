@@ -30,6 +30,9 @@
 #include <sstream>
 #include <SDL_events.h>
 
+#define DOCTEST_CONFIG_IMPLEMENT
+#include "doctest.h"
+
 // Function Defs
 void Shutdown();
 bool Init(CGraphics& gfx);
@@ -41,6 +44,7 @@ std::string monthnames[13]
 
 bool g_AltKeys = true;          // Toggles the alternate hotkeys --PP
 bool playershopinventory = false;
+
 
 // logfile
 CLog g_LogFile;
@@ -135,16 +139,16 @@ int main(int ac, char* av[])    // `J` Bookmark - #1 - Entering the game
 
 void Shutdown()
 {
-    g_LogFile.log(ELogLevel::INFO, "*** Shutting Down ***");
+    g_LogFile.log(ELogLevel::NOTIFY, "*** Shutting Down ***");
 
     ShutdownInterface();
 
-    g_LogFile.log(ELogLevel::INFO,"Shutdown Complete");
+    g_LogFile.log(ELogLevel::NOTIFY,"Shutdown Complete");
 }
 
 bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
 {
-    g_LogFile.log(ELogLevel::INFO, "*** Initializing ***");
+    g_LogFile.log(ELogLevel::NOTIFY, "*** Initializing ***");
     /*
     *       build the caption string
     */
