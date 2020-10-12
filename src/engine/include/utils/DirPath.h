@@ -87,6 +87,10 @@ public:
     operator std::string()    { return path; }
 
     bool is_directory() const;
+
+    // Expands environment variables (not yet) and the tilde syntax for
+    // home directories (Unix only).
+    static std::string expand_path(std::string path);
 };
 
 inline std::ostream& operator<<(std::ostream& target, const DirPath& content) {

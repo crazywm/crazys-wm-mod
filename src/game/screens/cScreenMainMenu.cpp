@@ -57,7 +57,7 @@ void cScreenMainMenu::set_ids()
 
 cScreenMainMenu::cScreenMainMenu(std::string saves_path) :
     cInterfaceWindowXML("main_menu.xml"),
-    m_SaveGamesPath(std::move(saves_path))
+    m_SaveGamesPath(DirPath::expand_path(std::move(saves_path)))
 {
 }
 

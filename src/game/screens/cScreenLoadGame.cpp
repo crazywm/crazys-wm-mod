@@ -27,7 +27,7 @@ extern int g_ReturnInt;
 
 cScreenLoadGame::cScreenLoadGame(const std::string& save_folder) :
     cInterfaceWindowXML("LoadMenu.xml"),
-    m_SavesPath(save_folder.c_str())
+    m_SavesPath(DirPath::expand_path(save_folder).c_str())
 {
 }
 

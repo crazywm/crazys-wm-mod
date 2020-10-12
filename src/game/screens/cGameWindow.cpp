@@ -1043,7 +1043,7 @@ std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool galler
     g_LogFile.log(ELogLevel::DEBUG, "Debug Alt Images || Getting image for: ", girl.FullName(), " (", image_folder, ")");
 
     int dir = 0; DirPath usedir = "";
-    DirPath imagedirDc = DirPath(cfg.folders.defaultimageloc().c_str());        // usedir = -1
+    DirPath imagedirDc = DirPath(DirPath::expand_path(cfg.folders.defaultimageloc()).c_str());        // usedir = -1
     DirPath imagedirDo = DirPath() << "Resources" << "DefaultImages";            // usedir = -2
     FileList tiCc(image_folder, "*.*");
     FileList tiDc(imagedirDc, "*.*");
