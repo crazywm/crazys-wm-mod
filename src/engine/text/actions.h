@@ -17,33 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WM_TEXTREPO_H
-#define WM_TEXTREPO_H
+#ifndef WM_ACTIONS_H
+#define WM_ACTIONS_H
 
-#include <string>
+#include "text/repo.h"
 #include <vector>
-#include <unordered_map>
-#include <functional>
 
-namespace tinyxml2 {
-    class XMLElement;
-}
+struct sAssignmentAction : public IAction {
+    enum EAssign {
+        SET, ADD, SUB
+    } Mode;
+    std::string Target;
+    int Value;
 
-struct sTextRecord {
-    sTextRecord(std::string text, std::vector<std::string> conds, int priority, int chance) :
-            Conditions(std::move(conds)), Text(std::move(text)), Priority(priority), Chance(chance) {}
-    std::vector<std::string> Conditions;
-    std::string Text;
-    int         Priority;
-    int         Chance;
+    sAssignmentAction(EAssign mode, std::string tgt, int value);
+    void apply(const IInteractionInterface& target) const override;
+
+    static std::unique_ptr<sAssignmentAction> from_string(const std::string& source);
 };
 
-class cTextRepository {
-public:
-    void load(const tinyxml2::XMLElement& root);
-    const std::string& get_text(const std::string& prompt, const std::function<bool(const std::string&)>& check);
-private:
-    std::unordered_map<std::string, std::vector<sTextRecord>> m_Texts;
+struct sSequenceAction : public IAction {
+    explicit sSequenceAction(std::vector<std::unique_ptr<IAction>> a) : Actions(std::move(a)) {}
+    void apply(const IInteractionInterface& target) const override;
+
+    std::vector<std::unique_ptr<IAction>> Actions;
 };
 
-#endif //WM_TEXTREPO_H
+#endif //WM_ACTIONS_H

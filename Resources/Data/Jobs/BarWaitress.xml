@@ -20,14 +20,281 @@
         </GainTrait>
     </Gains>
 
+    <Config>
+        <WageFunction>
+            <Point Performance="245" Wages="170" />
+            <Point Performance="185" Wages="110" />
+            <Point Performance="145" Wages="70" />
+            <Point Performance="100" Wages="30" />
+            <Point Performance="70" Wages="10" />
+            <Point Performance="0" Wages="0" />
+        </WageFunction>
+    </Config>
+
     <Messages>
         <Message Name="work">
-            <Text>${name} has been assigned to work as a waitress at your restaurant.
-                She is informed that this is a genteel and conservative establishment,
-                and she should focus on providing timely and efficient service.</Text>
+            ${name} has been assigned to work as a waitress at your restaurant.
+            She is informed that this is a genteel and conservative establishment,
+            and she should focus on providing timely and efficient service.
+            <Text>
+                ${name} worked as a waitress in the bar.
+            </Text>
+            <Text Condition="Mind Fucked">
+                ${name} nods in understanding, but she also has a hand down her skirt,
+                absent-mindedly rubbing her pussy as she listens.
+                You are not entirely sure that she understands what "genteel and conservative" means here..
+                ${name}'s mind fucked state may make this a more interesting shift than you anticipated.
+            </Text>
         </Message>
         <Message Name="refuse">
             <Text>${name} refused to wait the bar to${shift}.</Text>
+        </Message>
+        <Message Name="event.nympho-nowork">
+            <Text>${name} let lust get the better of her and she ended up missing her ${shift} shift.</Text>
+        </Message>
+
+        <Message Name="pre-work-text">
+            <Text Condition="Mind Fucked" Chance="20" Updates="Performance-=5">
+                ${name} unnerves the customers with her far-away stare while she takes their orders, and causes a few
+                gentlemen to sweat with discomfort as she casually mentions that she is also on the menu, if they would
+                like to use her for anything. They all cough, turn their heads, and try to ignore it.
+            </Text>
+            <Text Condition="Sexy Air|Titanic Tits|Abnormally Large Boobs|Massive Melons" Chance="20" Updates="Tips+=10">
+                Customers are willing to forgive a lot of mistakes where ${name} is concerned.
+                Her sexy body distracts them when they order,
+                and some find themselves ordering much more expensive wine than they had
+                anticipated in an effort to impress her.
+            </Text>
+            <Text Condition="Shy|Nervous" Chance="20">
+                Some customers are forced to flag ${name} down to get her to come to their table,
+                as her nerves and shyness get in the way of providing suitable service.
+                She is not comfortable talking with all of these new people.
+            </Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            She's the perfect waitress. Customers go on about her and many seem to come more for her than for the drinks or entertainment.
+            <Text>${name} danced around the bar dropping orders off as if she didn't even have to think about it.</Text>
+            <Text>
+                Knowing how to speak with customers,
+                ${name} always gets the clients to order something extra or more pricey then they wanted at the beginning,
+                making you a tidy profit.
+            </Text>
+            <Text>
+                Being a very popular waitress made ${name} some fans, that come here only to be served by her.
+                On the other hand they leave generous tips behind.
+            </Text>
+            <Text>Her shift past smoothly, earning her some really juicy tips.</Text>
+            <Text>
+                Memorizing the whole menu and prices, taking out three or four trays at once,
+                not making a single mistake for days. ${name} sure doesn't seem human.
+            </Text>
+            <Text>
+                Today she saved your place from a major disturbance. When greeting clients,
+                ${name} noticed that the newly arrived group was part of a gang that was at war with another group of
+                men which were already inside your place.
+                She politely apologized and explained that your place was full and couldn't take such a large group.
+                The men left unhappy but without giving her any trouble.
+            </Text>
+            <Text>
+                People came in from everywhere to see ${name} work.
+                She bounces all around the bar laughing and keeping the patrons happy without messing anything up.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            She's unbelievable at this and is always getting praised by the customers for her work.
+            <Text>${name} bounced from table to table taking orders and recommending items to help you make more money.</Text>
+            <Text>She's very good at this. You saw her several times today carrying out two orders at a time.</Text>
+            <Text>
+                When placing drink on the table she got slapped on the ass by one of the customers.
+                ${name} scolded them in a flirty way, saying that this kind of behavior could get them kicked out by
+                the security and that she didn't want to lose her favorite customers.
+                The client apologies, assuring her that he didn't mean any harm.
+            </Text>
+            <Text>
+                Knowing the menu paid off for ${name}.
+                After hearing the order she advised a more expensive option.
+                Customers went for it and enjoyed their stay. Happy with the good advice they left her a great tip.
+            </Text>
+            <Text>Memorizing the menu and prices has paid off for ${name}.</Text>
+            <Text>${name} is a town favourite and knows most of the patrons by name and what they order.</Text>
+        </Message>
+        <Message Name="work.good">
+            She's good at this job and gets praised by the customers often.
+            <Text Condition="Abnormally Large Boobs|Giant Juggs|Massive Melons|Titanic Tits" Priority="0">
+                The patrons love being served by ${name}.
+                Due to her skill at this job and the chance to stare at her legendary boobs.
+            </Text>
+            <Text Condition="Busty Boobs|Big Boobs|Giant Juggs" Priority="0">
+                The patrons love being served by ${name}.
+                Due to her skill at this job and the chance to stare at her Big Boobs.
+            </Text>
+            <Text>${name} didn't mess up any order this shift. Keeping the patrons happy.</Text>
+            <Text>One mishap today. A customer got away without paying!</Text>
+            <Text>She spends her shift greeting customers and showing them to their tables.</Text>
+            <Text>
+                Being confident in her skill, ${name} didn't make a single mistake today.
+                She also earned some tips from happy customers.
+            </Text>
+            <Text>Having a slow shift, she mostly gossip with other staff members.</Text>
+            <Text>Ensuring that every table was served, tired ${name} took a five minute breather.</Text>
+            <Text>
+                ${name} had some regulars come in.
+                She knows there order by heart and put it in as soon as she seen them walk in making them happy.
+            </Text>
+        </Message>
+        <Message Name="work.ok">
+            She made a few mistakes but overall she is okay at this.
+            <Text>
+                ${name} forgot to take an order to a table for over an hour.  But they were in a forgiving mood and stuck around.
+            </Text>
+            <Text>Trying her best, ${name} made few mistakes but otherwise she had a pleasant day.</Text>
+            <Text>She tripped over her own shoelaces when carrying out an expensive order!</Text>
+            <Text>
+                Taking orders without mistakes and getting drinks to the tables not spilling a single drop from them.
+                Today was a good day for ${name}.
+            </Text>
+            <Text>
+                When placing drink on the table she got slapped on the ass by one of the customers.
+                ${name} didn't ignore that and called him names.
+                Her behavior left the clients stunned for a moment.
+            </Text>
+            <Text>
+                ${name} spent her shift on cleaning duty.
+                Mopping the floor, wiping tables and ensuring that the bathrooms were accessible.
+                She did a decent job.
+            </Text>
+            <Text>
+                ${name} sneezed in an order she had just sat down on a table.
+                Needless to say the patron was mad and left.
+            </Text>
+        </Message>
+        <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
+            <Text>${name} wrote down the wrong orders for a few patrons resulting in them leaving.</Text>
+            <Text>
+                After being asked for the fourth time to repeat his order,
+                the irritated customer left your facility.
+                ${name} clearly isn't very good at this job.
+            </Text>
+            <Text>
+                Giving back change to a customer, ${name} made an error calculating the amount in favor of the client.
+            </Text>
+            <Text>
+                Holding the tray firmly in her hands, ${name} successfully delivered the order to designated table.
+                She was so nervous and focused on not failing this time,
+                that she jumped scared when the customer thanked her.
+            </Text>
+            <Text>${name} really hates this job. She used every opportunity to take a break.</Text>
+            <Text>Still learning to do her job, ${name} gets some orders wrong making a lot of people really angry.</Text>
+            <Text>
+                ${name} sneezed in an order she had just sat down on a table.
+                Needless to say the patron was mad and left.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            She was nervous and constantly making mistakes. She really isn't very good at this job.
+            <Text>
+                ${name} was taking orders to the wrong tables and
+                letting a lot of people walk out without paying their tab.
+            </Text>
+            <Text>
+                ${name} was presenting the ordered dish when she sneezed in it.
+                The outraged customer demanded a new serving, that he got on the house.
+            </Text>
+            <Text>
+                The tray slipped from ${name}'s hand right in front of the patron.
+                Causing her to get yelled at for being bad at her job.
+            </Text>
+            <Text>
+                Trying her best, ${name} focused on not screwing up today.
+                Surprisingly she managed not to fail at one of her appointed tasks today.
+            </Text>
+            <Text>
+                After picking up a tray full of drinks from the bar, ${name} tried to bring it to the table.
+                Her attempt failed when she slipped on wet floor that she mopped a minute ago.
+            </Text>
+            <Text>
+                ${name} was slacking on the job spending most of her shift chatting with other staff members.
+            </Text>
+            <Text>
+                ${name} spilled food all over the place and mixed orders up constantly.
+            </Text>
+        </Message>
+
+        <Message Name="post-work-text">
+            <Text Condition="Beauty>=85" Chance="20" Updates="Tips+=25">
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+            <Text Condition="Clumsy" Chance="15" Updates="Wages-=25">
+                Her clumsy nature cause her to spill food on a customer resulting in them storming off without paying.
+            </Text>
+
+            <Group Condition="Pessimist" Chance="10">
+                <Text Condition="Performance<130" Updates="Tips-=10" >
+                    Her pessimistic mood depressed the customers making them tip less.
+                </Text>
+                <Text Condition="Performance>120" Updates="Tips+=10" >
+                    ${name} was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.
+                </Text>
+            </Group>
+
+            <Group Condition="Optimist" Chance="10">
+                <Text Condition="Performance<130" Updates="Tips-=10" >
+                    ${name} was in a cheerful mood but the patrons thought she needed to work more on her services.
+                </Text>
+                <Text Condition="Performance>120" Updates="Tips+=10" >
+                    Her optimistic mood made patrons cheer up increasing the amount they tip.
+                </Text>
+            </Group>
+
+            <Group Condition="Psychic" Chance="20">
+                <Text Updates="Tips+=20" >
+                    She used her Psychic skills to know exactly what the patrons wanted to order making
+                    them happy and increasing her tips.
+                </Text>
+                <Text Updates="Tips+=20" >
+                    ${name} uses her psychic abilities to her advantage.
+                    She knows when a customer is thinking about dessert or another bottle of wine,
+                    and shows up just in time with the perfect recommendation.
+                </Text>
+            </Group>
+
+            <Group Condition="Assassin" Chance="5">
+                <Text Condition="Performance>140">
+                    A patron pissed her off but she just gave them a death stare and walked away.
+                </Text>
+                <Text Condition="Performance<150" Updates="Tips-=50;Wages-=50" >
+                    A patron pissed her off and using her Assassin skills she killed him before even thinking about it
+                    resulting in patrons storming out without paying.
+                </Text>
+            </Group>
+
+            <Group Condition="Horrific Scars" Chance="15">
+                <Text Condition="Performance<160">
+                    A patron gasped at her Horrific Scars making her uneasy. But they didn't feel sorry for her.
+                </Text>
+                <Text Condition="Performance>150" Updates="Tips+=25">
+                    A patron gasped at her Horrific Scars making her sad.
+                    Feeling bad about it as she did a wonderful job they left a good tip.
+                </Text>
+            </Group>
+
+            <Text Condition="Fleet Of Foot" Chance="30">
+                ${name} is fast on her feet, and makes great time navigating from table to table.
+                She is able to serve almost twice as many customers in her shift.
+            </Text>
+            <Text Condition="Dojikko" Chance="35">
+                ${name} accidentally sends a tray of plates crashing to the floor,
+                drawing the eyes of the entire restaurant to her.
+                She smiles and sighs with such cuteness that everyone just laughs,
+                and the customer whose dish splattered all over the tiles grins and says
+                he would be happy to wait for a replacement, and that it could happen to anyone.
+            </Text>
+            <Text Condition="Herbalism>40" Chance="5" Updates="Tips+=25">
+                Added a little something extra to the patrons order to spice it up.
+                They enjoyed it greatly and she received some nice tips.
+            </Text>
         </Message>
     </Messages>
 </Job>

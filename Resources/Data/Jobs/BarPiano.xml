@@ -30,5 +30,130 @@
         <Message Name="refuse">
             <Text>${name} refused to play piano in your bar to${shift}.</Text>
         </Message>
+        <Message Name="event.nympho-nowork">
+            <Text>${name} let lust get the better of her and she ended up missing her ${shift} shift.</Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            She plays with the grace of an angel. Customers come from miles around to listen to her play.
+            <Text>${name}'s playing brought many patrons to tears as she played a song full of sadness.</Text>
+            <Text>Nice melody fills the room when ${name} is behind the piano.</Text>
+            <Text>Knowing that she is good, ${name} played all the tunes blindfolded.</Text>
+            <Text>Being confident in her skill, ${name} played today using only one hand.</Text>
+            <Text>${name}'s soothing playing seems to glide over the noise and bustling of the bar.</Text>
+        </Message>
+
+        <Message Name="work.great">
+            She's unbelievable at this and is always getting praised by the customers for her playing skills.
+            <Text>Her playing fills the room. Some customers hum the melody under their noses.</Text>
+            <Text>After making a mistake she improvised a passage to the next song.</Text>
+            <Text>She plays without music sheets having all the songs memorized.</Text>
+            <Text>${name}'s soothing playing seems to glide over the noise and bustling of the bar.</Text>
+            <Text>
+                ${name} began to acquire her own following -
+                a small crowd of people came in just to listen to her and buy drinks
+            </Text>
+        </Message>
+
+        <Message Name="work.good">
+            Her playing is really good and gets praised by the customers often.
+            <Text>Her playing was pleasing, if bland.  Her rhythm was nice, if slightly untrained.</Text>
+            <Text>${name} doesn't have any trouble playing the piano.</Text>
+            <Text>Give ${name} any kind of music sheet and she will play it. She is really good at this.</Text>
+            <Text>When asked to play one of the more complicated tunes she gave her all.</Text>
+            <Text>The slow song ${name} played at the end of shift really had her full emotion and heart.</Text>
+        </Message>
+
+        <Message Name="work.ok">
+            She hits a few right notes but she still has room to improve.
+            <Text>While she won't win any contests, ${name} isn't a terrible pianist.</Text>
+            <Text>${name}'s performance today was good. She is a promising pianist.</Text>
+            <Text>She gets the key order right most of the time.</Text>
+            <Text>You could tell that there was something like a melody, but ${name} still needs a lot of practice.</Text>
+            <Text>
+                The slow song ${name} played at the end of shift really had her full emotion and heart.
+                A pity that she felt so bored and tired.
+            </Text>
+        </Message>
+
+        <Message Name="work.bad">
+            She almost never hits a right note. Lucky for you most of the customers are too drunk and horny to care.
+            <Text>She is terrible at this. Some customers left after she started to play.</Text>
+            <Text>You could count on the fingers of one hand the part in her performance that was clean.</Text>
+            <Text>She is bad at playing the piano.</Text>
+            <Text>${name} knows a note. Too bad it's the only one she knows and plays it over and over.</Text>
+            <Text>
+                Her playing is barely acceptable,
+                but fortunately the bustling of the bar drowns ${name} out for the most part.
+            </Text>
+        </Message>
+
+        <Message Name="work.worst">
+            She didn't play the piano so much as banged on it.
+            <Text>
+                Her audience seems paralyzed, as if they couldn't believe that a piano was capable of making such noise.
+            </Text>
+            <Text>
+                After ten seconds you wanted to grab an axe and end the instrument's misery under ${name}'s
+                attempt to play.
+            </Text>
+            <Text>Nobody else would call this random key-mashing 'playing', but ${name} thinks otherwise.</Text>
+            <Text>When ${name} started to play, the bar emptied almost instantly. This could be useful in a fire.</Text>
+            <Text>${name} banged on the piano clearly having no clue which note was which.</Text>
+        </Message>
+
+        <Message Name="post-work-text">
+            <Text Condition="Beauty>85" Chance="20">
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+            <Text Condition="Clumsy" Chance="5">
+                She used her Psychic skills to know exactly what the patrons wanted to hear her play.
+            </Text>
+
+            <Group Condition="Assassin" Chance="5">
+                <Text Condition="Performance<150">
+                    A patron bumped into the piano causing her to miss a note.
+                    This pissed her off and using her Assassin skills she killed him before even thinking about it,
+                    resulting in patrons fleeing the building.
+                </Text>
+                <Text Condition="Performance>100">
+                    A patron bumped into the piano, but with her skill she didn't miss a note.
+                    The patron was lucky to leave with his life.
+                </Text>
+            </Group>
+
+            <Text Condition="Psychic" Chance="20">
+                Her clumsy nature caused her to close the lid on her fingers making her have
+                to stop playing for a few hours.
+            </Text>
+
+            <Group Condition="Pessimist" Chance="20">
+                <Text Condition="Performance<150">
+                    Her pessimistic mood depressed the customers making them tip less.
+                </Text>
+                <Text Condition="Performance>100">
+                    ${name} was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.
+                </Text>
+            </Group>
+
+            <Group Condition="Optimist" Chance="10">
+                <Text Condition="Performance<150">
+                    ${name} was in a cheerful mood but the patrons thought she needed to work more on her on her playing.
+                </Text>
+                <Text Condition="Performance>100">
+                    Her optimistic mood made patrons cheer up increasing the amount they tip.
+                </Text>
+            </Group>
+
+            <Group Condition="Horrific Scars" Chance="15">
+                <Text Condition="Performance<160">
+                    "A patron gasped at her Horrific Scars making her uneasy. But $[he|she] didn't feel sorry for her.
+                </Text>
+                <Text Condition="Performance>150" Updates="Tips+=15">
+                    A patron gasped at her Horrific Scars making her sad.
+                    Feeling bad about it as she played so well, they left a good tip.
+                </Text>
+            </Group>
+        </Message>
     </Messages>
 </Job>

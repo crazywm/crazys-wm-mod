@@ -26,7 +26,6 @@
 #include "cGirls.h"
 #include "cRng.h"
 #include "character/sGirl.h"
-#include "TextRepo.h"
 
 class sBrothel;
 
@@ -41,6 +40,7 @@ bool IGenericJob::Work(sGirl& girl, bool is_night, cRng& rng) {
         g_LogFile.error("jobs", "Full time job was assigned for a single shift!");
     }
 
+    InitWork();
     switch (CheckWork(girl, is_night)) {
         case eCheckWorkResult::ACCEPTS:
             return DoWork(girl, is_night);
@@ -300,8 +300,12 @@ double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {
     return m_PerformanceData.eval(girl, estimate);
 }
 
-cBasicJob::cBasicJob(JOBS job, const char* xml_file) : IGenericJob(job) {
-    load_from_xml(xml_file);
+cBasicJob::cBasicJob(JOBS job, const char* xml_file) : IGenericJob(job), m_Interface(this) {
+    if(xml_file) {
+        load_from_xml(xml_file);
+    }
+
+    RegisterVariable("Performance", m_Performance);
 }
 
 void cBasicJob::apply_gains(sGirl& girl) {
@@ -352,16 +356,18 @@ void cBasicJob::load_from_xml_internal(const char* xml_file) {
     // Texts
     const auto* text_el = job_data->FirstChildElement("Messages");
     if(text_el) {
-        m_TextRepo = std::make_unique<cTextRepository>();
+        m_TextRepo = ITextRepository::create();
         m_TextRepo->load(*text_el);
+    }
+    const auto* config_el = job_data->FirstChildElement("Config");
+    if(config_el) {
+        load_from_xml_callback(*job_data);
     }
 }
 
 const std::string& cBasicJob::get_text(const std::string& prompt) const {
     assert(m_TextRepo);
-    return m_TextRepo->get_text(prompt, [this](const std::string& c) -> bool {
-        return active_girl().has_active_trait(c.c_str());
-    });
+    return m_TextRepo->get_text(prompt, m_Interface);
 }
 
 std::stringstream& cBasicJob::add_text(const std::string& prompt) {
@@ -375,4 +381,45 @@ std::stringstream& cBasicJob::add_text(const std::string& prompt) {
         assert(false);
         }, rng());
     return ss;
+}
+
+void cBasicJob::InitWork() {
+    m_Performance = GetPerformance(active_girl(), false);
+}
+
+void cBasicJob::RegisterVariable(std::string name, int& value) {
+    m_Interface.RegisterVariable(std::move(name), value);
+}
+
+bool cBasicJobTextInterface::LookupBoolean(const std::string& name) const {
+    return m_Job->active_girl().has_active_trait(name.c_str());
+}
+
+int cBasicJobTextInterface::LookupNumber(const std::string& name) const {
+    auto split_point = name.find(":");
+    auto type = name.substr(0, split_point);
+    if(type == "stat") {
+        return m_Job->active_girl().get_stat(get_stat_id(name.substr(split_point+1)));
+    } else if(type == "skill") {
+        return m_Job->active_girl().get_skill(get_skill_id(name.substr(split_point+1)));
+    } else if (type.size() == name.size()) {
+        return *m_MappedValues.at(name);
+    } else {
+
+        g_LogFile.error("job", "Unknown value category ", type, " of variable ", name);
+        throw std::invalid_argument("Unknown value category");
+    }
+}
+
+void cBasicJobTextInterface::SetVariable(const std::string& name, int value) const {
+    int* looked_up = m_MappedValues.at(name);
+    *looked_up = value;
+}
+
+void cBasicJobTextInterface::TriggerEvent(const std::string& name) const {
+    throw std::logic_error("Event triggers are not implemented yet");
+}
+
+void cBasicJobTextInterface::RegisterVariable(std::string name, int& value) {
+    m_MappedValues[std::move(name)] = &value;
 }

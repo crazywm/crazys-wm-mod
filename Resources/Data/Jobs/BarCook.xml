@@ -20,6 +20,17 @@
         <Stat Name="Intelligence" Weight="1" Max="50"/>
     </Gains>
 
+    <Config>
+        <WageFunction>
+            <Point Performance="245" Wages="170" />
+            <Point Performance="185" Wages="110" />
+            <Point Performance="145" Wages="70" />
+            <Point Performance="100" Wages="30" />
+            <Point Performance="70" Wages="10" />
+            <Point Performance="0" Wages="0" />
+        </WageFunction>
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} is assigned to work as a cook in the kitchen, preparing food for the customers.</Text>
@@ -48,31 +59,34 @@
         <Message Name="refuse">
             <Text>${name} refused to cook food in the bar to${shift}.</Text>
         </Message>
+        <Message Name="event.nympho-nowork">
+            <Text>${name} let lust get the better of her and she ended up missing her ${shift} shift.</Text>
+        </Message>
 
-        <!-- In the old version, these had an influence on the job performance -->
         <Message Name="pre-work-text">
-            <Text Condition="Chef">
+            <Text Condition="Chef" Chance="10">
                 ${name} understands the difference between a "Cook" and a "Chef."
                 She ventures away from the recipe book occasionally, spicing each dish to her own concept of perfection.
                 It is usually a great improvement.
             </Text>
-            <Text Condition="Agile">
+            <Text Condition="Agile" Chance="10">
                 ${name} looks like she is handling a dozen pots and pans at the same time without any problems!
                 She is certainly efficient.
             </Text>
-            <Text Condition="Mind Fucked">
+            <Text Condition="Mind Fucked" Chance="10">
                 ${name} works efficiently, but stares off into space with that vacant mindfucked expression of hers.
                 You would think there was nobody inside her brain at all, but sometimes, when she finishes cooking a dish,
                 she beams a maniacal grin and starts muttering about being a "good girl." "And good girls," she
                 smiles as she jams the end of the spatula into her asshole, "get dessert!"
                 She giggles, removes the spatula, and then starts using it for the next dish. That cannot be hygienic.
             </Text>
-            <Text Condition="One Hand">
+            <Text Condition="One Hand" Chance="10">
                 ${name} struggles with only having one hand in the kitchen, but makes the best of it.
             </Text>
         </Message>
 
         <Message Name="work.perfect">
+            She must be the perfect at this.
             <Text Condition="No Arms|No Hands">
                 The food is incredible! But how?! How in hell did she do it without any hands? It just.. it just boggles
                 your mind. Maybe she carries the pots with her mouth? How does she plate the food? Honestly, this whole
@@ -109,6 +123,7 @@
         </Message>
 
         <Message Name="work.great">
+            She's unbelievable at this.
             <Text Condition="No Arms|No Hands">
                 You are at a loss as to how she made such satisfying food without the use of her hands,
                 but hardly one to look a gift horse in the mouth, you accept it and move on.
@@ -148,6 +163,7 @@
         </Message>
 
         <Message Name="work.good">
+            She's good at this job.
             <Text Condition="No Arms|No Hands">
                 ${name}'s final products are surprisingly acceptable, given her lack of hands, but you can say nothing more positive about the dishes.
                 Merely satisfactory. Perhaps the patrons would be more appreciative if they knew the herculean efforts that went into their food.
@@ -180,6 +196,7 @@
         </Message>
 
         <Message Name="work.ok">
+            She made a few mistakes but overall she is okay at this.
             <Text Condition="No Arms|No Hands">
                 ${name} does about as well as you could hope for someone with no hands in a kitchen.
                 The food is acceptable enough to be served, and honestly, you are not sure you can ever expect any better than that from her.
@@ -215,6 +232,7 @@
         </Message>
 
         <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
             <Text Condition="No Arms|No Hands">
                 ${name} heroically lifts a pot from the burner with her mouth, setting it to cook on the counter.
                 She bites down on a knife handle and bobs her head back and forth to cut the vegetables.
@@ -250,6 +268,7 @@
         </Message>
 
         <Message Name="work.worst">
+            She was nervous and constantly making mistakes. She really isn't very good at this job.
             <Text Condition="No Arms|No Hands">
                 The results are what you would expect for a girl who has to carry, cut, cook, and plate everything with her mouth. It is awful.
                 You consider telling the staff to 'give her a hand, but conclude that the remark would be considered in poor taste.
@@ -280,6 +299,25 @@
                 Customers were disgusted by everything ${name} cooked, if "cooking" is the right word for it, and not a few walked away shaking their heads.
                 Any profits were destroyed by all of the wasted ingredients. At least the rats will eat well tonight,
                 because ${name} has to throw away practically everything she attempted.
+            </Text>
+        </Message>
+
+        <Message Name="post-work-text">
+            <Text Condition="Clumsy" Chance="15" Updates="Wages-=15">
+                Customers might wonder what that occasional cacophony of breaking glass coming from the kitchen is all
+                about. Not you, though. You know that ${name} is slowly destroying your supply of dishes with her
+                clumsiness. At least it was not another grease fire.
+            </Text>
+            <Text Condition="Homeless" Chance="15" Updates="Wages-=25">
+                ${name} has lived on the streets for so long that certain habits become unbreakable. When she is
+                surrounded by food, for example, she usually cannot help but fill her pockets with leftovers and morsels
+                that she will hoard for later. This may explain why each dish seems to need more ingredients than usual
+                to prepare.
+            </Text>
+            <Text Condition="Blind"  Updates="Wages-=10">
+                Some foodstuffs tend to feel the same way, and even smell the same, which is usually not a problem for a
+                competent chef. ${name} is blind, however, so she.. and also the customers.. may be surprised to find
+                out what ends up in the food.
             </Text>
         </Message>
     </Messages>

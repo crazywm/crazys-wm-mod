@@ -21,6 +21,8 @@
 #define SEEN_UTILS_DOCTEST_UTILS_2020_10_15_ 1
 
 #include <vector>
+#include <string>
+#include <sstream>
 
 #include "doctest.h"
 

@@ -24,9 +24,10 @@
 #include <vector>
 #include <memory>
 #include <sstream>
+#include <unordered_map>
 #include <cJobManager.h>
 #include "Constants.h"
-#include "TextRepo.h"
+#include "text/repo.h"
 #include "JobData.h"
 #include <boost/variant.hpp>
 
@@ -91,29 +92,44 @@ protected:
     bool is_night_shift() const;
 
 private:
+    virtual void InitWork() {}
     virtual bool DoWork(sGirl& girl, bool is_night) = 0;
     virtual eCheckWorkResult CheckWork(sGirl& girl, bool is_night) = 0;
 
     cRng* m_Rng;
     sGirl* m_ActiveGirl;
     bool m_CurrentShift;
+
     const cJobManager* m_JobManager;
 
 protected:
     sJobInfo m_Info;
 };
 
-struct sBasicJobData {
-    int XP;
-    int Skill;
+class cBasicJob;
+
+class cBasicJobTextInterface : public IInteractionInterface {
+public:
+    cBasicJobTextInterface() = delete;
+    explicit cBasicJobTextInterface(cBasicJob* job) : m_Job(job) {}
+
+    bool LookupBoolean(const std::string& name) const final;
+
+    int LookupNumber(const std::string& name) const final;
+
+    void TriggerEvent(const std::string& name) const final;
+    void SetVariable(const std::string& name, int value) const final;
+
+    void RegisterVariable(std::string name, int& value);
+private:
+    std::unordered_map<std::string, int*> m_MappedValues;
+    cBasicJob* m_Job;
 };
 
 class cBasicJob : public IGenericJob {
 public:
-    using IGenericJob::IGenericJob;
+    cBasicJob(JOBS job, const char* xml_file = nullptr);
     double GetPerformance(const sGirl& girl, bool estimate) const override;
-
-    cBasicJob(JOBS job, const char* xml_file);
 
 protected:
     void apply_gains(sGirl& girl);
@@ -121,14 +137,24 @@ protected:
     void load_from_xml(const char* xml_file);
     const std::string& get_text(const std::string& prompt) const;
     std::stringstream& add_text(const std::string& prompt);
+
+    // processing variables
+    void InitWork() override;
+    void RegisterVariable(std::string name, int& value);
+
+    int m_Performance;
+
 private:
     cJobPerformance m_PerformanceData;
     cJobGains       m_Gains;
-    sBasicJobData   m_Data;
 
-    std::unique_ptr<cTextRepository> m_TextRepo;
+    std::unique_ptr<ITextRepository> m_TextRepo;
+    cBasicJobTextInterface m_Interface;
 
     void load_from_xml_internal(const char* xml_file);
+    virtual void load_from_xml_callback(const tinyxml2::XMLElement& job_element) {};
+
+    friend class cBasicJobTextInterface;
 };
 
 void RegisterCraftingJobs(cJobManager& mgr);

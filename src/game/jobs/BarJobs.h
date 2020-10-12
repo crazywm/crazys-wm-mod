@@ -21,6 +21,7 @@
 #define WM_BARJOBS_H
 
 #include "GenericJob.h"
+#include "utils/piecewise_linear.h"
 
 struct sBarJobData {
     Action_Types Action;
@@ -34,8 +35,16 @@ public:
 
 protected:
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
-    void HandleGains(sGirl& girl, int enjoy, int jobperformance, int fame);
+    void HandleGains(sGirl& girl, int enjoy, int fame);
     sBarJobData m_Data;
+
+    PiecewiseLinearFunction PerformanceToWages;
+
+    void load_from_xml_callback(const tinyxml2::XMLElement& job_element) override;
+    void perf_text();
+
+    int m_Wages;
+    int m_Tips;
 };
 
 #endif //WM_BARJOBS_H

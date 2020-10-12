@@ -28,12 +28,201 @@
         </GainTrait>
     </Gains>
 
+    <Config>
+        <WageFunction>
+            <Point Performance="245" Wages="170" />
+            <Point Performance="185" Wages="110" />
+            <Point Performance="145" Wages="70" />
+            <Point Performance="100" Wages="30" />
+            <Point Performance="70" Wages="10" />
+            <Point Performance="0" Wages="0" />
+        </WageFunction>
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} worked as a singer in the bar.</Text>
         </Message>
         <Message Name="refuse">
             <Text>${name} refused to sing in your bar to${shift}.</Text>
+        </Message>
+        <Message Name="event.nympho-nowork">
+            <Text>${name} let lust get the better of her and she ended up missing her ${shift} shift.</Text>
+        </Message>
+
+        <Message Name="song-choice">
+            She sang
+            <!-- Without traits, select randomly from these -->
+            <Text>Goth Rock songs</Text>
+            <Text>Death Metal songs</Text>
+            <Text>Classical songs</Text>
+            <Text>Metal songs</Text>
+            <Text>Rock songs</Text>
+            <Text>Country songs</Text>
+            <Text>Pop songs</Text>
+
+            <!-- But certain traits make her choose certain songs -->
+            <Text Condition="Bimbo" Chance="60">Pop songs</Text>
+            <Text Condition="Aggressive" Chance="60">Death Metal songs</Text>
+            <Text Condition="Elegant" Chance="60">Classical songs</Text>
+            <Text Condition="Country Gal|Farmers Daughter" Chance="60">Country songs</Text>
+        </Message>
+
+        <Message Name="song-quality">
+            <Text Condition="Performance>=235">perfectly</Text>
+            <Text Condition="Performance>=175&amp;Performance<255">great</Text>
+            <Text Condition="Performance>=135&amp;Performance<195">good</Text>
+            <Text Condition="Performance>=90&amp;Performance<155">decently</Text>
+            <Text Condition="Performance>=50&amp;Performance<110">poorly</Text>
+            <Text Condition="Performance<70">very poorly</Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            She must have the voice of an angel, the customers go on and on about her and always come to listen when she sings.
+            <Text>${name}'s voice brought many patrons to tears as she sang a song full of sadness.</Text>
+            <Text>Wanting to have some fun she encouraged some listeners to sing-along with her.</Text>
+            <Text>${name}'s soothing voice seems to glide over the noise and bustling of the bar.</Text>
+            <Text>
+                Feeling a little blue she only sang sad ballads today.
+                You could swear that some customers were crying from the emotion.
+            </Text>
+            <Text>
+                The whole room was quiet when ${name} was singing.
+                After she finished, the gathered listeners applauded for minutes.
+            </Text>
+        </Message>
+
+        <Message Name="work.great">
+            She's unbelievable at this and is always getting praised by the customers for her voice.
+            <Text>Her performance was really great, giving the listeners a pleasant time.</Text>
+            <Text>${name}'s soothing voice seems to glide over the noise and bustling of the bar.</Text>
+            <Text>
+                ${name} begun to acquire her own following -
+                a small crowd of people came in just to listen to her and buy drinks
+            </Text>
+            <Text>
+                When ${name} got on stage the crowd went wild.
+                She didn't disappoint her fans giving one of the best performances in her life.
+            </Text>
+        </Message>
+
+        <Message Name="work.good">
+            Her voice is really good and gets praised by the customers often.
+            <Text>Her singing was pleasing, if bland.  Her voice was nice, if slightly untrained.</Text>
+            <Text>She sang every part of the song clearly. ${name} is a really good singer.</Text>
+            <Text>This wasn't the best performance of her life time, but in general she did well.</Text>
+            <Text>She is good at this. With some work she could be a star.</Text>
+            <Text>The slow song ${name} sang at the end of shift really had her full emotion and heart.</Text>
+        </Message>
+
+        <Message Name="work.ok">
+            She hits a few right notes but she still has room to improve.
+            <Text>While she won't win any contests, ${name} isn't a terrible singer.</Text>
+            <Text>She didn't sing every part clearly but overall she was good.</Text>
+            <Text>Maybe she isn't the best but at least she doesn't scare away the customers.</Text>
+            <Text>
+                The slow song ${name} sang at the end of shift really had her full emotion and heart.
+                A pity she was bored and tired.
+            </Text>
+        </Message>
+
+        <Message Name="work.bad">
+            She almost never hits a right note. Lucky for you most of your customers are drunks.
+            <Text>
+                Her singing is barely acceptable, but fortunately the bustling of the bar drowns ${name} out
+                for the most part.
+            </Text>
+            <Text>After hearing today's performance, you order your guards to gag her for a week.</Text>
+            <Text>Some customers left immediately after ${name} started to sing.</Text>
+            <Text>${name} singing was awful. Not a single line was sung clearly.</Text>
+            <Text>${name}'s voice is all over the place as she sings.</Text>
+        </Message>
+
+        <Message Name="work.worst">
+            Her voice sounds like nails on a chalk board. She could be the worst singer ever.
+            <Text>It's tragic, ${name} really can't sing.</Text>
+            <Text>${name} singing was awful. Angry listeners throw random objects at her.</Text>
+            <Text>Hearing ${name}'s singing gave you a thought to use it as a new torture method.</Text>
+            <Text>${name} bellowed out a melody that caused the bar to go into a panic clearing it quickly.</Text>
+            <Text>
+                Her audience seems paralyzed, as if they couldn't believe that a human body could produce those sounds,
+                much less call them "singing".
+            </Text>
+            <Text>
+                She is just $[terrible|horrible|awful].
+                You could swear that your singing under the shower is far better.
+            </Text>
+            <Text>
+                ${name} was the first to get on stage before today's star performance.
+                Seeing the gathered crowd, she froze up being able to let out a single word.
+            </Text>
+        </Message>
+
+        <Message Name="post-work-text">
+            <Text Condition="Beauty>=85" Chance="20" Updates="Tips+=15" >
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+            <Text Condition="Charisma>=80" Chance="20" Updates="Tips+=15" >
+                Her charisma shone through as she chatted to customers between songs.
+            </Text>
+            <Text Condition="Clumsy" Chance="5" Updates="Wages-=15" >
+                Her clumsy nature caused her to trip coming on stage causing the crowed to go wild with laughter.
+                She went to the back and hide refusing to take the stage for her song set.
+            </Text>
+            <Group Condition="Pessimist" Chance="10">
+                <Text Condition="Performance<130" Updates="Tips-=10" >
+                    Her pessimistic mood depressed the customers making them tip less.
+                </Text>
+                <Text Condition="Performance>120" Updates="Tips+=10" >
+                    ${name} was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.
+                </Text>
+            </Group>
+
+            <Group Condition="Optimist" Chance="10">
+                <Text Condition="Performance<130" Updates="Tips-=10" >
+                    ${name} was in a cheerful mood but the patrons thought she needed to work more on her on her singing.
+                </Text>
+                <Text Condition="Performance>120" Updates="Tips+=10" >
+                    Her optimistic mood made patrons cheer up increasing the amount they tip.
+                </Text>
+            </Group>
+
+            <Text Condition="Psychic" Chance="20" Updates="Tips+=15" >
+                She knew just what songs to sing to get better tips by using her Psychic powers.
+            </Text>
+            <Group Condition="Assassin" Chance="5">
+                <Text Condition="Performance<160" Updates="Wages-=50" >
+                    A patron booed her. She saw red and using her Assassin skills killed him instantly.
+                    Other patrons fled out without paying.
+                </Text>
+                <Text Condition="Performance>150" >
+                    A patron booed her. But was drunk and started crying a moment later so she ignored them.
+                </Text>
+            </Group>
+
+            <Group Condition="Horrific Scars" Chance="15">
+                <Text Condition="Performance<160" >
+                    A patron gasped and pointed at her Horrific Scars making her uneasy. But they didn't feel sorry for her.
+                </Text>
+                <Text Condition="Performance>150" Updates="Tips+=15">
+                    A patron gasped and pointed at her Horrific Scars making her sad.
+                    Her singing was so wonderful that at the end of the performance they personally apologized and
+                    thanked her, leaving her a good tip.
+                </Text>
+            </Group>
+
+            <Group Condition="Fame>75" Chance="25">
+                <Text Condition="Idol" Updates="Wages+=15;Tips+=25">
+                    Today a large group of ${name}'s followers came to listen to her sing,
+                    leaving very generous tips behind.
+                </Text>
+                <Text Updates="Wages+=5;Tips+=15">
+                    ${name} is quite popular in Crossgate so a small crowd of people came in just to listen to her.
+                </Text>
+            </Group>
+            <Text Condition="Idol" Chance="25" Updates="Wages+=10;Tips+=20">
+                A group of ${name}'s fans came to listen to her sing, leaving good tips behind.
+            </Text>
         </Message>
     </Messages>
 </Job>

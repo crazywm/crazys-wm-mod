@@ -25,12 +25,309 @@
         <Skill Name="Brewing" Weight="1" />
     </Gains>
 
+    <Config>
+        <WageFunction>
+            <Point Performance="245" Wages="170" />
+            <Point Performance="185" Wages="110" />
+            <Point Performance="145" Wages="70" />
+            <Point Performance="100" Wages="30" />
+            <Point Performance="70" Wages="10" />
+            <Point Performance="0" Wages="0" />
+        </WageFunction>
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} worked as a barmaid.</Text>
         </Message>
         <Message Name="refuse">
             <Text>${name} refused to work as a barmaid in your bar to${shift}.</Text>
+        </Message>
+        <Message Name="event.nympho-nowork">
+            <Text>${name} let lust get the better of her and she ended up missing her ${shift} shift.</Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            She must be the perfect bartender, customers go on and on about her and always come to see her when she works.
+            <Text>
+                ${name} was sliding drinks all over the bar without spilling a drop she put on quite a show for the patrons.
+            </Text>
+            <Text>
+                She agree to play a bar game with a client.
+                Knowing every type of bar game there is, ${name} easily wins.
+                The customer pays double for his drinks and leaves the bar saying that he will win next time.
+            </Text>
+            <Text>
+                ${name} made an 11 layer drink like it was nothing. The amazed customer left her a big tip!
+            </Text>
+            <Text>
+                She pours eleven 100ml shots from a single, one litre bottle. Now there's a good barmaid!
+            </Text>
+            <Text>
+                ${name} noticed that a client was upset about something.
+                After a pleasant conversation she managed to cheer him up.
+                The client left full of willpower, leaving a generous tip behind.
+            </Text>
+            <Text>
+                Bottles fly high under the ceiling when ${name} is pouring drinks for the customers.
+                The amazed crowd loudly applaudes every caught bottle and leave big tips for the girl.
+            </Text>
+            <Text>
+                ${name} mixed up what some patrons called the perfect drink.
+                It got them drunk faster then anything they had before.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            She's unbelievable at this and is always getting praised by the customers for her work.
+            <Text>${name} had the bar filled with happy drunks.  She didn't miss a beat all shift.</Text>
+            <Text>
+                Today wasn't really exciting for ${name}.
+                From boredom she spent some time trying to make more complicated drinks from the menu.
+            </Text>
+            <Text>
+                ${name} propose to a client to play a drinking game with her.
+                If she loses she will serve nude to the end of her shift,
+                but if she wins he will be paying double. Some other patrons join the wager on the same terms.
+                After a few hours the last of them drops drunk and ${name} cleaned up on money.
+            </Text>
+            <Text>
+                When taking orders from customers, ${name} talked them into buying more expensive drinks,
+                that let you make a solid profit today.
+            </Text>
+            <Text>
+                ${name} is great at this job. At happy hour she was irreplaceable getting all the orders right.
+                Later on she even prevented a fight between customers.
+            </Text>
+            <Text>
+                People love seeing ${name} work and they pour into the bar during her shift.
+                She mixes wonderful drinks and doesn't mess orders up so they couldn't be happier.
+            </Text>
+            <!-- TODO reference special-promotion as an option -->
+        </Message>
+        <Message Name="work.good">
+            <Text>${name} didn't mix up any orders and kept the patrons drunk and happy.</Text>
+            <Text>${name} didn't make any mistakes today. She even earned some tips from happy customers.</Text>
+            <Text>Her shift as a barmaid goes smoothly. ${name} feels more confident in her skills after today.</Text>
+            <Text>${name} had some regulars come in.  She knows just how to keep them happy and spending gold.</Text>
+            <Text>
+                ${name} spent more time talking with customers than filling their glasses.
+                She didn't earn much today.
+            </Text>
+            <Text>
+                When mixing one of the more complicated cocktails,
+                ${name} noticed that she made a mistake and remakes the order.
+                She wasted some alcohol, but the customer has happy with his drink.
+            </Text>
+            <Text>
+                ${name} certainly knows what she is doing behind the bar counter.
+                She spends her shift without making any mistakes and earning a lot from tips.
+            </Text>
+        </Message>
+        <Message Name="work.good">
+            She made a few mistakes but overall she is okay at this.
+            <Text>
+                ${name} mixed up a few drink orders...  But they ordered the same drink so it didn't matter too much.
+            </Text>
+            <Text>${name} made few mistakes but none of them were lethal.</Text>
+            <Text>
+                Trying her best she accidentally knocks down a bottle containing one of the bars most expensive liquors.
+            </Text>
+            <Text>
+                Maybe she isn't the best and fastest, but at least every drop of a drink that she pours stays in the glass.
+            </Text>
+            <Text>
+                She agreed to play a bar game with a client.
+                ${name} loses and the client spends the rest of his stay drinking on the house.
+            </Text>
+            <Text>
+                ${name} focused all her attention on taking orders and making drinks.
+                Her attitude wasn't too appealing to clients.
+                Some customers left feeling mistreated and unhappy.
+            </Text>
+            <Text>
+                ${name} wasted a few drinks by forgetting to put ice in them but it wasn't anything major.
+            </Text>
+        </Message>
+        <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
+            <Text>${name} mixed up people's drink orders...  When she only had four patrons drinking.</Text>
+            <Text>
+                ${name} is having a bad day and she isn't trying to hide it.
+                Her bad attitude shows and rubs off on the customers, leaving a negative impression on them.
+            </Text>
+            <Text>
+                Not being very good at this, she makes few mistakes. ${name} feels that she didn't improve today.
+            </Text>
+            <Text>
+                Wanting to impress a client, she throws a bottle of an expensive liquor into the air.
+                Trying to catch it behind her back, ${name} fails.
+            </Text>
+            <Text>
+                One patron, looking for encouragement or understanding from the barmaid,
+                unfortunately approached ${name}. After a short conversation, he left crying.
+            </Text>
+            <Text>
+                ${name} tried to tap a new keg of beer; consequently she spends the rest of her shift mopping the floor.
+            </Text>
+            <Text>
+                ${name} gave someone a drink she mixed that made them sick.
+                It was nothing but coke and ice so who knows how she did it.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            She was nervous and constantly making mistakes. She really isn't very good at this job.
+            <Text>
+                ${name} was giving orders to the wrong patrons and letting a lot people walk out without paying their tab.
+            </Text>
+            <Text>
+                She mixed the ordered cocktails in the wrong proportions,
+                making the clients throw up from the intoxication after just one shot!
+                Besides swearing at her and yelling that they will never come here again, they left without paying.
+            </Text>
+            <Text>
+                You can see that standing behind the bar isn't her happy place.
+                Being tense she made a lot of mistakes today.
+            </Text>
+            <Text>
+                Not having any experience at this kind of job, ${name} tries her best.. Regrettably without results.
+            </Text>
+            <Text>
+                She gets in a drinking game with a customer.
+                Being a total lightweight, she gets drunk quickly and passes out on the job.
+            </Text>
+            <Text>
+                She spends most of her shift flirting with one client and not paying much attention to the others.
+                What's worse, the guy she was flirting with skips without paying the bill!
+            </Text>
+            <Text>
+                ${name} spilled drinks all over the place and mixed the wrong stuff when trying to make drinks for people.
+            </Text>
+        </Message>
+        <!-- TODO this doesn't work yet -->
+        <Message Name="special-promotion">
+            Her shift was slow and hardly anyone was buying. ${name} took the initiative, announcing a special promotion.
+            <Text Condition="Flat Chest|Petite Breasts|Small Boobs" Priority="0">
+                Every third shot ordered by a client could be drunk from her navel.
+            </Text>
+            <Text Condition="Titanic Tits|Abnormally Large Boobs|Massive Melons" Priority="0">
+                Every pitcher ordered She would pour from between her breasts.
+            </Text>
+            <Text>
+                Every third shot ordered by a client could be drunk from a shot-glass between her breasts.
+            </Text>
+            The promotion was such a success that you almost run out of booze.
+        </Message>
+
+        <Message Name="post-work-text">
+            <Text Condition="Beauty>=85" Chance="20" Updates="Tips+=25">
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+            <Text Condition="Beauty>=99" Chance="5" Updates="Tips+=50">
+                ${name} looked absolutely stunning during her shift and was unable to hide it.
+                Instead of her ass or tits, the patrons couldn't take their eyes off her face,
+                and spent a lot more than usual on tipping her.
+            </Text>
+            <Text Condition="Charisma>=85" Chance="20" Updates="Tips+=35">
+                ${name} surprised a couple of gentlemen discussing some complicated issue by her insightful comments
+                when she was taking her order.
+                They decided her words were worth a heavy tip.
+            </Text>
+            <Text Condition="Intelligence<30" Chance="20" Updates="Wages-=25">
+                ${name} got confused when calculating the tabs,
+                and seems to have damn near given away most of the alcohol.
+            </Text>
+            <Text Condition="Clumsy" Chance="15" Updates="Wages-=25">
+                Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.
+            </Text>
+            <Group Condition="Pessimist" Chance="10">
+                <Text Condition="Performance<130" Updates="Tips-=10" >
+                    Her pessimistic mood depressed the customers making them tip less.
+                </Text>
+                <Text Condition="Performance>120" Updates="Tips+=10" >
+                    ${name} was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.
+                </Text>
+            </Group>
+            <Group Condition="Optimist" Chance="10">
+                <Text Condition="Performance<130" Updates="Tips-=10" >
+                    ${name} was in a cheerful mood but the patrons thought she needed to work more on her services.
+                </Text>
+                <Text Condition="Performance>120" Updates="Tips+=10" >
+                    Her optimistic mood made patrons cheer up increasing the amount they tip.
+                </Text>
+            </Group>
+            <Text Condition="Psychic" Chance="20" Updates="Tips+=15" >
+                She used her Psychic skills to know exactly what the patrons wanted to order and when to refill their
+                mugs, keeping them happy and increasing tips.
+            </Text>
+            <Group Condition="Assassin" Chance="5">
+                <Text Condition="Performance>140">
+                    A patron pissed her off but she just gave them a death stare and walked away.
+                </Text>
+                <Text Condition="Performance<150" Updates="Tips-=50;Wages-=50" >
+                    A patron pissed her off and using her Assassin skills she killed him before she even realised.
+                    In the chaos that followed a number of patrons fled without paying.
+                </Text>
+            </Group>
+
+            <Group Condition="Horrific Scars" Chance="15">
+                A patron gasped at her Horrific Scars making her sad.
+                <Text Condition="Performance<160" >
+                    But they didn't feel sorry for her.
+                </Text>
+                <Text Condition="Performance>150" Updates="Tips+=25">
+                     Feeling bad about it as she did a wonderful job they left a good tip.
+                </Text>
+            </Group>
+
+            <Group Condition="Morality>=80" Chance="20">
+                <Text Updates="Tips+=35">
+                    During her shift ${name} spotted a depressed-looking lone man sinking his sorrows in alcohol.
+                    She spent a short while cheering him up. Surprised with her kindness,
+                    the client left her a generous tip.
+                </Text>
+                <Text Updates="Tips+=25">
+                    One of the patrons paid way too much for his order. When ${name} quickly pointed out his mistake,
+                    he said not to worry about it and told her to keep the extra as a reward for her honesty.
+                </Text>
+            </Group>
+
+            <Group Condition="Morality<=-20" Chance="20">
+                <Text Updates="Tips+=35">
+                    During her shift, ${name} spotted a lone fellow passed out from alcohol alone at a table in a corner,
+                    his wallet bulging out of his pocket. Without a second thought,
+                    she discreetly snatched it out and claimed for herself.
+                </Text>
+                <Text Updates="Tips+=25">
+                    One of the patrons paid way too much for his order...
+                    and ${name} didn't really feel like pointing it out,
+                    considering the extra money a generous tip.
+                </Text>
+                <Text Updates="Tips-=15">
+                    ${name} responded to one of the vulgar remarks by a client in a much more vulgar way.
+                    Needless to say, this didn't earn her any favors with the patrons that shift,
+                    and her tips were a bit less than usual.
+                </Text>
+            </Group>
+
+            <Group Condition="Dignity<=-20" Chance="20">
+                <Text Condition="Morality<=-20" Updates="Tips+=40">
+                    A drunk patron suddenly walked up to ${name} and just started groping her body.
+                    Instead of pushing him away immediately,
+                    ${name} allowed him to take his time with her tits and butt while she helped herself to his
+                    pockets and all the money inside them.
+                    The rowdy client left with a dumb glee on his face,
+                    probably to find out his fondling was much, much overpriced.
+                </Text>
+                <Text Updates="Tips+=15">
+                    When taking an order, ${name} made sure to lean in really close for the client to get a full view of
+                    her cleavage. Giving him an eyefull of tits was promptly rewarded with some extra cash in tips.
+                </Text>
+                <Text Updates="Tips+=20">
+                    One of the rowdier clients gently slapped the butt of ${name} when she was passing through.
+                    Her coy giggle only encouraged more clients to occasionally fondle her butt through the rest of her work,
+                    which earned her some extra tips.
+                </Text>
+            </Group>
         </Message>
     </Messages>
 </Job>

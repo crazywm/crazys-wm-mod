@@ -145,7 +145,6 @@ set(SRC cEvents.cpp
         cGold.cpp
         cInventory.cpp
         cJobManager.cpp
-        jobs/TextRepo.cpp
         cNameList.cpp
         cObjectiveManager.cpp
         Constants.cpp
@@ -182,7 +181,7 @@ target_link_libraries(WhoreMaster PUBLIC WmGameObjects)
 add_executable(WhoreMasterFuzz $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> fuzzmain.cpp)
 target_link_libraries(WhoreMasterFuzz PUBLIC WmGameObjects)
 
-add_executable(WhoreMasterTest $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> unittest.cpp)
+add_executable(WhoreMasterTest $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> unittest.cpp ../engine/text/conditions_tests.cpp)
 target_link_libraries(WhoreMasterTest PUBLIC WmGameObjects)
 
 set_target_properties(WhoreMaster WhoreMasterFuzz WhoreMasterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
