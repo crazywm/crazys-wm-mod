@@ -30,7 +30,6 @@
 #include "character/sGirl.h"
 #include "character/cCustomers.h"
 #include "cInventory.h"
-#include "interface/cFont.h"
 #include "CLog.h"
 #include "xml/util.h"
 #include "scripting/GameEvents.h"
@@ -39,6 +38,7 @@
 
 #include "utils/DirPath.h"
 #include "utils/FileList.h"
+#include "utils/string.hpp"
 #include "character/traits/ITraitSpec.h"
 #include "Inventory.h"
 #include "character/traits/ITraitsCollection.h"
@@ -497,34 +497,6 @@ void cGirls::EndDayGirls(IBuilding& brothel, sGirl& girl)
     if (g_Dice.percent(5))    girl.upd_skill(SKILL_ANIMALHANDLING, -1);
     if (g_Dice.percent(5))    girl.upd_skill(SKILL_COOKING, -1);
 }
-
-std::string process_message(const sGirl& girl, std::string message) {
-    // for now, just replace ${name} with the girl's name
-    if(message.find("${name}") == std::string::npos) {
-        return std::move(message);
-    }
-
-    std::string result;
-    result.reserve(message.size() + 1024);
-    auto r = message.cbegin();
-    auto w = std::back_inserter(result);
-    // TODO this is usafe, and generally not nice. Maybe rewrite using regex
-    while(true) {
-        // first, copy the part until the next ${name}
-        auto next = message.find("${name}", std::distance(message.cbegin(), r));
-        if(next == std::string::npos) {
-            std::copy(r, message.cend(), w);
-            break;
-        } else {
-            std::copy(r, message.cbegin() + next, w);
-            // then write the name
-            std::copy(girl.FullName().begin(), girl.FullName().end(), w);
-            r = message.cbegin() + next + 7;
-        }
-    }
-    return std::move(result);
-}
-
 
 // ----- Add remove
 
@@ -2639,7 +2611,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     }    //end switch
 
     auto result = girl->CallScriptFunction(event, customer);
-    message += process_message(*girl, boost::get<std::string>(result)) + '\n';
+    message += interpolate_string(boost::get<std::string>(result), [girl](const std::string& pattern) -> std::string {
+        if(pattern == "name") {
+            return girl->FullName();
+        }
+        throw std::runtime_error("Invalid pattern " + pattern);
+    }, g_Dice) + '\n';
 
 
     message += (SexType == SKILL_GROUP) ? "\nThe customers " : "\nThe customer ";

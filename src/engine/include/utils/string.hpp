@@ -24,8 +24,10 @@
 #include <cctype>
 #include <string>
 #include <algorithm>
+#include <functional>
 #include <cstring>
 #include <boost/algorithm/string/predicate.hpp>
+class cRng;
 
 inline std::string tolower(std::string str) {
     std::transform(begin(str), end(str), begin(str), [](char c) { return std::tolower(c); });
@@ -65,5 +67,18 @@ inline std::size_t case_insensitive_hash(const char* str)
 }
 
 using boost::algorithm::starts_with;
+
+/*!
+ * Given a `text_template` that contains replacement specifiers of the form `${...}` and alternatives `$[...],
+ * this template is output into `target` with the replacements chosen by `lookup`.
+ * The return of lookup is allowed to contain a replacement again, which will be handled
+ * recursively. However, it is not possible to form new replacements dynamically.
+ */
+void interpolate_string(std::ostream& target, const std::string& text_template,
+                        const std::function<std::string(const std::string&)>& lookup, cRng& random);
+
+/// interpolates a string and returns the result.
+std::string interpolate_string(const std::string& text_template,
+                               const std::function<std::string(const std::string&)>& lookup, cRng& random);
 
 #endif //CRAZYS_WM_MOD_STRING_HPP

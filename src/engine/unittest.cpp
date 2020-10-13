@@ -2,6 +2,7 @@
 #include "doctest.h"
 #include "CLog.h"
 #include "sConfig.h"
+#include "cRng.h"
 
 class cScreenGetInput;
 
@@ -9,3 +10,4 @@ class cScreenGetInput;
 CLog g_LogFile;
 cConfig cfg;
 cScreenGetInput* g_GetInput = nullptr;
+cRng g_Dice;

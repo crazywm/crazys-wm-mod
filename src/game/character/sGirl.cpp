@@ -14,6 +14,7 @@
 #include "scripting/cScriptManager.h"
 #include "xml/util.h"
 #include "xml/getattr.h"
+#include "utils/string.hpp"
 #include "Inventory.h"
 #include "traits/ITraitsCollection.h"
 #include "predicates.h"
@@ -1424,9 +1425,14 @@ double sGirl::job_performance(JOBS job, bool estimate) const {
     return job_handler->GetPerformance(*this, estimate);
 }
 
-extern std::string process_message(const sGirl& girl, std::string message);
 void sGirl::AddMessage(std::string message, int nImgType, EventType event) {
-    m_Events.AddMessage(process_message(*this, std::move(message)), nImgType, event);
+    m_Events.AddMessage(interpolate_string(message,
+                                           [this](const std::string& pattern) -> std::string {
+        if(pattern == "name") {
+            return this->FullName();
+        }
+        throw std::runtime_error("Invalid pattern " + pattern);
+        }, g_Dice), nImgType, event);
 }
 
 const DirPath& sGirl::GetImageFolder() const {
