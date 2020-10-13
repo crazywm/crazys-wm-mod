@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12)
 
 set(SRC CLog.cpp utils/DirPath.cpp utils/FileList.cpp sConfig.cpp utils/cKeyValueStore.cpp)
 
@@ -35,17 +35,19 @@ SET(XML_SRC xml/getattr.cpp xml/util.cpp)
 
 find_package(FFMPEG REQUIRED)
 
-add_library(WMEngine STATIC ${SRC} ${WIDGETS_SRC} ${INTERFACE_SRC} ${XML_SRC})
-target_link_libraries(WMEngine PUBLIC SDL2::SDL2 lua::lua Boost::headers tinyxml2 FFMPEG::FFMPEG)
-target_link_libraries(WMEngine PRIVATE SDL2::TTF SDL2::Image)
-set_target_properties(WMEngine PROPERTIES CXX_STANDARD 14)
-
+add_library(WMEngineObjects OBJECT ${SRC} ${WIDGETS_SRC} ${INTERFACE_SRC} ${XML_SRC})
+target_link_libraries(WMEngineObjects PUBLIC SDL2::SDL2 lua::lua Boost::headers tinyxml2 FFMPEG::FFMPEG)
+target_link_libraries(WMEngineObjects PRIVATE SDL2::TTF SDL2::Image doctest::doctest)
+set_target_properties(WMEngineObjects PROPERTIES CXX_STANDARD 14)
 if (UNIX)
-    target_compile_definitions(WMEngine PUBLIC LINUX=1)
+	target_compile_definitions(WMEngineObjects PUBLIC LINUX=1)
 else()
-	target_link_libraries(WMEngine PRIVATE shlwapi)
+	target_link_libraries(WMEngineObjects PRIVATE shlwapi)
 endif(UNIX)
 
-# Long-term goal: make the first one PRIVATE
-target_include_directories(WMEngine PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(WMEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(WMEngineObjects PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(WMEngineObjects PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+
+add_library(WMEngine STATIC $<TARGET_OBJECTS:WMEngineObjects>)
+target_link_libraries(WMEngine PUBLIC WMEngineObjects)

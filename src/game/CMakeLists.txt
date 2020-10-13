@@ -167,17 +167,16 @@ set(SRC cEvents.cpp
         combat/combatant.cpp
         )
 
-add_executable(WhoreMaster ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${SRC} main.cpp)
-target_link_libraries(WhoreMaster PUBLIC WMEngine pthread)
-set_target_properties(WhoreMaster PROPERTIES CXX_STANDARD 14 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
-target_include_directories(WhoreMaster PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-
-add_executable(WhoreMasterFuzz ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${SRC} fuzzmain.cpp)
-target_link_libraries(WhoreMasterFuzz PUBLIC WMEngine pthread)
-set_target_properties(WhoreMasterFuzz PROPERTIES CXX_STANDARD 14 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
-target_include_directories(WhoreMasterFuzz PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-
-
+add_library(WmGameObjects OBJECT ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${SRC})
+target_link_libraries(WmGameObjects PUBLIC WMEngine pthread doctest::doctest)
+set_target_properties(WmGameObjects PROPERTIES CXX_STANDARD 14 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
+target_include_directories(WmGameObjects PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 if (UNIX)
-    target_compile_definitions(WhoreMaster PUBLIC LINUX=1)
+    target_compile_definitions(WmGameObjects PUBLIC LINUX=1)
 endif(UNIX)
+
+add_executable(WhoreMaster $<TARGET_OBJECTS:WmGameObjects> main.cpp)
+target_link_libraries(WhoreMaster PUBLIC WmGameObjects)
+
+add_executable(WhoreMasterFuzz $<TARGET_OBJECTS:WmGameObjects> fuzzmain.cpp)
+target_link_libraries(WhoreMasterFuzz PUBLIC WmGameObjects)
