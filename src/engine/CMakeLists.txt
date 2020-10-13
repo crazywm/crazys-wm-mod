@@ -5,6 +5,7 @@ set(SRC CLog.cpp
 		utils/FileList.cpp
 		sConfig.cpp
 		utils/cKeyValueStore.cpp
+		utils/string.cpp
 		cRng.cpp)
 
 set(INTERFACE_SRC
