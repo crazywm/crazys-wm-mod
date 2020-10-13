@@ -149,7 +149,6 @@ set(SRC cEvents.cpp
         Constants.cpp
         cRandomGirl.cpp
         cRival.cpp
-        cRng.cpp
         cShop.cpp
         cTariff.cpp
         cTrainable.cpp

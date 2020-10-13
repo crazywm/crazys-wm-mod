@@ -25,7 +25,7 @@
 #include "ICharacter.h"
 #include <tinyxml2.h>
 #include <cmath>
-#include <cRng.h>
+#include "cRng.h"
 #include "xml/util.h"
 #include "xml/getattr.h"
 #include "traits/ITraitsCollection.h"

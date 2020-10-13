@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(SRC CLog.cpp utils/DirPath.cpp utils/FileList.cpp sConfig.cpp utils/cKeyValueStore.cpp)
+set(SRC CLog.cpp
+		utils/DirPath.cpp
+		utils/FileList.cpp
+		sConfig.cpp
+		utils/cKeyValueStore.cpp
+		utils/string.cpp
+		cRng.cpp)
 
 set(INTERFACE_SRC
         interface/cColor.cpp
