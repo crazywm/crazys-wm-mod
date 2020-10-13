@@ -35,6 +35,7 @@
 #include "utils/DirPath.h"
 #include "utils/streaming_random_selection.hpp"
 #include "utils/algorithms.hpp"
+#include "utils/string.hpp"
 #include "CLog.h"
 #include "xml/util.h"
 #include "buildings/cBuildingManager.h"
@@ -48,40 +49,6 @@ namespace settings {
     extern const char* GANG_REMOVE_CHANCE;
     extern const char* GANG_MIN_WEEKLY_NEW;
     extern const char* GANG_MAX_WEEKLY_NEW;
-}
-
-namespace {
-   // Read one line from `is`.
-   std::string readline(std::ifstream& is)
-   {
-      std::string str;
-
-      const auto eof = std::ifstream::traits_type::eof();
-
-      while(true)
-      {
-         auto ch = is.get();
-         if(ch == eof)
-            return str;
-         else if(ch == '\n')    // \n -- Unix style
-            return str;
-         else if(ch == '\r')    // \r -- Mac style
-         {
-            auto ch2 = is.get();
-            if(ch2 == eof)
-               return str;
-            else if(ch2 == '\n') // \r\n -- Windows style
-               return str;
-            else
-            {
-               is.unget();      // unread next lines's 1st char
-               return str;
-            }
-         }
-         else
-            str.push_back(ch);
-      }
-   }
 }
 
 cGangManager::cGangManager()
