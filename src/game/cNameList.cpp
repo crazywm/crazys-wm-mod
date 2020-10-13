@@ -21,6 +21,7 @@
 #include "cNameList.h"
 #include "CLog.h"
 #include "cRng.h"
+#include "utils/string.hpp"
 
 using namespace std;
 
@@ -33,62 +34,32 @@ cNameList::cNameList(string file)
 
 void cNameList::load(string file)
 {
-    ifstream in;
-    char buff[1024];
-    bool first = true;
-    /*
+   /*
     *    open the file
     */
-    in.open(file.c_str());
+    ifstream in(file.c_str());
     if (!in)
     {
         g_LogFile.log(ELogLevel::ERROR, "Unable to open file '", file, "'");
         return;
     }
-    names.clear();
-    /*
-    *    loop until the stream breaks
-    */
-    for (;;)
+
+    std::vector<std::string> names;
+
+    readline(in);         // ignore the first line (it's a line count)
+    while(in.good())      // read until EOF
     {
-        in.getline(buff, sizeof(buff) - 1);
-        /*
-        *        before we do anythign with the string
-        *        test to see if there's an error flag
-        */
-        if (!in.good())
-        {
-            break;        // ok, we're done
-        }
-        /*
-        *        the first line is the number of names
-        *        we don't need it any more, so skip over it
-        */
-        if (first)
-        {
-            first = false;
-            continue;
-        }
-        string s = buff;
-        /*
-        *        just for linux (although will do no harm on windows)
-        *        we need to check for a carriage return char at the
-        *        end of the line and remove it if found
-        */
-        int last = s.length() - 1;
-        if (s[last] == '\r')
-        {
-            s.erase(last);
-        }
-        /*
-        *        finally, add it to the vector
-        */
-        names.push_back(s);
+       auto name = readline(in);
+       if(!name.empty())
+          names.emplace_back(std::move(name));
     }
+
+    m_names = std::move(names);
+
     /*
     *    quick sanity check
     */
-    if (names.empty())
+    if (m_names.empty())
     {
         g_LogFile.log(ELogLevel::ERROR, "No names found in file '", file, "'");
         return;
@@ -97,7 +68,7 @@ void cNameList::load(string file)
 
 string cNameList::random()
 {
-    if (names.empty())
+    if (m_names.empty())
     {
         g_LogFile.log(ELogLevel::ERROR, "No names in cNameList: Returning name '<ERROR>'");
         /*
@@ -108,6 +79,6 @@ string cNameList::random()
     /*
     *    otherwise, pick a random name
     */
-    unsigned size = names.size();
-    return names[g_Dice.random(size - 1)];  // edited from size to size-1 since I got an OOB vector crash once
+    unsigned size = m_names.size();
+    return m_names[g_Dice.random(size - 1)];  // edited from size to size-1 since I got an OOB vector crash once
 }

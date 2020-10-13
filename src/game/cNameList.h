@@ -21,7 +21,7 @@
 #include <string>
 
 class cNameList {
-    std::vector<std::string> names;
+    std::vector<std::string> m_names;
 public:
     cNameList() = default;
     cNameList(std::string file);
