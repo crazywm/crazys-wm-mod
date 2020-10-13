@@ -50,6 +50,40 @@ namespace settings {
     extern const char* GANG_MAX_WEEKLY_NEW;
 }
 
+namespace {
+   // Read one line from `is`.
+   std::string readline(std::ifstream& is)
+   {
+      std::string str;
+
+      const auto eof = std::ifstream::traits_type::eof();
+
+      while(true)
+      {
+         auto ch = is.get();
+         if(ch == eof)
+            return str;
+         else if(ch == '\n')    // \n -- Unix style
+            return str;
+         else if(ch == '\r')    // \r -- Mac style
+         {
+            auto ch2 = is.get();
+            if(ch2 == eof)
+               return str;
+            else if(ch2 == '\n') // \r\n -- Windows style
+               return str;
+            else
+            {
+               is.unget();      // unread next lines's 1st char
+               return str;
+            }
+         }
+         else
+            str.push_back(ch);
+      }
+   }
+}
+
 cGangManager::cGangManager()
 {
     m_BusinessesExtort = 0;
@@ -61,14 +95,12 @@ cGangManager::cGangManager()
     DirPath dp = DirPath() << "Resources" << "Data" << "HiredGangNames.txt";
     in.open(dp.c_str());
     in.seekg(0);
-    int num_gang_names;
-    in >> num_gang_names;    // ignore the first line
-    /// TODO(fix) automatically determine number of lines
-    for (int i = 0; i <= num_gang_names; i++)
+    readline(in);         // ignore the first line (it's a line count)
+    while(in.good())      // read until EOF
     {
-        std::string name;
-        in >> name;
-        m_GangNames.push_back(std::move(name));
+        std::string name = readline(in);
+        if(!name.empty())
+           m_GangNames.emplace_back(std::move(name));
     }
 
     m_Missions.resize(MISS_COUNT);
