@@ -74,7 +74,7 @@ void LoadInterface()
     try {
         DirPath dp = DirPath() << "Resources" << "Interface" << window_manager().GetTheme() << "InterfaceColors.xml";
         auto docInterfaceColors = LoadXMLDocument(dp.c_str());
-        g_LogFile.log(ELogLevel::INFO,"Loading InterfaceColors.xml");
+        g_LogFile.log(ELogLevel::NOTIFY, "Loading InterfaceColors.xml");
         const std::string& m_filename = dp.str();
         for (auto& el : IterateChildElements(*docInterfaceColors->RootElement())) {
             std::string tag = el.Value();
@@ -93,7 +93,7 @@ void LoadInterface()
         }
     } catch(std::runtime_error& error) {
         g_LogFile.log(ELogLevel::ERROR, "Could not load interface colors: ", error.what());
-        g_LogFile.log(ELogLevel::INFO, "Keeping Default InterfaceColors");
+        g_LogFile.log(ELogLevel::NOTIFY, "Keeping Default InterfaceColors");
     }
 
     g_LogFile.debug("interface", "Loading screens");

@@ -340,7 +340,7 @@ void Game::load(tinyxml2::XMLElement& root)
         }
     }
 
-    g_LogFile.log(ELogLevel::INFO, "Loading Rivals");
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading Rivals");
     /// TODO fix error handling;
     rivals().LoadRivalsXML(root.FirstChildElement("Rival_Manager"));
 
@@ -354,10 +354,10 @@ void Game::load(tinyxml2::XMLElement& root)
         m_Storage->load_from_xml(*storage);
     }
 
-    g_LogFile.log(ELogLevel::INFO, "Loading Player");
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading Player");
     player().LoadPlayerXML(root.FirstChildElement("Player"));
 
-    g_LogFile.log(ELogLevel::INFO, "Loading Dungeon");
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading Dungeon");
     dungeon().LoadDungeonDataXML(root.FirstChildElement("Dungeon"));
 
     // initialize new market
@@ -437,14 +437,14 @@ void Game::save(tinyxml2::XMLElement& root)
         rgirl->SaveGirlXML(elRunaways);
     }
 
-    g_LogFile.log(ELogLevel::INFO, "Saving Rivals");
+    g_LogFile.log(ELogLevel::NOTIFY, "Saving Rivals");
     rivals().SaveRivalsXML(el);
 
 
-    g_LogFile.log(ELogLevel::INFO, "Saving Player");
+    g_LogFile.log(ELogLevel::NOTIFY, "Saving Player");
     player().SavePlayerXML(el);
 
-    g_LogFile.log(ELogLevel::INFO, "Saving Dungeon");
+    g_LogFile.log(ELogLevel::NOTIFY, "Saving Dungeon");
     dungeon().SaveDungeonDataXML(&el);
 
     // output player gold
@@ -1038,7 +1038,7 @@ void Game::LoadTraitFiles(DirPath location) {
 
 void Game::LoadItemFiles(DirPath location) {
     FileList fl(location, "*.itemsx");
-    g_LogFile.log(ELogLevel::INFO, "Found ", fl.size(), " itemsx files");
+    g_LogFile.log(ELogLevel::NOTIFY, "Found ", fl.size(), " itemsx files");
     fl.scan("*.itemsx");
     // Iterate over the map and print out all key/value pairs. kudos: wikipedia
     g_LogFile.debug("items", "walking map...");
@@ -1118,7 +1118,7 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     g_LogFile.info("prepare", "Loading Girl Files");
     LoadGirlFiles(DirPath::expand_path(cfg.folders.characters()).c_str(), callback);
 
-    g_LogFile.log(ELogLevel::INFO, "Loading Rivals");
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading Rivals");
     callback("Loading Rivals");
     /// TODO fix error handling;
     rivals().LoadRivalsXML(source.FirstChildElement("Rival_Manager"));
@@ -1135,10 +1135,10 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     }
 
     callback("Loading Player");
-    g_LogFile.log(ELogLevel::INFO, "Loading Player");
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading Player");
     player().LoadPlayerXML(source.FirstChildElement("Player"));
 
-    g_LogFile.log(ELogLevel::INFO, "Loading Dungeon");
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading Dungeon");
     dungeon().LoadDungeonDataXML(source.FirstChildElement("Dungeon"));
 
     // initialize new market
@@ -1146,7 +1146,7 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     UpdateMarketSlaves();
 
     // load the buildings!
-    g_LogFile.log(ELogLevel::INFO, "Loading Buildings");
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading Buildings");
     callback("Loading Buildings");
     buildings().LoadXML(source);
 
@@ -1154,11 +1154,11 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     settings().load_xml(source);
 
     callback("Loading Girls.");
-    g_LogFile.log(ELogLevel::INFO, "Loading Girls");
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading Girls");
     g_Game->girl_pool().LoadGirlsXML(source.FirstChildElement("Girls"));
 
     callback("Loading Gangs.");
-    g_LogFile.log(ELogLevel::INFO, "Loading Gangs");
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading Gangs");
     g_Game->gang_manager().LoadGangsXML(source.FirstChildElement("Gang_Manager"));
 }
 

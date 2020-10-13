@@ -36,7 +36,7 @@ CLog::CLog() {
     for(auto& s : m_Streams) {
         s.push_back(&m_ofile);
     }
-    m_Streams[static_cast<int>(ELogLevel::INFO)].push_back(&std::cout);
+    m_Streams[static_cast<int>(ELogLevel::NOTIFY)].push_back(&std::cout);
     m_Streams[static_cast<int>(ELogLevel::WARNING)].push_back(&std::cerr);
     m_Streams[static_cast<int>(ELogLevel::ERROR)].push_back(&std::cerr);
 }
@@ -51,7 +51,7 @@ void CLog::write_log_level(ELogLevel ll, const char* channel) {
             case ELogLevel::DEBUG:
                 (*stream) << "DEBUG:";
                 break;
-            case ELogLevel::INFO:
+            case ELogLevel::NOTIFY:
                 (*stream) << "INFO:";
                 break;
             case ELogLevel::WARNING:

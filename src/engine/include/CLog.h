@@ -30,7 +30,7 @@
 enum class ELogLevel {
     VERBOSE,            // written only to log file in verbose mode
     DEBUG,              // written only to log file
-    INFO,               // written to file and stdout
+    NOTIFY,               // written to file and stdout
     WARNING,            // written to file and to stderr
     ERROR               // written to file and stderr
 };
@@ -75,7 +75,7 @@ public:
 
     template<class... Args>
     void info(const char* channel, Args&&... data) {
-        log(channel, ELogLevel::INFO, std::forward<Args>(data)...);
+        log(channel, ELogLevel::NOTIFY, std::forward<Args>(data)...);
     }
 
     template<class... Args>

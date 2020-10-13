@@ -89,7 +89,7 @@ void sRandomGirl::load_from_xml(tinyxml2::XMLElement *el)
     if (auto pt = el->Attribute("Name"))
     {
       m_Name = pt;
-      g_LogFile.log(ELogLevel::INFO, "Loading Rgirl : ", pt);
+      g_LogFile.log(ELogLevel::NOTIFY, "Loading Rgirl : ", pt);
     }
 
     if (auto pt = el->Attribute("Desc"))            m_Desc = pt;
@@ -213,7 +213,7 @@ void cRandomGirls::LoadRandomGirlXML(const std::string& filename, const std::str
                                      const std::function<void(const std::string&)>& error_handler)
 {
     auto doc = LoadXMLDocument(filename);
-    g_LogFile.log(ELogLevel::INFO, "Loading File ::: ", filename);
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading File ::: ", filename);
 
     auto root_element = doc->RootElement();
     if(!root_element) {

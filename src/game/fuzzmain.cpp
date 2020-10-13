@@ -192,16 +192,16 @@ int main(int ac, char* av[])    // `J` Bookmark - #1 - Entering the game
 
 void Shutdown()
 {
-    g_LogFile.log(ELogLevel::INFO, "*** Shutting Down ***");
+    g_LogFile.log(ELogLevel::NOTIFY, "*** Shutting Down ***");
 
     ShutdownInterface();
 
-    g_LogFile.log(ELogLevel::INFO,"Shutdown Complete");
+    g_LogFile.log(ELogLevel::NOTIFY, "Shutdown Complete");
 }
 
 bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
 {
-    g_LogFile.log(ELogLevel::INFO, "*** Initializing ***");
+    g_LogFile.log(ELogLevel::NOTIFY, "*** Initializing ***");
     /*
     *       build the caption string
     */
@@ -217,14 +217,14 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
         return false;
     }
 
-    g_LogFile.log(ELogLevel::INFO,"Graphics Initialized");
+    g_LogFile.log(ELogLevel::NOTIFY, "Graphics Initialized");
 
-    g_LogFile.log(ELogLevel::INFO, "Loading Interface");
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading Interface");
     InitInterface(&gfx, "J_1366x768");
     LoadInterface();        // Load the interface
     gfx.GetImageCache().PrintStats();
 
-    g_LogFile.log(ELogLevel::INFO,"Interface Loaded");
+    g_LogFile.log(ELogLevel::NOTIFY, "Interface Loaded");
 
     return true;
 }

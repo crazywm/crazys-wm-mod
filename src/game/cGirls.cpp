@@ -312,7 +312,7 @@ cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, 
     /// TODO (script) Load triggers
 
     // `J` more usefull log for rgirl
-    g_LogFile.log(ELogLevel::INFO, "Random girl ", newGirl->FullName(), " created from template ", newGirl->m_Name, ".rgirlsx");
+    g_LogFile.log(ELogLevel::NOTIFY, "Random girl ", newGirl->FullName(), " created from template ", newGirl->m_Name, ".rgirlsx");
 
     CalculateGirlType(*newGirl);
     return newGirl;
