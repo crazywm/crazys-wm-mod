@@ -70,37 +70,7 @@ inline std::size_t case_insensitive_hash(const char* str)
 
 // Read one line from `is`. The terminating newline is '\n', '\r' (or
 // '\r\n'. End-of-file also ends the line.
-inline
-std::string readline(std::istream& is)
-{
-   std::string str;
-
-   const auto eof = std::istream::traits_type::eof();
-
-   while(true)
-   {
-      auto ch = is.get();
-      if(ch == eof)
-         return str;
-      else if(ch == '\n')    // \n -- Unix style
-         return str;
-      else if(ch == '\r')    // \r -- Mac style
-      {
-         auto ch2 = is.get();
-         if(ch2 == eof)
-            return str;
-         else if(ch2 == '\n') // \r\n -- Windows style
-            return str;
-         else
-         {
-            is.unget();      // unread next lines's 1st char
-            return str;
-         }
-      }
-      else
-         str.push_back(ch);
-   }
-}
+std::string readline(std::istream& is);
 
 
 using boost::algorithm::starts_with;

@@ -82,9 +82,54 @@ interpolate_string(const std::string& text_template, const std::function<std::st
     return target.str();
 }
 
+std::string readline(std::istream& is) {
+    std::string str;
+
+    const auto eof = std::istream::traits_type::eof();
+
+    while(true)
+    {
+        auto ch = is.get();
+        if(ch == eof)
+            return str;
+        else if(ch == '\n')    // \n -- Unix style
+            return str;
+        else if(ch == '\r')    // \r -- Mac style
+        {
+            auto ch2 = is.get();
+            if(ch2 == eof)
+                return str;
+            else if(ch2 == '\n') // \r\n -- Windows style
+                return str;
+            else
+            {
+                is.unget();      // unread next lines's 1st char
+                return str;
+            }
+        }
+        else
+            str.push_back(ch);
+    }
+}
+
 #include "doctest.h"
 #include "utils/algorithms.hpp"
-TEST_CASE("string replacements") {
+TEST_CASE("readline") {
+    std::stringstream stream;
+    SUBCASE("linux-style") {
+        stream.str("this is a line\n");
+    }
+    SUBCASE("windows-style") {
+        stream.str("this is a line\r\n");
+    }
+    SUBCASE("mac-style") {
+        stream.str("this is a line\r");
+    }
+    CHECK(readline(stream) == "this is a line");
+}
+
+
+TEST_CASE("string interpolation") {
     std::stringstream target;
     cRng random;
 
