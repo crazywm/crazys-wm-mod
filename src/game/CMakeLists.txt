@@ -168,7 +168,7 @@ set(SRC cEvents.cpp
 
 add_library(WmGameObjects OBJECT ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${SRC})
 target_link_libraries(WmGameObjects PUBLIC WMEngineObjects pthread doctest::doctest)
-set_target_properties(WmGameObjects PROPERTIES CXX_STANDARD 14 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
+set_target_properties(WmGameObjects PROPERTIES CXX_STANDARD 14)
 target_include_directories(WmGameObjects PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 if (UNIX)
     target_compile_definitions(WmGameObjects PUBLIC LINUX=1)
@@ -182,4 +182,6 @@ target_link_libraries(WhoreMasterFuzz PUBLIC WmGameObjects)
 
 add_executable(WhoreMasterTest $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> unittest.cpp)
 target_link_libraries(WhoreMasterTest PUBLIC WmGameObjects)
+
+set_target_properties(WhoreMaster WhoreMasterFuzz WhoreMasterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
 
