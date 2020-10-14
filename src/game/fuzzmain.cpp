@@ -32,6 +32,9 @@
 #include "interface/cWindowManager.h"
 #include <iostream>
 
+#define DOCTEST_CONFIG_IMPLEMENT
+#include "doctest.h"
+
 
 // Function Defs
 void Shutdown();
