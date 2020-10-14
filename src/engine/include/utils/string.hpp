@@ -43,6 +43,7 @@ inline std::string toupper(std::string str) {
 
 inline bool iequals(const std::string& a, const std::string& b)
 {
+    if(a.size() != b.size()) return false;
     return std::equal(a.begin(), a.end(),
                       b.begin(),
                       [](char a, char b) {

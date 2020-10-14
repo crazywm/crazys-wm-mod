@@ -110,11 +110,12 @@ namespace {
     if(path.empty())
       return path;
 
-    if(path.substr(0, 2) == "~/")
-      if(auto env_home = std::getenv("HOME"))
-	return path.replace(0, 1, env_home);
-      else if(auto pwd_home = find_pwd_home())
-	return path.replace(0, 1, *pwd_home);
+    if(path.substr(0, 2) == "~/") {
+        if (auto env_home = std::getenv("HOME"))
+            return path.replace(0, 1, env_home);
+        else if (auto pwd_home = find_pwd_home())
+            return path.replace(0, 1, *pwd_home);
+    }
 
     return path;
   }

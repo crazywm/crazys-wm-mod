@@ -129,6 +129,16 @@ TEST_CASE("readline") {
 }
 
 
+TEST_CASE("case conversion") {
+    CHECK(tolower("TesT string?") == std::string("test string?"));
+    CHECK(toupper("TesT string?") == std::string("TEST STRING?"));
+
+    CHECK( iequals("lower Case", "Lower case") );
+    CHECK_FALSE( iequals("lower Case", "Lower case prefix") );
+
+    CHECK( case_insensitive_hash(std::string("test String")) == case_insensitive_hash("TEST string") );
+}
+
 TEST_CASE("string interpolation") {
     std::stringstream target;
     cRng random;
