@@ -20,6 +20,7 @@
 #define __DirPath_h
 
 #include <string>
+#include <vector>
 #include <iostream>
 #include <fstream>
 
@@ -91,6 +92,14 @@ public:
     // Expands environment variables (not yet) and the tilde syntax for
     // home directories (Unix only).
     static std::string expand_path(std::string path);
+
+    // Splits a search path (in the style of $PATH or %PATH%) into
+    // individual file paths.
+    //
+    // The search path is split at either ';' or the native separator
+    // character (':' on Unix, ';' on Windows).
+    static std::vector<std::string>
+    split_search_path(std::string const& search_path);
 };
 
 inline std::ostream& operator<<(std::ostream& target, const DirPath& content) {

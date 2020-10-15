@@ -21,6 +21,13 @@
 #include "utils/DirPath.h"
 #include "CLog.h"
 
+#include <boost/algorithm/string/split.hpp>
+
+#include "doctest.h"
+
+#include "utils/algorithms.hpp"
+#include "utils/doctest_utils.h"
+
 /*
  * kind of trivial...
  */
@@ -129,4 +136,97 @@ std::string DirPath::expand_path(std::string path)
 #else
   return path;
 #endif
+}
+
+namespace
+{
+   std::vector<std::string> do_split_search_path(std::string const& search_path,
+                                                 std::string const& sep)
+   {
+      const auto npos = std::string::npos;
+
+      std::vector<std::string> paths;
+
+      boost::algorithm::split(paths, search_path,
+                              [&sep, npos](auto ch){
+                                 return sep.find(ch) != npos;
+                              },
+                              boost::algorithm::token_compress_on);
+      erase_if(paths, [](std::string const& path) {return path.empty(); });
+
+      return paths;
+   }
+}
+
+std::vector<std::string>
+DirPath::split_search_path(std::string const& search_path)
+{
+#if defined(LINUX)
+   return do_split_search_path(search_path, ":;");
+#else
+   return do_split_search_path(search_path, ";");
+#endif
+}
+
+TEST_CASE("split search path") {
+   {
+      std::vector<std::string> expects = {"abcde"};
+      CHECK(do_split_search_path("abcde", ":") == expects);
+      CHECK(do_split_search_path("abcde", ";") == expects);
+      CHECK(do_split_search_path("abcde", "#") == expects);
+   }
+
+   {
+      std::vector<std::string> expects = {"aa", "bb", "cc"};
+      CHECK(do_split_search_path("aa:bb:cc", ":") == expects);
+   }
+
+   {
+      std::vector<std::string> expects = {"aa:bb:cc"};
+      CHECK(do_split_search_path("aa:bb:cc", ";") == expects);
+   }
+
+   {
+      std::vector<std::string> expects = {"aa", "bb", "cc"};
+      CHECK(do_split_search_path("aa#bb#cc", "#") == expects);
+   }
+
+   {
+      std::vector<std::string> expects = {"aa", "bb", "cc"};
+      CHECK(do_split_search_path("aa?bb&cc", "?&") == expects);
+   }
+
+   {
+      std::vector<std::string> expects = {"aa", "bb", "cc"};
+      CHECK(do_split_search_path("aa:bb;cc", ":;") == expects);
+   }
+
+   {
+      std::vector<std::string> expects = {"aa", "bb", "cc"};
+      CHECK(do_split_search_path("aa;bb;cc", ";") == expects);
+   }
+
+   {
+      std::vector<std::string> expects = {};
+      CHECK(do_split_search_path("", ":") == expects);
+      CHECK(do_split_search_path("", ";") == expects);
+      CHECK(do_split_search_path("", ":;") == expects);
+      CHECK(do_split_search_path("", "#") == expects);
+      CHECK(do_split_search_path("", "?&") == expects);
+   }
+
+   {
+      std::vector<std::string> expects = {"abcde"};
+      CHECK(do_split_search_path(":abcde:", ":") == expects);
+   }
+
+   {
+      std::vector<std::string> expects = {"aaa", "bb"};
+      CHECK(do_split_search_path(":aaa::bb:", ":") == expects);
+   }
+
+   {
+      std::vector<std::string> expects = {};
+      CHECK(do_split_search_path(":::", ":") == expects);
+   }
 }

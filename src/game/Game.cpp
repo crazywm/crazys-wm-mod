@@ -1076,11 +1076,13 @@ void Game::NewGame(const std::function<void(std::string)>& callback) {
 
     callback("Loading Items");
     g_LogFile.info("prepare", "Loading Items");
-    LoadItemFiles(DirPath::expand_path(cfg.folders.items()).c_str());
+    for(auto path : DirPath::split_search_path(cfg.folders.items()))
+       LoadItemFiles(DirPath::expand_path(path).c_str());
 
     callback("Loading Girls");
     g_LogFile.info("prepare", "Loading Girl Files");
-    LoadGirlFiles(DirPath::expand_path(cfg.folders.characters()).c_str(), callback);
+    for(auto path : DirPath::split_search_path(cfg.folders.characters()))
+       LoadGirlFiles(DirPath::expand_path(path).c_str(), callback);
 
     g_LogFile.info("prepare", "Update Shop");
     m_Shop->RestockShop();
@@ -1103,7 +1105,8 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
 
     callback("Loading Items");
     g_LogFile.info("prepare", "Loading Items");
-    LoadItemFiles(DirPath::expand_path(cfg.folders.items()).c_str());
+    for(auto path : DirPath::split_search_path(cfg.folders.items()))
+       LoadItemFiles(DirPath::expand_path(path).c_str());
 
     // girl file list
     g_LogFile.info("prepare", "Loading Girl List");
@@ -1116,7 +1119,8 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
 
     callback("Loading Girl Files");
     g_LogFile.info("prepare", "Loading Girl Files");
-    LoadGirlFiles(DirPath::expand_path(cfg.folders.characters()).c_str(), callback);
+    for(auto path : DirPath::split_search_path(cfg.folders.characters()))
+       LoadGirlFiles(DirPath::expand_path(path).c_str(), callback);
 
     g_LogFile.log(ELogLevel::NOTIFY, "Loading Rivals");
     callback("Loading Rivals");
