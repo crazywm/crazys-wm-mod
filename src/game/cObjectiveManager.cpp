@@ -431,7 +431,9 @@ void cObjectiveManager::PassObjective()
             {
                 tries--;
                 sInventoryItem* item = g_Game->inventory_manager().GetRandomItem();
-                if (item && item->m_Rarity < RARITYSCRIPTONLY)
+                if(!item)
+                   break;       // supplier is all out :(
+                else if (item->m_Rarity < RARITYSCRIPTONLY)
                 {
                     if(g_Game->player().inventory().add_item(item)) {
                         itemnames.push_back(item->m_Name);

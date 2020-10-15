@@ -136,8 +136,8 @@ void cShop::RestockShop() {
     // fill up again
     while(m_Inventory.all_items().size() < m_Capacity) {
         // find a random item
-        sInventoryItem* item = nullptr;
-        while (item == nullptr) item = g_Game->inventory_manager().GetRandomItem();
+        sInventoryItem* item = g_Game->inventory_manager().GetRandomItem();
+        if(!item) break;        // supplier is all out :(
 
         // check spawn chance
         int chance = g_Dice.d100();

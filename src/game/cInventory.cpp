@@ -31,6 +31,8 @@
 #include "xml/getattr.h"
 #include "Inventory.h"
 
+#include "utils/algorithms.hpp"
+
 using namespace std;
 
 namespace settings {
@@ -176,26 +178,21 @@ ostream& operator<<(ostream& os, sEffect& eff) {
     return os << endl;
 }
 
-// ----- Get
-sInventoryItem* cInventory::GetRandomItem()
+// Deletes all nulls from `items`.
+void cInventory::cull_null_items(std::vector<sInventoryItem *>& items)
 {
-    sInventoryItem *ipt;
-    if (m_Items.empty())
-    {
-        return nullptr;
-    }
-    if (m_Items.size() == 1)
-    {
-        ipt = m_Items[0];
-        return m_Items[0];
-    }
-    int index = g_Dice % (m_Items.size() - 1);    // fixed crash with going outside vector size - necro
-    ipt = m_Items[index];
-    return ipt;
+   erase_if(items, [](auto* ptr) {return ptr == nullptr;});
 }
+
 sInventoryItem* cInventory::GetRandomCatacombItem()
 {
     if (m_Items.empty())    return nullptr;
+
+    cull_null_items(m_Items);
+    assert(std::none_of(begin(m_Items), end(m_Items),
+                        [](auto* ptr) {return ptr == nullptr;})
+           && "no nulls in `m_Items`.");
+
     sInventoryItem *temp = nullptr;
     int index = g_Dice % (m_Items.size() - 1);
 

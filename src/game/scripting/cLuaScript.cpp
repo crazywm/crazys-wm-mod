@@ -229,18 +229,16 @@ int cLuaScript::GameOver(lua_State* state) {
 }
 
 int cLuaScript::GivePlayerRandomSpecialItem(lua_State* state) {
-    sInventoryItem* item = g_Game->inventory_manager().GetRandomItem();
-    while (item == nullptr)
-        item = g_Game->inventory_manager().GetRandomItem();
+    auto filter
+       = [](sInventoryItem const& item){
+            return item.m_Rarity >= RARITYSHOP05;
+         };
 
-    bool ok = false;
-    while (!ok)
+    sInventoryItem* item = g_Game->inventory_manager().GetRandomItem(filter);
+    if(!item)
     {
-        if (item->m_Rarity >= RARITYSHOP05) ok = true;
-        else
-        {
-            do { item = g_Game->inventory_manager().GetRandomItem(); } while (item == nullptr);
-        }
+       g_Game->push_message(" There are no suitable items to be had\n", COLOR_RED);
+       return 0;
     }
 
     if(!g_Game->player().inventory().add_item(item)) {

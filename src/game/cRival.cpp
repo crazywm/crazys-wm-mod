@@ -585,11 +585,16 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                     int items = 0;
                     while (g_Dice.percent(60) && items <= (cG1.m_Num / 3) && curr->m_NumInventory < MAXNUM_RIVAL_INVENTORY)
                     {
-                        bool add = false;
-                        sInventoryItem* temp;
-                        do { temp = g_Game->inventory_manager().GetRandomItem();
-                        } while (!temp || temp->m_Rarity < RARITYSHOP25 || temp->m_Rarity > RARITYCATACOMB01);
+                        auto filter
+                           = [](sInventoryItem const& item){
+                                return item.m_Rarity >= RARITYSHOP25
+                                   && item.m_Rarity <= RARITYCATACOMB01;
+                             };
 
+                        sInventoryItem* temp
+                           = g_Game->inventory_manager().GetRandomItem(filter);
+
+                        bool add = false;
                         switch (temp->m_Rarity)
                         {
                         case RARITYSHOP25:                                add = true;        break;
