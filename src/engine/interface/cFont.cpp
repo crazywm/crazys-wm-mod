@@ -272,7 +272,6 @@ cSurface cFont::RenderTable(const std::string& text, int max_width) const {
     }
 
     // at this point, we have the chance to split overlong lines
-    int num_lines = 0;
     for(int i = 0; i < cells.size(); ++i) {
         if(!cells[i].render) continue;
         int x_pos = tab_start[cells[i].tabs] + cells[i].render.GetWidth();
@@ -293,9 +292,15 @@ cSurface cFont::RenderTable(const std::string& text, int max_width) const {
                     m_Font.get(), last, m_TextColor, true);
             cells.insert(cells.begin() + i + 1, sCellData{0, std::move(last), std::move(render), true} );
         }
-
-        if(cells[i].is_last) ++num_lines;
     }
+
+    // count the lines
+    size_t num_lines =
+       std::accumulate(begin(cells), end(cells),
+                       size_t{0},
+                       [](size_t n, sCellData const& cell){
+                          return n + (cell.is_last ? 1 : 0);
+                       });
 
     int lineskip = GetFontLineSkip();
     int height = (num_lines+1)*lineskip;
@@ -304,15 +309,14 @@ cSurface cFont::RenderTable(const std::string& text, int max_width) const {
     auto message = m_GFX->CreateSurface(max_width, height, m_TextColor, true);
 
     int line = 0;
-    for(int i = 0; i < cells.size(); ++i) {
-        const auto& cell = cells[i];
+    for(const auto& cell : cells) {
         if(!cell.render) {
             if(cell.is_last)
                 line += 1;
             continue;
         }
 
-        int x = tab_start.at(cells[i].tabs);
+        int x = tab_start.at(cell.tabs);
         SDL_Rect dst = {static_cast<Sint16>(x),
                         static_cast<Sint16>(line * lineskip),
                         static_cast<Uint16>(cell.render.GetWidth()),
