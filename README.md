@@ -31,6 +31,11 @@ apt install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libboost-all-dev
 apt install libavformat-dev libswscale-dev libpng-dev libjpeg-dev libtiff-dev libwebp-dev
 ```
 
+To generate documentation (see below), you also need
+```sh
+apt install doxygen graphviz
+```
+
 Then configure, build, and run with
 ```sh
 mkdir build ; cd build
@@ -83,4 +88,15 @@ to `-O2` to be safe.
 Currently untested, but in principle CMake should be able to generate Visual Studio
 project files that can be used. If you get it working, document your steps here and
 submit a PR.
- 
+
+## Doxygen (documentation)
+
+To build the Doxygen docs, you need to have Doxygen and Graphviz
+installed. (They are otherwise optional.) Configure as usual, and say
+
+```sh
+cmake --build . --target doxygen
+```
+
+to build the documentation. To read it, open `docs/html/index.html` in
+your favourite browser.
