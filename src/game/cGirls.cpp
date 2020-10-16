@@ -956,7 +956,7 @@ const char* JobRatingLetter(double value)
 namespace {
     struct sJD {
         JOBS job;
-        char mark;
+        char mark = '-';
     };
 
     void JobRating(std::stringstream& jr, const sGirl& girl, std::initializer_list<sJD> jobs) {
@@ -1046,7 +1046,7 @@ string cGirls::GetThirdDetailsString(const sGirl& girl)    // `J` bookmark - Job
     stringstream House_Data;
     House_Data << "House Job Ratings\n";
     JobRating(House_Data, girl, {{JOB_HEADGIRL, '-'}, {JOB_RECRUITER, '-'}, {JOB_PERSONALTRAINING, '!'},
-                                  {JOB_FAKEORGASM, '!'}, {JOB_SO_STRAIGHT, '!'}, {JOB_SO_BISEXUAL, '!'}, {JOB_SO_LESBIAN}});
+                                 {JOB_FAKEORGASM, '!'}, {JOB_SO_STRAIGHT, '!'}, {JOB_SO_BISEXUAL, '!'}, {JOB_SO_LESBIAN, '!'}});
 
     // House_Data += JobRating(*girl, m_JobManager.JP_PersonalBedWarmer(girl, true), "* PersonalBedWarmer");
     House_Data << div;
