@@ -899,7 +899,7 @@ public:
 };
 
 cFarmJobMilker::cFarmJobMilker() : cFarmJob(
-        JOB_MILK, "Milker.xml", {ACTION_WORKFARM, 20}) {
+        JOB_MILKER, "Milker.xml", {ACTION_WORKFARM, 20}) {
 }
 
 bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {

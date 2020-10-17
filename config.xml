@@ -5,7 +5,7 @@
     <Entry Key="font.font" Value="segoeui.ttf"/>
     <Entry Key="interface.width" Value="1366"/>
     <Entry Key="interface.theme" Value="J_1366x768"/>
-    <Entry Key="folders.prefer_defaults" Value="true"/>
+    <Entry Key="folders.prefer_defaults" Value="false"/>
     <Entry Key="interface.fullscreen" Value="false"/>
     <Entry Key="folders.backup_saves" Value="true"/>
     <Entry Key="interface.text_scroll" Value="3"/>
