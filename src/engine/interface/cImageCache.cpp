@@ -353,7 +353,8 @@ cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, int target_width, in
     auto start = std::chrono::steady_clock::now();
     int frame_num = 0;
     long last_frame = 0;
-    ReadMovie(movie, target_width, target_height, [&](const sFrameData& frame) {
+
+    auto frame_handler = [&](const sFrameData& frame) {
         std::stringstream name;
 
         // create SDL surface from image data
@@ -376,7 +377,13 @@ cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, int target_width, in
         surfaces.push_back({std::move(surface), int(frame.Time - last_frame)});
         last_frame = frame.Time;
         ++frame_num;
-    });
+    };
+    try {
+        ReadMovie(movie, target_width, target_height, frame_handler);
+    } catch (std::exception& error) {
+        g_LogFile.error("ffmpeg", "Error when trying to load image/video from '", movie, "': ", error.what());
+        return {};
+    }
 
     int dur = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count();
     g_LogFile.info("ffmpeg", "Loaded ", movie, " with ", surfaces.size(), " frames in ", dur, "ms");

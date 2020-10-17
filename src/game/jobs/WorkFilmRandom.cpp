@@ -27,21 +27,21 @@ bool WorkFilmRandom(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 
-    int filmjob;
+    JOBS filmjob;
     int numfilmjobs = JOB_FILMRANDOM - JOB_STAGEHAND;
     bool cando = false;
     
     if (brothel->nothing_banned())
     {
         int roll = rng % numfilmjobs;
-        filmjob = roll + JOB_STAGEHAND + 1;
+        filmjob = JOBS(roll + JOB_STAGEHAND + 1);
     }
     else
     {
         do
         {
             int roll = rng % numfilmjobs;
-            filmjob = roll + JOB_STAGEHAND + 1;
+            filmjob = JOBS(roll + JOB_STAGEHAND + 1);
             // `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> WorkFilmRandom.cpp
             switch (filmjob)
             {
@@ -97,7 +97,7 @@ bool WorkFilmRandom(sGirl& girl, bool Day0Night1, cRng& rng)
         } while (!cando);
     }
 
-    return g_Game->job_manager().do_job(girl, SHIFT_NIGHT);
+    return g_Game->job_manager().do_job(filmjob, girl, SHIFT_NIGHT);
 }
 
 double JP_FilmRandom(const sGirl& girl, bool estimate)// not used

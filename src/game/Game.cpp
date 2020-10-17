@@ -1096,12 +1096,12 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     g_LogFile.info("prepare", "Setup Jobs");
     m_JobManager->Setup();
 
-    read_attributes_xml(source);
-
     // traits
     callback("Loading Traits");
     g_LogFile.info("prepare", "Loading Traits");
     LoadTraitFiles(DirPath() << "Resources" << "Data" << "Traits");
+
+    read_attributes_xml(source);
 
     callback("Loading Items");
     g_LogFile.info("prepare", "Loading Items");

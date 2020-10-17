@@ -2055,8 +2055,7 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     {
         sInventoryItem* item = nullptr;
         std::string itemname;
-        int tries = skill;
-        while (itemname.empty() && tries > 0)
+        for (int tries = skill; itemname.empty() && tries > 0; --tries)
         {
             switch (uniform(0, 20))
             {

@@ -101,20 +101,20 @@ struct FilmPubBDSM : public GenericFilmJob {
 };
 
 struct FilmSex : public GenericFilmJob {
-    FilmSex();;
+    FilmSex();
     void DoScene(sGirl& girl) override;
     void GainTraits(sGirl& girl, int performance) const override;
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
 struct FilmTease: public GenericFilmJob {
-    FilmTease();;
+    FilmTease();
     void DoScene(sGirl& girl) override;
     void GainTraits(sGirl& girl, int performance) const override;
 };
 
 struct FilmThroat: public GenericFilmJob {
-    FilmThroat();;
+    FilmThroat();
     void DoScene(sGirl& girl) override;
     void GainTraits(sGirl& girl, int performance) const override;
     bool CheckRefuseWork(sGirl& girl) override;

@@ -50,6 +50,7 @@ FilmSex::FilmSex() : GenericFilmJob(JOB_FILMSEX, {
         IMGTYPE_SEX, ACTION_SEX, 50, 0,
         FilmJobData::NORMAL, SKILL_NORMALSEX, "Sex"
 }) {
+    load_from_xml("FilmSex.xml");
 }
 
 double FilmSex::GetPerformance(const sGirl& girl, bool estimate) const
