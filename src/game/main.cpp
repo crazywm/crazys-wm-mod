@@ -30,6 +30,8 @@
 #include <sstream>
 #include <SDL_events.h>
 
+#include "utils/DirPath.h"
+
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
 
@@ -62,6 +64,15 @@ cNameList g_SurnameList;
 
 int main(int ac, char* av[])    // `J` Bookmark - #1 - Entering the game
 {
+    // Primitive option parsing goes here.
+    //
+    // TODO: Switch to something less painful, like
+    // Boost.Program_options or GNU getopt.
+    {
+       if(ac == 3 && strcmp("--config", av[1]) == 0)
+          cfg.reload(DirPath::expand_path(av[2]));
+    }
+
     bool running = true;
 
     // Init the program

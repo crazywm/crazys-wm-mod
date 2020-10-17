@@ -25,7 +25,7 @@ struct sConfigData;
 
 class cConfig
 {
-    static    sConfigData    *data;
+    static std::unique_ptr<sConfigData> data;
 public:
     cConfig();
 
@@ -55,5 +55,7 @@ public:
     void set_value(const char* id, bool value);
 
     void save();
+
+    void reload(std::string const& filename = "config.xml");
 };
 

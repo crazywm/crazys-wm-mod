@@ -31,14 +31,19 @@ struct sConfigData : public cSimpleKeyValue
     void load(const DirPath& source);
 };
 
-sConfigData *cConfig::data;
+std::unique_ptr<sConfigData> cConfig::data;
 
 cConfig::cConfig()
 {
     if (!data)
     {
-        data = new sConfigData();
+        data = std::make_unique<sConfigData>();
     }
+}
+
+void cConfig::reload(std::string const& filename)
+{
+   data = std::make_unique<sConfigData>(filename.c_str());
 }
 
 void cConfig::set_value(const char* id, std::string value) {
