@@ -30,7 +30,7 @@
 <Column     Name="is_pregnant"       Type="String"     Header="Preg"                       Offset="650" />
 <Column     Name="is_slave"          Type="String"     Header="Slave"                      Offset="700" />
 <Column     Name="Rebel"             Type="Numeric"    Header="Rebel"                      Offset="750" />
-<Column     Name="Age"               Type="Numeric"    Header="Age"                        Offset="800" />
+<Column     Name="Age"               Type="Age"        Header="Age"                        Offset="800" />
 <Column     Name="has_disease"       Type="String"     Header="Disease"                    Offset="850" />
 <Column     Name="STAT_Intelligence" Type="Numeric"    Header="Int."                       Offset="900" />
 <Column     Name="SKILL_Medicine"    Type="Numeric"    Header="Medicine"                   Offset="950" />
