@@ -170,7 +170,7 @@ function AfterDinner(girl)
         if girl:tiredness() > 40 then
             Dialog("She yawns and apologizes. \"I'm sorry, but I think it might be best to call it a night.\"")
             return HerRoom(girl)
-        elseif girl:pchate() < 50 then
+        elseif girl:pchate() > 50 then
             Dialog("She looks at you seriously. \"I appreciate that you're trying to be nice and all, but if you think a little wine and food means i'm going to fuck you, then you can go to hell.\"  She turns to storm out of your quarters.")
             -- GOTO 555 // 8
         elseif girl:pclove() > 50 then
