@@ -64,6 +64,7 @@ struct sLuaGirl : public sCharacter<sLuaGirl>{
 
     static int has_item(lua_State* L);
     static int give_money(lua_State* L);
+    static int clean_building(lua_State* L);
 
     static int add_message(lua_State* L);
 

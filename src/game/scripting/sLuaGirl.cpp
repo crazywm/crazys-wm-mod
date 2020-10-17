@@ -56,6 +56,7 @@ void sLuaGirl::init(lua_State* L) {
             {"give_money", sLuaGirl::give_money},
             {"torture", sLuaGirl::torture},
             {"trigger", sLuaGirl::trigger_event},
+            {"clean_building", sLuaGirl::clean_building},
             {"__gc", sLuaGirl::finalize},
             {nullptr, nullptr}
     };
@@ -409,6 +410,22 @@ int sLuaGirl::obey_check(lua_State * L)
 int sLuaGirl::torture(lua_State* L) {
     auto& girl = check_type(L, 1);
     cGirlTorture gt(&girl);
+    return 0;
+}
+
+// girl:clean_building()
+//
+/// The girl cleans the building and gains some experience.
+int sLuaGirl::clean_building(lua_State* L) {
+    auto& girl = check_type(L, 1);
+
+    if(auto building = girl.m_Building)
+    {
+       auto improvement = std::max(((girl.service() / 10 + 5) * 10), 50);
+       building->m_Filthiness -= improvement;
+       girl.service(+1);
+    }
+
     return 0;
 }
 

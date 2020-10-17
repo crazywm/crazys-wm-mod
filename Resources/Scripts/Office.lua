@@ -5,6 +5,7 @@ function InteractOffice(girl)
         if girl:obey_check(wm.ACTIONS.WORKCLEANING) then
             wm.UpdateImage(wm.IMG.MAID)
             Dialog("She puts on her maid's attire and sets about tidying up your office.  You always enjoy being around a women in a maid's outfit .")
+            girl:clean_building();
         else
             Dialog("She refuses to clean your office.")
             return girl:trigger("girl:refuse")
