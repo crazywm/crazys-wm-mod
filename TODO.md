@@ -35,7 +35,6 @@
   - [ ] OnBought
 
 ## UI
-* [ ] numeric column sorting
 * [ ] Per building/global anti preg setting
 * [ ] Game-Mode files
 * [ ] separate logical and actual render size and make configurable
@@ -59,6 +58,7 @@
   - [ ] "your inventory is full", but seems to buy anyway
   - [ ] "your inventory is full" for sell button
 * [ ] gracefully handle missing/corrupt config file
+* [ ] numeric columns may contain some textual data (i.e. Health column: DEAD) that causes an exception during sort
 
 
 ## Changes due to job text xml

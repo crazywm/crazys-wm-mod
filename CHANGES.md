@@ -1,3 +1,18 @@
+# Version 07.00.alpha6
+## Changes
+* Reworked the job performance xml specifications and split them from the gains
+* supports expanding ~ to home directory on linux
+* support for multiple girl pack locations
+
+## Fixes
+* improved compilation with clang
+* corrected sorting of numeric columns
+* fixes for some crashes
+* text rendering fixes
+* fixed processing of matron jobs
+* fixed reading of gang names
+
+
 # Version 07.00.alpha5
 ## Changes
 * More old scripts ported to lua

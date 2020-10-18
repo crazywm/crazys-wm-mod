@@ -859,17 +859,22 @@ void cListBox::SortByColumn(std::string ColumnName, bool Descending)
     // `m_LastSelected` will effectively be carried along to the
     // target element's new position.
 
-    auto direction = Descending ? Direction::Descending : Direction::Ascending;
-    switch(m_Columns[col_ref].type) {
-    case ColumnType::Numeric:
-      do_sort<ColumnType::Numeric>(m_Items, col_id, direction);
-      break;
-    case ColumnType::Age:
-      do_sort<ColumnType::Age>(m_Items, col_id, direction);
-      break;
-    case ColumnType::String:
-      do_sort<ColumnType::String>(m_Items, col_id, direction);
-      break;
+    /// TODO make sure this cannot throw.
+    try {
+        auto direction = Descending ? Direction::Descending : Direction::Ascending;
+        switch (m_Columns[col_ref].type) {
+            case ColumnType::Numeric:
+                do_sort<ColumnType::Numeric>(m_Items, col_id, direction);
+                break;
+            case ColumnType::Age:
+                do_sort<ColumnType::Age>(m_Items, col_id, direction);
+                break;
+            case ColumnType::String:
+                do_sort<ColumnType::String>(m_Items, col_id, direction);
+                break;
+        }
+    } catch (const std::exception& error) {
+        window_manager().PushError(std::string("Error during sorting: ") + error.what());
     }
 
     UpdatePositionsAfterSort();
