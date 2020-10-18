@@ -34,6 +34,11 @@
 
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
+// on mingw, doctest includes windows.h which pollutes with this macro
+#ifdef ERROR
+#undef ERROR
+#endif
+
 
 
 // Function Defs

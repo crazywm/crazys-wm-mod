@@ -1,10 +1,10 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "doctest.h"
 #include "CLog.h"
 #include "sConfig.h"
 #include "cRng.h"
 #include "Game.hpp"
 #include "cNameList.h"
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest.h"
 
 class cScreenGetInput;
 
