@@ -238,6 +238,7 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     bool calc_pregnancy(cPlayer* player, double factor = 1.0, bool nomessage=false);
     bool calc_pregnancy(const sCustomer& cust, double factor = 1.0);
     bool calc_insemination(const sCustomer& cust, double factor = 1.0);
+    bool calc_group_pregnancy(cPlayer* player, double factor = 1.0);
     bool calc_group_pregnancy(const sCustomer& cust, double factor = 1.0);
     /*
     *    let's overload that...

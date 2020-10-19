@@ -128,7 +128,7 @@ function DungeonInteractChoice(girl)
                 girl:happiness(1)
                 girl:libido(1)
                 girl:tiredness(1)
-                wm.UpdateImage(wm.IMG.GROUP)
+                PlayerFucksGirl_Group(girl)
                 Dialog("You and a group of your male servants take the poor girl in all way, she was hurt.")
             else
                 Dialog("She refuse to be fucked in a gangbang")
@@ -142,7 +142,7 @@ function DungeonInteractChoice(girl)
                 "To be in a bondage session", "For a blowjob", "For some anal sex", "For a threesome (not yet working)",
                 "To join in with a group session", "Go Back")
         if choice == 0 then
-            wm.UpdateImage(wm.IMG.SEX)
+            PlayerFucksGirl(girl)
             Dialog("She stuggles to no avail as you force yourself inside her, you fuck her roughly until you unload yourself into her.")
         elseif choice == 1 then
             wm.UpdateImage(wm.IMG.LESBIAN)
@@ -174,6 +174,9 @@ function DungeonInteractChoice(girl)
             wm.UpdateImage(wm.IMG.ANAL)
             Dialog("Although she tries to keep her ass closed you manage to get inside her and proceed to fuck her painfully.")
         elseif choice == 6 then
+           -- threesome (placeholder)
+            return DungeonInteractChoice(girl)
+        elseif choice == 7 then
             wm.UpdateImage(wm.IMG.GROUP)
             Dialog("One of your servant holds his head in his hands while your sperm spreads his face. All your servants are happy to unload on her pretty face")
             girl:dignity(-1)
@@ -210,14 +213,32 @@ function BrothelInteractChoice(girl)
     elseif choice == 1 then
         return girl:trigger("girl:chat.brothel")
     elseif choice == 2 then
-        local have_sex = "To have sex"
-        if girl:pclove() > 90 then
-            have_sex = "To make love"
-        end
-        choice = ChoiceBox("", have_sex, "To have sex with another girl", "To have sex with a beast",
-                "To be in a bondage session", "For a blowjob", "For some anal sex", "For a threesome (not yet working)",
-                "To join in with a group session", "For a strip tease", "Go Back")
-        if choice == 0 then
+         if girl:pclove() > 90 then
+            choice = ChoiceBox("",
+                               "Make love",
+                               "Watch her have sex with another girl",
+                               "Watch her have sex with your pet sex beast",
+                               "Play your favorite bondage roleplay",
+                               "Ask her to lick your love shaft",
+                               "Worship her cute little ass hole",
+                               "Watch her masturbate for you",
+                               "Have some others join the two of you for an orgy",
+                               "Have her tease you",
+                               "Go Back")
+         else
+            choice = ChoiceBox("",
+                               "Have Sex",
+                               "Ask her to have sex with another girl",
+                               "Ask her to have sex with a beast",
+                               "Ask her to be in a bondage session",
+                               "Ask for a blowjob",
+                               "Have anal sex",
+                               "Ask her to masturbate while you watch",
+                               "Ask her to be in a gangbang",
+                               "Ask her to show you her skills on the stripper pole",
+                               "Go Back")
+         end
+         if choice == 0 then
             if girl:obey_check(wm.ACTIONS.SEX) then
                 wm.UpdateImage(wm.IMG.SEX)
                 if wm.Percent(girl:normalsex()) then
@@ -289,7 +310,7 @@ function BrothelInteractChoice(girl)
             Dialog("As you enter her room you accidently jostle the crate you're carrying.  Hearing the clinking and clanging she eyes the crate.  \"What do you have got in the crate?\" She asks.")
             Dialog("\"Take a look.\" you say.  Her eyes widen at the sight of the whips, chains, and harnesses.")
             if girl:obey_check(wm.ACTIONS.SEX) then
-                wm.UpdateImage(wm.IMG.BDSM)
+                PlayerFucksGirl_BDSM(girl)
                 Dialog("A smile graces her face as she picks through the plethora of various bondage toys. ")
                 if wm.Percent(girl:bdsm()) then
                     Dialog("She chooses a large wicked looking dildo and some anal beads from the crate.  She blushes as she begs you to use them after you've tied her up.")
@@ -434,6 +455,7 @@ function BrothelInteractChoice(girl)
                 wm.UpdateImage(wm.IMG.STRIP)
                 Dialog("She relaxes and grins devilishly.  \"Alright, I hope you will enjoy the show,\" she then adds \"but no touching.\"")
                 if wm.Percent(girl:strip()) then
+                    wm.UpdateImage(wm.IMG.MAST)
                     Dialog("She moves to her bed and makes herself comfortable and making sure you have a good view.  She begins rubbing her mound through her panties and before long a dark wet spot begins to grow;  you also start feeling some growth.")
                     if girl:has_trait("Great Figure") then
                         Dialog("As she rubs, pulls, and teases her pussy; You admire her incredible figure as it undulates and gyrates from the stimulation.")
@@ -449,6 +471,7 @@ function BrothelInteractChoice(girl)
                     Dialog("She barely makes a sound and you can't tell what she is doing but there is certainly very little movement.")
                     Dialog("After a few minutes of the same routine, she looks up and you and tells you she is done.  You leave disappointed.")
                 end
+                girl:service(2)
             else
                 if girl:has_trait("Meek") then
                     Dialog("She blushes to a deep red and pushes you out of the room without ever making eye contact.")
@@ -461,7 +484,7 @@ function BrothelInteractChoice(girl)
             Dialog("You ask the group of men to wait in the hall as you enter her room.")
             Dialog("You find her relaxing on her bed looking through some of her lingerie.  She looks up as you speak.\"I wonder if you could help me, my dear.  I've got a group of gentlemen outside and I was wondering if you could help me entertain them?\"")
             if girl:obey_check(wm.ACTIONS.SEX) then
-                wm.UpdateImage(wm.IMG.GROUP)
+                PlayerFucksGirl_Group(girl)
                 Dialog("She nods in agreement, but asks for a few minutes to get ready.  As the door closes behind you, many rumbling and rustling sounds can be heard.  A minute or so later she declares that she is ready.")
                 if girl:has_trait("Nymphomaniac") then
                     Dialog("You lead the men inside and you all stand at attention for the amazing sight before you.  She stands in the center of the room surrounded by pillows and cushions.  There isn't a stitch of clothing on her body, which shines from the coating of lubricant she has applied.  She waits for the door to close before she strikes a sexy pose and exclaims \"Lets see who can catch the greased courtesan first!\"")
@@ -568,7 +591,7 @@ function Refuse(girl)
         Dialog("\"Oh I see.  You feel you have no need to obey me?\"  You ask calmly.  \"Perhaps then you also have no need for the things I have given you?\" ")
         Dialog("\"I'll just be taking a few things back then.\"  You order your guards to strip her naked and make her stand in front of the brothel all day and night.")
         Dialog("As she is lead outside you remark. \"Perhaps next time you will be more mindful of who it is that takes care of you.\"")
-        -- TODO Nude
+        wm.UpdateImage(wm.IMG.NUDE)
         wm.SetPlayerDisposition(-3)
         girl:happiness(-3)
         girl:pchate(5)
@@ -609,7 +632,7 @@ function Punish(girl)
             girl:pcfear(30)
         end
     elseif choice == 1 then
-        -- TODO Group Sex
+        PlayerFucksGirl_Group(girl)
         wm.SetPlayerDisposition(-40)
         Dialog("You and your men spend a few hours passing her around the room.")
         Dialog("For the grand finale you all stand around her and spray her with load after load of cum.")
@@ -625,6 +648,9 @@ function Punish(girl)
             girl:pcfear(5)
         end
     elseif choice == 2 then
+        -- Flavour text doesn't mention penis-in-vagina penetration,
+        -- so don't call PlayerFucksGirl_BDSM()
+        wm.UpdateImage(wm.IMG.BDSM)
         wm.SetPlayerDisposition(-40)
         Dialog("Your men seize her arms and drag her to stand before you.")
         if wm.Percent(girl:bdsm()) then
@@ -644,7 +670,7 @@ function Punish(girl)
             girl:pcfear(30)
         end
     elseif choice == 3 then
-        -- BEST SEX
+        wm.UpdateImage(wm.IMG.BEST)
         Dialog("Player: \"Let's see if a night with Cthulu's cousin improves her mood?\"")
         Dialog("Your men pick the girl up from the floor and haul her off to the beast pit.")
         Dialog("beast sex dialog")
@@ -653,7 +679,7 @@ function Punish(girl)
         girl:pcfear(10)
     elseif choice == 4 then
         if girl:obey_check(wm.ACTIONS.WORKSTRIP) then
-            -- NUDE
+            wm.UpdateImage(wm.IMG.NUDE)
             Dialog("However, they don't like when anyone disrespects their employer.  Before they leave her room they tear away her clothing and leave her naked and sobbing.")
         else
             Dialog("Your men don't like when someone disrespects their boss.  They tell her that they are going to strip her naked when they get to her room...")

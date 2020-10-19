@@ -44,6 +44,7 @@ void sLuaGirl::init(lua_State* L) {
             {"name", sLuaGirl::get_name},
             {"is_slave", sLuaGirl::is_slave},
             {"calc_player_pregnancy", sLuaGirl::calc_player_pregnancy},
+            {"calc_group_pregnancy", sLuaGirl::calc_group_pregnancy},
             {"clear_pregnancy", sLuaGirl::clear_pregnancy},
             {"is_pregnant", sLuaGirl::is_pregnant},
             {"start_pregnancy", sLuaGirl::start_pregnancy},
@@ -219,6 +220,20 @@ int sLuaGirl::calc_player_pregnancy(lua_State *L) {
         preg = girl.calc_pregnancy(&g_Game->player());
     }
     lua_pushboolean(L, !preg);
+    return 1;
+}
+
+int sLuaGirl::calc_group_pregnancy(lua_State *L) {
+    auto& girl = check_type(L, 1);
+
+    bool not_preg;
+    if(lua_gettop(L) == 2) {
+        double factor = luaL_checknumber(L, 2);
+        not_preg = girl.calc_group_pregnancy(&g_Game->player(), factor);
+    } else {
+        not_preg = girl.calc_group_pregnancy(&g_Game->player());
+    }
+    lua_pushboolean(L, !not_preg);
     return 1;
 }
 

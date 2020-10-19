@@ -55,6 +55,36 @@ function PlayerFucksGirl(girl)
     wm.UpdateImage(wm.IMG.SEX)
 end
 
+---@param girl wm.Girl
+function PlayerFucksGirl_BDSM(girl)
+    girl:bdsm(2);
+
+    if (girl:check_virginity()) then
+        girl:lose_virginity();
+    end -- `J` updated for trait/status
+
+    local preg = girl:calc_player_pregnancy(false, 0.75);
+    if preg then Dialog(girl:name() .. " has gotten pregnant") end
+
+    -- Set image
+    wm.UpdateImage(wm.IMG.BDSM)
+end
+
+---@param girl wm.Girl
+function PlayerFucksGirl_Group(girl)
+    girl:group(2);
+
+    if (girl:check_virginity()) then
+        girl:lose_virginity();
+    end -- `J` updated for trait/status
+
+    local preg = girl:calc_group_pregnancy(false, 1.0);
+    if preg then Dialog(girl:name() .. " has gotten pregnant") end
+
+    -- Set image
+    wm.UpdateImage(wm.IMG.GROUP)
+end
+
 
 
 ---@param girl wm.Girl

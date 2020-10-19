@@ -43,19 +43,23 @@ function InteractOffice(girl)
         Dialog("\"After observing your work these past couple days, I've noticed some things that could use improvement.  I think you will benefit from my personal instruction in these areas\"  *You wink at her slyly*")
         if girl:obey_check(wm.ACTIONS.SEX) then
             Dialog("\"Please, join me on my office couch there and we will begin....\"")
+            -- TODO: Prefer easily trainable skills (not maxed-out, no
+            -- adverse traits).
             local action = wm.Range(1, 4)
             if action == 1 then
+                wm.UpdateImage(wm.IMG.ORAL)
                 Dialog("You lay back on your leather couch and pull your erect member from your trousers.   \"Now my dear, I'm going to teach you the right way to suck a cock...\"")
-                -- TODO ORAL SEX
+                girl:oral(2)
             elseif action == 2 then
+                PlayerFucksGirl(girl)
                 Dialog("You gently help her remove her clothing and lay her down on the sofa.  As you position yourself on top of her you begin explaining the finer points of vaginal sex.")
-                -- TODO Normal Sex
             elseif action == 3 then
+                PlayerFucksGirl_BDSM(girl)
                 Dialog("You chat with her a few moments on the merits of pain and pleasure sex.  She listens intently and doesn't notice as you bind her with the hidden couch restraints.  She notices as you cinch the last strap and looks up at you inquiringly.  \"No lesson is complete without a demonstration\"  You explain. \"Now be mindful of what I told you, as I demonstrate....\"")
-                -- TODO BDSM sex
             else
+                wm.UpdateImage(wm.IMG.ANAL)
                 Dialog("You instruct her to kneel on the couch, facing away from you.  You admire her ass for a moment as you ask her to pull her dress up.  Reaching out, you slowly pull down her panties.  As you stimulate her clitoris and rub her juices on her anus, You explain some techniques to help her relax her muscles during anal sex.  You continue your lesson with a practical demonstration and you easily slide your penis into her ass...")
-                -- TODO ANAL SEX
+                girl:anal(2)
             end
         else
             Dialog("She refuses your offer of instruction.")
@@ -73,7 +77,8 @@ function InteractOffice(girl)
         Dialog("Remove your clothing.  I want to get a better look my investment.")
 
         if girl:obey_check(wm.ACTIONS.WORKSTRIP) then
-            -- TODO strip
+            girl:strip(2)
+            wm.UpdateImage(wm.IMG.STRIP)
             Dialog("She removes her clothing and stands nervously before you.")
             if girl:has_trait("Futanari") then
                 Dialog("Oh! Hmm...I didn't realize you were a dick girl...")
@@ -120,7 +125,7 @@ function InteractOffice(girl)
 
             Dialog("You sit back down and allow her to get dressed and leave your office.")
         else
-            Dialog("She refuses to be inspected like some prize heffer.")
+            Dialog("She refuses to be inspected like some prize heifer.")
             return girl:trigger("girl:refuse")
         end
     elseif choice == 5 then

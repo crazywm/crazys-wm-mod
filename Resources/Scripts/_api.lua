@@ -3,6 +3,7 @@ local g = {}
 function g:add_trait(trait) end
 function g:has_trait(trait) end
 function g:calc_player_pregnancy(good, factor) end
+function g:calc_group_pregnancy(good, factor) end
 function g:stat(stat, change) end
 function g:skill(skill, change) end
 function g:name() end
