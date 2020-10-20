@@ -21,6 +21,7 @@
 
 #include "interface/cInterfaceObject.h"
 #include "interface/constants.h"
+#include "TableCells.h"
 #include <vector>
 #include <functional>
 #include <map>
@@ -93,7 +94,9 @@ public:
 
     // List Boxes
     void AddToListBox(int listBoxID, int dataID, std::string data, int color = COLOR_BLUE);
+    void AddToListBox(int listBoxID, int dataID, CellData value, std::string formatted, int color = COLOR_BLUE);
     void AddToListBox(int listBoxID, int dataID, std::vector<std::string> data, int color = COLOR_BLUE);
+    void AddToListBox(int listBoxID, int dataID, std::vector<FormattedCellData> data, int color = COLOR_BLUE);
     int GetSelectedItemFromList(int listBoxID);
     std::string GetSelectedTextFromList(int listBoxID); // MYR: For new message summary display in InterfaceProcesses.cpp
     int GetLastSelectedItemFromList(int listBoxID);

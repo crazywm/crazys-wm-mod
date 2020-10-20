@@ -142,10 +142,10 @@ void cScreenTransfer::select_brothel(Side side, int selected)
         int i = 0;
         temp->girls().visit([&](const sGirl& girl) {
             if (selected_girl().get() == &girl) selection = i;
-            std::vector<std::string> Data(columnNames.size());
+            std::vector<FormattedCellData> Data(columnNames.size());
             for (unsigned int x = 0; x < columnNames.size(); ++x)
             {
-                girl.OutputGirlDetailString(Data[x], columnNames[x]);
+                Data[x] = girl.GetDetail(columnNames[x]);
             }
             AddToListBox(own_list_id, i, std::move(Data), checkjobcolor(girl));
             i++;

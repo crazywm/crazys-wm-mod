@@ -280,7 +280,7 @@ void cDungeon::RemoveCust(sDungeonCust* cust)
     m_NumCusts--;
 }
 
-void cDungeon::OutputGirlRow(int i, std::vector<std::string>& Data, const std::vector<std::string>& columnNames)
+void cDungeon::OutputGirlRow(int i, std::vector<FormattedCellData>& Data, const std::vector<std::string>& columnNames)
 {
     Data.resize(columnNames.size());
     int tmp = 0;
@@ -290,7 +290,7 @@ void cDungeon::OutputGirlRow(int i, std::vector<std::string>& Data, const std::v
             for (unsigned int x = 0; x < columnNames.size(); ++x)
             {
                 //for each column, write out the statistic that goes in it
-                current.OutputGirlDetailString(Data[x], columnNames[x]);
+                Data[x] = current.GetDetail(columnNames[x]);
             }
             break;
         };
@@ -298,53 +298,56 @@ void cDungeon::OutputGirlRow(int i, std::vector<std::string>& Data, const std::v
     }
 }
 
-void sDungeonGirl::OutputGirlDetailString(std::string& Data, const std::string& detailName)
+/// Given a name of a detail (stat, skill, trait, etc.), returns its
+/// value as itself (`.val_`) and as a formatted string (`.fmt_`).
+FormattedCellData sDungeonGirl::GetDetail(const std::string& detailName) const
 {
-    //given a statistic name, set a string to a value that represents that statistic
-    static std::stringstream ss;
-    ss.str("");
-    if (detailName == "Rebelliousness")    // `J` Dungeon "Matron" can be a Torturer from any brothel
+    if (detailName == "Rebelliousness")
     {
-        ss << cGirls::GetRebelValue(*m_Girl, random_girl_on_job(g_Game->buildings(), JOB_TORTURER, false) != nullptr);
+        // `J` Dungeon "Matron" can be a Torturer from any brothel
+        bool has_torturer = (random_girl_on_job(g_Game->buildings(), JOB_TORTURER, false) != nullptr);
+        return mk_num(cGirls::GetRebelValue(*m_Girl, has_torturer));
     }
     else if (detailName == "Reason")
     {
         switch (m_Reason)
         {
-        case DUNGEON_GIRLCAPTURED:                ss << "Newly Captured.";                    break;
-        case DUNGEON_GIRLKIDNAPPED:                ss << "Taken from her family.";            break;
-        case DUNGEON_GIRLWHIM:                    ss << "Your whim.";                        break;
-        case DUNGEON_GIRLSTEAL:                    ss << "Not reporting true earnings.";        break;
-        case DUNGEON_GIRLRUNAWAY:                ss << "Ran away and re-captured.";            break;
-        case DUNGEON_NEWSLAVE:                    ss << "This is a new slave.";                break;
-        case DUNGEON_NEWGIRL:                    ss << "This is a new girl.";                break;
-        case DUNGEON_KID:                        ss << "Child of one of your girls.";        break;
-        case DUNGEON_NEWARENA:                    ss << "This is a girl won in the arena.";    break;
-        case DUNGEON_RECRUITED:                    ss << "This girl was recruited for you.";    break;
+           case DUNGEON_GIRLCAPTURED:     return mk_text("Newly Captured.");
+           case DUNGEON_GIRLKIDNAPPED:    return mk_text("Taken from her family.");
+           case DUNGEON_GIRLWHIM:         return mk_text("Your whim.");
+           case DUNGEON_GIRLSTEAL:        return mk_text("Not reporting true earnings.");
+           case DUNGEON_GIRLRUNAWAY:      return mk_text("Ran away and re-captured.");
+           case DUNGEON_NEWSLAVE:         return mk_text("This is a new slave.");
+           case DUNGEON_NEWGIRL:          return mk_text("This is a new girl.");
+           case DUNGEON_KID:              return mk_text("Child of one of your girls.");
+           case DUNGEON_NEWARENA:         return mk_text("This is a girl won in the arena.");
+           case DUNGEON_RECRUITED:        return mk_text("This girl was recruited for you.");
+           default:                       return mk_error("(error)");
         }
     }
-    else if (detailName == "Duration")            { ss << m_Weeks; }
-    else if (detailName == "Feeding")            { ss << ((m_Feeding) ? "Yes" : "No"); }
-    else if (detailName == "Tortured")            { ss << ((m_Girl->m_Tort) ? "Yes" : "No"); }
+    else if (detailName == "Duration")    return mk_num(m_Weeks);
+    else if (detailName == "Feeding")     return mk_yesno(m_Feeding);
+    else if (detailName == "Tortured")    return mk_yesno(m_Girl->m_Tort);
     else if (detailName == "Kidnapped")
     {
         // TODO (traits) figure out something here!
-        /*
+#if 0
+        std::ostringstream ss;
+
         auto info = m_Girl->raw_traits().get_trait_info("Kidnapped");
         if (info.trait && info.remaining_time > 0) ss << info.remaining_time;
         else ss << "-";
-        */
+#else
+        return mk_text("-");
+#endif
     }
     else
     {
-        m_Girl->OutputGirlDetailString(Data, detailName);
-        return;
+        return m_Girl->GetDetail(detailName);
     }
-
-    Data = ss.str();
 }
 
-void cDungeon::OutputCustRow(int i, std::vector<std::string>& Data, const std::vector<std::string>& columnNames)
+void cDungeon::OutputCustRow(int i, std::vector<FormattedCellData>& Data, const std::vector<std::string>& columnNames)
 {
     Data.resize(columnNames.size());
     sDungeonCust* cust = m_Custs;
@@ -360,36 +363,32 @@ void cDungeon::OutputCustRow(int i, std::vector<std::string>& Data, const std::v
         for (unsigned int x = 0; x < columnNames.size(); ++x)
         {
             //for each column, write out the statistic that goes in it
-            cust->OutputCustDetailString(Data[x], columnNames[x]);
+            Data[x] = cust->GetDetail(columnNames[x]);
         }
     }
 }
 
-void sDungeonCust::OutputCustDetailString(std::string& Data, const std::string& detailName)
+/// Given a name of a detail (stat, skill, trait, etc.), returns its
+/// value as itself (`.val_`) and as a formatted string (`.fmt_`).
+FormattedCellData sDungeonCust::GetDetail(const std::string& detailName) const
 {
-    //given a statistic name, set a string to a value that represents that statistic
-    static std::stringstream ss;
-    ss.str("");
-    if (detailName == "Name")                    { ss << "Customer"; }
-    else if (detailName == "Health")    { if (m_Health <= 0) ss << "DEAD"; else ss << m_Health << "%"; }
+    if (detailName == "Name")           return mk_text("Customer");
+    else if (detailName == "Health")    return mk_health(m_Health);
     else if (detailName == "Reason")
     {
         switch (m_Reason)
         {
-        case DUNGEON_CUSTNOPAY:            ss << "Not paying.";            break;
-        case DUNGEON_CUSTBEATGIRL:        ss << "Beating your girls.";    break;
-        case DUNGEON_CUSTSPY:            ss << "Being a rival's spy.";    break;
-        case DUNGEON_RIVAL:                ss << "Is a rival.";            break;
+        case DUNGEON_CUSTNOPAY:         return mk_text("Not paying.");
+        case DUNGEON_CUSTBEATGIRL:      return mk_text("Beating your girls.");
+        case DUNGEON_CUSTSPY:           return mk_text("Being a rival's spy.");
+        case DUNGEON_RIVAL:             return mk_text("Is a rival.");
+        default:                        return mk_error("(error)");
         }
     }
-    else if (detailName == "Duration")            { ss << (int)m_Weeks; }
-    else if (detailName == "Feeding")            { ss << ((m_Feeding) ? "Yes" : "No"); }
-    else if (detailName == "Tortured")            { ss << ((m_Tort) ? "Yes" : "No"); }
-    else
-    {
-        ss << "---";
-    }
-    Data = ss.str();
+    else if (detailName == "Duration")  return mk_num((int)m_Weeks);
+    else if (detailName == "Feeding")   return mk_yesno(m_Feeding);
+    else if (detailName == "Tortured")  return mk_yesno(m_Tort);
+    else                                return mk_error("---");
 }
 
 sDungeonGirl* cDungeon::GetGirl(int i)

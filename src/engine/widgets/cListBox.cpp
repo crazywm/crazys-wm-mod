@@ -53,7 +53,6 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
     m_LastSelected = m_Items.end();
 
     DefineColumns(std::vector<std::string>(1), std::vector<std::string>(1),
-                  std::vector<ColumnType>(1),
                   std::vector<int>(1), std::vector<bool>(1));
     SDL_Rect dest_rect;
 
@@ -523,7 +522,7 @@ const std::string& cListBox::GetSelectedText()
     if (m_LastSelected == m_Items.end())
         return empty;
     else
-        return m_LastSelected->m_Data.front();
+        return m_LastSelected->m_Data.front().fmt_;
 }
 
 bool cListBox::IsSelected()
@@ -554,13 +553,14 @@ void cListBox::SetElementText(int ID, std::string data[], int columns)
         if (item.m_ID == ID)
         {
             for (int i = 0; i < columns; i++) {
-                item.m_Data[i] = data[i];
+                item.m_Data[i].val_ = data[i];
+                item.m_Data[i].fmt_ = data[i];
                 if(item.m_TextColor) {
                     m_Font.SetColor(item.m_TextColor->r, item.m_TextColor->g, item.m_TextColor->b);
                 } else {
                     m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
                 }
-                item.m_PreRendered[i] = m_Font.RenderText(item.m_Data[i]);
+                item.m_PreRendered[i] = m_Font.RenderText(item.m_Data[i].fmt_);
             }
             break;
         }
@@ -591,7 +591,8 @@ void cListBox::SetElementColumnText(int ID, std::string data, const std::string&
             }
             item.m_PreRendered[column_id] = m_Font.RenderText(data);
 
-            item.m_Data[column_id] = std::move(data);
+            item.m_Data[column_id].val_ = data;
+            item.m_Data[column_id].fmt_ = std::move(data);
             break;
         }
     }
@@ -606,13 +607,13 @@ void cListBox::SetElementTextColor(int ID, SDL_Color text_color)
             item.m_TextColor = std::make_unique<SDL_Color>(text_color);
             m_Font.SetColor(text_color.r, text_color.g, text_color.b);
             for(unsigned i = 0; i < item.m_Data.size(); ++i) {
-                item.m_PreRendered[i] = m_Font.RenderText(item.m_Data[i]);
+                item.m_PreRendered[i] = m_Font.RenderText(item.m_Data[i].fmt_);
             }
             break;
         }
     }
 }
-void cListBox::AddElement(int ID, std::vector<std::string> data, int color)
+void cListBox::AddElement(int ID, std::vector<FormattedCellData> data, int color)
 {
     m_Items.emplace_back();
     auto& newItem = m_Items.back();
@@ -623,7 +624,7 @@ void cListBox::AddElement(int ID, std::vector<std::string> data, int color)
     for(std::size_t i = 0; i < newItem.m_Data.size(); ++i) {
         /// TODO add ability to use reference to existing font with new text
         m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
-        auto gfx = m_Font.RenderText(newItem.m_Data[i]);
+        auto gfx = m_Font.RenderText(newItem.m_Data[i].fmt_);
         newItem.m_PreRendered.push_back(std::move(gfx));
     }
 
@@ -638,7 +639,7 @@ void cListBox::AddElement(int ID, std::vector<std::string> data, int color)
         m_ScrollBar->m_ItemsTotal = m_NumElements;
 }
 
-void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::string> header, std::vector<ColumnType> types, std::vector<int> offset, std::vector<bool> skip)
+void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::string> header, std::vector<int> offset, std::vector<bool> skip)
 {
     m_Columns.clear();
 
@@ -650,7 +651,7 @@ void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::str
         int left = offset[i];
         int right = i == name.size() - 1 ? m_eWidth : offset[i + 1];
         auto gfx = m_Font.RenderText(header[i]);
-        m_Columns.emplace_back(sColumnData{std::move(name[i]), std::move(header[i]), types[i], left, right - left, i, skip[i], gfx});
+        m_Columns.emplace_back(sColumnData{std::move(name[i]), std::move(header[i]), left, right - left, i, skip[i], gfx});
     }
     m_Font.SetFontBold(false);
 
@@ -784,50 +785,27 @@ void cListBox::UnSortList()
 namespace {
   enum class Direction { Ascending, Descending };
 
-  // Fetches the value of `item` at column `col_id`, and returns it as
-  // some type with an `operator<()` that gives us the sorting order
-  // we want.
-  template<ColumnType>
-  auto get_value(cListItem const& item, int col_id);
-
-  template<>
-  auto get_value<ColumnType::Numeric>(cListItem const& item, int col_id)
+  // Sorts `list` by column `col_id`.
+  void do_sort(cListBox::item_list_t& list, int col_id, Direction dir) noexcept
   {
-    return std::stoi(item.m_Data[col_id]);
-  }
+    auto get_value
+       = [col_id] (cListItem const& item) noexcept {
+            return item.m_Data[col_id].val_;
+         };
 
-  template<>
-  auto get_value<ColumnType::Age>(cListItem const& item, int col_id)
-  {
-    if(item.m_Data[col_id] == "???")
-      return std::numeric_limits<int>::max();
-    else
-      return std::stoi(item.m_Data[col_id]);
-  }
-
-  template<>
-  auto get_value<ColumnType::String>(cListItem const& item, int col_id)
-  {
-    return item.m_Data[col_id];
-  }
-
-  // Sorts `list` by column `col_id` of type `col_type`.
-  template<ColumnType col_type>
-  void do_sort(cListBox::item_list_t& list, int col_id, Direction dir)
-  {
     auto less_than
-      = [col_id](cListItem const& a, cListItem const& b) {
-	  return get_value<col_type>(a, col_id) < get_value<col_type>(b, col_id);
+      = [get_value](cListItem const& a, cListItem const& b) noexcept {
+	  return get_value(a) < get_value(b);
 	};
 
     switch(dir) {
     case Direction::Ascending:
-      list.sort([less_than](const cListItem& a, const cListItem& b) {
+      list.sort([less_than](const cListItem& a, const cListItem& b) noexcept {
 		  return less_than(a, b);
 		});
       break;
     case Direction::Descending:
-      list.sort([less_than](const cListItem& a, const cListItem& b) {
+      list.sort([less_than](const cListItem& a, const cListItem& b) noexcept {
 		  return less_than(b, a);
 		});
       break;
@@ -859,23 +837,8 @@ void cListBox::SortByColumn(std::string ColumnName, bool Descending)
     // `m_LastSelected` will effectively be carried along to the
     // target element's new position.
 
-    /// TODO make sure this cannot throw.
-    try {
-        auto direction = Descending ? Direction::Descending : Direction::Ascending;
-        switch (m_Columns[col_ref].type) {
-            case ColumnType::Numeric:
-                do_sort<ColumnType::Numeric>(m_Items, col_id, direction);
-                break;
-            case ColumnType::Age:
-                do_sort<ColumnType::Age>(m_Items, col_id, direction);
-                break;
-            case ColumnType::String:
-                do_sort<ColumnType::String>(m_Items, col_id, direction);
-                break;
-        }
-    } catch (const std::exception& error) {
-        window_manager().PushError(std::string("Error during sorting: ") + error.what());
-    }
+    auto direction = Descending ? Direction::Descending : Direction::Ascending;
+    do_sort(m_Items, col_id, direction);
 
     UpdatePositionsAfterSort();
 

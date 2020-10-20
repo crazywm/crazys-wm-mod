@@ -19,17 +19,17 @@
 <Button     Name="BackButton"           Image="Back"                        XPos="3177"     YPos="1941"      Width="562"     Height="112"     Transparency="true" PushWindow="<back>"/>
 
 <ListBox    Name="GirlList"                                                 XPos="28"       YPos="98"       Width="2867"     Height="1778"    FontSize="34"       RowHeight="59"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
-<Column     Name="Name"           Type="String"       Header="Girl Name"                  Offset="0"  />
-<Column     Name="Health"         Type="Numeric"      Header="Health"                     Offset="562"  />
-<Column     Name="Happiness"      Type="Numeric"      Header="Happy"                      Offset="703"  />
-<Column     Name="Rebelliousness" Type="Numeric"      Header="Rebel"                      Offset="844"  />
-<Column     Name="is_slave"       Type="String"       Header="Slave"                      Offset="985"  />
-<Column     Name="is_addict"      Type="String"       Header="Addict"                     Offset="1196"  />
-<Column     Name="has_disease"    Type="String"       Header="Disease"                    Offset="1407"  />
-<Column     Name="Duration"       Type="Numeric"      Header="Weeks In"                   Offset="1618"  />
-<Column     Name="Feeding"        Type="String"       Header="Feeding"                    Offset="1829"  />
-<Column     Name="Tortured"       Type="String"       Header="Tortured"                   Offset="2040"  />
-<Column     Name="Reason"         Type="String"       Header="Reason for Imprisonment"    Offset="2251"  />
+<Column     Name="Name"           Header="Girl Name"                  Offset="0"  />
+<Column     Name="Health"         Header="Health"                     Offset="562"  />
+<Column     Name="Happiness"      Header="Happy"                      Offset="703"  />
+<Column     Name="Rebelliousness" Header="Rebel"                      Offset="844"  />
+<Column     Name="is_slave"       Header="Slave"                      Offset="985"  />
+<Column     Name="is_addict"      Header="Addict"                     Offset="1196"  />
+<Column     Name="has_disease"    Header="Disease"                    Offset="1407"  />
+<Column     Name="Duration"       Header="Weeks In"                   Offset="1618"  />
+<Column     Name="Feeding"        Header="Feeding"                    Offset="1829"  />
+<Column     Name="Tortured"       Header="Tortured"                   Offset="2040"  />
+<Column     Name="Reason"         Header="Reason for Imprisonment"    Offset="2251"  />
 </ListBox>                                                                                                                  
 <Text       Name="ReleaseTo"            Text="Send Girl to: Brothel 0"      XPos="984"      YPos="1884"      Width="984"     Height="68"  FontSize="45"  />
 <Text       Name="RoomsFree"            Text="Room for # more girls."       XPos="2108"      YPos="1884"      Width="562"     Height="68"  FontSize="45"  />

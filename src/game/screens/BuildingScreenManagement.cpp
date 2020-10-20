@@ -439,7 +439,7 @@ void IBuildingScreenManagement::init(bool back)
     // get a list of all the column names, so we can find which data goes in that column
     std::vector<std::string> columnNames = GetListBox(girllist_id)->GetColumnNames();
     int numColumns = columnNames.size();
-    std::vector<std::string> data(numColumns);
+    std::vector<FormattedCellData> data(numColumns);
 
     for (int i = 0; i < active_building().num_girls(); i++)    // Add girls to list
     {
@@ -448,7 +448,7 @@ void IBuildingScreenManagement::init(bool back)
         unsigned int item_color = (gir->health() <= 30 || gir->tiredness() >= 80 || gir->happiness() <= 30) ? COLOR_RED : COLOR_BLUE;
         for (unsigned int x = 0; x < columnNames.size(); ++x)
         {
-            gir->OutputGirlDetailString(data[x], columnNames[x]);
+            data[x] = gir->GetDetail(columnNames[x]);
         }
         AddToListBox(girllist_id, i, data, item_color);
     }

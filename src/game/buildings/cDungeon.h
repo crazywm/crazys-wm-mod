@@ -29,6 +29,8 @@
 
 #include "cGirls.h"
 
+#include "interface/TableCells.h"
+
 class cGirlTorture;
 
 // Keeps track of customers in the dungeon
@@ -48,7 +50,8 @@ struct sDungeonCust
     sDungeonCust*   m_Next;
     sDungeonCust*   m_Prev;
     int             m_Health;
-    void OutputCustDetailString(std::string& Data, const std::string& detailName);
+
+    FormattedCellData GetDetail(const std::string& detailName) const;
 };
 
 // Keeps track of girls in the dungeon
@@ -66,7 +69,8 @@ struct sDungeonGirl
 
     // customer data
     std::shared_ptr<sGirl> m_Girl;
-    void OutputGirlDetailString(std::string& Data, const std::string& detailName);
+
+    FormattedCellData GetDetail(const std::string& detailName) const;
 };
 
 
@@ -95,8 +99,8 @@ public:
     bool SendGirlToDungeon(std::shared_ptr<sGirl> girl);
     void AddGirl(std::shared_ptr<sGirl> girl, int reason);
     void AddCust(int reason, int numDaughters, bool hasWife);
-    void OutputGirlRow(int i, std::vector<std::string>& Data, const std::vector<std::string>& columnNames);
-    void OutputCustRow(int i, std::vector<std::string>& Data, const std::vector<std::string>& columnNames);
+    void OutputGirlRow(int i, std::vector<FormattedCellData>& Data, const std::vector<std::string>& columnNames);
+    void OutputCustRow(int i, std::vector<FormattedCellData>& Data, const std::vector<std::string>& columnNames);
     sDungeonGirl* GetGirl(int i);
     sDungeonGirl* GetGirlByName(std::string name);
     sDungeonCust* GetCust(int i);

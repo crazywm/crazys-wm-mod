@@ -845,297 +845,317 @@ bool sGirl::was_resting() const
     return m_PrevDayJob == JOB_RESTING    && m_PrevNightJob == JOB_RESTING;
 }
 
-void sGirl::OutputGirlDetailString(std::string& Data, const std::string& detailName) const
+/// Given a name of a detail (stat, skill, trait, etc.), returns its
+/// value as itself (`.val_`) and as a formatted string (`.fmt_`).
+FormattedCellData sGirl::GetDetail(const std::string& detailName) const
 {
-    //given a statistic name, set a string to a value that represents that statistic
-    static std::stringstream ss;
-    ss.str("");
+    auto mk_age = [](int val) {
+                     if(val == 100)
+                        return FormattedCellData{val, "???"};
+                     else
+                        return FormattedCellData{val, std::to_string(val)};
+                  };
 
-    bool interrupted = false;    // `J` added
-    if (m_YesterDayJob != m_DayJob &&
-        (cJobManager::is_Surgery_Job(m_YesterDayJob) || m_YesterDayJob == JOB_REHAB) &&
-        ((m_WorkingDay > 0) || m_PrevWorkingDay > 0))
-        interrupted = true;
-
-    /* */if (detailName == "Name")                { ss << FullName(); }
-    else if (detailName == "Health")            { if (get_stat(STAT_HEALTH) <= 0) ss << "DEAD"; else ss << get_stat(STAT_HEALTH) << "%"; }
-    else if (detailName == "Age")                { if (get_stat(STAT_AGE) == 100) ss << "???"; else ss << get_stat(STAT_AGE); }
-    else if (detailName == "Libido")            { ss << libido(); }
-    else if (detailName == "Rebel")                { ss << rebel(); }
-    else if (detailName == "Looks")                { ss << ((get_stat(STAT_BEAUTY) + get_stat(STAT_CHARISMA)) / 2) << "%"; }
-    else if (detailName == "Tiredness")            { ss << get_stat(STAT_TIREDNESS) << "%"; }
-    else if (detailName == "Happiness")            { ss << get_stat(STAT_HAPPINESS) << "%"; }
-    else if (detailName == "Virgin")            { ss << (is_virgin(*this) ? "Yes" : "No"); }
+    /* */if (detailName == "Name")     return mk_text(FullName());
+    else if (detailName == "Health")   return mk_health(get_stat(STAT_HEALTH));
+    else if (detailName == "Age")      return mk_age(get_stat(STAT_AGE));
+    else if (detailName == "Libido")   return mk_num(libido());
+    else if (detailName == "Rebel")    return mk_num(rebel());
+    else if (detailName == "Looks")
+    {
+       return mk_percent((get_stat(STAT_BEAUTY) + get_stat(STAT_CHARISMA)) / 2);
+    }
+    else if (detailName == "Tiredness")     return mk_percent(get_stat(STAT_TIREDNESS));
+    else if (detailName == "Happiness")     return mk_percent(get_stat(STAT_HAPPINESS));
+    else if (detailName == "Virgin")        return mk_yesno(is_virgin(*this));
     else if (detailName == "Weeks_Due")
     {
         if (is_pregnant())
         {
-            ss << get_preg_duration() - m_WeeksPreg;
+            return mk_num(get_preg_duration() - m_WeeksPreg);
         }
         else
         {
-            ss << "---";
+            return mk_text("---");
         }
     }
-    else if (detailName == "PregCooldown")        { ss << m_PregCooldown; }
+    else if (detailName == "PregCooldown")
+    {
+        return mk_num(m_PregCooldown);
+    }
     else if (detailName == "Accommodation")
     {
-        ss << cGirls::Accommodation(m_AccLevel);
+        return mk_text(cGirls::Accommodation(m_AccLevel));
     }
     else if (detailName == "Gold")
     {
         if (g_Game->gang_manager().GetGangOnMission(MISS_SPYGIRLS))
         {
-            ss << m_Money;
+            return mk_num(m_Money);
         }
         else
         {
-            ss << "???";
+            return mk_text("???");
         }
     }
-    else if (detailName == "Pay")                { ss << m_Pay; }
+    else if (detailName == "Pay")                { return mk_num(m_Pay); }
 
         // 'J' Added for .06.03.01
-    else if (detailName == "DayJobShort" || detailName == "NightJobShort")
+    else if (detailName == "DayJobShort")
     {
-        ss << g_Game->job_manager().get_job_brief(detailName == "DayJobShort" ? m_DayJob : m_NightJob);
+        return mk_text(g_Game->job_manager().get_job_brief(m_DayJob));
+    }
+    else if(detailName == "NightJobShort")
+    {
+        return mk_text(g_Game->job_manager().get_job_brief(m_NightJob));
     }
 
         // 'J' Girl Table job text
     else if (detailName == "DayJob" || detailName == "NightJob")
     {
-        bool DN_Day = detailName == "NightJob";
-        JOBS DN_Job = get_job(DN_Day);
-        const std::string& job_name = g_Game->job_manager().get_job_name(DN_Job);
-
-        // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
-        if (DN_Job >= NUM_JOBS)
-        {
-            ss << "None";
-        }
-        else if (DN_Job == JOB_FAKEORGASM || DN_Job == JOB_SO_STRAIGHT || DN_Job == JOB_SO_BISEXUAL || DN_Job == JOB_SO_LESBIAN)
-        {
-            ss << job_name << " (" << m_WorkingDay << "%)";
-        }
-        else if (DN_Job == JOB_CUREDISEASES)
-        {
-            if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
-            {
-                ss << job_name << " (" << m_WorkingDay << "%)";
-            }
-            else
-            {
-                ss << job_name << " (" << m_WorkingDay << "%) **";
-            }
-        }
-        else if (DN_Job == JOB_REHAB || DN_Job == JOB_ANGER || DN_Job == JOB_EXTHERAPY || DN_Job == JOB_THERAPY)
-        {
-            if (m_Building->num_girls_on_job(JOB_COUNSELOR, DN_Day) > 0)
-            {
-                ss << job_name << " (" << 3 - m_WorkingDay << ")";
-            }
-            else
-            {
-                ss << job_name << " (?)***";
-            }
-        }
-        else if (DN_Job == JOB_GETHEALING)
-        {
-            if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
-            {
-                ss << job_name;
-            }
-            else
-            {
-                ss << job_name << " ***";
-            }
-        }
-        else if (DN_Job == JOB_GETREPAIRS)
-        {
-            if (m_Building->num_girls_on_job(JOB_MECHANIC, DN_Day) > 0 &&
-                (has_active_trait("Construct") || has_active_trait("Half-Construct")))
-            {
-                ss << job_name;
-            }
-            else if (has_active_trait("Construct"))
-            {
-                ss << job_name << " ****";
-            }
-            else
-            {
-                ss << job_name << " !!";
-            }
-        }
-        else if (DN_Job == JOB_GETABORT)
-        {
-            int wdays = (2 - (this)->m_WorkingDay);
-            if (m_Building->num_girls_on_job(JOB_NURSE, DN_Day) > 0)
-            {
-                wdays = 1;
-            }
-            if (m_Building->num_girls_on_job( JOB_DOCTOR, DN_Day) > 0)
-            {
-                ss << job_name << " (" << wdays << ")*";
-            }
-            else
-            {
-                ss << job_name << " (?)***";
-            }
-        }
-        else if (cJobManager::is_Surgery_Job(DN_Job))
-        {
-            int wdays = (5 - (this)->m_WorkingDay);
-            if (m_Building->num_girls_on_job(JOB_NURSE, DN_Day) > 0)
-            {
-                if (wdays >= 3)        { wdays = 3; }
-                else if (wdays > 1)    { wdays = 2; }
-                else                { wdays = 1; }
-            }
-            if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
-            {
-                ss << job_name << " (" << wdays << ")*";
-            }
-            else
-            {
-                ss << job_name << " (?)***";
-            }
-        }
-        else if (is_Actress_Job(DN_Job) && CrewNeeded(*m_Building))
-        {
-            ss << job_name << " **";
-        }
-        else if (is_resting() && !was_resting() && m_PrevDayJob != 255 && m_PrevNightJob != 255)
-        {
-            ss << job_name;
-            ss << " (" << g_Game->job_manager().get_job_brief(DN_Day == 0 ? m_PrevDayJob : m_PrevNightJob) << ")";
-        }
-        else
-        {
-            ss << job_name;
-        }
-        if (interrupted)
-        {
-            ss << " **";
-        }
+        return GetDetail_Job(detailName);
     }
 
-    else if (detailName.find("STAT_") != std::string::npos)
+    else if (detailName.substr(0, 5) == "STAT_")
     {
-        std::string stat = detailName;
-        stat.replace(0, 5, "");
+        std::string stat = detailName.substr(5);
         int code = get_stat_id(stat);
         if (code != -1)
         {
-            ss << get_stat(code);
+            return mk_num(code);
         }
         else
         {
-            ss << "Error";
+            return mk_error("Error");
         }
     }
-    else if (detailName.find("SKILL_") != std::string::npos)
+    else if (detailName.substr(0, 6) == "SKILL_")
     {
-        std::string skill = detailName;
-        skill.replace(0, 6, "");
+        std::string skill = detailName.substr(6);;
         int code = get_skill_id(skill);
         if (code != -1)
         {
-            ss << get_skill(code);
+            return mk_num(code);
         }
         else
         {
-            ss << "Error";
+            return mk_error("Error");
         }
     }
-    else if (detailName.find("TRAIT_") != std::string::npos)
+    else if (detailName.substr(0, 6) == "TRAIT_")
     {
-        std::string trait = detailName;
-        trait.replace(0, 6, "");
-        if (this->has_active_trait(trait.c_str()))
-        {
-            ss << "Yes";
-        }
-        else
-        {
-            ss << "No";
-        }
+        std::string trait = detailName.substr(6);
+        return mk_yesno(this->has_active_trait(trait.c_str()));
     }
-    else if (detailName.find("STATUS_") != std::string::npos)
+    else if (detailName.substr(0, 7) == "STATUS_")
     {
-        std::string status = detailName;
-        status.replace(0, 7, "");
+        std::string status = detailName.substr(7);
         int code = get_status_id(status);
         if (code != -1)
         {
-            ss << (m_States&(1u << code) ? "Yes" : "No");
+            return mk_yesno(m_States & (1u << code));
         }
         else
         {
-            ss << "Error";
+            return mk_error("Error");
         }
     }
     else if (detailName == "is_pregnant")
     {
-        if (is_virgin(*this)) ss << "Vg.";
+        if (is_virgin(*this)) return mk_text("Vg.");
         else if (is_pregnant())
         {
-            int to_go = get_preg_duration() - (this)->m_WeeksPreg;
-            if (carrying_players_child())    ss << "Yours";
-            else if (carrying_monster())    ss << "Beast";
+            static std::ostringstream ss;
+
+            if (carrying_players_child())      ss << "Yours";
+            else if (carrying_monster())       ss << "Beast";
             else /*                      */    ss << "Yes";
+
+            int to_go = get_preg_duration() - (this)->m_WeeksPreg;
             if (has_active_trait("Sterile") || has_active_trait("Zombie") || has_active_trait("Skeleton"))
                 ss << "?" << to_go << "?";    // how?
             else
                 ss << "(" << to_go << ")";
+
+            return mk_text(ss.str());
         }
         else if (m_PregCooldown > 0)
         {
+            static std::ostringstream ss;
+
             ss << "No";
             if (has_active_trait("Sterile") || has_active_trait("Zombie") || has_active_trait("Skeleton"))
                 ss << "!" << m_PregCooldown << "!";
             else
                 ss << "(" << m_PregCooldown << ")";
+
+            return mk_text(ss.str());
         }
-        else if (has_active_trait("Zombie") || has_active_trait("Skeleton")) ss << "Ud.";
-        else if (has_active_trait("Sterile"))        ss << "St.";
-        else if (has_active_trait("Fertile"))      ss << "No+";
-        else if (has_active_trait("Broodmother"))  ss << "No++";
-        else                                ss << "No";
+        else if (has_active_trait("Zombie") || has_active_trait("Skeleton"))
+           return mk_text("Ud.");
+        else if (has_active_trait("Sterile"))      return mk_text("St.");
+        else if (has_active_trait("Fertile"))      return mk_text("No+");
+        else if (has_active_trait("Broodmother"))  return mk_text("No++");
+        else                                       return mk_text("No");
     }
-    else if (detailName == "is_slave")            { ss << (is_slave() ? "Yes" : "No"); }
-    else if (detailName == "carrying_human")    { ss << (carrying_human() ? "Yes" : "No"); }
-    else if (detailName == "is_addict")            { ss << (is_addict(*this) ? "Yes" : "No"); }
-    else if (detailName == "has_disease")        { ss << (has_disease(*this) ? "Yes" : "No"); }
-    else if (detailName == "is_mother")            { ss << (is_mother() ? "Yes" : "No"); }
-    else if (detailName == "is_poisoned")        { ss << (is_poisoned() ? "Yes" : "No"); }
+    else if (detailName == "is_slave")       return mk_yesno(is_slave());
+    else if (detailName == "carrying_human") return mk_yesno(carrying_human());
+    else if (detailName == "is_addict")      return mk_yesno(is_addict(*this));
+    else if (detailName == "has_disease")    return mk_yesno(has_disease(*this));
+    else if (detailName == "is_mother")      return mk_yesno(is_mother());
+    else if (detailName == "is_poisoned")    return mk_yesno(is_poisoned());
     else if (detailName == "Value")
     {
         // TODO this should not be modifying the girl
         cGirls::UpdateAskPrice(*const_cast<sGirl*>(this), false);
-        ss << (int)g_Game->tariff().slave_price(*const_cast<sGirl*>(this), false);
+        return mk_num((int)g_Game->tariff().slave_price(*const_cast<sGirl*>(this), false));
     }
     else if (detailName == "SO")
     {
-        /* */if (has_active_trait("Lesbian"))    ss << "L";
-        else if (has_active_trait("Straight"))    ss << "S";
-        else if (has_active_trait("Bisexual"))    ss << "B";
-        else/*                       */    ss << "-";
+       /* */if (has_active_trait("Lesbian"))    return mk_text("L");
+       else if (has_active_trait("Straight"))   return mk_text("S");
+       else if (has_active_trait("Bisexual"))   return mk_text("B");
+       else/*                       */          return mk_text("-");
     }
     else if (detailName == "SexAverage")
-    {
-        ss << (int)cGirls::GetAverageOfSexSkills(*this);
-    }
+        return mk_num((int)cGirls::GetAverageOfSexSkills(*this));
     else if (detailName == "NonSexAverage")
-    {
-        ss << (int)cGirls::GetAverageOfNSxSkills(*this);
-    }
+        return mk_num((int)cGirls::GetAverageOfNSxSkills(*this));
     else if (detailName == "SkillAverage")
-    {
-        ss << (int)cGirls::GetAverageOfAllSkills(*this);
-    }
-    else /*                            */        { ss << "Not found"; }
-    Data = ss.str();
+        return mk_num((int)cGirls::GetAverageOfAllSkills(*this));
+    else
+        return mk_error("Not found");
 }
+
+/// Builds the detail value for jobs and job-like activities.
+///
+/// \param detailName Either "DayJob" or "NightJob".
+FormattedCellData sGirl::GetDetail_Job(std::string const& detailName) const
+{
+   bool interrupted = false;    // `J` added
+   if (m_YesterDayJob != m_DayJob &&
+       (cJobManager::is_Surgery_Job(m_YesterDayJob) || m_YesterDayJob == JOB_REHAB) &&
+       ((m_WorkingDay > 0) || m_PrevWorkingDay > 0))
+      interrupted = true;
+
+   std::ostringstream ss;
+
+   bool DN_Day = detailName == "NightJob";
+   JOBS DN_Job = get_job(DN_Day);
+   const std::string& job_name = g_Game->job_manager().get_job_name(DN_Job);
+
+   // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
+   if (DN_Job >= NUM_JOBS)
+   {
+      ss << "None";
+   }
+   else if (DN_Job == JOB_FAKEORGASM || DN_Job == JOB_SO_STRAIGHT || DN_Job == JOB_SO_BISEXUAL || DN_Job == JOB_SO_LESBIAN)
+   {
+      ss << job_name << " (" << m_WorkingDay << "%)";
+   }
+   else if (DN_Job == JOB_CUREDISEASES)
+   {
+      if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
+      {
+         ss << job_name << " (" << m_WorkingDay << "%)";
+      }
+      else
+      {
+         ss << job_name << " (" << m_WorkingDay << "%) **";
+      }
+   }
+   else if (DN_Job == JOB_REHAB || DN_Job == JOB_ANGER || DN_Job == JOB_EXTHERAPY || DN_Job == JOB_THERAPY)
+   {
+      if (m_Building->num_girls_on_job(JOB_COUNSELOR, DN_Day) > 0)
+      {
+         ss << job_name << " (" << 3 - m_WorkingDay << ")";
+      }
+      else
+      {
+         ss << job_name << " (?)***";
+      }
+   }
+   else if (DN_Job == JOB_GETHEALING)
+   {
+      if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
+      {
+         ss << job_name;
+      }
+      else
+      {
+         ss << job_name << " ***";
+      }
+   }
+   else if (DN_Job == JOB_GETREPAIRS)
+   {
+      if (m_Building->num_girls_on_job(JOB_MECHANIC, DN_Day) > 0 &&
+          (has_active_trait("Construct") || has_active_trait("Half-Construct")))
+      {
+         ss << job_name;
+      }
+      else if (has_active_trait("Construct"))
+      {
+         ss << job_name << " ****";
+      }
+      else
+      {
+         ss << job_name << " !!";
+      }
+   }
+   else if (DN_Job == JOB_GETABORT)
+   {
+      int wdays = (2 - (this)->m_WorkingDay);
+      if (m_Building->num_girls_on_job(JOB_NURSE, DN_Day) > 0)
+      {
+         wdays = 1;
+      }
+      if (m_Building->num_girls_on_job( JOB_DOCTOR, DN_Day) > 0)
+      {
+         ss << job_name << " (" << wdays << ")*";
+      }
+      else
+      {
+         ss << job_name << " (?)***";
+      }
+   }
+   else if (cJobManager::is_Surgery_Job(DN_Job))
+   {
+      int wdays = (5 - (this)->m_WorkingDay);
+      if (m_Building->num_girls_on_job(JOB_NURSE, DN_Day) > 0)
+      {
+         if (wdays >= 3)        { wdays = 3; }
+         else if (wdays > 1)    { wdays = 2; }
+         else                { wdays = 1; }
+      }
+      if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
+      {
+         ss << job_name << " (" << wdays << ")*";
+      }
+      else
+      {
+         ss << job_name << " (?)***";
+      }
+   }
+   else if (is_Actress_Job(DN_Job) && CrewNeeded(*m_Building))
+   {
+      ss << job_name << " **";
+   }
+   else if (is_resting() && !was_resting() && m_PrevDayJob != 255 && m_PrevNightJob != 255)
+   {
+      ss << job_name;
+      ss << " (" << g_Game->job_manager().get_job_brief(DN_Day == 0 ? m_PrevDayJob : m_PrevNightJob) << ")";
+   }
+   else
+   {
+      ss << job_name;
+   }
+   if (interrupted)
+   {
+      ss << " **";
+   }
+
+   return mk_text(ss.str());
+};
 
 int sGirl::rebel() const
 {

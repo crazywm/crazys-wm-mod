@@ -443,9 +443,17 @@ void cInterfaceWindow::SetSelectedItemText(int listBoxID, int itemID, string dat
     GetListBox(listBoxID)->SetElementText(itemID, data);
 }
 
-void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, string data, int color)
+void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, string text, int color)
 {
-    AddToListBox(listBoxID, dataID, std::vector<std::string>{std::move(data)}, color);
+    CellData value = text;
+    AddToListBox(listBoxID, dataID,
+                 std::vector<FormattedCellData>{{std::move(value), std::move(text)}},
+                 color);
+}
+
+void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, CellData value, std::string formatted, int color)
+{
+    AddToListBox(listBoxID, dataID, std::vector<FormattedCellData>{{std::move(value), std::move(formatted)}}, color);
 }
 
 void cInterfaceWindow::SetSelectedItemText(int listBoxID, int itemID, string data[], int columns)
@@ -469,6 +477,18 @@ void cInterfaceWindow::FillSortedIDList(int listBoxID, vector<int>& id_vec, int&
 }
 
 void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, std::vector<std::string> data, int color)
+{
+   std::vector<FormattedCellData> expanded_data;
+   expanded_data.reserve(data.size());
+
+   std::transform(begin(data), end(data),
+                  std::back_inserter(expanded_data),
+                  [](std::string const& str) { return mk_text(str); });
+
+   AddToListBox(listBoxID, dataID, expanded_data, color);
+}
+
+void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, std::vector<FormattedCellData> data, int color)
 {
     if(listBoxID < 0) {
         g_LogFile.error("interface", "Trying to access invalid ListBox");

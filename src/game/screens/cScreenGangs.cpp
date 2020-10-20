@@ -231,18 +231,20 @@ void cScreenGangs::init(bool back)
     for(auto& gang : g_Game->gang_manager().GetPlayerGangs())
     {
         // format the string with the gang name, mission and number of men
-        std::vector<std::string> Data(11);
-        ss.str("");    ss << gang->name(); Data[0] = ss.str();
-        ss.str("");    ss << gang->m_Num; Data[1] = ss.str();
-        ss.str("");    ss << short_mission_desc(gang->m_MissionID); Data[2] = ss.str();
-        ss.str("");    ss << gang->m_Skills[SKILL_COMBAT] << "%"; Data[3] = ss.str();
-        ss.str("");    ss << gang->m_Skills[SKILL_MAGIC] << "%"; Data[4] = ss.str();
-        ss.str("");    ss << gang->m_Stats[STAT_INTELLIGENCE] << "%"; Data[5] = ss.str();
-        ss.str("");    ss << gang->m_Stats[STAT_AGILITY] << "%"; Data[6] = ss.str();
-        ss.str("");    ss << gang->m_Stats[STAT_CONSTITUTION] << "%"; Data[7] = ss.str();
-        ss.str("");    ss << gang->m_Stats[STAT_CHARISMA] << "%"; Data[8] = ss.str();
-        ss.str("");    ss << gang->m_Stats[STAT_STRENGTH] << "%"; Data[9] = ss.str();
-        ss.str("");    ss << gang->m_Skills[SKILL_SERVICE] << "%"; Data[10] = ss.str();
+        std::vector<FormattedCellData> Data(11);
+
+        Data[0]  = mk_text(gang->name());
+        Data[1]  = mk_num(gang->m_Num);
+        Data[2]  = mk_text(short_mission_desc(gang->m_MissionID));
+
+        Data[3]  = mk_percent(gang->m_Skills[SKILL_COMBAT]);
+        Data[4]  = mk_percent(gang->m_Skills[SKILL_MAGIC]);
+        Data[5]  = mk_percent(gang->m_Stats[STAT_INTELLIGENCE]);
+        Data[6]  = mk_percent(gang->m_Stats[STAT_AGILITY]);
+        Data[7]  = mk_percent(gang->m_Stats[STAT_CONSTITUTION]);
+        Data[8]  = mk_percent(gang->m_Stats[STAT_CHARISMA]);
+        Data[9]  = mk_percent(gang->m_Stats[STAT_STRENGTH]);
+        Data[10] = mk_percent(gang->m_Skills[SKILL_SERVICE]);
 
         //        cerr << "Gang:\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
         //            << "\t" << Data[3] << "\t" << Data[4] << "\t" << Data[5] << "\t" << Data[6] << endl;

@@ -174,7 +174,7 @@ void cScreenDungeon::init(bool back)
     selection = g_Game->dungeon().GetNumGirls() > 0 ? 0 : -1;
     for (int i = 0; i < g_Game->dungeon().GetNumGirls(); i++)                                                // add girls
     {
-        std::vector<std::string> Data;
+        std::vector<FormattedCellData> Data;
         sGirl *girl = g_Game->dungeon().GetGirl(i)->m_Girl.get();                                            // get the i-th girl
         if (selected_girl().get() == girl) selection = i;                                                            // if selected_girl is this girl, update selection
         girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
@@ -186,7 +186,7 @@ void cScreenDungeon::init(bool back)
     int offset = g_Game->dungeon().GetNumGirls();
     for (int i = 0; i < g_Game->dungeon().GetNumCusts(); i++)    // add customers
     {
-        std::vector<std::string> Data;
+        std::vector<FormattedCellData> Data;
         int col = (g_Game->dungeon().GetCust(i)->m_Health <= 30) ? COLOR_RED : COLOR_BLUE;
         g_Game->dungeon().OutputCustRow(i, Data, columnNames);
         AddToListBox(girllist_id, i + offset, std::move(Data), col);
