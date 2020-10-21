@@ -563,7 +563,7 @@ void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
     auto moms_traits = mom.raw_traits().get_trait_info();
     for (auto& info : moms_traits) {
         if (info.type == sTraitInfo::INHERENT) {
-            if (g_Dice.percent(info.trait->get_properties().get_percent("inherit_chance"))) {
+            if (g_Dice.percent(info.trait->get_properties().get_percent("inherit:chance"))) {
                 sprog->raw_traits().add_inherent_trait(info.trait);
             }
         }
