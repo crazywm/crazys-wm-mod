@@ -6,7 +6,12 @@ set(SRC CLog.cpp
 		sConfig.cpp
 		utils/cKeyValueStore.cpp
 		utils/string.cpp
-		cRng.cpp)
+		cRng.cpp
+		text/cTextRepo.cpp
+		text/actions.cpp
+		text/conditions.cpp
+        utils/piecewise_linear.cpp)
+
 
 set(INTERFACE_SRC
         interface/cColor.cpp

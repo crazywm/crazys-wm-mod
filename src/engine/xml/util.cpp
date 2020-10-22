@@ -21,6 +21,7 @@
 #include <tinyxml2.h>
 #include "CLog.h"
 #include "interface/cColor.h"
+#include "utils/piecewise_linear.h"
 #include "xml/getattr.h"
 
 using namespace xmlutil;
@@ -49,6 +50,16 @@ tinyxml2::XMLElement& PushNewElement(tinyxml2::XMLElement& root, const char* nam
     auto el = root.GetDocument()->NewElement(name);
     root.InsertEndChild(el);
     return *el;
+}
+
+PiecewiseLinearFunction LoadLinearFunction(const XMLElement& source, const char* x_attr, const char* y_attr) {
+    auto result = PiecewiseLinearFunction();
+    for(auto& pt : IterateChildElements(source, "Point")) {
+        float x = GetFloatAttribute(pt, x_attr);
+        float y = GetFloatAttribute(pt, y_attr);
+        result.add_vertex(x, y);
+    }
+    return result;
 }
 
 tinyxml2::XMLElement* xmlutil::sibling(tinyxml2::XMLElement* el, const char* name) {

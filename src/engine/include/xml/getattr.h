@@ -33,6 +33,7 @@ namespace tinyxml2
  */
 
 int GetIntAttribute(const tinyxml2::XMLElement& element, const char* name);
+float GetFloatAttribute(const tinyxml2::XMLElement& element, const char* name);
 bool GetBoolAttribute(const tinyxml2::XMLElement& element, const char* name);
 int GetIntAttribute(const tinyxml2::XMLElement& element, const char* name, int min, int max);
 const char* GetStringAttribute(const tinyxml2::XMLElement& element, const char* name);

@@ -103,6 +103,11 @@ int GetIntAttribute(const tinyxml2::XMLElement& element, const char* name)
     return GetBasicTAttribute<int>(element, name);
 }
 
+float GetFloatAttribute(const tinyxml2::XMLElement& element, const char* name)
+{
+    return GetBasicTAttribute<float>(element, name);
+}
+
 bool GetBoolAttribute(const tinyxml2::XMLElement& element, const char* name) {
     return GetBasicTAttribute<bool>(element, name);
 }

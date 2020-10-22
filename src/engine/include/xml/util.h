@@ -31,6 +31,7 @@ namespace tinyxml2
 }
 
 class sColor;
+class PiecewiseLinearFunction;
 
 using pXMLDocument = std::unique_ptr<tinyxml2::XMLDocument>;
 
@@ -104,5 +105,6 @@ tinyxml2::XMLElement& PushNewElement(tinyxml2::XMLElement& root, const char* nam
 inline tinyxml2::XMLElement& PushNewElement(tinyxml2::XMLElement& root, const std::string& name) { return PushNewElement(root, name.c_str()); }
 
 void GetColorAttribute(tinyxml2::XMLElement& element, sColor& target);
+PiecewiseLinearFunction LoadLinearFunction(const tinyxml2::XMLElement& source, const char* x_attr, const char* y_attr);
 
 #endif //CRAZYS_WM_MOD_XML_UTIL_H
