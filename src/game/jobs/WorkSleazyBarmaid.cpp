@@ -212,6 +212,7 @@ bool WorkSleazyBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             g_Game->push_message(girl.FullName() + " has gotten pregnant.", 0);
         }
+        girl.m_NumCusts++;
     }
 
 #pragma endregion

@@ -357,6 +357,7 @@ bool WorkBrothelStripper(sGirl& girl, bool Day0Night1, cRng& rng)
         roll_max /= 4;
         wages += 50 + rng%roll_max;
         fame += 1;
+        girl.m_NumCusts++;
         //girl.m_Events.AddMessage(ss.str(), imageType, Day0Night1);
     }
     else if (mast)

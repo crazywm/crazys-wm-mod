@@ -286,6 +286,7 @@ bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
         tips += 30 + girl.get_skill(n) / 5;
         girl.upd_Enjoyment(ACTION_SEX, +1);
         fame += 1;
+        girl.m_NumCusts++;
         //girl.m_Events.AddMessage(ss.str(), imageType, Day0Night1);
     }
     //SIN - bit more spice - roll_c doesn't seem to be used anywhere else so ok here
