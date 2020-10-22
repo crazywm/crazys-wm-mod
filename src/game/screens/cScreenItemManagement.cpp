@@ -325,8 +325,8 @@ void cScreenItemManagement::update_details(const sItemTransferSide& target)
     if (target.detail_id > -1)
     {
         int index = GetSelectedItemFromList(target.owners_id);
-        if(index >= 0) {
-            EditTextItem(m_OwnerList.at(index)->get_details(), target.detail_id, true);
+        if(index >= 0 && index < m_OwnerList.size()) {
+            EditTextItem(m_OwnerList[index]->get_details(), target.detail_id, true);
         } else {
             EditTextItem("", target.detail_id);
         }
