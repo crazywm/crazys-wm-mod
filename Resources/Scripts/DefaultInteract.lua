@@ -568,6 +568,8 @@ function BrothelInteractChoice(girl)
         end
     elseif choice == 5 then
         return girl:trigger("girl:training")
+    else
+        ScoldGirl(girl)
     end
 end
 

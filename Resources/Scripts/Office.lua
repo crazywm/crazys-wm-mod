@@ -45,7 +45,7 @@ function InteractOffice(girl)
             Dialog("\"Please, join me on my office couch there and we will begin....\"")
             -- TODO: Prefer easily trainable skills (not maxed-out, no
             -- adverse traits).
-            local action = wm.Range(1, 4)
+            local action = wm.Range(1, 5)
             if action == 1 then
                 wm.UpdateImage(wm.IMG.ORAL)
                 Dialog("You lay back on your leather couch and pull your erect member from your trousers.   \"Now my dear, I'm going to teach you the right way to suck a cock...\"")
