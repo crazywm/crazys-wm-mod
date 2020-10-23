@@ -134,6 +134,7 @@ bool WorkCleaning(sGirl& girl, bool Day0Night1, cRng& rng)
                 tips *= 5; //customers tip 5 gold each
                 ss << "She got " << tips << " in tips for this extra service.\n";
                 imagetype = IMGTYPE_ORAL;
+                girl.m_NumCusts += tips;
             }
             else
             {
