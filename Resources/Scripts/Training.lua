@@ -16,8 +16,7 @@ function Training(girl)
         Dialog("She is not healthy enough for training today.")
     elseif action == 0 then -- Magic Lesson
         Dialog("Today you will spend the day at in the care of the mages at the Citadel.  Learn well from them. ")
-        -- TODO disobey check
-        if true then
+        if girl:obey_check(wm.ACTIONS.GENERAL) then
             Dialog("You hand her a bag of gold containing the lesson fee and send her on her way.")
             wm.TakePlayerGold(500)
             -- TODO this is a bit weird, magic training works better if she is good at magic
@@ -44,9 +43,8 @@ function Training(girl)
         end
     elseif action == 1 then
         Dialog("\"I have made arrangements with a local acrobatics troupe.  They have agreed to show you some of their techniques.\"  You hand her a parchment with a crude map and the name of the troupe leader.")
-        -- TODO disobey check
-        wm.TakePlayerGold(250)
-        if true then
+        if girl:obey_check(wm.ACTIONS.GENERAL) then
+            wm.TakePlayerGold(250)
             -- TODO this is a bit weird, agility training works better if she is good at agility
             if wm.Percent(girl:agility()) then
                 Dialog("She finds the plaza easily and introduced herself to the Head Troubadour. She easily picked up on the subtle important motions involved with tumbling and they acrobats were impressed by her natural flexibility.")
@@ -73,8 +71,8 @@ function Training(girl)
         end
     elseif action == 2 then
         Dialog("You have been lacking in exercise lately.  I've bribed the foreman of the shipyard workers to let you work with them for the day.")
-        wm.TakePlayerGold(300)
-        if true then
+        if girl:obey_check(wm.ACTIONS.GENERAL) then
+            wm.TakePlayerGold(300)
             if wm.Percent(girl:constitution()) then
                 Dialog("She shows up early at the docks and she remembered to bring a pair of thick leather gloves with her.")
                 Dialog("It was hard work, and just as they thought they had unloaded the last ship, another was spotted on the horizon.  The Foreman could be heard shouting \"Looks like we got some overtime tonight, Lads!\"")
@@ -100,7 +98,7 @@ function Training(girl)
         end
     elseif action == 3 then
         Dialog("\"Grab your armor and gear.  I'm sending you to study with the veteran warrior, Titus Pullo.\"")
-        if true then
+        if girl:obey_check(wm.ACTIONS.GENERAL) then
             wm.TakePlayerGold(500)
             if wm.Percent(girl:combat()) then
                 Dialog("She arrives early to the combat ring and becomes lost in thought as she waits...")
