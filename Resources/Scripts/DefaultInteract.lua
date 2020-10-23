@@ -276,6 +276,7 @@ function BrothelInteractChoice(girl)
                     Dialog("You shake your head as the girls make faces after each time tongue meets pussy.")
                     Dialog("After all the time you spent directing you had no chance to enjoy the show; awkward as it was.  You sigh and pray to goddess of Yuri that they at least learned something from the experience.")
                 end
+                girl:lesbian(2)
             else
                 Dialog("She wrinkles her nose in disgust and refuses.")
                 return girl:trigger("girl:refuse")
@@ -285,6 +286,7 @@ function BrothelInteractChoice(girl)
             if girl:obey_check(wm.ACTIONS.SEX) then
                 wm.UpdateImage(wm.IMG.BEAST)
                 Dialog("She smiles and nods. I've always liked that \"little\" guy.  Let's go cheer him up.")
+                -- TODO: Port and call Script_BeastSexTarget()
                 if wm.Percent(girl:beastiality()) then
                     Dialog("She smartly removes her clothing before she enters the cage. Beasts don't really care about what their fuck toys look like anyway.")
                     Dialog("She approaches the massive tentacled beast with skill of and professional handler.  She finds just the right spots to arouse the monster.")
@@ -299,6 +301,7 @@ function BrothelInteractChoice(girl)
                     Dialog("Fearing for her safety you and your men rush to the rescue.  You are forced to injure your pet in the process, not to mention the cost to replace her clothing.")
                     girl:health(-5)
                     girl:tiredness(10)
+                    girl:beastiality(1)
                     -- TODO what happens if the player doesn't have the funds?
                     wm.TakePlayerGold(wm.Range(50, 75))
                 end
@@ -342,11 +345,11 @@ function BrothelInteractChoice(girl)
                 Dialog("\"Now let's see how well you've learned to suck a cock.\"")
                 if girl:obey_check(wm.ACTIONS.SEX) then
                     wm.UpdateImage(wm.IMG.ORAL)
-                    if wm.Percent(girl:oral()) then
+                    if wm.Percent(girl:oralsex()) then
                         Dialog("She smiles and reaches up to grasp your cock.  She begins by gently licking and kissing the tip.  Her tongue then traces down the length of your shaft and  draws circles around our balls.")
                         Dialog("She gently sucks each ball into her mouth in turn.  She turns her head and slides her lips back forth on your shaft.  She kisses the tip again and slowly slides you into  her mouth.")
                         Dialog("You're not sure how long this pleasure lasted but soon you feel the volcano about to erupt.  She  senses it too and pulls your cock from her mouth and gently strokes it with her hands until you explode all over her face.")
-                        girl:oral(3)
+                        girl:oralsex(3)
                         girl:happiness(2)
                     else
                         Dialog("She giggles a bit and quickly closes her mouth over your member.  You become a little alarmed as you start to feel her teeth grazing the sensitive skin of your cock.")
