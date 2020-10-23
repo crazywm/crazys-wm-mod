@@ -922,7 +922,7 @@ FormattedCellData sGirl::GetDetail(const std::string& detailName) const
         int code = get_stat_id(stat);
         if (code != -1)
         {
-            return mk_num(code);
+            return mk_num(get_stat(code));
         }
         else
         {
@@ -935,7 +935,7 @@ FormattedCellData sGirl::GetDetail(const std::string& detailName) const
         int code = get_skill_id(skill);
         if (code != -1)
         {
-            return mk_num(code);
+            return mk_num(get_skill(code));
         }
         else
         {
