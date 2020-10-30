@@ -1344,25 +1344,29 @@ int cGirls::GetSkillWorth(const sGirl& girl)
 
 // ----- Load save
 
+// this function throws if the XML file itself cannot be opened or parsed, but
+// all errors that happen during parsing of any <Girl> elements are only logged
+// and the corresponding Girl ignored, but the other Girls will be loaded.
 void cGirls::LoadRandomGirl(const string& filename, const std::string& base_path,
                             const std::function<void(const std::string&)>& error_handler)
 {
     m_RandomGirls.LoadRandomGirlXML(filename, base_path, error_handler);
 }
 
+// this function throws if the XML file itself cannot be opened or parsed, but
+// all errors that happen during parsing of any <Girl> elements are only logged
+// and the corresponding Girl ignored, but the other Girls will be loaded.
 void cGirls::LoadGirlsXML(const std::string& file_path, const std::string& base_path,
                           const std::function<void(const std::string&)>& error_handler)
 {
     auto doc = LoadXMLDocument(file_path);
-    // loop over the elements attached to the root
     auto root = doc->RootElement();
     if(!root) {
-        if(error_handler)
-            error_handler("ERROR: No XML root found in girl file " + file_path);
-
         g_LogFile.error("girls", "No XML root found in girl file ", file_path);
-        return;
+        throw std::runtime_error("ERROR: No XML root element");
     }
+
+    // loop over the elements attached to the root
     for (auto& el : IterateChildElements(*root, "Girl"))
     {
         try {

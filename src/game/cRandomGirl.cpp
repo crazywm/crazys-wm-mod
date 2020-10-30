@@ -217,9 +217,8 @@ void cRandomGirls::LoadRandomGirlXML(const std::string& filename, const std::str
 
     auto root_element = doc->RootElement();
     if(!root_element) {
-        if(error_handler)
-            error_handler("ERROR: No XML root found in girl file " + filename);
-        return;
+        g_LogFile.error("girls", "No XML root found in rgirl file ", filename);
+        throw std::runtime_error("ERROR: No XML root element");
     }
 
     for (auto& el : IterateChildElements(*root_element))

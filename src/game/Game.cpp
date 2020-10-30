@@ -1004,14 +1004,22 @@ void Game::LoadGirlFiles(const DirPath& location,
             continue;
         }
         m_GirlFiles.insert(girlfiles[i].leaf());
-        girl_pool().LoadGirlsXML(girlfiles[i].full(), location.str(), error_handler);
+        try {
+            girl_pool().LoadGirlsXML(girlfiles[i].full(), location.str(), error_handler);
+        } catch (const std::runtime_error& error) {
+            error_handler(std::string("ERROR: Could not read girls in file '") + girlfiles[i].full() + "': " + error.what() );
+        }
     }
 
     // load all random girls.
     FileList rgirlfiles(location, "*.rgirlsx");
     for (int i = 0; i < rgirlfiles.size(); i++)
     {
-        girl_pool().LoadRandomGirl(rgirlfiles[i].full(), location.str(), error_handler);
+        try {
+            girl_pool().LoadRandomGirl(rgirlfiles[i].full(), location.str(), error_handler);
+        } catch (const std::runtime_error& error) {
+            error_handler(std::string("ERROR: Could not read girls in file '") + rgirlfiles[i].full() + "': " + error.what() );
+        }
     }
 
     // and recurse into subdirectories
