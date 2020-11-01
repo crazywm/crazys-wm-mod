@@ -965,23 +965,20 @@ FormattedCellData sGirl::GetDetail(const std::string& detailName) const
         if (is_virgin(*this)) return mk_text("Vg.");
         else if (is_pregnant())
         {
-            static std::ostringstream ss;
+            std::ostringstream ss;
 
             if (carrying_players_child())      ss << "Yours";
             else if (carrying_monster())       ss << "Beast";
             else /*                      */    ss << "Yes";
 
             int to_go = get_preg_duration() - (this)->m_WeeksPreg;
-            if (has_active_trait("Sterile") || has_active_trait("Zombie") || has_active_trait("Skeleton"))
-                ss << "?" << to_go << "?";    // how?
-            else
-                ss << "(" << to_go << ")";
+            ss << "(" << to_go << ")";
 
             return mk_text(ss.str());
         }
         else if (m_PregCooldown > 0)
         {
-            static std::ostringstream ss;
+            std::ostringstream ss;
 
             ss << "No";
             if (has_active_trait("Sterile") || has_active_trait("Zombie") || has_active_trait("Skeleton"))
