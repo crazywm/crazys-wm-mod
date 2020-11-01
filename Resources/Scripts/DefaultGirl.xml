@@ -23,6 +23,7 @@
     <Event Name="girl:interact.brothel" Script="DefaultInteract.lua" Function="InteractBrothel" />
     <Event Name="girl:interact.office" Script="Office.lua" Function="InteractOffice" />
     <Event Name="girl:interact.private" Script="PrivateChambers.lua" Function="PrivateChambers" />
+    <Event Name="girl:interact.bedroom" Script="Bedroom.lua" Function="VisitBedroom" />
     <Event Name="girl:chat.dungeon" Script="Chat.lua" Function="ChatDungeon" />
     <Event Name="girl:chat.brothel" Script="Chat.lua" Function="ChatBrothel" />
     <Event Name="girl:refuse" Script="DefaultInteract.lua" Function="Refuse" />
