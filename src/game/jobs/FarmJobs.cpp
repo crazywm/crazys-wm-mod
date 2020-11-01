@@ -1400,7 +1400,8 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
 
 
     //test code for auto preg
-    if (girl.m_WeeksPreg < 0 && brothel.num_girls_on_job(JOB_FARMMANGER, false) >= 1 && noAnti && !is_virgin(girl))
+    // can get pregnant?
+    if (girl.m_WeeksPreg == 0 && girl.m_PregCooldown == 0 && brothel.num_girls_on_job(JOB_FARMMANGER, false) >= 1 && noAnti && !is_virgin(girl))
     {
         sCustomer Cust = g_Game->GetCustomer(brothel);
         ss << farmmanname <<" noticing that ${name} wasn't pregnant decided to take it upon herself to make sure she got knocked up.\n";
