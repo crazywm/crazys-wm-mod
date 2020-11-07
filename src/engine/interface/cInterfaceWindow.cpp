@@ -35,6 +35,7 @@
 #include "interface/CGraphics.h"
 #include "interface/cColor.h"
 #include "sConfig.h"
+#include <algorithm>
 #include <cassert>
 
 using namespace std;
