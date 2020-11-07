@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(WM)
+project(WM VERSION 7.0.7)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(Boost REQUIRED)
@@ -14,3 +14,9 @@ add_subdirectory(deps/doctest EXCLUDE_FROM_ALL)
 add_subdirectory(deps/lua EXCLUDE_FROM_ALL)
 add_subdirectory(src/engine EXCLUDE_FROM_ALL)
 add_subdirectory(src/game)
+
+install(DIRECTORY Resources/Buttons Resources/Data Resources/Interface Resources/Items Resources/Scripts
+        Resources/Images DESTINATION Resources)
+
+set(CPACK_GENERATOR "ZIP")
+include(CPack)
