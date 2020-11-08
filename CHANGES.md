@@ -1,3 +1,15 @@
+# Version 07.00.alpha7
+
+## Changes
+* Updated the job text xmls, now supporting prefixes/suffixes and groups
+* Allow variable updates from text xmls
+
+## Fixes
+* Can load/start game even if some girl/rgirl files are broken
+* column sorting is now more robust
+* several lua script fixes
+* fixed a condition in the GetMilked job
+
 # Version 07.00.alpha6
 ## Changes
 * Reworked the job performance xml specifications and split them from the gains

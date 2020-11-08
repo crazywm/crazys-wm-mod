@@ -58,10 +58,3 @@
   - [ ] "your inventory is full", but seems to buy anyway
   - [ ] "your inventory is full" for sell button
 * [ ] gracefully handle missing/corrupt config file
-* [ ] numeric columns may contain some textual data (i.e. Health column: DEAD) that causes an exception during sort
-
-
-## Changes due to job text xml
-* BarCook
-  - removed performance influence of `pre` message
-  - non-trait messages can no longer appear when trait is present
