@@ -13,6 +13,7 @@ else()
     add_library(SDL2Image_ INTERFACE)
     target_include_directories(SDL2Image_ INTERFACE ${LOCAL_PREFIX}/include/SDL2)
     target_link_libraries(SDL2Image_ INTERFACE ${SDL_IMAGE_LIBRARY})
+    install(DIRECTORY ${LOCAL_PREFIX}/bin/ DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
 add_library(SDL2::Image ALIAS SDL2Image_)

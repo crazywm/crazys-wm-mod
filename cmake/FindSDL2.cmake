@@ -17,7 +17,7 @@ else()
     set(SDL2_INCLUDE_DIRS "${prefix}/include/SDL2")
     set(SDL2_LIBRARIES "-L${SDL2_LIBDIR}  -lmingw32 -lSDL2main -lSDL2 -mwindows")
     string(STRIP "${SDL2_LIBRARIES}" SDL2_LIBRARIES)
-
+    install(DIRECTORY ${prefix}/bin/ DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
 add_library(SDL2_ INTERFACE)

@@ -13,6 +13,7 @@ else()
     add_library(SDL2TTF_ INTERFACE)
     target_link_libraries(SDL2TTF_ INTERFACE ${SDL2_TTF_LIBRARY})
     target_include_directories(SDL2TTF_ INTERFACE ${LOCAL_PREFIX}/include/SDL2)
+    install(DIRECTORY ${LOCAL_PREFIX}/bin/ DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
 add_library(SDL2::TTF ALIAS SDL2TTF_)

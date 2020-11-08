@@ -185,5 +185,3 @@ add_executable(WhoreMasterTest $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:
 target_link_libraries(WhoreMasterTest PUBLIC WmGameObjects)
 
 set_target_properties(WhoreMaster WhoreMasterFuzz WhoreMasterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
-
-install(TARGETS WhoreMaster)

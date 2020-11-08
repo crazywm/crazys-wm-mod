@@ -15,8 +15,15 @@ add_subdirectory(deps/lua EXCLUDE_FROM_ALL)
 add_subdirectory(src/engine EXCLUDE_FROM_ALL)
 add_subdirectory(src/game)
 
-install(DIRECTORY Resources/Buttons Resources/Data Resources/Interface Resources/Items Resources/Scripts
-        Resources/Images DESTINATION Resources)
-
+install(DIRECTORY
+        Resources/Buttons
+        Resources/Data
+        Resources/Interface
+        Resources/Items
+        Resources/Scripts
+        Resources/Images
+        DESTINATION Resources)
+install(FILES Resources/Characters/randoms.rgirlsx DESTINATION Resources/Characters)
+install(TARGETS WhoreMaster lua tinyxml2)
 set(CPACK_GENERATOR "ZIP")
 include(CPack)
