@@ -322,55 +322,6 @@ void Game::UpdateRunaways() {
     }
 }
 
-void Game::load(tinyxml2::XMLElement& root)
-{
-    // legacy support
-    auto bm = root.FirstChildElement("Brothel_Manager");
-    if(bm) {
-        read_attributes_xml(*bm);
-    }
-
-    read_attributes_xml(root);
-
-    // girl file list
-    auto gf = root.FirstChildElement("GirlFiles");
-    if(gf) {
-        for(auto& file : IterateChildElements(*gf, "File")) {
-            m_GirlFiles.insert(file.GetText());
-        }
-    }
-
-    g_LogFile.log(ELogLevel::NOTIFY, "Loading Rivals");
-    /// TODO fix error handling;
-    rivals().LoadRivalsXML(root.FirstChildElement("Rival_Manager"));
-
-    gold().loadGoldXML(root.FirstChildElement("Gold"));            // load player gold
-    root.QueryAttribute("Year", &m_Date.year);
-    root.QueryAttribute("Month", &m_Date.month);
-    root.QueryAttribute("Day", &m_Date.day);
-
-    auto storage = root.FirstChildElement("Storage");
-    if(storage) {
-        m_Storage->load_from_xml(*storage);
-    }
-
-    g_LogFile.log(ELogLevel::NOTIFY, "Loading Player");
-    player().LoadPlayerXML(root.FirstChildElement("Player"));
-
-    g_LogFile.log(ELogLevel::NOTIFY, "Loading Dungeon");
-    dungeon().LoadDungeonDataXML(root.FirstChildElement("Dungeon"));
-
-    // initialize new market
-    // TODO load
-    UpdateMarketSlaves();
-
-    // load the buildings!
-    buildings().LoadXML(root);
-
-    // load the settings
-    settings().load_xml(root);
-}
-
 void Game::read_attributes_xml(const tinyxml2::XMLElement& el)
 {
     // load cheating
@@ -1084,12 +1035,12 @@ void Game::NewGame(const std::function<void(std::string)>& callback) {
 
     callback("Loading Items");
     g_LogFile.info("prepare", "Loading Items");
-    for(auto path : DirPath::split_search_path(cfg.folders.items()))
+    for(const auto& path : DirPath::split_search_path(cfg.folders.items()))
        LoadItemFiles(DirPath::expand_path(path).c_str());
 
     callback("Loading Girls");
     g_LogFile.info("prepare", "Loading Girl Files");
-    for(auto path : DirPath::split_search_path(cfg.folders.characters()))
+    for(const auto& path : DirPath::split_search_path(cfg.folders.characters()))
        LoadGirlFiles(DirPath::expand_path(path).c_str(), callback);
 
     g_LogFile.info("prepare", "Update Shop");
@@ -1163,7 +1114,9 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     buildings().LoadXML(source);
 
     // load the settings
-    settings().load_xml(source);
+    auto setting_el = source.FirstChildElement("Settings");
+    if(setting_el)
+        settings().load_xml(*setting_el);
 
     callback("Loading Girls.");
     g_LogFile.log(ELogLevel::NOTIFY, "Loading Girls");
@@ -1177,4 +1130,3 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
 void Game::error(std::string message) {
     window_manager().PushError(std::move(message));
 }
-

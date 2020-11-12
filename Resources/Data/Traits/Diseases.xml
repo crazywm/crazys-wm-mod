@@ -1,10 +1,8 @@
 <?xml version="1.0" ?>
 <Traits>
     <Default>
-        <Properties>
-            <Setting Name="random:inherent" Value="0" />
-            <Setting Name="inherit:from_acquired" Value="50" />
-        </Properties>
+        <Setting Name="random:inherent" Value="0" />
+        <Setting Name="inherit:from_acquired" Value="50" />
     </Default>
 
     <Trait Name="AIDS">

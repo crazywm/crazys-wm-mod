@@ -97,7 +97,7 @@ void cTraitSpec::add_modifier(std::string mod, int value) {
     m_Effects.push_back(TraitEffect{TraitEffect::MODIFIER, 0, std::move(mod), value});
 }
 
-cTraitProps::cTraitProps() {
+cTraitProps::cTraitProps() : cSimpleKeyValue("Setting", "Name", "Value") {
     // inheritance
     add_setting("inherit:chance", "Inherit Chance", sPercent(50), "Base chance for inheriting this trait.");
     add_setting("inherit:chance:from_dormant", "Inherit chance (from dormant)", boost::blank(),

@@ -24,9 +24,6 @@
 #include <utility>
 #include "CLog.h"
 
-cKeyValueBase::cKeyValueBase() {
-}
-
 int cKeyValueBase::get_integer(const char *name) const {
     return boost::get<int>(get_value(name));
 }
@@ -100,34 +97,36 @@ void cKeyValueBase::set_value(const char* name, sPercent value) {
 }
 
 void cKeyValueBase::load_xml(const tinyxml2::XMLElement& root) {
-    for(auto& element : IterateChildElements(root, "Entry")) {
+    bool found_entry = false;
+    for(auto& element : IterateChildElements(root, m_ElementName)) {
+        found_entry = true;
         try {
-            auto name = GetStringAttribute(element, "Key");
+            auto name = GetStringAttribute(element, m_KeyName);
             auto& value = get_value(name);
             switch(value.which()) {
                 case 0:         // bool
-                    value = GetBoolAttribute(element, "Value");
+                    value = GetBoolAttribute(element, m_ValueName);
                     break;
                 case 1:         // int
-                    value = GetIntAttribute(element, "Value");
+                    value = GetIntAttribute(element, m_ValueName);
                     break;
                 case 2:         // float
                 {
-                    const char* val_str = GetStringAttribute(element, "Value");
+                    const char* val_str = GetStringAttribute(element, m_ValueName);
                     float val = std::strtof(val_str, nullptr);
                     value = val;
                     break;
                 }
                 case 3:         // percent
                 {
-                    const char* val_str = GetStringAttribute(element, "Value");
+                    const char* val_str = GetStringAttribute(element, m_ValueName);
                     float val = std::strtof(val_str, nullptr);
                     value = sPercent(val / 100.f);
                     break;
                 }
                 case 4:         // string
                 default:
-                    value = std::string(GetStringAttribute(element, "Value"));
+                    value = std::string(GetStringAttribute(element, m_ValueName));
                     break;
             }
 
@@ -137,23 +136,30 @@ void cKeyValueBase::load_xml(const tinyxml2::XMLElement& root) {
             continue;
         }
     }
+
+    if(!found_entry && root.FirstChildElement() != nullptr) {
+        // if there is content, but no matching elements, chances are there is a typo/wrong name somewhere
+        g_LogFile.error("xml", "Reading a value set with expected Tag <", m_ElementName, ">, did not find ",
+                        "any matching data. Root element <", root.Value(), "> given on line ", root.GetLineNum());
+    }
 }
 
 namespace {
     struct visitor {
+        const char* AttributeName;
         tinyxml2::XMLElement &t;
 
         template<class T>
         void operator()(T value) const {
-            t.SetAttribute("Value", value);
+            t.SetAttribute(AttributeName, value);
         }
 
         void operator()(const std::string& value) const {
-            t.SetAttribute("Value", value.c_str());
+            t.SetAttribute(AttributeName, value.c_str());
         }
 
         void operator()(sPercent value) const {
-            t.SetAttribute("Value", (float)value * 100);
+            t.SetAttribute(AttributeName, (float)value * 100);
         }
 
         void operator()(boost::blank value) const {
@@ -164,7 +170,7 @@ namespace {
 }
 
 void cKeyValueBase::save_value_xml(tinyxml2::XMLElement& target, const settings_value_t& value) const {
-    auto vis = visitor{target};
+    auto vis = visitor{m_KeyName, target};
     value.apply_visitor(vis);
 }
 
@@ -198,8 +204,8 @@ settings_value_t& cSimpleKeyValue::get_value(const char* tag) {
 
 void cSimpleKeyValue::save_xml(tinyxml2::XMLElement& target) const {
     for(auto& s : m_Settings) {
-        auto& el = PushNewElement(target, "Entry");
-        el.SetAttribute("Key", s.first.c_str());
+        auto& el = PushNewElement(target, m_ElementName);
+        el.SetAttribute(m_KeyName, s.first.c_str());
         save_value_xml(el, s.second.value);
     }
 }

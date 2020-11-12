@@ -102,7 +102,7 @@ namespace settings {
 
 using namespace settings;
 
-cGameSettings::cGameSettings()
+cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
 {
     // game specific settings
     add_setting(INITIAL_GOLD, "Initial Gold", "The amount of gold available to the player at the beginning of the game", 4000);
@@ -193,8 +193,8 @@ const settings_value_t & cGameSettings::get_value(const char* name) const
 void cGameSettings::save_xml(tinyxml2::XMLElement& target) const {
     auto& root = PushNewElement(target, "Settings");
     for(auto& s : m_Settings) {
-       auto& el = PushNewElement(root, "Setting");
-       el.SetAttribute("Name", s.first.c_str());
+       auto& el = PushNewElement(root, m_ElementName);
+       el.SetAttribute(m_KeyName, s.first.c_str());
        save_value_xml(el, s.second.value);
     }
 }

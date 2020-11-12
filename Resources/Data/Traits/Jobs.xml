@@ -1,11 +1,9 @@
 <?xml version="1.0" ?>
 <Traits>
     <Default>
-        <Properties>
-            <Setting Name="inherit:chance" Value="70" />
-            <Setting Name="random:inherent" Value="0" />
-            <Setting Name="inherit:from_acquired" Value="15" />
-        </Properties>
+        <Setting Name="inherit:chance" Value="70" />
+        <Setting Name="random:inherent" Value="0" />
+        <Setting Name="inherit:from_acquired" Value="15" />
     </Default>
 
 

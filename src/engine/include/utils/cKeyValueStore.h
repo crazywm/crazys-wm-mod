@@ -40,7 +40,9 @@ using settings_value_t = boost::variant<bool, int, float, sPercent, std::string,
  */
 class cKeyValueBase : public IKeyValueStore {
 public:
-    cKeyValueBase();
+    cKeyValueBase(const char* element_name, const char* key_name, const char* value_name) :
+            m_ElementName(element_name ? element_name : "Entry"), m_KeyName(key_name ? key_name : "Key"), m_ValueName(value_name ? value_name : "Value")
+    {};
     virtual const settings_value_t & get_value(const char* name) const = 0;
 
     // access
@@ -63,11 +65,16 @@ public:
 protected:
     virtual settings_value_t& get_value(const char* name) = 0;
     void save_value_xml(tinyxml2::XMLElement& target, const settings_value_t& value) const;
+
+    const char* m_ElementName;
+    const char* m_KeyName;
+    const char* m_ValueName;
 };
 
 class cSimpleKeyValue : public cKeyValueBase {
 public:
-    cSimpleKeyValue() {};
+    using cKeyValueBase::cKeyValueBase;
+
     const settings_value_t& get_value(const char* tag) const override;
 
     // io

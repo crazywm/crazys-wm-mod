@@ -67,7 +67,7 @@ void cConfig::save() {
 * changed this to take a filename so we can pass config files on the command line
 * default is config.xml
 */
-sConfigData::sConfigData(const char *a_filename)
+sConfigData::sConfigData(const char *a_filename) : cSimpleKeyValue("Entry", "Key", "Value")
 {
     add_setting("folders.characters", "Character Folder", (DirPath() << "Resources" << "Characters").str());
     add_setting("folders.saves", "Save Folder", std::string("Saves"));
