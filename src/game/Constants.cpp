@@ -315,9 +315,9 @@ const std::array<const char*, NUM_JOBS>& get_job_names() {
             "Get Milked", "Butcher", "Baker", "Brewer",
             "Tailor", "Make Items", "Make Potions",
             "Head Girl", "Recruiter", "Bed Warmer", "House Cook",
-            "Clean House", "Personal Training", "House Pet",
+            "Clean House", "Personal Training", "Fake Orgasm Expert",
             "SO Straight", "SO Bisexual", "SO Lesbian",
-            "Fake Orgasm Expert", "In the Dungeon", "Runaway"
+            "House Pet", "In the Dungeon", "Runaway"
     };
     return names;
 }

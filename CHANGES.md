@@ -1,3 +1,11 @@
+# Version 07.00.alpha8
+
+## Fixes
+* Fixed loading of game configuration settings
+* Fixed loading of trait properties
+* Fixed House Pet / FO training names
+
+
 # Version 07.00.alpha7
 
 ## Changes
