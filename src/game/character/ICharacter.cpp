@@ -189,7 +189,7 @@ void ICharacter::LoadXML(const tinyxml2::XMLElement& elRoot)
         }
         auto stat_id = get_stat_id(name);
         m_Stats[stat_id].m_TempMods = el.IntAttribute("Temp", 0);
-        set_stat(stat_id, GetIntAttribute(el, "Value"));
+        ICharacter::set_stat(stat_id, GetIntAttribute(el, "Value"));
     }
 
     for(const auto& el : IterateChildElements(*root, "Skill")) {
