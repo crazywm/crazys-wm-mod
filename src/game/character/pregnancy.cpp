@@ -26,6 +26,7 @@
 #include "predicates.h"
 #include "cTariff.h"
 #include "sStorage.h"
+#include "CLog.h"
 #include "character/traits/ITraitsCollection.h"
 #include "character/traits/ITraitSpec.h"
 #include "cGangs.h"
@@ -96,15 +97,26 @@ bool UseAntiPreg(const sGirl& girl)
 
 
 int fertility(const sGirl& girl) {
-    if (girl.get_trait_modifier("tag:sterile") > 0)     return 0;
-    if (girl.is_pregnant())                                  return 0;
-    if (girl.m_PregCooldown > 0)                             return 0;
+    if (girl.get_trait_modifier("tag:sterile") > 0) {
+        g_LogFile.debug("pregnancy", girl.FullName(), " is sterile.");
+        return 0;
+    }
+    if (girl.is_pregnant()) {
+        g_LogFile.debug("pregnancy", girl.FullName(), " is already pregnant.");
+        return 0;
+    }
+    if (girl.m_PregCooldown > 0) {
+        g_LogFile.debug("pregnancy", girl.FullName(), " is was recently pregnant (", girl.m_PregCooldown, ").");
+        return 0;
+    }
     if(UseAntiPreg(girl)) {
+        g_LogFile.debug("pregnancy", girl.FullName(), " succesfully used contraceptives.");
         return 0;
     }
 
     int chance = 100.f * g_Game->settings().get_percent(settings::PREG_CHANCE_GIRL);
     chance += girl.get_trait_modifier("fertility");
+    g_LogFile.debug("pregnancy", girl.FullName(), "'s fertility: ", chance);
     return chance;
 }
 
