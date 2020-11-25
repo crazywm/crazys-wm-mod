@@ -170,7 +170,7 @@ namespace {
 }
 
 void cKeyValueBase::save_value_xml(tinyxml2::XMLElement& target, const settings_value_t& value) const {
-    auto vis = visitor{m_KeyName, target};
+    auto vis = visitor{m_ValueName, target};
     value.apply_visitor(vis);
 }
 
@@ -195,7 +195,11 @@ namespace {
 }
 
 settings_value_t& cSimpleKeyValue::get_value(const char* tag) {
-    auto& ref = m_Settings.at(tag);
+    auto ref_iter = m_Settings.find(tag);
+    if(ref_iter == m_Settings.end()) {
+        throw std::out_of_range(std::string("Key ") + tag + " not found");
+    }
+    auto& ref = ref_iter->second;
     if(is_blank(ref.value)) {
         return get_value(ref.fallback);
     }
