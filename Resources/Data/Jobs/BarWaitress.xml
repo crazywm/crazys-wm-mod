@@ -295,6 +295,36 @@
                 Added a little something extra to the patrons order to spice it up.
                 They enjoyed it greatly and she received some nice tips.
             </Text>
+
+            <Group Condition="Great Arse" Chance="15">
+                <Text Condition="Performance>=185" Updates="Tips+=15">
+                    A patron reached out to grab her ass.
+                    But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.
+                    He laughed so hard he increased her tip.
+                </Text>
+                <Text Condition="Performance>=135&amp;Performance<185">
+                    A patron reached out and grabbed her ass.
+                    She's use to this and skilled enough so she didn't drop anything.
+                </Text>
+                <Text Condition="Performance>=85&amp;Performance<135" Updates="Wages-=10">
+                    A patron reached out and grabbed her ass.
+                    She was startled and ended up dropping half an order.
+                </Text>
+                <Text Condition="Performance<85" Updates="Wages-=15">
+                    A patron reached out and grabbed her ass.
+                    She was startled and ended up dropping a whole order.
+                </Text>
+            </Group>
+
+            <Group Chance="5">
+                <Text Condition="Medicine>=30" Updates="Tips+=15">
+                    A customer started chocking on his food so ${name} performed the Heimlich maneuver on him.
+                    Grateful the man left her a better tip.
+                </Text>
+                <Text>
+                    A customer started chocking on his food so ${name} not knowing what to do started screaming for help.
+                </Text>
+            </Group>
         </Message>
     </Messages>
 </Job>

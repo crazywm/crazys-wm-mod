@@ -36,6 +36,13 @@
             <Text>${name} refused to have any part in this "monstrous" scene.
                 She was clearly horrified so you had your men drug her before stripping her down for action.</Text>
         </Message>
-        <!-- Evil is handled by C++ -->
+        <Message Name="disobey.slave.evil">
+            ${name} refused to have any part in this "monstrous" scene.
+            She was clearly horrified so you had your men strip her, drag her outside and
+            <Text Condition="Pierced Clit">whip her clitoral piercing</Text>
+            <Text Condition="Pierced Nipples">whip her nipple piercings</Text>
+            <Text>whip some humility into her</Text>
+            ahead of the scene.
+        </Message>
     </Messages>
 </Job>

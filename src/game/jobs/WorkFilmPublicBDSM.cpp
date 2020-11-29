@@ -66,47 +66,9 @@ bool FilmPubBDSM::CheckRefuseWork(sGirl& girl) {
     }
     else if (roll <= 10 && girl.disobey_check(ACTION_WORKMOVIE, JOB_FILMPUBLICBDSM))
     {
-        if (girl.is_slave())
-        {
-            if (g_Game->player().disposition() > 30)  // nice
-            {
-                ss << get_text("disobey.slave.nice");
-                girl.pclove(2);
-                girl.pchate(-1);
-                girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-                return true;
-            }
-            else if (g_Game->player().disposition() > -30) //pragmatic
-            {
-                ss << get_text("disobey.slave.neutral");
-                girl.pclove(-1);
-                girl.pchate(2);
-                girl.pcfear(2);
-                g_Game->player().disposition(-1);
-                result.enjoy -= 2;
-            }
-            else
-            {
-                ss << "${name} refused to have any part in this \"monstrous\" scene.\nShe was clearly horrified so you had your men strip her, drag her outside and ";
-                /**/ if (girl.has_active_trait("Pierced Clit"))            ss << "whip her clitoral piercing";
-                else if (girl.has_active_trait("Pierced Nipples"))        ss << "whip her nipple piercings";
-                else ss << "whip some humility into her";
-                ss << " ahead of the scene.";
-                girl.pclove(-4);
-                girl.pchate(+5);
-                girl.pcfear(+5);
-                g_Game->player().disposition(-2);
-                result.enjoy -= 6;
-            }
-        }
-        else // not a slave
-        {
-            ss << get_text("disobey.free");
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-            return true;
-        }
+        return RefusedTieUp(girl);
     }
-    else ss << get_text("work");
+    else add_text("work");
     ss << "\n \n";
     return false;
 }

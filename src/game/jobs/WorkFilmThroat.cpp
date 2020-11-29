@@ -25,106 +25,42 @@ void FilmThroat::DoScene(sGirl& girl) {
     int OPTION = uniform(0, 3);
     if (result.performance >= 350)
     {
-        switch (OPTION)
-        {
-            case 0:
-                ss << ("${name} knelt in front of him, opened wide, and swallowed down his whole length, bouncing back and forward until he came ");
-                break;
-            case 1:
-                ss << ("${name} lay on her back on the bed with her head hanging back over the edge. Gripping her breasts, he rammed his cock down her throat until cum exploded ");
-                break;
-            case 2:
-                ss << ("The actor sat on a chair, with ${name} knelt before him. Gripping her head, he pulled her onto his cock, rocking her back and forward on his cock until he came ");
-                break;
-            default:
-                ss << ("${name} did some kind of throatfuck until he came ");
-                break;
-        }
-
-        ss << rng().select_text({"deep down her throat", "in her mouth", "deep in her stomach"}) << ".\n";
+        add_text("work.perfect");
         result.bonus = 12;
         hate = 1;
         tired = 1;
     }
     else if (result.performance >= 245)
     {
-        switch (OPTION)
-        {
-            case 0:
-                ss << ("${name} knelt in front of him and sucked his cock down, bouncing back and forward until he came ");
-                break;
-            case 1:
-                ss <<  ("${name} lay back on the bed with her head over the edge. He fucked her throat until he came ");
-                break;
-            case 2:
-                ss << ("The actor sat on a chair, with ${name} before him. Gripping her head, he pulled her onto his cock, back and forth until he came ");
-                break;
-            default:
-                ss << "${name} did some kind of throatfuck until he came ";
-                break;
-        }
-
-        ss << rng().select_text({"all over her", "in her mouth", "deep down her throat"});
+        add_text("work.great");
         hate = 2;
         tired = 4;
         result.bonus = 6;
     }
     else if (result.performance >= 185)
     {
-        switch (OPTION)
-        {
-            case 0:
-                ss << ("${name} knelt down and let him facefuck her until he came ");
-                break;
-            case 1:
-                ss << ("${name} lay on the bed and let him fuck her throat. He carefully facefucked her until he came ");
-                break;
-            case 2:
-                ss << ("The actor pulled ${name}'s head onto his cock, rubbing his cock down her throat until he came ");
-                break;
-            default:
-                ss << ("${name} did some kind of throatfuck until he came ");
-                break;
-        }
-        ss << rng().select_text({"all over her", "in her mouth", "deep down her throat"});
+        add_text("work.good");
         result.bonus = 4;
         hate = 3;
         tired = 8;
     }
     else if (result.performance >= 145)
     {
-        switch (OPTION)
-        {
-            case 0:
-                ss << ("${name} knelt down and get his cock down her throat. Eventually he came ");
-                break;
-            case 1:
-                ss << ("${name} lay on the bed and tried to take his meat in her throat. He facefucked her until he finally came ");
-                break;
-            case 2:
-                ss << ("The actor pulled ${name}'s head onto his cock, making her gag, until he came ");
-                break;
-            default:
-                ss << ("${name} did some kind of throatfuck until he came ");
-                break;
-        }
-
-        ss << rng().select_text({"in her face", "in her mouth", "over her face"});
+        add_text("work.ok");
         result.bonus = 2;
         hate = 5;
         tired = 10;
     }
     else if (result.performance >= 100)
     {
-        ss << ("It was a pretty awkward scene, with the actor not getting much pleasure trying to fuck her throat. ");
-        ss << ("In the end he gave up and plunged his cock down her throat, making her throw up through her nose, as he came in her head.");
+        add_text("work.bad");
         result.bonus = 1;
         hate = 8;
         tired = 12;
     }
     else
     {
-        ss << ("With her continual gagging, retching and vomittig the actor couldn't get any pleasure, and ended up wanking over her face.");
+        add_text("work.worst");
         hate = 8;
         tired = 12;
     }
@@ -176,44 +112,10 @@ bool FilmThroat::CheckRefuseWork(sGirl& girl) {
     }
     else if (girl.disobey_check(ACTION_WORKMOVIE, JOB_FILMFACEFUCK))
     {
-        ss << ("${name} angrily refused to be throat-fucked on film today.");
-        if (girl.is_slave())
-        {
-            if (g_Game->player().disposition() > 30)  // nice
-            {
-                ss << ("\nThough she is a slave, she was upset so you allowed her the day off.\n");
-                girl.pclove(2);
-                girl.spirit(1);
-                girl.pchate(-1);
-                girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-                return true;
-            }
-            else if (g_Game->player().disposition() > -30) //pragmatic
-            {
-                ss << (" Amused, you over-ruled her, and gave owner's consent for her. She glared at you as they dragged her away.\n");
-                girl.pclove(-1);
-                girl.pchate(2);
-                girl.pcfear(2);
-                g_Game->player().disposition(-1);
-                result.enjoy -= 2;
-            }
-            else if (g_Game->player().disposition() > -30)
-            {
-                ss << (" Amused, you over-ruled her, and gave owner's consent.\nShe made a hell of a fuss, but you knew just the thing to shut her up.");
-                girl.pclove(-4);
-                girl.pchate(+5);
-                girl.pcfear(+5);
-                g_Game->player().disposition(-2);
-                result.enjoy -= 6;
-            }
-        }
-        else // not a slave
-        {
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-            return true;
-        }
+        return RefusedTieUp(girl);
     }
-    else ss << "${name} was filmed in facefucking scenes.\n \n";
+    else add_text("work");
+    ss << "\n \n";
     return false;
 }
 

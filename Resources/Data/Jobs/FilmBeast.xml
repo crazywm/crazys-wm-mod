@@ -26,5 +26,31 @@
         <Message Name="work">
             <Text>${name} was filmed being fucked by animals.</Text>
         </Message>
+        <Message Name="crew.refuse.health">
+            <Text>
+                The crew refused to film a Bestiality scene with ${name} because she is not healthy enough.
+                "She could get hurt."
+            </Text>
+        </Message>
+        <Message Name="disobey.free">
+            <Text>${name} refused to be fucked by animals on film. She left the set.</Text>
+        </Message>
+        <Message Name="disobey.slave.nice">
+            <Text>${name} refused to be fucked by animals on film.
+                She was so passionate that you allowed her the day off.
+            </Text>
+        </Message>
+        <Message Name="disobey.slave.neutral">
+            <Text>${name} refused to be fucked by animals on film.
+                As her owner, you over-ruled and gave her consent.
+                Your crew readied the cameras, while your men tied her arms behind her back and feet behind her head.
+                "Release the beasts!"
+            </Text>
+        </Message>
+        <Message Name="disobey.slave.evil">
+            ${name} refused to be fucked by animals on film.
+            Amused, you have your men flog this slave for a while to remind her of her place.
+            You offer the film-crew first choice of your more exotic beasts.
+        </Message>
     </Messages>
 </Job>

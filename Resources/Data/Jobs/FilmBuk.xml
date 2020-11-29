@@ -39,5 +39,52 @@
             <Text>${name} refused to have any part in this "filthy" bukkake scene.
                 She was clearly upset so you had your men whip some sense into her before the scene and tie her down for action.</Text>
         </Message>
+
+        <Message Name="post-work-event">
+            <!-- In the C++ code, this was an if else if chain, so the game would always choose
+            the one with the strongest influence. TODO should we keep that? -->
+            <Text Condition="Mind Fucked" Updates="enjoy+=16">
+                Being completely mind fucked, ${name} really gets off on the depravity.
+            </Text>
+            <Text Condition="Masochist" Updates="enjoy+=13">
+                ${name} enjoys this. She knows it's what she deserves.
+            </Text>
+            <Text Condition="Cum Addict" Updates="enjoy+=13">
+                ${name} enjoys this, and spends a while licking cum off her body.
+            </Text>
+            <Text Condition="Broken Will|Dependant" Updates="enjoy+=11">
+                ${name} accepts this. It is Master's will.
+            </Text>
+            <Text Condition="Iron Will|Fearless" Updates="enjoy-=5">
+                ${name} endures in stoic silence, determined not to let you see her suffer.
+            </Text>
+        </Message>
+
+        <Message Name="work.description">
+            <Text>
+                ${name} was $[dutifully gangbanged|deeply probed|effectively raped|uncomfortably filled|clumsily penetrated|roughly used]
+                by $[40-year-old virgins|a large gang of men|unenthusiastic gay men|straight-jacketed psychopaths|real-life ogres|drunken soldiers]
+                who $[vigorously|stoutly|casually|lugubriously|excitedly|deliberately|ludicrously]
+                $[ejaculated their seed|splooged|fired hot cum|shot semen|nutted|came]
+            </Text>
+        </Message>
+        <Message Name="work.description.tied">
+            <Text>all over her tied, trembling body.</Text>
+            <Text>into her pried-open mouth.</Text>
+            <Text>on her face, breasts and inside her spread-eagle cunt.</Text>
+            <Text>over her bound, naked body until she was nicely 'glazed'.</Text>
+            <Text>in her tied down, squirming face.</Text>
+            <Text>into her speculum-spread vagina.</Text>
+            <Text>in her eyes and up her nose.</Text>
+        </Message>
+        <Message Name="work.description.untied">
+            <Text>all over her naked body.</Text>
+            <Text>into her waiting mouth.</Text>
+            <Text>simultaneously in her ass, mouth and cunt.</Text>
+            <Text>over her until she was nicely 'glazed'.</Text>
+            <Text>in her hair and on her face.</Text>
+            <Text>over her stomach and breasts.</Text>
+            <Text>all in her eyes and up her nose.</Text>
+        </Message>
     </Messages>
 </Job>

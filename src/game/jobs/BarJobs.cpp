@@ -647,53 +647,11 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     m_Tips += (int)(((10 + m_Performance / 22) * m_Wages) / 100);
 
     //try and add randomness here
-    if (girl.has_active_trait("Great Arse") && chance(15))
-    {
-        if (m_Performance >= 185) //great
-        {
-            ss << "A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
-            m_Tips += 15;
-        }
-        else if (m_Performance >= 135) //decent or good
-        {
-            ss << "A patron reached out and grabbed her ass. She's use to this and skilled enough so she didn't drop anything\n";
-        }
-        else if (m_Performance >= 85) //bad
-        {
-            ss << "A patron reached out and grabbed her ass. She was startled and ended up dropping half an order.\n";
-            m_Wages -= 10;
-        }
-        else  //very bad
-        {
-            ss << "A patron reached out and grabbed her ass. She was startled and ended up dropping a whole order\n";
-            m_Wages -= 15;
-        }
-    }
-
     if (girl.libido() > 90 && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Succubus") ||
                                girl.has_active_trait("Slut")))
     {
         ss << "During her shift, ${name} couldn't help but instinctively and excessively rub her ass against the crotches of the clients whenever she got the chance. Her slutty behavior earned her some extra tips, as a couple of patrons noticed her intentional butt grinding.\n";
         m_Tips += 30;
-    }
-
-    if (chance(5))
-    {
-        /*if (girl.medicine() >= 90)
-        { ss << "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n";
-        wages += 15; }
-        else if (girl.medicine() >= 60)
-        { ss << "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n";
-        wages += 15; }
-        else*/ if (girl.medicine() >= 30)
-        {
-            ss << "A customer started chocking on his food so ${name} performed the heimlich maneuver on him. Grateful the man left her a better tip.\n";
-            m_Tips += 15;
-        }
-        else
-        {
-            ss << "A customer started chocking on his food so ${name} not knowing what to do started screaming for help.\n";
-        }
     }
 
     if (brothel.num_girls_on_job( JOB_BARMAID, false) >= 1 && chance(25))

@@ -21,50 +21,34 @@
 #include "cGangs.h"
 
 void FilmOral::DoScene(sGirl& girl) {
-    //BSIN - not sure what's wrong but this crashes the game.
-    sGang* Gang = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
-    
     if (result.performance >= 350)
     {
-        if (Gang && Gang->m_Num > 0 && chance(50))
-        {
-            int members = std::min(rng().bell(0, Gang->m_Num * 2), Gang->m_Num);
-            ss << "When the 'actor' didn't turn up, ${name} expertly sucked off ";
-            if (members >= Gang->m_Num)    ss << "everyone";
-            else if (members > 1)/*  */    ss << members << " lucky guys";
-            else/*                   */    ss << "one lucky guy";
-            ss << " from your gang " << Gang->name() << ".";
-        }
-        else ss << "The lucky guy came uncontrollably, damn near passing out in pleasure as ${name}"
-            << " expertly sucked him dry.\nShe savoured the cum in her mouth, rolling it around her lips and tongue before finally swallowing it down.";
+        add_text("work.perfect");
         result.bonus = 12;
     }
     else if (result.performance >= 245)
     {
-        ss << "${name} sucked off her man like a pro - not once breaking eye-contact - and was rewarded with ";
-        if (chance(50) || girl.has_active_trait("Cum Addict")) ss << "a mouthful of semen. She kept her lips clamped to his cock to the last, thirstily swallowing down every drop of hot cum.";
-        else ss << "a explosion of cum in her face. As she licked his penis clean, she rubbed cum around her skin and licked it off her fingers.";
+        add_text("work.great");
         result.bonus = 6;
     }
     else if (result.performance >= 185)
     {
-        ss << "${name} gave a fairly pleasant blowjob, and ended up glazed in hot cum.";
+        add_text("work.good");
         result.bonus = 4;
     }
     else if (result.performance >= 145)
     {
-        ss << "${name} gave a passable blowjob, but in the end the actor had to finish himself off, splatting cum on her face.";
+        add_text("work.ok");
         result.bonus = 2;
     }
     else if (result.performance >= 100)
     {
-        ss << "It was a pretty awkward and uncomfortable scene, with the actor not getting any kind of pleasure from her clumsy, toothy attempts. ";
-        ss << "In the end he gave up and simply wanked in her face, but even then she dodged at the last moment, ruining that scene too.";
+        add_text("work.bad");
         result.bonus = 1;
     }
     else
     {
-        ss << "After the fourth time she 'snagged' the actor on her tooth, he cursed and stormed off set. Your gang, " << (Gang ? Gang->name() : "") << ", saved the day by pinning her down wanking on her face one-by-one.\nOverall it's a terrible scene.";
+        add_text("work.worst");
     }
     ss << "\n";
 

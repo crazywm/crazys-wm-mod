@@ -35,33 +35,7 @@ void FilmBdsm::DoScene(sGirl& girl) {
     PrintPerfSceneEval();
     ss << "\n";
 
-
-    //Enjoyed? If she's deranged, she'd should have enjoyed it.
-    if (girl.has_active_trait("Mind Fucked"))
-    {
-        result.enjoy += 16;
-        ss << "Being completely mind fucked, ${name} actually gets off on this.\n";
-    }
-    else if (girl.has_active_trait("Masochist"))
-    {
-        result.enjoy += 10;
-        ss << "${name} enjoys this. It's what she deserves.\n";
-    }
-    else if (girl.has_active_trait("Broken Will") || girl.has_active_trait("Dependant"))
-    {
-        result.enjoy += 5;
-        ss << "${name} accepts this. It is Master's will.\n";
-    }
-    else if (girl.has_active_trait("Iron Will") || girl.has_active_trait("Fearless"))
-    {
-        result.enjoy -= 5;
-        ss << "${name} endures in stoic silence, determined not to let you see her suffer.\n";
-    }
-    else if (girl.has_active_trait("Nymphomaniac"))
-    {
-        result.enjoy += 2;
-        ss << "${name} doesn't much like the pain, but loves the sex and attention.\n";
-    }
+    add_text("post-work-event");
 
     //Feedback enjoyment
     if (result.enjoy > 10)
@@ -105,13 +79,13 @@ bool FilmBdsm::CheckRefuseWork(sGirl& girl) {
     int roll = d100();
     if (girl.health() < 40)
     {
-        ss << "The crew refused to film a dungeon scene with ${name} because she is not healthy enough.\n\"We are NOT filming snuff.\"";
+        add_text("crew.refuse.health");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return true;
     }
     else if (girl.is_pregnant())
     {
-        ss << "The crew refused to do a BDSM scene with ${name} due to her pregnancy.";
+        add_text("crew.refuse.pregnant");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return true;
     }
@@ -127,53 +101,8 @@ bool FilmBdsm::CheckRefuseWork(sGirl& girl) {
     }
     else if (roll <= 10 && girl.disobey_check(ACTION_WORKMOVIE, JOB_FILMBONDAGE))
     {
-        if (girl.is_slave())
-        {
-            if (g_Game->player().disposition() > 30)  // nice
-            {
-                ss << get_text("disobey.slave.nice");
-                girl.pclove(2);
-                girl.pchate(-1);
-                girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-                return true;
-            }
-            else if (g_Game->player().disposition() > -30) //pragmatic
-            {
-                ss << get_text("disobey.slave.neutral");
-                girl.pclove(-1);
-                girl.pchate(2);
-                girl.pcfear(2);
-                g_Game->player().disposition(-1);
-                result.enjoy -= 2;
-            }
-            else
-            {
-                ss << "${name} was horrified and refused to be beaten and sexually tortured in this \"monstrous\" place.\nShe was starting to panic so you ordered your men to quickly grab, strip and bind her. Finally, ";
-                if (girl.has_active_trait("Pierced Nipples"))
-                {
-                    ss << "noticing her pierced nipples";
-                    if (girl.has_active_trait("Pierced Clit"))
-                    {
-                        ss << " and clit";
-                    }
-                    ss << ", ";
-                }
-                else if (girl.has_active_trait("Pierced Clit")) ss << "noticing her clittoral piercing, ";
-                ss << "you personally selected some 'fun tools' for your actor, instructing him to train your slave in humility and obedience.\n\"Master her. Intimately.\"";
-                girl.pclove(-4);
-                girl.pchate(+5);
-                girl.pcfear(+5);
-                g_Game->player().disposition(-2);
-                result.enjoy -= 6;
-            }
-        }
-        else // not a slave
-        {
-            ss << get_text("disobey.free");
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-            return true;
-        }
+        return RefusedTieUp(girl);
     }
-    else ss << get_text("work") << "\n \n";
+    else add_text("work") << "\n \n";
     return false;
 }

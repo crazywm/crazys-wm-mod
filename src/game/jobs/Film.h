@@ -48,7 +48,7 @@ struct SceneResult {
 
 class GenericFilmJob : public cBasicJob {
 public:
-    explicit GenericFilmJob(JOBS id, FilmJobData data) : cBasicJob(id), m_FilmData(std::move(data)) {}
+    explicit GenericFilmJob(JOBS id, FilmJobData data);
 
     bool DoWork(sGirl& girl, bool is_night) final;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
@@ -71,11 +71,8 @@ protected:
 
     FilmJobData m_FilmData;
 
-    // common trait changes
-    static sTraitChange GainPornStar;
-    static sTraitChange GainFaker;
-    static sTraitChange GainSlut;
-    static sTraitChange GainMasochist;
+    // used by films where you can tie up the girl and continue even if she refuses to work
+    bool RefusedTieUp(sGirl& girl);
 
 private:
     void NiceMovieGirlUpdate(sGirl& girl) const;

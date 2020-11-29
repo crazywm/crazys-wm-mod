@@ -26,5 +26,80 @@
         <Message Name="work">
             <Text>${name} was filmed in facefucking scenes.</Text>
         </Message>
+
+        <Message Name="work.perfect">
+            <Text>
+                ${name} knelt in front of him, opened wide, and swallowed down his whole length,
+                bouncing back and forward until he came
+            </Text>
+            <Text>
+                ${name} lay on her back on the bed with her head hanging back over the edge.
+                Gripping her breasts, he rammed his cock down her throat until cum exploded
+            </Text>
+            <Text>
+                The actor sat on a chair, with ${name} knelt before him. Gripping her head,
+                he pulled her onto his cock, rocking her back and forward on his cock until he came
+            </Text>
+            $[deep down her throat|in her mouth|deep in her stomach].
+        </Message>
+        <Message Name="work.great">
+            <Text>${name} knelt in front of him and sucked his cock down, bouncing back and forward until he came</Text>
+            <Text>${name} lay back on the bed with her head over the edge. He fucked her throat until he came</Text>
+            <Text>
+                The actor sat on a chair, with ${name} before him. Gripping her head,
+                he pulled her onto his cock, back and forth until he came
+            </Text>
+            $[all over her|in her mouth|deep down her throat].
+        </Message>
+        <Message Name="work.good">
+            <Text>${name} knelt down and let him facefuck her until he came</Text>
+            <Text>${name} lay on the bed and let him fuck her throat. He carefully facefucked her until he came</Text>
+            <Text>The actor pulled ${name}'s head onto his cock, rubbing his cock down her throat until he came</Text>
+            $[all over her|in her mouth|deep down her throat].
+        </Message>
+        <Message Name="work.ok">
+            <Text>${name} knelt down and get his cock down her throat. Eventually he came</Text>
+            <Text>
+                ${name} lay on the bed and tried to take his meat in her throat.
+                He facefucked her until he finally came
+            </Text>
+            <Text>The actor pulled ${name}'s head onto his cock, making her gag, until he came</Text>
+            $[in her face|in her mouth|over her face].
+        </Message>
+        <Message Name="work.bad">
+            <Text>
+                It was a pretty awkward scene, with the actor not getting much pleasure trying to fuck her throat.
+                In the end he gave up and plunged his cock down her throat, making her throw up through her nose,
+                as he came in her head.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>
+                With her continual gagging, retching and vomittig the actor couldn't get any pleasure,
+                and ended up wanking over her face.
+            </Text>
+        </Message>
+
+        <Message Name="disobey.free">
+            <Text>${name} angrily refused to be throat-fucked on film today.</Text>
+        </Message>
+        <Message Name="disobey.slave.nice">
+            <Text>
+                ${name} angrily refused to be throat-fucked on film today.
+                Though she is a slave, she was upset so you allowed her the day off.</Text>
+        </Message>
+        <Message Name="disobey.slave.neutral">
+            <Text>
+                ${name} angrily refused to be throat-fucked on film today.
+                Amused, you over-ruled her, and gave owner's consent for her. She glared at you as they dragged her away.
+            </Text>
+        </Message>
+        <Message Name="disobey.slave.evil">
+            <Text>
+                ${name} angrily refused to be throat-fucked on film today.
+                Amused, you over-ruled her, and gave owner's consent.
+                She made a hell of a fuss, but you knew just the thing to shut her up.
+            </Text>
+        </Message>
     </Messages>
 </Job>

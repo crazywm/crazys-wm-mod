@@ -59,49 +59,10 @@ bool FilmBeast::CheckRefuseWork(sGirl& girl) {
     }
     else if (!girl.has_active_trait("Mind Fucked") && girl.disobey_check(ACTION_WORKMOVIE, JOB_FILMBEAST))
     {
-        ss << "${name} refused to be fucked by animals on film.";
-        if (girl.is_slave())
-        {
-            if (g_Game->player().disposition() > 30)  // nice
-            {
-                ss << " She was so passionate that you allowed her the day off.\n";
-                girl.pclove(2);
-                girl.pchate(-1);
-                girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-                return true;
-            }
-            else if (g_Game->player().disposition() > -30) //pragmatic
-            {
-                ss << " As her owner, you over-ruled and gave her consent.";
-                ss << " Your crew readied the cameras, while your men tied her arms behind her back and feet behind her head. \n\"Release the beasts!\"";
-                girl.pclove(-1);
-                girl.pchate(1);
-                girl.pcfear(+1);
-                g_Game->player().disposition(-1);
-                tied = true;
-                result.enjoy -= 2;
-            }
-            else if (g_Game->player().disposition() > -30)
-            {
-                ss << " Amused, you have your men flog this slave for a while to remind her of her place.";
-                ss << " You offer the film-crew first choice of your more exotic beasts.";
-                girl.pclove(-2);
-                girl.pchate(+2);
-                girl.pcfear(+4);
-                girl.spirit(-1);
-                g_Game->player().disposition(-2);
-                result.enjoy -= 6;
-                tied = true;
-            }
-        }
-        else // not a slave
-        {
-            ss << " She left the set.";
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-            return true;
-        }
+        tied = !RefusedTieUp(girl);
+        return !tied;
     }
-    else ss << get_text("work") << "\n \n";
+    else add_text("work") << "\n \n";
     return false;
 }
 

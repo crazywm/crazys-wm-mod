@@ -23,5 +23,47 @@
         <Message Name="refuse">
             <Text>${name} refused to give head on film today.</Text>
         </Message>
+        <Message Name="work.perfect">
+            <Text>
+            The lucky guy came uncontrollably, damn near passing out in pleasure as ${name} expertly sucked him dry.
+            She savoured the cum in her mouth, rolling it around her lips and tongue before finally swallowing it down.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            ${name} sucked off her man like a pro - not once breaking eye-contact - and was rewarded with
+            <Text Condition="Cum Addict" Priority="1">
+                a mouthful of semen. She kept her lips clamped to his cock to the last,
+                thirstily swallowing down every drop of hot cum.
+            </Text>
+            <Text>
+                a mouthful of semen. She kept her lips clamped to his cock to the last,
+                thirstily swallowing down every drop of hot cum.
+            </Text>
+            <Text>
+                an explosion of cum in her face. As she licked his penis clean,
+                she rubbed cum around her skin and licked it off her fingers.
+            </Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>${name} gave a fairly pleasant blowjob, and ended up glazed in hot cum.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>${name} gave a passable blowjob, but in the end the actor had to finish himself off, splatting cum on her face.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>
+                It was a pretty awkward and uncomfortable scene,
+                with the actor not getting any kind of pleasure from her clumsy, toothy attempts.
+                In the end he gave up and simply wanked in her face, but even then she dodged at the last moment,
+                ruining that scene too.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>
+                After the fourth time she 'snagged' the actor on her tooth, he cursed and stormed off set.
+                Your goons saved the day by pinning her down wanking on her face one-by-one.
+                Overall it's a terrible scene.
+            </Text>
+        </Message>
     </Messages>
 </Job>

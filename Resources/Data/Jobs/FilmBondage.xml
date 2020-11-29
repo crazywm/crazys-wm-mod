@@ -33,6 +33,35 @@
             <Text>${name} was taken for bondage and torture scenes in your dungeon.</Text>
         </Message>
 
+        <Message Name="post-work-event">
+            <!-- In the C++ code, this was an if else if chain, so the game would always choose
+            the one with the strongest influence. TODO should we keep that? -->
+            <Text Condition="Mind Fucked" Updates="enjoy+=16">
+                Being completely mind fucked, ${name} actually gets off on this.
+            </Text>
+            <Text Condition="Masochist" Updates="enjoy+=10">
+                ${name} enjoys this. It's what she deserves.
+            </Text>
+            <Text Condition="Broken Will|Dependant" Updates="enjoy+=5">
+                ${name} accepts this. It is Master's will.
+            </Text>
+            <Text Condition="Iron Will|Fearless" Updates="enjoy-=5">
+                ${name} endures in stoic silence, determined not to let you see her suffer.
+            </Text>
+            <Text Condition="Nymphomaniac" Updates="enjoy+=2">
+                ${name} doesn't much like the pain, but loves the sex and attention.
+            </Text>
+        </Message>
+
+        <Message Name="crew.refuse.health">
+            <Text>The crew refused to film a dungeon scene with ${name} because she is not healthy enough.
+                "We are NOT filming snuff."</Text>
+        </Message>
+
+        <Message Name="crew.refuse.pregnant">
+            <Text>The crew refused to do a BDSM scene with ${name} due to her pregnancy.</Text>
+        </Message>
+
         <Message Name="disobey.free">
             <Text>${name} was horrified and refused to be beaten and sexually tortured in this "monstrous" place.</Text>
         </Message>
@@ -44,6 +73,16 @@
         <Message Name="disobey.slave.neutral">
             <Text>${name} refused to have any part in this "monstrous" scene.
                 She was clearly horrified so you had your men drug her before stripping her down for action.</Text>
+        </Message>
+        <Message Name="disobey.slave.evil">
+            ${name} was horrified and refused to be beaten and sexually tortured in this "monstrous" place.
+            She was starting to panic so you ordered your men to quickly grab, strip and bind her. Finally,
+            <Text Condition="Pierced Nipples">noticing her pierced nipples, </Text>
+            <Text Condition="Pierced Clit">noticing her clitoral piercing, </Text>
+            <Text></Text>
+            you personally selected some 'fun tools' for your actor,
+            instructing him to train your slave in humility and obedience.
+            "Master her. Intimately."
         </Message>
     </Messages>
 </Job>

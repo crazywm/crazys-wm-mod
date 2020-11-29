@@ -29,6 +29,11 @@
 #include "Films.h"
 #include "character/predicates.h"
 
+GenericFilmJob::GenericFilmJob(JOBS id, FilmJobData data) : cBasicJob(id), m_FilmData(std::move(data))
+{
+    RegisterVariable("Enjoy", result.enjoy);
+}
+
 
 bool GenericFilmJob::DoWork(sGirl& girl, bool is_night) {
     Reset();
@@ -413,11 +418,6 @@ void GenericFilmJob::PrintPerfSceneEval() {
     }
 }
 
-sTraitChange GenericFilmJob::GainPornStar = {true, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star."};
-sTraitChange GenericFilmJob::GainFaker = {true, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker."};
-sTraitChange GenericFilmJob::GainSlut = {true, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", EVENT_WARNING};
-sTraitChange GenericFilmJob::GainMasochist = {true, "Masochist", 65, ACTION_SEX, "${name} has turned into a Masochist from filming so many BDSM scenes."};
-
 IGenericJob::eCheckWorkResult GenericFilmJob::CheckWork(sGirl& girl, bool is_night) {
     if(!CheckCanWork(girl)) {
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;
@@ -428,4 +428,43 @@ IGenericJob::eCheckWorkResult GenericFilmJob::CheckWork(sGirl& girl, bool is_nig
     }
     
     return IGenericJob::eCheckWorkResult::ACCEPTS;
+}
+
+bool GenericFilmJob::RefusedTieUp(sGirl& girl) {
+    if (girl.is_slave())
+    {
+        if (g_Game->player().disposition() > 30)  // nice
+        {
+            add_text("disobey.slave.nice");
+            girl.pclove(2);
+            girl.pchate(-1);
+            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+            return true;
+        }
+        else if (g_Game->player().disposition() > -30) //pragmatic
+        {
+            add_text("disobey.slave.neutral") << "\n \n";
+            girl.pclove(-1);
+            girl.pchate(2);
+            girl.pcfear(2);
+            g_Game->player().disposition(-1);
+            result.enjoy -= 2;
+        }
+        else
+        {
+            add_text("disobey.slave.evil")<< "\n \n";
+            girl.pclove(-4);
+            girl.pchate(+5);
+            girl.pcfear(+5);
+            g_Game->player().disposition(-2);
+            result.enjoy -= 6;
+        }
+    }
+    else // not a slave
+    {
+        add_text("disobey.free");
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        return true;
+    }
+    return false;
 }
