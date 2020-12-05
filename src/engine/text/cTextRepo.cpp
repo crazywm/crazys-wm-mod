@@ -196,7 +196,10 @@ namespace {
         for(auto& text : IterateChildElements(entry, "Text")) {
             int priority = text.IntAttribute("Priority", text.Attribute("Condition") ? 1 : 0);
             int chance = text.IntAttribute("Chance", 100);
-            std::string content = prefix + text.GetText() + suffix;
+            const char* element_text = text.GetText();
+            std::string content = prefix;
+            if(element_text) content += element_text;
+            content += suffix;
             // TODO this does not convert \n -> ' '
             boost::algorithm::trim_all(content);
 
