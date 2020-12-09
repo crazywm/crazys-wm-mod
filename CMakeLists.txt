@@ -24,6 +24,7 @@ install(DIRECTORY
         Resources/Images
         DESTINATION Resources)
 install(FILES Resources/Characters/randoms.rgirlsx DESTINATION Resources/Characters)
+install(FILES README.md CHANGES.md TODO.md "Special Thanks.txt" gpl.txt DESTINATION .)
 install(TARGETS WhoreMaster lua tinyxml2)
 set(CPACK_GENERATOR "ZIP")
 include(CPack)

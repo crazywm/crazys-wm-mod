@@ -37,12 +37,16 @@ cScreenGameConfig::cScreenGameConfig(bool use_in_game_mode) :
 }
 
 void cScreenGameConfig::init(bool back) {
+    if(!back) {
+        m_Settings = dynamic_cast<cGameSettings&>(g_Game->settings());
+    }
+
     int last_selection = GetSelectedItemFromList(list_id);
     ClearListBox(list_id);
 
     m_SettingsList = m_Settings.list_all_settings();
 
-    std::sort(begin(m_SettingsList), end(m_SettingsList), [](const auto& a, const auto& b){
+    std::sort(begin(m_SettingsList), end(m_SettingsList), [](const auto& a, const auto& b) {
         return std::strcmp(a->tag, b->tag) <= 0;
     });
 
@@ -117,7 +121,7 @@ void cScreenGameConfig::set_ids() {
     revert_id      = get_id("RevertButton");
     list_id        = get_id("SettingsList");
 
-    SetButtonCallback(revert_id, [this](){ m_Settings = dynamic_cast<cGameSettings&>(g_Game->settings()); this->init(false); });
+    SetButtonCallback(revert_id, [this](){ this->init(false); });
     SetButtonCallback(ok_id, [this]() {
         dynamic_cast<cGameSettings&>(g_Game->settings()) = m_Settings;
         pop_window();
@@ -128,10 +132,10 @@ void cScreenGameConfig::set_ids() {
         switch(setting->value.which()) {
             case 0:
                 input_choice(setting->name, {"Yes", "No"},
-                        [this, setting](int c){ m_Settings.set_value(setting->tag, c == 0); init(false); });
+                        [this, setting](int c){ m_Settings.set_value(setting->tag, c == 0); init(true); });
                 break;
             case 1:
-                input_integer([this, setting](int c){ m_Settings.set_value(setting->tag, c); init(false); },
+                input_integer([this, setting](int c){ m_Settings.set_value(setting->tag, c); init(true); },
                         m_Settings.get_integer(setting->tag));
                 break;
             case 2:
@@ -139,7 +143,7 @@ void cScreenGameConfig::set_ids() {
                 input_string([this, setting](const std::string& v){
                     float val = std::strtof(v.c_str(), nullptr);
                     m_Settings.set_value(setting->tag, val);
-                    init(false); });
+                    init(true); });
                 break;
             }case 3:
             {
@@ -147,11 +151,11 @@ void cScreenGameConfig::set_ids() {
                     float val = std::strtof(v.c_str(), nullptr);
                     val /= 100.f;
                     m_Settings.set_value(setting->tag, sPercent(val));
-                    init(false); });
+                    init(true); });
                 break;
             }
             case 4:
-                input_string([this, setting](std::string v){ m_Settings.set_value(setting->tag, std::move(v)); init(false); });
+                input_string([this, setting](std::string v){ m_Settings.set_value(setting->tag, std::move(v)); init(true); });
                 break;
         }
     });
