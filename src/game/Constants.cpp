@@ -20,7 +20,20 @@
 #include "Constants.h"
 #include <unordered_map>
 #include "character/sAttribute.h"
+#include "CLog.h"
 #include <cassert>
+
+namespace {
+    template<class T>
+    inline auto lookup_with_error(const T& map, const std::string& name, const char* error_msg) {
+        try {
+            return map.at(name);
+        } catch (const std::out_of_range& oor ) {
+            g_LogFile.error(error_msg, ": '", name, "'");
+            throw;
+        }
+    }
+}
 
 template<class T>
 using id_lookup_t = std::unordered_map<std::string, T>;
@@ -88,7 +101,7 @@ const id_lookup_t<STATS>& get_stat_lookup() {
 }
 
 STATS get_stat_id(const std::string& name) {
-    return get_stat_lookup().at(name);
+    return lookup_with_error(get_stat_lookup(), name, "Trying to get invalid STAT");
 }
 
 const std::array<sAttribute, NUM_SKILLS>& get_all_skills() {
@@ -136,7 +149,7 @@ const id_lookup_t<SKILLS>& get_skill_lookup() {
 }
 
 SKILLS get_skill_id(const std::string& name) {
-    return get_skill_lookup().at(name);
+    return lookup_with_error(get_skill_lookup(), name, "Trying to get invalid SKILL");
 }
 
 const std::array<const char*, NUM_STATUS>& get_status_names() {
@@ -158,7 +171,7 @@ const id_lookup_t<STATUS>& get_status_lookup() {
 }
 
 STATUS get_status_id(const std::string& name) {
-    return get_status_lookup().at(name);
+    return lookup_with_error(get_status_lookup(), name, "Trying to get invalid STATUS");
 }
 
 const std::array<const char*, NUM_ACTIONTYPES>& get_action_names() {
@@ -231,7 +244,7 @@ const id_lookup_t<Action_Types >& get_action_lookup() {
 }
 
 Action_Types get_action_id(const std::string& name) {
-    return get_action_lookup().at(name);
+    return lookup_with_error(get_action_lookup(), name, "Trying to get invalid ACTION");
 }
 
 const std::array<const char*, NUM_FETISH>& get_fetish_names() {
@@ -253,7 +266,7 @@ const id_lookup_t<Fetishs>& get_fetish_lookup() {
 }
 
 Fetishs get_fetish_id(const std::string& name) {
-    return get_fetish_lookup().at(name);
+    return lookup_with_error(get_fetish_lookup(), name, "Trying to get invalid FETISH");
 }
 
 const std::array<const char*, NUM_IMGTYPES>& get_imgtype_names() {
@@ -332,5 +345,5 @@ auto get_job_lookup() -> const auto& {
 }
 
 JOBS get_job_id(const std::string& name) {
-    return get_job_lookup().at(name);
+    return lookup_with_error(get_job_lookup(), name, "Trying to get invalid JOB");
 }
