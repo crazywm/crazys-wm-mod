@@ -7,6 +7,9 @@
   - end with a letter or digit
 * updated film jobs
 
+## Fixes
+* Fixed loading of trait modifiers from external files
+
 # Version 07.00.alpha8
 
 ## Changes

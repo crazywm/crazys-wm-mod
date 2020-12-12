@@ -61,16 +61,22 @@ void cTraitsManager::load_xml(const tinyxml2::XMLElement& root) {
 }
 
 void cTraitsManager::load_mods(const tinyxml2::XMLElement& root) {
-    const char* modifier = root.GetText();
-    for (auto& el : IterateChildElements(root, "Trait"))
-    {
-        const char* trait_name = GetStringAttribute(el, "Name");
-        int value = GetIntAttribute(el, "Value");
-        auto trait = m_Traits.find(trait_name);
-        if(trait != m_Traits.end()) {
-            trait->second->add_modifier(modifier, value);
-        } else {
-            m_LoaderCache[trait_name].modifiers.emplace_back(modifier, value);
+    for (auto& modifier_el : IterateChildElements(root, "Modifier")) {
+        const char* modifier = GetStringAttribute(modifier_el, "Name");
+        bool has_modifiers = false;
+        for (auto& el : IterateChildElements(modifier_el, "Trait")) {
+            const char* trait_name = GetStringAttribute(el, "Name");
+            int value = GetIntAttribute(el, "Value");
+            auto trait = m_Traits.find(trait_name);
+            if (trait != m_Traits.end()) {
+                trait->second->add_modifier(modifier, value);
+            } else {
+                m_LoaderCache[trait_name].modifiers.emplace_back(modifier, value);
+            }
+            has_modifiers = true;
+        }
+        if(!has_modifiers) {
+            g_LogFile.warning("traits", "Did not find any <Trait> element for modifier ", modifier);
         }
     }
 }
