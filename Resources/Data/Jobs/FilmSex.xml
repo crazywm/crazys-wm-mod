@@ -31,5 +31,15 @@
         <Message Name="refuse">
             <Text>${name} refused to fuck on film today.</Text>
         </Message>
+
+        <Message Name="summary.like">
+            <Text>She loved having a man in her pussy today.</Text>
+        </Message>
+        <Message Name="summary.neural">
+            <Text>She had a pleasant day fucking her co-star.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>She didn't want sex today, but she did it anyway.</Text>
+        </Message>
     </Messages>
 </Job>

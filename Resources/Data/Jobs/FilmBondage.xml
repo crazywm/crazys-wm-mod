@@ -84,5 +84,34 @@
             instructing him to train your slave in humility and obedience.
             "Master her. Intimately."
         </Message>
+
+        <Message Name="work.perfect">
+            <Text>It was an excellent scene.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>It was mostly an excellent scene.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>Overall, it was an solid scene.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>Overall, it wasn't a bad scene.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>It wasn't a great scene.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>It was a poor scene.</Text>
+        </Message>
+
+        <Message Name="summary.like">
+            <Text>She won't say it, but you suspect she secretly gets off on the attention, sin and degradation.</Text>
+        </Message>
+        <Message Name="summary.neural">
+            <Text>She's only a little traumatised.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>From the way she's crouched, rocking in a corner and silently weeping... you figure she didn't enjoy this.</Text>
+        </Message>
     </Messages>
 </Job>

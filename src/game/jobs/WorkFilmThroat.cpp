@@ -67,11 +67,7 @@ void FilmThroat::DoScene(sGirl& girl) {
     ss << ("\n");
 
     //Enjoyed?! No, but some will hate it less.
-    PerformanceToEnjoyment("She won't say it, but you suspect she secretly gets off on the degradation.",
-                           "She's pretty raw and her makeup is everywhere.",
-                           "From the way she's coughing and gagging and has bright red eyes, you suspect this wasn't much fun for her."
-                           );
-    result.bonus += result.enjoy;
+    PrintEnjoyFeedback();
 
 
     int impact = uniform(0, 10);

@@ -24,5 +24,34 @@
         <Message Name="refuse">
             <Text>${name} refused to use her feet on film today.</Text>
         </Message>
+
+        <Message Name="work.perfect">
+            <Text>It was an excellent scene.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>It was mostly an excellent scene.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>Overall, it was an solid scene.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>Overall, it wasn't a bad scene.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>It wasn't a great scene.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>It was a poor scene.</Text>
+        </Message>
+
+        <Message Name="summary.like">
+            <Text>She loved having his cock slide between her feet.</Text>
+        </Message>
+        <Message Name="summary.neural">
+            <Text>She had a pleasant day using her feet to get her co-star off.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>She used her feet on his cock, but didn't like it.</Text>
+        </Message>
     </Messages>
 </Job>

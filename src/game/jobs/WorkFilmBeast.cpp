@@ -25,7 +25,7 @@
 
 void FilmBeast::DoScene(sGirl& girl) {
     PrintPerfSceneEval();
-    ss << "\n";
+    PrintEnjoyFeedback();
     if (girl.lose_trait("Virgin"))
     {
         result.performance += 50;

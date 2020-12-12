@@ -21,43 +21,11 @@
 #include "cGangs.h"
 
 void FilmOral::DoScene(sGirl& girl) {
-    if (result.performance >= 350)
-    {
-        add_text("work.perfect");
-        result.bonus = 12;
-    }
-    else if (result.performance >= 245)
-    {
-        add_text("work.great");
-        result.bonus = 6;
-    }
-    else if (result.performance >= 185)
-    {
-        add_text("work.good");
-        result.bonus = 4;
-    }
-    else if (result.performance >= 145)
-    {
-        add_text("work.ok");
-        result.bonus = 2;
-    }
-    else if (result.performance >= 100)
-    {
-        add_text("work.bad");
-        result.bonus = 1;
-    }
-    else
-    {
-        add_text("work.worst");
-    }
-    ss << "\n";
+    PrintPerfSceneEval();
 
     //Enjoyed? If she performed well, she'd should have enjoyed it.
     if (girl.has_active_trait("Cum Addict")) result.enjoy += 2;
-    PerformanceToEnjoyment("She really enjoyed giving head today.",
-            "She enjoyed this performance.",
-            "She's bad at this, and the whole experience was pretty humiliating.");
-    result.bonus += result.enjoy;
+    PrintEnjoyFeedback();
 }
 
 void FilmOral::GainTraits(sGirl& girl, int performance) const {

@@ -40,8 +40,7 @@ void FilmBuk::DoScene(sGirl& girl) {
     ss << "\n";
     add_text("post-work-event");
 
-    //For final calc
-    result.bonus += result.enjoy;
+    PrintEnjoyFeedback();
 
     // now we've got that done, most girls shouldn't like this...
     result.enjoy -= 10;

@@ -21,5 +21,34 @@
         <Message Name="refuse">
             <Text>${name} refused to strip on film today.</Text>
         </Message>
+
+        <Message Name="work.perfect">
+            <Text>It was an excellent scene.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>It was mostly an excellent scene.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>Overall, it was an solid scene.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>Overall, it wasn't a bad scene.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>It wasn't a great scene.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>It was a poor scene.</Text>
+        </Message>
+
+        <Message Name="summary.like">
+            <Text>She loved stripping for the camera.</Text>
+        </Message>
+        <Message Name="summary.neural">
+            <Text>She had a pleasant day stripping today.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>She stripped on film today, but didn't like it.</Text>
+        </Message>
     </Messages>
 </Job>

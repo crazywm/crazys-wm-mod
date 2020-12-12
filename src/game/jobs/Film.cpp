@@ -36,8 +36,16 @@ GenericFilmJob::GenericFilmJob(JOBS id, FilmJobData data) : cBasicJob(id), m_Fil
 
 
 bool GenericFilmJob::DoWork(sGirl& girl, bool is_night) {
-    Reset();
     return WorkFilm(girl);
+}
+
+void GenericFilmJob::InitWork() {
+    this->cBasicJob::InitWork();
+    result = SceneResult();
+    result.wages = m_FilmData.Wages;
+    result.bonus = m_FilmData.Bonus;
+    result.performance = m_Performance;
+    Reset();
 }
 
 bool GenericFilmJob::WorkFilm(sGirl& girl) {
@@ -47,15 +55,30 @@ bool GenericFilmJob::WorkFilm(sGirl& girl) {
         return false;
     }
 
-    result.wages = m_FilmData.Wages;
-    result.bonus = m_FilmData.Bonus;
-    result.performance = GetPerformance(girl, false);
+    int roll = d100();
+    if (roll <= 10) { result.enjoy -= uniform(1, 4);    }
+    else if (roll >= 90) { result.enjoy += uniform(1, 4); }
+    else { result.enjoy += uniform(0, 2); }
+
+    if (result.performance >= 200)
+    {
+        result.enjoy += uniform(1, 4);
+    }
+    else if (result.performance >= 100)
+    {
+        result.enjoy += uniform(0, 2);
+    }
+    else
+    {
+        result.enjoy -= uniform(2, 5);
+    }
 
     ss << "\n ";
 
     cGirls::UnequipCombat(girl);
 
     DoScene(girl);
+    result.bonus += result.enjoy;
 
     // remaining modifiers are in the AddScene function --PP
     // `J` do job based modifiers
@@ -152,7 +175,6 @@ void GenericFilmJob::NiceMovieGirlUpdate(sGirl& girl) const {
 }
 
 void GenericFilmJob::Reset() {
-    result = SceneResult();
 }
 
 struct SimpleFilmJob : public GenericFilmJob
@@ -161,7 +183,6 @@ struct SimpleFilmJob : public GenericFilmJob
     void DoScene(sGirl& girl) override;
 
     virtual int handle_events(sGirl& girl) { return 0; }
-    virtual void narrate(const sGirl& girl, int roll) = 0;
     double GetPerformance(const sGirl& girl, bool estimate) const override { return 0; }
 };
 
@@ -172,17 +193,12 @@ SimpleFilmJob::SimpleFilmJob(JOBS id, const char* xml, FilmJobData data) :
 }
 
 void SimpleFilmJob::DoScene(sGirl& girl) {
-    int roll = d100();
-    if (roll <= 10) { result.enjoy -= uniform(1, 4);    }
-    else if (roll >= 90) { result.enjoy += uniform(1, 4); }
-    else /*            */{ result.enjoy += uniform(0, 2); }
+    PrintPerfSceneEval();
 
-    narrate(girl, roll);
     ss << "\n \n";
     result.bonus = result.enjoy;
     handle_events(girl);
 }
-
 struct FilmTitty : public SimpleFilmJob
 {
     FilmTitty() : SimpleFilmJob(JOB_FILMTITTY, "FilmTitty.xml", {
@@ -191,12 +207,6 @@ struct FilmTitty : public SimpleFilmJob
     })
     {
     };
-
-    void narrate(const sGirl& girl, int roll) override {
-        if (roll <= 10) { ss << "She used her breasts on his cock, but didn't like it."; }
-        else if (roll >= 90) { ss << "She loved having his cock slide between her breasts."; }
-        else { ss << "She had a pleasant day using her tits to get her co-star off."; }
-    }
 };
 
 struct FilmStrip : public SimpleFilmJob
@@ -211,12 +221,6 @@ struct FilmStrip : public SimpleFilmJob
         {
             cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been stripping for so long, when she walks, it seems her clothes just want to fall off.", false);
         }
-    }
-
-    void narrate(const sGirl& girl, int roll) override {
-        if (roll <= 10) { ss << "She stripped on film today, but didn't like it."; }
-        else if (roll >= 90) { ss << "She loved stripping for the camera."; }
-        else { ss << "She had a pleasant day stripping today."; }
     }
 };
 
@@ -235,12 +239,6 @@ struct FilmLesbian : public SimpleFilmJob
         }
         return 0;
     }
-
-    void narrate(const sGirl& girl, int roll) override {
-        if (roll <= 10) { ss << "She didn't like doing it, but but she made the actress come."; }
-        else if (roll >= 90) { ss << "She was amazed how good it felt to have her pussy eaten, and gave as good in return."; }
-        else { ss << "She had a pleasant day playing with her girlfriend."; }
-    }
 };
 
 struct FilmHandJob : public SimpleFilmJob
@@ -250,12 +248,6 @@ struct FilmHandJob : public SimpleFilmJob
           FilmJobData::NORMAL, SKILL_HANDJOB, "Handjob"
     }) {
     }
-
-    void narrate(const sGirl& girl, int roll) override {
-        if (roll <= 10) { ss << "She used her hand on his cock, but didn't like it."; }
-        else if (roll >= 90) { ss << "She loved having his cock slide between her hands."; }
-        else { ss << "She had a pleasant day using her hands to get her co-star off."; }
-    }
 };
 
 struct FilmFootJob : public SimpleFilmJob
@@ -264,12 +256,6 @@ struct FilmFootJob : public SimpleFilmJob
           IMGTYPE_FOOT, ACTION_SEX, 50, -5,
           FilmJobData::NORMAL, SKILL_FOOTJOB, "Footjob",
     }) {
-    }
-
-    void narrate(const sGirl& girl, int roll) override {
-        if (roll <= 10) { ss << "She used her feet on his cock, but didn't like it."; }
-        else if (roll >= 90) { ss << "She loved having his cock slide between her feet."; }
-        else { ss << "She had a pleasant day using her feet to get her co-star off."; }
     }
 };
 
@@ -287,12 +273,6 @@ struct FilmAnal : public SimpleFilmJob
             return 20;
         }
         return 0;
-    }
-
-    void narrate(const sGirl& girl, int roll) override {
-        if (roll <= 10) { ss << "She didn't like having a cock up her ass today."; }
-        else if (roll >= 90) { ss << "She loved having her ass pounded today."; }
-        else { ss << "She had a pleasant day letting her co-star slip his cock into her butt."; }
     }
 };
 
@@ -323,23 +303,6 @@ struct FilmMast : public SimpleFilmJob
         }
         return 0;
     }
-
-    void narrate(const sGirl& girl, int roll) override {
-        if (roll <= 10) { ss << "She didn't want to make the film, but the director persuaded her."; }
-        else if (roll >= 90) {
-            if (girl.has_active_trait("Futanari")) {
-                ss << "She cummed hard while playing with her cock!";
-            } else {
-                ss << "She had intense orgasms while playing with her pussy!";
-            }
-        } else {
-            if (girl.has_active_trait("Futanari")) {
-                ss << "She spent the session rubbing her dick until she came.";
-            } else {
-                ss << "She spent the afternoon fingering herself.";
-            }
-        }
-    }
 };
 
 // film registry
@@ -365,56 +328,48 @@ void RegisterFilmJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<FilmThroat>());
 }
 
-void GenericFilmJob::PerformanceToEnjoyment(const char* good_message, const char* neutral_message, const char* bad_message) {
-    //Enjoyed? If she performed well, she'd should have enjoyed it.
-    if (result.performance >= 200)
-    {
-        result.enjoy += uniform(1, 4);
-        ss << good_message;
-    }
-    else if (result.performance >= 100)
-    {
-        result.enjoy += uniform(0, 2);
-        ss << neutral_message;
-    }
-    else
-    {
-        result.enjoy -= uniform(2, 5);
-        ss << bad_message;
-    }
-
-    ss << "\n \n";
-}
-
 void GenericFilmJob::PrintPerfSceneEval() {
     if (result.performance >= 350)
     {
-        ss << "It was an excellent scene.";
-        result.bonus += 12;
+        add_text("work.perfect");
+        result.bonus = 12;
     }
     else if (result.performance >= 245)
     {
-        ss << "It was mostly an excellent scene.";
-        result.bonus += 6;
+        add_text("work.great");
+        result.bonus = 6;
     }
     else if (result.performance >= 185)
     {
-        ss << "Overall, it was an solid scene.";
-        result.bonus += 4;
+        add_text("work.good");
+        result.bonus = 4;
     }
     else if (result.performance >= 145)
     {
-        ss << "Overall, it wasn't a bad scene.";
-        result.bonus += 2;
+        add_text("work.ok");
+        result.bonus = 2;
     }
     else if (result.performance >= 100)
     {
-        ss << "It wasn't a great scene.";
-        result.bonus++;
+        add_text("work.bad");
+        result.bonus = 1;
     }
     else
     {
-        ss << "It was a poor scene.";
+        add_text("work.worst");
+    }
+
+    ss << "\n";
+}
+
+void GenericFilmJob::PrintEnjoyFeedback() {
+
+    if (result.enjoy < -1) {
+        add_text("summary.dislike");
+    } else if (result.enjoy < 3) {
+        add_text("summary.neural");
+    }else {
+        add_text("summary.like");
     }
 }
 

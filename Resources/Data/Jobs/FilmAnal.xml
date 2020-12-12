@@ -30,5 +30,34 @@
         <Message Name="refuse">
             <Text>${name} refused to do anal on film today.</Text>
         </Message>
+
+        <Message Name="work.perfect">
+            <Text>It was an excellent scene.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>It was mostly an excellent scene.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>Overall, it was an solid scene.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>Overall, it wasn't a bad scene.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>It wasn't a great scene.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>It was a poor scene.</Text>
+        </Message>
+
+        <Message Name="summary.like">
+            <Text>She loved having her ass pounded today.</Text>
+        </Message>
+        <Message Name="summary.neural">
+            <Text>She had a pleasant day letting her co-star slip his cock into her butt.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>She didn't like having a cock up her ass today.</Text>
+        </Message>
     </Messages>
 </Job>

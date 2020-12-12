@@ -103,11 +103,7 @@ void FilmTease::DoScene(sGirl& girl) {
     ss << ("\n");
 
     //Enjoyed? If she performed well, she'd should have enjoyed it.
-    PerformanceToEnjoyment("She loved flirting with the camera today.",
-                           "She enjoyed this performance.",
-                           "She didn't really get what she was supposed to do, and did not enjoy making this scene."
-    );
-    result.bonus += result.enjoy;
+    PrintEnjoyFeedback();
 }
 
 void FilmTease::GainTraits(sGirl& girl, int performance) const {

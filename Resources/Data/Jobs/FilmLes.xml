@@ -27,5 +27,35 @@
         <Message Name="refuse">
             <Text>${name} refused to film a lesbian scene today.</Text>
         </Message>
+
+
+        <Message Name="work.perfect">
+            <Text>It was an excellent scene.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>It was mostly an excellent scene.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>Overall, it was an solid scene.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>Overall, it wasn't a bad scene.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>It wasn't a great scene.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>It was a poor scene.</Text>
+        </Message>
+
+        <Message Name="summary.like">
+            <Text>She was amazed how good it felt to have her pussy eaten, and gave as good in return.</Text>
+        </Message>
+        <Message Name="summary.neural">
+            <Text>She had a pleasant day playing with her girlfriend.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>She didn't like doing it, but but she made the actress come.</Text>
+        </Message>
     </Messages>
 </Job>

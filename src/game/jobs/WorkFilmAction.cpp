@@ -72,9 +72,7 @@ void FilmAction::DoScene(sGirl& girl) {
 
     ss << "\n";
 
-    PerformanceToEnjoyment("She loved performing on film today.",
-                           "She enjoyed this performance.",
-                           "She found this awkward and did not enjoy it.");
+    PrintEnjoyFeedback();
 }
 
 void FilmAction::GainTraits(sGirl& girl, int performance) const {

@@ -101,5 +101,16 @@
                 She made a hell of a fuss, but you knew just the thing to shut her up.
             </Text>
         </Message>
+
+        <Message Name="summary.like">
+            <Text>She won't say it, but you suspect she secretly gets off on the degradation.</Text>
+        </Message>
+        <Message Name="summary.neural">
+            <Text>She's pretty raw and her makeup is everywhere.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>From the way she's coughing and gagging and has bright red eyes,
+                you suspect this wasn't much fun for her.</Text>
+        </Message>
     </Messages>
 </Job>

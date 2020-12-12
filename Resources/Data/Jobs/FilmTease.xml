@@ -30,5 +30,15 @@
         <Message Name="refuse">
             <Text>${name} refused to make a teaser clip today.</Text>
         </Message>
+
+        <Message Name="summary.like">
+            <Text>She loved flirting with the camera today.</Text>
+        </Message>
+        <Message Name="summary.neural">
+            <Text>She enjoyed this performance.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>She didn't really get what she was supposed to do, and did not enjoy making this scene.</Text>
+        </Message>
     </Messages>
 </Job>

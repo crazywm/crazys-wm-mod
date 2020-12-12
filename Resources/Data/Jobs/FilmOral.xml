@@ -65,5 +65,16 @@
                 Overall it's a terrible scene.
             </Text>
         </Message>
+
+
+        <Message Name="summary.like">
+            <Text>She really enjoyed giving head today.</Text>
+        </Message>
+        <Message Name="summary.neural">
+            <Text>She enjoyed this performance.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>She's bad at this, and the whole experience was pretty humiliating.</Text>
+        </Message>
     </Messages>
 </Job>

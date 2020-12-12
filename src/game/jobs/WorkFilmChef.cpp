@@ -72,10 +72,7 @@ void FilmChef::DoScene(sGirl& girl) {
     ss << "\n";
 
     //Enjoyed? If she performed well, she'd should have enjoyed it.
-    PerformanceToEnjoyment("She loved cooking and flirting on camera.",
-                           "She enjoyed making this show.",
-                           "She was awful at this and did not enjoy making it.");
-    result.bonus += result.enjoy;
+    PrintEnjoyFeedback();
 }
 
 void FilmChef::GainTraits(sGirl& girl, int performance) const {

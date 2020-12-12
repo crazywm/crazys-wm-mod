@@ -20,5 +20,15 @@
         <Message Name="refuse">
             <Text>${name} refused to shoot a music video scene today.</Text>
         </Message>
+
+        <Message Name="summary.like">
+            <Text>She loved singing and performing today.</Text>
+        </Message>
+        <Message Name="summary.neural">
+            <Text>She enjoyed this performance.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>She isn't much of a performer and did not enjoy making this scene.</Text>
+        </Message>
     </Messages>
 </Job>

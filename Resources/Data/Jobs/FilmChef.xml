@@ -29,5 +29,15 @@
         <Message Name="refuse">
             <Text>${name} refused to make a kitchen show today.</Text>
         </Message>
+
+        <Message Name="summary.like">
+            <Text>She loved cooking and flirting on camera.</Text>
+        </Message>
+        <Message Name="summary.neural">
+            <Text>She enjoyed making this show.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>She was awful at this and did not enjoy making it.</Text>
+        </Message>
     </Messages>
 </Job>

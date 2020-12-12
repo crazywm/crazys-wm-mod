@@ -37,19 +37,8 @@ void FilmBdsm::DoScene(sGirl& girl) {
 
     add_text("post-work-event");
 
-    //Feedback enjoyment
-    if (result.enjoy > 10)
-    {
-        ss << "She won't say it, but you suspect she secretly gets off on the attention, sin and degradation.\n \n";
-    }
-    else if (result.enjoy > 0)
-    {
-        ss << "She's only a little traumatised.\n \n";
-    }
-    else
-    {
-        ss << "From the way she's crouched, rocking in a corner and silently weeping... you figure she didn't enjoy this.\n \n";
-    }
+    // Feedback enjoyment
+    PrintEnjoyFeedback();
 
     if (girl.lose_trait("Virgin"))
     {

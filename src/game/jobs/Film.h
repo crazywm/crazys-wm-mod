@@ -62,8 +62,8 @@ protected:
     virtual bool CheckRefuseWork(sGirl& girl);
 
     // some helpers for common code
-    void PerformanceToEnjoyment(const char* good_message, const char* neutral_message, const char* bad_message);
     void PrintPerfSceneEval();
+    void PrintEnjoyFeedback();
 
     // common data
     std::stringstream ss;
@@ -77,6 +77,8 @@ protected:
 private:
     void NiceMovieGirlUpdate(sGirl& girl) const;
     void EvilMovieGirlUpdate(sGirl& girl) const;
+
+    void InitWork() override;
 };
 
 

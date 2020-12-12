@@ -22,11 +22,7 @@
 #include "character/predicates.h"
 
 void FilmSex::DoScene(sGirl& girl) {
-    int roll = d100();
-    if (roll <= 10) { result.enjoy -= uniform(1, 4);        ss << "She didn't want sex today, but she did it anyway.\n \n"; }
-    else if (roll >= 90) { result.enjoy += uniform(1, 4);    ss << "She loved having a man in her pussy today.\n \n"; }
-    else /*            */{ result.enjoy += uniform(0, 2);    ss << "She had a pleasant day fucking her co-star.\n \n"; }
-    result.performance += result.enjoy * 2;
+    PrintEnjoyFeedback();
 
     if (girl.lose_trait("Virgin"))
     {
