@@ -5,6 +5,7 @@
 #include <utils/cKeyValueStore.h>
 #include "CLog.h"
 #include <boost/algorithm/string.hpp>
+#include <regex>
 
 
 TraitEffect TraitEffect::from_xml(const tinyxml2::XMLElement& el)
@@ -27,13 +28,18 @@ TraitEffect TraitEffect::from_xml(const tinyxml2::XMLElement& el)
     return effect;
 }
 
+namespace {
+    std::regex valid_trait{R"([[:alpha:]][\w -]*[[:alnum:]])", std::regex_constants::optimize};
+}
+
 
 std::unique_ptr<cTraitSpec> cTraitSpec::from_xml(const tinyxml2::XMLElement& el, cTraitProps* default_properties) {
     std::string name = GetStringAttribute(el, "Name");
     if(name.empty()) {
         throw std::runtime_error("Trait name cannot be empty!");
-    } else if( !std::isalnum(name.front()) ) {
-        throw std::runtime_error("Trait name must start with an alphanumeric character. Got " + name);
+    } else if( !std::regex_match(name, valid_trait) ) {
+
+        throw std::runtime_error("Invalid Trait name '" + name + '\'');
     }
 
     auto props = default_properties ? default_properties->clone() : std::make_unique<cTraitProps>();

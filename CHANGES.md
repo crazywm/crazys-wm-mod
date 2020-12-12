@@ -1,3 +1,12 @@
+# Version 07.00.alpha9
+##  Changes
+* Better error message if skill/stat/... lookup fails
+* Restrict trait names to 
+  - start with a letter
+  - consist only of letters, digits, spaces, underscores and hyphens
+  - end with a letter or digit
+* updated film jobs
+
 # Version 07.00.alpha8
 
 ## Changes
