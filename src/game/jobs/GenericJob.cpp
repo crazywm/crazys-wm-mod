@@ -19,6 +19,7 @@
 
 #include "GenericJob.h"
 #include <functional>
+#include <boost/throw_exception.hpp>
 #include <CLog.h>
 #include "xml/util.h"
 #include "xml/getattr.h"
@@ -396,18 +397,22 @@ bool cBasicJobTextInterface::LookupBoolean(const std::string& name) const {
 }
 
 int cBasicJobTextInterface::LookupNumber(const std::string& name) const {
-    auto split_point = name.find(":");
+    auto split_point = name.find(':');
     auto type = name.substr(0, split_point);
     if(type == "stat") {
         return m_Job->active_girl().get_stat(get_stat_id(name.substr(split_point+1)));
     } else if(type == "skill") {
         return m_Job->active_girl().get_skill(get_skill_id(name.substr(split_point+1)));
     } else if (type.size() == name.size()) {
-        return *m_MappedValues.at(name);
+        try {
+            return *m_MappedValues.at(name);
+        } catch (const std::out_of_range& oor) {
+            g_LogFile.error("job", "Unknown job variable '", name, '\'');
+            BOOST_THROW_EXCEPTION(std::runtime_error("Unknown job variable: " + name));
+        }
     } else {
-
         g_LogFile.error("job", "Unknown value category ", type, " of variable ", name);
-        throw std::invalid_argument("Unknown value category");
+        BOOST_THROW_EXCEPTION(std::runtime_error("Unknown value category: " + type));
     }
 }
 

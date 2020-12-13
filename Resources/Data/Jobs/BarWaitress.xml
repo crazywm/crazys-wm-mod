@@ -223,7 +223,7 @@
         </Message>
 
         <Message Name="post-work-text">
-            <Text Condition="Beauty>=85" Chance="20" Updates="Tips+=25">
+            <Text Condition="stat:Beauty>=85" Chance="20" Updates="Tips+=25">
                 Stunned by her beauty a customer left her a great tip.
             </Text>
             <Text Condition="Clumsy" Chance="15" Updates="Wages-=25">
@@ -291,7 +291,7 @@
                 and the customer whose dish splattered all over the tiles grins and says
                 he would be happy to wait for a replacement, and that it could happen to anyone.
             </Text>
-            <Text Condition="Herbalism>40" Chance="5" Updates="Tips+=25">
+            <Text Condition="skill:Herbalism>40" Chance="5" Updates="Tips+=25">
                 Added a little something extra to the patrons order to spice it up.
                 They enjoyed it greatly and she received some nice tips.
             </Text>
@@ -317,7 +317,7 @@
             </Group>
 
             <Group Chance="5">
-                <Text Condition="Medicine>=30" Updates="Tips+=15">
+                <Text Condition="skill:Medicine>=30" Updates="Tips+=15">
                     A customer started chocking on his food so ${name} performed the Heimlich maneuver on him.
                     Grateful the man left her a better tip.
                 </Text>

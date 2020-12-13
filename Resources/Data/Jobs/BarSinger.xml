@@ -159,10 +159,10 @@
         </Message>
 
         <Message Name="post-work-text">
-            <Text Condition="Beauty>=85" Chance="20" Updates="Tips+=15" >
+            <Text Condition="stat:Beauty>=85" Chance="20" Updates="Tips+=15" >
                 Stunned by her beauty a customer left her a great tip.
             </Text>
-            <Text Condition="Charisma>=80" Chance="20" Updates="Tips+=15" >
+            <Text Condition="stat:Charisma>=80" Chance="20" Updates="Tips+=15" >
                 Her charisma shone through as she chatted to customers between songs.
             </Text>
             <Text Condition="Clumsy" Chance="5" Updates="Wages-=15" >
@@ -211,7 +211,7 @@
                 </Text>
             </Group>
 
-            <Group Condition="Fame>75" Chance="25">
+            <Group Condition="stat:Fame>75" Chance="25">
                 <Text Condition="Idol" Updates="Wages+=15;Tips+=25">
                     Today a large group of ${name}'s followers came to listen to her sing,
                     leaving very generous tips behind.

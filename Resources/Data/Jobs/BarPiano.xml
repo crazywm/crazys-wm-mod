@@ -103,7 +103,7 @@
         </Message>
 
         <Message Name="post-work-text">
-            <Text Condition="Beauty>85" Chance="20">
+            <Text Condition="stat:Beauty>85" Chance="20">
                 Stunned by her beauty a customer left her a great tip.
             </Text>
             <Text Condition="Clumsy" Chance="5">

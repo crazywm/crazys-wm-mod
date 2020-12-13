@@ -219,20 +219,20 @@
         </Message>
 
         <Message Name="post-work-text">
-            <Text Condition="Beauty>=85" Chance="20" Updates="Tips+=25">
+            <Text Condition="stat:Beauty>=85" Chance="20" Updates="Tips+=25">
                 Stunned by her beauty a customer left her a great tip.
             </Text>
-            <Text Condition="Beauty>=99" Chance="5" Updates="Tips+=50">
+            <Text Condition="stat:Beauty>=99" Chance="5" Updates="Tips+=50">
                 ${name} looked absolutely stunning during her shift and was unable to hide it.
                 Instead of her ass or tits, the patrons couldn't take their eyes off her face,
                 and spent a lot more than usual on tipping her.
             </Text>
-            <Text Condition="Charisma>=85" Chance="20" Updates="Tips+=35">
+            <Text Condition="stat:Charisma>=85" Chance="20" Updates="Tips+=35">
                 ${name} surprised a couple of gentlemen discussing some complicated issue by her insightful comments
                 when she was taking her order.
                 They decided her words were worth a heavy tip.
             </Text>
-            <Text Condition="Intelligence<30" Chance="20" Updates="Wages-=25">
+            <Text Condition="stat:Intelligence<30" Chance="20" Updates="Wages-=25">
                 ${name} got confused when calculating the tabs,
                 and seems to have damn near given away most of the alcohol.
             </Text>
@@ -279,7 +279,7 @@
                 </Text>
             </Group>
 
-            <Group Condition="Morality>=80" Chance="20">
+            <Group Condition="stat:Morality>=80" Chance="20">
                 <Text Updates="Tips+=35">
                     During her shift ${name} spotted a depressed-looking lone man sinking his sorrows in alcohol.
                     She spent a short while cheering him up. Surprised with her kindness,
@@ -291,7 +291,7 @@
                 </Text>
             </Group>
 
-            <Group Condition="Morality<=-20" Chance="20">
+            <Group Condition="stat:Morality<=-20" Chance="20">
                 <Text Updates="Tips+=35">
                     During her shift, ${name} spotted a lone fellow passed out from alcohol alone at a table in a corner,
                     his wallet bulging out of his pocket. Without a second thought,
@@ -309,8 +309,8 @@
                 </Text>
             </Group>
 
-            <Group Condition="Dignity<=-20" Chance="20">
-                <Text Condition="Morality<=-20" Updates="Tips+=40">
+            <Group Condition="stat:Dignity<=-20" Chance="20">
+                <Text Condition="stat:Morality<=-20" Updates="Tips+=40">
                     A drunk patron suddenly walked up to ${name} and just started groping her body.
                     Instead of pushing him away immediately,
                     ${name} allowed him to take his time with her tits and butt while she helped herself to his
