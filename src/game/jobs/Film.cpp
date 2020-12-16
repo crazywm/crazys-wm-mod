@@ -134,11 +134,11 @@ bool GenericFilmJob::CheckCanWork(sGirl& girl) {
 bool GenericFilmJob::CheckRefuseWork(sGirl& girl) {
     if (girl.disobey_check(ACTION_WORKMOVIE, job()))
     {
-        ss << get_text("refuse");
+        add_text("refuse");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return true;
     } else {
-        ss << get_text("work") << "\n ";
+        add_text("work");
         return false;
     }
 }
@@ -195,10 +195,11 @@ SimpleFilmJob::SimpleFilmJob(JOBS id, const char* xml, FilmJobData data) :
 void SimpleFilmJob::DoScene(sGirl& girl) {
     PrintPerfSceneEval();
 
-    ss << "\n \n";
+    ss << "\n";
     result.bonus = result.enjoy;
     handle_events(girl);
 }
+
 struct FilmTitty : public SimpleFilmJob
 {
     FilmTitty() : SimpleFilmJob(JOB_FILMTITTY, "FilmTitty.xml", {
@@ -367,7 +368,7 @@ void GenericFilmJob::PrintEnjoyFeedback() {
     if (result.enjoy < -1) {
         add_text("summary.dislike");
     } else if (result.enjoy < 3) {
-        add_text("summary.neural");
+        add_text("summary.neutral");
     }else {
         add_text("summary.like");
     }

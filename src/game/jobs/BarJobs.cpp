@@ -34,6 +34,7 @@ bool cBarJob::DoWork(sGirl& girl, bool is_night) {
 
 cBarJob::cBarJob(JOBS job, const char* xml, sBarJobData data) : cBasicJob(job, xml), m_Data(data) {
     RegisterVariable("Wages", m_Wages);
+    RegisterVariable("Tips", m_Tips);
 }
 
 void cBarJob::HandleGains(sGirl& girl, int enjoy, int fame) {
