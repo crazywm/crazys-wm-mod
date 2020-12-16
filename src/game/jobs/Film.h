@@ -66,7 +66,6 @@ protected:
     void PrintEnjoyFeedback();
 
     // common data
-    std::stringstream ss;
     SceneResult result;
 
     FilmJobData m_FilmData;
