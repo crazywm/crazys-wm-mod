@@ -17,6 +17,8 @@ public:
     virtual ~ITraitsManager() = default;
 
     virtual void load_xml(const tinyxml2::XMLElement& root) = 0;
+    virtual void load_modifiers(const tinyxml2::XMLElement& root, std::string prefix) = 0;
+    virtual bool load_modifier(const tinyxml2::XMLElement& root, std::string name) = 0;
 
     virtual std::unique_ptr<ITraitsCollection> create_collection() const = 0;
     virtual const ITraitSpec* lookup(const char* name) const = 0;

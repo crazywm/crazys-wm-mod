@@ -26,7 +26,8 @@ public:
     void load_xml(const tinyxml2::XMLElement& doc) override;
 
     void load_traits(const tinyxml2::XMLElement& doc);
-    void load_mods(const tinyxml2::XMLElement& doc);
+    void load_modifiers(const tinyxml2::XMLElement& root, std::string prefix) override;
+    bool load_modifier(const tinyxml2::XMLElement& root, std::string name) override;
 
     std::unique_ptr<ITraitsCollection> create_collection() const override;
     const ITraitSpec* lookup(const char* name) const override;

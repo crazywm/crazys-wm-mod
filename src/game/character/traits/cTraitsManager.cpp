@@ -54,31 +54,40 @@ void cTraitsManager::load_xml(const tinyxml2::XMLElement& root) {
     if(std::strcmp(root.Value(), "Traits") == 0) {
         load_traits(root);
     } else if(std::strcmp(root.Value(), "TraitMods") == 0) {
-        load_mods(root);
+        load_modifiers(root, "");
     } else {
         throw std::runtime_error("Unknown root element: " + std::string(root.Value()));
     }
 }
 
-void cTraitsManager::load_mods(const tinyxml2::XMLElement& root) {
+void cTraitsManager::load_modifiers(const tinyxml2::XMLElement& root, std::string prefix) {
     for (auto& modifier_el : IterateChildElements(root, "Modifier")) {
-        const char* modifier = GetStringAttribute(modifier_el, "Name");
-        bool has_modifiers = false;
-        for (auto& el : IterateChildElements(modifier_el, "Trait")) {
-            const char* trait_name = GetStringAttribute(el, "Name");
-            int value = GetIntAttribute(el, "Value");
-            auto trait = m_Traits.find(trait_name);
-            if (trait != m_Traits.end()) {
-                trait->second->add_modifier(modifier, value);
-            } else {
-                m_LoaderCache[trait_name].modifiers.emplace_back(modifier, value);
-            }
-            has_modifiers = true;
+        std::string modifier = GetStringAttribute(modifier_el, "Name");
+        if(modifier.front() == '.') {
+            modifier = prefix + modifier;
         }
+
+        bool has_modifiers = load_modifier(modifier_el, std::move(modifier));
         if(!has_modifiers) {
             g_LogFile.warning("traits", "Did not find any <Trait> element for modifier ", modifier);
         }
     }
+}
+
+bool cTraitsManager::load_modifier(const tinyxml2::XMLElement& element, std::string name) {
+    bool has_modifiers = false;
+    for (auto& el : IterateChildElements(element, "Trait")) {
+        const char* trait_name = GetStringAttribute(el, "Name");
+        int value = GetIntAttribute(el, "Value");
+        auto trait = m_Traits.find(trait_name);
+        if (trait != m_Traits.end()) {
+            trait->second->add_modifier(name, value);
+        } else {
+            m_LoaderCache[trait_name].modifiers.emplace_back(name, value);
+        }
+        has_modifiers = true;
+    }
+    return has_modifiers;
 }
 
 void cTraitsManager::add_trait(std::unique_ptr<cTraitSpec> spec) {
