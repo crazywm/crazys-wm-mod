@@ -3,11 +3,39 @@
     <Description>
         She will perform in an oral sex scene.
     </Description>
-    <Performance Modifier="">
+    <Performance>
         <Factor Stat="Charisma" Weight="1"/>
         <Factor Stat="Beauty" Weight="1"/>
         <Factor Skill="OralSex" Weight="1"/>
+
+        <!-- Good -->
+        <Trait Name="Deep Throat" Value="60"/> <!-- better ability -->
+        <Trait Name="No Gag Reflex" Value="40"/>
+        <Trait Name="Good Kisser" Value="20"/>
+        <Trait Name="Nimble Tongue" Value="20"/>
+        <Trait Name="Pierced Tongue" Value="25"/>
+        <Trait Name="Dick-Sucking Lips" Value="35"/>
+        <Trait Name="Exotic" Value="5"/>
+        <Trait Name="Whore" Value="20"/>   <!-- Knows how to work it -->
+        <Trait Name="Porn Star" Value="30"/>   <!-- Knows how to work it on film -->
+        <Trait Name="No Teeth" Value="15"/>    <!-- no chance of 'accident' -->
+        <Trait Name="Missing Teeth" Value="15"/>
+        <Trait Name="Nymphomaniac" Value="25"/>    <!-- had lots of practice -->
+        <Trait Name="Slut" Value="15"/>    <!-- had practice -->
+        <Trait Name="Cum Addict" Value="30"/>  <!-- eager to please -->
+        <Trait Name="Mind Fucked" Value="25"/> <!-- eager to please -->
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Open Minded" Value="10"/>
+        <Trait Name="Natural Pheromones" Value="5"/>
+
+
+        <!-- Bad -->
+        <Trait Name="Strong Gag Reflex" Value="-40"/>
+        <Trait Name="Gag Reflex" Value="-20"/>
+        <Trait Name="Clumsy" Value="-25"/>
+        <Trait Name="Nervous" Value="-15"/>
     </Performance>
+
     <Gains XP="10" Skill="3">
         <Skill Name="Performance" Weight="2" />
         <Skill Name="OralSex" Weight="1" />
@@ -70,7 +98,7 @@
         <Message Name="summary.like">
             <Text>She really enjoyed giving head today.</Text>
         </Message>
-        <Message Name="summary.neural">
+        <Message Name="summary.neutral">
             <Text>She enjoyed this performance.</Text>
         </Message>
         <Message Name="summary.dislike">

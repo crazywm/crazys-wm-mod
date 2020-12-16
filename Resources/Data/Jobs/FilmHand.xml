@@ -3,7 +3,7 @@
     <Description>
         She will perform in a hand job scene.
     </Description>
-    <Performance Modifier="work.farmer">
+    <Performance>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Handjob" Weight="1"/>
     </Performance>
@@ -47,7 +47,7 @@
         <Message Name="summary.like">
             <Text>She loved having his cock slide between her hands.</Text>
         </Message>
-        <Message Name="summary.neural">
+        <Message Name="summary.neutral">
             <Text>She had a pleasant day using her hands to get her co-star off.</Text>
         </Message>
         <Message Name="summary.dislike">

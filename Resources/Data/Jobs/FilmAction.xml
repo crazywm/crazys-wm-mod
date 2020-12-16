@@ -4,8 +4,47 @@
         She will be the scantily clad heroine in fighting/magical action scenes.
     </Description>
 
-    <Performance Modifier="work.film.action">
+    <Performance>
         <!-- This is currently handled on the C++ side -->
+        <!-- Good -->
+        <Trait Name="Actress" Value="60"/> <!-- Can act -->
+        <Trait Name="Charismatic" Value="30"/> <!-- Can act -->
+        <Trait Name="Incorporeal" Value="60"/> <!-- Can't be hurt -->
+        <Trait Name="Construct" Value="50"/>
+        <Trait Name="Half-Construct" Value="35"/>
+        <Trait Name="Muscular" Value="35"/>
+        <Trait Name="Strong" Value="35"/>
+        <Trait Name="Tough" Value="30"/>
+        <Trait Name="Fleet of Foot" Value="30"/>
+        <Trait Name="Agile" Value="30"/>
+        <Trait Name="Princess" Value="30"/>    <!-- High-Status -->
+        <Trait Name="Queen" Value="30"/>
+        <Trait Name="Goddess" Value="30"/>
+        <Trait Name="Angel" Value="30"/>
+        <Trait Name="Heroine" Value="20"/> <!-- Exciting -->
+        <Trait Name="Brawler" Value="20"/>
+        <Trait Name="Dominatrix" Value="20"/>
+        <Trait Name="Tsundere" Value="15"/>
+        <Trait Name="Yandere" Value="15"/>
+        <Trait Name="Fearless" Value="15"/>
+        <Trait Name="Iron Will" Value="10"/>
+
+        <!-- Bad -->
+        <Trait Name="No Legs" Value="-80"/>    <!-- Difficult to make action scene -->
+        <Trait Name="One Leg" Value="-50"/>
+        <Trait Name="No Feet" Value="-80"/>
+        <Trait Name="One Foot" Value="-50"/>
+        <Trait Name="No Arms" Value="-50"/>
+        <Trait Name="One Arm" Value="-30"/>
+        <Trait Name="One Hand" Value="-20"/>
+        <Trait Name="No Hands" Value="-25"/>
+        <Trait Name="Blind" Value="-50"/>
+        <Trait Name="Fragile" Value="-30"/>    <!-- Tends to get hurt on set -->
+        <Trait Name="Delicate" Value="-30"/>
+        <Trait Name="Clumsy" Value="-25"/>
+        <Trait Name="Dojikko" Value="-15"/>
+        <Trait Name="Muggle" Value="-10"/>
+        <Trait Name="Meek" Value="-5"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
@@ -41,7 +80,7 @@
         <Message Name="summary.like">
             <Text>She loved performing on film today.</Text>
         </Message>
-        <Message Name="summary.neural">
+        <Message Name="summary.neutral">
             <Text>She enjoyed this performance.</Text>
         </Message>
         <Message Name="summary.dislike">

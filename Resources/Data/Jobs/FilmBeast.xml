@@ -3,11 +3,34 @@
     <Description>
         She will film a bestiality scene.
     </Description>
-    <Performance Modifier="work.film.beast">
+
+    <Performance>
         <Factor Stat="Beauty" Weight="2"/>
         <Factor Stat="Charisma" Weight="2"/>
         <Factor Skill="AnimalHandling" />
         <Factor Skill="Beastiality" />
+
+        <!-- Good -->
+        <Trait Name="Mind Fucked" Value="100"/>    <!-- Enjoyment and craziness -->
+        <Trait Name="Masochist" Value="35"/>
+        <Trait Name="Broken Will" Value="30"/>
+        <Trait Name="Dependant" Value="25"/>
+        <Trait Name="Twisted" Value="25"/>
+        <Trait Name="Goddess" Value="60"/> <!-- High-status degraded -->
+        <Trait Name="Angel" Value="50"/>
+        <Trait Name="Queen" Value="50"/>
+        <Trait Name="Princess" Value="40"/>
+        <Trait Name="Noble" Value="15"/>
+        <Trait Name="Idol" Value="25"/>
+        <Trait Name="Priestess" Value="25"/>
+        <Trait Name="Heroine" Value="15"/>
+        <Trait Name="Teacher" Value="15"/>
+        <Trait Name="Tsundere" Value="30"/>    <!-- beaten customers wanna see this! -->
+        <Trait Name="Yandere" Value="25"/>
+
+        <!-- Bad -->
+        <Trait Name="Iron Will" Value="40"/>   <!-- Try not to put on a show -->
+        <Trait Name="Fearless" Value="25"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
@@ -70,6 +93,17 @@
         </Message>
         <Message Name="work.worst">
             <Text>It was a poor scene.</Text>
+        </Message>
+
+
+        <Message Name="summary.like">
+            <Text>She loved performing on film today.</Text>
+        </Message>
+        <Message Name="summary.neutral">
+            <Text>She enjoyed this performance.</Text>
+        </Message>
+        <Message Name="summary.dislike">
+            <Text>She found this awkward and did not enjoy it.</Text>
         </Message>
     </Messages>
 </Job>

@@ -1,10 +1,10 @@
-<!ELEMENT Job (Description, Performance, Gains, Config, Messages?)>
+<!ELEMENT Job (Description, Performance, Modifiers?, Gains, Config, Messages?)>
 <!ATTLIST Job ShortName CDATA #REQUIRED>
 
 <!ELEMENT Description (#PCDATA)>
 <!ELEMENT Config ANY>
 
-<!ELEMENT Performance (Factor)*>
+<!ELEMENT Performance (Factor|Trait)*>
 <!ATTLIST Performance Modifier CDATA #IMPLIED>
 <!ELEMENT Factor EMPTY>
 <!ATTLIST Factor Skill CDATA #IMPLIED Stat CDATA #IMPLIED Weight CDATA #IMPLIED Min CDATA #IMPLIED Max CDATA #IMPLIED>
@@ -27,3 +27,9 @@
 <!ATTLIST Text Condition CDATA #IMPLIED Priority CDATA #IMPLIED Chance CDATA #IMPLIED Updates CDATA #IMPLIED>
 <!ELEMENT Group ((Text|Group)+)>
 <!ATTLIST Group Condition CDATA #IMPLIED Priority CDATA #IMPLIED Chance CDATA #IMPLIED Updates CDATA #IMPLIED>
+
+<!ELEMENT Modifiers (Modifier)*>
+<!ELEMENT Modifier (Trait)*>
+<!ATTLIST Modifier Name CDATA #REQUIRED>
+<!ELEMENT Trait (EMPTY)*>
+<!ATTLIST Trait Name CDATA #REQUIRED Value CDATA #REQUIRED>

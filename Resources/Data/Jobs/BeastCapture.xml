@@ -3,7 +3,7 @@
     <Description>
         She will go out into the wilds to capture beasts.
     </Description>
-    <Performance Modifier="work.beastcapture">
+    <Performance>
         <Factor Skill="AnimalHandling" Weight="2"/>
         <Factor Skill="Combat" Weight="2"/>
         <Factor Stat="Strength" Weight="2"/>
@@ -11,6 +11,12 @@
         <Factor Skill="Magic" Weight="1"/>
         <Factor Stat="Agility" Weight="1"/>
         <Factor Stat="Constitution" Weight="1"/>
+
+        <Trait Name="Hunter" Value="40"/>
+        <Trait Name="Adventurer" Value="10"/>
+        <Trait Name="Angel" Value="5"/>
+        <Trait Name="Agile" Value="5"/>
+        <Trait Name="Aggressive" Value="5"/>
     </Performance>
 
     <Gains XP="10" Skill="3">

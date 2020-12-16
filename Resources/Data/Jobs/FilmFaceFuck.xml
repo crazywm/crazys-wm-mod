@@ -4,10 +4,38 @@
         She will be used in gag and face-fuck scenes.
     </Description>
 
-    <Performance Modifier="work.film.throat">
+    <Performance>
         <Factor Stat="Beauty" Weight="1"/>
         <Factor Stat="Charisma" Weight="1"/>
         <Factor Skill="OralSex" Weight="1"/>
+
+        <!-- Good -->
+        <Trait Name="Deep Throat" Value="80"/> <!-- better ability -->
+        <Trait Name="Mind Fucked" Value="60"/> <!-- eager to please -->
+        <Trait Name="No Gag Reflex" Value="50"/>
+        <Trait Name="Masochist" Value="50"/>
+        <Trait Name="Cum Addict" Value="40"/>
+        <Trait Name="No Teeth" Value="25"/>    <!-- Lower resistance -->
+        <Trait Name="Missing Teeth" Value="25"/>
+        <Trait Name="Good Kisser" Value="20"/>
+        <Trait Name="Dick-Sucking Lips" Value="20"/>
+        <Trait Name="Demon Possessed" Value="20"/> <!-- Wild -->
+        <Trait Name="Nimble Tongue" Value="10"/>
+        <Trait Name="Pierced Tongue" Value="15"/>
+        <Trait Name="Exotic" Value="10"/>
+        <Trait Name="Whore" Value="20"/>   <!-- Knows how to work it -->
+        <Trait Name="Porn Star" Value="30"/>   <!-- Knows how to work it on film -->
+        <Trait Name="Nymphomaniac" Value="25"/>    <!-- had lots of practice -->
+        <Trait Name="Slut" Value="15"/>    <!-- had practice -->
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Open Minded" Value="10"/>
+        <Trait Name="Natural Pheromones" Value="5"/>
+
+        <!-- Bad -->
+        <Trait Name="Strong Gag Reflex" Value="-20"/>
+        <Trait Name="Gag Reflex" Value="-20"/>
+        <Trait Name="Clumsy" Value="-25"/>
+        <Trait Name="Nervous" Value="-15"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
@@ -105,7 +133,7 @@
         <Message Name="summary.like">
             <Text>She won't say it, but you suspect she secretly gets off on the degradation.</Text>
         </Message>
-        <Message Name="summary.neural">
+        <Message Name="summary.neutral">
             <Text>She's pretty raw and her makeup is everywhere.</Text>
         </Message>
         <Message Name="summary.dislike">

@@ -4,7 +4,7 @@
         She will make weapons and armor.
     </Description>
 
-    <Performance Modifier="work.blacksmith">
+    <Performance>
         <Factor Skill="Crafting" Weight="2"/>
         <Factor Stat="Strength" Weight="2"/>
         <Factor Skill="Combat" Weight="1"/>

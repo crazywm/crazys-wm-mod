@@ -5,7 +5,7 @@
     </Description>
 
     <!-- GetMilked has a non-trivial performance calculation -->
-    <Performance Modifier="work.getmilked">
+    <Performance>
     </Performance>
 
     <Gains XP="5" Skill="3">

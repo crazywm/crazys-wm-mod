@@ -4,7 +4,7 @@
         She will make clothes and other items from fabrics.
     </Description>
 
-    <Performance Modifier="work.tailor">
+    <Performance>
         <Factor Weight="3" Skill="Crafting"/>
         <Factor Skill="Service" Weight="1"/>
         <Factor Skill="Magic" Weight="1"/>

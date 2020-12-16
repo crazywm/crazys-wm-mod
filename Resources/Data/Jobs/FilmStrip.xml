@@ -4,7 +4,7 @@
         She will perform in a strip tease scene.
     </Description>
 
-    <Performance Modifier="work.farmer">
+    <Performance>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Strip" Weight="1"/>
     </Performance>
@@ -44,7 +44,7 @@
         <Message Name="summary.like">
             <Text>She loved stripping for the camera.</Text>
         </Message>
-        <Message Name="summary.neural">
+        <Message Name="summary.neutral">
             <Text>She had a pleasant day stripping today.</Text>
         </Message>
         <Message Name="summary.dislike">

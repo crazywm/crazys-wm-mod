@@ -4,11 +4,54 @@
         She will sing for the customers.
     </Description>
 
-    <Performance Modifier="work.singer">
+    <Performance>
         <Factor Skill="Performance" Weight="3"/>
         <Factor Stat="Confidence" Weight="1"/>
         <Factor Stat="Charisma" Weight="1"/>
         <Factor Stat="Constitution" Weight="1"/>
+
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="15"/>
+        <Trait Name="Sexy Air" Value="5"/>
+        <Trait Name="Cool Person" Value="5"/>   <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="5"/>   <!-- people like charming people -->
+        <Trait Name="Elegant" Value="5"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>  <!-- knows what people want to hear -->
+        <Trait Name="Fearless" Value="5"/>
+        <Trait Name="Singer" Value="50"/>
+        <Trait Name="Idol" Value="10"/>
+        <Trait Name="Natural Pheromones" Value="15"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Aggressive" Value="-10"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Broken Will" Value="-50"/>
+        <Trait Name="Clumsy" Value="-10"/><!-- might trip on stage -->
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="Shy" Value="-10"/>
+        <Trait Name="Construct" Value="-20"/> <!-- voice would sound funny -->
+        <Trait Name="Tone Deaf" Value="-150"/> <!-- should never get good at this job -->
+
+        <Trait Name="Deaf" Value="-20"/>   <!-- Voice would sound funny -->
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-20"/> <!-- would need smoke breaks and get out of breath quicker -->
+        <Trait Name="Mute" Value="-1000"/> <!-- cant sing -->
+        <Trait Name="Canine" Value="-20"/> <!-- Voice would sound funny -->
+        <Trait Name="Cat Girl" Value="-20"/>   <!-- Voice would sound funny -->
+        <Trait Name="Demon Possessed" Value="-20"/>    <!-- Voice would sound funny -->
+        <Trait Name="Reptilian" Value="-20"/>  <!-- Voice would sound funny -->
+        <Trait Name="Slitherer" Value="-20"/>  <!-- Voice would sound funny -->
+        <Trait Name="Spirit Possessed" Value="-20"/>   <!-- Voice would sound funny -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+        <Trait Name="Cum Addict" Value="-5"/>
     </Performance>
 
     <Gains XP="5" Skill="3">

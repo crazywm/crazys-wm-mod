@@ -4,12 +4,28 @@
         She will buy and sell things.
     </Description>
 
-    <Performance Modifier="work.farmmarketer">
+    <Performance>
         <Factor Stat="Charisma" Weight="3"/>
         <Factor Stat="Confidence" Weight="3"/>
         <Factor Stat="Intelligence" Weight="2"/>
         <Factor Stat="Fame" Weight="2"/>
         <Factor Skill="Farming" Weight="2"/>
+
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="15"/>
+        <Trait Name="Sexy Air" Value="5"/>
+        <Trait Name="Cool Person" Value="10"/>  <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="15"/>  <!-- people like charming people -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
     </Performance>
 
     <Gains XP="5" Skill="3">

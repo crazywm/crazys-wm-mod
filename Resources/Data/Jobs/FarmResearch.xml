@@ -4,7 +4,7 @@
         She will research how to improve various things.
     </Description>
 
-    <Performance Modifier="work.veterinarian">
+    <Performance>
     </Performance>
 
     <Gains XP="10" Skill="3">

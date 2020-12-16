@@ -4,12 +4,24 @@
         She will make various potions.
     </Description>
 
-    <Performance Modifier="work.makepotions">
+    <Performance>
         <Factor Skill="Brewing" Weight="3"/>
         <Factor Skill="Herbalism" Weight="3"/>
         <Factor Skill="Service" Weight="2"/>
         <Factor Skill="Magic" Weight="2"/>
         <Factor Skill="Cooking" Weight="2"/>
+
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Nerd" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
     </Performance>
 
     <Gains XP="5" Skill="3">

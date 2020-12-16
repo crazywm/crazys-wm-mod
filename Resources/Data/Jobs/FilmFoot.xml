@@ -4,7 +4,7 @@
         She will perform in a foot job scene.
     </Description>
 
-    <Performance Modifier="work.farmer">
+    <Performance>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Footjob" Weight="1"/>
     </Performance>
@@ -47,7 +47,7 @@
         <Message Name="summary.like">
             <Text>She loved having his cock slide between her feet.</Text>
         </Message>
-        <Message Name="summary.neural">
+        <Message Name="summary.neutral">
             <Text>She had a pleasant day using her feet to get her co-star off.</Text>
         </Message>
         <Message Name="summary.dislike">

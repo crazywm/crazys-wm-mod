@@ -3,7 +3,7 @@
     <Description>
         She will be filmed preparing food. And talking slowly. Sensuously. In sexy outfits. Because no reason.
     </Description>
-    <Performance Modifier="work.film.chef">
+    <Performance Modifier=".performance">
         <Factor Stat="Charisma" Weight="1"/>
         <Factor Stat="Beauty" Weight="1"/>
         <Factor Stat="Confidence" Weight="1"/>
@@ -22,6 +22,41 @@
         </GainTrait>
     </Gains>
 
+    <Modifiers>
+    <Modifier Name=".performance">
+        <!-- good traits -->
+        <Trait Name="Chef" Value="40"/>    <!-- Good at cooking -->
+        <Trait Name="Mixologist" Value="20"/>  <!-- Good with measures -->
+        <Trait Name="Charismatic" Value="25"/> <!-- Charisma on film -->
+        <Trait Name="Sexy Air" Value="25"/>
+        <Trait Name="Charming" Value="20"/>
+        <Trait Name="Cool Person" Value="10"/>
+        <Trait Name="Social Drinker" Value="5"/>   <!-- Drinks too -->
+        <Trait Name="Exhibitionist" Value="30"/>   <!-- Shows off body -->
+        <Trait Name="MILF" Value="15"/>    <!-- Attractive to some -->
+        <Trait Name="Cute" Value="10"/>
+        <Trait Name="Lolita" Value="10"/>
+        <Trait Name="Elegant" Value="10"/>
+        <Trait Name="Exotic" Value="5"/>
+        <Trait Name="Beauty Mark" Value="5"/>
+        <Trait Name="Fat" Value="10"/> <!-- Likes food -->
+        <Trait Name="Plump" Value="5"/>
+        <Trait Name="Wide Bottom" Value="5"/>
+        <Trait Name="Plump Tush" Value="5"/>
+
+
+        <!-- bad traits -->
+        <Trait Name="Nervous" Value="-30"/>    <!-- weakens performance -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Shy" Value="-20"/>
+        <Trait Name="One Arm" Value="-20"/>
+        <Trait Name="One Hand" Value="-10"/>
+        <Trait Name="No Arms" Value="-50"/>    <!-- hard to strip -->
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="Alcoholic" Value="-5"/>
+    </Modifier>
+    </Modifiers>
+
     <Messages>
         <Message Name="work">
             <Text>${name} worked filming sexy chef scenes to educate and entertain viewers.</Text>
@@ -33,7 +68,7 @@
         <Message Name="summary.like">
             <Text>She loved cooking and flirting on camera.</Text>
         </Message>
-        <Message Name="summary.neural">
+        <Message Name="summary.neutral">
             <Text>She enjoyed making this show.</Text>
         </Message>
         <Message Name="summary.dislike">

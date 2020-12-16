@@ -4,7 +4,7 @@
         She will make shoes and leather items.
     </Description>
 
-    <Performance Modifier="work.cobbler">
+    <Performance>
         <Factor Skill="Crafting" Weight="3"/>
         <Factor Skill="Service" Weight="1"/>
         <Factor Skill="Magic" Weight="1"/>

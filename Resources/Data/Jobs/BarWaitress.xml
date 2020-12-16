@@ -4,11 +4,61 @@
         She will bring drinks and food to customers at the tables.
     </Description>
 
-    <Performance Modifier="work.waitress">
+    <Performance>
         <Factor Skill="Service" Weight="3"/>
         <Factor Stat="Charisma" Weight="1"/>
         <Factor Stat="Intelligence" Weight="1"/>
         <Factor Stat="Agility" Weight="1"/>
+
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="15"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/> <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="20"/>    <!-- people like charming people -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Fleet of Foot" Value="5"/>    <!-- faster at taking orders and droping them off -->
+        <Trait Name="Waitress" Value="40"/>
+        <Trait Name="Natural Pheromones" Value="15"/>
+        <Trait Name="Agile" Value="5"/>
+        <Trait Name="Flexible" Value="5"/>
+        <Trait Name="Flat Ass" Value="10"/>    <!-- Ass wont get in the way -->
+        <Trait Name="Prehensile Tail" Value="10"/> <!-- for carrying that one extra drink! -->
+        <Trait Name="Social Drinker" Value="5"/>   <!-- customers like a girl that might have a drink with them -->
+        <Trait Name="Bisexual" Value="5"/> <!-- can flirt with everyone -->
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Abnormally Large Boobs" Value="-20"/> <!-- boobs are too big and get in the way -->
+        <Trait Name="Titanic Tits" Value="-25"/> <!-- boobs are too big and get in the way -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="One Eye" Value="-10"/>
+
+        <Trait Name="One Arm" Value="-30"/>
+        <Trait Name="One Foot" Value="-20"/>
+        <Trait Name="One Hand" Value="-15"/>
+        <Trait Name="One Leg" Value="-40"/>
+        <Trait Name="No Arms" Value="-100"/>
+        <Trait Name="No Feet" Value="-30"/>
+        <Trait Name="No Hands" Value="-15"/>
+        <Trait Name="No Legs" Value="-100"/>
+        <Trait Name="Blind" Value="-60"/>
+        <Trait Name="Deaf" Value="-40"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+        <Trait Name="Dominatrix"
+               Value="-5"/>  <!-- try and force the people to order what she wants them to not what they want -->
+
+        <Trait Name="Alcoholic" Value="-40"/> <!-- might drink the drinks instead of taking to people -->
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+        <Trait Name="Cum Addict" Value="-5"/>
     </Performance>
 
     <Gains XP="10" Skill="3">

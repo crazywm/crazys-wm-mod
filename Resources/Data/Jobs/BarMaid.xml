@@ -4,12 +4,57 @@
         She will staff the bar and serve drinks.
     </Description>
 
-    <Performance Modifier="work.barmaid">
+    <Performance>
         <Factor Skill="Service" Weight="3"/>
         <Factor Stat="Intelligence" Weight="3"/>
         <Factor Stat="Charisma" Weight="2"/>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Brewing" Weight="2"/>
+
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="15"/>
+        <Trait Name="Sexy Air" Value="5"/>
+        <Trait Name="Cool Person" Value="10"/>  <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="15"/>  <!-- people like charming people -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Mixologist" Value="40"/>
+        <Trait Name="Dick-Sucking Lips" Value="5"/>
+        <Trait Name="Long Legs" Value="5"/>
+        <Trait Name="Fleet of Foot" Value="10"/>   <!-- fast worker -->
+        <Trait Name="Agile" Value="5"/>    <!-- fast worker -->
+        <Trait Name="Natural Pheromones" Value="15"/>
+        <Trait Name="Optimist" Value="5"/> <!-- cheerful -->
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/>  <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/>  <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/>  <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/>  <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="Alcoholic" Value="-40"/>  <!-- bad idea let an alcoholic near booze -->
+        <Trait Name="Social Drinker" Value="-10"/>
+        <Trait Name="Bimbo" Value="-5"/>
+
+        <Trait Name="One Arm" Value="-30"/>
+        <Trait Name="One Foot" Value="-20"/>
+        <Trait Name="One Hand" Value="-15"/>
+        <Trait Name="One Leg" Value="-40"/>
+        <Trait Name="No Arms" Value="-100"/>
+        <Trait Name="No Feet" Value="-20"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-40"/>
+        <Trait Name="Blind" Value="-40"/>
+        <Trait Name="Deaf" Value="-20"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/><!-- would need smoke breaks -->
+
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+        <Trait Name="Cum Addict" Value="-5"/>
     </Performance>
 
     <Gains XP="10" Skill="3">

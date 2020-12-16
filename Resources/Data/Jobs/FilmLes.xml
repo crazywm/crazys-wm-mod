@@ -4,7 +4,7 @@
         She will do a lesbian scene.
     </Description>
 
-    <Performance Modifier="work.farmer">
+    <Performance>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Lesbian" Weight="1"/>
     </Performance>
@@ -51,7 +51,7 @@
         <Message Name="summary.like">
             <Text>She was amazed how good it felt to have her pussy eaten, and gave as good in return.</Text>
         </Message>
-        <Message Name="summary.neural">
+        <Message Name="summary.neutral">
             <Text>She had a pleasant day playing with her girlfriend.</Text>
         </Message>
         <Message Name="summary.dislike">

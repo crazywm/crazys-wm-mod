@@ -4,7 +4,7 @@
         She will make jewelery.
     </Description>
 
-    <Performance Modifier="work.jeweler">
+    <Performance>
         <Factor Skill="Crafting" Weight="4"/>
         <Factor Skill="Magic" Weight="1"/>
         <Factor Stat="Confidence" Weight="1"/>

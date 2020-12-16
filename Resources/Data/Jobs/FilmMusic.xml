@@ -3,16 +3,49 @@
     <Description>
         She will make a music video.
     </Description>
-    <Performance Modifier="work.film.music">
+    <Performance>
         <Factor Stat="Charisma" Weight="1"/>
         <Factor Stat="Beauty" Weight="1"/>
         <Factor Stat="Confidence" Weight="1"/>
         <Factor Skill="Performance" Weight="1"/>
+
+        <!-- good traits -->
+        <Trait Name="Singer" Value="50"/>  <!-- can Sing -->
+        <Trait Name="Angel" Value="40"/>   <!-- like a choir of angels -->
+        <Trait Name="Sexy Air" Value="25"/>    <!-- nice video -->
+        <Trait Name="Agile" Value="20"/>
+        <Trait Name="Cool Person" Value="20"/>
+        <Trait Name="Charismatic" Value="20"/>
+        <Trait Name="Charming" Value="10"/>
+        <Trait Name="Audacity" Value="10"/>
+        <Trait Name="Cute" Value="15"/>    <!-- Attractive to some -->
+        <Trait Name="Exotic" Value="15"/>
+        <Trait Name="Idol" Value="15"/>
+        <Trait Name="Lolita" Value="10"/>
+        <Trait Name="Elegant" Value="10"/>
+        <Trait Name="Great Figure" Value="10"/>
+        <Trait Name="Beauty Mark" Value="5"/>
+        <Trait Name="Porn Star" Value="10"/>   <!-- plays to camera well -->
+        <Trait Name="Exhibitionist" Value="10"/>
+        <Trait Name="Social Drinker" Value="5"/>   <!-- relaxed -->
+
+        <!-- bad traits -->
+        <Trait Name="Tone Deaf" Value="-60"/>  <!-- weakens performance -->
+        <Trait Name="Mind Fucked" Value="-40"/>    <!-- too messed up -->
+        <Trait Name="Nervous" Value="-25"/>    <!-- weakens performance -->
+        <Trait Name="Meek" Value="-25"/>
+        <Trait Name="Shy" Value="-20"/>
+        <Trait Name="Retarded" Value="-15"/>
+
+        <Trait Name="Alcoholic" Value="-5"/>
+        <Trait Name="Fairy Dust Addict" Value="-5"/>
+        <Trait Name="Shroud Addict" Value="-5"/>
+        <Trait Name="Viras Blood Addict" Value="-5"/>
     </Performance>
+
     <Gains XP="10" Skill="3">
         <Skill Name="Performance"/>
     </Gains>
-
     <Messages>
         <Message Name="work">
             <Text>${name} worked on a music video showcasing her singing and dancing talent.</Text>
@@ -24,7 +57,7 @@
         <Message Name="summary.like">
             <Text>She loved singing and performing today.</Text>
         </Message>
-        <Message Name="summary.neural">
+        <Message Name="summary.neutral">
             <Text>She enjoyed this performance.</Text>
         </Message>
         <Message Name="summary.dislike">

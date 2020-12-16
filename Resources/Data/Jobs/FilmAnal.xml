@@ -4,7 +4,7 @@
         She will film an anal scene.
     </Description>
 
-    <Performance Modifier="">
+    <Performance>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Anal" Weight="1"/>
     </Performance>
@@ -53,7 +53,7 @@
         <Message Name="summary.like">
             <Text>She loved having her ass pounded today.</Text>
         </Message>
-        <Message Name="summary.neural">
+        <Message Name="summary.neutral">
             <Text>She had a pleasant day letting her co-star slip his cock into her butt.</Text>
         </Message>
         <Message Name="summary.dislike">

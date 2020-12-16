@@ -3,7 +3,7 @@
     <Description>
         Will train in how to be a nurse.
     </Description>
-    <Performance Modifier="">
+    <Performance>
         <!-- unused: Intern job is a training job -->
     </Performance>
     <Gains XP="0" Skill="0">
