@@ -28,24 +28,23 @@
             <Text>${name} refused to film a lesbian scene today.</Text>
         </Message>
 
-
         <Message Name="work.perfect">
-            <Text>It was an excellent scene.</Text>
+            <Text>${name} doesn't care who she works with. She always give a Perfect scene.</Text>
         </Message>
         <Message Name="work.great">
-            <Text>It was mostly an excellent scene.</Text>
+            <Text>${name} pleased her lover in amazing ways.</Text>
         </Message>
         <Message Name="work.good">
-            <Text>Overall, it was an solid scene.</Text>
+            <Text>${name} gave serveral good orgasm's to her lover.</Text>
         </Message>
         <Message Name="work.ok">
-            <Text>Overall, it wasn't a bad scene.</Text>
+            <Text>${name} didn't care for her assigned actress, she did an ok job.</Text>
         </Message>
         <Message Name="work.bad">
-            <Text>It wasn't a great scene.</Text>
+            <Text>${name} visually wasn't interested in her lover at all. Terrible scene.</Text>
         </Message>
         <Message Name="work.worst">
-            <Text>It was a poor scene.</Text>
+            <Text>${name} was totaly horrible today.  She was scorned for hours by the entire crew.</Text>
         </Message>
 
         <Message Name="summary.like">

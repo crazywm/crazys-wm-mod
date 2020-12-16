@@ -6,9 +6,12 @@
   - consist only of letters, digits, spaces, underscores and hyphens
   - end with a letter or digit
 * updated film jobs
+* added new film texts provided by jrok
 
 ## Fixes
 * Fixed loading of trait modifiers from external files
+* Fixed text generation for film jobs
+* Fixed some out_of_range errors in job processing
 
 # Version 07.00.alpha8
 
