@@ -43,7 +43,7 @@ struct sWeightedStatSkill {
 class cJobPerformance {
 public:
     float eval(const sGirl& girl, bool estimate) const;
-    void load(const tinyxml2::XMLElement& source);
+    void load(const tinyxml2::XMLElement& source, const std::string& prefix);
 private:
     std::string                      TraitMod;   //!< Name of the trait modifier
     std::vector<sWeightedStatSkill>  Factors;    //!< List of stat/skill influences

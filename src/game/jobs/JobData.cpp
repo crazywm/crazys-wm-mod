@@ -24,6 +24,8 @@
 #include "utils/streaming_random_selection.hpp"
 #include "cRng.h"
 #include "cGirls.h"
+#include "Game.hpp"
+#include "character/traits/ITraitsManager.h"
 
 extern cRng g_Dice;
 
@@ -52,7 +54,7 @@ float cJobPerformance::eval(const sGirl& girl, bool estimate) const {
     return performance;
 }
 
-void cJobPerformance::load(const tinyxml2::XMLElement& source) {
+void cJobPerformance::load(const tinyxml2::XMLElement& source, const std::string& prefix) {
     for(const auto& stat_skill : IterateChildElements(source, "Factor")) {
         float weight = stat_skill.FloatAttribute("Weight", 1.0);
         float min = stat_skill.FloatAttribute("Min", 0);
@@ -66,6 +68,10 @@ void cJobPerformance::load(const tinyxml2::XMLElement& source) {
         }
     }
     TraitMod = GetDefaultedStringAttribute(source, "Modifier", "");
+    if(TraitMod.empty()) {
+        TraitMod = prefix + ".performance";
+        g_Game->traits().load_modifier(source, TraitMod);
+    }
 }
 
 void cJobGains::apply(sGirl& girl) const {

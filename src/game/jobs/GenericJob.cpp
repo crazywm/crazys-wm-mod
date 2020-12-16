@@ -27,6 +27,8 @@
 #include "cGirls.h"
 #include "cRng.h"
 #include "character/sGirl.h"
+#include "Game.hpp"
+#include "character/traits/ITraitsManager.h"
 
 class sBrothel;
 
@@ -330,18 +332,6 @@ void cBasicJob::load_from_xml_internal(const char* xml_file) {
         throw std::runtime_error("Job xml does not contain <Job> element!");
     }
 
-    // Performance Criteria
-    const auto* performance_el = job_data->FirstChildElement("Performance");
-    if(performance_el) {
-        m_PerformanceData.load(*performance_el);
-    }
-
-    // Gains
-    const auto* gains_el = job_data->FirstChildElement("Gains");
-    if(gains_el) {
-        m_Gains.load(*gains_el);
-    }
-
     // Info
     m_Info.ShortName = GetStringAttribute(*job_data, "ShortName");
     if(const auto* desc_el = job_data->FirstChildElement("Description")) {
@@ -352,6 +342,28 @@ void cBasicJob::load_from_xml_internal(const char* xml_file) {
         }
     } else {
         g_LogFile.error("jobs", "<Job> element does not contain <Description>. File: ", xml_file);
+    }
+
+    std::string prefix = "job." + std::string(xml_file);
+
+    // Performance Criteria
+    const auto* performance_el = job_data->FirstChildElement("Performance");
+    if(performance_el) {
+        m_PerformanceData.load(*performance_el, prefix);
+    }
+
+    // Gains
+    const auto* gains_el = job_data->FirstChildElement("Gains");
+    if(gains_el) {
+        m_Gains.load(*gains_el);
+    }
+
+    // Modifiers
+    const auto* modifiers_el = job_data->FirstChildElement("Modifiers");
+    if(modifiers_el) {
+        // TODO automatically prefix with the jobs name, and allow for loading "local" modifiers
+        // which start with .
+        g_Game->traits().load_modifiers(*modifiers_el, prefix);
     }
 
     // Texts
@@ -368,7 +380,12 @@ void cBasicJob::load_from_xml_internal(const char* xml_file) {
 
 const std::string& cBasicJob::get_text(const std::string& prompt) const {
     assert(m_TextRepo);
-    return m_TextRepo->get_text(prompt, m_Interface);
+    try {
+        return m_TextRepo->get_text(prompt, m_Interface);
+    } catch (const std::out_of_range& oor) {
+        g_LogFile.error("job", "Trying to get missing text '", prompt, '\'');
+        throw;
+    }
 }
 
 std::stringstream& cBasicJob::add_text(const std::string& prompt) {
