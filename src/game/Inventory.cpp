@@ -29,6 +29,11 @@
 
 
 int Inventory::add_item(const sInventoryItem *item, int count) {
+    // don't insert anything when adding zero elements.
+    if(count == 0) {
+        return count;
+    }
+
     auto found = m_ItemCounts.find(item);
     if(found != m_ItemCounts.end()) {
         found->second.count += count;

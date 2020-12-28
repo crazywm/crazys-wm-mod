@@ -639,7 +639,9 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
         int sold = m_OwnerList[from_data.selected_owner]->take_item(item, num);
         int remaining = m_OwnerList[to_data.selected_owner]->give_item(item, sold);
         // give back remaining items to original owner
-        remaining = m_OwnerList[from_data.selected_owner]->give_item(item, remaining);
+        if(remaining > 0) {
+            remaining = m_OwnerList[from_data.selected_owner]->give_item(item, remaining);
+        }
         selection = GetNextSelectedItemFromList(from_data.items_id, pos + 1, pos);
     }
 

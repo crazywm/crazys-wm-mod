@@ -1125,6 +1125,9 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     callback("Loading Gangs.");
     g_LogFile.log(ELogLevel::NOTIFY, "Loading Gangs");
     g_Game->gang_manager().LoadGangsXML(source.FirstChildElement("Gang_Manager"));
+
+    // TODO save the shop, and load items again here
+    m_Shop->RestockShop();
 }
 
 void Game::error(std::string message) {

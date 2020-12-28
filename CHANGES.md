@@ -1,3 +1,9 @@
+# Version 07.00.alpha10
+
+## Fixes
+* fixed empty item after item transfer
+* fixed shop contents after loading game
+
 # Version 07.00.alpha9
 ##  Changes
 * Better error message if skill/stat/... lookup fails
