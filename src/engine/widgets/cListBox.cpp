@@ -617,8 +617,10 @@ void cListBox::AddElement(int ID, std::vector<FormattedCellData> data, int color
 {
     m_Items.emplace_back();
     auto& newItem = m_Items.back();
-    if(data.size() != m_Columns.size())
+    if(data.size() != m_Columns.size()) {
+        m_Items.pop_back();     // remove the invalid element again
         throw std::logic_error("Column count mismatch when adding new element to list box");
+    }
     newItem.m_Data = std::move(data);
     newItem.m_PreRendered.reserve(newItem.m_Data.size());
     for(std::size_t i = 0; i < newItem.m_Data.size(); ++i) {
