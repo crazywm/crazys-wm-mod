@@ -36,12 +36,12 @@
 #include "character/cGirlPool.h"
 
 
-bool cBuildingManager::NameExists(string name) const
+bool cBuildingManager::NameExists(std::string name) const
 {
     return has_any_girl_with(HasName(std::move(name)));
 }
 
-bool cBuildingManager::SurnameExists(const string& name) const
+bool cBuildingManager::SurnameExists(const std::string& name) const
 {
     // convert to std::function before the loop
     girl_pred_fn check_name = [&](const sGirl& girl){

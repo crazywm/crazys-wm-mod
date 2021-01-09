@@ -5,14 +5,16 @@
     </Description>
 
     <Performance>
-        <Factor Stat="Beauty"/>
-        <Factor Stat="Charisma" />
-        <Factor Stat="Dignity" />
+        <Factor Stat="Constitution" Weight="1"/>
+        <Factor Stat="Beauty" Weight="2"/>
+        <Factor Skill="Performance" Weight="2"/>
+        <Factor Skill="BDSM" Weight="1"/>
+
+        <Mod>work.pornstar</Mod>
 
         <Trait Name="Mind Fucked" Value="50"/> <!-- this is her home -->
         <Trait Name="Masochist" Value="30"/>   <!-- she likes it -->
         <Trait Name="Twisted" Value="10"/>
-        <Trait Name="Open Minded" Value="10"/>
         <Trait Name="Broken Will" Value="20"/>
         <Trait Name="Pierced Clit" Value="40"/>    <!-- Piercings can be useful for this... -->
         <Trait Name="Pierced Nipples" Value="40"/>
@@ -48,20 +50,42 @@
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
+        <Skill Name="Performance" Weight="2" Max="66"/>
         <Skill Name="BDSM" Weight="1" />
-        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+        <Skill Name="Constitution" Weight="1" Max="75"/>
+
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Masochist" Threshold="65" Action="SEX">
             ${name} has turned into a Masochist from filming so many BDSM scenes.
         </GainTrait>
     </Gains>
+
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" CanBeForced="1">
+        <LustInfluence Amount="10" SkillMin="66" BaseValue="50" Skill="BDSM" />
+    </Config>
     
     <Messages>
         <Message Name="work">
             <Text>${name} was taken for filming in public bondage and torture scenes.</Text>
+            <Text Condition="Mind Fucked" Chance="50">
+                Mind fucked ${name} was pleased to be paraded naked in public and tortured and degraded. It is natural.
+            </Text>
+            <Text Condition="Masochist" Chance="50">
+                Masochist ${name} was pleased to be tortured and degraded. It is her place.
+            </Text>
         </Message>
+
+        <Message Name="crew.refuse.health">
+            <Text>The crew refused to film a Public Torture scene with ${name} because she is not healthy enough.
+                "We are NOT filming snuff."</Text>
+        </Message>
+
+        <Message Name="crew.refuse.pregnant">
+            <Text>The crew refused to film a Public Torture scene with ${name} due to her pregnancy.</Text>
+        </Message>
+
         <Message Name="disobey.free">
             <Text>${name} refused to have any part in this "monstrous" scene today and left.</Text>
         </Message>
@@ -82,14 +106,108 @@
             ahead of the scene.
         </Message>
 
-        <Message Name="summary.like">
-            <Text>She loved performing on film today.</Text>
+        <Message Name="scene.position">
+            A crowd gathered to watch as ${name}
+            <Text>was hogtied naked on the floor outside the studio.</Text>
+            <Text>was stripped and locked in the public stocks in the city square.</Text>
+            <Text>was stripped and strapped over a barrel in the market.</Text>
+            <Text>shackled and sent into the streets in only a maid hat, was quickly surrounded.</Text>
+            <Text>was dragged naked from the studio and tied to a tree.</Text>
+            <Text Condition="Pierced Clit|Pierced Nipples|Pierced Tongue|Pierced Navel|Pierced Nose">
+                was stripped naked and tied tightly in place through the rings in her piercings.
+            </Text>
+            <Text>
+                was stripped naked and had her arms taped together behind her back, exposing her breasts.
+            </Text>
+            <Text>was tied to a fence and had her clothes ripped off.</Text>
+            <Text>was suspended in the air by chains.</Text>
+            <Text>was rendered helpless and given over to the mob.</Text>
         </Message>
-        <Message Name="summary.neutral">
-            <Text>She enjoyed this performance.</Text>
+
+        <Message Name="scene.action">
+            The crowd jeered at her
+            <Text Condition="Strong Gag Reflex|Gag Reflex">
+                gags, retches and gasps as guys competed to shove their dicks down her throat.
+            </Text>
+            <Text>yelps as a gang of teenagers slapped her tits and spanked her ass with sticks.</Text>
+            <Text>cries as she was double-fisted by three angry elves.</Text>
+            <Text>gasps and squeals as a cackling old witch claiming to be her 'fairy godmother' mounted her with a thick double-dildo.</Text>
+            <Text>cries as a demented priest shoved 'Candles of Cleansing' in her 'unclean places', chanting prayers as he lit them.</Text>
+            <Text>screams for help as she was fucked by a pack of wild beasts.</Text>
+            <Group>struggles as a pair of
+                <Text Condition="stat:Beauty>80">ugly whores, jealous of her looks</Text>
+                <Text Condition="stat:Age<25">old whores, jealous of her youth</Text>
+                <Text Condition="stat:Intelligence>75">dumb whores, jealous of her brains</Text>
+                <Text>sadistic rival whores</Text>
+                spit-roasted her with some shockingly large strap-ons.
+            </Group>
+            <Group>cries as a large gang of
+                <Text Condition="Tsundere|Yandere">losers she's rejected over the years</Text>
+                <Text Condition="Queen|Princess">her former subjects</Text>
+                <Text Condition="Idol|stat:Fame>75">men from her fan-club</Text>
+                <Text Condition="Teacher">students from her class</Text>
+                <Text Condition="stat:Age<21">guys she went to school with</Text>
+                <Text>tramps, gypsies and homeless</Text>
+                took this chance to spank her, grope her and fill her cunt with cum.
+            </Group>
+            <Text>screams as the police captain stubbed out a cigar on her asshole, once he and his men were 'done with that'.</Text>
+            <Text>agonised screams as a passing battle-mage tested out flame spells on her naked form.</Text>
+            Your film crew rescued her once they had enough footage.
         </Message>
-        <Message Name="summary.dislike">
-            <Text>She found this awkward and did not enjoy it.</Text>
+
+        <Message Name="work.perfect">
+            <Text>It was an outstanding scene, and definitely boosted her fame and resliience, even if it did wear her out a lot.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>It was a great scene and should win her some fans. She looks wrecked now though.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>It was a good scene, but not the best.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>It was okay, but something about the scene didn't work.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>It wasn't a great public scene.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>Sadly, the scene really didn't work. Even the onlookers weren't looking.</Text>
+        </Message>
+
+        <Message Name="post-work-event">
+            <Text Condition="Mind Fucked" Chance="50">
+                Being completely mind fucked, ${name} actually gets off on this.
+            </Text>
+            <Text Condition="Masochist" Chance="50">
+                ${name} enjoys this. It's what she deserves.
+            </Text>
+            <Text Condition="Broken Will|Dependant" Chance="50">
+                ${name} accepts this. It is Master's will.
+            </Text>
+            <Text Condition="Iron Will|Fearless" Chance="50">
+                ${name} endures in stoic silence, determined not to let you see her suffer.
+            </Text>
+            <Text Condition="Nymphomaniac" Chance="50">
+                ${name} doesn't much like the pain, but enjoys getting this much sex and attention.
+            </Text>
+        </Message>
+
+        <Message Name="forced-filming">
+            <Text Condition="Performance>100">
+                Given ${name}'s rather 'unenthusiastic' performance, the scene turned out decent enough.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit<60">
+                ${name} is just laying there, totally unresponsive except for a few whimpers and cries.
+                Not a good scene.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit>=60">
+                Despite being tied up, ${name} managed to hurt someone in the crowd. Needless to say, the scene
+                turned out rather bad.
+            </Text>
+            <Text Condition="Performance<50">
+                While tying her up made it possible to film this scene, the result looks so bad that maybe you should
+                have just sent her to the dungeon instead.
+            </Text>
         </Message>
     </Messages>
 </Job>

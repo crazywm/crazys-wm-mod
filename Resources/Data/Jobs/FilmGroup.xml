@@ -5,14 +5,19 @@
     </Description>
 
     <Performance>
+        <Factor Stat="Beauty" Weight="2"/>
+        <Factor Stat="Charisma" Weight="1"/>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Group" Weight="1"/>
+        <Mod>work.pornstar</Mod>
     </Performance>
 
     <Gains XP="10" Skill="3">
         <Skill Name="Performance" Weight="2" />
-        <Skill Name="Group" Weight="1" />
-        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+        <Skill Name="Group" Weight="1" Max="50"/>
+        <Skill Name="Constitution" Weight="1" Max="40"/>
+
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
@@ -23,9 +28,117 @@
         </GainTrait>
     </Gains>
 
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" CanBeForced="1">
+        <LustInfluence Amount="25" SkillMin="33" BaseValue="15" Skill="Group" />
+    </Config>
+
     <Messages>
-        <Message Name="refuse">
-            <Text>${name} refused to do an orgy on film today.</Text>
+        <Message Name="work">
+            <Text>${name} starred in an orgy scene today.</Text>
+            <Text Condition="Nymphomaniac^Porn Star">
+                ${name} worked in a scene where she tried to set a new record by taking part in a $[25|35|69] men gangbang.
+            </Text>
+        </Message>
+
+        <Message Name="disobey.free">
+            <Text>${name} refused to do an Orgy on film today.</Text>
+        </Message>
+        <Message Name="disobey.slave.nice">
+            <Text>
+                ${name} refused to do an Orgy on film today. Nice guy that you are, you let her be.
+            </Text>
+        </Message>
+        <Message Name="disobey.slave.neutral">
+            <Text>
+                ${name} refused to perform in an Orgy scene today. "That's not how I wanted this to be," you say,
+                "but I've got bills to pay. Boys, tie her up!" Seeing her terrified expression, you call out to her co-stars:
+                "Be gentle with her, will ya!".
+            </Text>
+        </Message>
+        <Message Name="disobey.slave.evil">
+            <Text>
+                "No, I'm not doing this!", ${name} complains. Ignoring her pleading, your men roughly tie her up.
+                "It seems like a lesson in obedience is in order here", you say as you produce a pair of nipple clamps.
+            </Text>
+        </Message>
+
+        <Message Name="pre-work-event">
+            <Text Condition="Lolita" Chance="50">
+                With such a young looking girl on the cover, this movie is simply sure to sell out.
+            </Text>
+            <Text Condition="Cute" Chance="50">
+                Such a cute girl doing her best to handle the rough ponding her co-stars gave her will surely make a few hearts skip a beat.
+            </Text>
+            <Text Condition="Fragile|Delicate" Chance="50">
+                This will be somewhat rough for her. Some people find that hot though.
+            </Text>
+        </Message>
+
+        <Message Name="post-work-event">
+            <Text Condition="Bimbo^Performance<150" Chance="50">
+                Her performance couldn't be considered acting.
+                She just enjoyed a good dicking with a blissfully stupid smile on her face.
+            </Text>
+            <Text Condition="Natural Pheromones" Chance="50">
+                Her scent drove the actors mad with lust. They went at it harder and wilder than the director had ordered.
+            </Text>
+            <Text Condition="Fast Orgasms" Chance="50">
+                She came the second she got two dicks inside her.
+                That was the first of many orgasms.
+                She barely remembered her own name by the end of the scene.
+            </Text>
+            <Text Condition="Great Arse" Chance="50">
+                Her ass jiggling with each thrust was a sight to behold.
+                The camera mage made sure to capture its wiggly glory in slow motion.
+            </Text>
+            <Text Condition="Plump" Chance="50">
+                She sure offered a lot of meat to work with.
+                The wet and fleshy sound she made with each thrust is sure to drive the audience wild.
+            </Text>
+            <Text Condition="Cum Addict" Chance="50">
+                She insisted that her co-stars collect their semen in a cup for her to drink at the end of the scene.
+            </Text>
+            <Text Condition="Succubus" Chance="50">
+                After the camera stopped running, she grabbed two actors and had another round with them.
+            </Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            <Text>${name} filmed a perfect orgy scene.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>${name} filmed a great orgy scene.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>${name} did alright today, hopefully she will be better in the future.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>The good thing about filming an orgy scene: Even if the main girl is rather unskilled,
+                there is enough action going on for the end result to be decent. </Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>${name} performed in an orgy scene. The result looked awful.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>This has to be the worst orgy ever recorded on film.</Text>
+        </Message>
+
+        <Message Name="forced-filming">
+            <Text Condition="Performance>100">
+                Given ${name}'s rather 'unenthusiastic' performance, the scene turned out decent enough.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit<60">
+                ${name} is just laying there, totally unresponsive except for a few whimpers and cries.
+                Not a good scene.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit>=60">
+                Despite being tied up, ${name} managed to hurt one of the other actors. Needless to say, the scene
+                turned out rather bad.
+            </Text>
+            <Text Condition="Performance<50">
+                While tying her up made it possible to film this scene, the result looks so bad that maybe you should
+                have just sent her to the dungeon instead.
+            </Text>
         </Message>
     </Messages>
 </Job>

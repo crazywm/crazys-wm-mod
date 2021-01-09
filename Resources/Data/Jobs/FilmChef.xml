@@ -4,26 +4,14 @@
         She will be filmed preparing food. And talking slowly. Sensuously. In sexy outfits. Because no reason.
     </Description>
     <Performance Modifier=".performance">
-        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Charisma" Weight="2"/>
         <Factor Stat="Beauty" Weight="1"/>
         <Factor Stat="Confidence" Weight="1"/>
+        <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Cooking" Weight="1"/>
-    </Performance>
 
-    <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
-        <Skill Name="Cooking" Weight="1" />
+        <Mod>work.actress</Mod>
 
-        <GainTrait Trait="Charming" Threshold="80" Action="WORKMOVIE">
-            She has become quite Charming.
-        </GainTrait>
-        <GainTrait Trait="Actress" Threshold="80" Action="WORKMOVIE">
-            Working on camera has improved her acting skills.
-        </GainTrait>
-    </Gains>
-
-    <Modifiers>
-    <Modifier Name=".performance">
         <!-- good traits -->
         <Trait Name="Chef" Value="40"/>    <!-- Good at cooking -->
         <Trait Name="Mixologist" Value="20"/>  <!-- Good with measures -->
@@ -54,8 +42,29 @@
         <Trait Name="No Arms" Value="-50"/>    <!-- hard to strip -->
         <Trait Name="No Hands" Value="-50"/>
         <Trait Name="Alcoholic" Value="-5"/>
-    </Modifier>
-    </Modifiers>
+    </Performance>
+
+    <Gains XP="10" Skill="3">
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="Cooking" Weight="1" Max="50"/>
+        <Stat Name="Charisma" Weight="1" />
+
+        <GainTrait Trait="Charming" Threshold="80" Action="ACTRESS">
+            She has become quite Charming.
+        </GainTrait>
+        <GainTrait Trait="Actress" Threshold="80" Action="ACTRESS">
+            Working on camera has improved her acting skills.
+        </GainTrait>
+        <GainTrait Trait="Chef" Threshold="80" Action="COOKING" MinPerformance="220" Chance="30">
+            ${name} has become a competent Chef.
+        </GainTrait>
+        <GainTrait Trait="Sexy Air" Threshold="80" Action="WORKSTRIP" MinPerformance="140" Chance="25">
+            ${name} has been having to be sexy for so long she now reeks of sexiness.
+        </GainTrait>
+    </Gains>
+
+    <Config PrimaryAction="ACTRESS" SecondaryAction="COOKING">
+    </Config>
 
     <Messages>
         <Message Name="work">
@@ -65,14 +74,40 @@
             <Text>${name} refused to make a kitchen show today.</Text>
         </Message>
 
-        <Message Name="summary.like">
-            <Text>She loved cooking and flirting on camera.</Text>
+        <Message Name="work.perfect">
+            <Text>${name} created an outstanding show.
+                She's so competent and flirtatious that the show is a hit with everyone.</Text>
         </Message>
-        <Message Name="summary.neutral">
-            <Text>She enjoyed making this show.</Text>
+        <Message Name="work.great">
+            <Text>
+                ${name} created a great show. Women are impressed with her competence.
+                Men are impressed with her... competence. It doesn't hurt that she's hot and flirtatious.
+            </Text>
         </Message>
-        <Message Name="summary.dislike">
-            <Text>She was awful at this and did not enjoy making it.</Text>
+        <Message Name="work.good">
+            ${name} created a good show.
+            <Text Condition="skill:Cooking>=stat:Beauty">Her skills in the kitchen are enough to carry the show.</Text>
+            <Text Condition="skill:Cooking<=stat:Beauty">She's sexy enough that her fumbles in the kitchen go mostly unnoticed.</Text>
+        </Message>
+        <Message Name="work.ok">
+            ${name} created an okay cooking show.
+            <Text Condition="skill:Cooking>=stat:Beauty">She was skilled enough in the kitchen to mostly entertain.</Text>
+            <Text Condition="skill:Cooking<=stat:Beauty">She's cute, so it doesn't really matter that she can't cook.</Text>
+        </Message>
+        <Message Name="work.bad">
+            ${name} created a bad cooking show.
+            <Text Condition="skill:Cooking>=stat:Beauty">The little skill she had in the kitchen wasn't nearly enough to save it.</Text>
+            <Text Condition="skill:Cooking<=stat:Beauty">
+                Perhaps if she'd quit breaking all the utensils and had instead taken her clothes off it'd would've been worth watching.
+                Perhaps.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>
+                ${name} created a really bad cooking show.
+                She had no charisma and burned or broke basically everything she touched. It was almost funny.
+                Almost.
+            </Text>
         </Message>
     </Messages>
 </Job>

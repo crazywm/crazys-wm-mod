@@ -5,20 +5,29 @@
     </Description>
 
     <Performance>
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Charisma" Weight="2"/>
         <Factor Skill="Performance" Weight="2"/>
-        <Factor Skill="Service" Weight="1"/>
+        <Factor Skill="Lesbian" Weight="1"/>
+        <Mod>work.pornstar</Mod>
     </Performance>
 
     <Gains XP="10" Skill="3">
         <Skill Name="Performance" Weight="2" />
-        <Skill Name="Service" Weight="1" />
-        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+        <Skill Name="Lesbian" Weight="1" Max="50" />
+
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
             She has become quite the Faker.
         </GainTrait>
     </Gains>
+
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX">
+        <!-- Not sure which skill to use here -->
+        <LustInfluence Amount="25" SkillMin="20" BaseValue="5" Skill="Lesbian" />
+    </Config>
 
     <Messages>
         <Message Name="work">
@@ -47,16 +56,5 @@
             <Text>${name} made the worst scene EVER.  She didn't even get her pussy wet. She got punished by cleaning the toilet with her own panties.</Text>
         </Message>
 
-        <Message Name="summary.like">
-            <Text Condition="Futanari">She cummed hard while playing with her cock!</Text>
-            <Text>She had intense orgasms while playing with her pussy!</Text>
-        </Message>
-        <Message Name="summary.neutral">
-            <Text Condition="Futanari">She spent the session rubbing her dick until she came.</Text>
-            <Text>She spent the afternoon fingering herself.</Text>
-        </Message>
-        <Message Name="summary.dislike">
-            <Text>She didn't want to make the film, but the director persuaded her.</Text>
-        </Message>
     </Messages>
 </Job>

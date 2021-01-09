@@ -60,21 +60,18 @@ bool DoctorJob::DoWork(sGirl& girl, bool is_night) {
     // Doctor is a full time job now
     girl.m_DayJob = girl.m_NightJob = JOB_DOCTOR;
 
-
-    double jobperformance = girl.job_performance(JOB_DOCTOR, false);
-
     //enjoyed the work or not
     int roll = d100();
     if (roll <= 10)
     {
         enjoy -= uniform(1, 3);
-        jobperformance *= 0.9;
+        m_Performance *= 0.9;
         ss << "Some of the patients abused her during the shift.\n";
     }
     else if (roll >= 90)
     {
         enjoy += uniform(1, 3);
-        jobperformance *= 1.1;
+        m_Performance *= 1.1;
         ss << "She had a pleasant time working.\n";
     }
     else
@@ -84,7 +81,7 @@ bool DoctorJob::DoWork(sGirl& girl, bool is_night) {
     }
 
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-    patients += (int)(jobperformance / 10);        // `J` 1 patient per 10 point of performance
+    patients += (int)(m_Performance / 10);        // `J` 1 patient per 10 point of performance
 
     /* `J` this will be a place holder until a better payment system gets done
     *  this does not take into account any of your girls in surgery
@@ -105,7 +102,7 @@ bool DoctorJob::DoWork(sGirl& girl, bool is_night) {
 
     // Improve stats
     girl.upd_Enjoyment(actiontype, enjoy);
-    apply_gains(girl);
+    apply_gains(girl, m_Performance);
     return false;
 }
 
@@ -172,13 +169,10 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
     // this will be added to the clinic's code eventually - for now it is just used for her pay
     int patients = 0;            // `J` how many patients the Doctor can see in a shift
 
-
-    double jobperformance = girl.job_performance(JOB_NURSE, false);
-
     //Adding cust here for use in scripts...
     sCustomer Cust = cJobManager::GetMiscCustomer(*brothel);
 
-    if (jobperformance >= 245)
+    if (m_Performance >= 245)
     {
         ss << "She must be the perfect nurse, patients go on and on about her and always come to see her when she works.\n \n";
         wages += 155;
@@ -203,7 +197,7 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
             ss << "She spent her day supervising new nurses, showing them how to do the work properly and answering tons of questions.";
         }
     }
-    else if (jobperformance >= 185)
+    else if (m_Performance >= 185)
     {
         ss << "She's unbelievable at this and is always getting praised for her work by the patients.\n \n";
         wages += 95;
@@ -228,7 +222,7 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
             ss << "${name} is really committed to her job as a nurse. She's starting to feel enjoyment after every hard worked day.";
         }
     }
-    else if (jobperformance >= 135)
+    else if (m_Performance >= 135)
     {
         ss << "She's good at this job and gets praised by the patients often.\n \n";
         wages += 55;
@@ -253,7 +247,7 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
             ss << "It was a busy day for ${name}, but she manage to get thru it without any slipups.";
         }
     }
-    else if (jobperformance >= 85)
+    else if (m_Performance >= 85)
     {
         ss << "She made a few mistakes but overall she is okay at this.\n \n";
         wages += 15;
@@ -286,7 +280,7 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
             }
         }
     }
-    else if (jobperformance >= 65)
+    else if (m_Performance >= 65)
     {
         ss << "She was nervous and made a few mistakes. She isn't that good at this.\n \n";
         wages -= 5;
@@ -353,7 +347,7 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
 
     if (girl.has_active_trait("Pessimist") && chance(5))
     {
-        if (jobperformance < 125)
+        if (m_Performance < 125)
         {
             wages -= 10;
             ss << "Her pessimistic mood depressed the patients making them tip less.\n";
@@ -367,7 +361,7 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
 
     if (girl.has_active_trait("Optimist") && chance(20))
     {
-        if (jobperformance < 125)
+        if (m_Performance < 125)
         {
             wages -= 10;
             ss << "${name} was in a cheerful mood but the patients thought she needed to work more on her services.\n";
@@ -417,13 +411,13 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
     if (roll_a <= 5)
     {
         enjoy -= uniform(1, 3);
-        jobperformance *= 0.9;
+        m_Performance *= 0.9;
         ss << "Some of the patrons abused her during the shift.";
     }
     else if (roll_a <= 25)
     {
         enjoy += uniform(1, 3);
-        jobperformance *= 1.1;
+        m_Performance *= 1.1;
         ss << "She had a pleasant time working.";
     }
     else
@@ -471,13 +465,13 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
 
     if (girl.is_unpaid())
     {
-        jobperformance *= 0.9;
-        patients += (int)(jobperformance / 5);        // `J` 1 patient per 5 point of performance
+        m_Performance *= 0.9;
+        patients += (int)(m_Performance / 5);        // `J` 1 patient per 5 point of performance
         wages = 0;
     }
     else
     {
-        patients += (int)(jobperformance / 5);        // `J` 1 patient per 5 point of performance
+        patients += (int)(m_Performance / 5);        // `J` 1 patient per 5 point of performance
         wages += patients * 2;                // `J` pay her 2 for each patient you send to her
     }
 
@@ -505,12 +499,12 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
 
 
     // Improve stats
-    if (girl.fame() < 10 && jobperformance >= 70)        { fame += 1; }
-    if (girl.fame() < 20 && jobperformance >= 100)        { fame += 1; }
-    if (girl.fame() < 40 && jobperformance >= 145)        { fame += 1; }
-    if (girl.fame() < 50 && jobperformance >= 185)        { fame += 1; }
+    if (girl.fame() < 10 && m_Performance >= 70)        { fame += 1; }
+    if (girl.fame() < 20 && m_Performance >= 100)        { fame += 1; }
+    if (girl.fame() < 40 && m_Performance >= 145)        { fame += 1; }
+    if (girl.fame() < 50 && m_Performance >= 185)        { fame += 1; }
     girl.fame(fame);
-    apply_gains(girl);
+    apply_gains(girl, m_Performance);
     girl.upd_Enjoyment(actiontype, enjoy);
 
 #pragma endregion
@@ -575,30 +569,27 @@ bool MechanicJob::DoWork(sGirl& girl, bool is_night) {
 #pragma endregion
 #pragma region //    Job Performance            //
 
-    double jobperformance = girl.job_performance(JOB_MECHANIC, false);
-
-
-    if (jobperformance >= 245)
+    if (m_Performance >= 245)
     {
         wages += 155;
         ss << "She must be the perfect mechanic patients go on and on about her and always come to see her when she works.\n \n";
     }
-    else if (jobperformance >= 185)
+    else if (m_Performance >= 185)
     {
         wages += 95;
         ss << "She's unbelievable at this and is always getting praised by the patients for her work.\n \n";
     }
-    else if (jobperformance >= 135)
+    else if (m_Performance >= 135)
     {
         wages += 55;
         ss << "She's good at this job and gets praised by the patients often.\n \n";
     }
-    else if (jobperformance >= 85)
+    else if (m_Performance >= 85)
     {
         wages += 15;
         ss << "She made a few mistakes but overall she is okay at this.\n \n";
     }
-    else if (jobperformance >= 65)
+    else if (m_Performance >= 65)
     {
         wages -= 5;
         ss << "She was nervous and made a few mistakes. She isn't that good at this.\n \n";
@@ -633,7 +624,7 @@ bool MechanicJob::DoWork(sGirl& girl, bool is_night) {
     }
     if (girl.has_active_trait("Pessimist") && chance(5))
     {
-        if (jobperformance < 125)
+        if (m_Performance < 125)
         {
             wages -= 10;
             ss << " Her pessimistic mood depressed the patients making them tip less.\n";
@@ -646,7 +637,7 @@ bool MechanicJob::DoWork(sGirl& girl, bool is_night) {
     }
     if (girl.has_active_trait("Optimist") && chance(5))
     {
-        if (jobperformance < 125)
+        if (m_Performance < 125)
         {
             wages -= 10;
             ss << "${name} was in a cheerful mood but the patients thought she needed to work more on her services.\n";
@@ -692,14 +683,14 @@ bool MechanicJob::DoWork(sGirl& girl, bool is_night) {
     girl.m_Tips = std::max(0, tips);
     girl.m_Pay = std::max(0, wages);
 
-    if (girl.fame() < 10 && jobperformance >= 70)        { fame += 1; }
-    if (girl.fame() < 20 && jobperformance >= 100)        { fame += 1; }
-    if (girl.fame() < 40 && jobperformance >= 145)        { fame += 1; }
-    if (girl.fame() < 50 && jobperformance >= 185)        { fame += 1; }
+    if (girl.fame() < 10 && m_Performance >= 70)        { fame += 1; }
+    if (girl.fame() < 20 && m_Performance >= 100)        { fame += 1; }
+    if (girl.fame() < 40 && m_Performance >= 145)        { fame += 1; }
+    if (girl.fame() < 50 && m_Performance >= 185)        { fame += 1; }
 
     girl.fame(fame);
 
-    apply_gains(girl);
+    apply_gains(girl, m_Performance);
 
     girl.upd_Enjoyment(actiontype, enjoy);
 

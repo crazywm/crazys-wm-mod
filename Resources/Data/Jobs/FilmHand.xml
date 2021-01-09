@@ -4,17 +4,25 @@
         She will perform in a hand job scene.
     </Description>
     <Performance>
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Charisma" Weight="2"/>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Handjob" Weight="1"/>
+        <Mod>work.pornstar</Mod>
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
-        <Skill Name="Handjob" Weight="1" />
-        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+        <Skill Name="Performance" Weight="2" Max="75"/>
+        <Skill Name="Handjob" Weight="1" Max="50"/>
+
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
     </Gains>
+
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX">
+        <LustInfluence Amount="10" SkillMin="20" BaseValue="5" Skill="Handjob" />
+    </Config>
 
     <Messages>
         <Message Name="work">
@@ -42,16 +50,6 @@
         </Message>
         <Message Name="work.worst">
             <Text>${name} was the worst actress to Director ever saw. She might be better at behind the scenes jobs.</Text>
-        </Message>
-
-        <Message Name="summary.like">
-            <Text>She loved having his cock slide between her hands.</Text>
-        </Message>
-        <Message Name="summary.neutral">
-            <Text>She had a pleasant day using her hands to get her co-star off.</Text>
-        </Message>
-        <Message Name="summary.dislike">
-            <Text>She used her hand on his cock, but didn't like it.</Text>
         </Message>
     </Messages>
 </Job>

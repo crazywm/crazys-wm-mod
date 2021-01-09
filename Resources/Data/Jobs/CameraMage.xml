@@ -1,0 +1,64 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="CM">
+    <Description>
+        She will film the scenes. One CameraMage can film at most 3 scenes per week.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Stat="Spirit" Weight="1"/>
+        <Factor Stat="Agility" Weight="1"/>
+        <Factor Skill="Magic" Weight="1"/>
+        <Factor Skill="Service" Weight="1"/>
+    </Performance>
+
+    <Gains XP="5" Skill="3">
+        <Skill Name="Magic" Weight="2" Max="50" />
+        <Skill Name="Service" Weight="1" Max="50" />
+        <Stat Name="Agility" Weight="1" Max="66" />
+        <Stat Name="Confidence" Weight="1" />
+    </Gains>
+
+    <Messages>
+        <Message Name="no-crew">
+            <Text>There was no crew to film the scene, so ${name} took the day off.</Text>
+        </Message>
+        <Message Name="no-actress">
+            <Text>There were no actresses to film, so ${name} took the day off.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to work as a camera mage today.</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} was assigned to work as a Camera Mage.</Text>
+        </Message>
+        <Message Name="work.perfect">
+            <Text>
+                ${name} is a true magician behind the camera.
+                She manages to capture every moment perfectly. Future generations of camera mages will
+                study her work and use it as reference to aspire to.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>${name} is a great cinematomancer. Wide angles, close ups, fast movement, she has a spell for each
+            situation, and uses them to great artistic effect.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>${name} is a great camera mage. Her recording spells work well in most studio conditions, even
+            though she still has some difficulties with bad lighting and quick movements. </Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>${name} did decent camera work today. No artistic masterpiece, to be sure, but the image
+            is sharp and steady. </Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>${name}'s cinematomancy still needs some work. She can produce a stable picture, but
+                it often is out of focus and blurry.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>${name} is barely able to perform the recording spell. The resulting image is flickering,
+            shaky and blurry.</Text>
+        </Message>
+    </Messages>
+</Job>

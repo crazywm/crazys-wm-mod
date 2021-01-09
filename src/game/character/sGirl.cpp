@@ -431,7 +431,7 @@ bool sGirl::keep_tips() const {
 }
 
 bool sGirl::is_unpaid() const {
-    return is_slave() && g_Game->settings().get_bool(settings::USER_PAY_SLAVE);
+    return is_slave() && !g_Game->settings().get_bool(settings::USER_PAY_SLAVE);
 }
 
 // This load

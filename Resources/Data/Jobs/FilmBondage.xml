@@ -5,11 +5,14 @@
     </Description>
 
     <Performance>
+        <Factor Stat="Charisma" Weight="1"/>
         <Factor Stat="Beauty" Weight="2"/>
-        <Factor Stat="Charisma" Weight="1" />
-        <Factor Stat="Dignity" Weight="1"/>
+        <Factor Skill="Performance" Weight="2"/>
+        <Factor Skill="BDSM" Weight="1"/>
 
-        <Trait Name="Mind Fucked" Value="50"/> <!-- this is her home -->
+        <Mod>work.pornstar</Mod>
+
+        <Trait Name="Mind Fucked" Value="25"/> <!-- this is her home -->
         <Trait Name="Masochist" Value="30"/>   <!-- she likes it -->
         <Trait Name="Twisted" Value="10"/>
         <Trait Name="Open Minded" Value="10"/>
@@ -48,10 +51,11 @@
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
-        <Skill Name="BDSM" Weight="1" />
+        <Skill Name="Performance" Weight="4" Max="66"/>
+        <Skill Name="BDSM" Weight="2"/>
+        <Skill Name="Constitution" Weight="1" Max="50"/>
 
-        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
@@ -65,9 +69,19 @@
         </GainTrait>
     </Gains>
 
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" MinimumHealth="40" RefuseIfPregnant="1" CanBeForced="1">
+        <LustInfluence Amount="20" SkillMin="33" BaseValue="30" Skill="BDSM" />
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} was taken for bondage and torture scenes in your dungeon.</Text>
+            <Text Condition="Mind Fucked">
+                Mind fucked ${name} seemed at home in the dungeon, and started collecting together tools she should be punished with.
+            </Text>
+            <Text Condition="Masochist">
+                Masochist ${name} was pleased to in the dungeon. It is her place.
+            </Text>
         </Message>
 
         <Message Name="post-work-event">
@@ -141,14 +155,22 @@
             <Text>It was a poor scene.</Text>
         </Message>
 
-        <Message Name="summary.like">
-            <Text>She won't say it, but you suspect she secretly gets off on the attention, sin and degradation.</Text>
-        </Message>
-        <Message Name="summary.neutral">
-            <Text>She's only a little traumatised.</Text>
-        </Message>
-        <Message Name="summary.dislike">
-            <Text>From the way she's crouched, rocking in a corner and silently weeping... you figure she didn't enjoy this.</Text>
+        <Message Name="forced-filming">
+            <Text Condition="Performance>100">
+                Given ${name}'s rather 'unenthusiastic' performance, the scene turned out decent enough.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit<60">
+                ${name} is just laying there, totally unresponsive except for a few whimpers and cries.
+                Not a good scene.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit>=60">
+                Despite being tied up, ${name} managed to hurt the other actor. Needless to say, the scene
+                turned out rather bad.
+            </Text>
+            <Text Condition="Performance<50">
+                While tying her up made it possible to film this scene, the result looks so bad that maybe you should
+                have just sent her to the dungeon instead.
+            </Text>
         </Message>
     </Messages>
 </Job>

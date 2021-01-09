@@ -5,14 +5,17 @@
     </Description>
 
     <Performance>
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Beauty" Weight="2"/>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Anal" Weight="1"/>
+        <Mod>work.pornstar</Mod>
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
-        <Skill Name="Anal" Weight="1" />
-        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+        <Skill Name="Performance" Weight="2" Max="75"/>
+        <Skill Name="Anal" Weight="1" Max="50"/>
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
@@ -23,12 +26,13 @@
         </GainTrait>
     </Gains>
 
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" CanBeForced="1">
+        <LustInfluence Amount="20" SkillMin="33" BaseValue="20" Skill="Anal" />
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} worked as an actress filming anal scenes.</Text>
-        </Message>
-        <Message Name="refuse">
-            <Text>${name} refused to do anal on film today.</Text>
         </Message>
 
         <Message Name="work.perfect">
@@ -47,17 +51,48 @@
             <Text>${name} sucked in filming anal scene.</Text>
         </Message>
         <Message Name="work.worst">
-            <Text>${name} is horrible in doing anal.  She needs more anal dildos to practive with.</Text>
+            <Text>${name} is horrible in doing anal.  She needs more anal dildos to practice with.</Text>
         </Message>
 
-        <Message Name="summary.like">
-            <Text>She loved having her ass pounded today.</Text>
+        <Message Name="disobey.free">
+            <Text>${name} refused to perform in an Anal scene today.</Text>
         </Message>
-        <Message Name="summary.neutral">
-            <Text>She had a pleasant day letting her co-star slip his cock into her butt.</Text>
+        <Message Name="disobey.slave.nice">
+            <Text>
+                ${name} refused to perform in an Anal scene today. Nice guy that you are, you let her be.
+            </Text>
         </Message>
-        <Message Name="summary.dislike">
-            <Text>She didn't like having a cock up her ass today.</Text>
+        <Message Name="disobey.slave.neutral">
+            <Text>
+                ${name} refused to perform in an Anal scene today. "That's not how I wanted this to be," you say,
+                "but I've got bills to pay. Boys, tie her up!" Seeing her terrified expression, you call out to her co-star.
+                "Be gentle with her, will ya!".
+            </Text>
+        </Message>
+        <Message Name="disobey.slave.evil">
+            <Text>
+            "No, I'm not doing this!", ${name} complains. Ignoring her pleading, your men roughly tie her up. "It seems
+            like a lesson in obedience is in order here", you say as you hand a gigantic dildo to the
+            actor. Turning to her with an evil grin on you face, you add "No foreplay, no lube!"
+            </Text>
+        </Message>
+
+        <Message Name="forced-filming">
+            <Text Condition="Performance>100">
+                Given ${name}'s rather 'unenthusiastic' performance, the scene turned out decent enough.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit<60">
+                ${name} is just laying there, totally unresponsive except for a few whimpers and cries.
+                Not a good scene.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit>=60">
+                Despite being tied up, ${name} managed to hurt the other actor. Needless to say, the scene
+                turned out rather bad.
+            </Text>
+            <Text Condition="Performance<50">
+                While tying her up made it possible to film this scene, the result looks so bad that maybe you should
+                have just sent her to the dungeon instead.
+            </Text>
         </Message>
     </Messages>
 </Job>

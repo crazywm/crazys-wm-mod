@@ -56,14 +56,13 @@ bool cFarmJob::DoWork(sGirl& girl, bool is_night) {
     girl.m_Tips = 0;
     wages = m_Data.BaseWages;
 
-    double performance = girl.job_performance(job(), false);
-    return JobProcessing(girl, *girl.m_Building, is_night, performance);
+    return JobProcessing(girl, *girl.m_Building, is_night, m_Performance);
 }
 
 void cFarmJob::HandleGains(sGirl& girl, int enjoy) {
     // update enjoyment
     girl.upd_Enjoyment(m_Data.Action, enjoy);
-    apply_gains(girl);
+    apply_gains(girl, m_Performance);
 }
 
 IGenericJob::eCheckWorkResult cFarmJob::CheckWork(sGirl& girl, bool is_night) {

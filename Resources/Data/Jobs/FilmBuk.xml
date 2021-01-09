@@ -5,12 +5,15 @@
     </Description>
 
     <Performance>
-        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Beauty" Weight="2"/>
         <Factor Stat="Charisma" Weight="1"/>
+        <Factor Skill="Performance" Weight="2"/>
+
+        <Mod>work.pornstar</Mod>
 
         <!-- Good -->
-        <Trait Name="Mind Fucked" Value="100"/>    <!-- Enjoyment and craziness -->
-        <Trait Name="Masochist" Value="35"/>
+        <Trait Name="Mind Fucked" Value="35"/>    <!-- Enjoyment and craziness -->
+        <Trait Name="Masochist" Value="25"/>
         <Trait Name="Broken Will" Value="30"/>
         <Trait Name="Dependant" Value="25"/>
         <Trait Name="Twisted" Value="25"/>
@@ -33,8 +36,8 @@
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
-        <Skill Name="BDSM" Weight="1" />
+        <Skill Name="Performance" Weight="2" Max="75"/>
+        <Skill Name="BDSM" Weight="1" Max="40"/>
 
         <GainTrait Trait="Masochist" Threshold="65" Action="SEX">
             ${name} has turned into a Masochist from all the degradation.
@@ -44,9 +47,17 @@
         </GainTrait>
     </Gains>
 
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" CanBeForced="1">
+        <LustInfluence Amount="10" SkillMin="0" BaseValue="20" Skill="Group" />
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} was filmed being splattered with cum in bukkake scenes.</Text>
+            <Text Condition="Cum Addict">
+                Cum-craving ${name} couldn't wait to get sticky in this bukkake scene,
+                and was sucking guys off before the lighting was even set up.
+            </Text>
         </Message>
         <Message Name="disobey.free">
             <Text>${name} refused to have any part in this "disgusting" bukkake scene and left the set.</Text>
@@ -130,14 +141,18 @@
             <Text>It was a poor scene.</Text>
         </Message>
 
-        <Message Name="summary.like">
-            <Text>She loved performing on film today.</Text>
-        </Message>
-        <Message Name="summary.neutral">
-            <Text>She enjoyed this performance.</Text>
-        </Message>
-        <Message Name="summary.dislike">
-            <Text>She found this awkward and did not enjoy it.</Text>
+        <Message Name="forced-filming">
+            <Text Condition="Performance>100">
+                Given ${name}'s rather 'unenthusiastic' performance, the scene turned out decent enough.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit<60">
+                ${name} is just laying there, totally unresponsive except for a few whimpers and cries.
+                Not a good scene.
+            </Text>
+            <Text Condition="Performance<50">
+                While tying her up made it possible to film this scene, the result looks so bad that maybe you should
+                have just sent her to the dungeon instead.
+            </Text>
         </Message>
     </Messages>
 </Job>

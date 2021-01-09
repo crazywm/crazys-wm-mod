@@ -109,12 +109,15 @@ void TextGroup::add_entry(std::unique_ptr<ICondition> conds, std::unique_ptr<IAc
     add_entry(std::make_unique<TextGroup>(std::move(conds), std::move(actions), priority, chance, std::move(text)));
 }
 
+bool cTextRepository::has_text(const std::string& prompt) {
+    return m_Texts.count(prompt) > 0;
+}
 
 const std::string& cTextRepository::get_text(const std::string& prompt,
                                              const IInteractionInterface& lookup) {
     auto& texts = m_Texts.at(prompt);
     if(texts.empty()) {
-        throw std::runtime_error("No text available for prompt.");
+        throw std::runtime_error("No text available for prompt '" + prompt + "'.");
     }
 
     return texts.get_text(lookup);
@@ -245,15 +248,15 @@ std::unique_ptr<ITextRepository> ITextRepository::create() {
 
 namespace {
     struct MockLookup : public IInteractionInterface {
-        bool LookupBoolean(const std::string& name) const {
+        bool LookupBoolean(const std::string& name) const override {
             if(name=="A") { return A; }
             if(name=="B") { return B; }
         }
-        int LookupNumber(const std::string& name) const { }
+        int LookupNumber(const std::string& name) const override { }
 
         // actions
-        void TriggerEvent(const std::string& name) const { }
-        void SetVariable(const std::string& name, int value) const {}
+        void TriggerEvent(const std::string& name) const override { }
+        void SetVariable(const std::string& name, int value) const override {}
 
         bool A = false;
         bool B = false;

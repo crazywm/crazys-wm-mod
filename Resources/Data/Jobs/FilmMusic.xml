@@ -4,10 +4,13 @@
         She will make a music video.
     </Description>
     <Performance>
-        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Charisma" Weight="2"/>
         <Factor Stat="Beauty" Weight="1"/>
         <Factor Stat="Confidence" Weight="1"/>
-        <Factor Skill="Performance" Weight="1"/>
+        <Factor Skill="Performance" Weight="2"/>
+
+        <Mod>work.actress</Mod>
 
         <!-- good traits -->
         <Trait Name="Singer" Value="50"/>  <!-- can Sing -->
@@ -15,18 +18,13 @@
         <Trait Name="Sexy Air" Value="25"/>    <!-- nice video -->
         <Trait Name="Agile" Value="20"/>
         <Trait Name="Cool Person" Value="20"/>
-        <Trait Name="Charismatic" Value="20"/>
-        <Trait Name="Charming" Value="10"/>
         <Trait Name="Audacity" Value="10"/>
         <Trait Name="Cute" Value="15"/>    <!-- Attractive to some -->
         <Trait Name="Exotic" Value="15"/>
         <Trait Name="Idol" Value="15"/>
         <Trait Name="Lolita" Value="10"/>
         <Trait Name="Elegant" Value="10"/>
-        <Trait Name="Great Figure" Value="10"/>
         <Trait Name="Beauty Mark" Value="5"/>
-        <Trait Name="Porn Star" Value="10"/>   <!-- plays to camera well -->
-        <Trait Name="Exhibitionist" Value="10"/>
         <Trait Name="Social Drinker" Value="5"/>   <!-- relaxed -->
 
         <!-- bad traits -->
@@ -36,16 +34,30 @@
         <Trait Name="Meek" Value="-25"/>
         <Trait Name="Shy" Value="-20"/>
         <Trait Name="Retarded" Value="-15"/>
-
-        <Trait Name="Alcoholic" Value="-5"/>
-        <Trait Name="Fairy Dust Addict" Value="-5"/>
-        <Trait Name="Shroud Addict" Value="-5"/>
-        <Trait Name="Viras Blood Addict" Value="-5"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance"/>
+        <Skill Name="Performance" Weight="2"/>
+        <Stat Name="Charisma" Weight="1"/>
+        <Stat Name="Confidence" Weight="1" Max="50" />
+
+        <GainTrait Trait="Charming" Threshold="80" Action="ACTRESS" MinPerformance="100" Chance="25">
+            Singing and dancing on film has made her more Charming.
+        </GainTrait>
+        <GainTrait Trait="Sexy Air" Threshold="80" Action="WORKSTRIP" MinPerformance="140" Chance="25">
+            ${name} has been having to be sexy for so long she now reeks of sexiness.
+        </GainTrait>
+        <GainTrait Trait="Singer" Threshold="80" Action="ACTRESS" MinPerformance="200" Chance="30">
+            Her singing has become quite excellent.
+        </GainTrait>
+        <GainTrait Trait="Idol" Threshold="80" Action="ACTRESS" MinPerformance="245" Chance="30">
+            Her talented and charismatic performances have got a large number of fans Idolizing her.
+        </GainTrait>
     </Gains>
+
+    <Config PrimaryAction="ACTRESS" SecondaryAction="WORKMUSIC">
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} worked on a music video showcasing her singing and dancing talent.</Text>
@@ -54,14 +66,35 @@
             <Text>${name} refused to shoot a music video scene today.</Text>
         </Message>
 
-        <Message Name="summary.like">
-            <Text>She loved singing and performing today.</Text>
+        <Message Name="work.perfect">
+            ${name} created a legendary music video.
+            <Text Condition="skill:Performance>=stat:Beauty">Her singing and dancing was outstanding, and she herself was truly breathtaking.</Text>
+            <Text Condition="skill:Performance<=stat:Beauty">She was stunning and gave a fantastic performance.</Text>
         </Message>
-        <Message Name="summary.neutral">
-            <Text>She enjoyed this performance.</Text>
+        <Message Name="work.great">
+            ${name} created a superb music video.
+            <Text Condition="skill:Performance>=stat:Beauty">Her singing and dancing were top-notch and she looked amazing on camera.</Text>
+            <Text Condition="skill:Performance<=stat:Beauty">She was beautiful and she gave a very touching performance.</Text>
         </Message>
-        <Message Name="summary.dislike">
-            <Text>She isn't much of a performer and did not enjoy making this scene.</Text>
+        <Message Name="work.good">
+            ${name} created a very good music video.
+            <Text Condition="skill:Performance>=stat:Beauty">Her singing and dancing were excellent and she looked okay.</Text>
+            <Text Condition="skill:Performance<=stat:Beauty">She looked fantastic and gave a nice performance.</Text>
+        </Message>
+        <Message Name="work.ok">
+            ${name} created an okay music video.
+            <Text Condition="skill:Performance>=stat:Beauty">Her singing and dancing were decent.</Text>
+            <Text Condition="skill:Performance<=stat:Beauty">She looked pretty good.</Text>
+        </Message>
+        <Message Name="work.bad">
+            ${name} created a weak music video.
+            <Text Condition="skill:Performance>=stat:Beauty">Her singing and dancing were decent but she didn't look all that.</Text>
+            <Text Condition="skill:Performance<=stat:Beauty">She looked pretty good but the performance let her down.</Text>
+        </Message>
+        <Message Name="work.worst">
+            ${name} created a bad music video.
+            <Text Condition="skill:Performance>=stat:Charisma">Her singing and dancing weren't great and she had zero charisma on camera.</Text>
+            <Text Condition="skill:Performance<=stat:Charisma">She was just about likeable on camera, but her performance was painful.</Text>
         </Message>
     </Messages>
 </Job>

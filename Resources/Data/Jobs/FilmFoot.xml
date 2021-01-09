@@ -5,17 +5,25 @@
     </Description>
 
     <Performance>
+        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Stat="Beauty" Weight="1"/>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Footjob" Weight="1"/>
+        <Mod>work.pornstar</Mod>
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
-        <Skill Name="Footjob" Weight="1" />
-        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+        <Skill Name="Performance" Weight="2" Max="75"/>
+        <Skill Name="Footjob" Weight="1" Max="75"/>
+
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
     </Gains>
+
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX">
+        <LustInfluence Amount="10" SkillMin="20" BaseValue="5" Skill="Footjob" />
+    </Config>
 
     <Messages>
         <Message Name="work">
@@ -42,16 +50,6 @@
         </Message>
         <Message Name="work.worst">
             <Text>${name} was visually discusted using her feet. The Director yelled at her for hours.</Text>
-        </Message>
-
-        <Message Name="summary.like">
-            <Text>She loved having his cock slide between her feet.</Text>
-        </Message>
-        <Message Name="summary.neutral">
-            <Text>She had a pleasant day using her feet to get her co-star off.</Text>
-        </Message>
-        <Message Name="summary.dislike">
-            <Text>She used her feet on his cock, but didn't like it.</Text>
         </Message>
     </Messages>
 </Job>

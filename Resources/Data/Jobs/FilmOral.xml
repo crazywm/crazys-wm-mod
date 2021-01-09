@@ -4,9 +4,12 @@
         She will perform in an oral sex scene.
     </Description>
     <Performance>
-        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Charisma" Weight="2"/>
         <Factor Stat="Beauty" Weight="1"/>
         <Factor Skill="OralSex" Weight="1"/>
+        <Factor Skill="Performance" Weight="2"/>
+
+        <Mod>work.pornstar</Mod>
 
         <!-- Good -->
         <Trait Name="Deep Throat" Value="60"/> <!-- better ability -->
@@ -33,16 +36,20 @@
         <Trait Name="Strong Gag Reflex" Value="-40"/>
         <Trait Name="Gag Reflex" Value="-20"/>
         <Trait Name="Clumsy" Value="-25"/>
-        <Trait Name="Nervous" Value="-15"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
-        <Skill Name="OralSex" Weight="1" />
-        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+        <Skill Name="Performance" Weight="2" Max="75"/>
+        <Skill Name="OralSex" Weight="1" Max="50"/>
+
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
     </Gains>
+
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX">
+        <LustInfluence Amount="15" SkillMin="25" BaseValue="10" Skill="OralSex" />
+    </Config>
 
     <Messages>
         <Message Name="work">
@@ -92,17 +99,6 @@
                 Your goons saved the day by pinning her down wanking on her face one-by-one.
                 Overall it's a terrible scene.
             </Text>
-        </Message>
-
-
-        <Message Name="summary.like">
-            <Text>She really enjoyed giving head today.</Text>
-        </Message>
-        <Message Name="summary.neutral">
-            <Text>She enjoyed this performance.</Text>
-        </Message>
-        <Message Name="summary.dislike">
-            <Text>She's bad at this, and the whole experience was pretty humiliating.</Text>
         </Message>
     </Messages>
 </Job>

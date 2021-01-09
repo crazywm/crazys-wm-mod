@@ -26,20 +26,52 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <utility>
+
+namespace {
+    struct GetValueVisitor {
+        const IInteractionInterface* Lookup;
+
+        int operator()(int val) const {
+            return val;
+        }
+
+        int operator()(const std::string& val) const {
+            return Lookup->LookupNumber(val);
+        }
+
+        using result_type = int;
+    };
+
+    sCompareCondition::ValueRef val_from_string(const std::string& source) {
+        char* endptr = nullptr;
+        int num_candidate = std::strtol(source.c_str(), &endptr, 10);
+        if(endptr == source.c_str()) {
+            assert(num_candidate == 0);
+            return source;
+        } else {
+            return num_candidate;
+        }
+    }
+}
 
 bool sCompareCondition::check(const IInteractionInterface& lookup) const {
-    int value = lookup.LookupNumber(ValueRef);
+
+    GetValueVisitor visitor{&lookup};
+    int left = Left.apply_visitor(visitor);
+    int right = Right.apply_visitor(visitor);
+
     switch (Comparison) {
         case sCompareCondition::LESS:
-            return value < ReferenceNumber;
+            return left < right;
         case sCompareCondition::LEQ:
-            return value <= ReferenceNumber;
+            return left <= right;
         case sCompareCondition::EQUAL:
-            return value == ReferenceNumber;
+            return left == right;
         case sCompareCondition::GEQ:
-            return value >= ReferenceNumber;
+            return left >= right;
         case sCompareCondition::GREATER:
-            return value > ReferenceNumber;
+            return left > right;
     }
     assert(false);
 }
@@ -51,55 +83,55 @@ std::unique_ptr<sCompareCondition> sCompareCondition::from_string(const std::str
         throw std::runtime_error("invalid action: no comparison operator");
     }
 
-    auto value = std::string(begin(source), cmp);
-    boost::algorithm::trim(value);
-    if(value.empty()) {
+    auto lhs = std::string(begin(source), cmp);
+    boost::algorithm::trim(lhs);
+    if(lhs.empty()) {
         g_LogFile.error("text", "Trying to parse invalid condition '", source, "'");
         throw std::runtime_error("invalid action: lhs of comparison is empty");
     }
 
-    auto num_start = cmp + 1;
+    auto rhs_start = cmp + 1;
     sCompareCondition::ECompare compare;
     if(*cmp == '<') {
         if(*(cmp+1) == '=') {
             compare = sCompareCondition::LEQ;
-            ++num_start;
+            ++rhs_start;
         } else {
             compare = sCompareCondition::LESS;
         }
     } else if(*cmp == '>') {
         if(*(cmp+1) == '=') {
             compare = sCompareCondition::GEQ;
-            ++num_start;
+            ++rhs_start;
         } else {
             compare = sCompareCondition::GREATER;
-            ++num_start;
+            ++rhs_start;
         }
     } else if(*cmp == '=') {
         compare = sCompareCondition::EQUAL;
         // TODO should we require ==?
-        if(*num_start == '=') {
-            ++num_start;
+        if(*rhs_start == '=') {
+            ++rhs_start;
         }
     } else {
         assert(false);
     }
-    auto rhs = std::string(num_start, end(source));
+    auto rhs = std::string(rhs_start, end(source));
     boost::trim(rhs);
     if(rhs.empty()) {
         g_LogFile.error("text", "Trying to parse invalid condition '", source, "'");
         throw std::runtime_error("invalid action: rhs of condition is empty");
     }
 
-    return std::make_unique<sCompareCondition>(compare, std::move(value), boost::lexical_cast<int>(rhs));
+    return std::make_unique<sCompareCondition>(compare, val_from_string(lhs), val_from_string(rhs));
 }
 
-sCompareCondition::sCompareCondition(sCompareCondition::ECompare cmp, std::string val, int num) :
-    Comparison(cmp), ValueRef(std::move(val)), ReferenceNumber(num) {
+sCompareCondition::sCompareCondition(sCompareCondition::ECompare cmp, ValueRef left, ValueRef right) :
+    Comparison(cmp), Left(std::move(left)), Right(std::move(right)) {
 }
 
 std::unique_ptr<ICondition> sCompareCondition::clone() const {
-    return std::make_unique<sCompareCondition>(Comparison, ValueRef, ReferenceNumber);
+    return std::make_unique<sCompareCondition>(Comparison, Left, Right);
 }
 
 namespace {
@@ -179,7 +211,7 @@ namespace {
     }
 
     std::unique_ptr<ICondition> parse_and(const std::string& source) {
-        auto ands = split_and_parse(source, '&', parse_inner);
+        auto ands = split_and_parse(source, '^', parse_inner);
         if(ands.size() == 1) {
             return std::move(ands.front());
         }
@@ -215,7 +247,7 @@ TEST_CASE("parse and") {
     cond = parse_and("x < 12");
     CHECK(typeid(*cond) == typeid(sCompareCondition));
 
-    cond = parse_and("a & b");
+    cond = parse_and("a ^ b");
     CHECK(typeid(*cond) == typeid(sConjunctCondition));
 }
 
@@ -227,3 +259,5 @@ TEST_CASE("parse or") {
     cond = parse_or("a | x < 5");
     CHECK(typeid(*cond) == typeid(sDisjunctCondition));
 }
+
+// TODO check evaluation of conditions!

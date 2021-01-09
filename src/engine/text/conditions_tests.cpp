@@ -25,53 +25,52 @@
 TEST_CASE("parse comparison") {
     SUBCASE("parsing comparison condition: >=") {
         auto condition = sCompareCondition::from_string("exp >=50");
-                CHECK(condition->Comparison == sCompareCondition::GEQ);
-                CHECK(condition->ValueRef == "exp");
-                CHECK(condition->ReferenceNumber == 50);
+        CHECK(condition->Comparison == sCompareCondition::GEQ);
+        CHECK(boost::get<std::string>(condition->Left) == "exp");
+        CHECK(boost::get<int>(condition->Right) == 50);
     }
 
     SUBCASE("parsing comparison condition: >") {
         auto condition = sCompareCondition::from_string("\texp > -23");
-                CHECK(condition->Comparison == sCompareCondition::GREATER);
-                CHECK(condition->ValueRef == "exp");
-                CHECK(condition->ReferenceNumber == -23);
+        CHECK(condition->Comparison == sCompareCondition::GREATER);
+        CHECK(boost::get<std::string>(condition->Left) == "exp");
+        CHECK(boost::get<int>(condition->Right) == -23);
     }
 
     SUBCASE("parsing comparison condition: ==") {
         std::unique_ptr<sCompareCondition> condition;
-                SUBCASE("=") {
+        SUBCASE("=") {
             condition = sCompareCondition::from_string("exp = 13");
         }
-                SUBCASE("==") {
+        SUBCASE("==") {
             condition = sCompareCondition::from_string("exp == 13");
         }
-                CHECK(condition->Comparison == sCompareCondition::EQUAL);
-                CHECK(condition->ValueRef == "exp");
-                CHECK(condition->ReferenceNumber == 13);
+        CHECK(condition->Comparison == sCompareCondition::EQUAL);
+        CHECK(boost::get<std::string>(condition->Left) == "exp");
+        CHECK(boost::get<int>(condition->Right) == 13);
     }
 
     SUBCASE("parsing comparison condition: <") {
         auto condition = sCompareCondition::from_string(" exp < +12 ");
-                CHECK(condition->Comparison == sCompareCondition::LESS);
-                CHECK(condition->ValueRef == "exp");
-                CHECK(condition->ReferenceNumber == 12);
+        CHECK(condition->Comparison == sCompareCondition::LESS);
+        CHECK(boost::get<std::string>(condition->Left) == "exp");
+        CHECK(boost::get<int>(condition->Right) == 12);
     }
 
     SUBCASE("parsing comparison condition: <=") {
-        auto condition = sCompareCondition::from_string(" exp <= 14254");
-                CHECK(condition->Comparison == sCompareCondition::LEQ);
-                CHECK(condition->ValueRef == "exp");
-                CHECK(condition->ReferenceNumber == 14254);
+        auto condition = sCompareCondition::from_string(" exp <= var");
+        CHECK(condition->Comparison == sCompareCondition::LEQ);
+        CHECK(boost::get<std::string>(condition->Left) == "exp");
+        CHECK(boost::get<std::string>(condition->Right) == "var");
     }
 
     SUBCASE("compare condition invalid") {
-                CHECK_THROWS(sCompareCondition::from_string("exp>"));
-                CHECK_THROWS(sCompareCondition::from_string("<54"));
-                CHECK_THROWS(sCompareCondition::from_string("12<exp"));
-                CHECK_THROWS(sCompareCondition::from_string("exp<2exp"));
-                CHECK_THROWS(sCompareCondition::from_string("exp<1.56"));
+        CHECK_THROWS(sCompareCondition::from_string("exp>"));
+        CHECK_THROWS(sCompareCondition::from_string("<54"));
+        CHECK_THROWS(sCompareCondition::from_string("exp<2exp"));
+        CHECK_THROWS(sCompareCondition::from_string("exp<1.56"));
 
-                CHECK_THROWS(sCompareCondition::from_string("exp <== 5"));
+        CHECK_THROWS(sCompareCondition::from_string("exp <== 5"));
     }
 }
 
@@ -101,7 +100,7 @@ TEST_CASE("evaluate conditions") {
 
     SUBCASE("true comparisons") {
         for(auto parse : {"TEN < 15", "TEN <= 10", "TEN = 10", "TEN >= 10", "TEN > 5",
-                          "TRUE", "TEN < 5 | TRUE", " TRUE & TEN = 10", "TRUE & TEN = 10 | FALSE"}) {
+                          "TRUE", "TEN < 5 | TRUE", " TRUE ^ TEN = 10", "TRUE ^ TEN = 10 | FALSE"}) {
             CAPTURE(parse);
             auto cc = parse_conditions(parse);
             CHECK(cc->check(mock));
@@ -109,8 +108,8 @@ TEST_CASE("evaluate conditions") {
     }
 
     SUBCASE("false comparisons") {
-        for(auto parse : {"TEN > 15", "TEN = 8", "TEN < 5", "FALSE", "TEN < 15 & FALSE", "FALSE | TEN > 15",
-                          "FALSE & TRUE | TRUE & FALSE"}) {
+        for(auto parse : {"TEN > 15", "TEN = 8", "TEN < 5", "FALSE", "TEN < 15 ^ FALSE", "FALSE | TEN > 15",
+                          "FALSE ^ TRUE | TRUE ^ FALSE"}) {
             CAPTURE(parse);
             auto cc = parse_conditions(parse);
             CHECK_FALSE(cc->check(mock));

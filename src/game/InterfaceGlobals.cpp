@@ -44,6 +44,7 @@
 #include "screens/cScreenTurnSummary.h"
 #include "screens/cScreenTransfer.h"
 #include "screens/cScreenGameConfig.h"
+#include "screens/cScreenMovieMaker.h"
 #include <tinyxml2.h>
 #include "CLog.h"
 #include "xml/util.h"
@@ -139,6 +140,7 @@ void LoadInterface()
     load_window<cScreenBank>("Bank");
     load_window<cScreenHouseDetails>("House");
     load_window<cScreenPrison>("Prison");
+    load_window<cScreenMovieMaker>("Movie Maker");
     load_window<cScreenGameConfig>("GameSetup", false, false);
     load_window<cScreenGameConfig>("UserSettings", false, true);
 

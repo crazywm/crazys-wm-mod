@@ -185,7 +185,7 @@ enum JOBFILTER {
 
   // `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> Constants.h > JOBFILTER
   JOBFILTER_STUDIOCREW,
-  JOBFILTER_STUDIONONSEX,
+  JOBFILTER_STUDIOTEASE,
   JOBFILTER_STUDIOSOFTCORE,        
   JOBFILTER_STUDIOPORN,            
   JOBFILTER_STUDIOHARDCORE,            
@@ -274,28 +274,28 @@ enum JOBS {
     //JOB_FILMHORROR,            // For Horror scenes
     //JOB_FILMIDOL,            //For cool, sexy & cute girls
     JOB_FILMMUSIC,            // For cute music videos
+    JOB_FILMTEASE,            // Fex sensual and cute
 
     // Studio - Softcore Porn
     JOB_FILMMAST,            // films this type of scene CRAZY
     JOB_FILMSTRIP,            // films this type of scene CRAZY
-    JOB_FILMTEASE,            //Fex sensual and cute
+    JOB_FILMFOOTJOB,        // films this type of scene CRAZY
+    JOB_FILMHANDJOB,        // films this type of scene CRAZY
+    JOB_FILMTITTY,            // films this type of scene CRAZY
 
     // Studio - Porn
     JOB_FILMANAL,            // films this sort of scene in the movie
-    JOB_FILMFOOTJOB,        // films this type of scene CRAZY
     //JOB_FILMFUTA,            // films scenes with/as futa
-    JOB_FILMHANDJOB,        // films this type of scene CRAZY
     JOB_FILMLESBIAN,        // films this sort of scene in the movie. thinking about changing to Lesbian
     JOB_FILMORAL,            // films this type of scene CRAZY
     JOB_FILMSEX,            // films this sort of scene in the movie
-    JOB_FILMTITTY,            // films this type of scene CRAZY
+    JOB_FILMGROUP,            // films this sort of scene in the movie
 
     // Studio - Hardcore porn
     JOB_FILMBEAST,            // films this sort of scene in the movie (uses beast resource)
     JOB_FILMBONDAGE,        // films this sort of scene in the movie
     JOB_FILMBUKKAKE,        // 
-    JOB_FILMFACEFUCK,        // 
-    JOB_FILMGROUP,            // films this sort of scene in the movie
+    JOB_FILMFACEFUCK,        //
     JOB_FILMPUBLICBDSM,        // 
     //JOB_FILMDOM,            //
 
@@ -625,7 +625,9 @@ enum Action_Types{
     ACTION_WORKTORTURER,
     ACTION_WORKCARING,
     ACTION_WORKDOCTOR,
-    ACTION_WORKMOVIE,
+    ACTION_ACTRESS,
+    ACTION_PORNSTAR,
+    ACTION_MOVIECREW,
     ACTION_WORKCUSTSERV,
     ACTION_WORKCENTRE,
     ACTION_WORKCLUB,

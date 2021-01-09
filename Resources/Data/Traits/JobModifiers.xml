@@ -258,9 +258,6 @@
         <Trait Name="Viras Blood Addict" Value="-25"/>
     </Modifier>
 
-    <Modifier Name="work.cameramage">
-    </Modifier>
-
     <Modifier Name="work.cityguard">
         <!-- Good traits -->
         <Trait Name="Incorporeal" Value="100"/>    <!-- I'm fucking Superman! -->
@@ -481,9 +478,6 @@
     </Modifier>
 
     <Modifier Name="work.counselor">
-    </Modifier>
-
-    <Modifier Name="work.crystalpurifier">
     </Modifier>
 
     <Modifier Name="work.customerservice">
@@ -1034,7 +1028,92 @@
         <Trait Name="Battery Operated" Value="-20"/>   <!-- "What is this 'pain' you feel?" -->
         <Trait Name="Construct" Value="-20"/>  <!-- "What is this 'pain' you feel?" -->
         <Trait Name="Clumsy" Value="20"/>  <!-- OW! I just whipped myself. -->
+    </Modifier>
 
+    <Modifier Name="work.actress">
+        <Trait Name="Porn Star" Value="5" />
+        <Trait Name="Actress" Value="40" />             <!-- Can act -->
+        <Trait Name="Charismatic" Value="30"/>
+        <Trait Name="Charming" Value="10"/>
+        <Trait Name="Shape Shifter" Value="10" />
+        <Trait Name="Fake Orgasm Expert" Value="2" />   <!-- Can act -->
+        <Trait Name="Great Figure" Value="10" />
+        <Trait Name="Good Kisser" Value="5" />
+        <Trait Name="Exhibitionist" Value="5"/>
+        <Trait Name="Singer" Value="3"/>
+
+        <!-- High Status -->
+        <Trait Name="Princess" Value="10"/>
+        <Trait Name="Queen" Value="10"/>
+        <Trait Name="Goddess" Value="10"/>
+        <Trait Name="Angel" Value="10"/>
+
+        <Trait Name="Psychic" Value="4" />
+        <Trait Name="Fragile" Value="-5" />
+        <Trait Name="Mind Fucked" Value="-15" />
+        <Trait Name="Nervous" Value="-10" />
+
+        <Trait Name="Clumsy" Value="-20" />
+        <Trait Name="Aggressive" Value="-15" />
+        <Trait Name="Broken Will" Value="-10" />
+        <Trait Name="Dependant" Value="-8" />
+        <Trait Name="Meek" Value="-8" />
+        <Trait Name="Dojikko" Value="-8"/>
+        <Trait Name="Shy" Value="-5" />
+
+        <Trait Name="Flexible" Value="5"/>
+        <Trait Name="Retarded" Value="-40"/>
+        <Trait Name="Broken Will" Value="-30"/>
+
+        <Trait Name="Deaf" Value="-20"/> <!-- Can't hear director -->
+        <Trait Name="Blind" Value="-30"/>
+
+        <!-- Difficultto film -->
+        <Trait Name="No Legs" Value="-40"/>
+        <Trait Name="One Leg" Value="-25"/>
+        <Trait Name="No Feet" Value="-40"/>
+        <Trait Name="One Foot" Value="-25"/>
+        <Trait Name="No Arms" Value="-25"/>
+        <Trait Name="One Arm" Value="-15"/>
+        <Trait Name="One Hand" Value="-10"/>
+        <Trait Name="No Hands" Value="-10"/>
+
+        <Trait Name="Alcoholic" Value="-5"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-40"/>
+        <Trait Name="Viras Blood Addict" Value="-40"/>
+    </Modifier>
+
+    <Modifier Name="work.pornstar">
+        <Trait Name="Porn Star" Value="40" />
+        <Trait Name="Actress" Value="10" />
+        <Trait Name="Shape Shifter" Value="5" />
+        <Trait Name="Fake Orgasm Expert" Value="10" />
+        <Trait Name="Great Figure" Value="15" />
+        <Trait Name="Good Kisser" Value="15" />
+        <Trait Name="Exhibitionist" Value="15"/>
+        <Trait Name="Whore" Value="10"/>
+        <Trait Name="Slut" Value="10"/>
+        <Trait Name="Open Minded" Value="10"/>
+
+        <Trait Name="Fragile" Value="-5" />
+        <Trait Name="Mind Fucked" Value="-10" />
+        <Trait Name="Nervous" Value="-10" />
+
+        <Trait Name="Clumsy" Value="-4" />
+        <Trait Name="Aggressive" Value="-10" />
+        <Trait Name="Broken Will" Value="-6" />
+        <Trait Name="Dependant" Value="-4" />
+
+        <Trait Name="Flexible" Value="5"/>
+        <Trait Name="Retarded" Value="-20"/>
+        <Trait Name="Deaf" Value="-10"/>
+        <Trait Name="Broken Will" Value="-10"/>
+
+        <Trait Name="Alcoholic" Value="-5"/>
+        <Trait Name="Fairy Dust Addict" Value="-20"/>
+        <Trait Name="Shroud Addict" Value="-30"/>
+        <Trait Name="Viras Blood Addict" Value="-30"/>
     </Modifier>
 
 </TraitMods>

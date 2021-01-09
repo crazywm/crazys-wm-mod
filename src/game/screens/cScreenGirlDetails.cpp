@@ -238,7 +238,7 @@ void cScreenGirlDetails::init(bool back)
                 break;
             case BuildingType::STUDIO:
                 jobfilters.push_back(JOBFILTER_STUDIOCREW);
-                jobfilters.push_back(JOBFILTER_STUDIONONSEX);
+                jobfilters.push_back(JOBFILTER_STUDIOTEASE);
                 jobfilters.push_back(JOBFILTER_STUDIOSOFTCORE);
                 jobfilters.push_back(JOBFILTER_STUDIOPORN);
                 jobfilters.push_back(JOBFILTER_STUDIOHARDCORE);

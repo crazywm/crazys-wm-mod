@@ -101,6 +101,16 @@ public:
     std::string GetSelectedTextFromList(int listBoxID); // MYR: For new message summary display in InterfaceProcesses.cpp
     int GetLastSelectedItemFromList(int listBoxID);
     int GetNextSelectedItemFromList(int listBoxID, int from, int& pos);
+    template<class F>
+    void ForAllSelectedItems(int id, F&& handler) {
+        int pos = 0;
+        int selection = GetNextSelectedItemFromList(id, 0, pos);
+        while (selection != -1)
+        {
+            handler(selection);
+            selection = GetNextSelectedItemFromList(id, pos + 1, pos);
+        }
+    }
     int GetAfterSelectedItemFromList(int listBoxID);
     void SetListTopPos(int listBoxID, int pos = 0);
     void SetSelectedItemInList(int listBoxID, int itemID, bool ev = true, bool DeselectOthers = true);

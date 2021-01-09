@@ -22,32 +22,7 @@
 #include "character/sAttribute.h"
 #include "CLog.h"
 #include <cassert>
-
-namespace {
-    template<class T>
-    inline auto lookup_with_error(const T& map, const std::string& name, const char* error_msg) {
-        try {
-            return map.at(name);
-        } catch (const std::out_of_range& oor ) {
-            g_LogFile.error(error_msg, ": '", name, "'");
-            throw;
-        }
-    }
-}
-
-template<class T>
-using id_lookup_t = std::unordered_map<std::string, T>;
-
-template<class T, std::size_t N>
-id_lookup_t<T> create_lookup_table(const std::array<const char*, N>& names) {
-    id_lookup_t<T> lookup;
-    // TODO make this case insensitive
-    for(std::size_t i = 0; i < N; ++i) {
-        auto inserted = lookup.insert(std::make_pair(names[i], static_cast<T>(i)));
-        assert(inserted.second);
-    }
-    return std::move(lookup);
-}
+#include "utils/lookup.h"
 
 const std::array<sAttribute, NUM_STATS>& get_all_stats () {
     static std::array<sAttribute, NUM_STATS> stats {
@@ -179,7 +154,7 @@ const std::array<const char*, NUM_ACTIONTYPES>& get_action_names() {
             "COMBAT", "SEX", "WORKESCORT", "WORKCLEANING", "WORKMATRON",
             "WORKBAR", "WORKHALL", "WORKSHOW", "WORKSECURITY",
             "WORKADVERTISING", "WORKTORTURER", "WORKCARING", "WORKDOCTOR",
-            "WORKMOVIE", "WORKCUSTSERV", "WORKCENTRE", "WORKCLUB",
+            "ACTRESS", "PORNSTAR", "MOVIECREW", "WORKCUSTSERV", "WORKCENTRE", "WORKCLUB",
             "WORKHAREM", "WORKRECRUIT", "WORKNURSE", "WORKMECHANIC",
             "WORKCOUNSELOR", "WORKMUSIC", "WORKSTRIP", "WORKMILK",
             "WORKMASSEUSE", "WORKFARM", "WORKTRAINING", "WORKREHAB",
@@ -306,11 +281,11 @@ const std::array<const char*, NUM_JOBS>& get_job_names() {
             "Strip Club Whore", "Masseuse", "Brothel Stripper", "Peep Show",
             "Brothel Whore", "Whore on Streets",
             "Director", "Promoter", "Camera Mage", "Crystal Purifier", "Fluffer",
-            "Stagehand", "Action", "The Naked Chef", "Music",
-            "Film Masturbation", "Film Strip tease", "Teaser Video",
-            "Film Anal", "Film Foot Job", "Film Hand Job", "Film Lesbian",
-            "Film Oral Sex", "Film Sex", "Film Titty Fuck", "Film Bestiality",
-            "Film Bondage", "Cumslut/Bukkake", "Face-fuck", "Film Group",
+            "Stagehand", "Action", "The Naked Chef", "Music", "Teaser Video",
+            "Film Masturbation", "Film Strip tease", "Film Foot Job", "Film Hand Job",
+            "Film Titty Fuck", "Film Anal", "Film Lesbian",
+            "Film Oral Sex", "Film Sex", "Film Group",
+            "Film Bestiality", "Film Bondage", "Cumslut/Bukkake", "Face-fuck",
             "Public Torture", "Film a random scene",
             "Fight Beasts", "Cage Match", "Combat Training", "Doctore",
             "City Guard", "Blacksmith", "Cobbler", "Jeweler",

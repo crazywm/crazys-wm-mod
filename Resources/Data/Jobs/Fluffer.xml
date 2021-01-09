@@ -1,0 +1,65 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Fluf">
+    <Description>
+        She will keep the porn stars aroused.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Skill="OralSex" Weight="1"/>
+        <Factor Skill="Service" Weight="1"/>
+    </Performance>
+
+    <Gains XP="10" Skill="1">
+        <Skill Name="OralSex" Weight="1" />
+        <Skill Name="Service" Weight="1" />
+    </Gains>
+
+    <Messages>
+        <Message Name="no-crew">
+            <Text>There was no crew to film the scene, so ${name} took the day off.</Text>
+        </Message>
+        <Message Name="no-actress">
+            <Text>There were no actresses to film, so ${name} took the day off.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to work as a fluffer today.</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} worked as a fluffer.</Text>
+        </Message>
+        <Message Name="work.perfect">
+            <Text>
+                She was so skillful in keeping the actors aroused that your camera mage decided to film some of her work
+                too. This will be a great after-credits shot.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>
+                Who needs blue pills and aphrodisiacs when you have ${name}. She is great at keeping the actors ready to
+                work.
+            </Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>
+                She did a good job of keeping the actors aroused.
+            </Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>
+                She does a decent job of keeping the actors ready.
+            </Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>
+                She is supposed to keep the actors aroused, but her attempts left them amused at best.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>
+                Her performance on set has earned her the nickname "The Limper". This has nothing to do with the way she
+                walks.
+            </Text>
+        </Message>
+    </Messages>
+</Job>

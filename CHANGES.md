@@ -1,8 +1,24 @@
 # Version 07.00.alpha10
 
+## Major Changes
+The Movie Studio has been rewritten almost entirely. The most important changes are:
+* You can (and should) have more than one camera mage, crystal purifier, and promoter
+* Finished movies are now tracked explicitly in the movie maker screen. There you can also
+  set the ticket prices
+* There are now different types of target audiences, which have differing requirements on
+the movie.
+* In the turn summary, BUILDINGS section, the Movie Studio will now have additional info about
+created scenes and screened movies
+
+**The new movie mechanics are still preliminary, and haven't really been balanced yet**
+
 ## Fixes
 * fixed empty item after item transfer
 * fixed shop contents after loading game
+* fixed TraitModifiers after loading save game
+* removed Day Job column from Movie Studio
+* fixed errors in loading job xml
+* error message (instead of crash) when invalid element is added to list box
 
 # Version 07.00.alpha9
 ##  Changes

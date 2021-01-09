@@ -36,6 +36,7 @@ class ITraitsCollection;
 class cTariff;
 class cShop;
 class cGirlPool;
+class cMovieManager;
 
 namespace tinyxml2
 {
@@ -86,6 +87,9 @@ public:
 
     // storage
     sStorage& storage();
+
+    // movies
+    cMovieManager& movie_manager();
 
     // gold
     cGold& gold();
@@ -195,6 +199,7 @@ private:
     std::unique_ptr<cShop> m_Shop;
     std::unique_ptr<IKeyValueStore> m_GameSettings;
     std::unique_ptr<scripting::cScriptManager> m_ScriptManager;
+    std::unique_ptr<cMovieManager> m_MovieManager;
 
     // slave market stuff
     std::unique_ptr<cGirlPool> m_MarketGirls;

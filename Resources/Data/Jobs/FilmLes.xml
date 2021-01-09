@@ -5,14 +5,18 @@
     </Description>
 
     <Performance>
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Charisma" Weight="2"/>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Lesbian" Weight="1"/>
+        <Mod>work.pornstar</Mod>
     </Performance>
 
     <Gains XP="10" Skill="3">
         <Skill Name="Performance" Weight="2" />
-        <Skill Name="Lesbian" Weight="1" />
-        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+        <Skill Name="Lesbian" Weight="1" Max="75"/>
+
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
@@ -20,12 +24,13 @@
         </GainTrait>
     </Gains>
 
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" CanBeForced="1">
+        <LustInfluence Amount="25" SkillMin="20" BaseValue="5" Skill="Lesbian" />
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} worked as an actress filming lesbian scenes.</Text>
-        </Message>
-        <Message Name="refuse">
-            <Text>${name} refused to film a lesbian scene today.</Text>
         </Message>
 
         <Message Name="work.perfect">
@@ -47,14 +52,44 @@
             <Text>${name} was totaly horrible today.  She was scorned for hours by the entire crew.</Text>
         </Message>
 
-        <Message Name="summary.like">
-            <Text>She was amazed how good it felt to have her pussy eaten, and gave as good in return.</Text>
+        <Message Name="disobey.free">
+            <Text>${name} refused to perform in a Lesbian scene today.</Text>
         </Message>
-        <Message Name="summary.neutral">
-            <Text>She had a pleasant day playing with her girlfriend.</Text>
+        <Message Name="disobey.slave.nice">
+            <Text>
+                ${name} refused to perform in an Lesbian scene today. Nice guy that you are, you let her be.
+            </Text>
         </Message>
-        <Message Name="summary.dislike">
-            <Text>She didn't like doing it, but but she made the actress come.</Text>
+        <Message Name="disobey.slave.neutral">
+            <Text>
+                ${name} refused to perform in an Lesbian scene today. "That's not how I wanted this to be," you say,
+                "but I've got bills to pay. Tie her up!"
+            </Text>
+        </Message>
+        <Message Name="disobey.slave.evil">
+            <Text>
+                "No, I'm not doing this!", ${name} complains. Ignoring her pleading, your studio crew roughly ties her up. "It seems
+                like a lesson in obedience is in order here", you say as you hand a gigantic dildo to the
+                other actress actor. Turning to her with an evil grin on you face, you add "No foreplay, no lube!"
+            </Text>
+        </Message>
+
+        <Message Name="forced-filming">
+            <Text Condition="Performance>100">
+                Given ${name}'s rather 'unenthusiastic' performance, the scene turned out decent enough.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit<60">
+                ${name} is just laying there, totally unresponsive except for a few whimpers and cries.
+                Not a good scene.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit>=60">
+                Despite being tied up, ${name} managed to hurt the other actress. Needless to say, the scene
+                turned out rather bad.
+            </Text>
+            <Text Condition="Performance<50">
+                While tying her up made it possible to film this scene, the result looks so bad that maybe you should
+                have just sent her to the dungeon instead.
+            </Text>
         </Message>
     </Messages>
 </Job>

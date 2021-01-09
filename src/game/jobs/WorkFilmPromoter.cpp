@@ -18,26 +18,27 @@
 */
 #include "buildings/cBuildingManager.h"
 #include "cRng.h"
-#include "buildings/cMovieStudio.h"
 #include "Game.hpp"
 #include <sstream>
 #include "cGirls.h"
+#include "movies/manager.h"
 
 // `J` Job Movie Studio - Crew
 bool WorkFilmPromoter(sGirl& girl, bool Day0Night1, cRng& rng)
 {
-    sMovieStudio* brothel = dynamic_cast<sMovieStudio*>(girl.m_Building);
+    auto brothel = girl.m_Building;
 
     std::stringstream ss;
     int roll = rng.d100();
-    if (roll <= 20 && girl.disobey_check(ACTION_WORKMOVIE, JOB_PROMOTER))
+    if (roll <= 20 && girl.disobey_check(ACTION_MOVIECREW, JOB_PROMOTER))
     {
         ss << "${name} refused to work as a promoter today.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return true;
     }
     ss << "${name} worked to promote the sales of the studio's films.\n \n";
-    bool movies = !brothel->m_Movies.empty();
+    // TODO
+    bool movies = !g_Game->movie_manager().get_movies().empty();
     if (!movies)    ss << "There were no movies for her to promote, so she just promoted the studio in general.\n \n";
 
     cGirls::UnequipCombat(girl);    // not for studio crew
@@ -77,24 +78,37 @@ bool WorkFilmPromoter(sGirl& girl, bool Day0Night1, cRng& rng)
         wages += 10 + rng%roll_max;
     }
 
-    if (movies)
-    {
-        /* */if (jobperformance > 0)    ss << " She helped promote the studio's movies, increasing sales " << (int)jobperformance << "%. \n";
-        else if (jobperformance < 0)    ss << " She did a bad job today, she hurt film sales " << (int)jobperformance << "%. \n";
-        else /*                   */    ss << " She did not really help film sales.\n";
-    }
-    else
-    {    // `J` zzzzzz - need some effects for this
-        /* */if (jobperformance > 0)    ss << " She helped promote the studio. \n";
-        else if (jobperformance < 0)    ss << " She did a bad job today, she hurt reputation of the studio. \n";
-        else /*                   */    ss << " She did not really help promote the studio.\n";
+    for(int tries = 0; tries < 5; ++tries) {
+        auto& mm = g_Game->movie_manager();
+        float promotion_effect = jobperformance * std::log(brothel->m_AdvertisingBudget / jobperformance + 2);
+        if (movies && g_Dice.percent(66)) {
+            int index = g_Dice.random(mm.get_movies().size());
+            auto& movie = mm.get_movies().at(index);
+            if (movie.Age - movie.Hype > promotion_effect / 100 + 2) {
+                // not much chance in improving the movie, don't promote it
+                continue;
+            } else {
+                mm.hype_movie(index, promotion_effect / 100.f, brothel->m_AdvertisingBudget + wages);
+                ss << " She promoted your movie '" << movie.Name << "' and improved hype by " << int(promotion_effect)
+                   << " points\n";
+                break;
+            }
+        }
+
+        // OK, no movie was promoted, then encourage people to go see movies in general
+        auto& audience = mm.get_audience();
+        int index = g_Dice.random(audience.size());
+        if(audience.at(index).Saturation / (float)audience.at(index).Amount > 0.2f) {
+            int convinced = mm.hype_audience(index, promotion_effect / 100.f);
+            ss << " She started an ad campaign focussed on '" << audience.at(index).Name << "' and managed to "
+               << "decrease market saturation by " << convinced << "\n";
+            break;
+        }
     }
 
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NIGHTSHIFT);
     girl.m_Tips = std::max(0, tips);
     girl.m_Pay = std::max(0, wages);
-
-    brothel->m_PromoterBonus = (double)(brothel->m_AdvertisingBudget / 10) + jobperformance;
 
 
     // Improve girl

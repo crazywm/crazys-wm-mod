@@ -50,7 +50,6 @@ protected:
 
     // shift processing data
     int enjoy;
-    int jobperformance;
     int craftpoints;
 private:
     virtual void performance_msg();

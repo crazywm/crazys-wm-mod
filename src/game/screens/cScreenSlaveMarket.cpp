@@ -81,7 +81,9 @@ void cScreenSlaveMarket::set_ids()
     SetButtonHotKey(buy_slave_id, SDLK_SPACE);
 
     for(const auto& btn: m_ReleaseButtons) {
-        SetButtonCallback(btn.id, [this, btn](){ change_release(btn.type, btn.index); });
+        SetButtonCallback(btn.id, [this, btn](){
+            m_TargetBuilding = g_Game->buildings().building_with_type(btn.type, btn.index);
+            update_release_text();});
     }
 
     SetButtonCallback(dungeon_id, [this]() {
@@ -139,7 +141,8 @@ void cScreenSlaveMarket::init(bool back)
     ImageNum = -1;
     if (cur_brothel_id >= 0)    EditTextItem(active_building().name(), cur_brothel_id);
 
-    change_release(BuildingType::BROTHEL, 0);
+    m_TargetBuilding = &active_building();
+    update_release_text();
 
     for(const auto& btn: m_ReleaseButtons) {
         HideWidget(btn.id, g_Game->buildings().num_buildings(btn.type) < btn.index + 1);
@@ -978,12 +981,11 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
     }
 }
 
-void cScreenSlaveMarket::change_release(BuildingType target, int index)
+void cScreenSlaveMarket::update_release_text()
 {
-    std::stringstream ss;
-    m_TargetBuilding = g_Game->buildings().building_with_type(target, index);
-
-    ss.str("");
+    if(!m_TargetBuilding)
+        return;
+    std::stringstream  ss;
     ss << "Send Girl to: " << m_TargetBuilding->name();
     EditTextItem(ss.str(), releaseto_id);
     ss.str("");

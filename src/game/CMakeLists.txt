@@ -34,13 +34,12 @@ set(JOBS_SRC
         jobs/WorkBrothelMassusse.cpp
         jobs/WorkBrothelStripper.cpp
         jobs/WorkWhore.cpp
-        jobs/WorkCameraMage.cpp
+        jobs/StudioCrew.cpp
         jobs/WorkCityGuard.cpp
         jobs/WorkCleaning.cpp
         jobs/WorkCombatTraining.cpp
         jobs/WorkComunityService.cpp
         jobs/WorkCounselor.cpp
-        jobs/WorkCrystalPurifier.cpp
         jobs/WorkCureDiseases.cpp
         jobs/WorkCustService.cpp
         jobs/WorkEscort.cpp
@@ -50,24 +49,11 @@ set(JOBS_SRC
         jobs/WorkFeedPoor.cpp
         jobs/WorkFightArenaGirls.cpp
         jobs/WorkFightBeast.cpp
-        jobs/WorkFilmAction.cpp
-        jobs/WorkFilmBeast.cpp
-        jobs/WorkFilmBondage.cpp
-        jobs/WorkFilmBuk.cpp
-        jobs/WorkFilmChef.cpp
         jobs/WorkFilmDirector.cpp
-        jobs/WorkFilmDominatrix.cpp
-        jobs/WorkFilmGroup.cpp
-        jobs/WorkFilmMusic.cpp
-        jobs/WorkFilmOral.cpp
         jobs/WorkFilmPromoter.cpp
         jobs/WorkFilmPublicBDSM.cpp
         jobs/WorkFilmRandom.cpp
-        jobs/WorkFilmSex.cpp
         jobs/WorkFilmStagehand.cpp
-        jobs/WorkFilmTease.cpp
-        jobs/WorkFilmThroat.cpp
-        jobs/WorkFluffer.cpp
         jobs/WorkFreetime.cpp
         jobs/WorkGetAbort.cpp
         jobs/WorkHallDealer.cpp
@@ -89,7 +75,7 @@ set(JOBS_SRC
         jobs/WorkSOLesbian.cpp
         jobs/WorkSOStraight.cpp
         jobs/WorkTorturer.cpp
-        jobs/Film.cpp
+        jobs/StudioFilming.cpp
         jobs/Crafting.cpp
         jobs/GenericJob.cpp
         jobs/Matron.cpp
@@ -98,6 +84,7 @@ set(JOBS_SRC
         jobs/FarmJobs.cpp
         jobs/ClinicJobs.cpp
         jobs/JobData.cpp
+        jobs/StudioScenes.cpp
         )
 
 set(BUILDINGS_SRC
@@ -137,6 +124,12 @@ set(SCRIPTING_SRC
         scripting/sLuaParameter.cpp
         )
 
+set(MOVIES_SRC
+        movies/manager.cpp
+        movies/data.cpp
+        movies/filming.cpp
+        )
+
 set(SRC cEvents.cpp
         cGangs.cpp
         cGirlGangFight.cpp
@@ -167,7 +160,7 @@ set(SRC cEvents.cpp
         combat/combatant.cpp
         )
 
-add_library(WmGameObjects OBJECT ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${SRC})
+add_library(WmGameObjects OBJECT ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${MOVIES_SRC} ${SRC})
 target_link_libraries(WmGameObjects PUBLIC WMEngineObjects pthread doctest::doctest)
 set_target_properties(WmGameObjects PROPERTIES CXX_STANDARD 14)
 target_include_directories(WmGameObjects PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

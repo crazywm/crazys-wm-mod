@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/*
 #include "Films.h"
 #include "Game.hpp"
 #include "character/cCustomers.h"
@@ -40,39 +42,6 @@ void FilmPubBDSM::GainTraits(sGirl& girl, int performance) const {
     girl.obedience(impact / 2);
 }
 
-bool FilmPubBDSM::CheckRefuseWork(sGirl& girl) {
-    int roll = d100();
-    if (girl.health() < 50)
-    {
-        ss << "The crew refused to film a Public Torture scene with ${name} because she is not healthy enough.\n\"We are NOT filming snuff.\"";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
-    }
-    else if (girl.is_pregnant())
-    {
-        ss << "The crew refused to film a Public Torture scene with ${name} due to her pregnancy.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
-    }
-    else if (girl.has_active_trait("Mind Fucked"))
-    {
-        ss << "Mind fucked ${name} was pleased to be paraded naked in public and tortured and degraded. It is natural.";
-        result.bonus += 10;
-    }
-    else if (girl.has_active_trait("Masochist"))
-    {
-        ss << "Masochist ${name} was pleased to be tortured and degraded. It is her place.";
-        result.bonus += 6;
-    }
-    else if (roll <= 10 && girl.disobey_check(ACTION_WORKMOVIE, JOB_FILMPUBLICBDSM))
-    {
-        return RefusedTieUp(girl);
-    }
-    else add_text("work");
-    ss << "\n \n";
-    return false;
-}
-
 void FilmPubBDSM::DoScene(sGirl& girl) {
     ss << "A crowd gathered to watch as ${name}";
     int NUMSCENARIOS = 9;
@@ -81,7 +50,7 @@ void FilmPubBDSM::DoScene(sGirl& girl) {
     switch (roll)
     {
         case 0:
-            ss << (" was hogtied naked on the floor outside ") << g_Game->buildings().get_building(uniform(0, g_Game->buildings().num_buildings())).name() << (" brothel");
+            ss << (" was hogtied naked on the floor outside the studio.");
             break;
         case 1:
             ss << (" was stripped and locked in the public stocks in the city square");
@@ -176,7 +145,7 @@ void FilmPubBDSM::DoScene(sGirl& girl) {
             break;
         case 6:
             ss << ("struggles as a pair of ");
-            if /*  */(girl.beauty() > 80)        ss << "ugly whores, jealous of her looks";
+            if (girl.beauty() > 80)        ss << "ugly whores, jealous of her looks";
             else if (girl.age() < 25)            ss << "old whores, jealous of her youth";
             else if (girl.intelligence() > 75)    ss << "dumb whores, jealous of her brains";
             else if (girl.is_free())            ss << "slave whores, jealous of her freedom";
@@ -187,7 +156,7 @@ void FilmPubBDSM::DoScene(sGirl& girl) {
             break;
         case 7:
             ss << ("cries as a large gang of ");
-            if /* */(girl.has_active_trait("Tsundere") || girl.has_active_trait("Yandere"))    ss << ("losers she's rejected over the years");
+            if (girl.has_active_trait("Tsundere") || girl.has_active_trait("Yandere"))    ss << ("losers she's rejected over the years");
             else if ((girl.has_active_trait("Lolita") || girl.has_active_trait("Flat Chest") ||
                       girl.has_active_trait("Petite Breasts") ||
                       girl.has_active_trait("Small Boobs"))
@@ -291,8 +260,6 @@ void FilmPubBDSM::DoScene(sGirl& girl) {
         result.enjoy += 2;
         ss << "${name} doesn't much like the pain, but enjoys getting this much sex and attention.\n";
     }
-    //Feedback enjoyment
-    PrintEnjoyFeedback();
 
     if (fucked == BYMAN || fucked == BYBEAST)
     {
@@ -332,8 +299,8 @@ void FilmPubBDSM::Reset() {
 }
 
 FilmPubBDSM::FilmPubBDSM() : GenericFilmJob(JOB_FILMPUBLICBDSM, {
-        IMGTYPE_BDSM, ACTION_SEX, 50, 10,
-        FilmJobData::EVIL, SKILL_BDSM, "Public BDSM"
+        IMGTYPE_BDSM, ACTION_SEX, 50, SceneType::PUB_BDSM,
 }) {
     load_from_xml("FilmPublicBDSM.xml");
 }
+*/

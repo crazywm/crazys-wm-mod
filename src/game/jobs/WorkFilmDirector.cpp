@@ -31,7 +31,6 @@ bool WorkFilmDirector(sGirl& girl, bool Day0Night1, cRng& rng)
     Action_Types actiontype = ACTION_WORKMATRON;
     // DisobeyCheck is done in the building flow.
     std::stringstream ss;
-    brothel->m_DirectorName = girl.FullName();
 
     ss << "${name} worked as a Film Director.\n \n";
 

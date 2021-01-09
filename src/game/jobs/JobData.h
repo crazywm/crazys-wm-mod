@@ -45,28 +45,38 @@ public:
     float eval(const sGirl& girl, bool estimate) const;
     void load(const tinyxml2::XMLElement& source, const std::string& prefix);
 private:
-    std::string                      TraitMod;   //!< Name of the trait modifier
+    struct sTraitMod {
+        std::string Trait;
+        float Weight = 1.f;
+    };
+
+    std::vector<sTraitMod>           TraitMod;   //!< Name of the trait modifier
     std::vector<sWeightedStatSkill>  Factors;    //!< List of stat/skill influences
 };
 
 struct sTraitChange {
     // explicit constructor needed for mingw
-    sTraitChange(bool g, std::string trait, int th, Action_Types a, std::string message, EventType e = EVENT_GOODNEWS) :
-            Gain(g), TraitName(std::move(trait)), Threshold(th), Action(a), Message(std::move(message)), EventType(e) {}
+    sTraitChange(bool g, std::string trait, int th, Action_Types a, std::string message, EventType e = EVENT_GOODNEWS,
+                 int perf = -1000, int chance = 100) :
+            Gain(g), TraitName(std::move(trait)), Threshold(th), Action(a), Message(std::move(message)), EventType(e),
+            PerformanceRequirement(perf), Chance(chance) {}
     bool Gain;
     std::string TraitName;
     int Threshold;
     Action_Types Action;
     std::string Message;
     ::EventType EventType = EVENT_GOODNEWS;
+
+    int PerformanceRequirement = -1000;        // minimum job performance to consider the trait
+    int Chance = 100;
 };
 
 class cJobGains {
 public:
-    void apply(sGirl& target) const;
+    void apply(sGirl& target, int performance) const;
     void load(const tinyxml2::XMLElement& source);
 private:
-    void gain_traits(sGirl& girl) const;
+    void gain_traits(sGirl& girl, int performance) const;
 
     int XP;                                         //!< Amount of experience points gained
     int Skill;                                      //!< Amount of gains for stats/skills

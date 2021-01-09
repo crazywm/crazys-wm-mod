@@ -5,22 +5,25 @@
     </Description>
 
     <Performance>
+        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Agility" Weight="1"/>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Skill="Performance" Weight="2"/>
+
+        <Mod>work.actress</Mod>
+
         <!-- This is currently handled on the C++ side -->
         <!-- Good -->
-        <Trait Name="Actress" Value="60"/> <!-- Can act -->
         <Trait Name="Charismatic" Value="30"/> <!-- Can act -->
-        <Trait Name="Incorporeal" Value="60"/> <!-- Can't be hurt -->
-        <Trait Name="Construct" Value="50"/>
-        <Trait Name="Half-Construct" Value="35"/>
+        <Trait Name="Incorporeal" Value="20"/> <!-- Can't be hurt -->
+        <Trait Name="Construct" Value="20"/>
+        <Trait Name="Half-Construct" Value="15"/>
         <Trait Name="Muscular" Value="35"/>
         <Trait Name="Strong" Value="35"/>
         <Trait Name="Tough" Value="30"/>
         <Trait Name="Fleet of Foot" Value="30"/>
         <Trait Name="Agile" Value="30"/>
-        <Trait Name="Princess" Value="30"/>    <!-- High-Status -->
-        <Trait Name="Queen" Value="30"/>
-        <Trait Name="Goddess" Value="30"/>
-        <Trait Name="Angel" Value="30"/>
         <Trait Name="Heroine" Value="20"/> <!-- Exciting -->
         <Trait Name="Brawler" Value="20"/>
         <Trait Name="Dominatrix" Value="20"/>
@@ -30,27 +33,43 @@
         <Trait Name="Iron Will" Value="10"/>
 
         <!-- Bad -->
-        <Trait Name="No Legs" Value="-80"/>    <!-- Difficult to make action scene -->
-        <Trait Name="One Leg" Value="-50"/>
-        <Trait Name="No Feet" Value="-80"/>
-        <Trait Name="One Foot" Value="-50"/>
-        <Trait Name="No Arms" Value="-50"/>
-        <Trait Name="One Arm" Value="-30"/>
-        <Trait Name="One Hand" Value="-20"/>
-        <Trait Name="No Hands" Value="-25"/>
-        <Trait Name="Blind" Value="-50"/>
         <Trait Name="Fragile" Value="-30"/>    <!-- Tends to get hurt on set -->
         <Trait Name="Delicate" Value="-30"/>
-        <Trait Name="Clumsy" Value="-25"/>
+        <Trait Name="Clumsy" Value="-10"/>
         <Trait Name="Dojikko" Value="-15"/>
-        <Trait Name="Muggle" Value="-10"/>
-        <Trait Name="Meek" Value="-5"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
-        <Skill Name="Combat" Weight="1" />
+        <Skill Name="Performance" Weight="4" Max="80"/>
+        <Skill Name="Combat" Weight="2" Max="40"/>
+        <Stat Name="Agility" Weight="2" Max="50" />
+        <Stat Name="Confidence" Weight="1" Max="33" />
+
+        <GainTrait Trait="Brawler" Threshold="60" Action="COMBAT" Chance="50" MinPerformance="140" >
+            She has performed in enough fight scenes that she has become quite a Brawler.
+        </GainTrait>
+        <GainTrait Trait="Tough" Threshold="70" Action="COMBAT" Chance="50" MinPerformance="160" >
+            She has performed in enough fight scenes that she has become quite Tough.
+        </GainTrait>
+        <GainTrait Trait="Agile" Threshold="80" Action="COMBAT" Chance="50" MinPerformance="180" >
+            She has performed so many martial arts scenes that she is becoming agile.
+        </GainTrait>
+        <GainTrait Trait="Fleet of Foot" Threshold="90" Action="COMBAT" Chance="50" MinPerformance="180" >
+            She has performed so many action scenes that she has become fast on her feet.
+        </GainTrait>
+        <GainTrait Trait="Charismatic" Threshold="60" Action="ACTRESS" Chance="50" MinPerformance="140" >
+            She has performed in enough movie scenes that she has become Charismatic.
+        </GainTrait>
+        <GainTrait Trait="Actress" Threshold="70" Action="ACTRESS" Chance="50" MinPerformance="160" >
+            She has performed in enough movie scenes that she has become a good Actress.
+        </GainTrait>
+        <GainTrait Trait="Sexy Air" Threshold="80" Action="ACTRESS" Chance="50" MinPerformance="180" >
+            ${name} has been having to be sexy for so long she now reeks sexiness.
+        </GainTrait>
     </Gains>
+
+    <Config PrimaryAction="ACTRESS" SecondaryAction="COMBAT">
+    </Config>
 
     <Messages>
         <Message Name="work">

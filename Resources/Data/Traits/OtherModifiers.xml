@@ -317,36 +317,23 @@
     -->
 
     <!-- Movies -->
-    <Modifier Name="movie.quality.general">
-        <Trait Name="Porn Star" Value="20" />
-        <Trait Name="Actress" Value="10" />
-        <Trait Name="Shape Shifter" Value="10" />
-        <Trait Name="Fake Orgasm Expert" Value="5" />
-        <Trait Name="Fast Orgasms" Value="2" />
-        <Trait Name="Slow Orgasms" Value="-2" />
-        <Trait Name="Great Figure" Value="4" />
-        <Trait Name="Great Arse" Value="2" />
+    <Modifier Name="movie.quality">
         <Trait Name="Charismatic" Value="4" />
-        <Trait Name="Charming" Value="2" />
+        <Trait Name="Cute" Value="3" />
+        <Trait Name="Charming" Value="3" />
         <Trait Name="Long Legs" Value="2" />
-        <Trait Name="Nymphomaniac" Value="4" />
-        <Trait Name="Good Kisser" Value="2" />
-        <Trait Name="Cute" Value="2" />
         <Trait Name="Sexy Air" Value="2" />
-        <Trait Name="Psychic" Value="4" />
-        <Trait Name="Dick-Sucking Lips" Value="1" />
-        <Trait Name="Chaste" Value="-2" />
+        <Trait Name="Cool Person" Value="2"/>
         <Trait Name="Manly" Value="-2" />
-        <Trait Name="Fragile" Value="-2" />
-        <Trait Name="Mind Fucked" Value="-4" />
-        <Trait Name="Nervous" Value="-2" />
-        <Trait Name="Horrific Scars" Value="-4" />
-        <Trait Name="Clumsy" Value="-2" />
-        <Trait Name="Meek" Value="-2" />
-        <Trait Name="Aggressive" Value="-2" />
-        <Trait Name="Broken Will" Value="-4" />
-        <Trait Name="Dependant" Value="-3" />
-        <Trait Name="Shy" Value="-3" />
+        <Trait Name="Horrific Scars" Value="-5" />
+        <Trait Name="Small Scars" Value="-2"/>
+
+        <Trait Name="Great Arse" Value="2" />
+        <Trait Name="Tight Butt" Value="1" />
+        <Trait Name="Phat Booty" Value="1" />
+        <Trait Name="Wide Bottom" Value="1" />
+        <Trait Name="Plump Tush" Value="0" />
+        <Trait Name="Flat Ass" Value="-2" />
 
         <Trait Name="Flat Chest" Value="-2" />
         <Trait Name="Petite Breasts" Value="-1" />
@@ -355,10 +342,52 @@
         <Trait Name="Big Boobs" Value="1" />
         <Trait Name="Giant Juggs" Value="2" />
         <Trait Name="Massive Melons" Value="3" />
-        <Trait Name="Abnormally Large Boobs" Value="4" />
-        <Trait Name="Titanic Tits" Value="5" />
+        <Trait Name="Abnormally Large Boobs" Value="3" />
+        <Trait Name="Titanic Tits" Value="3" />
         <Trait Name="Perky Nipples" Value="1" />
         <Trait Name="Puffy Nipples" Value="1" />
+
+        <Trait Name="One Eye" Value="-3"/>
+        <Trait Name="One Arm" Value="-3"/>
+        <Trait Name="One Foot" Value="-3"/>
+        <Trait Name="One Hand" Value="-3"/>
+        <Trait Name="One Leg" Value="-3"/>
+        <Trait Name="No Arms" Value="-5"/>
+        <Trait Name="No Feet" Value="-5"/>
+        <Trait Name="No Hands" Value="-5"/>
+        <Trait Name="No Legs" Value="-5"/>
+        <Trait Name="Fat" Value="-3" />
+    </Modifier>
+
+    <!--
+    <Modifier Name="movie.quality.pg13">
+        <Trait Name="Porn Star" Value="20" />
+        <Trait Name="Actress" Value="10" />
+        <Trait Name="Shape Shifter" Value="10" />
+        <Trait Name="Fake Orgasm Expert" Value="5" />
+        <Trait Name="Fast Orgasms" Value="2" />
+        <Trait Name="Slow Orgasms" Value="-2" />
+        <Trait Name="Great Figure" Value="4" />
+
+
+        <Trait Name="Nymphomaniac" Value="4" />
+        <Trait Name="Good Kisser" Value="2" />
+
+
+        <Trait Name="Psychic" Value="4" />
+        <Trait Name="Dick-Sucking Lips" Value="1" />
+        <Trait Name="Chaste" Value="-2" />
+
+        <Trait Name="Fragile" Value="-2" />
+        <Trait Name="Mind Fucked" Value="-4" />
+        <Trait Name="Nervous" Value="-2" />
+
+        <Trait Name="Clumsy" Value="-2" />
+        <Trait Name="Meek" Value="-2" />
+        <Trait Name="Aggressive" Value="-2" />
+        <Trait Name="Broken Will" Value="-4" />
+        <Trait Name="Dependant" Value="-3" />
+        <Trait Name="Shy" Value="-3" />
     </Modifier>
 
     <Modifier Name="movie.quality.titty">
@@ -441,6 +470,7 @@
         <Trait Name="Strong Gag Reflex" Value="-10" />
         <Trait Name="Lesbian" Value="-10" />
     </Modifier>
+    -->
 
     <!-- Pregnancy stuff -->
     <Modifier Name="preg.abort.happy">

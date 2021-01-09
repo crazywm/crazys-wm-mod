@@ -32,7 +32,6 @@
 #include "Game.hpp"
 #include "scripting/GameEvents.h"
 #include "combat/combat.h"
-#include "jobs/Film.h"
 #include "jobs/Crafting.h"
 #include "Inventory.h"
 #include "cRival.h"
@@ -59,6 +58,9 @@ void cJobManager::Setup()
     auto register_filter = [&](JOBFILTER filter, JOBS first, JOBS last, std::initializer_list<JOBS> extra) {
         for(int i = first; i <= last; ++i) {
             JobFilters[filter].Contents.push_back((JOBS)i);
+        }
+        for(auto& j : extra)  {
+            JobFilters[filter].Contents.push_back(j);
         }
     };
 
@@ -96,16 +98,16 @@ void cJobManager::Setup()
     // `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cJobManager.cpp > Setup
 
     // Studio - Non-Sex Scenes
-    JobFilters[JOBFILTER_STUDIONONSEX] = sJobFilter{"Non-Sex Scenes", "These are scenes without sex."};
-    register_filter(JOBFILTER_STUDIONONSEX, JOB_FILMACTION, JOB_FILMMUSIC, {});
+    JobFilters[JOBFILTER_STUDIOTEASE] = sJobFilter{"Teasing Scenes", "These are scenes without sex."};
+    register_filter(JOBFILTER_STUDIOTEASE, JOB_FILMACTION, JOB_FILMTEASE, {});
 
     // Studio - Softcore Porn
-    JobFilters[JOBFILTER_STUDIOSOFTCORE] = sJobFilter{"Softcore Scenes", "These are scenes with just the one girl."};
-    register_filter(JOBFILTER_STUDIOSOFTCORE, JOB_FILMMAST, JOB_FILMTEASE, {});
+    JobFilters[JOBFILTER_STUDIOSOFTCORE] = sJobFilter{"Softcore Scenes", "These are scenes without any penetration."};
+    register_filter(JOBFILTER_STUDIOSOFTCORE, JOB_FILMMAST, JOB_FILMTITTY, {});
 
     // Studio - Porn
     JobFilters[JOBFILTER_STUDIOPORN] = sJobFilter{"Porn Scenes", "These are regular sex scenes."};
-    register_filter(JOBFILTER_STUDIOPORN, JOB_FILMANAL, JOB_FILMTITTY, {});
+    register_filter(JOBFILTER_STUDIOPORN, JOB_FILMANAL, JOB_FILMGROUP, {});
 
     // Studio - Hardcore porn
     JobFilters[JOBFILTER_STUDIOHARDCORE] = sJobFilter{"Hardcore Scenes", "These are rough scenes that not all girls would be comfortable with."};
@@ -173,7 +175,8 @@ void cJobManager::Setup()
     RegisterSurgeryJobs(*this);
     RegisterWrappedJobs(*this);
     RegisterManagerJobs(*this);
-    RegisterFilmJobs(*this);
+    RegisterFilmingJobs(*this);
+    RegisterFilmCrewJobs(*this);
     RegisterTherapyJobs(*this);
     RegisterBarJobs(*this);
     RegisterFarmJobs(*this);
@@ -781,17 +784,6 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     else if (JobID == JOB_DIRECTOR && Girl.m_Building->num_girls_on_job(JOB_DIRECTOR, SHIFT_NIGHT) >0)
     {
         g_Game->push_message(("There can be only one Director!"), 0);
-    }
-    else if (JobID == JOB_PROMOTER && Girl.m_Building->num_girls_on_job(JOB_PROMOTER, SHIFT_NIGHT) > 0)
-    {
-        g_Game->push_message(("There can be only one Promoter."), 0);
-    }
-    else if (is_Actress_Job(JobID) &&
-        (Girl.m_Building->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) < 1 ||
-                Girl.m_Building->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) < 1))
-    {
-        g_Game->push_message("You must have one cameramage and one crystal purifier.", 0);
-        Girl.m_DayJob = Girl.m_NightJob = rest;
     }
 #endif
 
@@ -1845,9 +1837,9 @@ void cJobManager::handle_simple_job(sGirl& girl, bool is_night)
     // do their job
     bool refused = do_job(girl, is_night);
 
+    brothel->CalculatePay(girl, sw);
     int totalPay  = girl.m_Pay;
     int totalTips = girl.m_Tips;
-    brothel->CalculatePay(girl, sw);
 
     //        Summary Messages
     if (refused)

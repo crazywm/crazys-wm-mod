@@ -28,7 +28,7 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl.m_Building);
 
-    Action_Types actiontype = ACTION_WORKMOVIE; Action_Types actiontype2 = ACTION_WORKCLEANING;
+    Action_Types actiontype = ACTION_MOVIECREW; Action_Types actiontype2 = ACTION_WORKCLEANING;
     std::stringstream ss;
     int roll_a = rng.d100();
     if (roll_a <= 50 && (girl.disobey_check(actiontype, JOB_STAGEHAND) || girl.disobey_check(actiontype2, JOB_STAGEHAND)))
@@ -61,10 +61,6 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
         filming = false;
         imagetype = IMGTYPE_MAID;
     }
-    else    // she worked on the film so only cleaned half as much
-    {
-        CleanAmt *= 0.5;
-    }
 
     if (roll_a <= 10)
     {
@@ -86,24 +82,23 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
     jobperformance += enjoyc + enjoym;
     ss << "\n \n";
 
+    CleanAmt = std::min((int)CleanAmt, brothel->m_Filthiness);
+
     if (filming)
     {
-        jobperformance += (((girl.spirit() - 50) / 10) + ((girl.intelligence() - 50) / 10) + (girl.service() / 10)) / 3;
+        jobperformance += (girl.crafting() / 5) + (girl.constitution() / 10) + (girl.service() / 10);
         jobperformance += girl.level();
         jobperformance += rng % 4 - 1;    // should add a -1 to +3 random element --PP
 
-        if (jobperformance > 0)
-        {
-            jobperformance = std::max(1.0, jobperformance / 10);
-            ss << "She helped improve the scene " << (int)jobperformance << "% with her production skills.";
+        // Cleaning reduces the points remaining for actual stage hand work
+        jobperformance -= CleanAmt / 2;
+        if(jobperformance < 0 && CleanAmt > 0) {
+            ss << "Your studio was so messy that ${name} spent the entire shift cleaning up, and had no time to "
+                  "assist in movie production. She improved the cleanliness rating by " << (int)CleanAmt << ".";
+            jobperformance = 0;
+        } else {
+            ss << "She assisted the crew in movie production and provided " << (int)jobperformance << " stage hand points.";
         }
-        else if (jobperformance < 0)
-        {
-            jobperformance = std::min(-1.0, jobperformance / 10);
-            ss << "She did a bad job today, reduceing the scene quality " << (int)jobperformance << "% with her poor performance.";
-        }
-        else ss << "She did not really help the scene quality.";
-        ss << "\n \n";
     }
 
 
@@ -122,8 +117,6 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
         wages += int(CleanAmt);
     }
 
-    ss << "Cleanliness rating improved by " << (int)CleanAmt;
-
     if (!filming && brothel->m_Filthiness < CleanAmt / 2) // `J` needs more variation
     {
         ss << "\n \n${name} finished her cleaning early so she hung out around the Studio a bit.";
@@ -133,8 +126,9 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     girl.AddMessage(ss.str(), imagetype, EVENT_NIGHTSHIFT);
-    if (filming) brothel->m_StagehandQuality += int(jobperformance);
-    brothel->m_Filthiness -= int(CleanAmt);
+
+    brothel->m_StageHandPoints += int(jobperformance);
+    brothel->m_Filthiness = std::max(0, brothel->m_Filthiness - int(CleanAmt));
     girl.m_Tips = std::max(0, tips);
     girl.m_Pay = std::max(0, wages);
 

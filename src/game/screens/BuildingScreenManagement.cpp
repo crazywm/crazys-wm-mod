@@ -1205,7 +1205,7 @@ cScreenStudioManagement::cScreenStudioManagement() :
         IBuildingScreenManagement(BuildingType::STUDIO, "studio_management_screen.xml")
 {
     add_job_filter(JOBFILTER_STUDIOCREW);
-    add_job_filter(JOBFILTER_STUDIONONSEX);
+    add_job_filter(JOBFILTER_STUDIOTEASE);
     add_job_filter(JOBFILTER_STUDIOSOFTCORE);
     add_job_filter(JOBFILTER_STUDIOPORN);
     add_job_filter(JOBFILTER_STUDIOHARDCORE);

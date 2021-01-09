@@ -5,9 +5,12 @@
     </Description>
 
     <Performance>
-        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Stat="Beauty" Weight="2"/>
         <Factor Stat="Charisma" Weight="1"/>
         <Factor Skill="OralSex" Weight="1"/>
+        <Factor Skill="Performance" Weight="2"/>
+
+        <Mod>work.pornstar</Mod>
 
         <!-- Good -->
         <Trait Name="Deep Throat" Value="80"/> <!-- better ability -->
@@ -24,7 +27,6 @@
         <Trait Name="Pierced Tongue" Value="15"/>
         <Trait Name="Exotic" Value="10"/>
         <Trait Name="Whore" Value="20"/>   <!-- Knows how to work it -->
-        <Trait Name="Porn Star" Value="30"/>   <!-- Knows how to work it on film -->
         <Trait Name="Nymphomaniac" Value="25"/>    <!-- had lots of practice -->
         <Trait Name="Slut" Value="15"/>    <!-- had practice -->
         <Trait Name="Sexy Air" Value="10"/>
@@ -39,20 +41,44 @@
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
-        <Skill Name="OralSex" Weight="1" />
+        <Skill Name="Performance" Weight="2" Max="66"/>
+        <Skill Name="OralSex" Weight="1" Max="75"/>
+        <Skill Name="Constitution" Weight="1" Max="33"/>
 
-        <GainTrait Trait="Mind Fucked" Threshold="90" Action="WORKMOVIE" Event="2">
+        <GainTrait Trait="Mind Fucked" Threshold="90" Action="PORNSTAR" Event="2">
             She has been abused so much she is now completely Mind Fucked.
         </GainTrait>
         <GainTrait Trait="Masochist" Threshold="65" Action="SEX">
             ${name} has turned into a Masochist from filming so many BDSM scenes.
         </GainTrait>
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR" MinPerformance="200">
+            She has performed in enough sex scenes that she has become a well known Porn Star.
+        </GainTrait>
+        <GainTrait Trait="Iron Will" Threshold="80" Action="SEX" Chance="5">
+            Somewhere between having a dick in her throat, balls slapping her eyes and a camera watching her retch,
+            ${name} has lost her iron will.
+        </GainTrait>
     </Gains>
+
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" MinimumHealth="25" CanBeForced="1">
+        <LustInfluence Amount="15" SkillMin="50" BaseValue="30" Skill="OralSex" />
+    </Config>
 
     <Messages>
         <Message Name="work">
             <Text>${name} was filmed in facefucking scenes.</Text>
+            <Text Condition="Mind Fucked">
+                Mind fucked ${name} was pleased to be paraded naked in public and tortured and degraded. It is natural.
+            </Text>
+            <Text Condition="Masochist">
+                Masochist ${name} was pleased to be tortured, used and degraded. It is her place.
+            </Text>
+        </Message>
+        <Message Name="crew.refuse.health">
+            <Text>
+                The crew refused to film a throatjob scene because ${name} is not healthy enough.
+                "We are NOT filming snuff".
+            </Text>
         </Message>
 
         <Message Name="work.perfect">
@@ -130,15 +156,22 @@
             </Text>
         </Message>
 
-        <Message Name="summary.like">
-            <Text>She won't say it, but you suspect she secretly gets off on the degradation.</Text>
-        </Message>
-        <Message Name="summary.neutral">
-            <Text>She's pretty raw and her makeup is everywhere.</Text>
-        </Message>
-        <Message Name="summary.dislike">
-            <Text>From the way she's coughing and gagging and has bright red eyes,
-                you suspect this wasn't much fun for her.</Text>
+        <Message Name="forced-filming">
+            <Text Condition="Performance>100">
+                Given ${name}'s rather 'unenthusiastic' performance, the scene turned out decent enough.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit<60">
+                ${name} is just laying there, totally unresponsive except for a few whimpers and cries.
+                Not a good scene.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit>=60">
+                Despite being tied up, ${name} managed to hurt the other actor. Needless to say, the scene
+                turned out rather bad.
+            </Text>
+            <Text Condition="Performance<50">
+                While tying her up made it possible to film this scene, the result looks so bad that maybe you should
+                have just sent her to the dungeon instead.
+            </Text>
         </Message>
     </Messages>
 </Job>

@@ -23,7 +23,6 @@
 #include <tinyxml2.h>
 #include "utils/algorithms.hpp"
 #include "cGangs.h"
-#include "buildings/cMovieStudio.h"
 #include "buildings/IBuilding.h"
 #include "Game.hpp"
 #include "sStorage.h"
@@ -35,6 +34,7 @@
 #include "scripting/GameEvents.h"
 #include "cNameList.h"
 #include "buildings/cDungeon.h"
+#include "cJobManager.h"
 
 #include "utils/DirPath.h"
 #include "utils/FileList.h"
@@ -1229,7 +1229,7 @@ int cGirls::GetRebelValue(const sGirl& girl, bool matron, JOBS job)
     sGang* gang = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
     if (gang)    chanceNo -= 10;
 
-    chanceNo += girl.tiredness() / 10;    // Tired girls increase Rebel
+    chanceNo += std::max(0, girl.tiredness() / 10 - 3);    // Tired girls increase Rebel
 
     if (happyStat < 50)                                // Unhappy girls increase Rebel
     {

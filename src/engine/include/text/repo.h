@@ -76,6 +76,9 @@ public:
      */
     virtual const std::string& get_text(const std::string& prompt, const IInteractionInterface& lookup) = 0;
 
+    /// Checks whether an entry for the given prompt exists.
+    virtual bool has_text(const std::string& prompt) = 0;
+
     /// Creates a text repository. This will return a unique_ptr to a concrete implementation of a text
     /// repo as supplied by the engine.
     static std::unique_ptr<ITextRepository> create();

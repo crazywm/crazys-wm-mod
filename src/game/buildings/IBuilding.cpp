@@ -1712,6 +1712,8 @@ void IBuilding::CalculatePay(sGirl& girl, JOBS Job)
     // if the house takes nothing        or if it is a player paid job and you are paying her
     if (girl.house() == 0 || (g_Game->job_manager().is_job_Paid_Player(Job) && !girl.is_unpaid()))
     {
+        // TODO check where we are handling the money processing for girl's payment
+        m_Finance.girl_support(girl.m_Pay);
         girl.m_Money += girl.m_Pay;    // she gets it all
         girl.m_Pay = 0;
         return;

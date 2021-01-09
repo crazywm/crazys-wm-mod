@@ -63,7 +63,7 @@ public:
     void process() override;
 
     bool buy_slaves();            // `J` used when buying slaves
-    void change_release(BuildingType target, int index = 0);
+    void update_release_text();
     void preparescreenitems(sGirl* girl);
 
     bool check_keys();

@@ -132,10 +132,11 @@ public:
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 
 protected:
-    void apply_gains(sGirl& girl);
+    void apply_gains(sGirl& girl, int performance);
 
     void load_from_xml(const char* xml_file);
     const std::string& get_text(const std::string& prompt) const;
+    bool has_text(const std::string& prompt) const;
     std::stringstream& add_text(const std::string& prompt);
 
     // processing variables
@@ -161,10 +162,11 @@ void RegisterCraftingJobs(cJobManager& mgr);
 void RegisterSurgeryJobs(cJobManager& mgr);
 void RegisterWrappedJobs(cJobManager& mgr);
 void RegisterManagerJobs(cJobManager& mgr);
-void RegisterFilmJobs(cJobManager& mgr);
 void RegisterTherapyJobs(cJobManager& mgr);
 void RegisterBarJobs(cJobManager& mgr);
 void RegisterFarmJobs(cJobManager& mgr);
 void RegisterClinicJobs(cJobManager& mgr);
+void RegisterFilmCrewJobs(cJobManager& mgr);
+void RegisterFilmingJobs(cJobManager& mgr);
 
 #endif //WM_GENERICJOB_H

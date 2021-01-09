@@ -44,13 +44,19 @@ float cJobPerformance::eval(const sGirl& girl, bool estimate) const {
 
     if (!estimate)
     {
-        int t = girl.tiredness() - 80;
+        float t = girl.tiredness() - 80;
         if (t > 0)
             performance -= (t + 2) * (t / 3);
+        float h = girl.health() - 25.f;
+        if (h < 0)
+            performance -= (h - 2) * (h / 3.f);
     }
 
-    if(!TraitMod.empty())
-        performance += girl.get_trait_modifier(TraitMod.c_str());
+    for(const auto& mod : TraitMod) {
+        performance += girl.get_trait_modifier(mod.Trait.c_str()) * mod.Weight;
+    }
+    performance = std::max(performance, 0.f);
+
     return performance;
 }
 
@@ -67,14 +73,17 @@ void cJobPerformance::load(const tinyxml2::XMLElement& source, const std::string
             Factors.push_back({skill, weight, min, max});
         }
     }
-    TraitMod = GetDefaultedStringAttribute(source, "Modifier", "");
-    if(TraitMod.empty()) {
-        TraitMod = prefix + ".performance";
-        g_Game->traits().load_modifier(source, TraitMod);
+
+    std::string mod_name = prefix + ".performance";
+    if(g_Game->traits().load_modifier(source, mod_name)) {
+        TraitMod.push_back(sTraitMod{mod_name, 1.f});
+    }
+    for(const auto& mod : IterateChildElements(source, "Mod")) {
+        TraitMod.push_back(sTraitMod{mod.GetText(), mod.FloatAttribute("Weight", 1.f)});
     }
 }
 
-void cJobGains::apply(sGirl& girl) const {
+void cJobGains::apply(sGirl& girl, int performance) const {
     // Improve stats
     int xp = XP, skill = Skill;
     enum LearningAbility {
@@ -120,11 +129,17 @@ void cJobGains::apply(sGirl& girl) const {
         }
     }
 
-    gain_traits(girl);
+    gain_traits(girl, performance);
 }
 
-void cJobGains::gain_traits(sGirl& girl) const {
+void cJobGains::gain_traits(sGirl& girl, int performance) const {
     for(auto& trait : TraitChanges) {
+        if(trait.PerformanceRequirement > performance)
+            continue;
+
+        if(trait.Chance < 100 && !g_Dice.percent(trait.Chance))
+            continue;
+
         if(trait.Gain) {
             cGirls::PossiblyGainNewTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
                                          trait.Message, false, trait.EventType);
@@ -142,6 +157,8 @@ void cJobGains::load(const tinyxml2::XMLElement& source) {
     auto load_trait_change = [&](const tinyxml2::XMLElement& element, bool gain) {
         std::string trait = GetStringAttribute(element, "Trait");
         int threshold = GetIntAttribute(element, "Threshold", -100, 100);
+        int performance = element.IntAttribute("MinPerformance", -1000);
+        int chance = element.IntAttribute("Chance", 100);
         Action_Types action = get_action_id(GetStringAttribute(element, "Action"));
         const char* msg_text = element.GetText();
         std::string message = (gain ? "${name} has gained the trait " : "${name} has lost the trait ") + trait;
@@ -150,7 +167,7 @@ void cJobGains::load(const tinyxml2::XMLElement& source) {
             message = msg_text;
         }
         EventType event_type = (EventType)element.IntAttribute("Event", EVENT_GOODNEWS);
-        TraitChanges.push_back({gain, trait, threshold, action, message, event_type});
+        TraitChanges.push_back({gain, trait, threshold, action, message, event_type, performance, chance});
     };
 
     for(const auto& trait_change : IterateChildElements(source, "GainTrait")) {

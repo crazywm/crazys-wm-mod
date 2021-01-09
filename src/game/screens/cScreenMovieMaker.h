@@ -19,6 +19,9 @@
 #pragma once
 
 #include "cGameWindow.h"
+#include <set>
+
+class sMovieStudio;
 
 class cScreenMovieMaker : public cGameWindow
 {
@@ -26,17 +29,20 @@ private:
     int autocreatemovies_id;// auto create movies checkbox
     int sceneslist_id;        // Scenes listbox
     int makethismovie_id;    // Make this movie
+    int running_movies_id;           // List box with running movies
     int releasemovie_id;    // Release movie
     int girlimage_id;        // Girl image
     int scrapscene_id;        // Scrap scene
-    int moveup_id;            // Move scene up in the movie
-    int movedown_id;        // Move scene down in the movie
     int addscene_id;        // add selected scene
     int removescene_id;        // removes selected scene
-    int scenedetails_id;    // scene details
     int moviedetails_id;    // movie details
 
+    int incticket_id;    // movie details
+    int decticket_id;    // movie details
+
     void set_ids() override;
+
+    std::set<int> m_ScenesInMovie;
 public:
     cScreenMovieMaker();
 
@@ -44,14 +50,11 @@ public:
     void process() override { };
     void update_image();
 
-    sMovieStudio& getStudio() const;
-
-    void movie_scene_up();
-    void movie_scene_down();
     void movie_add_scene();
     void movie_remove_scene();
 
+private:
     void on_select_source_scene(int selection);
-
     void on_select_movie_scene(int selection);
+    void on_select_running_movie(int selection);
 };

@@ -5,15 +5,18 @@
     </Description>
 
     <Performance>
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Beauty" Weight="2"/>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="NormalSex" Weight="1"/>
+        <Mod>work.pornstar</Mod>
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
-        <Skill Name="NormalSex" Weight="1" />
+        <Skill Name="Performance" Weight="2" Max="66"/>
+        <Skill Name="NormalSex" Weight="1" Max="66"/>
 
-        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
@@ -24,22 +27,71 @@
         </GainTrait>
     </Gains>
 
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" CanBeForced="1">
+        <LustInfluence Amount="20" SkillMin="25" BaseValue="15" Skill="NormalSex" />
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} worked as an actress filming sex scenes.</Text>
         </Message>
-        <Message Name="refuse">
-            <Text>${name} refused to fuck on film today.</Text>
+
+        <Message Name="work.perfect">
+            <Text>${name} made a perfect sex scene.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>${name} made a great sex scene.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>${name} made a good sex scene.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>${name} made a mediocre sex scene.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>${name} made a rather bad sex scene. This will make the viewers feel more awkward than aroused.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>${name} made the worst sex scene imaginable.</Text>
         </Message>
 
-        <Message Name="summary.like">
-            <Text>She loved having a man in her pussy today.</Text>
+        <Message Name="disobey.free">
+            <Text>${name} refused to perform in an Sex scene today.</Text>
         </Message>
-        <Message Name="summary.neutral">
-            <Text>She had a pleasant day fucking her co-star.</Text>
+        <Message Name="disobey.slave.nice">
+            <Text>
+                ${name} refused to get fucked on film today. Nice guy that you are, you let her be.
+            </Text>
         </Message>
-        <Message Name="summary.dislike">
-            <Text>She didn't want sex today, but she did it anyway.</Text>
+        <Message Name="disobey.slave.neutral">
+            <Text>
+                ${name} refused to get fucked on film today. "That's not how I wanted this to be," you say,
+                "but I've got bills to pay. Tie her up!"
+            </Text>
+        </Message>
+        <Message Name="disobey.slave.evil">
+            <Text>
+                "No, I'm not doing this!", ${name} complains. Ignoring her pleading, your men tie her up. "It seems
+                like a lesson in obedience is in order here", you say and turning to her co-star, you add "Pound her hard! And no foreplay!"
+            </Text>
+        </Message>
+
+        <Message Name="forced-filming">
+            <Text Condition="Performance>100">
+                Given ${name}'s rather 'unenthusiastic' performance, the scene turned out decent enough.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit<60">
+                ${name} is just laying there, totally unresponsive except for a few whimpers and cries.
+                Not a good scene.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit>=60">
+                Despite being tied up, ${name} managed to hurt the other actor. Needless to say, the scene
+                turned out rather bad.
+            </Text>
+            <Text Condition="Performance<50">
+                While tying her up made it possible to film this scene, the result looks so bad that maybe you should
+                have just sent her to the dungeon instead.
+            </Text>
         </Message>
     </Messages>
 </Job>

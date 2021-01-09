@@ -48,10 +48,16 @@ bool IGenericJob::Work(sGirl& girl, bool is_night, cRng& rng) {
         case eCheckWorkResult::ACCEPTS:
             return DoWork(girl, is_night);
         case eCheckWorkResult::REFUSES:
+            if(is_night) {
+                girl.m_Refused_To_Work_Night = true;
+            } else {
+                girl.m_Refused_To_Work_Day = true;
+            }
             return true;
         case eCheckWorkResult::IMPOSSIBLE:
             return false;
     }
+    assert(false);
 }
 
 int IGenericJob::d100() const {
@@ -63,7 +69,7 @@ bool IGenericJob::chance(float percent) const {
 }
 
 int IGenericJob::uniform(int min, int max) const {
-    return m_Rng->in_range(min, max);
+    return m_Rng->in_range(min, max + 1);
 }
 
 IGenericJob::IGenericJob(JOBS j) : m_Info{j, get_job_name(j)} {}
@@ -160,9 +166,6 @@ DECL_JOB(Whore);
 // - Movie Studio
 DECL_JOB(FilmDirector);
 DECL_JOB(FilmPromoter);
-DECL_JOB(CameraMage);
-DECL_JOB(CrystalPurifier);
-DECL_JOB(Fluffer);
 DECL_JOB(FilmStagehand);
 DECL_JOB(FilmRandom);
 
@@ -249,10 +252,7 @@ void RegisterWrappedJobs(cJobManager& mgr) {
 
 // - Movie Studio - Crew
     REGISTER_JOB(JOB_DIRECTOR, FilmDirector, "Dir", "She directs the filming, and keeps the girls in line. (max 1)").free_only();
-    REGISTER_JOB(JOB_PROMOTER, FilmPromoter, "Prmt", "She advertises the movies. (max 1)");
-    REGISTER_JOB(JOB_CAMERAMAGE, CameraMage, "CM", "She will film the scenes. (requires at least 1 to create a scene)");
-    REGISTER_JOB(JOB_CRYSTALPURIFIER, CrystalPurifier, "CP",  "She will clean up the filmed scenes. (requires at least 1 to create a scene)");
-    REGISTER_JOB(JOB_FLUFFER, Fluffer, "Fluf", "She will keep the porn stars aroused.");
+    REGISTER_JOB(JOB_PROMOTER, FilmPromoter, "Prmt", "She advertises the movies.");
     REGISTER_JOB_MANUAL(JOB_STAGEHAND, FilmStagehand, Cleaning, "StgH", "She helps setup equipment, and keeps the studio clean.");
 
     //Rand
@@ -311,8 +311,8 @@ cBasicJob::cBasicJob(JOBS job, const char* xml_file) : IGenericJob(job), m_Inter
     RegisterVariable("Performance", m_Performance);
 }
 
-void cBasicJob::apply_gains(sGirl& girl) {
-    m_Gains.apply(girl);
+void cBasicJob::apply_gains(sGirl& girl, int performance) {
+    m_Gains.apply(girl, performance);
 }
 
 void cBasicJob::load_from_xml(const char* xml_file) {
@@ -383,9 +383,13 @@ const std::string& cBasicJob::get_text(const std::string& prompt) const {
     try {
         return m_TextRepo->get_text(prompt, m_Interface);
     } catch (const std::out_of_range& oor) {
-        g_LogFile.error("job", "Trying to get missing text '", prompt, '\'');
+        g_LogFile.error("job", "Trying to get missing text '", prompt, "\' in job ", m_Info.Name);
         throw;
     }
+}
+
+bool cBasicJob::has_text(const std::string& prompt) const {
+    return m_TextRepo->has_text(prompt);
 }
 
 std::stringstream& cBasicJob::add_text(const std::string& prompt) {
@@ -397,7 +401,7 @@ std::stringstream& cBasicJob::add_text(const std::string& prompt) {
             return is_night_shift() ? "night" : "day";
         }
         assert(false);
-        }, rng());
+    }, rng());
     return ss;
 }
 

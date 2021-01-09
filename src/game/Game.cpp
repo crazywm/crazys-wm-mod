@@ -27,6 +27,7 @@
 #include "character/traits/ITraitsCollection.h"
 #include "character/cGirlPool.h"
 #include "sConfig.h"
+#include "movies/manager.h"
 
 namespace settings {
     extern const char* TAXES_RATE;
@@ -71,7 +72,8 @@ Game::Game() :
     m_GameSettings(new cGameSettings()),
     m_MarketGirls( new cGirlPool() ),
     m_Prison( new cGirlPool() ),
-    m_EventStack( new sScriptEventStack() )
+    m_EventStack( new sScriptEventStack() ),
+    m_MovieManager(new cMovieManager)
 {
     m_Player = std::make_unique<cPlayer>( create_traits_collection() );
 
@@ -417,6 +419,8 @@ void Game::save(tinyxml2::XMLElement& root)
     buildings().SaveXML(el);
 
     settings().save_xml(el);
+
+    movie_manager().save_xml(PushNewElement(el, "Movies"));
 }
 
 
@@ -556,6 +560,11 @@ cJobManager& Game::job_manager()
 sStorage& Game::storage()
 {
     return *m_Storage;
+}
+
+cMovieManager& Game::movie_manager()
+{
+    return *m_MovieManager;
 }
 
 Game::~Game() = default;
@@ -1125,6 +1134,13 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     callback("Loading Gangs.");
     g_LogFile.log(ELogLevel::NOTIFY, "Loading Gangs");
     g_Game->gang_manager().LoadGangsXML(source.FirstChildElement("Gang_Manager"));
+
+    auto* mvel = source.FirstChildElement("Movies");
+    if(mvel) {
+        m_MovieManager->load_xml(*mvel);
+    } else {
+        g_LogFile.log(ELogLevel::WARNING, "Could not find <Movies> element in save game");
+    }
 
     // TODO save the shop, and load items again here
     m_Shop->RestockShop();

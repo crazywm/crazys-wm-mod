@@ -1,0 +1,70 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="CP">
+    <Description>
+        She will clean up the filmed scenes. One Purifier can process at most 3 scenes per week.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Stat="Refinement" Weight="1"/>
+        <Factor Skill="Magic" Weight="1"/>
+        <Factor Skill="Crafting" Weight="1"/>
+    </Performance>
+
+    <Gains XP="5" Skill="3">
+        <Skill Name="Magic" Weight="1" />
+        <Skill Name="Crafting" Weight="1" />
+        <Stat Name="Confidence" Weight="1" />
+    </Gains>
+
+    <Messages>
+        <Message Name="no-crew">
+            <Text>There was no crew to film the scene, so ${name} took the day off.</Text>
+        </Message>
+        <Message Name="no-actress">
+            <Text>There were no actresses to film, so ${name} took the day off.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to work as a crystal purifier today.</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} was assigned to work as a Crystal Purifier.</Text>
+        </Message>
+        <Message Name="work.perfect">
+            <Text>
+                Her skill with movie crystals, together with her deep understanding of colour and contrast allowed
+                her to transform the scene into a masterpiece. Truly an outstanding work in post-production.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>
+                She preserves the recordings with great skill, and is able to perform some touch-ups that make the
+                scenes look even better.
+            </Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>
+                She knows how to preserve the recording, and has the skill to edit them further in post-production.
+                What ${name} is lacking is the experience on where to edit and how to touch up things in a more subtle
+                way.
+            </Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>
+                She managed to preserve the recording more or less in the same state as the original film.
+            </Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>
+                She managed to preserve the recordings in a storage crystal, though the image is somewhat distorted
+                in places.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>
+                Seeing the cracked movie crystal, you decide that ${name} probably should never again be left
+                unsupervised with the footage. It is a wonder that there is still something left of the scene.
+            </Text>
+        </Message>
+    </Messages>
+</Job>

@@ -25,14 +25,14 @@
 <Column     Name="Health"            Header="Health"                     Offset="562" /> 
 <Column     Name="Happiness"         Header="Happy"                      Offset="703" />
 <Column     Name="Tiredness"         Header="Tired"                      Offset="844" />
-<Column     Name="DayJob"            Header="Day Job"                    Offset="985" />
-<Column     Name="NightJob"          Header="Night Job"                  Offset="1407" />
-<Column     Name="is_pregnant"       Header="Preg"                       Offset="1829" />
-<Column     Name="is_slave"          Header="Slave"                      Offset="1970" />
-<Column     Name="Rebel"             Header="Rebel"                      Offset="2111" />
-<Column     Name="Age"               Header="Age"                        Offset="2252" />
-<Column     Name="Looks"             Header="Looks"                      Offset="2393" />
-<Column     Name="STAT_Fame"         Header="Fame"                       Offset="2534" />
-<Column     Name="SKILL_Performance" Header="Perform"                    Offset="2675" />
+<Column     Name="NightJob"          Header="Job"                        Offset="985" />
+<Column     Name="is_pregnant"       Header="Preg"                       Offset="1688" />
+<Column     Name="is_slave"          Header="Slave"                      Offset="1829" />
+<Column     Name="Rebel"             Header="Rebel"                      Offset="1970" />
+<Column     Name="Age"               Header="Age"                        Offset="2111" />
+<Column     Name="Looks"             Header="Looks"                      Offset="2252" />
+<Column     Name="STAT_Fame"         Header="Fame"                       Offset="2393" />
+<Column     Name="SKILL_Performance" Header="Perf"                       Offset="2534" />
+<Column     Name="STAT_Level"        Header="Level"                      Offset="2675" />
 </ListBox>
 </Screen>

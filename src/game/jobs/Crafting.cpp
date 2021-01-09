@@ -48,8 +48,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
 #pragma endregion
 #pragma region //    Job Performance            //
 
-    jobperformance = GetPerformance(girl, false);
-    craftpoints = jobperformance;
+    craftpoints = m_Performance;
 
     int dirtyloss = brothel->m_Filthiness / 10;        // craftpoints lost due to repairing equipment
     if (dirtyloss > 0)
@@ -59,7 +58,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
         ss << m_CraftingData.MsgRepair << "\n";
     }
 
-    int wages = m_CraftingData.Wages * (1.0 + (jobperformance - 70) / 100.0);
+    int wages = m_CraftingData.Wages * (1.0 + (m_Performance - 70) / 100.0);
     performance_msg();
     ss << "\n \n";
 
@@ -91,7 +90,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     girl.m_Tips = 0;
     girl.m_Pay = std::max(0, wages);
 
-    apply_gains(girl);
+    apply_gains(girl, m_Performance);
 
     // Update Enjoyment
     girl.upd_Enjoyment(m_CraftingData.Action, enjoy);
@@ -152,23 +151,23 @@ void GenericCraftingJob::DoWorkEvents(sGirl& girl) {
 }
 
 void GenericCraftingJob::performance_msg() {
-    if (jobperformance >= 245)
+    if (m_Performance >= 245)
     {
         ss << " She must be the perfect at this.";
     }
-    else if (jobperformance >= 185)
+    else if (m_Performance >= 185)
     {
         ss << " She's unbelievable at this.";;
     }
-    else if (jobperformance >= 145)
+    else if (m_Performance >= 145)
     {
         ss << " She's good at this job.";
     }
-    else if (jobperformance >= 100)
+    else if (m_Performance >= 100)
     {
         ss << " She made a few mistakes but overall she is okay at this.";
     }
-    else if (jobperformance >= 70)
+    else if (m_Performance >= 70)
     {
         ss << " She was nervous and made a few mistakes. She isn't that good at this.";
     }
@@ -204,8 +203,8 @@ cBlacksmithJob::cBlacksmithJob() :
 }
 
 void cBlacksmithJob::DoWorkEvents(sGirl& girl) {
-    int tired = (300 - (int)jobperformance);    // this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
-    int roll_a = uniform(0, 100) + (jobperformance - 75) / 20;
+    int tired = (300 - (int)m_Performance);    // this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
+    int roll_a = uniform(0, 100) + (m_Performance - 75) / 20;
     int roll_b = uniform(0, 100);
     if (roll_a <= 10)
     {
@@ -278,8 +277,8 @@ cCobblerJob::cCobblerJob() :
 }
 
 void cCobblerJob::DoWorkEvents(sGirl& girl) {
-    int tired = (300 - (int)jobperformance);    // this gets divided in roll_a by (10, 12 or 14) so it will end up around 0-23 tired
-    int roll_a = uniform(0, 100) + (jobperformance - 75) / 20;
+    int tired = (300 - (int)m_Performance);    // this gets divided in roll_a by (10, 12 or 14) so it will end up around 0-23 tired
+    int roll_a = uniform(0, 100) + (m_Performance - 75) / 20;
     int roll_b = uniform(0, 100);
     if (roll_a <= 10)
     {
@@ -341,8 +340,8 @@ cMakeItemJob::cMakeItemJob() :
 }
 
 void cMakeItemJob::DoWorkEvents(sGirl& girl) {
-    int tired = (300 - (int)jobperformance);    // this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
-    int roll_a = uniform(0, 100) + (jobperformance - 75) / 20;
+    int tired = (300 - (int)m_Performance);    // this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
+    int roll_a = uniform(0, 100) + (m_Performance - 75) / 20;
     int roll_b = uniform(0, 100);
     if (roll_a <= 10)
     {
@@ -403,7 +402,7 @@ cMakePotionsJob::cMakePotionsJob() :
 }
 
 void cMakePotionsJob::DoWorkEvents(sGirl& girl) {
-    int roll = uniform(0, 100) + (jobperformance - 75) / 20;
+    int roll = uniform(0, 100) + (m_Performance - 75) / 20;
     //enjoyed the work or not
     if (roll >= 90)
     {
@@ -445,8 +444,8 @@ cTailorJob::cTailorJob() :
 }
 
 void cTailorJob::DoWorkEvents(sGirl& girl) {
-    int tired = (300 - (int)jobperformance);    // this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
-    int roll_a = uniform(0, 100) + (jobperformance - 75) / 20;
+    int tired = (300 - (int)m_Performance);    // this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
+    int roll_a = uniform(0, 100) + (m_Performance - 75) / 20;
     int roll_b = uniform(0, 100);
     if (roll_a <= 10)
     {
@@ -523,8 +522,8 @@ cJewelerJob::cJewelerJob() :
 }
 
 void cJewelerJob::DoWorkEvents(sGirl& girl) {
-    int tired = (300 - (int)jobperformance);    // this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
-    int roll_a = uniform(0, 100) + (jobperformance - 75) / 20;
+    int tired = (300 - (int)m_Performance);    // this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
+    int roll_a = uniform(0, 100) + (m_Performance - 75) / 20;
     int roll_b = uniform(0, 100);
     if (roll_a <= 10)
     {

@@ -5,14 +5,25 @@
     </Description>
 
     <Performance>
+        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Stat="Beauty" Weight="1"/>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Strip" Weight="1"/>
+        <Mod>work.pornstar</Mod>
     </Performance>
 
     <Gains XP="10" Skill="3">
         <Skill Name="Performance" Weight="2" />
         <Skill Name="Strip" Weight="1" />
+        <Skill Name="Charisma" Weight="1" Max="50"/>
+        <GainTrait Trait="Sexy Air" Threshold="80" Action="WORKSTRIP" MinPerformance="150" Chance="25">
+        ${name} has been stripping for so long, when she walks, it seems her clothes just want to fall off.
+        </GainTrait>
     </Gains>
+
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="WORKSTRIP">
+        <LustInfluence Amount="5" SkillMin="5" BaseValue="5" Skill="Strip" />
+    </Config>
 
     <Messages>
         <Message Name="work">
@@ -39,16 +50,6 @@
         </Message>
         <Message Name="work.worst">
             <Text>${name} is the worst stripper you have EVER seen. Way to shy to even look up and she blushed the entire remakes.</Text>
-        </Message>
-
-        <Message Name="summary.like">
-            <Text>She loved stripping for the camera.</Text>
-        </Message>
-        <Message Name="summary.neutral">
-            <Text>She had a pleasant day stripping today.</Text>
-        </Message>
-        <Message Name="summary.dislike">
-            <Text>She stripped on film today, but didn't like it.</Text>
         </Message>
     </Messages>
 </Job>

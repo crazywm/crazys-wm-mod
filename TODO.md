@@ -24,7 +24,7 @@
   - [ ] House
   - [ ] Sex Training
   - [ ] Arena
-  - [ ] Studio
+  - [ ] Studio -- almost done
   - [ ] Centre
 
 ## Scripting
@@ -33,6 +33,10 @@
   - [ ] Player inventory
 * [ ] New Triggers:
   - [ ] OnBought
+  
+## Movies
+* [ ] MarketResearch Job
+* [ ] Split Director into Executive (Matron) and Director
 
 ## UI
 * [ ] Per building/global anti preg setting
@@ -41,6 +45,7 @@
 * [ ] Active Building Widget
 * [ ] LoadGame delete button
 * [ ] LoadGame more info
+* [ ] Multi-Select when hiring gangs
 
 ## Bugs
 * [ ] some parts of the old scripts are still missing
@@ -58,3 +63,4 @@
   - [ ] "your inventory is full", but seems to buy anyway
   - [ ] "your inventory is full" for sell button
 * [ ] gracefully handle missing/corrupt config file
+* [ ] may select wrong scene when removing in movie maker

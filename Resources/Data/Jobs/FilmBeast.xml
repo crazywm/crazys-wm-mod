@@ -6,20 +6,23 @@
 
     <Performance>
         <Factor Stat="Beauty" Weight="2"/>
-        <Factor Stat="Charisma" Weight="2"/>
-        <Factor Skill="AnimalHandling" />
-        <Factor Skill="Beastiality" />
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Skill="Performance" Weight="4"/>
+        <Factor Skill="AnimalHandling" Weight="1"/>
+        <Factor Skill="Beastiality" Weight="1"/>
+
+        <Mod>work.pornstar</Mod>
 
         <!-- Good -->
-        <Trait Name="Mind Fucked" Value="100"/>    <!-- Enjoyment and craziness -->
+        <Trait Name="Mind Fucked" Value="10"/>    <!-- Enjoyment and craziness -->
         <Trait Name="Masochist" Value="35"/>
-        <Trait Name="Broken Will" Value="30"/>
-        <Trait Name="Dependant" Value="25"/>
-        <Trait Name="Twisted" Value="25"/>
-        <Trait Name="Goddess" Value="60"/> <!-- High-status degraded -->
-        <Trait Name="Angel" Value="50"/>
-        <Trait Name="Queen" Value="50"/>
-        <Trait Name="Princess" Value="40"/>
+        <Trait Name="Broken Will" Value="10"/>
+        <Trait Name="Dependant" Value="5"/>
+        <Trait Name="Twisted" Value="15"/>
+        <Trait Name="Goddess" Value="30"/> <!-- High-status degraded -->
+        <Trait Name="Angel" Value="25"/>
+        <Trait Name="Queen" Value="25"/>
+        <Trait Name="Princess" Value="20"/>
         <Trait Name="Noble" Value="15"/>
         <Trait Name="Idol" Value="25"/>
         <Trait Name="Priestess" Value="25"/>
@@ -28,16 +31,19 @@
         <Trait Name="Tsundere" Value="30"/>    <!-- beaten customers wanna see this! -->
         <Trait Name="Yandere" Value="25"/>
 
-        <!-- Bad -->
         <Trait Name="Iron Will" Value="40"/>   <!-- Try not to put on a show -->
         <Trait Name="Fearless" Value="25"/>
+
+        <Trait Name="Fragile" Value="-30"/>    <!-- Tends to get hurt too much on set -->
+        <Trait Name="Delicate" Value="-30"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="4" />
+        <Skill Name="Performance" Weight="4" Max="66"/>
         <Skill Name="Beastiality" Weight="1" />
         <Skill Name="AnimalHandling" Weight="1" />
-        <GainTrait Trait="Porn Star" Threshold="80" Action="WORKMOVIE">
+
+        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
@@ -45,9 +51,17 @@
         </GainTrait>
     </Gains>
 
+    <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" MinimumHealth="25" CanBeForced="1">
+        <LustInfluence Amount="20" SkillMin="50" BaseValue="35" Skill="Beastiality" />
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} was filmed being fucked by animals.</Text>
+            <Text Condition="Nymphomaniac">
+                "Bestiality? Aren't we all animals?!"
+                As long as it will fuck her, sex addict ${name} really doesn't care WHAT it is.
+            </Text>
         </Message>
         <Message Name="crew.refuse.health">
             <Text>
@@ -55,6 +69,7 @@
                 "She could get hurt."
             </Text>
         </Message>
+
         <Message Name="disobey.free">
             <Text>${name} refused to be fucked by animals on film. She left the set.</Text>
         </Message>
@@ -95,15 +110,22 @@
             <Text>It was a poor scene.</Text>
         </Message>
 
-
-        <Message Name="summary.like">
-            <Text>She loved performing on film today.</Text>
-        </Message>
-        <Message Name="summary.neutral">
-            <Text>She enjoyed this performance.</Text>
-        </Message>
-        <Message Name="summary.dislike">
-            <Text>She found this awkward and did not enjoy it.</Text>
+        <Message Name="forced-filming">
+            <Text Condition="Performance>100">
+                Given ${name}'s rather 'unenthusiastic' performance, the scene turned out decent enough.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit<60">
+                ${name} is just laying there, totally unresponsive except for a few whimpers and cries.
+                Not a good scene.
+            </Text>
+            <Text Condition="Performance<125^stat:Spirit>=60">
+                As a result of all her struggeling, the beast seriously injured ${name}. The scene turned out rather
+                bad.
+            </Text>
+            <Text Condition="Performance<50">
+                While tying her up made it possible to film this scene, the result looks so bad that maybe you should
+                have just sent her to the dungeon instead.
+            </Text>
         </Message>
     </Messages>
 </Job>

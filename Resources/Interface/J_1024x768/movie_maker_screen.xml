@@ -1,40 +1,47 @@
 <Screen>
 <Window     Name="Movie Maker Window"                                       XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
 
-<Text       Name="Scenes"               Text="Available Scenes"             XPos="7"       YPos="12"       Width="592"     Height="20"           FontSize="12"            />           
-<Checkbox   Name="AutoCreateMovies"     Text="Auto Create Movies"           XPos="450"      YPos="10"       Width="12"      Height="16"     FontSize="9"                  LeftOrRight="false" />
-<ListBox    Name="ScenesList"                                               XPos="7"       YPos="35"       Width="675"     Height="337"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
-<Column     Name="SceneNumber"          Header="#"                          Offset="0"  />                                   
-<Column     Name="Name"                 Header="Scene Name"                 Offset="52"  />                                  
-<Column     Name="Actress"              Header="Actress"                    Offset="307"  />                                 
-<Column     Name="Director"             Header="Director"                   Offset="404"  />                                 
-<Column     Name="Job"                  Header="Job"                        Offset="501"  />                                 
-<Column     Name="Quality"              Header="Quality"                    Offset="598"  />                                 
+<Text       Name="Scenes"               Text="Available Scenes"             XPos="7"       YPos="12"       Width="412"     Height="20"           FontSize="12"            />
+<ListBox    Name="ScenesList"                                               XPos="7"       YPos="35"       Width="412"     Height="337"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<Column     Name="Type"                 Header="Scene Type"                 Offset="0"  />
+<Column     Name="Actress"              Header="Actress"                    Offset="75"  />
+<Column     Name="Director"             Header="Director"                   Offset="169"  />
+<Column     Name="TechnicalQuality"     Header="Cinemat."                   Offset="263"  />
+<Column     Name="ContentQuality"       Header="Content"                    Offset="338"  />
 </ListBox>                                                                                                                  
 
 
-<Text       Name="Movie"                Text="Current Movie"                XPos="7"       YPos="370"       Width="592"     Height="20"     FontSize="12"            />           
-<ListBox    Name="MakeThisMovie"                                            XPos="7"       YPos="393"       Width="675"     Height="337"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
-<Column     Name="MovieSceneNumber"     Header="#"                          Offset="0"  />                                   
-<Column     Name="Name"                 Header="Scene Name"                 Offset="52"  />                                  
-<Column     Name="Actress"              Header="Actress"                    Offset="307"  />                                 
-<Column     Name="Director"             Header="Director"                   Offset="404"  />                                 
-<Column     Name="Job"                  Header="Job"                        Offset="501"  />                                 
-<Column     Name="Quality"              Header="Quality"                    Offset="598"  />                                 
+<Text       Name="Movie"                Text="Current Movie"                XPos="7"       YPos="370"       Width="412"     Height="20"     FontSize="12"            />
+<ListBox    Name="MakeThisMovie"                                            XPos="7"       YPos="393"       Width="412"     Height="337"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+    <Column     Name="Type"                 Header="Scene Type"                 Offset="0"  />
+    <Column     Name="Actress"              Header="Actress"                    Offset="75"  />
+    <Column     Name="Director"             Header="Director"                   Offset="169"  />
+    <Column     Name="TechnicalQuality"     Header="Cinemat."                   Offset="263"  />
+    <Column     Name="ContentQuality"       Header="Content"                    Offset="338"  />
 </ListBox>                                                                                                                  
 
 
-<Button     Name="ScrapScene"           Image="minus_24x24"                 XPos="690"      YPos="250"      Width="18"      Height="24"     Transparency="true"/>
-<Button     Name="AddScene"             Image="ShiftDown"                   XPos="690"      YPos="324"      Width="36"      Height="48"     Transparency="true"/>
-<Button     Name="RemoveScene"          Image="ShiftUp"                     XPos="690"      YPos="393"      Width="36"      Height="48"     Transparency="true"/>
-<Button     Name="MoveUp"               Image="ShiftUp"                     XPos="690"      YPos="521"      Width="24"      Height="32"     Transparency="true"/>
-<Button     Name="MoveDown"             Image="ShiftDown"                   XPos="690"      YPos="563"      Width="24"      Height="32"     Transparency="true"/>
+<Button     Name="ScrapScene"           Image="minus_24x24"                 XPos="427"      YPos="250"      Width="18"      Height="24"     Transparency="true"/>
+<Button     Name="AddScene"             Image="ShiftDown"                   XPos="427"      YPos="324"      Width="36"      Height="48"     Transparency="true"/>
+<Button     Name="RemoveScene"          Image="ShiftUp"                     XPos="427"      YPos="393"      Width="36"      Height="48"     Transparency="true"/>
 
-<Text       Name="SceneDetails"         Text=""                             XPos="727"      YPos="35"       Width="270"     Height="297"    FontSize="7"  />
-<Text       Name="MovieDetails"         Text=""                             XPos="727"      YPos="393"      Width="270"     Height="297"    FontSize="7"  />
+<Text       Name="SceneDetails"         Text=""                             XPos="487"      YPos="35"       Width="270"     Height="297"    FontSize="7"  />
+<Text       Name="MovieDetails"         Text=""                             XPos="487"      YPos="420"      Width="300"     Height="297"    FontSize="7"  />
 
-
-<Button     Name="ReleaseMovieButton"   Image="ReleaseMovie"                XPos="690"      YPos="698"      Width="120"     Height="32"     Transparency="true" />
+<Checkbox   Name="AutoCreateMovies"     Text="Auto Create Movies"           XPos="427"      YPos="670"       Width="12"      Height="16"     FontSize="9"                  LeftOrRight="false" />
+<Button     Name="ReleaseMovieButton"   Image="ReleaseMovie"                XPos="427"      YPos="698"      Width="120"     Height="32"     Transparency="true" />
 <Button     Name="BackButton"           Image="Back"                        XPos="847"     YPos="690"      Width="150"     Height="40"     Transparency="true" PushWindow="<back>"/>
+
+<ListBox    Name="MoviesList"                                               XPos="487"       YPos="35"       Width="412"     Height="337"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+    <Column     Name="Name"                 Header="Name"                       Offset="0"  />
+    <Column     Name="Price"                Header="Ticket"                     Offset="131"  />
+    <Column     Name="Age"                  Header="Running"                    Offset="187"  />
+    <Column     Name="EarningsLastWeek"     Header="Last Week"                  Offset="243"  />
+    <Column     Name="TotalEarnings"        Header="Box Office"                 Offset="299"  />
+    <Column     Name="Cost"                 Header="Budget"                 Offset="355"  />
+</ListBox>
+
+    <Button     Name="IncreaseTicketPrice"             Image="ShiftUp"                     XPos="652"      YPos="380"      Width="24"      Height="32"     Transparency="true"/>
+    <Button     Name="DecreaseTicketPrice"             Image="ShiftDown"                   XPos="682"      YPos="380"      Width="24"      Height="32"     Transparency="true"/>
 
 </Screen>

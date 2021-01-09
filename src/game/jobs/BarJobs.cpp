@@ -48,7 +48,7 @@ void cBarJob::HandleGains(sGirl& girl, int enjoy, int fame) {
 
     girl.fame(fame);
 
-    apply_gains(girl);
+    apply_gains(girl, m_Performance);
 }
 
 IGenericJob::eCheckWorkResult cBarJob::CheckWork(sGirl& girl, bool is_night) {
