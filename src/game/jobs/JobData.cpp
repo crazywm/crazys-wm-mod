@@ -33,7 +33,7 @@ float cJobPerformance::eval(const sGirl& girl, bool estimate) const {
     float performance = 0.f;
     float weights = 0.f;
     for(auto& fac : Factors) {
-        float add = std::min(fac.Minimum, std::max(fac.Maximum, (float)girl.get_attribute(fac.Source)));
+        float add = std::max(fac.Minimum, std::min(fac.Maximum, (float)girl.get_attribute(fac.Source)));
         add = 100.f * (add - fac.Minimum) / (fac.Maximum - fac.Minimum);
         performance += add * fac.Weight;
         weights += fac.Weight;
