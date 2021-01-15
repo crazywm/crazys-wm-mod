@@ -302,6 +302,8 @@ void cTraitsCollection::load_from_xml(const tinyxml2::XMLElement &root) {
             // ignore the error
         }
     }
+    m_DirtyFlag = true;
+    update();
 }
 
 void cTraitsCollection::save_to_xml(tinyxml2::XMLElement &root) {
