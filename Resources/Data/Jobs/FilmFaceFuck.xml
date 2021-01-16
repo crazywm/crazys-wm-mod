@@ -43,7 +43,7 @@
     <Gains XP="10" Skill="3">
         <Skill Name="Performance" Weight="2" Max="66"/>
         <Skill Name="OralSex" Weight="1" Max="75"/>
-        <Skill Name="Constitution" Weight="1" Max="33"/>
+        <Stat Name="Constitution" Weight="1" Max="33"/>
 
         <GainTrait Trait="Mind Fucked" Threshold="90" Action="PORNSTAR" Event="2">
             She has been abused so much she is now completely Mind Fucked.

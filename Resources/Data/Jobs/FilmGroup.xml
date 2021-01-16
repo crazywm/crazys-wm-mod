@@ -15,7 +15,7 @@
     <Gains XP="10" Skill="3">
         <Skill Name="Performance" Weight="2" />
         <Skill Name="Group" Weight="1" Max="50"/>
-        <Skill Name="Constitution" Weight="1" Max="40"/>
+        <Stat Name="Constitution" Weight="1" Max="40"/>
 
         <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.

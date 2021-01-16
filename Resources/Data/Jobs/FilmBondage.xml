@@ -53,7 +53,7 @@
     <Gains XP="10" Skill="3">
         <Skill Name="Performance" Weight="4" Max="66"/>
         <Skill Name="BDSM" Weight="2"/>
-        <Skill Name="Constitution" Weight="1" Max="50"/>
+        <Stat Name="Constitution" Weight="1" Max="50"/>
 
         <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.

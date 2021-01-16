@@ -64,3 +64,4 @@
   - [ ] "your inventory is full" for sell button
 * [ ] gracefully handle missing/corrupt config file
 * [ ] may select wrong scene when removing in movie maker
+* [ ] slave market problem from discord
