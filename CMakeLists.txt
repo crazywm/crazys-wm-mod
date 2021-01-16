@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.12)
-project(WM VERSION 7.0.7)
+project(WM VERSION 7.01.10)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(Boost REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2Image REQUIRED)
 find_package(SDL2TTF REQUIRED)
+find_package(FFMPEG REQUIRED)
 
 include(Doxygen)
 

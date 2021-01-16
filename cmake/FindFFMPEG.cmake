@@ -25,6 +25,7 @@ else()
 	
     target_include_directories(FFMPEG INTERFACE ${prefix}/include)
     install(DIRECTORY ${prefix}/bin/ DESTINATION ${CMAKE_INSTALL_BINDIR})
+    install(FILES ${prefix}/LICENSE.txt DESTINATION ${CMAKE_INSTALL_BINDIR}/LICENSE.ffmpeg.txt)
 	
     add_library(FFMPEG::FFMPEG ALIAS FFMPEG)
 endif()

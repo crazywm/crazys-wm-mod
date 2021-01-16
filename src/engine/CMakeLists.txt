@@ -44,8 +44,6 @@ set(WIDGETS_SRC
 
 SET(XML_SRC xml/getattr.cpp xml/util.cpp)
 
-find_package(FFMPEG REQUIRED)
-
 add_library(WMEngineObjects OBJECT ${SRC} ${WIDGETS_SRC} ${INTERFACE_SRC} ${XML_SRC})
 target_link_libraries(WMEngineObjects PUBLIC SDL2::SDL2 lua::lua Boost::headers tinyxml2 FFMPEG::FFMPEG)
 target_link_libraries(WMEngineObjects PRIVATE SDL2::TTF SDL2::Image doctest::doctest)
