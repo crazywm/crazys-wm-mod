@@ -374,7 +374,7 @@ void cBasicJob::load_from_xml_internal(const char* xml_file) {
     }
     const auto* config_el = job_data->FirstChildElement("Config");
     if(config_el) {
-        load_from_xml_callback(*job_data);
+        load_from_xml_callback(*config_el);
     }
 }
 
