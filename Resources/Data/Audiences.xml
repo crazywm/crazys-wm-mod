@@ -1,7 +1,7 @@
 <Audiences>
     <TargetGroup Name="The Mob" ForcedIsTurnOff="0.1">
         <Amount Min="2000" Max="4000" />
-        <RequiredScore Min="30" Max="50" />
+        <RequiredScore Min="25" Max="45" />
         <SpendingPower Min="2" Max="6" />
 
         <TurnOff Category="Tease" Value="0.0" />
@@ -17,7 +17,7 @@
 
     <TargetGroup Name="Families" ForcedIsTurnOff="1.0">
         <Amount Min="2000" Max="4000" />
-        <RequiredScore Min="100" Max="200" />
+        <RequiredScore Min="110" Max="200" />
         <SpendingPower Min="15" Max="25" />
 
         <TurnOff Category="Tease" Value="0.0" />
@@ -37,7 +37,7 @@
 
     <TargetGroup Name="Workers" ForcedIsTurnOff="0.33">
         <Amount Min="2000" Max="4000" />
-        <RequiredScore Min="90" Max="180" />
+        <RequiredScore Min="100" Max="180" />
         <SpendingPower Min="15" Max="20" />
 
         <TurnOff Category="Tease" Value="0.0" />
@@ -45,15 +45,15 @@
         <TurnOff Category="Hard" Value="0.0" />
         <TurnOff Category="Extreme" Value="0.5" />
 
-        <Desire Category="Tease" Min="0.8" Max="1.0" />
-        <Desire Category="Soft" Min="0.8" Max="1.0" />
-        <Desire Category="Hard" Min="0.8" Max="1.0" />
+        <Desire Category="Tease" Min="0.5" Max="0.8" />
+        <Desire Category="Soft" Min="0.7" Max="1.0" />
+        <Desire Category="Hard" Min="0.7" Max="1.0" />
         <Desire Category="Extreme" Min="0.5" Max="0.8" />
     </TargetGroup>
 
     <TargetGroup Name="Perverts" ForcedIsTurnOff="0.0">
         <Amount Min="1000" Max="2000" />
-        <RequiredScore Min="90" Max="180" />
+        <RequiredScore Min="100" Max="180" />
         <SpendingPower Min="20" Max="30" />
 
         <TurnOff Category="Tease" Value="0.75" />
@@ -61,7 +61,7 @@
         <TurnOff Category="Hard" Value="0.0" />
         <TurnOff Category="Extreme" Value="0.0" />
 
-        <Desire Category="Tease" Min="0.0" Max="0.1" />
+        <Desire Category="Tease" Min="0.0" Max="0.2" />
         <Desire Category="Soft" Min="0.4" Max="0.8" />
         <Desire Category="Hard" Min="1.0" Max="1.0" />
         <Desire Category="Extreme" Min="0.7" Max="0.9" />
@@ -75,7 +75,7 @@
 
     <TargetGroup Name="Merchants" ForcedIsTurnOff="0.9">
         <Amount Min="1000" Max="1600" />
-        <RequiredScore Min="110" Max="220" />
+        <RequiredScore Min="120" Max="220" />
         <SpendingPower Min="25" Max="35" />
 
         <TurnOff Category="Tease" Value="0.0" />
@@ -83,32 +83,32 @@
         <TurnOff Category="Hard" Value="0.0" />
         <TurnOff Category="Extreme" Value="0.5" />
 
-        <Desire Category="Tease" Min="0.8" Max="1.0" />
+        <Desire Category="Tease" Min="0.5" Max="1.0" />
         <Desire Category="Soft" Min="0.8" Max="1.0" />
         <Desire Category="Hard" Min="0.8" Max="1.0" />
         <Desire Category="Extreme" Min="0.8" Max="1.0" />
     </TargetGroup>
 
     <TargetGroup Name="The Aristocracy" ForcedIsTurnOff="0.5">
-        <Amount Min="400" Max="1000" />
-        <RequiredScore Min="200" Max="300" />
-        <SpendingPower Min="35" Max="50" />
+        <Amount Min="450" Max="1100" />
+        <RequiredScore Min="210" Max="300" />
+        <SpendingPower Min="35" Max="55" />
 
         <TurnOff Category="Tease" Value="0.0" />
         <TurnOff Category="Soft" Value="0.0" />
         <TurnOff Category="Hard" Value="0.2" />
         <TurnOff Category="Extreme" Value="0.5" />
 
-        <Desire Category="Tease" Min="0.8" Max="1.0" />
-        <Desire Category="Soft" Min="0.8" Max="1.0" />
-        <Desire Category="Hard" Min="0.8" Max="1.0" />
-        <Desire Category="Extreme" Min="0.8" Max="1.0" />
+        <Desire Category="Tease" Min="0.5" Max="0.9" />
+        <Desire Category="Soft" Min="0.7" Max="1.0" />
+        <Desire Category="Hard" Min="0.7" Max="1.0" />
+        <Desire Category="Extreme" Min="0.7" Max="1.0" />
     </TargetGroup>
 
     <TargetGroup Name="Sadists" ForcedIsTurnOff="0.0">
-        <Amount Min="200" Max="800" />
-        <RequiredScore Min="130" Max="250" />
-        <SpendingPower Min="35" Max="50" />
+        <Amount Min="300" Max="800" />
+        <RequiredScore Min="150" Max="300" />
+        <SpendingPower Min="35" Max="60" />
 
         <TurnOff Category="Tease" Value="0.9" />
         <TurnOff Category="Soft" Value="0.2" />
@@ -128,9 +128,9 @@
     </TargetGroup>
 
     <TargetGroup Name="The 'Artistic Movies' Club" ForcedIsTurnOff="0.9">
-        <Amount Min="200" Max="600" />
-        <RequiredScore Min="250" Max="400" />
-        <SpendingPower Min="35" Max="60" />
+        <Amount Min="275" Max="600" />
+        <RequiredScore Min="260" Max="400" />
+        <SpendingPower Min="35" Max="65" />
 
         <TurnOff Category="Tease" Value="0.2" />
         <TurnOff Category="Soft" Value="0.0" />
@@ -140,7 +140,7 @@
         <Desire Category="Tease" Min="0.5" Max="0.8" />
         <Desire Category="Soft" Min="1.0" Max="1.0" />
         <Desire Category="Hard" Min="0.4" Max="0.6" />
-        <Desire Category="Extreme" Min="1.0" Max="0.0" />
+        <Desire Category="Extreme" Min="0.0" Max="0.0" />
     </TargetGroup>
 
 </Audiences>

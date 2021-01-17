@@ -106,9 +106,7 @@ void cScreenGallery::init(bool back)
         if (numimages[i] > 0)
         {
             if (startmode == -1) startmode = i;
-            std::stringstream num0;    num0 << numimages[i];
-
-            std::vector<std::string> dataP{ galtxt[i], num0.str() };
+            std::vector<FormattedCellData> dataP{ mk_text(galtxt[i]), mk_num(numimages[i]) };
             AddToListBox(imagelist_id, i, std::move(dataP));
         }
     }

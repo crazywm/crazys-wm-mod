@@ -44,6 +44,13 @@ public:
 
 };
 
+class cJobDirector : public cCrewJob {
+public:
+    cJobDirector();
+    void HandleUpdate(sGirl& girl, float performance) override {};
+
+};
+
 bool DoWork(sGirl& girl, bool is_night);
 cCrewJob::eCheckWorkResult cCrewJob::CheckWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
@@ -53,14 +60,13 @@ cCrewJob::eCheckWorkResult cCrewJob::CheckWork(sGirl& girl, bool is_night) {
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
-    else if (Num_Actress(*brothel) < 1)
+    else if (GetNumberActresses(*brothel) < 1)
     {
         add_text("no-actress");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
-    // TODO find or define a good action here
     if (girl.disobey_check(ACTION_MOVIECREW, job()))
     {
         add_text("refuse");
@@ -75,39 +81,37 @@ bool cCrewJob::DoWork(sGirl& girl, bool is_night) {
     cGirls::UnequipCombat(girl);    // not for studio crew
     int wages = 50;
 
-    double performance = girl.job_performance(job(), false);
-
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
     {
-        performance *= 0.9;
+        m_Performance *= 0.9;
         wages = 0;
     }
     else    // work out the pay between the house and the girl
     {
         // `J` zzzzzz - need to change pay so it better reflects how well she filmed the films
-        int roll_max = performance;
+        int roll_max = m_Performance;
         roll_max /= 4;
         wages += uniform(10, 10 + roll_max);
     }
 
-    if (performance >= 166)
+    if (m_Performance >= 166)
     {
         add_text("work.perfect");
     }
-    else if (performance >= 133)
+    else if (m_Performance >= 133)
     {
         add_text("work.great");
     }
-    else if (performance >= 100)
+    else if (m_Performance >= 100)
     {
         add_text("work.good");
     }
-    else if (performance >= 66)
+    else if (m_Performance >= 66)
     {
         add_text("work.ok");
     }
-    else if (performance >= 33)
+    else if (m_Performance >= 33)
     {
         add_text("work.bad");
     }
@@ -120,10 +124,10 @@ bool cCrewJob::DoWork(sGirl& girl, bool is_night) {
     girl.m_Tips = 0;
     girl.m_Pay = std::max(0, wages);
 
-    HandleUpdate(girl, performance);
+    HandleUpdate(girl, m_Performance);
 
     // Improve stats
-    apply_gains(girl, performance);
+    apply_gains(girl, m_Performance);
 
     return false;
 }
@@ -144,8 +148,13 @@ void cJobFluffer::HandleUpdate(sGirl& girl, float performance) {
     brothel->m_FluffPoints += (int)performance;
 }
 
+cJobDirector::cJobDirector() : cCrewJob(JOB_DIRECTOR, "Director.xml") {
+    m_EventImage = IMGTYPE_FORMAL;
+}
+
 void RegisterFilmCrewJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cJobCameraMage>());
     mgr.register_job(std::make_unique<cJobFluffer>());
     mgr.register_job(std::make_unique<cJobCrystalPurifier>());
+    mgr.register_job(std::make_unique<cJobDirector>());
 }

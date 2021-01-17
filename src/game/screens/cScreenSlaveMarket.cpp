@@ -249,12 +249,11 @@ bool cScreenSlaveMarket::buy_slaves()
 
     int totalcost = 0;
     std::vector<sGirl*> girls_bought;
-    for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
-    {
+    ForAllSelectedItems(slave_list_id, [&](int sel) {
         auto girl = g_Game->GetSlaveMarket().get_girl(sel);
         girls_bought.push_back(girl);
         totalcost += g_Game->tariff().slave_buy_price(*girl);
-    }
+    });
     numgirls = girls_bought.size();
 
     // Check if there is enough room where we want to send her
@@ -746,17 +745,14 @@ bool cScreenSlaveMarket::change_selected_girl(int selected)
         }
     }
     bool MatchSel = false;
-    int i;
+    int first_candidate = -1;
 
-    for (i = multi_slave_first(); i != -1; i = multi_slave_next())
-    {
-        if (i == m_SelectedGirl)
-        {
-            MatchSel = true;
-            break;
-        }
-    }
-    if (!MatchSel) m_SelectedGirl = multi_slave_first();
+    ForAllSelectedItems(slave_list_id, [&](int sel) {
+        MatchSel |= sel == m_SelectedGirl;
+        if(first_candidate == -1)  first_candidate = sel;
+    });
+
+    if (!MatchSel) m_SelectedGirl = first_candidate;
     // if the player selected an empty slot make that into "nothing selected" and return
     //if (MarketSlaveGirls[selection] == nullptr) selection = -1;
     // disable/enable buttons based on whether a girl is selected

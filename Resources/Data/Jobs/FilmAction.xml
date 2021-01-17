@@ -41,7 +41,7 @@
 
     <Gains XP="10" Skill="3">
         <Skill Name="Performance" Weight="4" Max="80"/>
-        <Skill Name="Combat" Weight="2" Max="40"/>
+        <Skill Name="Combat" Weight="1" Max="30"/>
         <Stat Name="Agility" Weight="2" Max="50" />
         <Stat Name="Confidence" Weight="1" Max="33" />
 

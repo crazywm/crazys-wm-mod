@@ -20,6 +20,7 @@
 #include "manager.h"
 #include "utils/DirPath.h"
 #include "xml/util.h"
+#include "xml/getattr.h"
 #include "tinyxml2.h"
 #include "cRng.h"
 #include <cmath>
@@ -32,13 +33,18 @@
 
 extern cRng g_Dice;
 
+namespace settings {
+    extern const char* MOVIES_SATURATION_DECAY;
+    extern const char* MOVIES_HYPE_DECAY;
+    extern const char* MOVIES_AUDIENCE_UPDATE_CHANCE;
+    extern const char* MOVIES_REPEATED_SCENE_FACTOR;
+    extern const char* MOVIES_RUNNING_WEEKS;
+    extern const char* MOVIES_AUDIENCE_BASE_FRACTION;
+    extern const char* MOVIES_AUDIENCE_SATED_CHANCE;
+}
+
 
 namespace {
-    // maybe turn these into game constants later
-    sPercent CHANCE_TO_UPDATE_GROUP = sPercent(2);
-    float SATURATION_DECAY = 0.05;
-    float HYPE_DECAY = 0.1;
-
     void update_group_by_spec(sTargetGroup& group, const sTargetGroupSpec& spec) {
         group.Name = spec.Name;
         group.Favourite = spec.Favourites[g_Dice.random(spec.Favourites.size())];
@@ -79,6 +85,8 @@ auto cMovieManager::rate_movie_for_audience(const sTargetGroup& audience, const 
 
     std::map<SceneType, int> type_counts;
 
+    const float multi_scene_factor = 1.f - g_Game->settings().get_float(settings::MOVIES_REPEATED_SCENE_FACTOR);
+
     for(const auto& scene : movie.Scenes) {
         float desired = audience.Desires[(int)scene.Category];
 
@@ -87,7 +95,7 @@ auto cMovieManager::rate_movie_for_audience(const sTargetGroup& audience, const 
             found = type_counts.insert(std::make_pair(scene.Type, 0)).first;
         }
         // desire for scene type decreases for repetitions
-        desired *= std::pow(0.8, found->second);
+        desired *= std::pow(multi_scene_factor, found->second);
 
         if(scene.Type == audience.Favourite) {
             desired = 1.0;
@@ -100,13 +108,20 @@ auto cMovieManager::rate_movie_for_audience(const sTargetGroup& audience, const 
     }
 
     float price_fraction = static_cast<float>(movie.TicketPrice) / audience.SpendingPower;
-    float can_afford = sigmoid(6.f * (1.f - price_fraction));
+    float can_afford = sigmoid(7.f * (1.f - price_fraction));
 
     const float log_factor = std::log(0.9f) / std::log(0.5f);
     float quality_threshold = audience.RequiredScore * std::max(std::min(1.f, std::exp(std::log(price_fraction) * log_factor)), 0.8f);
-    float quality_factor = sigmoid(6.f * (total_score / quality_threshold - 1.f));
 
-    float base_hype = 0.05f + 0.05f * sigmoid(movie.Hype - movie.Age / 2 - 5);
+    // we want a contribution from relative quality, so that for low quality movies the curves are sharp,
+    // but also a contribution from absolute quality, so the curves don't become too smooth (and never reach 100%)
+    // for the high-quality segment
+    float relative_quality = total_score / quality_threshold - 1.f;
+    float absolute_quality = (total_score - quality_threshold) / 25.f;
+    float quality_factor = sigmoid(7.f * relative_quality + absolute_quality);
+
+    float base_hype = g_Game->settings().get_float(settings::MOVIES_AUDIENCE_BASE_FRACTION) * (1 + sigmoid(movie.Hype - 5));
+    base_hype = std::min(base_hype, 1.f);
     base_hype *= std::exp(-float(movie.Age) / 10.f);
 
     float satisfaction = total_score / audience.RequiredScore - price_fraction;
@@ -135,17 +150,23 @@ void cMovieManager::init() {
     if(!doc->RootElement()) {
         throw std::runtime_error("MovieNames.xml is missing Root Element");
     }
+
+    auto read_movie = [](tinyxml2::XMLElement& el) {
+        const char* req = el.Attribute("Requires");
+        return sMovieName{el.GetText(), req ? scene_type_from_string(req) : SceneType::COUNT};
+    };
+
     for(auto& el : IterateChildElements(*doc->RootElement(), "Tease")) {
-        m_DefaultNames[(int)SceneCategory::TEASE].push_back( el.GetText() );
+        m_DefaultNames[(int)SceneCategory::TEASE].push_back( read_movie(el) );
     }
     for(auto& el : IterateChildElements(*doc->RootElement(), "Soft")) {
-        m_DefaultNames[(int)SceneCategory::SOFT].push_back( el.GetText() );
+        m_DefaultNames[(int)SceneCategory::SOFT].push_back( read_movie(el) );
     }
     for(auto& el : IterateChildElements(*doc->RootElement(), "Hard")) {
-        m_DefaultNames[(int)SceneCategory::HARD].push_back( el.GetText() );
+        m_DefaultNames[(int)SceneCategory::HARD].push_back( read_movie(el) );
     }
     for(auto& el : IterateChildElements(*doc->RootElement(), "Extreme")) {
-        m_DefaultNames[(int)SceneCategory::EXTREME].push_back( el.GetText() );
+        m_DefaultNames[(int)SceneCategory::EXTREME].push_back( read_movie(el) );
     }
 
     m_Audiences.clear();
@@ -157,6 +178,8 @@ void cMovieManager::init() {
 
 int cMovieManager::step(IBuilding& studio) {
     float total_income = 0.0;
+    const float sated_chance = g_Game->settings().get_float(settings::MOVIES_AUDIENCE_SATED_CHANCE);
+
     for(auto& movie : m_Movies) {
         int income = 0;
         float hype = 0.f;
@@ -166,7 +189,7 @@ int cMovieManager::step(IBuilding& studio) {
             float factor = rating.QualityFactor * rating.PriceFactor * rating.HypeFactor * rating.NoTurnOff;
             int viewers = static_cast<int>((audience.Amount - audience.Saturation) * factor);
             income += movie.TicketPrice * viewers;
-            audience.Saturation += viewers * 0.5f;
+            audience.Saturation += viewers * sated_chance;
             if(rating.Satisfaction > 0.5) {
                 hype += (rating.Satisfaction - 0.5f) * rating.PriceFactor * viewers;
             }
@@ -198,7 +221,7 @@ int cMovieManager::step(IBuilding& studio) {
     // remove old movies and notify the player
     erase_if(m_Movies, [&](const Movie& m)
     {
-        if(m.Age >= 25) {
+        if(m.Age >= g_Game->settings().get_integer(settings::MOVIES_RUNNING_WEEKS)) {
             std::stringstream movie_end_report;
             movie_end_report << "Your movie " << m.Name << " finished its run with a total revenue of " << m.TotalEarnings
                              << " and has now been taken out of the programming. It generated a total hype of " << int(100 * m.Hype) << ".";
@@ -209,12 +232,20 @@ int cMovieManager::step(IBuilding& studio) {
     });
 
     // decay hype and saturation
+    const float hype_decay_factor = 1.f - g_Game->settings().get_float(settings::MOVIES_HYPE_DECAY);
     for(auto& movie : m_Movies) {
-        movie.Hype *= 1.f - HYPE_DECAY;
+        movie.Hype -= g_Dice.in_range(25, 75) / 100.f;
+        movie.Hype *= hype_decay_factor;
     }
 
     update_audience();
 
+    // update market research / promotion points
+    // decay the market research / promotion points, except for the last one
+    m_MarketResearchPoints = m_MarketResearchPoints - std::max(0, m_MarketResearchPoints / 10 - 8);
+    m_PromotionPoints = m_PromotionPoints - std::max(0, m_PromotionPoints / 10 - 8);
+
+    const float saturation_decay_factor = 1.f - g_Game->settings().get_float(settings::MOVIES_SATURATION_DECAY);
     for(auto& aud : m_Audiences) {
         if(aud.Saturation > 0.5 * aud.Amount) {
             std::stringstream tg_wn;
@@ -224,9 +255,14 @@ int cMovieManager::step(IBuilding& studio) {
         }
 
         // a small fraction of people become saturated even if you aren't showing any movies
-        aud.Saturation += 0.025f * (aud.Amount - aud.Saturation);
+        // but only in some weeks, to increase the variance between groups
+        if(g_Dice.percent(5)) {
+            // TODO note these changes here in the design document!
+            // TODO make this GAME-CONFIG changeable
+            aud.Saturation += g_Dice.in_range(0, 10) * (aud.Amount - aud.Saturation) / 100;
+        }
         // and some of the saturated once want to watch movies again
-        aud.Saturation *= 1.f - SATURATION_DECAY;
+        aud.Saturation *= saturation_decay_factor;
     }
 
     studio.m_Events.AddMessage("In total, your Studio earned " + std::to_string((int)total_income) +
@@ -258,6 +294,9 @@ void cMovieManager::load_xml(const tinyxml2::XMLElement& element) {
         m_Movies.emplace_back();
         m_Movies.back().load_xml(el);
     }
+
+    m_MarketResearchPoints = GetIntAttribute(element, "MarketResearch");
+    m_PromotionPoints = GetIntAttribute(element, "Promotion");
 }
 
 void cMovieManager::save_xml(tinyxml2::XMLElement& element) const {
@@ -275,6 +314,9 @@ void cMovieManager::save_xml(tinyxml2::XMLElement& element) const {
         auto& el = PushNewElement(element, "Movie");
         movie.save_xml(el);
     }
+
+    element.SetAttribute("MarketResearch", m_MarketResearchPoints);
+    element.SetAttribute("Promotion", m_PromotionPoints);
 }
 
 void cMovieManager::add_scene(MovieScene scene) {
@@ -344,44 +386,131 @@ std::string cMovieManager::auto_create_name(const std::vector<const MovieScene*>
         most_extreme = std::max(most_extreme, (int)scene->Category);
     }
     auto& namelist = m_DefaultNames.at(most_extreme);
-    auto candidate = namelist.at(g_Dice.random(namelist.size()));
-    // TODO automatic counter?
-    return candidate;
+    RandomSelector<sMovieName> select;
+    for(auto& n : namelist) {
+        if(n.Requires != SceneType::COUNT) {
+            for(auto& scene : scenes) {
+                if(scene->Type == n.Requires) {
+                    select.process(&n);
+                    break;
+                }
+            }
+        } else {
+            select.process(&n);
+        }
+    }
+
+    if(select.selection()) {
+        return select.selection()->Name;
+    }
+
+    return "";
+}
+
+namespace {
+    auto lookup_spec(const std::string& name, const std::vector<sTargetGroupSpec>& groups) {
+        auto found = std::find_if(groups.begin(), groups.end(),
+                                  [&](const sTargetGroupSpec& spec){
+                                      return spec.Name == name;
+                                  });
+        return found;
+    }
+
+    sTargetGroup known_data(const sTargetGroup& true_data, const sTargetGroupSpec& spec) {
+        sTargetGroup group;
+        group.Name = spec.Name;
+        if(true_data.Knowledge >= sTargetGroup::KnowledgeForFavScene) {
+            group.Favourite = true_data.Favourite;
+        } else {
+            group.Favourite = SceneType::COUNT;
+        }
+
+        if(true_data.Knowledge >= sTargetGroup::KnowledgeForSpendingPower) {
+            group.SpendingPower = true_data.SpendingPower;
+        } else {
+            group.SpendingPower = (spec.SpendingPowerMax + spec.SpendingPowerMin) / 2;
+        }
+
+        if(true_data.Knowledge >= sTargetGroup::KnowledgeForReqScore) {
+            group.RequiredScore = true_data.RequiredScore;
+        } else {
+            group.RequiredScore = (spec.RequiredScoreMax + spec.RequiredScoreMin) / 2;
+        }
+
+        if(true_data.Knowledge >= sTargetGroup::KnowledgeForSize) {
+            group.Amount = true_data.Amount;
+        } else {
+            group.Amount = (spec.MinAmount + spec.MaxAmount) / 2;
+        }
+
+        if(true_data.Knowledge >= sTargetGroup::KnowledgeForSaturation) {
+            group.Saturation = true_data.Saturation;
+        } else {
+            group.Saturation = 0.25f * group.Amount;
+        }
+
+        group.ForcedIsTurnOff = spec.ForcedIsTurnOff;
+        for(int i = 0; i < (int)SceneCategory::NUM_TYPES; ++i) {
+            group.TurnOffs[i] = spec.TurnOffs[i];
+            if(true_data.Knowledge >= sTargetGroup::KnowledgeForDesires) {
+                group.Desires[i] = true_data.Desires[i];
+            } else {
+                group.Desires[i] = 0.5 * (spec.DesiresMin[i] + spec.DesiresMax[i]);
+            }
+        }
+
+        return group;
+    }
 }
 
 void cMovieManager::update_audience() {
+    const sPercent update_chance = g_Game->settings().get_percent(settings::MOVIES_AUDIENCE_UPDATE_CHANCE);
+
     for(auto& aud : m_Audiences) {
-        if(g_Dice.percent(CHANCE_TO_UPDATE_GROUP)) {
-            auto found = std::find_if(m_TargetGroupSpecs.begin(), m_TargetGroupSpecs.end(),
-                                      [&](const sTargetGroupSpec& spec){
-                return spec.Name == aud.Name;
-            });
+        // decline of knowledge
+        aud.Knowledge = std::max(0, aud.Knowledge - 1);
+
+        if(g_Dice.percent(update_chance)) {
+            auto found = lookup_spec(aud.Name, m_TargetGroupSpecs);
             if(found != m_TargetGroupSpecs.end()) {
                 // update the target group, but preserve the fraction of saturation
                 float sat_fac = static_cast<float>(aud.Saturation) / aud.Amount;
                 update_group_by_spec(aud, *found);
                 aud.Saturation = static_cast<int>(sat_fac * aud.Amount);
+                aud.Knowledge /= 2;
             } else {
-                g_LogFile.warning("movies", "Could not find audience spec for ", aud.Name);
+                g_LogFile.error("movies", "Could not find audience spec for ", aud.Name);
             }
         }
     }
 }
 
+auto cMovieManager::estimate_revenue(const sTargetGroup& audience, const Movie& movie) -> sRevenueEstimate {
+    auto spec_iter = lookup_spec(audience.Name, m_TargetGroupSpecs);
+    if(spec_iter == end(m_TargetGroupSpecs)) {
+        g_LogFile.error("movies", "Could not find audience spec for ", audience.Name);
+        return {{}, 0, 0};
+    }
+    sTargetGroup tg_est = known_data(audience, *spec_iter);
+    auto rating = rate_movie_for_audience(tg_est, movie);
+    float factor = rating.QualityFactor * rating.PriceFactor * rating.HypeFactor * rating.NoTurnOff;
+    int viewers = static_cast<int>((tg_est.Amount - tg_est.Saturation) * factor);
+
+    return {rating, viewers, viewers * movie.TicketPrice, (int)tg_est.RequiredScore};
+}
+
+
 int cMovieManager::estimate_revenue(const Movie& movie) {
     int total_expected = 0;
     for(auto& a : m_Audiences) {
-        auto rating = rate_movie_for_audience(a, movie);
-        float factor = rating.QualityFactor * rating.PriceFactor * rating.HypeFactor * rating.NoTurnOff;
-        int viewers = static_cast<int>((a.Amount - a.Saturation) * factor);
-        total_expected += viewers * movie.TicketPrice;
+        total_expected += estimate_revenue(a, movie).Revenue;
     }
     return total_expected;
 }
 
 int cMovieManager::auto_detect_ticket_price(const Movie& movie) {
     Movie cp(movie);
-    auto TicketPrices = {1, 2, 4, 5, 6, 8, 10, 15, 20, 25, 30, 40, 50};
+    auto TicketPrices = {1, 2, 4, 5, 6, 8, 10, 12, 15, 20, 25, 30, 40, 50};
     int best = -1;
     int best_rev = -1;
     for(auto& price : TicketPrices) {
@@ -393,5 +522,49 @@ int cMovieManager::auto_detect_ticket_price(const Movie& movie) {
         }
     }
     return best;
+}
+
+void cMovieManager::gain_knowledge(const sTargetGroup* group, int gain) {
+    int index = group - m_Audiences.data();
+    m_Audiences.at(index).Knowledge += gain;
+}
+
+void cMovieManager::gain_promo_point() {
+    m_PromotionPoints += 100;
+}
+
+int cMovieManager::promotion_points() const {
+    return (m_PromotionPoints + 50) / 100;
+}
+
+void cMovieManager::run_ad_campaign(int target_movie) {
+    int points = std::min(m_PromotionPoints, 500);
+    if(g_Game->gold().misc_debit(500)) {
+        auto& movie = m_Movies.at(target_movie);
+        movie.Hype += points * g_Dice.in_range(90, 110) / 10000.f;
+        m_PromotionPoints -= points;
+        movie.TotalCost += 500;
+    } else {
+        g_Game->push_message("The ad campaign costs 500 gold!", COLOR_RED);
+    }
+}
+
+void cMovieManager::gain_market_research_point() {
+    m_MarketResearchPoints += 100;
+}
+
+void cMovieManager::make_survey(int target_audience) {
+    int points = std::min(m_MarketResearchPoints, 500);
+    if(g_Game->gold().misc_debit(500)) {
+        auto& audience = m_Audiences.at(target_audience);
+        audience.Knowledge += (points * g_Dice.in_range(10, 20)) / 1000;
+        m_MarketResearchPoints -= points;
+    }else {
+        g_Game->push_message("The survey costs 500 gold!", COLOR_RED);
+    }
+}
+
+int cMovieManager::market_research_points() const {
+    return (m_MarketResearchPoints + 50) / 100;
 }
 

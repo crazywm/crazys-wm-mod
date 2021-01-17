@@ -1,3 +1,24 @@
+# Version 07.00.alpha11
+
+## Changes
+* Internal work on cListBox
+* Split Director into Executive (Matron) and Director (Filming scenes)
+* New MarketResearch job and corresponding MarketResearch screen
+* Reworked random scene and studio auto assignment code
+* Improved MovieMaker Screen
+* Slight updates to the bedroom interaction scripts
+* More movie name variety, and custom movie names
+* Movie configuration in advanced game settings
+* Ad Campaign and Survey actions
+* JobRating column in Studio Screen
+* Allow hiring multiple gangs at once
+* Added a new "send for training" interaction to improve performance skill
+
+## Fixes
+* fixed error in BarMaid.xml
+* fixed error in SexText.lua
+* fixed removing scene from movie
+
 # Version 07.00.alpha10
 
 ## Major Changes

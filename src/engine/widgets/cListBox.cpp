@@ -42,11 +42,12 @@ extern sColor g_ListBoxHeaderBorderHColor;
 extern sColor g_ListBoxHeaderTextColor;
 
 cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect,
-        bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight):
-    cUIWidget(ID, x, y, width, height, parent),
+        bool Events, bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight):
+    IListBox(ID, x, y, width, height, parent),
     m_ShowHeaders(ShowHeaders), m_HeaderDividers(HeaderDiv), m_HeaderClicksSort(HeaderSort), m_BorderSize(BorderSize),
     m_FontSize( fontsize == 0 ? 10 : fontsize ),
-    m_Font(GetGraphics().LoadNormalFont(m_FontSize))
+    m_Font(GetGraphics().LoadNormalFont(m_FontSize)),
+    m_EnableEvents(Events)
 {
     m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
 
@@ -126,18 +127,29 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
 
     m_Divider.h = m_eHeight - (m_BorderSize * 2) - 3;
     m_Divider.y = m_BorderSize + 1;
+
+    // if showing headers and allowing header clicks to sort list, offset scrollbar and scroll up button
+    int header_offset = (ShowHeaders && HeaderSort) ? 21 : 0;
+
+    auto bar = parent->AddScrollBar( x + width - 16 - parent->GetXPos(), y + header_offset + 1 - parent->GetYPos(),
+                                     16, height - header_offset - 2, m_NumDrawnElements);
+    bar->ParentPosition = &m_ScrollChange;
+    m_ScrollBar = bar;
 }
 
 cListBox::~cListBox()
 {
 }
 
-void cListBox::ClearList()
+void cListBox::Clear()
 {
     m_Items.clear();
     m_LastSelected = m_Items.end();
     m_Position = 0;
     m_NumElements = 0;
+
+    // update "item total" reference for scroll bar
+    m_ScrollBar->m_ItemsTotal = 0;
     m_ScrollBar->SetTopValue(0);
 }
 
@@ -146,7 +158,7 @@ int cListBox::ArrowDownList()
     if(m_Items.empty())
         return -1;
 
-    int selection = GetSelected();
+    int selection = GetSelectedIndex();
     if (selection == -1)
     {
         SetSelected(m_Items.front().m_ID);
@@ -176,7 +188,7 @@ int cListBox::ArrowUpList()
     if(m_Items.empty())
         return -1;
 
-    int selection = GetSelected();
+    int selection = GetSelectedIndex();
     if (selection == -1)
     {
         SetSelected(m_Items.back().m_ID);
@@ -477,21 +489,7 @@ void cListBox::ScrollUp(int amount, bool updatebar)
     if (updatebar) m_ScrollBar->SetTopValue(m_Position);
 }
 
-int cListBox::GetNextSelected(int from, int& pos)
-{
-    if (!m_MultiSelect) return -1;
-
-    auto start = begin(m_Items);
-    std::advance(start, from);
-    auto selected = FindSelected(start);
-
-    pos = std::distance(begin(m_Items), selected);
-
-    if (selected != m_Items.end()) return selected->m_ID;
-    return -1;
-}
-
-auto cListBox::FindSelected(const std::list<cListItem, std::allocator<cListItem>>::iterator& start) -> item_list_t::iterator
+auto cListBox::FindSelected(const std::list<cListItem, std::allocator<cListItem>>::const_iterator& start) const -> item_list_t::const_iterator
 {
     auto selected = find_if(start, end(m_Items),
                             [](const cListItem& item) { return item.m_Selected; });
@@ -504,7 +502,7 @@ int cListBox::GetLastSelected()
     return -1;
 }
 
-int cListBox::GetSelected()
+int cListBox::GetSelectedIndex() const
 {
     if (m_LastSelected == m_Items.end()) return -1;
     //else return m_LastSelected->m_ID;
@@ -525,20 +523,9 @@ const std::string& cListBox::GetSelectedText()
         return m_LastSelected->m_Data.front().fmt_;
 }
 
-bool cListBox::IsSelected()
+int cListBox::NumSelectedElements() const
 {
-    return FindSelected(begin(m_Items)) != end(m_Items);
-}
-
-void cListBox::GetSortedIDList(std::vector<int> *id_vec, int *vec_pos)
-{
-    id_vec->clear();
-    id_vec->reserve(m_Items.size());
-    for(auto& item : m_Items) {
-        id_vec->push_back(item.m_ID);
-    }
-
-    *vec_pos = std::distance(begin(m_Items), m_LastSelected);
+    return std::count_if(begin(m_Items), end(m_Items), [](const cListItem& item){ return item.m_Selected; });
 }
 
 void cListBox::SetElementText(int ID, std::string data)
@@ -639,6 +626,35 @@ void cListBox::AddElement(int ID, std::vector<FormattedCellData> data, int color
     // update "item total" reference for scroll bar
     if(m_ScrollBar)
         m_ScrollBar->m_ItemsTotal = m_NumElements;
+}
+
+void cListBox::AddRow(int id, const std::function<FormattedCellData(const std::string&)>& query, int color) {
+    std::vector<FormattedCellData> data;
+    data.reserve(m_Columns.size());
+    for(auto& col : m_Columns) {
+        data.push_back( query(col.name) );
+    }
+
+    AddElement(id, std::move(data), color);
+}
+
+
+void cListBox::UpdateRow(int id, const std::function<FormattedCellData(const std::string&)>& query, int color) {
+    auto found = std::find_if(begin(m_Items), end(m_Items), [id](const cListItem& item){ return item.m_ID == id; });
+    if(found == end(m_Items)) {
+        throw std::logic_error("Trying to update an element that is not in the list box.");
+    }
+
+    for(int i = 0; i < m_Columns.size(); ++i) {
+        found->m_Data[i] = query(m_Columns[i].name);
+        m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+        auto gfx = m_Font.RenderText(found->m_Data[i].fmt_);
+        found->m_PreRendered[i] = std::move(gfx);
+    }
+
+    if(color >= 0) {
+        found->m_Color = color;
+    }
 }
 
 void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::string> header, std::vector<int> offset, std::vector<bool> skip)
@@ -884,10 +900,10 @@ void cListBox::handle_selection_change()
 {
     if(DoubleClicked()) {
         if (m_DoubleClickCallback)
-            m_DoubleClickCallback(GetSelected());
+            m_DoubleClickCallback(GetSelectedIndex());
     } else {
         if (m_SelectionCallback)
-            m_SelectionCallback(GetSelected());
+            m_SelectionCallback(GetSelectedIndex());
     }
 }
 
@@ -929,7 +945,7 @@ void cListBox::SetArrowHotKeys(SDL_Keycode up, SDL_Keycode down)
 
 void cListBox::Reset()
 {
-    ClearList();
+    Clear();
 }
 
 bool cListBox::HandleMouseWheel(bool down)
@@ -947,4 +963,32 @@ std::vector<std::string> cListBox::GetColumnNames() const
     std::vector<std::string> result(m_Columns.size());
     std::transform(begin(m_Columns), end(m_Columns), begin(result), [](const sColumnData& d){ return d.name; });
     return std::move(result);
+}
+
+int cListBox::HandleSelectedIndices(std::function<void(int)> handler) {
+    auto start = begin(m_Items);
+    int count = 0;
+    for(auto& item : m_Items) {
+        if(item.m_Selected) {
+            handler(item.m_ID);
+            ++count;
+        }
+    }
+    return count;
+}
+
+int cListBox::NumItems() const {
+    return m_Items.size();
+}
+
+int cListBox::GetTopPosition() const {
+    return m_Position;
+}
+
+void cListBox::SetTopPosition(int pos) {
+    // TODO verify pos
+    m_Position = pos;
+    if(m_ScrollBar) {
+        m_ScrollBar->SetTopValue(pos);
+    }
 }

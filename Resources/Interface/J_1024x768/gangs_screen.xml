@@ -24,17 +24,17 @@
 <Image      Name="HireArrow"            File="imgArrowLeft.png"             XPos="145"      YPos="495"      Width="24"      Height="80"  />
 <Button     Name="GangHireButton"       Image="Hire"                        XPos="87"      YPos="520"      Width="60"      Height="32"  Transparency="true"/>
 
-<ListBox    Name="RecruitList"                                              XPos="157"      YPos="450"      Width="675"     Height="182" FontSize="9" RowHeight="19" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
-<Column     Name="GangName"      Header="Recruitable Gang"           Offset="0"  />
-<Column     Name="Number"        Header="Men"                        Offset="150"  />
-<Column     Name="Combat"        Header="Combat"                     Offset="206"  />
-<Column     Name="Magic"         Header="Magic"                      Offset="262"  />
-<Column     Name="Intelligence"  Header="Intel."                     Offset="318"  />
-<Column     Name="Agility"       Header="Agility"                    Offset="374"  />
-<Column     Name="Constitution"  Header="Tough"                      Offset="430"  />
-<Column     Name="Strength"      Header="Strength"                   Offset="486"  />
-<Column     Name="Service"       Header="Service"                    Offset="542"  />
-<Column     Name="Charisma"      Header="Charisma"                   Offset="598"  />
+<ListBox    Name="RecruitList"                                              XPos="157"      YPos="450"      Width="675"     Height="182" FontSize="9" RowHeight="19" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
+<Column     Name="GangName"     Header="Recruitable Gang"           Offset="0"  />
+<Column     Name="Number"       Header="Men"                        Offset="150"  />
+<Column     Name="Combat"       Header="Combat"                     Offset="206"  />
+<Column     Name="Magic"        Header="Magic"                      Offset="262"  />
+<Column     Name="Intelligence" Header="Intel."                     Offset="318"  />
+<Column     Name="Agility"      Header="Agility"                    Offset="374"  />
+<Column     Name="Constitution" Header="Tough"                      Offset="430"  />
+<Column     Name="Strength"     Header="Strength"                   Offset="486"  />
+<Column     Name="Service"      Header="Service"                    Offset="542"  />
+<Column     Name="Charisma"     Header="Charisma"                   Offset="598"  />
 </ListBox>
 
 <Text       Name="txtMissions"          Text="Available Missions"           XPos="847"     YPos="8"        Width="150"     Height="32"  FontSize="13"  />

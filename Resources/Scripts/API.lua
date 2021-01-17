@@ -42,8 +42,6 @@ end
 
 ---@param girl wm.Girl
 function PlayerFucksGirl(girl)
-    girl:normalsex(2);
-
     if (girl:check_virginity()) then
         girl:lose_virginity();
     end -- `J` updated for trait/status
@@ -53,6 +51,17 @@ function PlayerFucksGirl(girl)
 
     -- Set image
     wm.UpdateImage(wm.IMG.SEX)
+end
+
+---@param girl wm.Girl
+--- This function updates virginity and pregnancy. It creates a dialog box if the girl gets pregnant.
+function PlayerFucksGirlUpdate(girl)
+    if (girl:check_virginity()) then
+        girl:lose_virginity();
+    end -- `J` updated for trait/status
+
+    local preg = girl:calc_player_pregnancy(false, 1.0);
+    if preg then Dialog(girl:name() .. " has gotten pregnant") end
 end
 
 ---@param girl wm.Girl

@@ -25,6 +25,7 @@
 #include <functional>
 #include <SDL_keyboard.h>
 
+#include "widgets/IListBox.h"
 #include "interface/cInterfaceObject.h"
 #include "interface/cFont.h"
 #include "interface/cSurface.h"
@@ -59,12 +60,12 @@ struct sColumnData {
     cSurface header_gfx;        // pre-rendered column header
 };
 
-class cListBox : public cUIWidget
+class cListBox : public IListBox
 {
 public:
-    cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect, bool ShowHeaders = false,
+    cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect, bool events, bool ShowHeaders = false,
             bool HeaderDiv = true, bool HeaderSort = true, int fontsize = 10, int rowheight = LISTBOX_ITEMHEIGHT);
-    ~cListBox();
+    ~cListBox() override;
 
     bool IsOver(int x, int y) const override;
     bool HandleClick(int x, int y, bool press) override;
@@ -73,13 +74,49 @@ public:
     void Reset() override;
     void DrawWidget(const CGraphics& gfx) override;
 
-    void SetSelectionCallback(std::function<void(int)>);
-    void SetDoubleClickCallback(std::function<void(int)>);
-    void SetArrowHotKeys(SDL_Keycode up, SDL_Keycode down);
+    void SetSelectionCallback(std::function<void(int)>) override;
+    void SetDoubleClickCallback(std::function<void(int)>) override;
+    void SetArrowHotKeys(SDL_Keycode up, SDL_Keycode down) override;
+
+
+    // Content
+    void Clear() override;
+
+    /// Given a query function that maps column names to cell data, this function
+    /// adds a new row to the table.
+    void AddRow(int id, const std::function<FormattedCellData(const std::string&)>& query, int color) override;
+
+    /// Given a query function that maps column names to cell data, this function
+    /// updates a row in the table.
+    void UpdateRow(int id, const std::function<FormattedCellData(const std::string&)>& query, int color) override;
+
+    // Queries
+    /// Returns the total number of items in the list box
+    int NumItems() const override;
+
+    /// Creates a vector that contains the names of all the columns
+    std::vector<std::string> GetColumnNames() const override;
+
+    // Scrolling
+    /// Gets the index of the item that is at the top of the list box.
+    int GetTopPosition() const override;
+    /// Sets the index of the item that is at the top of the list box.
+    void SetTopPosition(int pos) override;
+
+    // Selection
+    /// This function can only be used for single-selection ListBox elements, and will throw a logic error otherwise.
+    /// If no element is selected, -1 is returned.
+    int GetSelectedIndex() const override;
+
+    /// Returns true if there is at least one selected element.
+    int NumSelectedElements() const override;
+
+    /// Calls handler for each index that is selected. Returns the number of selected elements.
+    /// Don't add or remove any rows from the ListBox in the handler!
+    int HandleSelectedIndices(std::function<void(int)> handler) override;
+
 
     void SetElementText(int ID, std::string data);
-
-    void ClearList();
 
     int ArrowDownList();
     int ArrowUpList();
@@ -90,26 +127,11 @@ public:
     void ScrollUp(int amount = 0, bool updatebar = true);
     int m_ScrollChange = -1;  // scrollbar changes will update this value
 
-    int GetSelected();    // returns the id for the first selected element
     const std::string& GetSelectedText();
     int GetAfterSelected();    // returns the id for the element after the last selected element
-    int GetNextSelected(int from, int& pos);    // returns the id for the next selected element and sets pos to its position
+    // returns the id for the next selected element and sets pos to its position
     int GetLastSelected();    // gets the last item selected
-    bool IsSelected();    // returns true if an element is selected
     void SetSelected(int ID, bool ev = true, bool deselect_others = true);    // sets the selected item
-    int GetSize() {return m_NumElements;};
-    bool IsMultiSelect() {return m_MultiSelect;}
-    void GetSortedIDList(std::vector<int> *id_vec, int *vec_pos);  // fills up a vector with the list of item IDs, sorted
-    const std::vector<sColumnData>& GetColumnData() const { return m_Columns; }
-    std::vector<std::string> GetColumnNames() const;
-
-    int m_Position         = 0;    // What element is at position 0 on the list
-    int m_NumElements      = 0;    // number of elements in the list
-    int m_NumDrawnElements = 0;    // how many elements can be rendered at a time
-
-    int m_eHeight, m_eWidth;    // the height and width of element images
-
-    std::string m_HeaderClicked;                    // set to m_ColumnName value of a header that has just been clicked; otherwise empty
 
     void DefineColumns(std::vector<std::string> name, std::vector<std::string> header, std::vector<int> offset, std::vector<bool> skip);  // define column layout
     void SetColumnSort(const std::vector<std::string>& column_name);    // Update column sorting based on expected default order
@@ -128,8 +150,31 @@ public:
     void ReSortList();                        // re-sort list again, if needed
     void UnSortList();                        // un-sort list back to the order the elements were originally added in
 
-    // Double-click detection
+
     bool DoubleClicked();
+
+    cScrollBar* m_ScrollBar; // pointer to the associated scrollbar
+
+    using item_list_t = std::list<cListItem>;
+
+private:
+    int m_Position         = 0;    // What element is at position 0 on the list
+    int m_NumElements      = 0;    // number of elements in the list
+    int m_NumDrawnElements = 0;    // how many elements can be rendered at a time
+
+    int m_eHeight, m_eWidth;    // the height and width of element images
+
+    int m_FontSize = -1;
+    cFont m_Font;
+
+    item_list_t m_Items;
+    item_list_t::iterator m_LastSelected;
+
+    item_list_t::iterator FindItemAtPosition(int x, int y);
+
+    item_list_t::const_iterator FindSelected(const item_list_t::const_iterator& start) const;
+
+    // Double-click detection
     Uint32 m_CurrentClickTime = 0;
     int m_CurrentClickX = 0;
     int m_CurrentClickY = 0;
@@ -137,23 +182,15 @@ public:
     int m_LastClickX = 0;
     int m_LastClickY = 0;
 
+    std::string m_HeaderClicked;
+
     int m_BorderSize;
     int m_RowHeight = LISTBOX_ITEMHEIGHT;
+public:
     bool m_EnableEvents   = false;    // are events enabled
+private:
     bool m_MultiSelect    = false;
     bool m_HasMultiSelect = false;
-
-    cScrollBar* m_ScrollBar; // pointer to the associated scrollbar
-    using item_list_t = std::list<cListItem>;
-    item_list_t::iterator FindItemAtPosition(int x, int y);
-    item_list_t::iterator FindSelected(const item_list_t::iterator& start);
-
-private:
-    int m_FontSize = -1;
-    cFont m_Font;
-
-    item_list_t m_Items;
-    item_list_t::iterator m_LastSelected;
 
 
     void handle_selection_change();

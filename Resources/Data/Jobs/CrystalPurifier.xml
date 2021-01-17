@@ -8,12 +8,12 @@
         <Factor Stat="Confidence" Weight="1"/>
         <Factor Stat="Refinement" Weight="1"/>
         <Factor Skill="Magic" Weight="1"/>
-        <Factor Skill="Crafting" Weight="1"/>
+        <Factor Skill="Crafting" Weight="2"/>
     </Performance>
 
-    <Gains XP="5" Skill="3">
+    <Gains XP="5" Skill="2">
         <Skill Name="Magic" Weight="1" />
-        <Skill Name="Crafting" Weight="1" />
+        <Skill Name="Crafting" Weight="2" />
         <Stat Name="Confidence" Weight="1" />
     </Gains>
 

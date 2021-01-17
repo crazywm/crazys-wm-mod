@@ -59,13 +59,6 @@ int g_TalkCount = 10;
 
 #pragma endregion
 
-static std::string clobber_extension(std::string s)    // `J` debug logging
-{
-    size_t pos = s.rfind(".");
-    std::string base = s.substr(0, pos);
-    return base;
-}
-
 void LoadNames()
 {// `J` load names lists
     DirPath location_N = DirPath() << "Resources" << "Data" << "RandomGirlNames.txt";
@@ -106,10 +99,6 @@ void SaveGame()
     std::string filenamedotgam = filename + ".gam";
 
     SaveGameXML(DirPath(DirPath::expand_path(cfg.folders.saves()).c_str()) << filenamedotgam);
-    if (cfg.folders.backupsaves())
-    {
-        SaveGameXML(DirPath() << "Saves" << filenamedotgam);
-    }
 }
 
 void SaveGameXML(std::string filename)

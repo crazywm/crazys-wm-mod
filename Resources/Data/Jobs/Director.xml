@@ -1,0 +1,57 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="CM">
+    <Description>
+        She will direct the scenes. One Director can film at most 3 scenes per week.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Stat="Spirit" Weight="1"/>
+        <Factor Stat="Intelligence" Weight="1"/>
+        <Factor Stat="Charisma" Weight="1"/>
+    </Performance>
+
+    <Gains XP="5" Skill="2">
+        <Stat Name="Intelligence" Weight="1" Max="50" />
+        <Stat Name="Charisma" Weight="1" Max="50"/>
+        <Stat Name="Confidence" Weight="1" Min="20" />
+    </Gains>
+
+    <Messages>
+        <Message Name="no-crew">
+            <Text>There was no crew to film the scene, so ${name} took the day off.</Text>
+        </Message>
+        <Message Name="no-actress">
+            <Text>There were no actresses to film, so ${name} took the day off.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to work as a Director today.</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} directed the filming of some scenes today.</Text>
+        </Message>
+        <Message Name="work.perfect">
+            <Text>
+                ${name} is an excellent Director. Not only is she a great cinematographer, but she also helped the
+                actress improve her performance.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>${name} is a great Director.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>${name} is quite good as a Director.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>${name} did an ok job directing scenes today. </Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>${name} isn't really a good Director.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>${name} was supposed to be directing some scenes today, but really, all she did was
+            confuse the studio crew with contradictory instructions.</Text>
+        </Message>
+    </Messages>
+</Job>

@@ -41,14 +41,12 @@ namespace settings
 // // ----- Strut sMovieStudio Create / destroy
 sMovieStudio::sMovieStudio() : IBuilding(BuildingType::STUDIO, "Studio")
 {
-    m_FirstJob = JOB_DIRECTOR;
+    m_FirstJob = JOB_EXECUTIVE;
     m_LastJob = JOB_FILMRANDOM;
-    m_MatronJob = JOB_DIRECTOR;
+    m_MatronJob = JOB_EXECUTIVE;
 }
 
-sMovieStudio::~sMovieStudio()            // destructor
-{
-}
+sMovieStudio::~sMovieStudio() = default;
 
 // Run the shifts
 void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Process_B
@@ -61,13 +59,15 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
 
     m_CameraMages.clear();
     m_CrystalPurifiers.clear();
+    m_Directors.clear();
 
     //  Handle the start of shift stuff for all girls.  //
     BeginShift(is_night);
 
     m_Girls->apply([&]( sGirl& current){
         if (current.is_dead() || (current.m_NightJob != JOB_CAMERAMAGE && current.m_NightJob != JOB_CRYSTALPURIFIER &&
-                                  current.m_NightJob != JOB_PROMOTER))
+                                  current.m_NightJob != JOB_PROMOTER && current.m_NightJob != JOB_DIRECTOR &&
+                                  current.m_NightJob != JOB_MARKET_RESEARCH))
         {    // skip dead girls and anyone not working the jobs we are processing
             return;
         }
@@ -79,11 +79,13 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
             m_CameraMages.push_back(WorkerData{&current, 0});
         } else if(current.m_NightJob == JOB_CRYSTALPURIFIER) {
             m_CrystalPurifiers.push_back(WorkerData{&current, 0});
+        }else if(current.m_NightJob == JOB_DIRECTOR) {
+            m_Directors.push_back(WorkerData{&current, 0});
         }
     });
 
     // last check, is there a crew to film?
-    bool readytofilm = (!m_CameraMages.empty() && !m_CrystalPurifiers.empty() && get_active_matron());
+    bool readytofilm = (!m_CameraMages.empty() && !m_CrystalPurifiers.empty() && !m_Directors.empty());
     std::stringstream summary;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +96,8 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
                    "crystal purifier and a director. Your scenes will be better if you also employ sufficiently many stage hands "
                    "and fluffers.";
         m_Girls->apply([this](sGirl& girl) {
-            if (girl.is_dead() || girl.m_NightJob == JOB_RESTING || girl.m_NightJob == m_MatronJob || girl.m_NightJob == JOB_PROMOTER) {    // skip dead girls, resting girls and the director (if there is one)
+            if (girl.is_dead() || girl.m_NightJob == JOB_RESTING || girl.m_NightJob == m_MatronJob ||
+                girl.m_NightJob == JOB_PROMOTER || girl.m_NightJob == JOB_MARKET_RESEARCH) {    // skip dead girls, resting girls and the director (if there is one)
                 return;
             }
             if (girl.m_NightJob == JOB_STAGEHAND) { // these two can still work
@@ -116,7 +119,8 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
 
         // Add an event with info
 
-        summary << "You have " << m_CrystalPurifiers.size() << " crystal purifiers and " << m_CameraMages.size() << " camera mages working.\n";
+        summary << "You have " << m_CrystalPurifiers.size() << " crystal purifiers, " << m_CameraMages.size() << " camera mages ";
+        summary << "and " << m_Directors.size() << " working.\n";
         summary << "Your stagehands provide a total of " << m_StageHandPoints << " stagehand points.\n";
         summary << "Your fluffers provide a total of " << m_FluffPoints << " fluffer points.\n";
 
@@ -125,7 +129,7 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
         m_Girls->apply([&](sGirl& girl) {
             auto sw = girl.m_NightJob;
             if (girl.is_dead() || sw == JOB_RESTING || sw == JOB_FLUFFER || sw == JOB_CAMERAMAGE ||
-                sw == JOB_CRYSTALPURIFIER || sw == JOB_DIRECTOR || sw == JOB_PROMOTER ||
+                sw == JOB_CRYSTALPURIFIER || sw == JOB_DIRECTOR || sw == JOB_EXECUTIVE || sw == JOB_PROMOTER || sw == JOB_MARKET_RESEARCH ||
                 sw == JOB_STAGEHAND) {    // skip dead girls and already processed jobs
                 return;
             }
@@ -138,6 +142,7 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
     // Finally, check if we overused our production staff
     check_camera_mages_overuse();
     check_purifier_overuse();
+    check_director_overuse();
 
     EndShift(is_night);
 
@@ -148,109 +153,30 @@ void sMovieStudio::auto_assign_job(sGirl& target, std::stringstream& message, bo
 {
     std::stringstream& ss = message;
     ss << "The Director assigns " << target.FullName() << " to ";
-    bool assign_actress = false;
     target.m_DayJob = JOB_RESTING;
 
-    // first, if there are not enough girls in the studio to film a scene, put them to work at something else.
-    if (num_girls() < 4)    // Director plus only 1 or 2 others
-    {
-        // if there are movies being sold and noone promoting them, assign a promoter.
-        if (!g_Game->movie_manager().get_movies().empty() && target.is_free()
-            && num_girls_on_job(JOB_PROMOTER, 1) < 1)
-        {
-            target.m_NightJob = JOB_PROMOTER;
-            ss << "promote the movies being sold.";
-        }
-        else // otherwise assign her to clean
-        {
-            target.m_NightJob = JOB_STAGEHAND;
-            ss << "clean the building and take care of the equipment.";
-        }
-    }
-        // second, make sure there is at least 1 camera, 1 crystal and 1 actress
-    else if (num_girls_on_job(JOB_CAMERAMAGE, 1) < 1)
-    {
+    int actresses = GetNumberActresses(*this);
+    if (num_girls_on_job(JOB_CAMERAMAGE, 1) * 3 < actresses + 1) {
         target.m_NightJob = JOB_CAMERAMAGE;
         ss << "film the scenes.";
-    }
-    else if (num_girls_on_job(JOB_CRYSTALPURIFIER, 1) < 1)
-    {
+    } else if (num_girls_on_job(JOB_CRYSTALPURIFIER, 1) * 3 < actresses + 1) {
         target.m_NightJob = JOB_CRYSTALPURIFIER;
         ss << "clean up the filmed scenes.";
-    }
-    else if (Num_Actress(*this) < 1)
-    {
-        assign_actress = true;
-    }
-
-        // if there are a lot of girls in the studio, assign more to camera and crystal
-    else if (num_girls_on_job(JOB_CAMERAMAGE, 1) < (num_girls() / 20) + 1)
-    {
-        target.m_NightJob = JOB_CAMERAMAGE;
-        ss << "film the scenes.";
-    }
-    else if (num_girls_on_job(JOB_CRYSTALPURIFIER, 1) < (num_girls() / 20) + 1)
-    {
-        target.m_NightJob = JOB_CRYSTALPURIFIER;
-        ss << "clean up the filmed scenes.";
-    }
-        // if there are more than 20 girls and no promoter, assign one
-    else if (num_girls_on_job(JOB_PROMOTER, 1) < 1 && target.is_free() && num_girls() > 20)
-    {
-        target.m_NightJob = JOB_PROMOTER;
-        ss << "advertise the movies.";
-    }
-        // assign at least 1 stagehand if there are 10 or more girls and 1 more for every 20 after that
-    else if (num_girls() >= 10 && num_girls_on_job(JOB_STAGEHAND, 1) < (num_girls() / 20) + 1)
-    {
+    } else if (num_girls_on_job(JOB_DIRECTOR, 1) * 3 < actresses + 1) {
+        target.m_NightJob = JOB_DIRECTOR;
+        ss << "direct the scenes.";
+    } else if (m_Filthiness > 10 || num_girls_on_job(JOB_STAGEHAND, 1) * 3 < actresses) {
         target.m_NightJob = JOB_STAGEHAND;
         ss << "setup equipment and keep the studio clean.";
-    }
-        // assign a fluffer if there are more than 20 and 1 more for every 20 after that
-    else if (num_girls_on_job(JOB_FLUFFER, 1) < (num_girls() / 20))
-    {
+    } else if (num_girls_on_job(JOB_FLUFFER, 1) < actresses / 5) {
         target.m_NightJob = JOB_FLUFFER;
         ss << "keep the porn stars aroused.";
-    }
-    else assign_actress = true;
-
-    if (assign_actress)        // everyone else gets assigned to film something they are good at
-    {
-        JOBS sw = JOB_FILMRANDOM;
-        int test = 80;
-        do // now roll a random number and if that skill is higher than the test number set that as her job
-        {
-            int testa = g_Dice % 12;
-            if (testa == 0 && !is_sex_type_allowed(SKILL_BEASTIALITY))    testa++;
-            if (testa == 1 && !is_sex_type_allowed(SKILL_BDSM))            testa++;
-            if (testa == 2 && !is_sex_type_allowed(SKILL_GROUP))        testa++;
-            if (testa == 3 && !is_sex_type_allowed(SKILL_ANAL))            testa++;
-            if (testa == 4 && !is_sex_type_allowed(SKILL_NORMALSEX))    testa++;
-            if (testa == 5 && !is_sex_type_allowed(SKILL_LESBIAN))        testa++;
-            if (testa == 6 && !is_sex_type_allowed(SKILL_FOOTJOB))        testa++;
-            if (testa == 7 && !is_sex_type_allowed(SKILL_HANDJOB))        testa++;
-            if (testa == 8 && !is_sex_type_allowed(SKILL_ORALSEX))        testa++;
-            if (testa == 9 && !is_sex_type_allowed(SKILL_TITTYSEX))        testa++;
-            if (testa == 10 && !is_sex_type_allowed(SKILL_STRIP))        testa++;
-            switch (testa)
-            {
-            case 0:        if (test <= target.get_skill(SKILL_BEASTIALITY))    { sw = JOB_FILMBEAST;    ss << "perform in bestiality scenes."; }    break;
-            case 1:        if (test <= target.get_skill(SKILL_BDSM))            { sw = JOB_FILMBONDAGE;    ss << "perform in bondage scenes."; }        break;
-            case 2:        if (test <= target.get_skill(SKILL_GROUP))        { sw = JOB_FILMGROUP;    ss << "perform in group sex scenes."; }        break;
-            case 3:        if (test <= target.get_skill(SKILL_ANAL))            { sw = JOB_FILMANAL;    ss << "perform in anal scenes."; }            break;
-            case 4:        if (test <= target.get_skill(SKILL_NORMALSEX))    { sw = JOB_FILMSEX;        ss << "perform in normal sex scenes."; }    break;
-            case 5:        if (test <= target.get_skill(SKILL_LESBIAN))        { sw = JOB_FILMLESBIAN;    ss << "perform in lesbian scenes."; }        break;
-            case 6:        if (test <= target.get_skill(SKILL_FOOTJOB))        { sw = JOB_FILMFOOTJOB;    ss << "perform in foot job scenes."; }        break;
-            case 7:        if (test <= target.get_skill(SKILL_HANDJOB))        { sw = JOB_FILMHANDJOB;    ss << "perform in hand job scenes."; }        break;
-            case 8:        if (test <= target.get_skill(SKILL_ORALSEX))        { sw = JOB_FILMORAL;    ss << "perform in oral sex scenes."; }        break;
-            case 9:        if (test <= target.get_skill(SKILL_TITTYSEX))        { sw = JOB_FILMTITTY;    ss << "perform in titty fuck scenes."; }    break;
-            case 10:    if (test <= target.get_skill(SKILL_STRIP))        { sw = JOB_FILMSTRIP;    ss << "perform in strip tease scenes."; }    break;
-            case 11:    if (test <= target.get_skill(SKILL_PERFORMANCE))    { sw = JOB_FILMMAST;    ss << "perform in masturbation scenes."; }    break;
-            default: break;
-            }
-            test -= 5;    // after each roll, lower the test number and roll again
-        } while (sw == JOB_FILMRANDOM);    // until something is assigned or the test number gets too low
-        target.m_NightJob = sw;    // when done set her job (random if the loop failed)
+    } else if (g_Game->movie_manager().get_movies().size() > num_girls_on_job(JOB_PROMOTER, 1)) {
+        target.m_NightJob = JOB_PROMOTER;
+        ss << "promote the movies being sold.";
+    } else {
+        target.m_NightJob = JOB_FILMRANDOM;
+        ss << "work as an actress.";
     }
 }
 
@@ -280,7 +206,7 @@ void sMovieStudio::Update()
     auto income = g_Game->movie_manager().step(*this);
     m_Finance.movie_income(income);
 
-    m_StageHandPoints = m_FluffPoints = m_DirectorQuality = 0;
+    m_StageHandPoints = m_FluffPoints = 0;
 
     UpdateGirls(true);        // Run the Nighty Shift
 
@@ -336,6 +262,7 @@ void sMovieStudio::auto_create_movies() {
     }
 }
 
+// TODO unify the following three similar functions
 void sMovieStudio::check_camera_mages_overuse() {
     int total_scenes = 0;
     bool too_many = false;
@@ -366,8 +293,26 @@ void sMovieStudio::check_purifier_overuse() {
 
     if(too_many) {
         m_Events.AddMessage("You need more Crystal Purifiers. Each Crystal Purifier can process up to three scenes, before"
-                            " they start producing only shoddy work.\nYou have " + std::to_string(m_CameraMages.size()) +
+                            " they start producing only shoddy work.\nYou have " + std::to_string(m_CrystalPurifiers.size()) +
                             " Crystal Purifiers, but filmed " + std::to_string(total_scenes) + " scenes this week.",
+                            0, EventType::EVENT_WARNING);
+    }
+}
+
+void sMovieStudio::check_director_overuse() {
+    int total_scenes = 0;
+    bool too_many = false;
+    for(auto& cm : m_Directors) {
+        if(cm.ScenesFilmed > 3) {
+            too_many = true;
+        }
+        total_scenes += cm.ScenesFilmed;
+    }
+
+    if(too_many) {
+        m_Events.AddMessage("You need more Directors. Each Director can direct up to three scenes, before"
+                            " they start producing shoddy work.\nYou have " + std::to_string(m_Directors.size()) +
+                            " Directors, but filmed " + std::to_string(total_scenes) + " scenes this week.",
                             0, EventType::EVENT_WARNING);
     }
 }

@@ -12,36 +12,34 @@
 
 
 <Text       Name="Movie"                Text="Current Movie"                XPos="28"       YPos="1041"       Width="1546"     Height="56"     FontSize="45"            />
-<ListBox    Name="MakeThisMovie"                                            XPos="28"       YPos="1105"       Width="1546"     Height="948"    FontSize="34"       RowHeight="59"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<ListBox    Name="MakeThisMovie"                                            XPos="28"       YPos="1105"       Width="1546"     Height="788"    FontSize="34"       RowHeight="59"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
     <Column     Name="Type"                 Header="Scene Type"                 Offset="0"  />
     <Column     Name="Actress"              Header="Actress"                    Offset="281"  />
     <Column     Name="Director"             Header="Director"                   Offset="632"  />
     <Column     Name="TechnicalQuality"     Header="Cinemat."                   Offset="983"  />
     <Column     Name="ContentQuality"       Header="Content"                    Offset="1264"  />
-</ListBox>                                                                                                                  
+</ListBox>
 
+<Text       Name="Prediction"               Text="Predicted Audience"           XPos="2249"      YPos="1041"       Width="1223"     Height="56"     FontSize="45"            />
+<ListBox    Name="PredictedAudience"                                            XPos="2249"      YPos="1105"       Width="1223"     Height="788"    FontSize="34"       RowHeight="59"      Border="1"          Events="false"      Multi="false"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+    <Column     Name="TargetGroup"          Header="Target Group"               Offset="0"  />
+    <Column     Name="Rating"               Header="Rating"                     Offset="562"  />
+    <Column     Name="Views"                Header="Views"                      Offset="773"  />
+    <Column     Name="Revenue"              Header="Revenue"                    Offset="984"  />
+</ListBox>
 
-<Button     Name="ScrapScene"           Image="minus_24x24"                 XPos="1602"      YPos="703"      Width="67"      Height="68"     Transparency="true"/>
+    <Button     Name="ScrapScene"           Image="minus_24x24"                 XPos="1602"      YPos="703"      Width="67"      Height="68"     Transparency="true"/>
 <Button     Name="AddScene"             Image="ShiftDown"                   XPos="1602"      YPos="911"      Width="135"      Height="135"     Transparency="true"/>
 <Button     Name="RemoveScene"          Image="ShiftUp"                     XPos="1602"      YPos="1105"      Width="135"      Height="135"     Transparency="true"/>
 
-<Text       Name="SceneDetails"         Text=""                             XPos="1827"      YPos="98"       Width="1012"     Height="835"    FontSize="28"  />
-<Text       Name="MovieDetails"         Text=""                             XPos="1827"      YPos="1181"      Width="1124"     Height="835"    FontSize="28"  />
+<Text       Name="MovieName_txt"            Text="Name:"                    XPos="1968"      YPos="98"       Width="281"     Height="90"    FontSize="45"  />
+<EditBox    Name="MovieName"                                                XPos="2249"      YPos="98"       Width="942"     Height="90"  Border="1"  />
+<Text       Name="MovieDetail_txt"            Text="Details:"               XPos="1968"      YPos="197"       Width="281"     Height="90"    FontSize="45"  />
+<Text       Name="MovieDetails"         Text=""                             XPos="2249"      YPos="197"       Width="1546"     Height="562"    FontSize="28"  />
 
-<Checkbox   Name="AutoCreateMovies"     Text="Auto Create Movies"           XPos="1602"      YPos="1884"       Width="45"      Height="45"     FontSize="34"                  LeftOrRight="false" />
-<Button     Name="ReleaseMovieButton"   Image="ReleaseMovie"                XPos="1602"      YPos="1963"      Width="450"     Height="90"     Transparency="true" />
+<Checkbox   Name="AutoCreateMovies"     Text="Auto Create Movies"           XPos="2811"      YPos="872"       Width="45"      Height="45"     FontSize="34"                  LeftOrRight="false" />
+<Button     Name="ReleaseMovieButton"   Image="ReleaseMovie"                XPos="2811"      YPos="759"      Width="450"     Height="90"     Transparency="true" />
 <Button     Name="BackButton"           Image="Back"                        XPos="3177"     YPos="1941"      Width="562"     Height="112"     Transparency="true" PushWindow="<back>"/>
-
-<ListBox    Name="MoviesList"                                               XPos="1827"       YPos="98"       Width="1546"     Height="948"    FontSize="34"       RowHeight="59"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
-    <Column     Name="Name"                 Header="Name"                       Offset="0"  />
-    <Column     Name="Price"                Header="Ticket"                     Offset="492"  />
-    <Column     Name="Age"                  Header="Running"                    Offset="703"  />
-    <Column     Name="EarningsLastWeek"     Header="Last Week"                  Offset="914"  />
-    <Column     Name="TotalEarnings"        Header="Box Office"                 Offset="1125"  />
-    <Column     Name="Cost"                 Header="Budget"                 Offset="1336"  />
-</ListBox>
-
-    <Button     Name="IncreaseTicketPrice"             Image="ShiftUp"                     XPos="2446"      YPos="1069"      Width="90"      Height="90"     Transparency="true"/>
-    <Button     Name="DecreaseTicketPrice"             Image="ShiftDown"                   XPos="2558"      YPos="1069"      Width="90"      Height="90"     Transparency="true"/>
+<Button     Name="MarketResearch"       Image="MarketResearch"              XPos="2249"     YPos="759"      Width="450"     Height="90"     Transparency="true" PushWindow="Market Research"/>
 
 </Screen>

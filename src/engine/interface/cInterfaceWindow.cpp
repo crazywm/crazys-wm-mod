@@ -400,48 +400,27 @@ cTextItem* cInterfaceWindow::GetTextItem(int id)
 
 cListBox* cInterfaceWindow::AddListBox(int x, int y, int width, int height, int BorderSize, bool enableEvents, bool MultiSelect, bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight)
 {
-    width = (int)((float)width);
-    height = (int)((float)height);
-    x = (int)((float)x);
-    y = (int)((float)y);
-
     g_LogFile.debug("interface", "Adding listbox...");
     // create listbox item
     int ID = m_Widgets.size();
+    // need to ensure correct ordering of the list box and the scroll bar
+    m_Widgets.push_back(nullptr);
     g_LogFile.debug("interface", "initializing listbox");
     auto newListBox = std::make_unique<cListBox>(this, ID, x + m_XPos, y + m_YPos, width, height, BorderSize, MultiSelect,
-            ShowHeaders, HeaderDiv, HeaderSort, fontsize, rowheight);
-    g_LogFile.debug("interface", "enabling events");
+            enableEvents, ShowHeaders, HeaderDiv, HeaderSort, fontsize, rowheight);
     cListBox* lb = newListBox.get();
-    lb->m_EnableEvents = enableEvents;
-
-    // Store listbox item
-    DirPath up, down;
-    up = ButtonPath("Up");
-    down = ButtonPath("Down");
-    string ups = up.c_str();
-    string downs = down.c_str();
-
-    // if showing headers and allowing header clicks to sort list, offset scrollbar and scroll up button
-    int header_offset = (ShowHeaders && HeaderSort) ? 21 : 0;
-    m_Widgets.push_back(std::move(newListBox));
-
-    g_LogFile.debug("interface", "adding scrollbar");
-    auto bar = AddScrollBar( x + width - 16, y + header_offset + 1, 16, height - header_offset - 2, lb->m_NumDrawnElements);
-    bar->ParentPosition = &lb->m_ScrollChange;
-    lb->m_ScrollBar = bar;
-    g_LogFile.debug("interface", "pushing listbox onto stack");
+    m_Widgets[ID] = std::move(newListBox);
     return lb;
 }
 
 int cInterfaceWindow::GetListBoxSize(int ID)
 {
-    return GetListBox(ID)->GetSize();
+    return GetListBox(ID)->NumItems();
 }
 
 void cInterfaceWindow::SetSelectedItemText(int listBoxID, int itemID, string data)
 {
-    GetListBox(listBoxID)->SetElementText(itemID, data);
+    GetCListBox(listBoxID)->SetElementText(itemID, data);
 }
 
 void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, string text, int color)
@@ -457,36 +436,14 @@ void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, CellData value, s
     AddToListBox(listBoxID, dataID, std::vector<FormattedCellData>{{std::move(value), std::move(formatted)}}, color);
 }
 
-void cInterfaceWindow::SetSelectedItemText(int listBoxID, int itemID, string data[], int columns)
-{
-    GetListBox(listBoxID)->SetElementText(itemID, data, columns);
-}
-
 void cInterfaceWindow::SetSelectedItemColumnText(int listBoxID, int itemID, string data, const std::string& column)
 {
-    GetListBox(listBoxID)->SetElementColumnText(itemID, std::move(data), column);
+    GetCListBox(listBoxID)->SetElementColumnText(itemID, std::move(data), column);
 }
 
 void cInterfaceWindow::SetSelectedItemTextColor(int listBoxID, int itemID, const SDL_Color& text_color)
 {
-    GetListBox(listBoxID)->SetElementTextColor(itemID, text_color);
-}
-
-void cInterfaceWindow::FillSortedIDList(int listBoxID, vector<int>& id_vec, int& vec_pos)
-{
-    GetListBox(listBoxID)->GetSortedIDList(&id_vec, &vec_pos);
-}
-
-void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, std::vector<std::string> data, int color)
-{
-   std::vector<FormattedCellData> expanded_data;
-   expanded_data.reserve(data.size());
-
-   std::transform(begin(data), end(data),
-                  std::back_inserter(expanded_data),
-                  [](std::string const& str) { return mk_text(str); });
-
-   AddToListBox(listBoxID, dataID, expanded_data, color);
+    GetCListBox(listBoxID)->SetElementTextColor(itemID, text_color);
 }
 
 void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, std::vector<FormattedCellData> data, int color)
@@ -495,99 +452,75 @@ void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, std::vector<Forma
         g_LogFile.error("interface", "Trying to access invalid ListBox");
         return;
     }
-    GetListBox(listBoxID)->AddElement(dataID, std::move(data), color);
+    GetCListBox(listBoxID)->AddElement(dataID, std::move(data), color);
 }
 
 void cInterfaceWindow::SortColumns(int listBoxID, const std::vector<std::string>& column_name)
 {
-    GetListBox(listBoxID)->SetColumnSort(column_name);
+    GetCListBox(listBoxID)->SetColumnSort(column_name);
 }
 
 void cInterfaceWindow::SortListItems(int listBoxID, string column_name, bool Desc)
 {
-    GetListBox(listBoxID)->SortByColumn(column_name, Desc);
-}
-
-string cInterfaceWindow::HeaderClicked(int listBoxID)
-{
-    string clicked = GetListBox(listBoxID)->m_HeaderClicked;
-    GetListBox(listBoxID)->m_HeaderClicked = "";
-    return clicked;
-}
-
-int cInterfaceWindow::GetNextSelectedItemFromList(int listBoxID, int from, int& pos)
-{
-    return GetListBox(listBoxID)->GetNextSelected(from, pos);
+    GetCListBox(listBoxID)->SortByColumn(column_name, Desc);
 }
 
 int cInterfaceWindow::GetLastSelectedItemFromList(int listBoxID)
 {
-    return GetListBox(listBoxID)->GetLastSelected();
+    return GetCListBox(listBoxID)->GetLastSelected();
 }
 
 int cInterfaceWindow::GetSelectedItemFromList(int listBoxID)
 {
-    return GetListBox(listBoxID)->GetSelected();
+    return GetListBox(listBoxID)->GetSelectedIndex();
 }
 
 string cInterfaceWindow::GetSelectedTextFromList(int listBoxID)
 {
-    return GetListBox(listBoxID)->GetSelectedText();
-}
-
-int cInterfaceWindow::GetAfterSelectedItemFromList(int listBoxID)
-{
-    return GetListBox(listBoxID)->GetAfterSelected();
-}
-
-bool cInterfaceWindow::ListDoubleClicked(int listBoxID)
-{
-    return GetListBox(listBoxID)->DoubleClicked();
-}
-
-void cInterfaceWindow::SetListTopPos(int listBoxID, int pos)
-{
-    if (pos < 0)    return;
-    GetListBox(listBoxID)->m_Position = pos;
-    GetListBox(listBoxID)->m_ScrollBar->SetTopValue(pos);
+    return GetCListBox(listBoxID)->GetSelectedText();
 }
 
 void cInterfaceWindow::SetSelectedItemInList(int listBoxID, int itemID, bool ev, bool DeselectOthers)
 {
     if (itemID == -1 || listBoxID == -1)    return;
-    GetListBox(listBoxID)->SetSelected(itemID, ev, DeselectOthers);
+    GetCListBox(listBoxID)->SetSelected(itemID, ev, DeselectOthers);
 }
 
 int cInterfaceWindow::ArrowDownListBox(int ID)
 {
     if (ID == -1)        return -1;
-    return GetListBox(ID)->ArrowDownList();
+    return GetCListBox(ID)->ArrowDownList();
 }
 
 bool cInterfaceWindow::IsMultiSelected(int ID)
 {
     if (ID == -1)        return false;
-    return GetListBox(ID)->HasMultiSelected();
+    return GetCListBox(ID)->HasMultiSelected();
 }
 
 int cInterfaceWindow::ArrowUpListBox(int ID)
 {
     if (ID == -1)        return -1;
-    return GetListBox(ID)->ArrowUpList();
+    return GetCListBox(ID)->ArrowUpList();
 }
 
 void cInterfaceWindow::ClearListBox(int ID)
 {
-    GetListBox(ID)->ClearList();
-    // update "item total" reference for scroll bar
-    GetListBox(ID)->m_ScrollBar->m_ItemsTotal = 0;
-    GetListBox(ID)->m_ScrollBar->SetTopValue(0);
+    GetListBox(ID)->Clear();
 }
 
-cListBox* cInterfaceWindow::GetListBox(int id)
+IListBox* cInterfaceWindow::GetListBox(int id)
 {
     if (id == -1) return nullptr;
-    return dynamic_cast<cListBox*>(m_Widgets[id].get());
+    auto* elem = m_Widgets[id].get();
+    return dynamic_cast<IListBox*>(elem);
+}
+
+cListBox* cInterfaceWindow::GetCListBox(int id)
+{
+    if (id == -1) return nullptr;
+    auto* elem = m_Widgets[id].get();
+    return dynamic_cast<cListBox*>(elem);
 }
 
 cWindowManager& cInterfaceWindow::window_manager() const
@@ -772,6 +705,10 @@ bool cInterfaceWindow::is_ctrl_held() const {
 
 std::size_t cInterfaceWindow::NumWidgets() const {
     return m_Widgets.size();
+}
+
+void cInterfaceWindow::ForAllSelectedItems(int id, std::function<void(int)> handler) {
+    GetListBox(id)->HandleSelectedIndices(std::move(handler));
 }
 
 void cModalWindow::process() {

@@ -24,6 +24,7 @@
 #include <array>
 #include <string>
 #include <vector>
+#include "interface/TableCells.h"
 
 namespace tinyxml2 {
     class XMLElement;
@@ -45,8 +46,21 @@ public:
 
     int Saturation = 0;                 // The amount of people who have seen a movie just recently and aren't going to watch a new one soon.
 
+    int Knowledge = 0;                  // How much do we know about this target audience?
+
+    /// Gets the queries info as `FormattedCellData`. If `all` is false, then only those
+    /// available at the current `Knowledge` will be shown.
+    FormattedCellData get_formatted(const std::string& query, bool all=true) const;
+
     void load_xml(const tinyxml2::XMLElement& root);
     void save_xml(tinyxml2::XMLElement& target) const;
+
+    static constexpr const int KnowledgeForSpendingPower = 5;
+    static constexpr const int KnowledgeForSize = 10;
+    static constexpr const int KnowledgeForReqScore = 15;
+    static constexpr const int KnowledgeForSaturation = 20;
+    static constexpr const int KnowledgeForFavScene = 25;
+    static constexpr const int KnowledgeForDesires = 30;
 };
 
 struct sTargetGroupSpec {

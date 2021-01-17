@@ -13,10 +13,10 @@
     </Performance>
 
     <Gains XP="10" Skill="3">
-        <Skill Name="Performance" Weight="2" />
-        <Skill Name="Lesbian" Weight="1" Max="50" />
+        <Skill Name="Performance" Weight="2" Min="25"/>
+        <Skill Name="Lesbian" Weight="1" Max="50" Min="20"/>
 
-        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
+        <GainTrait Trait="Porn Star" Threshold="70" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">

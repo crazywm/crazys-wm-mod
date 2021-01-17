@@ -40,7 +40,6 @@ private:
     int saves_id = -1;
     int defaultimages_id = -1;
     int items_id = -1;
-    int backupsaves_id = -1;
     int preferdefault_id = -1;
 
     int theme_id = -1;

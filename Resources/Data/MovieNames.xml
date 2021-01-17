@@ -1,9 +1,147 @@
 <MovieNames>
+    <!-- For inspiration: https://en.wikiquote.org/wiki/List_of_films -->
     <Tease>Movie</Tease>
+    <Tease>Babe</Tease>
+    <Tease>Body Heat</Tease>
+    <Tease>Beautiful Girls</Tease>
+    <Tease>Charlie's Angels</Tease>
+    <Tease>Another Cinderella Story</Tease>
+    <Tease>The Girl Next Door</Tease>
+    <Tease>My Fair Lady</Tease>
+    <Tease>The Queen</Tease>
+    <Tease Requires="Chef">Hottest Kitchen</Tease>
+    <Tease Requires="Tease">Half Naked</Tease>
+    <Tease Requires="Tease">Lady in the Water</Tease>
+    <Tease Requires="Tease">Lolita</Tease>
+    <Tease Requires="Tease">A Midsummer Night's Dream</Tease>
+    <Tease Requires="Tease">Teen Beach Movie</Tease>
+    <Tease Requires="Action">Lesbian Vampire Killers</Tease>
+    <Tease Requires="Action">Red Hot Riding Hood</Tease>
+    <Tease Requires="Music">The Sound of Music</Tease>
+    <Tease Requires="Music">The Wedding Singer</Tease>
+    <Tease>The Hot Chick</Tease>
+    <Tease>Pretty in Pink</Tease>
+    <Tease>Pretty Woman</Tease>
+    <Tease>She's Out of My League</Tease>
+    <Tease>Sleeping Beauty</Tease>
+    <Tease>Tinker Bell</Tease>
+    <Tease>Some Like It Hot</Tease>
+    <Tease>True Romance</Tease>
+    <Tease>Valley Girl</Tease>
+    <Tease>Woman of the Year</Tease>
+
     <Soft>Sensual Encounters</Soft>
     <Soft>Erotica</Soft>
+    <Soft>Heat</Soft>
+    <Soft>Amour</Soft>
+    <Soft>Sin City</Soft>
+    <Soft>Hot &amp; Sexy</Soft>
+    <Soft>Bad Girls</Soft>
+    <Soft>A Close Shave</Soft>
+    <Soft Requires="Hand">The Cumscrubber</Soft>
+    <Soft>Dangerous Beauty</Soft>
+    <Soft>Everybody Wants Some!!</Soft>
+    <Soft>Fantasia</Soft>
+    <Soft>Gentleman Prefer Blondes</Soft>
+    <Soft>Margot at the Wedding</Soft>
+    <Soft>Gold Diggers of Broadway</Soft>
+    <Soft>The Naughty Nineties</Soft>
+    <Soft>Not Another Teen Movie</Soft>
+    <Soft>Pillow Talk</Soft>
+    <Soft Requires="Hand">Free Willy</Soft>
+    <Soft Requires="Mast">Gold-Fingering</Soft>
+    <Soft Requires="Mast">Home Alone</Soft>
+    <Soft Requires="Mast">Busy Hands</Soft>
+    <Soft Requires="Mast">Vibes</Soft>
+    <Soft>In the Heat of the Night</Soft>
+    <Soft Requires="Strip">Jennifer's Body</Soft>
+    <Soft Requires="Strip">Naked</Soft>
+    <Soft Requires="Strip">The Naked City</Soft>
+    <Soft Requires="Strip">Puss in Boots</Soft>
+    <Soft Requires="Strip">Striptease</Soft>
+    <Soft Requires="Hand">Mr. Seeds</Soft>
+    <Soft>Private Parts</Soft>
+    <Soft>Saint Moan</Soft>
+    <Soft>Scent of a Woman</Soft>
+    <Soft>Sex Drive</Soft>
+    <Soft>Sleeping with the Enemy</Soft>
+    <Soft>Wet Hot American Summer</Soft>
+    <Soft>While We're Young</Soft>
+    <Soft>What a Girl Wants</Soft>
+    <Soft>Working Girl</Soft>
+    <Soft>Young and Innocent</Soft>
+
     <Hard>Fuckfest</Hard>
     <Hard>Banged</Hard>
+    <Hard>Porn Harbour</Hard>
+    <Hard>Pornocalypse Now</Hard>
+    <Hard>Alice in Pornoland</Hard>
+    <Hard>American Cream Pie</Hard>
+    <Hard Requires="Oral">Blown Away</Hard>
+    <Hard Requires="Oral">The Jizz Singer</Hard>
+    <Hard Requires="Oral">Vampires Suck</Hard>
+    <Hard>Cumming Home</Hard>
+    <Hard>Days of Being Wild</Hard>
+    <Hard>Dirty Work</Hard>
+    <Hard>Earth Girls Are Easy</Hard>
+    <Hard>Edward Penishands</Hard>
+    <Hard>Faster, Pussycat!</Hard>
+    <Hard>Fuck Club</Hard>
+    <Hard>Forrest Hump</Hard>
+    <Hard>Friends with Benefits</Hard>
+    <Hard>Bangs of New York</Hard>
+    <Hard>A Lot Like Love</Hard>
+    <Hard Requires="Les">Girls Will Be Girls</Hard>
+    <Hard Requires="Sex">In &amp; Out</Hard>
+    <Hard Requires="Sex">In the Mood for Love</Hard>
+    <Hard Requires="Sex">Jack and Jill</Hard>
+    <Hard Requires="Sex">Knocked Up</Hard>
+    <Hard Requires="Sex">Zack and Miri Make a Porno</Hard>
+    <Hard Requires="Action">Womb Raider</Hard>
+    <Hard Requires="Anal">Smokin' Asses</Hard>
+    <Hard Requires="Group">League of Extraordinary Not-so-gentlemen</Hard>
+    <Hard Requires="Group">Ocean's Eleven</Hard>
+    <Hard Requires="Group">XXX-Men</Hard>
+    <Hard>Kiss Kiss Bang Bang</Hard>
+    <Hard>The Nutty Professor</Hard>
+    <Hard>Original Sin</Hard>
+    <Hard>Porn Fiction</Hard>
+    <Hard>Porn Hour</Hard>
+    <Hard>Sex Tape</Hard>
+    <Hard>The Stepfather</Hard>
+    <Hard>Tenacious D</Hard>
+    <Hard>The Dick of Destiny</Hard>
+    <Hard>Uncle Fuck</Hard>
+    <Hard>When a Man Loves a Woman</Hard>
+
     <Extreme>Used and Abused</Extreme>
     <Extreme>Dungeon Sweethearts</Extreme>
+    <Extreme>Fucked and Furious</Extreme>
+    <Extreme>12 Years a Slave</Extreme>
+    <Extreme>Bound</Extreme>
+    <Extreme Requires="Throat">Choke</Extreme>
+    <Extreme>Love is the Devil</Extreme>
+    <Extreme>The Great Dicktator</Extreme>
+    <Extreme>Mean Girls</Extreme>
+    <Extreme>Misery</Extreme>
+    <Extreme>The Object of My Affection</Extreme>
+    <Extreme>Quiet Please!</Extreme>
+    <Extreme>Training Day</Extreme>
+    <Extreme Requires="BDSM">Cruel Intentions</Extreme>
+    <Extreme Requires="BDSM">Horror Express</Extreme>
+    <Extreme Requires="BDSM">Human Traffic</Extreme>
+    <Extreme Requires="BDSM">Intolerable Cruelty</Extreme>
+    <Extreme Requires="BDSM">Little Shop of Horrors</Extreme>
+    <Extreme Requires="BDSM">A Nightmare on Elm Street</Extreme>
+    <Extreme Requires="BDSM">Primal Fear</Extreme>
+    <Extreme Requires="BDSM">Tower of Terror</Extreme>
+    <Extreme Requires="Throat">Deep Throat</Extreme>
+    <Extreme Requires="Beast">Eight Dicked Freaks</Extreme>
+    <Extreme Requires="Beast">Fuckzilla</Extreme>
+    <Extreme Requires="Beast">The Hulk</Extreme>
+    <Extreme Requires="Beast">Planet of the Apes</Extreme>
+    <Extreme Requires="Beast">The Princess and the Frog</Extreme>
+    <Extreme Requires="Beast">Revenge of the Pink Panther</Extreme>
+    <Extreme Requires="Beast">Sexy Beast</Extreme>
+    <Extreme Requires="Bukkake">Milk</Extreme>
 </MovieNames>

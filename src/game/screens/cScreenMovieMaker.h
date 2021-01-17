@@ -29,16 +29,15 @@ private:
     int autocreatemovies_id;// auto create movies checkbox
     int sceneslist_id;        // Scenes listbox
     int makethismovie_id;    // Make this movie
-    int running_movies_id;           // List box with running movies
+    int predict_list_id;
+
     int releasemovie_id;    // Release movie
     int girlimage_id;        // Girl image
     int scrapscene_id;        // Scrap scene
     int addscene_id;        // add selected scene
     int removescene_id;        // removes selected scene
     int moviedetails_id;    // movie details
-
-    int incticket_id;    // movie details
-    int decticket_id;    // movie details
+    int moviename_id;    // movie details
 
     void set_ids() override;
 
@@ -56,5 +55,5 @@ public:
 private:
     void on_select_source_scene(int selection);
     void on_select_movie_scene(int selection);
-    void on_select_running_movie(int selection);
+    std::string generate_name();
 };

@@ -53,6 +53,7 @@ void sLuaGirl::init(lua_State* L) {
             {"set_status", sLuaGirl::set_status},
             {"has_status", sLuaGirl::has_status},
             {"obey_check", sLuaGirl::obey_check},
+            {"skill_check", sLuaGirl::skill_check},
             {"add_message", sLuaGirl::add_message},
             {"give_money", sLuaGirl::give_money},
             {"torture", sLuaGirl::torture},
@@ -422,6 +423,23 @@ int sLuaGirl::obey_check(lua_State * L)
     return 1;
 }
 
+int sLuaGirl::skill_check(lua_State* L) {
+    // probability increases linearly until target is reached, where it becomes 100%
+    auto& girl = check_type(L, 1);
+    int skill = luaL_checkinteger(L, 2);
+    int target = luaL_checkinteger(L, 3);
+
+    int skill_val = girl.get_skill(skill);
+    if(skill_val > target) {
+        lua_pushboolean(L, true);
+        return 1;
+    }
+    int deficiency = target - skill_val;
+    lua_pushboolean(L, g_Dice.percent(100 - 100 * deficiency / 100));
+    return 1;
+}
+
+
 int sLuaGirl::torture(lua_State* L) {
     auto& girl = check_type(L, 1);
     cGirlTorture gt(&girl);
@@ -481,7 +499,6 @@ int sLuaGirl::pregnancy_term(lua_State* L)
     lua_pushinteger(L, girl.get_preg_duration());
     return 1;
 }
-
 
 void sLuaCustomer::init(lua_State* L) {
     luaL_newmetatable(L, "wm.Customer");

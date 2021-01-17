@@ -100,7 +100,7 @@ private:
     sGirl* m_ActiveGirl;
     bool m_CurrentShift;
 
-    const cJobManager* m_JobManager;
+    const cJobManager* m_JobManager = nullptr;
 
 protected:
     sJobInfo m_Info;
@@ -168,5 +168,6 @@ void RegisterFarmJobs(cJobManager& mgr);
 void RegisterClinicJobs(cJobManager& mgr);
 void RegisterFilmCrewJobs(cJobManager& mgr);
 void RegisterFilmingJobs(cJobManager& mgr);
+void RegisterOtherStudioJobs(cJobManager& mgr);
 
 #endif //WM_GENERICJOB_H

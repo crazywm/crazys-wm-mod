@@ -14,6 +14,7 @@ set(SCREENS_SRC
         screens/cScreenMainMenu.cpp
         screens/cScreenMayor.cpp
         screens/cScreenMovieMaker.cpp
+        screens/cScreenMarketResearch.cpp
         screens/cScreenNewGame.cpp
         screens/cScreenPreparingGame.cpp
         screens/cScreenPrison.cpp
@@ -49,10 +50,6 @@ set(JOBS_SRC
         jobs/WorkFeedPoor.cpp
         jobs/WorkFightArenaGirls.cpp
         jobs/WorkFightBeast.cpp
-        jobs/WorkFilmDirector.cpp
-        jobs/WorkFilmPromoter.cpp
-        jobs/WorkFilmPublicBDSM.cpp
-        jobs/WorkFilmRandom.cpp
         jobs/WorkFilmStagehand.cpp
         jobs/WorkFreetime.cpp
         jobs/WorkGetAbort.cpp
@@ -85,6 +82,7 @@ set(JOBS_SRC
         jobs/ClinicJobs.cpp
         jobs/JobData.cpp
         jobs/StudioScenes.cpp
+        jobs/StudioOther.cpp
         )
 
 set(BUILDINGS_SRC

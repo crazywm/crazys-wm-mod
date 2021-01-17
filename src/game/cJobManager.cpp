@@ -90,7 +90,7 @@ void cJobManager::Setup()
 
     // Studio Crew
     JobFilters[JOBFILTER_STUDIOCREW] = sJobFilter{"Studio Crew", "These are jobs for running a movie studio."};
-    register_filter(JOBFILTER_STUDIOCREW, JOB_DIRECTOR, JOB_STAGEHAND, {JOB_RESTING});
+    register_filter(JOBFILTER_STUDIOCREW, JOB_EXECUTIVE, JOB_STAGEHAND, {JOB_RESTING});
     //JobData[JOB_SOUNDTRACK] = sJobData("Sound Track", "SndT", WorkSoundTrack, JP_SoundTrack);
     //JobData[JOB_SOUNDTRACK].description = ("She will clean up the audio and add music to the scenes. (not required but helpful)");
 
@@ -177,6 +177,7 @@ void cJobManager::Setup()
     RegisterManagerJobs(*this);
     RegisterFilmingJobs(*this);
     RegisterFilmCrewJobs(*this);
+    RegisterOtherStudioJobs(*this);
     RegisterTherapyJobs(*this);
     RegisterBarJobs(*this);
     RegisterFarmJobs(*this);
@@ -779,13 +780,6 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
         else
             Girl.m_DayJob = Girl.m_NightJob = JOB_THERAPY;
     }
-    // Special Movie Studio Jobs
-#if 1
-    else if (JobID == JOB_DIRECTOR && Girl.m_Building->num_girls_on_job(JOB_DIRECTOR, SHIFT_NIGHT) >0)
-    {
-        g_Game->push_message(("There can be only one Director!"), 0);
-    }
-#endif
 
 // Special cases were checked and don't apply, just set the studio job as requested
 #if 1
@@ -1973,6 +1967,7 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
 
 void cJobManager::register_job(std::unique_ptr<IGenericJob> job) {
     assert(job != nullptr);
+    job->OnRegisterJobManager(*this);
     m_OOPJobs[job->job()] = std::move(job);
 }
 

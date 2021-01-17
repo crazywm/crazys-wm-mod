@@ -92,18 +92,7 @@ public:
     void    change_release(BuildingType type, int index);
     void    release();
     void    talk();
-    void    get_selected_girls(std::vector<int> *girl_array);
+    void    get_selected_girls(std::vector<int> *sel);
     void    update_image();
     void UpdateImage(int imagetype) override;
-
-    // XML screen replacement for cSelector, for multi-select listboxes
-    int multi_first() {
-        sel_pos = 0;
-        return GetNextSelectedItemFromList(girllist_id, 0, sel_pos);
-    }
-    int multi_next() {
-        return GetNextSelectedItemFromList(girllist_id, sel_pos + 1, sel_pos);
-    }
-
-    IBuilding& getBuilding(const std::string& sub, int sendtonum) const;
 };

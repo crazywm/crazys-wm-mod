@@ -33,7 +33,6 @@ void cScreenSettings::set_ids()
     saves_id           = get_id("Saves");
     defaultimages_id   = get_id("DefaultImages");
     items_id           = get_id("Items");
-    backupsaves_id     = get_id("BackupSaves");
     preferdefault_id   = get_id("PreferDefault");
 
     theme_id           = get_id("ThemeList");
@@ -70,7 +69,6 @@ void cScreenSettings::init(bool back)
         SetEditBoxText(saves_id, cfg.folders.saves());
         SetEditBoxText(defaultimages_id, cfg.folders.defaultimageloc());
         SetEditBoxText(items_id, cfg.folders.items());
-        SetCheckBox(backupsaves_id, cfg.folders.backupsaves());
         SetCheckBox(preferdefault_id, cfg.folders.preferdefault());
         SetCheckBox(fullscreen_id, cfg.resolution.fullscreen());
         SetSelectedItemInList(theme_id, 1, false, true);
@@ -84,7 +82,6 @@ void cScreenSettings::update_settings()
     cfg.set_value("folders.default_images", GetEditBoxText(defaultimages_id));
     cfg.set_value("folders.items", GetEditBoxText(items_id));
 
-    cfg.set_value("folders.backup_saves", IsCheckboxOn(backupsaves_id));
     cfg.set_value("folders.prefer_defaults", IsCheckboxOn(preferdefault_id));
 
     cfg.set_value("interface.theme", GetSelectedTextFromList(theme_id));

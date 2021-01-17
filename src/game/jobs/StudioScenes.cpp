@@ -22,6 +22,8 @@
 #include "cGirls.h"
 #include "Game.hpp"
 #include "sStorage.h"
+#include "buildings/IBuilding.h"
+#include "utils/streaming_random_selection.hpp"
 
 namespace {
     struct FilmOral : cFilmSceneJob {
@@ -161,6 +163,48 @@ namespace {
             }
         }
     };
+
+    struct FilmRandom : cBasicJob {
+        FilmRandom() : cBasicJob(JOB_FILMRANDOM) {
+            m_Info.ShortName = "FRnd";
+            m_Info.Description = "She will perform in a random scene, chosen according to her skills.";
+        }
+
+        eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override {
+            return eCheckWorkResult::ACCEPTS;
+        }
+
+        bool DoWork(sGirl& girl, bool is_night) override {
+            cJobManager& mgr = g_Game->job_manager();
+            RandomSelector<void> select_job;
+
+            std::initializer_list<JOBFILTER> filters = {JOBFILTER_STUDIOTEASE, JOBFILTER_STUDIOSOFTCORE, JOBFILTER_STUDIOPORN, JOBFILTER_STUDIOHARDCORE};
+            for(auto& filter : filters) {
+                auto jobs = mgr.JobFilters[filter];
+                // note: we really need to capture by reference here, because the selector works with pointers!
+                for(auto& job : jobs.Contents) {
+                    auto& job_class = dynamic_cast<cFilmSceneJob&>(*mgr.m_OOPJobs[job]);
+                    auto st = job_class.GetSexType();
+                    if(girl.m_Building->is_sex_type_allowed(st)) {
+                        auto o = job_class.CalcChanceToObey(girl);
+                        // scale performance with chance to obey. If larger than 80%, don't differentiate further
+                        float f = o.total() / 80.f;
+                        f = std::min(1.f, f);
+                        // make it less likely to choose a job type with bad performance, or which the girl is unlikely to do
+                        select_job.process((void*)job, std::exp(f * girl.job_performance(job, true) / 15.f) / 10.f);
+                    }
+                }
+            }
+
+            if(select_job.selection()) {
+                JOBS chosen = static_cast<JOBS>((long)select_job.selection());
+                return mgr.do_job(chosen, girl, SHIFT_NIGHT);
+            }
+
+            girl.AddMessage("Could not find a valid scene to film for the random job.", IMGTYPE_PROFILE, EVENT_DEBUG);
+            return false;
+        }
+    };
 }
 
 // film registry
@@ -210,4 +254,5 @@ void RegisterFilmingJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<FilmBuk>());
     mgr.register_job(std::make_unique<FilmAction>());
     mgr.register_job(std::make_unique<FilmPubBDSM>());
+    mgr.register_job(std::make_unique<FilmRandom>());
 }

@@ -42,7 +42,7 @@
         <Skill Name="Performance" Weight="2" Max="75"/>
         <Skill Name="OralSex" Weight="1" Max="50"/>
 
-        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
+        <GainTrait Trait="Porn Star" Threshold="70" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
     </Gains>

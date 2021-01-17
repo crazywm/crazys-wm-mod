@@ -30,6 +30,7 @@
 #include "interface/cSurface.h"
 #include <stack>
 
+class IListBox;
 class cImageItem;
 class cButton;
 class cEditBox;
@@ -95,42 +96,29 @@ public:
     // List Boxes
     void AddToListBox(int listBoxID, int dataID, std::string data, int color = COLOR_BLUE);
     void AddToListBox(int listBoxID, int dataID, CellData value, std::string formatted, int color = COLOR_BLUE);
-    void AddToListBox(int listBoxID, int dataID, std::vector<std::string> data, int color = COLOR_BLUE);
     void AddToListBox(int listBoxID, int dataID, std::vector<FormattedCellData> data, int color = COLOR_BLUE);
+
     int GetSelectedItemFromList(int listBoxID);
     std::string GetSelectedTextFromList(int listBoxID); // MYR: For new message summary display in InterfaceProcesses.cpp
     int GetLastSelectedItemFromList(int listBoxID);
-    int GetNextSelectedItemFromList(int listBoxID, int from, int& pos);
-    template<class F>
-    void ForAllSelectedItems(int id, F&& handler) {
-        int pos = 0;
-        int selection = GetNextSelectedItemFromList(id, 0, pos);
-        while (selection != -1)
-        {
-            handler(selection);
-            selection = GetNextSelectedItemFromList(id, pos + 1, pos);
-        }
-    }
-    int GetAfterSelectedItemFromList(int listBoxID);
-    void SetListTopPos(int listBoxID, int pos = 0);
+
+    void ForAllSelectedItems(int id, std::function<void(int)> handler);
+
     void SetSelectedItemInList(int listBoxID, int itemID, bool ev = true, bool DeselectOthers = true);
     void SetSelectedItemText(int listBoxID, int itemID, std::string data);
     void ClearListBox(int ID);
     int ArrowDownListBox(int ID);
     int ArrowUpListBox(int ID);
     bool IsMultiSelected(int ID);    // returns true if list has more than one item selected
-    void SetSelectedItemText(int listBoxID, int itemID, std::string data[], int columns);
-    cListBox* GetListBox(int listBoxID);
+    IListBox* GetListBox(int listBoxID);
+    cListBox* GetCListBox(int listBoxID);
     void SetListBoxSelectionCallback(int id, std::function<void(int)>);
     void SetListBoxDoubleClickCallback(int id, std::function<void(int)>);
     void SetListBoxHotKeys(int id, SDL_Keycode up, SDL_Keycode down);
     void SetSelectedItemColumnText(int listBoxID, int itemID, std::string data, const std::string& column);
     void SortColumns(int listBoxID, const std::vector<std::string>& column_name);
     void SortListItems(int listBoxID, std::string column_name, bool Desc = false);
-    std::string HeaderClicked(int listBoxID);
-    bool ListDoubleClicked(int listBoxID);
     void SetSelectedItemTextColor(int listBoxID, int itemID, const SDL_Color& text_color);
-    void FillSortedIDList(int listBoxID, std::vector<int>& id_vec, int & vec_pos);
 
     cScrollBar* AddScrollBar(int x, int y, int width, int height, int visibleitems);
 

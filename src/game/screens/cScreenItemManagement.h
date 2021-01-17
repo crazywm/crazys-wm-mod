@@ -42,7 +42,7 @@ class IInventoryProvider {
     // everything to which an inventory item can be transferred
 public:
     virtual ~IInventoryProvider() = default;
-    virtual std::vector<std::string> get_data(int filter) const = 0;
+    virtual std::vector<FormattedCellData> get_data(int filter) const = 0;
     virtual std::string get_details() const { return "-"; }
     virtual void enumerate_items(const std::function<void(const sInventoryItem *, int)> &callback) const = 0;
 

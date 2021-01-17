@@ -15,6 +15,7 @@
 * [ ] Improve performance of animations (upscale only when blitting?)
 * [ ] Pre-generate list of all images for each girl on game start
 * [ ] De-interlacing
+* [ ] IListBox conversion
 * [ ] Convert job functions to classes
   - [ ] General
   - [ ] Bar
@@ -35,8 +36,8 @@
   - [ ] OnBought
   
 ## Movies
-* [ ] MarketResearch Job
-* [ ] Split Director into Executive (Matron) and Director
+* [ ] More text variety
+* [ ] Trait text influences for scenes
 
 ## UI
 * [ ] Per building/global anti preg setting
@@ -45,7 +46,7 @@
 * [ ] Active Building Widget
 * [ ] LoadGame delete button
 * [ ] LoadGame more info
-* [ ] Multi-Select when hiring gangs
+* [ ] Inventory screen resets
 
 ## Bugs
 * [ ] some parts of the old scripts are still missing
@@ -57,11 +58,11 @@
 * [ ] "ERROR: Selected girl is a runaway"
 * [ ] Clicking the item filter in the inventory screen sets focus to left inventory
 * [ ] async scripts and messages may get scrambled
-* [ ] Bought a dead girl from the market?
+* [ ] Bought a dead girl from the market? Got a DEAD girl from an event!
 * [ ] ffmpeg frame duration off by one
 * [ ] bugs in shop/inventory screen
   - [ ] "your inventory is full", but seems to buy anyway
   - [ ] "your inventory is full" for sell button
 * [ ] gracefully handle missing/corrupt config file
-* [ ] may select wrong scene when removing in movie maker
 * [ ] slave market problem from discord
+* [ ] Setting jobs for multiple girls when girl list is not in default sort order

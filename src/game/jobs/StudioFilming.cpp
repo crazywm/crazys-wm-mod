@@ -58,13 +58,22 @@ bool cFilmSceneJob::CheckCanWork(sGirl& girl) {
     {
         add_text("crew.refuse.health");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return false;
     }
 
     if(m_RefuseIfPregnant && girl.is_pregnant()) {
         add_text("crew.refuse.pregnant");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return false;
+    }
+
+    // check sex type
+    if(m_PleasureFactor.Skill != NUM_SKILLS) {
+        if(!brothel->is_sex_type_allowed(m_PleasureFactor.Skill)) {
+            girl.AddMessage("A scene of this type cannot be filmed, because you have forbidden the corresponding sex type.",
+                            IMGTYPE_PROFILE, EVENT_NOWORK);
+            return false;
+        }
     }
 
     return true;
@@ -84,30 +93,40 @@ namespace {
         // a non-linear transformation
         // the 0.09 makes the curve a bit smoother
         skill_factor = std::sqrt(0.09f + skill_factor) / std::sqrt(1.09f);
-        return (girl.libido() * (data.Factor + data.BaseValue) * skill_factor) / 100 - data.BaseValue;
+
+        float lib_value = girl.libido() * (data.Factor + data.BaseValue) * skill_factor;
+        return lib_value / 100 - data.BaseValue;
     }
+}
+
+
+sFilmObedienceData cFilmSceneJob::CalcChanceToObey(const sGirl& girl) const {
+    int base_chance = 100 - cGirls::GetRebelValue(girl, false, job());
+    base_chance /= 2;      // get a conventional percentage value
+
+    int libido = libido_influence(m_PleasureFactor, girl);
+    int enjoy = (2 * girl.get_enjoyment(m_PrimaryAction) + girl.get_enjoyment(m_SecondaryAction)) / 3;
+    int love_hate = (girl.pclove() + girl.pcfear() - girl.pchate()) / 10;
+
+    return {base_chance, libido, enjoy, love_hate};
 }
 
 bool cFilmSceneJob::CheckRefuseWork(sGirl& girl) {
     // since a scene job combines multiple actions, we cannot use the normal disobey_check code
-    int chance_to_obey = 100 - cGirls::GetRebelValue(girl, false, job());
-    chance_to_obey /= 2;      // get a conventional percentage value
+    auto obey = CalcChanceToObey(girl);
 
-    m_Dbg_Msg << "Obedience:\n  Basic Value " << chance_to_obey << "\n";
-    m_Dbg_Msg << "  Libido " << libido_influence(m_PleasureFactor, girl) << "\n";
-    m_Dbg_Msg << "  Enjoy " << (2 * girl.get_enjoyment(m_PrimaryAction) + girl.get_enjoyment(m_SecondaryAction)) / 3 << "\n";
-    m_Dbg_Msg << "  Love/Hate " << (girl.pclove() + girl.pcfear() - girl.pchate()) / 10 << "\n";
+    m_Dbg_Msg << "Obedience:\n  Basic Value " << obey.Base << "\n";
+    m_Dbg_Msg << "  Libido " << obey.Libido << "\n";
+    m_Dbg_Msg << "  Enjoy " << obey.Enjoy << "\n";
+    m_Dbg_Msg << "  Love/Hate " << obey.LoveHate << "\n";
 
-    chance_to_obey += libido_influence(m_PleasureFactor, girl);
-    chance_to_obey += (2 * girl.get_enjoyment(m_PrimaryAction) + girl.get_enjoyment(m_SecondaryAction)) / 3;
-    chance_to_obey += (girl.pclove() + girl.pcfear() - girl.pchate()) / 10;
-
-    m_Dbg_Msg << "           Total " << chance_to_obey << "\n";
+    int chance_to_obey = obey.total();
 
 
     // TODO add trait based values
 
     int roll = g_Dice.d100();                                // let's get a percentage roll
+    m_Dbg_Msg << "           Total " << chance_to_obey << " " << roll << "\n";
     int diff = chance_to_obey - roll;
     bool girl_obeys = (diff >= 0);
     if (girl_obeys)                                            // there's a price to be paid for relying on love or fear
@@ -118,10 +137,10 @@ bool cFilmSceneJob::CheckRefuseWork(sGirl& girl) {
 
     // if she doesn't want to do it, but still works, her enjoyment decreases
     m_Dbg_Msg << "Enjoyment: \n  Init " << m_Enjoyment << "\n";
-    m_Dbg_Msg << "  Libido " << libido_influence(m_PleasureFactor, girl) / 2 << "\n";
-    m_Dbg_Msg << "  Base " << ((2 * girl.get_enjoyment(m_PrimaryAction) + girl.get_enjoyment(m_SecondaryAction)) / 3) / 3 << "\n";
-    m_Enjoyment += libido_influence(m_PleasureFactor, girl) / 2;
-    m_Enjoyment += ((2 * girl.get_enjoyment(m_PrimaryAction) + girl.get_enjoyment(m_SecondaryAction)) / 3) / 3;
+    m_Dbg_Msg << "  Libido " << libido_influence(m_PleasureFactor, girl) << "\n";
+    m_Dbg_Msg << "  Base " << (2*(2 * girl.get_enjoyment(m_PrimaryAction) + girl.get_enjoyment(m_SecondaryAction)) / 3) / 3 << "\n";
+    m_Enjoyment += libido_influence(m_PleasureFactor, girl);
+    m_Enjoyment += (2*(2 * girl.get_enjoyment(m_PrimaryAction) + girl.get_enjoyment(m_SecondaryAction)) / 3) / 3;
     if(chance_to_obey < 60) {
         m_Enjoyment += (chance_to_obey - 60) / 10;
         m_Dbg_Msg << "  Obey " << (chance_to_obey - 60) / 10 << "\n";
@@ -134,6 +153,7 @@ bool cFilmSceneJob::CheckRefuseWork(sGirl& girl) {
         } else {
             add_text("refuse");
             girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+            produce_debug_message(girl);
         }
         return true;
     } else {
@@ -209,19 +229,22 @@ bool cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
     else if (roll >= 90) { m_Enjoyment += uniform(1, 4); }
     else { m_Enjoyment += uniform(0, 2); }
 
+    int bonus_enjoy = 0;
     if (m_Performance >= 200)
     {
-        m_Enjoyment  += uniform(5, 7);
+        bonus_enjoy = uniform(9, 14);
     }
     else if (m_Performance >= 100)
     {
-        int offset = (m_Performance - 100) / 20;
-        m_Enjoyment += uniform(offset / 2, 2 + offset);
+        int offset = (m_Performance - 100) / 10;
+        bonus_enjoy = uniform(offset / 2, 2 + offset);
     }
     else
     {
-        m_Enjoyment -= uniform(2, 5);
+        bonus_enjoy = -uniform(3, 6);
     }
+    m_Enjoyment += bonus_enjoy;
+    m_Dbg_Msg << "  Perf base Enjoy: " << bonus_enjoy << "\n";
 
     ss << "\n ";
 
@@ -301,29 +324,32 @@ bool cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
     apply_gains(girl, m_Performance);
     update_enjoyment(girl);
 
-    girl.AddMessage(m_Dbg_Msg.str(), IMGTYPE_PROFILE, EventType::EVENT_DEBUG);
+    produce_debug_message(girl);
 
     return false;
 }
 
+void cFilmSceneJob::produce_debug_message(sGirl& girl) const { girl.AddMessage(m_Dbg_Msg.str(), IMGTYPE_PROFILE, EVENT_DEBUG); }
+
 void cFilmSceneJob::update_enjoyment(sGirl& girl) const {
     m_Dbg_Msg << "Enjoyment: " << m_Enjoyment << " [" << girl.get_enjoyment(m_PrimaryAction) << "]\n";
-    if (m_Enjoyment > girl.m_Enjoyment[m_PrimaryAction] / 2) {
-        int delta = m_Enjoyment - girl.m_Enjoyment[m_PrimaryAction] / 2;
-        if(chance(33 + 5 * delta)) {
-            girl.upd_Enjoyment(m_PrimaryAction, uniform(1, 1 + delta));
+    int old_enjoyment = girl.m_Enjoyment[m_PrimaryAction];
+    if (m_Enjoyment > old_enjoyment + 2) {
+        int delta = m_Enjoyment - old_enjoyment;
+        if(chance(25 + 5 * delta)) {
+            girl.upd_Enjoyment(m_PrimaryAction, uniform(1, delta));
             std::stringstream enjoy_message;
             enjoy_message << "${name} had fun working today (" << m_Enjoyment
-                          << "), and now enjoys this job a little more.";
+                          << "), and now enjoys this job a little more (" << old_enjoyment << " -> " << girl.get_enjoyment(m_PrimaryAction) << ").";
             girl.AddMessage(enjoy_message.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
         }
-    } else if (m_Enjoyment < girl.m_Enjoyment[m_PrimaryAction] / 2 - 4) {
-        int delta = girl.m_Enjoyment[m_PrimaryAction] / 2 - 4 - m_Enjoyment;
-        if(chance(33 + 5 * delta)) {
+    } else if (m_Enjoyment < old_enjoyment - 6) {
+        int delta = old_enjoyment - 4 - m_Enjoyment;
+        if(chance(25 + 5 * delta)) {
             girl.upd_Enjoyment(m_PrimaryAction, -uniform(1, 1 + delta));
             std::stringstream enjoy_message;
             enjoy_message << "${name} disliked working today (" << m_Enjoyment
-                          << "), and now enjoys this job a little less.";
+                          << "), and now enjoys this job a little less (" << old_enjoyment << " -> " << girl.get_enjoyment(m_PrimaryAction) << ").";
             girl.AddMessage(enjoy_message.str(), IMGTYPE_PROFILE, EVENT_WARNING);
         }
     }
@@ -413,8 +439,13 @@ void cFilmSceneJob::Narrate(sGirl& girl) {
 
 void cFilmSceneJob::InitWork() {
     cBasicJob::InitWork();
+    RegisterVariable("Enjoy", m_Enjoyment);
     m_IsForced = false;
     m_Enjoyment = 0;
     m_Dbg_Msg.str("");
+}
+
+SKILLS cFilmSceneJob::GetSexType() const {
+    return m_PleasureFactor.Skill;
 }
 

@@ -98,6 +98,15 @@ namespace settings {
     const char* MONEY_COST_NET     = "money.cost.net";
 
     const char* TORTURE_INJURY_CHANCE   = "interact.torture_injury_chance";
+
+
+    const char* MOVIES_SATURATION_DECAY = "movies.saturation-decay";
+    const char* MOVIES_HYPE_DECAY = "movies.hype-decay";
+    const char* MOVIES_AUDIENCE_UPDATE_CHANCE = "movies.audience.update-chance";
+    const char* MOVIES_AUDIENCE_BASE_FRACTION = "movies.audience.base-fraction";
+    const char* MOVIES_REPEATED_SCENE_FACTOR = "movies.movie.repeated-factor";
+    const char* MOVIES_RUNNING_WEEKS = "movies.running-weeks";
+    const char* MOVIES_AUDIENCE_SATED_CHANCE = "movies.audience.sated-chance";
 }
 
 using namespace settings;
@@ -178,6 +187,14 @@ cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
 
     add_setting(TORTURE_INJURY_CHANCE, "Torture Injury Chance", "Base chance for inflicting permanent damage on a girl during torture.",
                 sPercent(.03f));
+
+    add_setting(MOVIES_SATURATION_DECAY, "Audience Saturation Decay", "Percentage of sated moviegoers that will be reset each week.", sPercent(0.02f));
+    add_setting(MOVIES_HYPE_DECAY, "Hype Decay", "Percentage of hype points a movie loses each week", sPercent(0.05f));
+    add_setting(MOVIES_AUDIENCE_UPDATE_CHANCE, "Audience Update Chance", "Weekly chance to re-randomize a target group.", sPercent(0.02f));
+    add_setting(MOVIES_REPEATED_SCENE_FACTOR, "Repeated Scene Factor", "Decrease in value if multiple scenes of the same type are used in one movie.", sPercent(0.2f));
+    add_setting(MOVIES_RUNNING_WEEKS, "Movie Running Weeks", "How many weeks a movie will be shown.", 25);
+    add_setting(MOVIES_AUDIENCE_BASE_FRACTION, "Base Audience", "Base chance for viewers to go see a movie.", sPercent(0.05f));
+    add_setting(MOVIES_AUDIENCE_SATED_CHANCE, "Audience Sated Chance", "Chance that a moviegoer will become sated after seeing a movie.",sPercent(0.5f));
 }
 
 void cGameSettings::add_setting(const char* tag, const char* name, const char* desc, settings_value_t default_value)

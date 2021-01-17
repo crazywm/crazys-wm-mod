@@ -1,5 +1,16 @@
 cmake_minimum_required(VERSION 3.12)
-project(WM VERSION 7.01.10)
+project(WM VERSION 7.01.11)
+
+# this needs to happen before the find_package calls, because they register the dlls
+# for install under windows
+if(UNIX)
+else()
+    # on windows, don't put the dlls/exes into their own directory
+    set(CMAKE_INSTALL_BINDIR .)
+
+    # TODO copy those from somewhere
+    # libgcc_s_seh-1.dll, libstdc++-6.dll, libwinpthread-1.dll
+endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(Boost REQUIRED)

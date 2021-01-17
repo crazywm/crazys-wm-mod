@@ -17,7 +17,7 @@
         <Skill Name="Strip" Weight="1" />
         <Stat Name="Charisma" Weight="1" Max="50"/>
         <GainTrait Trait="Sexy Air" Threshold="80" Action="WORKSTRIP" MinPerformance="150" Chance="25">
-        ${name} has been stripping for so long, when she walks, it seems her clothes just want to fall off.
+            ${name} has been stripping for so long, when she walks, it seems her clothes just want to fall off.
         </GainTrait>
     </Gains>
 

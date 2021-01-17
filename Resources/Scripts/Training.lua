@@ -5,9 +5,10 @@ function Training(girl)
         "Have her do Agility training with the local street acrobats.  Cost: 250 gold",
         "Work with the stevedore's at the shipyard to improve her Strength and Stamina.  COST: 300 gold",
         "Spend the day with a veteran adventurer for combat training. COST: 500 gold",
+        "Send her to the conservatory to improve her acting, rhetoric and music skills. COST: 300 gold",
         "Go Back"
     )
-    if action == 4 then
+    if action == 5 then
         return girl:trigger("girl:interact.brothel")
     elseif girl:tiredness() > 75 then
         Dialog("She is too tired for training")
@@ -122,6 +123,46 @@ function Training(girl)
         else
             Dialog("She mumbles something about her armor still being in the dirty laundry pile and meanders away.")
             return girl:trigger("girl:refuse")
+        end
+    elseif action == 4 then
+        if girl:performance() < 33 then
+            Dialog("\"Go to the conservatory and take some lessons in the performing arts! You really need them!\"")
+        elseif girl:performance() < 66 then
+            Dialog("\"Go to the conservatory and take some lessons in the performing arts!\"")
+        else
+            Dialog("\"I want you to go to the conservatory and perfect your skills in the performing arts!\"")
+        end
+        if girl:obey_check(wm.ACTIONS.ACTRESS) then
+            wm.TakePlayerGold(300)
+            if girl:performance() < 33 then
+                Dialog(girl:name() .. " takes part in some basic acting, singing, and dancing lessons. Pretty easy stuff, " ..
+                        "but she still needs to learn this.")
+                girl:performance(wm.Range(2, 5))
+                girl:tiredness(wm.Range(5, 15))
+                if girl:charisma() < 25 then
+                    girl:charisma(wm.Range(0, 3))
+                end
+            elseif girl:performance() < 66 then
+                Dialog(girl:name() .. " knows some basic dances, can sing some simple songs, and knows how to read lines from a script. " ..
+                        " Now she has to learn how to convey emotion with her body and voice, and gets taught some tricks for memorizing her lines."
+                )
+                girl:performance(wm.Range(1, 3))
+                girl:tiredness(wm.Range(5, 15))
+                if girl:charisma() < 33 then
+                    girl:charisma(wm.Range(0, 3))
+                end
+            else
+                Dialog(girl:name() .. " already is a rather skilled thespian, but there are still some things she can learn from the masters. "..
+                        "She works on her comedic timing, and practice nuanced facial expressions.")
+                girl:performance(wm.Range(0, 2))
+                girl:tiredness(wm.Range(5, 15))
+                if girl:charisma() < 50 then
+                    girl:charisma(wm.Range(0, 3))
+                end
+                if girl:refinement() < 33 then
+                    girl:refinement(wm.Range(0, 2))
+                end
+            end
         end
     end
 end

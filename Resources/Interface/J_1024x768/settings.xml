@@ -13,7 +13,6 @@
 <EditBox    Name="Saves"                                                    XPos="82"      YPos="100"      Width="225"     Height="20"     FontSize="7"                  Border="1"  />
 <EditBox    Name="DefaultImages"                                            XPos="82"      YPos="120"      Width="225"     Height="20"     FontSize="7"                  Border="1"  />
 <EditBox    Name="Items"                                                    XPos="82"      YPos="140"      Width="225"     Height="20"     FontSize="7"                  Border="1"  />
-<Checkbox   Name="BackupSaves"              Text="Backup Saves"             XPos="45"       YPos="170"      Width="12"      Height="16"     FontSize="9" LeftOrRight="false" />
 <Checkbox   Name="PreferDefault"            Text="Prefer Default"           XPos="195"      YPos="170"      Width="12"      Height="16"     FontSize="9" LeftOrRight="false" />
 
 <Text       Name="ThemeLabel"               Text="Theme"                    XPos="7"       YPos="220"      Width="75"     Height="20"     FontSize="9"  />

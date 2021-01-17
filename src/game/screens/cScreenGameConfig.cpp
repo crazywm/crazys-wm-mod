@@ -18,7 +18,7 @@
 */
 
 #include "cScreenGameConfig.h"
-#include "widgets/cListBox.h"
+#include "widgets/IListBox.h"
 #include "CLog.h"
 #include "Game.hpp"
 #include <algorithm>
@@ -62,7 +62,8 @@ void cScreenGameConfig::init(bool back) {
              {"user", {"User Settings", "These can be changed by the player during the game"}},
              {"slave_market", {"Slave Market", "Slave Market"}},
              {"pregnancy", {"Pregnancy", "Pregnancy Settings"}},
-             {"tax", {"Taxation", "Tax and Money Laundering"}}
+             {"tax", {"Taxation", "Tax and Money Laundering"}},
+             {"movies", {"Movies", "Movies and Studio"}}
             };
 
     std::string cls;
@@ -73,10 +74,10 @@ void cScreenGameConfig::init(bool back) {
             cls = get_class(setting);
             try {
                 auto& heading = headings.at(cls);
-                AddToListBox(list_id, -1, {heading.first, heading.second, ""}, COLOR_DARKBLUE);
+                AddToListBox(list_id, -1, std::vector<FormattedCellData>({mk_text(heading.first), mk_text(heading.second), mk_text("")}), COLOR_DARKBLUE);
             } catch(std::logic_error&) {
                 g_LogFile.error("interface", "Could not find heading for tag ", setting->tag);
-                AddToListBox(list_id, -1, {cls, "???", ""}, COLOR_DARKBLUE);
+                AddToListBox(list_id, -1, std::vector<FormattedCellData>({mk_text(cls), mk_text("???"), mk_text("")}), COLOR_DARKBLUE);
             }
         }
         switch(setting->value.which()) {
@@ -108,7 +109,7 @@ void cScreenGameConfig::init(bool back) {
                 break;
         }
 
-        AddToListBox(list_id, i, {setting->name, setting->description, value});
+        AddToListBox(list_id, i, std::vector<FormattedCellData>({mk_text(setting->name), mk_text(setting->description), mk_text(value)}));
     }
 
     if(last_selection != -1) {

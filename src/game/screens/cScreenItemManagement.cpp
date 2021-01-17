@@ -18,16 +18,16 @@
 */
 #include <sstream>
 #include <xml/util.h>
+#include "interface/cColor.h"
 #include "cScreenItemManagement.h"
 #include "buildings/cBuildingManager.h"
 #include "buildings/cDungeon.h"
 #include "character/cPlayer.h"
-#include "widgets/cListBox.h"
+#include "widgets/IListBox.h"
 #include "widgets/cTextItem.h"
 #include "cTariff.h"
 #include "interface/cWindowManager.h"
 #include "interface/CGraphics.h"
-#include "InterfaceProcesses.h"
 #include "cGirls.h"
 #include "Game.hpp"
 #include "cInventory.h"
@@ -45,14 +45,11 @@ static bool AutoUseItems = false;
 
 
 struct cInventoryProviderPlayer: public IInventoryProvider {
-    std::vector<std::string> get_data(int filter) const override {
-        std::stringstream ss, ss2;
+    std::vector<FormattedCellData> get_data(int filter) const override {
         int num_items = g_Game->player().inventory().get_num_items();
-        if (num_items > 0) ss << num_items;
         int numtype = g_Game->player().inventory().get_num_of_type(filter);
-        if (numtype > 0) ss2 << numtype;
 
-        return std::vector<std::string> {"Player", ss.str(), ss2.str()};
+        return std::vector<FormattedCellData> {mk_text("Player"), mk_num(num_items), mk_num(numtype)};
     }
 
     void enumerate_items(const std::function<void(const sInventoryItem *, int)> &callback) const override
@@ -80,8 +77,8 @@ struct cInventoryProviderPlayer: public IInventoryProvider {
 };
 
 struct cInventoryProviderShop : public IInventoryProvider {
-    std::vector<std::string> get_data(int filter) const override {
-        return std::vector<std::string> {"Shop", "", ""};
+    std::vector<FormattedCellData> get_data(int filter) const override {
+        return std::vector<FormattedCellData> {mk_text("Shop"), mk_text(""), mk_text("")};
     }
 
     void enumerate_items(const std::function<void(const sInventoryItem*, int)> &callback) const override
@@ -118,16 +115,16 @@ struct cInventoryProviderShop : public IInventoryProvider {
 
 struct cInventoryProviderGirl : public IInventoryProvider {
     explicit cInventoryProviderGirl(std::shared_ptr<sGirl> girl) : m_Girl(girl) { }
-    std::vector<std::string> get_data(int filter) const override {
-        std::vector<std::string> data(3);
+    std::vector<FormattedCellData> get_data(int filter) const override {
+        std::vector<FormattedCellData> data(3);
 
-        data[0] = m_Girl->FullName();
+        data[0] = mk_text(m_Girl->FullName());
 
         if (!m_Girl->inventory().empty())
-            data[1] = std::to_string(m_Girl->inventory().get_num_items());
+            data[1] = mk_num(m_Girl->inventory().get_num_items());
 
         int numtype = cGirls::GetNumItemType(*m_Girl, filter);
-        if (numtype > 0) data[2] = std::to_string(numtype);
+        if (numtype > 0) data[2] = mk_num(numtype);
 
         return data;
     }
@@ -310,7 +307,7 @@ void cScreenItemManagement::init_side(sItemTransferSide& target, int owner, int 
         AddToListBox(target.owners_id, i, m_OwnerList[i]->get_data(filter), COLOR_BLUE);
     }
 
-    if (GetListBox(target.owners_id)->GetSelected() != owner)        SetSelectedItemInList(target.owners_id, owner);
+    if (GetSelectedItemFromList(target.owners_id) != owner)        SetSelectedItemInList(target.owners_id, owner);
     SetSelectedItemInList(target.items_id, item);
 
     update_details(target);
@@ -379,7 +376,7 @@ void cScreenItemManagement::init(bool back)    // `J` bookmark
 
     if (filter < 0) filter = 0;
     SetSelectedItemInList(filter_id, filter, false);
-    SetListTopPos(filter_id, filterpos);
+    GetListBox(filter_id)->SetTopPosition(filterpos);
     
     // shop and player
     m_OwnerList.clear();
@@ -468,7 +465,7 @@ void cScreenItemManagement::on_select_item(Side side, int selected)
 void cScreenItemManagement::on_select_filter(int selection)
 {
     filter    = selection;
-    filterpos = GetListBox(filter_id)->m_Position;
+    filterpos = GetListBox(filter_id)->GetTopPosition();
     sync_owner_selection(m_LeftData);
     sync_owner_selection(m_RightData);
     init(false);
@@ -583,7 +580,6 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
     {
         int i = 0;
         m_OwnerList[selection]->enumerate_items([this, &data, &i](const sInventoryItem* item, int amount) {
-            int          ItemColor = -1;
             std::stringstream it;
             it << item->m_Name;
             if(amount > 1 && amount < 999) {
@@ -595,13 +591,11 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
                 || ((filter == sInventoryItem::Food) && (item_type == sInventoryItem::Makeup))  // passes "consumable" filter?
                     ) {  // passed the filter, so add it
                 AddToListBox(data.items_id, i, it.str());
-                ItemColor = item->m_Rarity;
+                SetSelectedItemTextColor(data.items_id, i, RarityColor[item->m_Rarity]);
 
                 data.items.push_back(item);
                 ++i;
             }
-
-            if (ItemColor > -1) SetSelectedItemTextColor(data.items_id, i, RarityColor[ItemColor]);
         });
     }
 
@@ -631,9 +625,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
     m_RightData.selected_item = GetLastSelectedItemFromList(m_RightData.items_id);
 
     int pos = 0;
-    int selection = GetNextSelectedItemFromList(from_data.items_id, 0, pos);
-    while (selection != -1)
-    {
+    ForAllSelectedItems(from_data.items_id, [&](int selection) {
         // since items sold to shop are simply destroyed, no selection to track here
         const sInventoryItem* item = from_data.items[selection];
         int sold = m_OwnerList[from_data.selected_owner]->take_item(item, num);
@@ -642,8 +634,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
         if(remaining > 0) {
             remaining = m_OwnerList[from_data.selected_owner]->give_item(item, remaining);
         }
-        selection = GetNextSelectedItemFromList(from_data.items_id, pos + 1, pos);
-    }
+    });
 
     // update the item lists
     refresh_item_list(Side::Left);

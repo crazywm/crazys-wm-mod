@@ -268,6 +268,7 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     bool was_resting() const;
 
     FormattedCellData GetDetail(const std::string& detailName) const;
+    FormattedCellData GetJobRating(JOBS job) const;
 
 private:
     FormattedCellData GetDetail_Job(const std::string& detailName) const;

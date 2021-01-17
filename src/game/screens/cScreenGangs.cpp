@@ -31,16 +31,6 @@ cScreenGangs::cScreenGangs() : cInterfaceWindowXML("gangs_screen.xml")
 {
 }
 
-int cScreenGangs::multi_first()
-{
-    sel_pos = 0;
-    return GetNextSelectedItemFromList(ganglist_id, 0, sel_pos);
-}
-int cScreenGangs::multi_next()
-{
-    return GetNextSelectedItemFromList(ganglist_id, sel_pos + 1, sel_pos);
-}
-
 void cScreenGangs::set_ids()
 {
     ganghire_id        = get_id("GangHireButton");
@@ -95,7 +85,7 @@ void cScreenGangs::set_ids()
     });
 
     SetButtonCallback(weaponup_id, [this]() {
-        for (int selection = multi_first(); selection != -1; selection = multi_next()) {
+        ForAllSelectedItems(ganglist_id, [&](int selection) {
             sGang* gang = g_Game->gang_manager().GetGang(selection);
             if(gang) {
                 int wlev = gang->weapon_level();
@@ -104,7 +94,7 @@ void cScreenGangs::set_ids()
                 {
                     gang->set_weapon_level(wlev + 1);                }
             }
-        }
+        });
         init(false);
     });
 
@@ -265,24 +255,19 @@ void cScreenGangs::init(bool back)
     for (auto& current : g_Game->gang_manager().GetHireableGangs())
     {
         // format the string with the gang name, mission and number of men
-        std::vector<std::string> Data(10);
-        Data[0] = current->name();
-        Data[1] = std::to_string(current->m_Num);
-        ss.str("");    ss << current->combat() << "%";        Data[2] = ss.str();
-        ss.str("");    ss << current->magic() << "%";        Data[3] = ss.str();
-        ss.str("");    ss << current->intelligence() << "%";    Data[4] = ss.str();
-        ss.str("");    ss << current->agility() << "%";        Data[5] = ss.str();
-        ss.str("");    ss << current->constitution() << "%";    Data[6] = ss.str();
-        ss.str("");    ss << current->charisma() << "%";        Data[7] = ss.str();
-        ss.str("");    ss << current->strength() << "%";        Data[8] = ss.str();
-        ss.str("");    ss << current->service() << "%";        Data[9] = ss.str();
+        std::vector<FormattedCellData> Data(10);
+        Data[0] = mk_text(current->name());
+        Data[1] = mk_num(current->m_Num);
+        Data[2] = mk_percent(current->combat());
+        Data[3] = mk_percent(current->magic());
+        Data[4] = mk_percent(current->intelligence());
+        Data[5] = mk_percent(current->agility());
+        Data[6] = mk_percent(current->constitution());
+        Data[7] = mk_percent(current->charisma());
+        Data[8] = mk_percent(current->strength());
+        Data[9] = mk_percent(current->service());
 
-        //        cerr << "Recruitable\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
-        //            << "\t" << Data[3] << "\t" << Data[4] << "\t" << Data[5] << endl;
-
-        /*
-        *            add the box to the list
-        */
+        //           add the box to the list
         int color = current->m_Num < 6 ? COLOR_RED : COLOR_BLUE;
         AddToListBox(recruitlist_id, num++, std::move(Data), color);
     }
@@ -336,8 +321,7 @@ void cScreenGangs::on_select_mission()
     // get the index into the missions list
     int mission_id            = GetLastSelectedItemFromList(missionlist_id);
     set_mission_desc(mission_id);        // set the textfield with the long description and price for this mission
-    for (int selection = multi_first(); selection != -1; selection = multi_next())
-    {
+    ForAllSelectedItems(ganglist_id, [&](int selection) {
         sGang* gang = g_Game->gang_manager().GetGang(selection);
         /*
         *                make sure we found the gang - pretty catastrophic
@@ -346,7 +330,7 @@ void cScreenGangs::on_select_mission()
         if (gang == nullptr)
         {
             g_LogFile.log(ELogLevel::ERROR, "No gang for index ", selection);
-            continue;
+            return;
         }
         /*
         *                if the mission id is -1, nothing else to do
@@ -354,12 +338,12 @@ void cScreenGangs::on_select_mission()
         *                since -1 most likely means nothing selected in
         *                the missions list)
         */
-        if (mission_id == -1) { continue; }
+        if (mission_id == -1) { return; }
         /*
         *                if the gang is already doing <whatever>
         *                then let them get on with it
         */
-        if (gang->m_MissionID == mission_id) { continue; }
+        if (gang->m_MissionID == mission_id) { return; }
         /*
         *                if they were recruiting, turn off the
         *                auto-recruit flag
@@ -374,7 +358,7 @@ void cScreenGangs::on_select_mission()
         *                format the display line
         */
         init(false);
-    }
+    });
 
     int cost = 0;
     if (g_Game->gang_manager().GetNumGangs() > 0)
@@ -448,9 +432,13 @@ int cScreenGangs::set_mission_desc(int mid)
 
 void cScreenGangs::hire_recruitable()
 {
-    int sel_recruit = GetLastSelectedItemFromList(recruitlist_id);
-    if ((g_Game->gang_manager().GetNumGangs() >= g_Game->gang_manager().GetMaxNumGangs()) || (sel_recruit == -1)) return;
-    g_Game->gang_manager().HireGang(sel_recruit);
+    ForAllSelectedItems(recruitlist_id, [shift = 0](int sel_recruit) mutable {
+        sel_recruit -= shift;
+        if ((g_Game->gang_manager().GetNumGangs() >= g_Game->gang_manager().GetMaxNumGangs()) || (sel_recruit == -1)) return;
+        g_Game->gang_manager().HireGang(sel_recruit);
+        ++shift;
+    });
+
     init(false);
 }
 
@@ -469,7 +457,7 @@ void cScreenGangs::buy_nets(int buynets)
 void cScreenGangs::update_wpn_info() {
     ss.str("");    ss << "Weapon Level: ";
     int wpn_cost = 0;
-    for (int selection = multi_first(); selection != -1; selection = multi_next()) {
+    ForAllSelectedItems(ganglist_id, [&](int selection) {
         sGang* gang = g_Game->gang_manager().GetGang(selection);
         if(gang) {
             ss << gang->weapon_level() << " ";
@@ -478,7 +466,7 @@ void cScreenGangs::update_wpn_info() {
                 wpn_cost += g_Game->tariff().goon_weapon_upgrade(gang->weapon_level());
             }
         }
-    }
+    });
 
     if(wpn_cost == 0) {
         DisableWidget(weaponup_id);

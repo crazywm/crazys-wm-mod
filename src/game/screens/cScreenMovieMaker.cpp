@@ -19,7 +19,7 @@
 #include <algorithm>
 #include "cScreenMovieMaker.h"
 #include "interface/cWindowManager.h"
-#include "widgets/cListBox.h"
+#include "widgets/IListBox.h"
 #include "cTariff.h"
 #include "cJobManager.h"
 #include <sstream>
@@ -30,10 +30,6 @@ namespace settings {
     extern const char* USER_MOVIES_AUTO;
 }
 
-static std::stringstream ss;
-
-static int ImageNum = -1;
-
 cScreenMovieMaker::cScreenMovieMaker() : cGameWindow("movie_maker_screen.xml")
 {
 }
@@ -43,15 +39,14 @@ void cScreenMovieMaker::set_ids()
     autocreatemovies_id = get_id("AutoCreateMovies");
     sceneslist_id       = get_id("ScenesList");
     makethismovie_id    = get_id("MakeThisMovie");
-    running_movies_id   = get_id("MoviesList");
     releasemovie_id     = get_id("ReleaseMovieButton");
     girlimage_id        = get_id("GirlImage");
     scrapscene_id       = get_id("ScrapScene");
     addscene_id         = get_id("AddScene");
     removescene_id      = get_id("RemoveScene");
     moviedetails_id     = get_id("MovieDetails");
-    incticket_id        = get_id("IncreaseTicketPrice");
-    decticket_id        = get_id("DecreaseTicketPrice");
+    predict_list_id     = get_id("PredictedAudience");
+    moviename_id        = get_id("MovieName");
 
     SetButtonCallback(addscene_id, [this]() { movie_add_scene(); });
     SetButtonHotKey(addscene_id, SDLK_r);
@@ -67,8 +62,11 @@ void cScreenMovieMaker::set_ids()
             active_scenes.push_back(&g_Game->movie_manager().get_scenes().at(index));
         }
         m_ScenesInMovie.clear();
-        auto& new_movie = g_Game->movie_manager().create_movie(active_scenes,
-                                                               g_Game->movie_manager().auto_create_name(active_scenes));
+        auto movie_name = GetEditBoxText(moviename_id);
+        if(movie_name.empty()) {
+            movie_name = g_Game->movie_manager().auto_create_name(active_scenes);
+        }
+        auto& new_movie = g_Game->movie_manager().create_movie(active_scenes, movie_name);
         init(false);
     });
 
@@ -97,86 +95,46 @@ void cScreenMovieMaker::set_ids()
     SetListBoxHotKeys(sceneslist_id, SDLK_q, SDLK_a);
     SetListBoxSelectionCallback(makethismovie_id, [this](int selection) { on_select_movie_scene(selection); });
     SetListBoxHotKeys(makethismovie_id, SDLK_w, SDLK_s);
-    SetListBoxSelectionCallback(running_movies_id, [this](int selection) { on_select_running_movie(selection); });
 
     SetCheckBoxCallback(autocreatemovies_id, [this](bool on) {
         g_Game->settings().set_value(settings::USER_MOVIES_AUTO, on);
     });
-
-    SetButtonCallback(incticket_id, [this](){
-        int sel = GetSelectedItemFromList(running_movies_id);
-        if(sel == -1)  return;
-        auto& movie = g_Game->movie_manager().get_movies().at(sel);
-        if(movie.TicketPrice < 10) {
-            g_Game->movie_manager().set_ticket_price(sel, movie.TicketPrice + 1);
-        } else if(movie.TicketPrice < 20) {
-            g_Game->movie_manager().set_ticket_price(sel, movie.TicketPrice + 2);
-        } else{
-            g_Game->movie_manager().set_ticket_price(sel, movie.TicketPrice + 5);
-        }
-        init(false);
-    });
-    SetButtonCallback(decticket_id, [this](){
-        int sel = GetSelectedItemFromList(running_movies_id);
-        if(sel == -1)  return;
-        auto& movie = g_Game->movie_manager().get_movies().at(sel);
-        if(movie.TicketPrice > 20) {
-            g_Game->movie_manager().set_ticket_price(sel, movie.TicketPrice - 5);
-        } else if(movie.TicketPrice > 10) {
-            g_Game->movie_manager().set_ticket_price(sel, movie.TicketPrice - 2);
-        } else if(movie.TicketPrice > 1) {
-            g_Game->movie_manager().set_ticket_price(sel, movie.TicketPrice - 1);
-        }
-        init(false);
-    });
 }
 
 namespace {
-    void OutputSceneRow(const MovieScene& scene, std::vector<std::string>& Data, const std::vector<std::string>& columnNames)
+    FormattedCellData get_scene_detail(const MovieScene& scene, const std::string& name)
     {
-        Data.resize(columnNames.size());
-        for (unsigned int x = 0; x < columnNames.size(); ++x)
-        {
-            const std::string& name = columnNames[x];
-            if(name == "Actress") {
-                Data[x] = scene.Actress;
-            } else if(name == "Director") {
-                Data[x] = scene.Director;
-            } else if(name == "Camera Mage") {
-                Data[x] = scene.CameraMage;
-            } else if(name == "Crystal Purifier") {
-                Data[x] = scene.CrystalPurifier;
-            } else if(name == "Type") {
-                Data[x] = get_name(scene.Type);
-            } else if(name == "ContentQuality") {
-                Data[x] = std::to_string(scene.ContentQuality);
-            } else if(name == "TechnicalQuality") {
-                Data[x] = std::to_string(scene.TechnicalQuality);
-            }
+        if(name == "Actress") {
+            return mk_text(scene.Actress);
+        } else if(name == "Director") {
+            return mk_text(scene.Director);
+        } else if(name == "Camera Mage") {
+            return mk_text(scene.CameraMage);
+        } else if(name == "Crystal Purifier") {
+            return mk_text(scene.CrystalPurifier);
+        } else if(name == "Type") {
+            return mk_text(get_name(scene.Type));
+        } else if(name == "ContentQuality") {
+            return mk_num(scene.ContentQuality);
+        } else if(name == "TechnicalQuality") {
+            return mk_num(scene.TechnicalQuality);
         }
+        assert(false);
     }
-    void OutputSceneRow(const Movie& movie, std::vector<std::string>& Data, const std::vector<std::string>& columnNames)
-    {
-        Data.resize(columnNames.size());
-        for (unsigned int x = 0; x < columnNames.size(); ++x)
-        {
-            const std::string& name = columnNames[x];
-            if(name == "Name") {
-                Data[x] = movie.Name;
-            } else if(name == "Price") {
-                Data[x] = std::to_string(movie.TicketPrice);
-            } else if(name == "Age") {
-                Data[x] = std::to_string(movie.Age);
-            } else if(name == "EarningsLastWeek") {
-                Data[x] = std::to_string(movie.EarningsLastWeek);
-            } else if(name == "TotalEarnings") {
-                Data[x] = std::to_string(movie.TotalEarnings);
-            }else if(name == "Cost") {
-                Data[x] = std::to_string(movie.TotalCost);
-            }
-        }
-    }
+}
 
+
+FormattedCellData get_prediction_detail(const sTargetGroup& group, const cMovieManager::sRevenueEstimate& rating, const std::string& name) {
+    if(name == "TargetGroup") {
+        return mk_text(group.Name);
+    } else if(name == "Rating") {
+        return mk_text(std::to_string(int(rating.Rating.Score)) + " / " + std::to_string(rating.EstimatedScoreRequirement));
+    } else if(name == "Views") {
+        return mk_num(rating.Viewers);
+    } else if(name == "Revenue") {
+        return mk_num(rating.Revenue);
+    }
+    assert(false);
 }
 
 void cScreenMovieMaker::init(bool back)
@@ -185,22 +143,7 @@ void cScreenMovieMaker::init(bool back)
 
     ClearListBox(sceneslist_id);    // clear the lists
     ClearListBox(makethismovie_id);
-    ClearListBox(running_movies_id);
-
-    //get a list of all the column names, so we can find which data goes in that column
-    auto& columns = GetListBox(sceneslist_id)->GetColumnData();
-    std::vector<std::string> scene_col_names(columns.size());
-    std::vector<std::string> scene_col_data(columns.size());
-    for(int i = 0; i < columns.size(); ++i) {
-        scene_col_names[i] = columns[i].name;
-    }
-
-    auto& columnsm = GetListBox(makethismovie_id)->GetColumnData();
-    std::vector<std::string> movie_col_names(columnsm.size());
-    std::vector<std::string> movie_col_data(columnsm.size());
-    for(int i = 0; i < columnsm.size(); ++i) {
-        movie_col_names[i] = columnsm[i].name;
-    }
+    ClearListBox(predict_list_id);
 
     auto& scenes = g_Game->movie_manager().get_scenes();
 
@@ -209,11 +152,9 @@ void cScreenMovieMaker::init(bool back)
     for(auto& scene: scenes) {
         unsigned int item_color = COLOR_BLUE;
         if(m_ScenesInMovie.count(row) > 0) {
-            OutputSceneRow(scene, movie_col_data, movie_col_names);
-            AddToListBox(makethismovie_id, row, std::move(movie_col_data), item_color);
+            GetListBox(makethismovie_id)->AddRow(row, [&](const std::string& c){ return get_scene_detail(scene, c); }, item_color);
         } else {
-            OutputSceneRow(scene, scene_col_data, scene_col_names);
-            AddToListBox(sceneslist_id, row, std::move(scene_col_data), item_color);
+            GetListBox(sceneslist_id)->AddRow(row, [&](const std::string& c){ return get_scene_detail(scene, c); }, item_color);
         }
         row++;
     }
@@ -222,7 +163,7 @@ void cScreenMovieMaker::init(bool back)
     DisableWidget(addscene_id, GetSelectedItemFromList(sceneslist_id) == -1 || m_ScenesInMovie.size() >= 5);
     DisableWidget(removescene_id, GetSelectedItemFromList(makethismovie_id) == -1);
     std::stringstream movietext;
-    if (GetListBox(makethismovie_id)->GetSize() > 0)
+    if (GetListBox(makethismovie_id)->NumItems() > 0)
     {
         std::set<std::string> directors;
         std::set<std::string> cast;
@@ -254,43 +195,20 @@ void cScreenMovieMaker::init(bool back)
         for(auto& index : m_ScenesInMovie) {
             fake_movie.Scenes.push_back(g_Game->movie_manager().get_scenes().at(index));
         }
-        float sum_score = 0;
-        float max_score = 0;
-        float sum_aud = 0;
-        for(auto& aud : g_Game->movie_manager().get_audience()) {
-            auto rating = g_Game->movie_manager().rate_movie_for_audience(aud, fake_movie);
-            sum_score += rating.Score * aud.Amount * rating.NoTurnOff;
-            sum_aud += aud.Amount;
-            if(rating.NoTurnOff > 0.5f) {
-                max_score = std::max(max_score, rating.Score);
-            }
-        }
-        float avg_score = sum_score / sum_aud;
-        movietext << "Avg. Score: \t" << int(avg_score) << "\n";
-        movietext << "Best Score: \t" << int(max_score) << "\n";
-        int ticket =  g_Game->movie_manager().auto_detect_ticket_price(fake_movie);
+        int ticket = g_Game->movie_manager().auto_detect_ticket_price(fake_movie);
         movietext << "Ticket: \t" << ticket << "\n";
         fake_movie.TicketPrice = ticket;
         movietext << "Revenue: \t" << g_Game->movie_manager().estimate_revenue(fake_movie) << "\n";
+
+        fake_movie.TicketPrice = ticket;
+
+        for(auto& aud : g_Game->movie_manager().get_audience()) {
+            auto rating = g_Game->movie_manager().estimate_revenue(aud, fake_movie);
+            GetListBox(predict_list_id)->AddRow(0, [&](const std::string& col){ return get_prediction_detail(aud, rating, col); }, 0);
+        }
     }
     EditTextItem(movietext.str(), moviedetails_id, true);
     SetCheckBox(autocreatemovies_id, g_Game->settings().get_bool(settings::USER_MOVIES_AUTO));
-
-    // Add movies to list
-    auto& columns_movie = GetListBox(running_movies_id)->GetColumnData();
-    std::vector<std::string> rmovie_col_names(columns_movie.size());
-    std::vector<std::string> rmovie_col_data(columns_movie.size());
-    for(int i = 0; i < columns_movie.size(); ++i) {
-        rmovie_col_names[i] = columns_movie[i].name;
-    }
-
-    row = 0;
-    for(auto& movie: g_Game->movie_manager().get_movies()) {
-        unsigned int item_color = COLOR_BLUE;
-        OutputSceneRow(movie, rmovie_col_data, rmovie_col_names);
-        AddToListBox(running_movies_id, row, std::move(rmovie_col_data), item_color);
-        ++row;
-    }
 }
 
 void cScreenMovieMaker::on_select_movie_scene(int selection)
@@ -304,44 +222,23 @@ void cScreenMovieMaker::on_select_source_scene(int selection)
     DisableWidget(scrapscene_id, selection == -1);
 }
 
-void cScreenMovieMaker::on_select_running_movie(int selection) {
-    DisableWidget(incticket_id, selection == -1);
-    DisableWidget(decticket_id, selection == -1);
-    if(selection != -1) {
-        const auto& movie = g_Game->movie_manager().get_movies().at(selection);
-        std::stringstream movietext;
-        int total_expected = 0;
-        for(auto& a : g_Game->movie_manager().get_audience()) {
-            auto rating = g_Game->movie_manager().rate_movie_for_audience(a, movie);
-            float factor = rating.QualityFactor * rating.PriceFactor * rating.HypeFactor * rating.NoTurnOff;
-            int viewers = static_cast<int>((a.Amount - a.Saturation) * factor);
-            movietext << a.Name << " [" << a.Amount << ", " << int(100 * a.Saturation / a.Amount) << "%]:\t " << (int)rating.Score << " / " << (int)a.RequiredScore;
-            movietext << "  \t" << int(rating.NoTurnOff * rating.HypeFactor / 0.05f * 100) << "% "<< int(rating.PriceFactor * 100) << "% " << int(rating.QualityFactor * 100) << "% \t-> ";
-            movietext << viewers << " (" << viewers * movie.TicketPrice << ")";
-            if(viewers > 0) {
-                movietext << "\t -- " << int(100 * rating.Satisfaction) << "\n";
-            } else {
-                movietext << "\t\n";
-            }
-            total_expected += viewers * movie.TicketPrice;
-        }
-        movietext << " => " << total_expected << "\n";
-        movietext << int(100 * movie.Hype) << "\n";
-        EditTextItem(movietext.str(), moviedetails_id, true);
-    }
-}
-
 void cScreenMovieMaker::movie_add_scene() {
     ForAllSelectedItems(sceneslist_id, [this](int selection) {
         m_ScenesInMovie.insert(selection);
     });
+
+    SetEditBoxText(moviename_id, generate_name());
+
     init(false);
 }
 
 void cScreenMovieMaker::movie_remove_scene() {
-    ForAllSelectedItems(sceneslist_id, [this](int selection) {
+    ForAllSelectedItems(makethismovie_id, [this](int selection) {
         m_ScenesInMovie.erase(selection);
     });
+
+    SetEditBoxText(moviename_id, generate_name());
+
     init(false);
 }
 
@@ -349,12 +246,24 @@ void cScreenMovieMaker::update_image()
 {
     if (selected_girl()/*&& !IsMultiSelected(girllist_id)*/)
     {
-        PrepareImage(girlimage_id, selected_girl().get(), IMGTYPE_PROFILE, true, ImageNum);
+        PrepareImage(girlimage_id, selected_girl().get(), IMGTYPE_PROFILE, true, 1);
         HideWidget(girlimage_id, false);
     }
     else
     {
         HideWidget(girlimage_id, true);
     }
+}
+
+std::string cScreenMovieMaker::generate_name() {
+    std::vector<const MovieScene*> active_scenes;
+    if(m_ScenesInMovie.empty())
+        return "";
+
+    for(auto& index : m_ScenesInMovie) {
+        active_scenes.push_back(&g_Game->movie_manager().get_scenes().at(index));
+    }
+
+    return g_Game->movie_manager().auto_create_name(active_scenes);
 }
 

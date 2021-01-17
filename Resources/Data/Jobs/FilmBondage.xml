@@ -55,7 +55,7 @@
         <Skill Name="BDSM" Weight="2"/>
         <Stat Name="Constitution" Weight="1" Max="50"/>
 
-        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
+        <GainTrait Trait="Porn Star" Threshold="70" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
@@ -87,19 +87,19 @@
         <Message Name="post-work-event">
             <!-- In the C++ code, this was an if else if chain, so the game would always choose
             the one with the strongest influence. TODO should we keep that? -->
-            <Text Condition="Mind Fucked" Updates="enjoy+=16">
+            <Text Condition="Mind Fucked" Updates="Enjoy+=16">
                 Being completely mind fucked, ${name} actually gets off on this.
             </Text>
-            <Text Condition="Masochist" Updates="enjoy+=10">
+            <Text Condition="Masochist" Updates="Enjoy+=10">
                 ${name} enjoys this. It's what she deserves.
             </Text>
-            <Text Condition="Broken Will|Dependant" Updates="enjoy+=5">
+            <Text Condition="Broken Will|Dependant" Updates="Enjoy+=5">
                 ${name} accepts this. It is Master's will.
             </Text>
-            <Text Condition="Iron Will|Fearless" Updates="enjoy-=5">
+            <Text Condition="Iron Will|Fearless" Updates="Enjoy-=5">
                 ${name} endures in stoic silence, determined not to let you see her suffer.
             </Text>
-            <Text Condition="Nymphomaniac" Updates="enjoy+=2">
+            <Text Condition="Nymphomaniac" Updates="Enjoy+=2">
                 ${name} doesn't much like the pain, but loves the sex and attention.
             </Text>
         </Message>

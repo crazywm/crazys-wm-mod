@@ -68,10 +68,6 @@ public:
     std::string mission_desc(int mid);
     std::string short_mission_desc(int mid);
 
-    // XML screen replacement for cSelector, for multi-select listboxes
-    int multi_first();
-    int multi_next();
-
     void buy_nets(int buynets);
 
     void buy_potions(int buypots);

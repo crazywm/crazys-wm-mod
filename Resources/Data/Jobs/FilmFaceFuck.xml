@@ -51,7 +51,7 @@
         <GainTrait Trait="Masochist" Threshold="65" Action="SEX">
             ${name} has turned into a Masochist from filming so many BDSM scenes.
         </GainTrait>
-        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR" MinPerformance="200">
+        <GainTrait Trait="Porn Star" Threshold="70" Action="PORNSTAR" MinPerformance="200">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Iron Will" Threshold="80" Action="SEX" Chance="5">

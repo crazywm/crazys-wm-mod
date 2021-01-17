@@ -18,7 +18,7 @@
 */
 #include "cScreenLoadGame.hpp"
 #include "utils/FileList.h"
-#include "widgets/cListBox.h"
+#include "widgets/IListBox.h"
 
 extern std::string g_ReturnText;
 extern int g_ReturnInt;

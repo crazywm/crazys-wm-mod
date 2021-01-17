@@ -856,7 +856,7 @@ FormattedCellData sGirl::GetDetail(const std::string& detailName) const
                         return FormattedCellData{val, std::to_string(val)};
                   };
 
-    /* */if (detailName == "Name")     return mk_text(FullName());
+    if (detailName == "Name")          return mk_text(FullName());
     else if (detailName == "Health")   return mk_health(get_stat(STAT_HEALTH));
     else if (detailName == "Age")      return mk_age(get_stat(STAT_AGE));
     else if (detailName == "Libido")   return mk_num(libido());
@@ -909,7 +909,12 @@ FormattedCellData sGirl::GetDetail(const std::string& detailName) const
     {
         return mk_text(g_Game->job_manager().get_job_brief(m_NightJob));
     }
-
+    else if(detailName == "NightJobRating") {
+        return GetJobRating(m_NightJob);
+    }
+    else if(detailName == "DayJobRating") {
+        return GetJobRating(m_DayJob);
+    }
         // 'J' Girl Table job text
     else if (detailName == "DayJob" || detailName == "NightJob")
     {
@@ -1469,4 +1474,17 @@ const DirPath& sGirl::GetImageFolder() const {
 
 void sGirl::SetImageFolder(DirPath p) {
     m_ImageFolder = std::move(p);
+}
+
+FormattedCellData sGirl::GetJobRating(JOBS job) const {
+    auto value = job_performance(job, true);
+    if (value < -500)        return {-1, "X"}; // Can not do this job
+    else if (value >= 350)   return {"I"};           // Incomparable
+    else if (value >= 245)   return {5, "S"};             // Superior
+    else if (value >= 185)   return {4, "A"};             // Amazing
+    else if (value >= 145)   return {3, "B"};             // Better
+    else if (value >= 100)   return {2, "C"};             // Can do it
+    else if (value >= 70)    return {1, "D"};             // Don't bother
+    else                     return {0, "E"};  // Expect Failure
+
 }

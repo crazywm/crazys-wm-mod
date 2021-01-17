@@ -1,0 +1,49 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="MktRs">
+    <Description>
+        She will gather information about the different target groups of your movie studio.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Stat="Intelligence" Weight="1" Max="50"/>
+    </Performance>
+
+    <Gains XP="5" Skill="3">
+        <Stat Name="Charisma" Weight="1" Max="75"/>
+        <Stat Name="Intelligence" Weight="1" Max="50"/>
+    </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to do Market Research today.</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} gathered information about Crossgate's moviegoers today.</Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            <Text>
+                Her charming ways mean that folks really want to tell her about their movie preferences, and
+                her sharp mind allows her to put this information to good use. It is as if she were made for this
+                job.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>${name} is a great Market Researcher.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>${name} is quite good as a Market Researcher.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>${name} is ok at being a Market Researcher.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>${name} isn't really a good Market Researcher.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>${name} is the worst Market Researcher your could ever imagine.</Text>
+        </Message>
+    </Messages>
+</Job>

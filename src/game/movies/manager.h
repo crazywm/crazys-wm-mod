@@ -44,17 +44,25 @@ public:
     Movie& create_movie(const std::vector<const MovieScene*>& scene, std::string name);
     const std::vector<MovieScene>& get_scenes() const;
 
-    std::string auto_create_name(const std::vector<const MovieScene*>& scene);
-
     // running movies
     const std::vector<Movie>& get_movies() const;
     void set_ticket_price(int index, int price);
     void hype_movie(int index, float hype, int cost);
     int hype_audience(int index, float hype);
 
+    // audience
     const std::vector<sTargetGroup>& get_audience() const;
+    void gain_knowledge(const sTargetGroup* group, int gain);
 
-    // info queries
+    int market_research_points() const;
+    void gain_market_research_point();
+    void make_survey(int audience);
+
+    // promotion and add campaigns
+    int promotion_points() const;
+    void gain_promo_point();
+    void run_ad_campaign(int target_movie);
+
     struct RatingResult {
         float Satisfaction;
         float Score;
@@ -65,18 +73,37 @@ public:
         float NoTurnOff;
     };
     static RatingResult rate_movie_for_audience(const sTargetGroup& audience, const Movie& movie);
+
+    struct sRevenueEstimate {
+        RatingResult Rating;
+        int Viewers;
+        int Revenue;
+        int EstimatedScoreRequirement;
+    };
+
     int estimate_revenue(const Movie& movie);
+    sRevenueEstimate estimate_revenue(const sTargetGroup& audience, const Movie& movie);
     int auto_detect_ticket_price(const Movie& movie);
+    std::string auto_create_name(const std::vector<const MovieScene*>& scene);
 private:
     std::vector<sTargetGroup> m_Audiences;
     std::vector<sTargetGroupSpec> m_TargetGroupSpecs;
     std::vector<Movie> m_Movies;
     std::vector<MovieScene> m_Scenes;       // scenes that haven't been used in a movie yet
 
+    // Points that have been accumulated by the player
+    int m_MarketResearchPoints = 0;
+    int m_PromotionPoints      = 0;
+
     void update_audience();
 
+    struct sMovieName {
+        std::string Name;
+        SceneType Requires;
+    };
+
     // default naming list
-    std::array<std::vector<std::string>, (int)SceneCategory::NUM_TYPES> m_DefaultNames;
+    std::array<std::vector<sMovieName>, (int)SceneCategory::NUM_TYPES> m_DefaultNames;
 };
 
 

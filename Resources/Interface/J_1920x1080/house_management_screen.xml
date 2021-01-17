@@ -22,7 +22,7 @@
 
 <ListBox    Name="GirlList"                                                 XPos="14"       YPos="49"       Width="1434"     Height="771"    FontSize="17"       RowHeight="30"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column     Name="Name"         Header="Girl Name"                  Offset="0" />
-<Column     Name="Health"       Header="Health"                     Offset="281" /> 
+<Column     Name="Health"       Header="Health"                     Offset="281" />
 <Column     Name="Happiness"    Header="Happy"                      Offset="351" />
 <Column     Name="Tiredness"    Header="Tired"                      Offset="421" />
 <Column     Name="DayJob"       Header="Day Job"                    Offset="491" />

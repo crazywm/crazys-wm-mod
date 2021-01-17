@@ -24,7 +24,7 @@
 <Image      Name="HireArrow"            File="imgArrowLeft.png"             XPos="194"      YPos="495"      Width="32"      Height="80"  />
 <Button     Name="GangHireButton"       Image="Hire"                        XPos="116"      YPos="520"      Width="80"      Height="32"  Transparency="true"/>
 
-<ListBox    Name="RecruitList"                                              XPos="210"      YPos="450"      Width="900"     Height="182" FontSize="12" RowHeight="19" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
+<ListBox    Name="RecruitList"                                              XPos="210"      YPos="450"      Width="900"     Height="182" FontSize="12" RowHeight="19" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
 <Column     Name="GangName"     Header="Recruitable Gang"           Offset="0"  />
 <Column     Name="Number"       Header="Men"                        Offset="200"  />
 <Column     Name="Combat"       Header="Combat"                     Offset="275"  />

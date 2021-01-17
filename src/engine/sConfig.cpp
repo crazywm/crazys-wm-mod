@@ -73,7 +73,6 @@ sConfigData::sConfigData(const char *a_filename) : cSimpleKeyValue("Entry", "Key
     add_setting("folders.saves", "Save Folder", std::string("Saves"));
     add_setting("folders.items", "Items Folder", (DirPath() << "Resources" << "Items").str());
     add_setting("folders.default_images", "Items Folder", (DirPath() << "Resources" << "DefaultImages").str());
-    add_setting("folders.backup_saves", "Backup Saves", false);
     add_setting("folders.prefer_defaults", "Prefer Defaults", false);
 
     add_setting("interface.theme", "Interface Theme", "J_1024x768");
@@ -111,7 +110,6 @@ const std::string& cConfig::font_data::normal() { return data->get_str("font.fon
 const std::string& cConfig::Folders::characters() { return data->get_str("folders.characters"); }
 const std::string& cConfig::Folders::saves() { return data->get_str("folders.saves"); }
 const std::string& cConfig::Folders::items() { return data->get_str("folders.items"); }
-bool cConfig::Folders::backupsaves() { return data->get_bool("folders.backup_saves"); }
 const std::string& cConfig::Folders::defaultimageloc() { return data->get_str("folders.default_images");  }
 bool cConfig::Folders::preferdefault() { return data->get_bool("folders.prefer_defaults"); }
 

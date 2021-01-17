@@ -20,6 +20,8 @@
 #ifndef WM_GAME_MOVIES_FWD_H
 #define WM_GAME_MOVIES_FWD_H
 
+#include <iosfwd>
+
 enum class SceneCategory {
     TEASE,
     SOFT,
@@ -65,6 +67,7 @@ SceneCategory get_category(SceneType type);
 int get_fluffer_required(SceneType type);
 int get_stage_points_required(SceneType type);
 const char* get_name(SceneType type);
+SceneType scene_type_from_string(const std::string& name);
 const MovieScene& film_scene(cMovieManager& mgr, sGirl& girl, int quality, SceneType scene_type, bool forced);
 
 #endif //WM_GAME_MOVIES_FWD_H

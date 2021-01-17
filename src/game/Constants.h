@@ -252,12 +252,14 @@ enum JOBS {
 
 
     // `J` Job Movie Studio - Crew
-    JOB_DIRECTOR,            // Does same work as matron plus adds quality to films.
-    JOB_PROMOTER,            // Advertising -- This helps film sales after it is created.
-    JOB_CAMERAMAGE,            // Uses magic to record the scenes to crystals (requires at least 1)
-    JOB_CRYSTALPURIFIER,    // Post editing to get the best out of the film (requires at least 1)
-    //JOB_SOUNDTRACK,            // Correct audio and add in music to the scenes (not required but helpful)
-    JOB_FLUFFER,            // Keeps the porn stars and animals aroused
+    JOB_EXECUTIVE,            // Does same work as matron
+    JOB_DIRECTOR,             // Directs movies.
+    JOB_MARKET_RESEARCH,      // Gathers info about target groups
+    JOB_PROMOTER,             // Advertising -- This helps film sales after it is created.
+    JOB_CAMERAMAGE,           // Uses magic to record the scenes to crystals (requires at least 1 for each 3 scenes)
+    JOB_CRYSTALPURIFIER,      // Post editing to get the best out of the film (requires at least 1  for each 3 scenes)
+    //JOB_SOUNDTRACK,         // Correct audio and add in music to the scenes (not required but helpful)
+    JOB_FLUFFER,              // Keeps the porn stars and animals aroused
     JOB_STAGEHAND,            // Currently does the same as a cleaner.
 
     // `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> Constants.h > JOBS
@@ -277,19 +279,19 @@ enum JOBS {
     JOB_FILMTEASE,            // Fex sensual and cute
 
     // Studio - Softcore Porn
-    JOB_FILMMAST,            // films this type of scene CRAZY
-    JOB_FILMSTRIP,            // films this type of scene CRAZY
-    JOB_FILMFOOTJOB,        // films this type of scene CRAZY
-    JOB_FILMHANDJOB,        // films this type of scene CRAZY
-    JOB_FILMTITTY,            // films this type of scene CRAZY
+    JOB_FILMMAST,
+    JOB_FILMSTRIP,
+    JOB_FILMFOOTJOB,
+    JOB_FILMHANDJOB,
+    JOB_FILMTITTY,
 
     // Studio - Porn
-    JOB_FILMANAL,            // films this sort of scene in the movie
-    //JOB_FILMFUTA,            // films scenes with/as futa
-    JOB_FILMLESBIAN,        // films this sort of scene in the movie. thinking about changing to Lesbian
-    JOB_FILMORAL,            // films this type of scene CRAZY
-    JOB_FILMSEX,            // films this sort of scene in the movie
-    JOB_FILMGROUP,            // films this sort of scene in the movie
+    JOB_FILMANAL,
+    //JOB_FILMFUTA,          // films scenes with/as futa
+    JOB_FILMLESBIAN,
+    JOB_FILMORAL,
+    JOB_FILMSEX,
+    JOB_FILMGROUP,
 
     // Studio - Hardcore porn
     JOB_FILMBEAST,            // films this sort of scene in the movie (uses beast resource)

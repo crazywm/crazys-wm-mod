@@ -39,7 +39,6 @@ public:
         const std::string&    saves();
         const std::string&    items();
         const std::string&    defaultimageloc();
-        bool                  backupsaves();
         bool                  preferdefault();
     } folders;
 

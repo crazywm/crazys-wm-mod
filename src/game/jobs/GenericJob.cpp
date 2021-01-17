@@ -164,10 +164,7 @@ DECL_JOB(PeepShow);
 DECL_JOB(Whore);
 
 // - Movie Studio
-DECL_JOB(FilmDirector);
-DECL_JOB(FilmPromoter);
 DECL_JOB(FilmStagehand);
-DECL_JOB(FilmRandom);
 
 // - Arena - Fighting
 DECL_JOB(FightBeast);
@@ -251,12 +248,7 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_WHORESTREETS, Whore, "StWr", "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable.");
 
 // - Movie Studio - Crew
-    REGISTER_JOB(JOB_DIRECTOR, FilmDirector, "Dir", "She directs the filming, and keeps the girls in line. (max 1)").free_only();
-    REGISTER_JOB(JOB_PROMOTER, FilmPromoter, "Prmt", "She advertises the movies.");
     REGISTER_JOB_MANUAL(JOB_STAGEHAND, FilmStagehand, Cleaning, "StgH", "She helps setup equipment, and keeps the studio clean.");
-
-    //Rand
-    REGISTER_JOB(JOB_FILMRANDOM, FilmRandom, "FRnd", "She will perform in a random sex scene.");
 
 // - Arena - Fighting
     REGISTER_JOB(JOB_FIGHTBEASTS, FightBeast, "FiBs", "She will fight to the death against beasts you own. Dangerous.");

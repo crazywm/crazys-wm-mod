@@ -23,7 +23,7 @@
 #include "buildings/queries.h"
 
 #include "cGangs.h"
-#include "widgets/cListBox.h"
+#include "widgets/IListBox.h"
 
 #include "interface/cWindowManager.h"
 #include "utils/FileList.h"
@@ -130,7 +130,6 @@ void cScreenTransfer::init(bool back)
 void cScreenTransfer::select_brothel(Side side, int selected)
 {
     int own_list_id = side == Side::Right ? listright_id : listleft_id;
-    std::vector<std::string> columnNames = GetListBox(own_list_id)->GetColumnNames();
 
     ClearListBox(own_list_id);
     (side == Side::Right ? rightBrothel : leftBrothel) = selected;
@@ -142,12 +141,7 @@ void cScreenTransfer::select_brothel(Side side, int selected)
         int i = 0;
         temp->girls().visit([&](const sGirl& girl) {
             if (selected_girl().get() == &girl) selection = i;
-            std::vector<FormattedCellData> Data(columnNames.size());
-            for (unsigned int x = 0; x < columnNames.size(); ++x)
-            {
-                Data[x] = girl.GetDetail(columnNames[x]);
-            }
-            AddToListBox(own_list_id, i, std::move(Data), checkjobcolor(girl));
+            GetListBox(own_list_id)->AddRow(i, &girl, checkjobcolor(girl));
             i++;
         });
         if (selection >= 0) while (selection > GetListBoxSize(own_list_id) && selection != -1) selection--;
@@ -185,26 +179,25 @@ void cScreenTransfer::TransferGirlsRightToLeft(bool rightfirst, int rightBrothel
     }
     else
     {
-        int pos = 0;
         int NumRemoved = 0;
-        int girlSelection = GetNextSelectedItemFromList(listb_id, 0, pos);
-        while (girlSelection != -1)
-        {
+        bool is_full = false;
+        ForAllSelectedItems(listb_id, [&](int girlSelection) {
+            if(is_full)  return;
             IBuilding* bb = getBuilding(brothelb);
             sGirl* temp = bb->get_girl(girlSelection - NumRemoved);
             // check there is still room
             if (brothela != brothelb && brothel->num_girls() + 1 > brothel->m_NumRooms)
             {
-                push_message("Right side building is full", 1);
-                break;
+                is_full = true;
             }
 
             // remove girl from left side
             NumRemoved++;
             brothel->add_girl(bb->remove_girl(temp), brothela == brothelb);
+        });
 
-            // get next girl
-            girlSelection = GetNextSelectedItemFromList(listb_id, pos + 1, pos);
+        if(is_full) {
+            push_message("Right side building is full", 1);
         }
 
         // update the girl lists

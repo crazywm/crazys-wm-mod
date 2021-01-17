@@ -2,7 +2,7 @@
 #include "BuildingScreenManagement.h"
 #include "interface/cWindowManager.h"
 #include "buildings/cBrothel.h"
-#include "widgets/cListBox.h"
+#include "widgets/IListBox.h"
 #include "cTariff.h"
 #include "InterfaceProcesses.h"
 #include "Game.hpp"
@@ -62,13 +62,9 @@ void IBuildingScreenManagement::ViewSelectedGirl()
 
         if(IsMultiSelected(girllist_id)) {
             // if multiple girls are selected, put them into the selection list
-            int pos = 0;
-            int sel = GetNextSelectedItemFromList(girllist_id, 0, pos);
-            while (sel != -1)
-            {
+            ForAllSelectedItems(girllist_id, [&](int sel) {
                 add_to_cycle_list(active_building().get_girl(sel)->shared_from_this());
-                sel = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
-            }
+            });
         } else {
             // if only a single girl is selected, allow iterating over all
             active_building().girls().apply([this](sGirl& g) {
@@ -84,13 +80,9 @@ void IBuildingScreenManagement::ViewSelectedGirl()
 
 void IBuildingScreenManagement::GetSelectedGirls(std::vector<int> *girl_array)
 {  // take passed vector and fill it with sorted list of selected girl IDs
-    int pos = 0;
-    int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
-    while (GSelection != -1)
-    {
-        girl_array->push_back(GSelection);
-        GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
-    }
+    ForAllSelectedItems(girllist_id, [&](int sel){
+        girl_array->push_back(sel);
+    });
     sort(girl_array->begin(), girl_array->end());
 }
 
@@ -129,28 +121,17 @@ void IBuildingScreenManagement::on_select_girl(int selection)
     if (selection != -1)
     {
         selected_girl = active_building().get_girl(selection);
-        if (IsMultiSelected(girllist_id))
-        {
-            bool freefound = false;
-            bool slavefound = false;
-            int pos = 0;
-            int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
-            while (GSelection != -1)
-            {
-                if (active_building().get_girl(pos)->is_slave()) slavefound = true;
-                if (!active_building().get_girl(pos)->is_slave()) freefound = true;
-                GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
-            }
-            DisableWidget(firegirl_id, !freefound);
-            DisableWidget(freeslave_id, !slavefound);
-            DisableWidget(sellslave_id, !slavefound);
-        }
-        else
-        {
-            DisableWidget(firegirl_id, selected_girl->is_slave());
-            DisableWidget(freeslave_id, selected_girl->is_free());
-            DisableWidget(sellslave_id, selected_girl->is_free());
-        }
+
+        bool freefound = false;
+        bool slavefound = false;
+        ForAllSelectedItems(girllist_id, [&](int sel) {
+            if (active_building().get_girl(sel)->is_slave()) slavefound = true;
+            if (!active_building().get_girl(sel)->is_slave()) freefound = true;
+        });
+        DisableWidget(firegirl_id, !freefound);
+        DisableWidget(freeslave_id, !slavefound);
+        DisableWidget(sellslave_id, !slavefound);
+
         DisableWidget(viewdetails_id, false);
         RefreshSelectedJobType();
     }
@@ -186,10 +167,6 @@ void IBuildingScreenManagement::set_ids() {
     jobtypehead_id = get_id("JobTypeHeader");
     jobtypedesc_id = get_id("JobTypeDescription");
     curbrothel_id  = get_id("CurrentBrothel");
-
-
-    //Set the default sort order for columns, so listbox knows the order in which data will be sent
-    SortColumns(girllist_id, GetListBox(girllist_id)->GetColumnNames());
 
     // setting up button callbacks
     SetButtonCallback(viewdetails_id, [this](){
@@ -227,20 +204,15 @@ void IBuildingScreenManagement::on_select_job(int selection)
     bool fulltime = is_ctrl_held();
     if (selection != -1)
     {
+        JOBS new_job = static_cast<JOBS>(selection);
         EditTextItem(job_manager().get_job_description((JOBS)selection), jobdesc_id);        // first handle the descriptions
-        int pos = 0;
-        int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);        // Now assign the job to all the selected girls
-        while (GSelection != -1)
-        {
-            // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
-            JOBS new_job = static_cast<JOBS>(selection);
-            auto girl = active_building().get_girl(GSelection);
+        ForAllSelectedItems(girllist_id, [&](int sel) {
+            auto girl = active_building().get_girl(sel);
             if (girl)
             {
-                assign_job(*girl, new_job, GSelection, fulltime);
+                assign_job(*girl, new_job, sel, fulltime);
             }
-            GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
-        }
+        });
     }
     else EditTextItem("Nothing Selected", jobdesc_id);
 }
@@ -264,38 +236,11 @@ void IBuildingScreenManagement::assign_job(sGirl& girl, JOBS new_job, int girl_s
     // update the girl's listing to reflect the job change
     const auto day_job_name = job_manager().get_job_name(day_job);
     const auto night_job_name = job_manager().get_job_name(night_job);
-    ss << day_job_name;
-    SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
-    ss.str("");
-    ss << night_job_name;
-    SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
+    GetListBox(girllist_id)->UpdateRow(girl_selection, &girl, -1);
 
     // refresh job worker counts for former job and current job
     SetSelectedItemText(joblist_id, old_job, jobname_with_count((JOBS)old_job, Day0Night1));
     SetSelectedItemText(joblist_id, new_job, jobname_with_count((JOBS)new_job, Day0Night1));
-
-    // handle rehab
-    if (day_job == JOB_REHAB)    // `J` added
-    {
-        ss.str("");    ss << day_job_name << " (" << 3 - girl.m_WorkingDay << ")";
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
-    }
-    else if (girl.m_YesterDayJob == JOB_REHAB && ((girl.m_WorkingDay > 0) || girl.m_PrevWorkingDay > 0))
-    {
-        ss.str("");    ss << day_job_name << " **";
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
-    }
-
-    if (night_job == JOB_REHAB)    // `J` added
-    {
-        ss.str("");    ss << night_job_name << " (" << 3 - girl.m_WorkingDay << ")";
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
-    }
-    else if (girl.m_YesterNightJob == JOB_REHAB && ((girl.m_WorkingDay > 0) || girl.m_PrevWorkingDay > 0))
-    {
-        ss.str("");    ss << night_job_name << " **";
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
-    }
 
     if (girl.m_YesterDayJob == JOB_REHAB && new_job != JOB_REHAB && (girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0))
     {    // `J` added
@@ -308,47 +253,6 @@ void IBuildingScreenManagement::assign_job(sGirl& girl, JOBS new_job, int girl_s
     if (girl.m_YesterDayJob != day_job && cJobManager::is_Surgery_Job(girl.m_YesterDayJob) && ((girl.m_WorkingDay > 0) || girl.m_PrevWorkingDay > 0))
         interrupted = true;
 
-    if (day_job == JOB_CUREDISEASES)    // `J` added
-    {
-        ss.str(""); ss << day_job_name << " (" << girl.m_WorkingDay << "%)*" << (interrupted ? " **" : "");
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
-    }
-    else if (day_job == JOB_GETABORT)    // `J` added
-    {
-        ss.str(""); ss << day_job_name << " (" << 2 - girl.m_WorkingDay << ")*" << (interrupted ? " **" : "");
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
-    }
-    else if (cJobManager::is_Surgery_Job(day_job))    // `J` added
-    {
-        ss.str(""); ss << day_job_name << " (" << 5 - girl.m_WorkingDay << ")*" << (interrupted ? " **" : "");
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
-    }
-    else if (interrupted)
-    {
-        ss.str(""); ss << day_job_name << " **";
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
-    }
-
-    if (night_job == JOB_CUREDISEASES)    // `J` added
-    {
-        ss.str(""); ss << night_job_name << " (" << girl.m_WorkingDay << "%)*" << (interrupted ? " **" : "");
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
-    }
-    else if (night_job == JOB_GETABORT)    // `J` added
-    {
-        ss.str(""); ss << night_job_name << " (" << 2 - girl.m_WorkingDay << ")*" << (interrupted ? " **" : "");
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
-    }
-    else if (cJobManager::is_Surgery_Job(night_job))    // `J` added
-    {
-        ss.str(""); ss << night_job_name << " (" << 5 - girl.m_WorkingDay << ")*" << (interrupted ? " **" : "");
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
-    }
-    else if (interrupted)
-    {
-        ss.str(""); ss << night_job_name << " **";
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
-    }
     if (interrupted)
     {    // `J` added
         ss.str(""); ss << job_manager().get_job_description(new_job) << "\n** This girl was getting ";
@@ -367,36 +271,6 @@ void IBuildingScreenManagement::assign_job(sGirl& girl, JOBS new_job, int girl_s
     }
 
     // conversions
-    if (day_job == JOB_SO_STRAIGHT || day_job == JOB_SO_BISEXUAL || day_job == JOB_SO_LESBIAN || day_job == JOB_FAKEORGASM)    // `J` added
-    {
-        ss.str("");    ss << day_job_name << " (" << girl.m_WorkingDay << "%)";
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
-    }
-    else if ((girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0) && (
-            girl.m_YesterDayJob == JOB_SO_STRAIGHT ||
-            girl.m_YesterDayJob == JOB_SO_BISEXUAL ||
-            girl.m_YesterDayJob == JOB_SO_LESBIAN ||
-            girl.m_YesterDayJob == JOB_FAKEORGASM))
-    {
-        ss.str("");    ss << day_job_name << " **";
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
-    }
-
-    if (night_job == JOB_SO_STRAIGHT || night_job == JOB_SO_BISEXUAL || night_job == JOB_SO_LESBIAN || night_job == JOB_FAKEORGASM)    // `J` added
-    {
-        ss.str("");    ss << night_job_name << " (" << girl.m_WorkingDay << "%)";
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
-    }
-    else if ((girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0) && (
-            girl.m_YesterNightJob == JOB_SO_STRAIGHT ||
-            girl.m_YesterNightJob == JOB_SO_BISEXUAL ||
-            girl.m_YesterNightJob == JOB_SO_LESBIAN ||
-            girl.m_YesterNightJob == JOB_FAKEORGASM))
-    {
-        ss.str("");    ss << night_job_name << " **";
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
-    }
-
     if ((girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0) && (new_job != girl.m_YesterDayJob && (
             girl.m_YesterDayJob == JOB_SO_STRAIGHT ||
             girl.m_YesterDayJob == JOB_SO_BISEXUAL ||
@@ -407,13 +281,6 @@ void IBuildingScreenManagement::assign_job(sGirl& girl, JOBS new_job, int girl_s
                           "\n** This girl was in training for " << job_manager().get_job_name(girl.m_YesterDayJob)
                           << ", if you send her somewhere else, she will have to start her training over.";
         EditTextItem(ss.str(), jobdesc_id);
-    }
-
-    // actress
-    if (is_Actress_Job(night_job))    // `J` added
-    {
-        ss.str(""); ss << night_job_name << (CrewNeeded(*girl.m_Building) ? " **" : "");
-        SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
     }
 }
 
@@ -436,21 +303,12 @@ void IBuildingScreenManagement::init(bool back)
     ClearListBox(girllist_id);
     ClearListBox(jobtypelist_id);
 
-    // get a list of all the column names, so we can find which data goes in that column
-    std::vector<std::string> columnNames = GetListBox(girllist_id)->GetColumnNames();
-    int numColumns = columnNames.size();
-    std::vector<FormattedCellData> data(numColumns);
-
     for (int i = 0; i < active_building().num_girls(); i++)    // Add girls to list
     {
         sGirl* gir = active_building().get_girl(i);
         if (selected_girl == gir) selection = i;
         unsigned int item_color = (gir->health() <= 30 || gir->tiredness() >= 80 || gir->happiness() <= 30) ? COLOR_RED : COLOR_BLUE;
-        for (unsigned int x = 0; x < columnNames.size(); ++x)
-        {
-            data[x] = gir->GetDetail(columnNames[x]);
-        }
-        AddToListBox(girllist_id, i, data, item_color);
+        GetListBox(girllist_id)->AddRow(i, gir, item_color);
     }
 
     DisableWidget(firegirl_id, true);

@@ -19,7 +19,7 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
-#include "widgets/cListBox.h"
+#include "widgets/IListBox.h"
 #include "cScreenDungeon.h"
 #include "buildings/cBuildingManager.h"
 #include "buildings/cDungeon.h"
@@ -159,8 +159,6 @@ void cScreenDungeon::init(bool back)
 
     Focused();
     ClearListBox(girllist_id);                // clear the lists
-    //get a list of all the column names, so we can find which data goes in that column
-    std::vector<std::string> columnNames = GetListBox(girllist_id)->GetColumnNames();
 
     if (gold_id >= 0)
     {
@@ -174,22 +172,19 @@ void cScreenDungeon::init(bool back)
     selection = g_Game->dungeon().GetNumGirls() > 0 ? 0 : -1;
     for (int i = 0; i < g_Game->dungeon().GetNumGirls(); i++)                                                // add girls
     {
-        std::vector<FormattedCellData> Data;
         sGirl *girl = g_Game->dungeon().GetGirl(i)->m_Girl.get();                                            // get the i-th girl
         if (selected_girl().get() == girl) selection = i;                                                            // if selected_girl is this girl, update selection
         girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
         int col = ((girl->health() <= 30) || (girl->happiness() <= 30)) ? COLOR_RED : COLOR_BLUE;            // if she's low health or unhappy, flag her entry to display in red // Anon21
-        g_Game->dungeon().OutputGirlRow(i, Data, columnNames);                                                // add her to the list
-        AddToListBox(girllist_id, i, std::move(Data), col);
+        GetListBox(girllist_id)->AddRow(i, girl, col);
     }
     // now add the customers
     int offset = g_Game->dungeon().GetNumGirls();
     for (int i = 0; i < g_Game->dungeon().GetNumCusts(); i++)    // add customers
     {
-        std::vector<FormattedCellData> Data;
-        int col = (g_Game->dungeon().GetCust(i)->m_Health <= 30) ? COLOR_RED : COLOR_BLUE;
-        g_Game->dungeon().OutputCustRow(i, Data, columnNames);
-        AddToListBox(girllist_id, i + offset, std::move(Data), col);
+        sDungeonCust* cust = g_Game->dungeon().GetCust(i);
+        int col = (cust->m_Health <= 30) ? COLOR_RED : COLOR_BLUE;
+        GetListBox(girllist_id)->AddRow(i, cust, col);
     }
 
     // disable some buttons
@@ -310,13 +305,11 @@ int cScreenDungeon::view_girl()
 
     if(IsMultiSelected(girllist_id)) {
         // if multiple girls are selected, put them into the selection list
-        int pos = 0;
-        int sel = GetNextSelectedItemFromList(girllist_id, 0, pos);
-        while (sel != -1 && sel < g_Game->dungeon().GetNumGirls())
-        {
-            add_to_cycle_list(g_Game->dungeon().GetGirl(sel)->m_Girl);
-            sel = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
-        }
+        ForAllSelectedItems(girllist_id, [&](int sel) {
+            if(sel < g_Game->dungeon().GetNumGirls()) {
+                add_to_cycle_list(g_Game->dungeon().GetGirl(sel)->m_Girl);
+            }
+        });
     } else {
         auto girl = g_Game->dungeon().GetGirl(selection)->m_Girl;
         // TODO can this happen?
@@ -371,23 +364,20 @@ int cScreenDungeon::enslave()
 {
     int numCustsRemoved = 0;
     int numGirlsRemoved = 0;
-    int pos = 0, deadcount = 0;
+    int deadcount = 0;
 
     // roll on vectors!
-    for (int selection = GetNextSelectedItemFromList(girllist_id, 0, pos);
-         selection != -1;
-         selection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos))
-    {
+    ForAllSelectedItems(girllist_id, [&](int selection) {
         if ((selection - (g_Game->dungeon().GetNumGirls() + numGirlsRemoved)) >= 0)    // it is a customer
         {
             enslave_customer(numGirlsRemoved, numCustsRemoved);
             numCustsRemoved++;
-            continue;
+            return;
         }
         // it is a girl
         sGirl *girl = g_Game->dungeon().GetGirl(selection - numGirlsRemoved)->m_Girl.get();
-        if (girl->is_slave()) continue;                    // nothing to do if she's _already_ enslaved
-        if (girl->is_dead()) { deadcount++; continue; }    // likewise, dead girls can't be enslaved
+        if (girl->is_slave()) return;                    // nothing to do if she's _already_ enslaved
+        if (girl->is_dead()) { deadcount++; return; }    // likewise, dead girls can't be enslaved
 
         auto result = AttemptEscape(*girl);
         switch(result) {
@@ -424,7 +414,7 @@ int cScreenDungeon::enslave()
             g_Game->player().evil(15);                        // so does evil
             push_message(ss.str(), COLOR_RED);    // add to the message queue
         }
-    }
+    });
     if (deadcount > 0) push_message("There's not much point in using a slave tattoo on a dead body.", 0);
     init(false);
     return Return;
@@ -513,22 +503,19 @@ void cScreenDungeon::release_all_girls()
 
 void cScreenDungeon::stop_feeding()
 {
-    // and then loop using multi_first() and multi_next()
-    for (int selection = multi_first(); selection != -1; selection = multi_next())
-    {
+    ForAllSelectedItems(girllist_id, [&](int selection) {
         g_Game->dungeon().SetFeeding(selection, false);
         SetSelectedItemColumnText(girllist_id, selection, "No", "Feeding");
-    }
+    });
     selection_change();
 }
 
 void cScreenDungeon::start_feeding()
 {
-    for (int selection = multi_first(); selection != -1; selection = multi_next())
-    {
+    ForAllSelectedItems(girllist_id, [&](int selection) {
         g_Game->dungeon().SetFeeding(selection, true);
         SetSelectedItemColumnText(girllist_id, selection, "Yes", "Feeding");
-    }
+    });
     selection_change();
 }
 
@@ -569,27 +556,25 @@ void cScreenDungeon::torture_customer(int girls_removed)
 */
 bool cScreenDungeon::torture_possible()
 {
-    int nSelection;        // don't use selection for the loop - its a class global and can mess things up elsewhere
-    int    nPosition = 0;
     int nNumGirls = g_Game->dungeon().GetNumGirls();
-    for (nSelection = GetNextSelectedItemFromList(girllist_id, 0, nPosition); nSelection != -1; nSelection = GetNextSelectedItemFromList(girllist_id, nPosition + 1, nPosition))
-    {
-        bool not_yet_tortured;
+    bool can_torture = false;
+    ForAllSelectedItems(girllist_id, [&](int nSelection) {
+        bool not_yet_tortured = false;
         // get the customer or girl under selection and find out if they've been tortured this turn
         if (nSelection >= nNumGirls)
         {
             sDungeonCust* dcust = g_Game->dungeon().GetCust(nSelection - nNumGirls);
-            if(dcust)
-                not_yet_tortured = !dcust->m_Tort;
+            assert(dcust);
+            if(dcust) not_yet_tortured = !dcust->m_Tort;
         }
         else
         {
             sDungeonGirl* dgirl = g_Game->dungeon().GetGirl(nSelection);
-            if(dgirl)
-                not_yet_tortured = !dgirl->m_Girl->m_Tort;
+            assert(dgirl);
+            if(dgirl) not_yet_tortured = !dgirl->m_Girl->m_Tort;
         }
-        if (not_yet_tortured) return true;    // we only need one torturable prisoner so if we found one, we can go home
-    }
+        if (not_yet_tortured) can_torture = true;    // we only need one torturable prisoner so if we found one, we can go home
+    });
     return false;                            // we only get here if no-one in the list was torturable
 }
 
@@ -598,21 +583,18 @@ void cScreenDungeon::torture()
     int pos = 0;
     int numGirlsRemoved = 0;
 
-    for (int selection = GetNextSelectedItemFromList(girllist_id, 0, pos);
-        selection != -1;
-        selection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos))
-    {
+    ForAllSelectedItems(girllist_id, [&](int nSelection) {
         // if it's a customer, we have a separate routine
         if ((selection - (g_Game->dungeon().GetNumGirls() + numGirlsRemoved)) >= 0)
         {
             g_Game->player().evil(5);
             torture_customer(numGirlsRemoved);
-            continue;
+            return;
         }
         // If we get here, it's a girl
         sDungeonGirl* dgirl = g_Game->dungeon().GetGirl(selection - numGirlsRemoved);
         cGirlTorture gt(dgirl);
-    }
+    });
 }
 
 void cScreenDungeon::change_release(BuildingType building, int index)
@@ -690,12 +672,8 @@ void cScreenDungeon::UpdateImage(int imagetype) {
 
 void cScreenDungeon::get_selected_girls(std::vector<int> *girl_array)
 {  // take passed vector and fill it with sorted list of girl/customer IDs
-    int pos = 0;
-    int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
-    while (GSelection != -1)
-    {
-        girl_array->push_back(GSelection);
-        GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
-    }
+    ForAllSelectedItems(girllist_id, [&](int sel) {
+        girl_array->push_back(sel);
+    });
     sort(girl_array->begin(), girl_array->end());
 }

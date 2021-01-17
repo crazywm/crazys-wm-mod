@@ -55,7 +55,7 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
 
     if (brothel->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 ||
         brothel->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0 ||
-        Num_Actress(*brothel) < 1)
+            GetNumberActresses(*brothel) < 1)
     {
         ss << "There were no scenes being filmed, so she just cleaned the set.\n \n";
         filming = false;

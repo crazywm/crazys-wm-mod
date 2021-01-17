@@ -26,6 +26,7 @@
 <Column     Name="Happiness"         Header="Happy"                      Offset="703" />
 <Column     Name="Tiredness"         Header="Tired"                      Offset="844" />
 <Column     Name="NightJob"          Header="Job"                        Offset="985" />
+<Column     Name="NightJobRating"    Header="Rating"                     Offset="1547" />
 <Column     Name="is_pregnant"       Header="Preg"                       Offset="1688" />
 <Column     Name="is_slave"          Header="Slave"                      Offset="1829" />
 <Column     Name="Rebel"             Header="Rebel"                      Offset="1970" />

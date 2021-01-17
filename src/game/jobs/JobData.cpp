@@ -40,16 +40,16 @@ float cJobPerformance::eval(const sGirl& girl, bool estimate) const {
     }
 
     performance = 2 * performance / weights;
-    performance += girl.level();
+    performance += 2 * girl.level();
 
     if (!estimate)
     {
         float t = girl.tiredness() - 80;
         if (t > 0)
             performance -= (t + 2) * (t / 3);
-        float h = girl.health() - 25.f;
-        if (h < 0)
-            performance -= (h - 2) * (h / 3.f);
+        float h = 25.f - girl.health();
+        if (h > 0)
+            performance -= (h + 2) * (h / 3.f);
     }
 
     for(const auto& mod : TraitMod) {

@@ -11,6 +11,9 @@ function g:torture() end
 function g:give_money() end
 function g:trigger(event) end
 
+function g:obey_check(action) end
+function g:skill_check(skill, target) end
+
 -- shortcuts
 function g:anal(change) end
 function g:bdsm(change) end

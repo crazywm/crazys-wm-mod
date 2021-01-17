@@ -179,7 +179,9 @@ const std::array<const char*, NUM_ACTIONTYPES>& get_action_descriptions() {
             "torturing people",                    // ACTION_WORKTORTURER
             "caring for beasts",                // ACTION_WORKCARING
             "working as a doctor",                // ACTION_WORKDOCTOR
-            "producing movies",                    // ACTION_WORKMOVIE
+            "being an actress",                    // ACTION_ACTRESS
+            "doing porn",                          // ACTION_PORNSTAR
+            "producing movies",                  // ACTION_MOVIECREW
             "providing customer service",        // ACTION_WORKCUSTSERV
             "working in the centre",            // ACTION_WORKCENTRE
             "working in the club",                // ACTION_WORKCLUB
@@ -280,7 +282,8 @@ const std::array<const char*, NUM_JOBS>& get_job_names() {
             "Strip Club Barmaid", "Strip Club Waitress", "Strip Club Stripper",
             "Strip Club Whore", "Masseuse", "Brothel Stripper", "Peep Show",
             "Brothel Whore", "Whore on Streets",
-            "Director", "Promoter", "Camera Mage", "Crystal Purifier", "Fluffer",
+            "Executive", "Director", "Market Research", "Promoter",
+            "Camera Mage", "Crystal Purifier", "Fluffer",
             "Stagehand", "Action", "The Naked Chef", "Music", "Teaser Video",
             "Film Masturbation", "Film Strip tease", "Film Foot Job", "Film Hand Job",
             "Film Titty Fuck", "Film Anal", "Film Lesbian",

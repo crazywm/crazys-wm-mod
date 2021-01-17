@@ -54,10 +54,6 @@ namespace {
         return lookup;
     }
 
-    SceneType scene_type_from_string(const std::string& name) {
-        return lookup_with_error(get_scene_type_lookup(), name, "Trying to get invalid Scene Type");
-    }
-
     std::array<const char*, (int)SceneCategory::NUM_TYPES> CategoryNames = {
             "Tease", "Soft", "Hard", "Extreme"
     };
@@ -103,6 +99,10 @@ int get_stage_points_required(SceneType type) {
     return TypeToCategory.at(int(type)).StageHandNeeded;
 }
 
+SceneType scene_type_from_string(const std::string& name) {
+    return lookup_with_error(get_scene_type_lookup(), name, "Trying to get invalid Scene Type");
+}
+
 const char* get_name(SceneType type) {
     return get_scene_type_names().at((int)type);
 }
@@ -114,6 +114,7 @@ void sTargetGroup::load_xml(const tinyxml2::XMLElement& root) {
     RequiredScore = GetFloatAttribute(root, "RequiredScore");
     SpendingPower = GetFloatAttribute(root, "SpendingPower");
     Saturation = GetIntAttribute(root, "Saturation");
+    Knowledge = GetIntAttribute(root, "Knowledge");
 
     TurnOffs.fill(0.f);
     for(const auto& turnoff : IterateChildElements(root, "TurnOff")) {
@@ -139,6 +140,7 @@ void sTargetGroup::save_xml(tinyxml2::XMLElement& target) const {
     target.SetAttribute("RequiredScore", RequiredScore);
     target.SetAttribute("SpendingPower", SpendingPower);
     target.SetAttribute("Saturation", Saturation);
+    target.SetAttribute("Knowledge", Knowledge);
     for(int i = 0; i < TurnOffs.size(); ++i) {
         auto& elem = PushNewElement(target, "TurnOff");
         elem.SetAttribute("Category", CategoryNames[i]);
@@ -152,6 +154,58 @@ void sTargetGroup::save_xml(tinyxml2::XMLElement& target) const {
     }
 
     target.SetAttribute("Favourite", get_scene_type_names()[(int)Favourite]);
+}
+
+FormattedCellData sTargetGroup::get_formatted(const std::string& name, bool all) const {
+    int lookup_desires = -1;
+    if(name == "Group") {
+        return mk_text(Name);
+    } else if(name == "Size") {
+        if(all || Knowledge >= KnowledgeForSize) {
+            return mk_num(Amount);
+        } else {
+            return {0, "???"};
+        }
+    } else if(name == "Saturation") {
+        if(all || Knowledge >= KnowledgeForSaturation) {
+            return mk_percent(100 * Saturation / Amount);
+        } else {
+            return {0, "???"};
+        }
+    } else if(name == "FavScene") {
+        if(all || Knowledge >= KnowledgeForFavScene) {
+            return mk_text(get_name(Favourite));
+        }else {
+            return mk_text("???");
+        }
+    } else if(name == "Score") {
+        if(all || Knowledge >= KnowledgeForReqScore) {
+            return mk_num((int) RequiredScore);
+        } else {
+            return {0, "???"};
+        }
+    } else if(name == "SpendingPower") {
+        if(all || Knowledge >= KnowledgeForSpendingPower) {
+            return mk_num((int)SpendingPower);
+        } else {
+            return {0, "???"};
+        }
+    } else if(name == "Desire_Tease") {
+        lookup_desires = 0;
+    } else if(name == "Desire_Soft") {
+        lookup_desires = 1;
+    } else if(name == "Desire_Hard") {
+        lookup_desires = 2;
+    } else if(name == "Desire_Extreme") {
+        lookup_desires = 3;
+    }
+    assert(lookup_desires >= 0);
+
+    if(all || Knowledge >= KnowledgeForDesires) {
+        return mk_num(Desires[lookup_desires] * 100);
+    } else {
+        return {0, "???"};
+    }
 }
 
 void MovieScene::load_xml(const tinyxml2::XMLElement& root) {

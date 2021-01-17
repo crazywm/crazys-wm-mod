@@ -574,71 +574,6 @@
     <Modifier Name="work.fightarena">
     </Modifier>
 
-    <Modifier Name="work.filmpromoter">
-        <!-- useful traits -->
-        <Trait Name="Actress" Value="10"/>
-        <Trait Name="Charismatic" Value="10"/>
-        <Trait Name="Charming" Value="10"/>
-        <Trait Name="Cool Person" Value="10"/>
-        <Trait Name="Elegant" Value="5"/>
-        <Trait Name="Exhibitionist" Value="15"/>   <!-- Advertising topless -->
-        <Trait Name="Fearless" Value="5"/>
-        <Trait Name="Flexible" Value="5"/>
-        <Trait Name="Former Official" Value="10"/>
-        <Trait Name="Great Arse" Value="5"/>
-        <Trait Name="Great Figure" Value="5"/>
-        <Trait Name="Idol" Value="20"/>
-        <Trait Name="Natural Pheromones" Value="10"/>
-        <Trait Name="Optimist" Value="5"/>
-        <Trait Name="Porn Star" Value="20"/>
-        <Trait Name="Priestess" Value="10"/>   <!-- used to preaching to the masses -->
-        <Trait Name="Princess" Value="5"/>
-        <Trait Name="Psychic" Value="10"/>
-        <Trait Name="Queen" Value="10"/>
-        <Trait Name="Quick Learner" Value="5"/>
-        <Trait Name="Sexy Air" Value="10"/>
-        <Trait Name="Shape Shifter" Value="20"/>   <!-- she can show what is playing -->
-        <Trait Name="Singer" Value="10"/>
-        <Trait Name="Slut" Value="10"/>
-        <Trait Name="Your Daughter" Value="20"/>
-        <Trait Name="Your Wife" Value="20"/>
-
-
-        <!-- unhelpful traits -->
-        <Trait Name="Alcoholic" Value="-15"/>
-        <Trait Name="Aggressive" Value="-10"/> <!-- gets mad easy and may attack people -->
-        <Trait Name="Blind" Value="-20"/>
-        <Trait Name="Broken Will" Value="-50"/>
-        <Trait Name="Clumsy" Value="-5"/>
-        <Trait Name="Deaf" Value="-10"/>
-        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
-        <Trait Name="Emprisoned Customer" Value="-30"/>    <!-- she may be warning the other customers -->
-        <Trait Name="Fairy Dust Addict" Value="-15"/>
-        <Trait Name="Horrific Scars" Value="-10"/>
-        <Trait Name="Kidnapped" Value="-40"/>  <!-- she may try to run away or get help -->
-        <Trait Name="Malformed" Value="-20"/>
-        <Trait Name="Meek" Value="-10"/>
-        <Trait Name="Mute" Value="-10"/>
-        <Trait Name="Nervous" Value="-5"/>
-        <Trait Name="No Arms" Value="-40"/>
-        <Trait Name="No Feet" Value="-40"/>
-        <Trait Name="No Hands" Value="-30"/>
-        <Trait Name="No Legs" Value="-40"/>
-        <Trait Name="One Arm" Value="-10"/>
-        <Trait Name="One Foot" Value="-15"/>
-        <Trait Name="One Hand" Value="-5"/>
-        <Trait Name="One Leg" Value="-20"/>
-        <Trait Name="Pessimist" Value="-5"/>
-        <Trait Name="Retarded" Value="-20"/>
-        <Trait Name="Skeleton" Value="-50"/>
-        <Trait Name="Shy" Value="-10"/>
-        <Trait Name="Slow Learner" Value="-5"/>
-        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
-        <Trait Name="Shroud Addict" Value="-15"/>
-        <Trait Name="Viras Blood Addict" Value="-15"/>
-        <Trait Name="Zombie" Value="-50"/>
-    </Modifier>
-
     <Modifier Name="work.halldealer">
         <!-- good traits -->
         <Trait Name="Charismatic" Value="5"/>
@@ -1090,11 +1025,17 @@
         <Trait Name="Shape Shifter" Value="5" />
         <Trait Name="Fake Orgasm Expert" Value="10" />
         <Trait Name="Great Figure" Value="15" />
+        <Trait Name="Great Arse" Value="10" />
         <Trait Name="Good Kisser" Value="15" />
         <Trait Name="Exhibitionist" Value="15"/>
         <Trait Name="Whore" Value="10"/>
         <Trait Name="Slut" Value="10"/>
         <Trait Name="Open Minded" Value="10"/>
+        <Trait Name="Nymphomaniac" Value="15"/>
+        <Trait Name="Cool Person" Value="5"/>
+        <Trait Name="Fast Orgasms" Value="5"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Charming" Value="5"/>
 
         <Trait Name="Fragile" Value="-5" />
         <Trait Name="Mind Fucked" Value="-10" />

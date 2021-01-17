@@ -99,8 +99,6 @@ public:
     bool SendGirlToDungeon(std::shared_ptr<sGirl> girl);
     void AddGirl(std::shared_ptr<sGirl> girl, int reason);
     void AddCust(int reason, int numDaughters, bool hasWife);
-    void OutputGirlRow(int i, std::vector<FormattedCellData>& Data, const std::vector<std::string>& columnNames);
-    void OutputCustRow(int i, std::vector<FormattedCellData>& Data, const std::vector<std::string>& columnNames);
     sDungeonGirl* GetGirl(int i);
     sDungeonGirl* GetGirlByName(std::string name);
     sDungeonCust* GetCust(int i);

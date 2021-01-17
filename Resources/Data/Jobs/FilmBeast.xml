@@ -43,7 +43,7 @@
         <Skill Name="Beastiality" Weight="1" />
         <Skill Name="AnimalHandling" Weight="1" />
 
-        <GainTrait Trait="Porn Star" Threshold="80" Action="PORNSTAR">
+        <GainTrait Trait="Porn Star" Threshold="70" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">

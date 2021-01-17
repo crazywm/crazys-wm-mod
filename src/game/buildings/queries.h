@@ -28,7 +28,7 @@ bool DoctorNeeded(IBuilding& building);
 int GetNumberPatients(IBuilding& building, bool Day0Night1);
 bool CrewNeeded(const IBuilding& building);
 bool is_Actress_Job(int testjob);
-int Num_Actress(const IBuilding& building);
+int GetNumberActresses(const IBuilding& building);
 int Num_Patients(const IBuilding& building, bool is_night);
 
 #endif //CRAZYS_WM_MOD_QUERIES_HPP

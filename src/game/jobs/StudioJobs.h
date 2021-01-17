@@ -25,9 +25,21 @@
 
 struct sFilmPleasureData {
     int Factor = 0;                             // Determines the influence of libido
-    SKILLS Skill = SKILLS::SKILL_NORMALSEX;     // Which sex skill is required
+    SKILLS Skill = SKILLS::NUM_SKILLS;          // Which sex skill is required
     int SkillMin = 0;                           // Minimum skill to have the filming be pleasurable
     int BaseValue = 0;                          // Base value if there is no libido at all
+};
+
+struct sFilmObedienceData {
+    int total() const {
+        return Base + Libido + Enjoy + LoveHate;
+    }
+
+    int Base;
+    int Libido;
+    int Enjoy;
+    int LoveHate;
+
 };
 
 class cFilmSceneJob : public cBasicJob {
@@ -38,6 +50,9 @@ public:
         MONSTER
     };
     cFilmSceneJob(JOBS job, const char* xml, Image_Types event_image, SceneType scene, SexAction sex = SexAction::NONE);
+
+    SKILLS GetSexType() const;
+    sFilmObedienceData CalcChanceToObey(const sGirl& girl) const;
 private:
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     void InitWork() override;
@@ -83,6 +98,8 @@ protected:
     mutable std::stringstream m_Dbg_Msg;
 
     void update_enjoyment(sGirl& girl) const;
+
+    void produce_debug_message(sGirl& girl) const;
 };
 
 class cCrewJob : public cBasicJob {
@@ -94,6 +111,10 @@ protected:
     Image_Types m_EventImage = IMGTYPE_PROFILE;
 private:
     virtual void HandleUpdate(sGirl& girl, float performance) = 0;
+};
+
+class cMarketResearchJob : public cBasicJob {
+
 };
 
 #endif //WM_STUDIOJOBS_H

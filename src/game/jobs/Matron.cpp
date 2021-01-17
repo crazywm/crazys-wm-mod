@@ -372,4 +372,5 @@ void RegisterManagerJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<MatronJob>(JOB_DOCTORE, "Doctore", "Dtre", "She will watch over the girls in the arena."));
     mgr.register_job(std::make_unique<MatronJob>(JOB_FARMMANGER, "Farm Manager", "FMgr", "She will watch over the farm and girls working there."));
     mgr.register_job(std::make_unique<MatronJob>(JOB_HEADGIRL, "Head Girl", "HGrl", "She takes care of the girls in your house."));
+    mgr.register_job(std::make_unique<MatronJob>(JOB_EXECUTIVE, "Executive", "Exec", "She takes care of the girls in your studio."));
 }

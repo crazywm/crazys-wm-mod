@@ -52,7 +52,7 @@ int GetNumberPatients(IBuilding& building, bool Day0Night1)    // `J` added, if 
 }
 
 
-int Num_Actress(const IBuilding& building)
+int GetNumberActresses(const IBuilding& building)
 {
     // `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cMovieStudio.cpp > Num_Actress
     int actresses = 0;
@@ -75,7 +75,7 @@ bool CrewNeeded(const IBuilding& building)    // `J` added, if CM and CP both on
     // `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cMovieStudio.cpp > CrewNeeded
     if ((building.num_girls_on_job(JOB_CAMERAMAGE, 1) > 0 &&
          building.num_girls_on_job(JOB_CRYSTALPURIFIER, 1) > 0) ||
-        Num_Actress(building) < 1)
+            GetNumberActresses(building) < 1)
         return false;    // a CM or CP is not Needed
     return true;    // Otherwise a CM or CP is Needed
 }
