@@ -433,7 +433,7 @@ function GetBestialityMessage(girl, customer)
         elseif choice == 4 then
             message = "the angel."
             if wm.Percent(50) then
-                message = message .. " ('" .. RandomChoice("You're very pretty", "I was never here", "I had a great time", "I didn't know my body could do that") "' he said.)"
+                message = message .. " ('" .. RandomChoice("You're very pretty", "I was never here", "I had a great time", "I didn't know my body could do that") .. "' he said.)"
             end
         elseif choice == 5 then
             message = message .. "the " .. RandomChoice("demon", "major devil", "oni", "earth elemental", "raging hormone beast", "Happy Fun Ball") ..

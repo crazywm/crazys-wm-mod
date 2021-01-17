@@ -168,7 +168,7 @@
                 She spends her shift without making any mistakes and earning a lot from tips.
             </Text>
         </Message>
-        <Message Name="work.good">
+        <Message Name="work.ok">
             She made a few mistakes but overall she is okay at this.
             <Text>
                 ${name} mixed up a few drink orders...  But they ordered the same drink so it didn't matter too much.

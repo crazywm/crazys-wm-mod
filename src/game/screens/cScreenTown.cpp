@@ -252,14 +252,17 @@ void cScreenTown::check_building(int BrothelNum)
         num = 0;
     }
 
-    if (g_Game->buildings().num_buildings(type) == num)    // player doesn't own this brothel... can he buy it?
+    auto num_owned = g_Game->buildings().num_buildings(type);
+
+    if (num_owned == num)    // player doesn't own this brothel... can he buy it?
     {
         buy_building(brothel_data + BrothelNum);
-
     }
-    else    // player owns this brothel... go to it
+    else if(num_owned > num)   // player owns this brothel... go to it
     {
-        set_active_building(g_Game->buildings().building_with_type(type, num));
+        auto own_building = g_Game->buildings().building_with_type(type, num);
+        assert(own_building);
+        set_active_building(own_building);
         replace_window("Building Management");
     }
 }
