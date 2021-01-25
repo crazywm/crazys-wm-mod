@@ -2,17 +2,17 @@
 <Window     Name="Item Management Window"                                   XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
 <Text       Name="OwnersLeftHeader"     Text="Owner"                        XPos="226"      YPos="0"        Width="90"     Height="32"  FontSize="13"  />
 <ListBox    Name="OwnersLeftList"                                           XPos="165"       YPos="24"       Width="225"     Height="282" FontSize="9" RowHeight="19" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
-<Column     Name="OLLName"              Header="Name"                       Offset="0"  />                                   
-<Column     Name="OLLNumber"            Header="Items"                      Offset="135"  />                                 
-<Column     Name="OLLCatNum"            Header="Cat."                       Offset="172"  />                                 
+<Column     Name="Name"                 Header="Name"                       Offset="0"  />
+<Column     Name="Number"               Header="Items"                      Offset="135"  />
+<Column     Name="CatNum"               Header="Cat."                       Offset="172"  />
 </ListBox>                                                                                                                  
 <Text       Name="ItemsLeftHeader"      Text="Inventory"                    XPos="214"       YPos="302"      Width="90"     Height="32"  FontSize="13"  />
 <ListBox    Name="ItemsLeftList"                                            XPos="165"       YPos="328"      Width="225"     Height="402" FontSize="9" RowHeight="19" Border="1"       Events="true" Multi="true"  />
 <Text       Name="OwnersRightHeader"    Text="Owner"                        XPos="677"      YPos="0"        Width="90"     Height="32"  FontSize="13"  />
 <ListBox    Name="OwnersRightList"                                          XPos="607"      YPos="24"       Width="225"     Height="282" FontSize="9" RowHeight="19" Border="1"      Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
-<Column     Name="ORLName"              Header="Name"                       Offset="0"  />                                   
-<Column     Name="ORLNumber"            Header="Items"                      Offset="135"  />                                 
-<Column     Name="ORLCatNum"            Header="Cat."                       Offset="172"  />                                 
+<Column     Name="Name"                 Header="Name"                       Offset="0"  />
+<Column     Name="Number"               Header="Items"                      Offset="135"  />
+<Column     Name="CatNum"               Header="Cat."                       Offset="172"  />
 </ListBox>                                                                                                                  
 <Text       Name="ItemsRightHeader"     Text="Inventory"                    XPos="666"      YPos="302"      Width="90"     Height="32"     FontSize="13"  />
 <ListBox    Name="ItemsRightList"                                           XPos="607"      YPos="328"      Width="225"     Height="402"    FontSize="9" RowHeight="19" Border="1"          Events="true" Multi="true"  />

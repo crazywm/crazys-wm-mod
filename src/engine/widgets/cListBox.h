@@ -106,7 +106,20 @@ public:
     // Selection
     /// This function can only be used for single-selection ListBox elements, and will throw a logic error otherwise.
     /// If no element is selected, -1 is returned.
+    int GetSelectedID() const override;
+
+    /// This function can only be used for single-selection ListBox elements, and will throw a logic error otherwise.
+    /// If no element is selected, -1 is returned.
     int GetSelectedIndex() const override;
+
+    /// Sets the selected element based on its index in the list box.
+    void SetSelectedIndex(int index, bool trigger, bool deselect) override;
+
+    /// Sets the selected element based on its index in the list box.
+    /// If trigger is true, then a `selection_change` event is triggered.
+    /// If deselect is true, then all other elements will be deselected.
+    void SetSelectedID(int id, bool trigger=true, bool deselect = true) override;
+
 
     /// Returns true if there is at least one selected element.
     int NumSelectedElements() const override;
@@ -128,10 +141,8 @@ public:
     int m_ScrollChange = -1;  // scrollbar changes will update this value
 
     const std::string& GetSelectedText();
-    int GetAfterSelected();    // returns the id for the element after the last selected element
     // returns the id for the next selected element and sets pos to its position
     int GetLastSelected();    // gets the last item selected
-    void SetSelected(int ID, bool ev = true, bool deselect_others = true);    // sets the selected item
 
     void DefineColumns(std::vector<std::string> name, std::vector<std::string> header, std::vector<int> offset, std::vector<bool> skip);  // define column layout
     void SetColumnSort(const std::vector<std::string>& column_name);    // Update column sorting based on expected default order
@@ -173,6 +184,8 @@ private:
     item_list_t::iterator FindItemAtPosition(int x, int y);
 
     item_list_t::const_iterator FindSelected(const item_list_t::const_iterator& start) const;
+
+    void UpdateSelectionPosition(int index);
 
     // Double-click detection
     Uint32 m_CurrentClickTime = 0;

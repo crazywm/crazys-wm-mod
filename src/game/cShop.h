@@ -49,6 +49,11 @@ public:
     /// fill up the shop's inventory after the end of the week.
     void RestockShop();
 
+    /// Gets a direct reference to the inventory
+    const Inventory& GetInventory() const {
+        return m_Inventory;
+    }
+
     /// returns whether the shop's inventory is emtpy
     bool empty() const { return m_Inventory.empty(); }
 

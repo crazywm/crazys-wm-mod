@@ -21,13 +21,14 @@
 #include "cGameWindow.h"
 
 class sInventoryItem;
+class IListBox;
 
 struct sItemTransferSide {
     int sell10_id;
     int sellall_id;
     int buy10_id;
     int shift_id;
-    int owners_id;
+    IListBox* owners_list;
     int items_id;
     int equip_id;
     int unequip_id;
@@ -42,7 +43,7 @@ class IInventoryProvider {
     // everything to which an inventory item can be transferred
 public:
     virtual ~IInventoryProvider() = default;
-    virtual std::vector<FormattedCellData> get_data(int filter) const = 0;
+    virtual FormattedCellData get_data(int filter, const std::string& column) const = 0;
     virtual std::string get_details() const { return "-"; }
     virtual void enumerate_items(const std::function<void(const sInventoryItem *, int)> &callback) const = 0;
 

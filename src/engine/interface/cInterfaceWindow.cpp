@@ -472,7 +472,7 @@ int cInterfaceWindow::GetLastSelectedItemFromList(int listBoxID)
 
 int cInterfaceWindow::GetSelectedItemFromList(int listBoxID)
 {
-    return GetListBox(listBoxID)->GetSelectedIndex();
+    return GetListBox(listBoxID)->GetSelectedID();
 }
 
 string cInterfaceWindow::GetSelectedTextFromList(int listBoxID)
@@ -483,7 +483,7 @@ string cInterfaceWindow::GetSelectedTextFromList(int listBoxID)
 void cInterfaceWindow::SetSelectedItemInList(int listBoxID, int itemID, bool ev, bool DeselectOthers)
 {
     if (itemID == -1 || listBoxID == -1)    return;
-    GetCListBox(listBoxID)->SetSelected(itemID, ev, DeselectOthers);
+    GetCListBox(listBoxID)->SetSelectedID(itemID, ev, DeselectOthers);
 }
 
 int cInterfaceWindow::ArrowDownListBox(int ID)

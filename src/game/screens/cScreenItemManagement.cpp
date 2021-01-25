@@ -43,13 +43,18 @@ namespace settings {
 // TODO make this a config
 static bool AutoUseItems = false;
 
-
 struct cInventoryProviderPlayer: public IInventoryProvider {
-    std::vector<FormattedCellData> get_data(int filter) const override {
-        int num_items = g_Game->player().inventory().get_num_items();
-        int numtype = g_Game->player().inventory().get_num_of_type(filter);
-
-        return std::vector<FormattedCellData> {mk_text("Player"), mk_num(num_items), mk_num(numtype)};
+    FormattedCellData get_data(int filter, const std::string& column) const override {
+        if(column == "Name") {
+            return mk_text("Player");
+        } else if (column == "Number") {
+            int num_items = g_Game->player().inventory().get_num_items();
+            return mk_num(num_items);
+        } else if (column == "CatNum") {
+            int numtype = g_Game->player().inventory().get_num_of_type(filter);
+            return mk_num(numtype);
+        }
+        assert(false);
     }
 
     void enumerate_items(const std::function<void(const sInventoryItem *, int)> &callback) const override
@@ -77,8 +82,17 @@ struct cInventoryProviderPlayer: public IInventoryProvider {
 };
 
 struct cInventoryProviderShop : public IInventoryProvider {
-    std::vector<FormattedCellData> get_data(int filter) const override {
-        return std::vector<FormattedCellData> {mk_text("Shop"), mk_text(""), mk_text("")};
+    FormattedCellData get_data(int filter, const std::string& column) const override {
+        if(column == "Name") {
+            return mk_text("Shop");
+        } else if (column == "Number") {
+            int num_items = g_Game->shop().GetInventory().get_num_items();
+            return mk_num(num_items);
+        } else if (column == "CatNum") {
+            int numtype = g_Game->shop().GetInventory().get_num_of_type(filter);
+            return mk_num(numtype);
+        }
+        assert(false);
     }
 
     void enumerate_items(const std::function<void(const sInventoryItem*, int)> &callback) const override
@@ -115,18 +129,17 @@ struct cInventoryProviderShop : public IInventoryProvider {
 
 struct cInventoryProviderGirl : public IInventoryProvider {
     explicit cInventoryProviderGirl(std::shared_ptr<sGirl> girl) : m_Girl(girl) { }
-    std::vector<FormattedCellData> get_data(int filter) const override {
-        std::vector<FormattedCellData> data(3);
-
-        data[0] = mk_text(m_Girl->FullName());
-
-        if (!m_Girl->inventory().empty())
-            data[1] = mk_num(m_Girl->inventory().get_num_items());
-
-        int numtype = cGirls::GetNumItemType(*m_Girl, filter);
-        if (numtype > 0) data[2] = mk_num(numtype);
-
-        return data;
+    FormattedCellData get_data(int filter, const std::string& column) const override {
+        if(column == "Name") {
+            return mk_text(m_Girl->FullName());
+        } else if (column == "Number") {
+            int num_items = m_Girl->inventory().get_num_items();
+            return mk_num(num_items);
+        } else if (column == "CatNum") {
+            int numtype = m_Girl->inventory().get_num_of_type(filter);
+            return mk_num(numtype);
+        }
+        assert(false);
     }
 
     std::string get_details() const override
@@ -207,7 +220,6 @@ cScreenItemManagement::cScreenItemManagement() : cGameWindow("itemmanagement_scr
 }
 
 static int filter = 0;
-static int filterpos = 0;
 
 static SDL_Color RarityColor[9];
 
@@ -221,17 +233,9 @@ void cScreenItemManagement::load_ids(sItemTransferSide& target, Side side)
     target.shift_id     = get_id("Shift" + side_str + "Button");
     target.equip_id     = get_id("Equip" + side_str + "Button");
     target.unequip_id   = get_id("Unequip" + side_str + "Button");
-    target.owners_id    = get_id("Owners" + side_str + "List");
+    target.owners_list  = GetListBox(get_id("Owners" + side_str + "List"));
     target.items_id     = get_id("Items" + side_str + "List");
     target.detail_id     = get_id("Owners" + side_str + "Details", "*Optional*");
-
-    std::vector<std::string> ORColumns{ "ORLName", "ORLNumber", "ORLCatNum" };
-    std::vector<std::string> OLColumns{ "OLLName", "OLLNumber", "OLLCatNum" };
-    if(side == Side::Left) {
-        SortColumns(target.owners_id, OLColumns);
-    } else {
-        SortColumns(target.owners_id, ORColumns);
-    }
 
     SetButtonCallback(target.buy10_id, [this, opposite]() { attempt_transfer(opposite, 10); });
     SetButtonCallback(target.sell10_id, [this, side]() { attempt_transfer(side, 10); });
@@ -239,7 +243,7 @@ void cScreenItemManagement::load_ids(sItemTransferSide& target, Side side)
     SetButtonCallback(target.shift_id, [this, opposite]() { attempt_transfer(opposite); });
     SetButtonCallback(target.equip_id, [this, side]() { change_equip(side, true); });
     SetButtonCallback(target.unequip_id, [this, side]() { change_equip(side, false); });
-    SetListBoxSelectionCallback(target.owners_id, [this, side](int selection) { refresh_item_list(side); });
+    target.owners_list->SetSelectionCallback([this, side](int selection) { refresh_item_list(side); });
     SetListBoxSelectionCallback(target.items_id, [this, side](int selection) { on_select_item(side, selection); });
 }
 
@@ -287,8 +291,8 @@ void cScreenItemManagement::set_ids()
         }
     }
 
-    SetListBoxHotKeys(m_LeftData.owners_id, SDLK_t, SDLK_g);
-    SetListBoxHotKeys(m_RightData.owners_id, SDLK_y, SDLK_h);
+    m_LeftData.owners_list->SetArrowHotKeys(SDLK_t, SDLK_g);
+    m_RightData.owners_list->SetArrowHotKeys(SDLK_y, SDLK_h);
     SetListBoxHotKeys(m_LeftData.items_id, SDLK_u, SDLK_j);
     SetListBoxHotKeys(m_RightData.items_id, SDLK_i, SDLK_k);
     SetListBoxSelectionCallback(filter_id, [this](int selection) { on_select_filter(selection); });
@@ -299,15 +303,16 @@ void cScreenItemManagement::set_ids()
 
 void cScreenItemManagement::init_side(sItemTransferSide& target, int owner, int item)
 {
-    ClearListBox(target.owners_id);
+    target.owners_list->Clear();
     ClearListBox(target.items_id);
 
     for(std::size_t i = 0; i < m_OwnerList.size(); ++i) {
         /// TODO define colors
-        AddToListBox(target.owners_id, i, m_OwnerList[i]->get_data(filter), COLOR_BLUE);
+        target.owners_list->AddRow(i, [&](const std::string& col){ return m_OwnerList[i]->get_data(filter, col); }, COLOR_BLUE);
     }
 
-    if (GetSelectedItemFromList(target.owners_id) != owner)        SetSelectedItemInList(target.owners_id, owner);
+    /// this works because here ID == index
+    target.owners_list->SetSelectedIndex(owner);
     SetSelectedItemInList(target.items_id, item);
 
     update_details(target);
@@ -321,7 +326,7 @@ void cScreenItemManagement::update_details(const sItemTransferSide& target)
 {
     if (target.detail_id > -1)
     {
-        int index = GetSelectedItemFromList(target.owners_id);
+        int index = target.owners_list->GetSelectedID();
         if(index >= 0 && index < m_OwnerList.size()) {
             EditTextItem(m_OwnerList[index]->get_details(), target.detail_id, true);
         } else {
@@ -376,7 +381,6 @@ void cScreenItemManagement::init(bool back)    // `J` bookmark
 
     if (filter < 0) filter = 0;
     SetSelectedItemInList(filter_id, filter, false);
-    GetListBox(filter_id)->SetTopPosition(filterpos);
     
     // shop and player
     m_OwnerList.clear();
@@ -396,8 +400,10 @@ void cScreenItemManagement::init(bool back)    // `J` bookmark
         m_OwnerList.push_back(std::make_unique<cInventoryProviderGirl>(girl.m_Girl));
     }
 
-    init_side(m_LeftData, 0, 0);
-    init_side(m_RightData, 0, 0);
+    if(!back) {
+        init_side(m_LeftData, 0, 0);
+        init_side(m_RightData, 0, 0);
+    }
 
     g_AllTogle = false;
 
@@ -465,16 +471,22 @@ void cScreenItemManagement::on_select_item(Side side, int selected)
 void cScreenItemManagement::on_select_filter(int selection)
 {
     filter    = selection;
-    filterpos = GetListBox(filter_id)->GetTopPosition();
+    int filterpos = GetListBox(filter_id)->GetTopPosition();
     sync_owner_selection(m_LeftData);
     sync_owner_selection(m_RightData);
-    init(false);
+    init_side(m_LeftData, m_LeftData.selected_owner, 0);
+    init_side(m_RightData, m_RightData.selected_owner, 0);
+    update_button_states(Left);
+    update_button_states(Right);
+
+    GetListBox(filter_id)->SetTopPosition(filterpos);
 }
 
 void cScreenItemManagement::sync_owner_selection(const sItemTransferSide& side)
 {
-    if (GetSelectedItemFromList(side.owners_id) != side.selected_owner)
-        SetSelectedItemInList(side.owners_id, side.selected_owner);
+    if (side.owners_list->GetSelectedID() != side.selected_owner) {
+        side.owners_list->SetSelectedID(side.selected_owner);
+    }
 }
 
 void cScreenItemManagement::change_equip(Side side, bool equip)
@@ -560,17 +572,19 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
     update_details(m_LeftData);
     update_details(m_RightData);
 
+    int selected_item = GetListBox(data.items_id)->GetSelectedIndex();
     ClearListBox(data.items_id);
     data.items.clear();
 
-    int selection = GetSelectedItemFromList(data.owners_id);
+    int selection = data.owners_list->GetSelectedID();
 
     // prevent selecting the same on both sides. in that case, just reset to old selection.
     if (selection == other.selected_owner) {
         if(selection == data.selected_owner)
             std::cout << "THIS IS WEIRD\n";
-        else
-            SetSelectedItemInList(data.owners_id, data.selected_owner);
+        else {
+            data.owners_list->SetSelectedID(data.selected_owner);
+        }
         return;
     } else {
         data.selected_owner = selection;
@@ -600,11 +614,12 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
     }
 
     SortListItems(data.items_id, "");
-    // TODO tracking of selected items. This is something we can do once items are uniquely identifiable.
-    SetSelectedItemInList(data.items_id, -1);
-    data.selected_item = -1;
 
-    if (GetLastSelectedItemFromList(data.items_id) < 0)
+    if(selected_item >= 0 && selected_item < GetListBox(data.items_id)->NumItems())
+        GetListBox(data.items_id)->SetSelectedIndex(selected_item);
+    data.selected_item = GetLastSelectedItemFromList(data.items_id);
+
+    if (data.selected_item < 0)
     {
         write_item_text(nullptr, -1, -1);
         DisableWidget(data.shift_id, true);
@@ -624,7 +639,6 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
     m_LeftData.selected_item  = GetLastSelectedItemFromList(m_LeftData.items_id);
     m_RightData.selected_item = GetLastSelectedItemFromList(m_RightData.items_id);
 
-    int pos = 0;
     ForAllSelectedItems(from_data.items_id, [&](int selection) {
         // since items sold to shop are simply destroyed, no selection to track here
         const sInventoryItem* item = from_data.items[selection];

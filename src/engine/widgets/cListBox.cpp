@@ -158,10 +158,10 @@ int cListBox::ArrowDownList()
     if(m_Items.empty())
         return -1;
 
-    int selection = GetSelectedIndex();
+    int selection = GetSelectedID();
     if (selection == -1)
     {
-        SetSelected(m_Items.front().m_ID);
+        SetSelectedID(m_Items.front().m_ID);
         return m_Items.front().m_ID;
     }
 
@@ -175,11 +175,11 @@ int cListBox::ArrowDownList()
 
     // If there is not next item, jump back to the top.
     if(current == m_Items.end()) {
-        SetSelected(m_Items.front().m_ID);
+        SetSelectedID(m_Items.front().m_ID);
         return m_Items.front().m_ID;
     }
 
-    SetSelected(current->m_ID);
+    SetSelectedID(current->m_ID);
     return current->m_ID;
 }
 
@@ -188,10 +188,10 @@ int cListBox::ArrowUpList()
     if(m_Items.empty())
         return -1;
 
-    int selection = GetSelectedIndex();
+    int selection = GetSelectedID();
     if (selection == -1)
     {
-        SetSelected(m_Items.back().m_ID);
+        SetSelectedID(m_Items.back().m_ID);
         return m_Items.back().m_ID;
     }
 
@@ -202,12 +202,12 @@ int cListBox::ArrowUpList()
         return -1;
 
     if(current == m_Items.begin()) {
-        SetSelected(m_Items.back().m_ID);
+        SetSelectedID(m_Items.back().m_ID);
         return m_Items.back().m_ID;
     }
 
     --current;
-    SetSelected(current->m_ID);
+    SetSelectedID(current->m_ID);
     return current->m_ID;
 }
 
@@ -502,7 +502,7 @@ int cListBox::GetLastSelected()
     return -1;
 }
 
-int cListBox::GetSelectedIndex() const
+int cListBox::GetSelectedID() const
 {
     if (m_LastSelected == m_Items.end()) return -1;
     //else return m_LastSelected->m_ID;
@@ -513,6 +513,18 @@ int cListBox::GetSelectedIndex() const
 
     return selected->m_ID;
 }
+
+int cListBox::GetSelectedIndex() const {
+    int pos = 0;
+    for(auto& item : m_Items) {
+        if(item.m_Selected) {
+            return pos;
+        }
+        ++pos;
+    }
+    return -1;
+}
+
 
 const std::string& cListBox::GetSelectedText()
 {
@@ -706,7 +718,7 @@ void cListBox::SetColumnSort(const std::vector<std::string>& column_name)
     }
 }
 
-void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
+void cListBox::SetSelectedID(int ID, bool ev, bool deselect_others)
 {
 
     m_LastSelected = m_Items.end();
@@ -743,43 +755,41 @@ void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
 
     if (ev) handle_selection_change();
 
-    if (count <= m_NumDrawnElements)
-    {
-        m_Position = 0;
-    }
-    else
-    {
-        if (m_Position >= posit)    // if the item is above the top of the list
-        {
-            m_Position = posit - 1;    // shift the list up
-        }
-        else if (m_Position < posit && posit < m_Position + m_NumDrawnElements - 1)
-        {
-            // don't change m_Position
-        }
-        else if (m_Position + m_NumDrawnElements - 1 <= posit)
-            m_Position = posit - m_NumDrawnElements + 2;
-    }
-
-    if (m_Position > count - m_NumDrawnElements) m_Position = count - m_NumDrawnElements;
-    if (m_Position < 0) m_Position = 0;
-
-    m_ScrollBar->SetTopValue(m_Position);
+    UpdateSelectionPosition(posit);
 }
 
-int cListBox::GetAfterSelected()
-{
-    if (m_LastSelected != m_Items.end())
-    {
-        auto copy = m_LastSelected;
-        ++copy;
-        if (copy != m_Items.end())
-            return copy->m_ID;
+void cListBox::SetSelectedIndex(int index, bool trigger, bool deselect) {
+    if (m_Items.empty()) return;
+
+    int count = m_Items.size();
+    assert(index >= 0 && index < count);
+
+    int pos = 0;
+    bool changed = false;
+    for(auto current = m_Items.begin(); current != m_Items.end(); ++current) {
+        if (pos == index)
+        {
+            changed |= current->m_Selected == false;
+            current->m_Selected = true;
+            m_LastSelected = current;
+            if (!deselect) break;
+        }
+        else
+        {
+            if (deselect) {
+                changed |= current->m_Selected == true;
+                current->m_Selected = false;
+            }
+        }
+        ++pos;
     }
 
-    return -1;
-}
+    if(trigger && changed && m_EnableEvents) {
+        handle_selection_change();
+    }
 
+    UpdateSelectionPosition(index);
+}
 
 void cListBox::ReSortList()
 {
@@ -900,10 +910,10 @@ void cListBox::handle_selection_change()
 {
     if(DoubleClicked()) {
         if (m_DoubleClickCallback)
-            m_DoubleClickCallback(GetSelectedIndex());
+            m_DoubleClickCallback(GetSelectedID());
     } else {
         if (m_SelectionCallback)
-            m_SelectionCallback(GetSelectedIndex());
+            m_SelectionCallback(GetSelectedID());
     }
 }
 
@@ -991,4 +1001,30 @@ void cListBox::SetTopPosition(int pos) {
     if(m_ScrollBar) {
         m_ScrollBar->SetTopValue(pos);
     }
+}
+
+void cListBox::UpdateSelectionPosition(int index) {
+    int count = m_Items.size();
+    if (count <= m_NumDrawnElements)
+    {
+        m_Position = 0;
+    }
+    else
+    {
+        if (m_Position >= index)    // if the item is above the top of the list
+        {
+            m_Position = index - 1;    // shift the list up
+        }
+        else if (m_Position < index && index < m_Position + m_NumDrawnElements - 1)
+        {
+            // don't change m_Position
+        }
+        else if (m_Position + m_NumDrawnElements - 1 <= index)
+            m_Position = index - m_NumDrawnElements + 2;
+    }
+
+    if (m_Position > count - m_NumDrawnElements) m_Position = count - m_NumDrawnElements;
+    if (m_Position < 0) m_Position = 0;
+
+    m_ScrollBar->SetTopValue(m_Position);
 }

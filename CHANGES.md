@@ -1,3 +1,10 @@
+# Version 07.00.alpha12
+
+## Changes
+
+## Fixes
+* fixed reset when selecting filter in item screen
+
 # Version 07.00.alpha11
 
 ## Changes
