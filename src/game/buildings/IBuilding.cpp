@@ -573,6 +573,8 @@ sGirl* IBuilding::get_girl(int index)
 
 void IBuilding::BeginShift(bool is_night)
 {
+    setup_resources();
+
     m_Girls->apply([this, is_night](sGirl& girl){
         if (girl.is_dead())        // skip dead girls
         {
@@ -1830,4 +1832,91 @@ void IBuilding::GirlBeginShift(sGirl& girl, bool is_night) {
     cGirls::UseItems(girl);
     cGirls::CalculateGirlType(girl);        // update the fetish traits
     cGirls::UpdateAskPrice(girl, true);    // Calculate the girls asking price
+}
+
+void IBuilding::declare_resource(const std::string& name) {
+    auto result = m_ShiftResources.insert(std::make_pair(name, 0));
+    assert(result.second);
+}
+
+void IBuilding::setup_resources() {
+    for(auto& res : m_ShiftResources) {
+        res.second = 0;
+    }
+
+    for(auto& ia : m_ShiftInteractions) {
+        ia.second.TotalConsumed = 0;
+        ia.second.TotalProvided = 0;
+        ia.second.Workers.clear();
+    }
+}
+
+int IBuilding::GetResourceAmount(const std::string& name) const {
+    return m_ShiftResources.at(name);
+}
+
+int IBuilding::ConsumeResource(const std::string& name, int amount) {
+    int has = m_ShiftResources.at(name);
+    if(has >= amount) {
+        m_ShiftResources[name] -= amount;
+        return amount;
+    } else {
+        m_ShiftResources[name] = 0;
+        return has;
+    }
+}
+
+bool IBuilding::TryConsumeResource(const std::string& name, int amount) {
+    int has = m_ShiftResources.at(name);
+    if(has >= amount) {
+        m_ShiftResources[name] -= amount;
+        return true;
+    }
+    return false;
+}
+
+void IBuilding::ProvideResource(const std::string& name, int amount) {
+    m_ShiftResources.at(name) += amount;
+}
+
+void IBuilding::declare_interaction(const std::string& name) {
+    auto result = m_ShiftInteractions.insert(std::make_pair(name, sInteractionData{}));
+    assert(result.second);
+}
+
+void IBuilding::ProvideInteraction(const std::string& name, sGirl* source, int amount) {
+    sInteractionData& data = m_ShiftInteractions.at(name);
+    data.TotalProvided += amount;
+    data.Workers.push_back(sInteractionWorker{source, amount});
+}
+
+sGirl* IBuilding::RequestInteraction(const std::string& name) {
+    sInteractionData& data = m_ShiftInteractions.at(name);
+    auto& candidates = data.Workers;
+    data.TotalConsumed += 1;
+    auto res = std::max_element(begin(candidates), end(candidates),
+                                [](auto&& a, auto&& b){ return a.Amount < b.Amount; });
+    if(res == end(candidates))  return nullptr;
+    if(res->Amount == 0) return nullptr;
+    res->Amount -= 1;
+    return res->Worker;
+}
+
+bool IBuilding::HasInteraction(const std::string& name) const {
+    const sInteractionData& data = m_ShiftInteractions.at(name);
+    auto& candidates = data.Workers;
+    return std::any_of(begin(candidates), end(candidates),[](auto&& a){ return a.Amount > 0; });
+}
+
+int IBuilding::NumInteractors(const std::string& name) const {
+    const sInteractionData& data = m_ShiftInteractions.at(name);
+    return data.Workers.size();
+}
+
+int IBuilding::GetInteractionProvided(const std::string& name) const {
+    return m_ShiftInteractions.at(name).TotalProvided;
+}
+
+int IBuilding::GetInteractionConsumed(const std::string& name) const {
+    return m_ShiftInteractions.at(name).TotalConsumed;
 }

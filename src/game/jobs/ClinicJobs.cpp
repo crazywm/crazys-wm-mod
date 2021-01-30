@@ -25,6 +25,9 @@
 #include "buildings/IBuilding.h"
 #include "IGame.h"
 
+extern const char* const CarePointsBasicId;
+extern const char* const CarePointsGoodId;
+
 struct DoctorJob : public cBasicJob {
     DoctorJob();
     bool DoWork(sGirl& girl, bool is_night) override;
@@ -172,8 +175,12 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
     //Adding cust here for use in scripts...
     sCustomer Cust = cJobManager::GetMiscCustomer(*brothel);
 
+    int basic_care = 0;
+    int quality_care = 0;
     if (m_Performance >= 245)
     {
+        basic_care = 20;
+        quality_care = 10;
         ss << "She must be the perfect nurse, patients go on and on about her and always come to see her when she works.\n \n";
         wages += 155;
         if (roll_b <= 20)
@@ -199,6 +206,8 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
     }
     else if (m_Performance >= 185)
     {
+        basic_care = 16;
+        quality_care = 6;
         ss << "She's unbelievable at this and is always getting praised for her work by the patients.\n \n";
         wages += 95;
         if (roll_b <= 20)
@@ -224,6 +233,8 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
     }
     else if (m_Performance >= 135)
     {
+        basic_care = 12;
+        quality_care = 2;
         ss << "She's good at this job and gets praised by the patients often.\n \n";
         wages += 55;
         if (roll_b <= 20)
@@ -249,6 +260,7 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
     }
     else if (m_Performance >= 85)
     {
+        basic_care = 8;
         ss << "She made a few mistakes but overall she is okay at this.\n \n";
         wages += 15;
         if (roll_b <= 20)
@@ -282,6 +294,7 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
     }
     else if (m_Performance >= 65)
     {
+        basic_care = 6;
         ss << "She was nervous and made a few mistakes. She isn't that good at this.\n \n";
         wages -= 5;
         if (roll_b <= 20)
@@ -307,6 +320,7 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
     }
     else
     {
+        basic_care = 4;
         ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
         wages -= 15;
         if (roll_b <= 20)
@@ -331,6 +345,9 @@ bool NurseJob::DoWork(sGirl& girl, bool is_night) {
         }
     }
     ss << "\n \n";
+
+    brothel->ProvideResource(CarePointsBasicId, basic_care);
+    brothel->ProvideResource(CarePointsGoodId, quality_care);
 
     //try and add randomness here
     if (girl.beauty() > 85 && chance(20))

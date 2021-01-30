@@ -23,6 +23,8 @@
 #include "cJobManager.h"
 #include "cGirls.h"
 
+extern const char* const StageHandPtsId;
+
 // `J` Job Movie Studio - Crew - job_is_cleaning
 bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
 {
@@ -127,7 +129,7 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
 
     girl.AddMessage(ss.str(), imagetype, EVENT_NIGHTSHIFT);
 
-    brothel->m_StageHandPoints += int(jobperformance);
+    brothel->ProvideResource(StageHandPtsId, int(jobperformance));
     brothel->m_Filthiness = std::max(0, brothel->m_Filthiness - int(CleanAmt));
     girl.m_Tips = std::max(0, tips);
     girl.m_Pay = std::max(0, wages);

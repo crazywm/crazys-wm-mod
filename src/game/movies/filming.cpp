@@ -24,51 +24,25 @@
 #include "buildings/cBuildingManager.h"
 #include <sstream>
 
-using WorkerData = sMovieStudio::WorkerData;
+extern const char* const FluffPointsId;
+extern const char* const StageHandPtsId;
+extern const char* const DirectorInteractionId;
+extern const char* const CamMageInteractionId;
+extern const char* const CrystalPurifierInteractionId;
 
 namespace {
     const float STAGEHAND_MAX_MALUS = 0.1f;
 
-    template<class T>
-    WorkerData& select_worker(T& workers) {
-        auto selected = std::min_element(begin(workers), end(workers),
-                                         [](auto& a, auto& b) { return a.ScenesFilmed < b.ScenesFilmed; });
-        return *selected;
+    sGirl& select_worker(sMovieStudio& studio, const char* id) {
+        auto wrk = studio.RequestInteraction(id);
+        if(wrk == nullptr) throw std::logic_error("Tried to film a scene, but crew could not be found");
+        return *wrk;
     }
 
-    WorkerData& select_camera_mage(sMovieStudio& studio) {
-        auto& camera_mages = studio.m_CameraMages;
-        if (camera_mages.empty()) {
-            throw std::logic_error("No camera mage");
-        }
-        return select_worker(camera_mages);
-    }
-
-    WorkerData& select_purifier(sMovieStudio& studio) {
-        auto& purifiers = studio.m_CrystalPurifiers;
-        if (purifiers.empty()) {
-            throw std::logic_error("No crystal purifier");
-        }
-        return select_worker(purifiers);
-    }
-
-    WorkerData& select_director(sMovieStudio& studio) {
-        auto& purifiers = studio.m_Directors;
-        if (purifiers.empty()) {
-            throw std::logic_error("No director");
-        }
-        return select_worker(purifiers);
-    }
-
-    float work_on_scene(WorkerData& worker, JOBS job) {
-        float quality = worker.Worker->job_performance(job, false);
-        if (worker.Worker->is_unpaid()) {
+    float work_on_scene(sGirl& worker, JOBS job) {
+        float quality = worker.job_performance(job, false);
+        if (worker.is_unpaid()) {
             quality *= 0.9f;
-        }
-        ++worker.ScenesFilmed;
-        if (worker.ScenesFilmed > 3) {
-            quality *= std::pow(0.5, worker.ScenesFilmed - 3);
-            worker.Worker->tiredness(5);
         }
         // go from the normal [0, 200] range to [0, 100] for movie quality
         return quality / 2.f;
@@ -89,9 +63,9 @@ const MovieScene& film_scene(cMovieManager& mgr, sGirl& girl, int quality, Scene
     auto& studio = dynamic_cast<sMovieStudio&>(*girl.m_Building);
 
     // Let camera mage and purifier work
-    auto& camera_mage = select_camera_mage(studio);
-    auto& purifier = select_purifier(studio);
-    auto& director = select_director(studio);
+    auto& camera_mage = select_worker(studio, CamMageInteractionId);
+    auto& purifier = select_worker(studio, CrystalPurifierInteractionId);
+    auto& director = select_worker(studio, DirectorInteractionId);
     float cam_quality = work_on_scene(camera_mage, JOB_CAMERAMAGE);
     float pur_quality = work_on_scene(purifier, JOB_CRYSTALPURIFIER);
     float dir_quality = work_on_scene(director, JOB_DIRECTOR);
@@ -107,8 +81,7 @@ const MovieScene& film_scene(cMovieManager& mgr, sGirl& girl, int quality, Scene
 
     // Fluffer influence
     float fluff_needed = static_cast<float>(get_fluffer_required(scene_type)) * std::max(0.f, (110.f - quality) / 110.f);
-    float fluff_available = std::min(studio.m_FluffPoints * 0.5f, fluff_needed);
-    studio.m_FluffPoints -= fluff_available;
+    float fluff_available = studio.ConsumeResource(FluffPointsId, (int)fluff_needed);
     float fluff_ratio = fluff_needed > 0 ? fluff_available / fluff_needed : 1.f;
     quality *= 0.9f + fluff_ratio * 0.1f;
 
@@ -124,16 +97,15 @@ const MovieScene& film_scene(cMovieManager& mgr, sGirl& girl, int quality, Scene
 
     // Stage Hand
     int stage_needed = get_stage_points_required(scene_type);
-    int stage_avail  = std::min(stage_needed, studio.m_StageHandPoints / 2);
-    studio.m_StageHandPoints -= stage_avail;
+    int stage_avail  = studio.ConsumeResource(FluffPointsId, (int)stage_needed);
     float stage_ratio = stage_needed > 0 ? float(stage_avail) / float(stage_needed) : 1.f;
     quality *= (1.f - STAGEHAND_MAX_MALUS) + stage_ratio * STAGEHAND_MAX_MALUS;
     technical_quality *= (1.f - STAGEHAND_MAX_MALUS) + stage_ratio * STAGEHAND_MAX_MALUS;
 
     mgr.add_scene(MovieScene{get_category(scene_type), scene_type,
                              quality, technical_quality, forced,
-                             girl.FullName(), director.Worker->FullName(),
-                             camera_mage.Worker->FullName(), purifier.Worker->FullName()
+                             girl.FullName(), director.FullName(),
+                             camera_mage.FullName(), purifier.FullName()
     });
 
     auto& scene = mgr.get_scenes().back();
@@ -153,16 +125,16 @@ const MovieScene& film_scene(cMovieManager& mgr, sGirl& girl, int quality, Scene
     }
 
     if(dir_skill_limit) {
-        event << "Due to a lack of skill of your director " << director.Worker->FullName() << ", the scene was not as ";
+        event << "Due to a lack of skill of your director " << director.FullName() << ", the scene was not as ";
         event << "good as " << girl.FullName() << " acting abilities would have allowed.";
     }
 
     // Increase tiredness of studio crew if stage hand is missing
     if(stage_ratio < 1.f) {
         int tire = (1.f - stage_ratio) * 5;
-        camera_mage.Worker->tiredness(tire);
-        purifier.Worker->tiredness(tire);
-        director.Worker->tiredness(tire);
+        camera_mage.tiredness(tire);
+        purifier.tiredness(tire);
+        director.tiredness(tire);
         event << "Your lack of stage hands hurt the quality of the scene by " << int(10 - stage_ratio * 10) << "%, "
               << "and made the filming more stressful for the crew.";
     }
@@ -177,15 +149,15 @@ const MovieScene& film_scene(cMovieManager& mgr, sGirl& girl, int quality, Scene
     }
 
     // TODO fix this
-    const_cast<MovieScene&>(scene).Budget = pay_or_worth(girl) + pay_or_worth(purifier.Worker) / 3 + pay_or_worth(camera_mage.Worker) / 3 + pay_or_worth(director.Worker) / 3;
+    const_cast<MovieScene&>(scene).Budget = pay_or_worth(girl) + pay_or_worth(purifier) / 3 + pay_or_worth(camera_mage) / 3 + pay_or_worth(director) / 3;
 
 
     event << "\nThe scene has an estimated budget of " << scene.Budget << " gold\n";
 
     event << "Credits: \n";
-    event << " > Director: " << scene.Director << " [" <<  int(dir_quality) << (director.ScenesFilmed > 3 ? ", overworked]\n" : "]\n");
-    event << " > Camera: " << scene.CameraMage << " [" << int(cam_quality) << (camera_mage.ScenesFilmed > 3 ? ", overworked]\n" : "]\n");
-    event << " > Purifier: " << scene.CrystalPurifier << " [" << int(pur_quality) << (purifier.ScenesFilmed > 3 ? ", overworked]\n" : "]\n");
+    event << " > Director: " << scene.Director << " [" <<  int(dir_quality) << "]\n";
+    event << " > Camera: " << scene.CameraMage << " [" << int(cam_quality) << "]\n";
+    event << " > Purifier: " << scene.CrystalPurifier << " [" << int(pur_quality) << "]\n";
 
     studio.m_Events.AddMessage(event.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
 

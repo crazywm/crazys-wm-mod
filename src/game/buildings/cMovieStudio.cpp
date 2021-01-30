@@ -21,6 +21,7 @@
 #include "queries.h"
 
 #include <vector>
+#include <utils/string.hpp>
 #include "cMovieStudio.h"
 #include "cGangs.h"
 #include "buildings/cBuildingManager.h"
@@ -31,6 +32,11 @@
 #include "cGirls.h"
 #include "movies/manager.h"
 
+extern const char* const FluffPointsId = "FluffPoints";
+extern const char* const StageHandPtsId = "StageHandPoints";
+extern const char* const DirectorInteractionId = "DirectorInteraction";
+extern const char* const CamMageInteractionId = "CamMageInteraction";
+extern const char* const CrystalPurifierInteractionId = "CrystalPurifierInteraction";
 extern cRng             g_Dice;
 
 namespace settings
@@ -45,22 +51,22 @@ sMovieStudio::sMovieStudio() : IBuilding(BuildingType::STUDIO, "Studio")
     m_LastJob = JOB_FILMRANDOM;
     m_MatronJob = JOB_EXECUTIVE;
     m_MeetGirlData.Event = EDefaultEvent::MEET_GIRL_STUDIO;
+    declare_resource(FluffPointsId);
+    declare_resource(StageHandPtsId);
+    declare_interaction(DirectorInteractionId);
+    declare_interaction(CamMageInteractionId);
+    declare_interaction(CrystalPurifierInteractionId);
 }
 
 sMovieStudio::~sMovieStudio() = default;
 
 // Run the shifts
-void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Process_B
+void sMovieStudio::UpdateGirls(bool is_night)
 {
     if(!is_night)
         return;
 
-    // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cMovieStudio.cpp
     std::stringstream ss;
-
-    m_CameraMages.clear();
-    m_CrystalPurifiers.clear();
-    m_Directors.clear();
 
     //  Handle the start of shift stuff for all girls.  //
     BeginShift(is_night);
@@ -75,24 +81,16 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
         g_Game->job_manager().handle_simple_job(current, SHIFT_NIGHT);
         if(current.m_Refused_To_Work_Night)
             return;
-
-        if(current.m_NightJob == JOB_CAMERAMAGE) {
-            m_CameraMages.push_back(WorkerData{&current, 0});
-        } else if(current.m_NightJob == JOB_CRYSTALPURIFIER) {
-            m_CrystalPurifiers.push_back(WorkerData{&current, 0});
-        }else if(current.m_NightJob == JOB_DIRECTOR) {
-            m_Directors.push_back(WorkerData{&current, 0});
-        }
     });
 
     // last check, is there a crew to film?
-    bool readytofilm = (!m_CameraMages.empty() && !m_CrystalPurifiers.empty() && !m_Directors.empty());
+    bool ready_to_film = HasInteraction(CamMageInteractionId) && HasInteraction(CrystalPurifierInteractionId) && HasInteraction(DirectorInteractionId);
     std::stringstream summary;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // If the filming can not proceed even after trying to fill the jobs (or there is no Director to fill the jobs)  //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    if(!readytofilm) {
+    if(!ready_to_film) {
         summary << "No filming took place at the studio today. In order to film a scene, you need at least a camera mage, "
                    "crystal purifier and a director. Your scenes will be better if you also employ sufficiently many stage hands "
                    "and fluffers.";
@@ -120,10 +118,10 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
 
         // Add an event with info
 
-        summary << "You have " << m_CrystalPurifiers.size() << " crystal purifiers, " << m_CameraMages.size() << " camera mages ";
-        summary << "and " << m_Directors.size() << " working.\n";
-        summary << "Your stagehands provide a total of " << m_StageHandPoints << " stagehand points.\n";
-        summary << "Your fluffers provide a total of " << m_FluffPoints << " fluffer points.\n";
+        summary << "You have " << NumInteractors(CrystalPurifierInteractionId) << " crystal purifiers, " << NumInteractors(CamMageInteractionId) << " camera mages ";
+        summary << "and " << NumInteractors(DirectorInteractionId) << " working.\n";
+        summary << "Your stagehands provide a total of " << GetResourceAmount(StageHandPtsId) << " stagehand points.\n";
+        summary << "Your fluffers provide a total of " << GetResourceAmount(FluffPointsId) << " fluffer points.\n";
 
         int num_scenes_before = g_Game->movie_manager().get_scenes().size();
         // Process Stars.  //
@@ -141,9 +139,15 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
     }
 
     // Finally, check if we overused our production staff
-    check_camera_mages_overuse();
-    check_purifier_overuse();
-    check_director_overuse();
+    check_overuse(CamMageInteractionId,
+                  "You need more Camera Mages. You have ${workers} Camera Mages who can film up to "
+                  "${possible} scenes each week, but you wanted ${total} scenes this week.");
+    check_overuse(CrystalPurifierInteractionId,
+                  "You need more Crystal Purifiers. You have ${workers} Crystal Purifiers who can process up to "
+                  "${possible} scenes each week, but you wanted ${total} scenes this week.");
+    check_overuse(DirectorInteractionId,
+                  "You need more Directors. You have ${workers} Directors who can direct up to "
+                  "${possible} scenes each week, but you wanted ${total} scenes this week.");
 
     EndShift(is_night);
 
@@ -207,8 +211,6 @@ void sMovieStudio::Update()
     auto income = g_Game->movie_manager().step(*this);
     m_Finance.movie_income(income);
 
-    m_StageHandPoints = m_FluffPoints = 0;
-
     UpdateGirls(true);        // Run the Nighty Shift
 
     g_Game->gold().brothel_accounts(m_Finance, m_id);
@@ -255,57 +257,24 @@ void sMovieStudio::auto_create_movies() {
     }
 }
 
-// TODO unify the following three similar functions
-void sMovieStudio::check_camera_mages_overuse() {
-    int total_scenes = 0;
-    bool too_many = false;
-    for(auto& cm : m_CameraMages) {
-        if(cm.ScenesFilmed > 3) {
-            too_many = true;
-        }
-        total_scenes += cm.ScenesFilmed;
-    }
+void sMovieStudio::check_overuse(const std::string& resource, const std::string& message) {
+    int total_scenes = GetInteractionConsumed(resource);
+    int possible_scenes = GetInteractionProvided(resource);
 
-    if(too_many) {
-        m_Events.AddMessage("You need more Camera Mages. Each Camera Mage can film up to three scenes, before"
-                            " they start producing only shoddy work.\nYou have " + std::to_string(m_CameraMages.size()) +
-                            " Camera Mages, but filmed " + std::to_string(total_scenes) + " scenes this week.",
-                            0, EventType::EVENT_WARNING);
-    }
-}
 
-void sMovieStudio::check_purifier_overuse() {
-    int total_scenes = 0;
-    bool too_many = false;
-    for(auto& cm : m_CrystalPurifiers) {
-        if(cm.ScenesFilmed > 3) {
-            too_many = true;
-        }
-        total_scenes += cm.ScenesFilmed;
-    }
-
-    if(too_many) {
-        m_Events.AddMessage("You need more Crystal Purifiers. Each Crystal Purifier can process up to three scenes, before"
-                            " they start producing only shoddy work.\nYou have " + std::to_string(m_CrystalPurifiers.size()) +
-                            " Crystal Purifiers, but filmed " + std::to_string(total_scenes) + " scenes this week.",
-                            0, EventType::EVENT_WARNING);
-    }
-}
-
-void sMovieStudio::check_director_overuse() {
-    int total_scenes = 0;
-    bool too_many = false;
-    for(auto& cm : m_Directors) {
-        if(cm.ScenesFilmed > 3) {
-            too_many = true;
-        }
-        total_scenes += cm.ScenesFilmed;
-    }
-
-    if(too_many) {
-        m_Events.AddMessage("You need more Directors. Each Director can direct up to three scenes, before"
-                            " they start producing shoddy work.\nYou have " + std::to_string(m_Directors.size()) +
-                            " Directors, but filmed " + std::to_string(total_scenes) + " scenes this week.",
+    if(total_scenes > possible_scenes) {
+        auto lookup = [&](const std::string& key) {
+            if(key == "workers") {
+                return std::to_string(NumInteractors(resource));
+            } else if (key == "possible") {
+                return std::to_string(possible_scenes);
+            } else if (key == "total") {
+                return std::to_string(total_scenes);
+            }
+            assert(false);
+        };
+        ;
+        m_Events.AddMessage(interpolate_string(message, lookup, g_Dice),
                             0, EventType::EVENT_WARNING);
     }
 }

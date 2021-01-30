@@ -41,25 +41,9 @@ struct sMovieStudio : public IBuilding
     std::string meet_no_luck() const override;
 
     int GetNumScenes() const;
-
-    // added the following so movie crew could effect quality of each scene. --PP
-    int m_FluffPoints;           // How much fluffer work there was this shif
-    int m_StageHandPoints;       // How much work the stage hands provide this shift
-
-    struct WorkerData {
-        sGirl* Worker;
-        int ScenesFilmed = 0;
-    };
-    std::vector<WorkerData> m_CameraMages;
-    std::vector<WorkerData> m_CrystalPurifiers;
-    std::vector<WorkerData> m_Directors;
-
 private:
     void auto_create_movies();
-
-    void check_camera_mages_overuse();
-    void check_purifier_overuse();
-    void check_director_overuse();
+    void check_overuse(const std::string& resource, const std::string& message);
 };
 
 #endif  /* __CMOVIESTUDIO_H */

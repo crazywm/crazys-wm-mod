@@ -27,6 +27,10 @@
 #include "CLog.h"
 #include "xml/getattr.h"
 
+extern const char* const DirectorInteractionId;
+extern const char* const CamMageInteractionId;
+extern const char* const CrystalPurifierInteractionId;
+
 auto cFilmSceneJob::CheckWork(sGirl& girl, bool is_night) -> eCheckWorkResult {
     if(!CheckCanWork(girl)) {
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;
@@ -47,9 +51,23 @@ bool cFilmSceneJob::CheckCanWork(sGirl& girl) {
     }
 
     // No film crew.. then go home
-    if (brothel->m_CameraMages.empty() || brothel->m_CrystalPurifiers.empty())
+    if (!brothel->HasInteraction(DirectorInteractionId) ||
+        !brothel->HasInteraction(CamMageInteractionId)  ||
+        !brothel->HasInteraction(CrystalPurifierInteractionId) )
     {
-        girl.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
+        if(brothel->NumInteractors(DirectorInteractionId) != 0 && brothel->NumInteractors(CamMageInteractionId) != 0 &&
+        brothel->NumInteractors(CrystalPurifierInteractionId) != 0) {
+            girl.AddMessage("There were more scenes scheduled for filming today than you crew could handle. ${name} took the day off.",
+                            IMGTYPE_PROFILE, EVENT_NOWORK);
+        } else {
+            girl.AddMessage("There was no crew to film the scene, so she took the day off. You need at least a Director, a Camera Mage,"
+                            "and a Crystal Purifier to film a scene.", IMGTYPE_PROFILE,EVENT_NOWORK);
+        }
+        // still, we notify the building that we wanted these interactions.
+        // TODO maybe have a separate function for this.
+        brothel->RequestInteraction(DirectorInteractionId);
+        brothel->RequestInteraction(CamMageInteractionId);
+        brothel->RequestInteraction(CrystalPurifierInteractionId);
         return false;
     }
 

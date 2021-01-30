@@ -25,16 +25,25 @@
 #include "GenericJob.h"
 #include "StudioJobs.h"
 
+extern const char* const FluffPointsId;
+extern const char* const DirectorInteractionId;
+extern const char* const CamMageInteractionId;
+extern const char* const CrystalPurifierInteractionId;
+
 class cJobCameraMage : public cCrewJob {
 public:
     cJobCameraMage();
-    void HandleUpdate(sGirl& girl, float performance) override {}
+    void HandleUpdate(sGirl& girl, float performance) override {
+        girl.m_Building->ProvideInteraction(CamMageInteractionId, &girl, 3);
+    }
 };
 
 class cJobCrystalPurifier : public cCrewJob {
 public:
     cJobCrystalPurifier();
-    void HandleUpdate(sGirl& girl, float performance) override {}
+    void HandleUpdate(sGirl& girl, float performance) override {
+        girl.m_Building->ProvideInteraction(CrystalPurifierInteractionId, &girl, 3);
+    }
 };
 
 class cJobFluffer : public cCrewJob {
@@ -47,11 +56,12 @@ public:
 class cJobDirector : public cCrewJob {
 public:
     cJobDirector();
-    void HandleUpdate(sGirl& girl, float performance) override {};
+    void HandleUpdate(sGirl& girl, float performance) override {
+        girl.m_Building->ProvideInteraction(DirectorInteractionId, &girl, 3);
+    };
 
 };
 
-bool DoWork(sGirl& girl, bool is_night);
 cCrewJob::eCheckWorkResult cCrewJob::CheckWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
     if (brothel->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || brothel->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
@@ -144,8 +154,7 @@ cJobFluffer::cJobFluffer() : cCrewJob(JOB_FLUFFER, "Fluffer.xml") {
 }
 
 void cJobFluffer::HandleUpdate(sGirl& girl, float performance) {
-    auto brothel = dynamic_cast<sMovieStudio*>(girl.m_Building);
-    brothel->m_FluffPoints += (int)performance;
+    girl.m_Building->ProvideResource(FluffPointsId, (int)performance);
 }
 
 cJobDirector::cJobDirector() : cCrewJob(JOB_DIRECTOR, "Director.xml") {

@@ -30,6 +30,9 @@
 
 extern cRng    g_Dice;
 
+extern const char* const CarePointsBasicId = "CarePointsBasic";
+extern const char* const CarePointsGoodId = "CarePointsGood";
+
 // // ----- Strut sClinic Create / destroy
 sClinic::sClinic() : IBuilding(BuildingType::CLINIC, "Clinic")
 {
@@ -37,6 +40,9 @@ sClinic::sClinic() : IBuilding(BuildingType::CLINIC, "Clinic")
     m_LastJob = JOB_JANITOR;
     m_MatronJob = JOB_CHAIRMAN;
     m_MeetGirlData.Event = EDefaultEvent::MEET_GIRL_CLINIC;
+
+    declare_resource(CarePointsBasicId);
+    declare_resource(CarePointsGoodId);
 }
 
 sClinic::~sClinic()    = default;

@@ -65,10 +65,10 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
 
     int cost = 0;
     std::vector<std::string> diseases;
-    if (girl.has_active_trait("Herpes"))        { diseases.push_back("Herpes"); cost += 50; }
-    if (girl.has_active_trait("Chlamydia"))    { diseases.push_back("Chlamydia"); cost += 100; }
-    if (girl.has_active_trait("Syphilis"))    { diseases.push_back("Syphilis"); cost += 150; }
-    if (girl.has_active_trait("AIDS"))        { diseases.push_back("AIDS"); cost += 200; }
+    if (girl.has_active_trait("Herpes"))        { diseases.emplace_back("Herpes"); cost += 50; }
+    if (girl.has_active_trait("Chlamydia"))    { diseases.emplace_back("Chlamydia"); cost += 100; }
+    if (girl.has_active_trait("Syphilis"))    { diseases.emplace_back("Syphilis"); cost += 150; }
+    if (girl.has_active_trait("AIDS"))        { diseases.emplace_back("AIDS"); cost += 200; }
     int numdiseases = diseases.size();
 
     if (numdiseases > 1)    ss << "${name} is in the Clinic to get her diseases treated";

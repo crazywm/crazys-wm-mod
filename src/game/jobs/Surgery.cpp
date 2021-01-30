@@ -25,6 +25,9 @@
 #include <sstream>
 #include "character/predicates.h"
 
+extern const char* const CarePointsBasicId;
+extern const char* const CarePointsGoodId;
+
 struct sExcludeTrait {
     const char* Trait;
     const char* Message;
@@ -52,87 +55,76 @@ protected:
     // common data
     sSurgeryData m_SurgeryData;
 
-    int NumNurses;
-
-    void EndSurgery(sGirl& girl);
-
     virtual void success(sGirl& girl) = 0;
-};
 
-void SurgeryJob::EndSurgery(sGirl& girl) {
-    if (NumNurses > 2)
-    {
-        ss << "The Nurses kept her healthy and happy during her recovery.\n";
-        girl.health(rng().bell(0, 20));
-        girl.happiness(rng().bell(0, 10));
-        girl.spirit(rng().bell(0, 10));
-        girl.mana(rng().bell(0, 20));
-        girl.beauty(rng().bell(0, 2));
-        girl.charisma(rng().bell(0, 2));
-    }
-    else if (NumNurses > 0)
-    {
-        ss << "The Nurse" << (NumNurses > 1 ? "s" : "") << " helped her during her recovery.\n";
-        girl.health(rng().bell(0, 10));
-        girl.happiness(rng().bell(0, 5));
-        girl.spirit(rng().bell(0, 5));
-        girl.mana(rng().bell(0, 10));
-        girl.beauty(uniform(0, 2));
-        girl.charisma(uniform(0, 2));
-    }
-    else
-    {
-        ss << "She is sad and has lost some health during the operation.\n";
-        girl.health(rng().bell(-20, 2));
-        girl.happiness(rng().bell(-10, 1));
-        girl.spirit(rng().bell(-5, 1));
-        girl.mana(rng().bell(-20, 3));
-        girl.beauty(rng().bell(-1, 1));
-        girl.charisma(rng().bell(-1, 1));
-    }
-}
+private:
+    bool nursing_effect(sGirl& girl);
+};
 
 bool SurgeryJob::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
     JOBS job_id = job();
 
+    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
+    cGirls::UnequipCombat(girl);    // not for patient
+
     if (girl.m_YesterDayJob != job_id) { girl.m_WorkingDay = girl.m_PrevWorkingDay = 0; }
 
     ss << " " << m_SurgeryData.SurgeryMessage << "\n \n";
 
-    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
-    cGirls::UnequipCombat(girl);    // not for patient
-
     // update progress
     if (!is_night)    // the Doctor works on her during the day
     {
+        if(girl.health() < 50) {
+            int bp = uniform(4, 7);
+            if(brothel->TryConsumeResource(CarePointsBasicId, bp)) {
+                int req_gp = uniform(2, 4);
+                if(brothel->TryConsumeResource(CarePointsGoodId, req_gp)) {
+                    ss << "${name}'s health condition does not allow surgery to be performed. "
+                          "Your highly qualified nursing staff are making sure she get well enough for her treatment soon.";
+                    girl.health( uniform(5, 10) );
+                    girl.happiness(1);
+                } else {
+                    ss << "Your caretakers are trying to nurse ${name} back to health so that the doctor can perform the surgery.";
+                    girl.health( uniform(3, 5) );
+                }
+            } else {
+                ss << "${name}'s health condition does not allow surgery to be performed, and with no nurses around"
+                      " it may take a long time for her to get better. All she can do is rest.";
+                girl.health( uniform(1, 3) );
+            }
+            girl.tiredness(-uniform(5, 10));
+            if(girl.strength() > 50) {
+                girl.strength(-uniform(0, 2));
+            }
+            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
+            return false;
+        }
+
         girl.m_WorkingDay++;
+        nursing_effect(girl);
+
+
     } else    // and if there are nurses on duty, they take care of her at night
     {
-        if (NumNurses > 0) {
+        int req_gp = uniform(3, 6);
+        if(brothel->TryConsumeResource(CarePointsGoodId, req_gp)) {
+            brothel->ConsumeResource(CarePointsBasicId, req_gp);
             girl.m_WorkingDay++;
-            //!!!!!!!!! ABORTION !!!!!!!!!!
-            girl.happiness(5);
-            girl.mana(5);
-            //!!!!!!!!! Cosmetic Surgery !!!
-            girl.health(10);
-            girl.happiness(10);
-            girl.mana(10);
+            ss << "Your professional nurses ensure a speedy recovery.";
+            girl.health( uniform(3, 5) );
+        } else {
+            if(!nursing_effect(girl) && chance(50)) {
+                girl.m_WorkingDay -= 1;
+                ss << " These complications will prolong her stay in the hospital.";
+            }
         }
     }
 
     // process progress
     if (girl.m_WorkingDay < m_SurgeryData.Duration || !is_night) {
         int wdays = (m_SurgeryData.Duration - girl.m_WorkingDay);
-
-        if (NumNurses > 0)
-        {
-            wdays = (wdays - 1) / 2 + 1;
-        }
         ss << "The operation is in progress" << " (" << wdays << " day remaining).\n";
-        if (NumNurses > 1)         { ss << "The Nurses are taking care of her at night."; }
-        else if (NumNurses > 0)  { ss << "The Nurse is taking care of her at night."; }
-        else                     { ss << "Having a Nurse on duty will speed up her recovery."; }
     } else {
         msgtype = EVENT_GOODNEWS;
         girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
@@ -142,8 +134,7 @@ bool SurgeryJob::DoWork(sGirl& girl, bool is_night) {
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 
     // Improve girl
-    int libido = 0;  // -8 for abortion!
-    if (girl.has_active_trait("Lesbian"))   libido += NumNurses;
+    int libido = 0;
     if (girl.has_active_trait("Masochist")) libido += 1;
     girl.upd_temp_stat(STAT_LIBIDO, libido);
 
@@ -165,7 +156,6 @@ IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) 
     }
 
     bool hasDoctor = brothel->num_girls_on_job(JOB_DOCTOR, is_night) > 0;
-    NumNurses = brothel->num_girls_on_job(JOB_NURSE, is_night);
     if (!hasDoctor) {
         ss << "${name} does nothing. You don't have any Doctors working. (require 1) ";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -182,6 +172,32 @@ sJobValidResult SurgeryJob::is_job_valid(const sGirl& girl) const {
         }
     }
     return IGenericJob::is_job_valid(girl);
+}
+
+bool SurgeryJob::nursing_effect(sGirl& girl) {
+    int health_dmg = uniform(4, 7);
+    health_dmg -= girl.m_Building->ConsumeResource(CarePointsBasicId, health_dmg);
+
+    if(health_dmg > 0) {
+        if(girl.gain_trait("Small Scars", 2)) {
+            ss << "Due to a lack of care by the nurses, ${name}'s wounds have become infected. This surgery will "
+                  "leave Scars.";
+            girl.health(-10);
+            girl.tiredness(10);
+            girl.happiness(-10);
+            girl.strength(-uniform(0, 5));
+            girl.spirit(-2);
+        } else {
+            ss << "You seem to have too few nurses that provide care for your patients after their operation. "
+                  "This has negative effects on {name}'s health.";
+            girl.health(-health_dmg);
+            girl.tiredness(2 * health_dmg);
+            girl.happiness(-5);
+            girl.beauty(chance(20) ? -1 : 0);
+        }
+        return false;
+    }
+    return true;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -212,23 +228,9 @@ double CosmeticSurgery::GetPerformance(const sGirl& girl, bool estimate) const {
 void CosmeticSurgery::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
 
-    EndSurgery(girl);
+    girl.beauty(rng().bell(5, 12));
+    girl.charisma(rng().bell(0, 3));
 
-    if (NumNurses > 2)
-    {
-        girl.beauty(rng().bell(10, 20));
-        girl.charisma(rng().bell(1, 10));
-    }
-    else if (NumNurses > 0)
-    {
-        girl.beauty(rng().bell(8, 15));
-        girl.charisma(rng().bell(1, 5));
-    }
-    else
-    {
-        girl.beauty(rng().bell(5, 12));
-        girl.charisma(rng().bell(0, 3));
-    }
 
     if (girl.gain_trait("Sexy Air"))
     {
@@ -262,23 +264,9 @@ Liposuction::Liposuction() : SurgeryJob(JOB_LIPO, "Lipo", {"${name} is in the Cl
 void Liposuction::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
 
-    EndSurgery(girl);
+    girl.beauty(rng().bell(0, 10));
+    girl.charisma(rng().bell(-1, 2));
 
-    if (NumNurses > 2)
-    {
-        girl.beauty(rng().bell(5, 20));
-        girl.charisma(rng().bell(1, 6));
-    }
-    else if (NumNurses > 0)
-    {
-        girl.beauty(rng().bell(2, 15));
-        girl.charisma(rng().bell(1, 3));
-    }
-    else
-    {
-        girl.beauty(rng().bell(0, 10));
-        girl.charisma(rng().bell(-1, 2));
-    }
 
     if (girl.lose_trait( "Plump"))
     {
@@ -320,8 +308,6 @@ void BreastReduction::success(sGirl& girl) {
 
     ss << cGirls::AdjustTraitGroupBreastSize(girl, -1, false) << "\n \n";
 
-    EndSurgery(girl);
-
     if (girl.has_active_trait("Flat Chest"))
     {
         ss << "${name}'s breasts are as small as they can get so she was sent to the waiting room.";
@@ -355,8 +341,6 @@ void BoobJob::success(sGirl& girl) {
 
     ss << cGirls::AdjustTraitGroupBreastSize(girl, 1, false) << "\n \n";
 
-    EndSurgery(girl);
-
     if (girl.has_active_trait("Titanic Tits"))
     {
         ss << "${name}'s breasts are as large as they can get so she was sent to the waiting room.";
@@ -388,8 +372,6 @@ VaginalRejuvenation::VaginalRejuvenation() : SurgeryJob(JOB_VAGINAREJUV, "VagR",
 
 void VaginalRejuvenation::success(sGirl& girl) {
     ss << "The surgery is a success.\nShe is a 'Virgin' again.\n";
-
-    EndSurgery(girl);
 
     girl.gain_trait("Virgin");
     girl.FullJobReset(JOB_RESTING);
@@ -423,26 +405,10 @@ sJobValidResult FaceLift::is_job_valid(const sGirl& girl) const {
 
 void FaceLift::success(sGirl& girl) {
     ss << "The surgery is a success.\nShe looks a few years younger.\n";
-    EndSurgery(girl);
 
-    if (NumNurses > 2)
-    {
-        girl.beauty(rng().bell(8, 16));
-        girl.charisma(rng().bell(0, 2));
-        girl.age(rng().bell(-4, -1));
-    }
-    else if (NumNurses > 0)
-    {
-        girl.beauty(rng().bell(6, 12));
-        girl.charisma(uniform(0, 2));
-        girl.age(rng().bell(-3, -1));
-    }
-    else
-    {
-        girl.beauty(rng().bell(4, 10));
-        girl.charisma(rng().bell(-1, 1));
-        girl.age(rng().bell(-2, -1));
-    }
+    girl.beauty(rng().bell(4, 10));
+    girl.charisma(rng().bell(-1, 1));
+    girl.age(rng().bell(-2, -1));
 
     if (girl.age() <= 18) girl.set_stat(STAT_AGE, 18);
     if (girl.age() <= 21)
@@ -481,7 +447,6 @@ AssJob::AssJob(): SurgeryJob(JOB_ASSJOB, "AssJ",
 
 void AssJob::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
-    EndSurgery(girl);
     if (girl.gain_trait( "Great Arse"))
     {
         ss << "Thanks to the surgery she now has a Great Arse.\n";
@@ -516,7 +481,6 @@ sJobValidResult TubesTied::is_job_valid(const sGirl& girl) const {
 
 void TubesTied::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
-    EndSurgery(girl);
     girl.FullJobReset(JOB_RESTING);
     ss << cGirls::AdjustTraitGroupFertility(girl, -10, false);
 }
@@ -552,7 +516,6 @@ sJobValidResult Fertility::is_job_valid(const sGirl& girl) const {
 
 void Fertility::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
-    EndSurgery(girl);
     ss << cGirls::AdjustTraitGroupFertility(girl, 1, false);
     if (girl.has_active_trait("Broodmother"))
     {

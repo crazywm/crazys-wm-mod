@@ -1,6 +1,7 @@
 # Version 07.00.alpha13
 
 ## Changes
+* The number of scenes per Director, Camera Mage, and Crystal Purifier has been changed to a hard limit.
 * Apply new image scaling also to animations
 
 ## Fixes

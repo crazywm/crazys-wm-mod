@@ -27,6 +27,7 @@
 #include <list>
 #include <algorithm>
 #include <unordered_set>
+#include <unordered_map>
 #include "utils/streaming_random_selection.hpp"
 
 #include "cEvents.h"
@@ -176,6 +177,36 @@ public:
     // this is called for when the player tries to meet a new girl at this location
     bool CanEncounter() const;
     std::shared_ptr<sGirl> TryEncounter();
+
+
+    // resource management
+    //  bulk resources
+    /// Returns how many points of the resource `name` are available.
+    int GetResourceAmount(const std::string& name) const;
+
+    /// Consumes up to `amount` points of the given resource. If less is available,
+    /// that amount will we consumed. Returns the amount of actual consumption.
+    int ConsumeResource(const std::string& name, int amount);
+
+    /// Provides `amount` points of the given resource.
+    void ProvideResource(const std::string& name, int amount);
+
+    /// Tries to consume `amount` of the given resource. If not enough is available,
+    /// no resource is consumed and false is returned.
+    bool TryConsumeResource(const std::string& name, int amount);
+
+    //  one-on-one interactions
+    void ProvideInteraction(const std::string& name, sGirl* source, int amount);
+    sGirl* RequestInteraction(const std::string& name);
+
+    bool HasInteraction(const std::string& name) const;
+    /// Returns how many girls are working as "interactors" of the given type.
+    int NumInteractors(const std::string& name) const;
+
+    int GetInteractionProvided(const std::string& name) const;
+    int GetInteractionConsumed(const std::string& name) const;
+
+
 protected:
     std::string m_Name;
     std::unique_ptr<cGirlPool> m_Girls;
@@ -188,6 +219,10 @@ protected:
         bool Arena = false;
         EDefaultEvent Event;
     } m_MeetGirlData;
+
+    // resource management
+    void declare_resource(const std::string& name);
+    void declare_interaction(const std::string& name);
 private:
     std::unordered_set<SKILLS> m_ForbiddenSexType;
 
@@ -202,6 +237,25 @@ private:
     virtual std::string meet_no_luck() const;
 
     sGirl* m_ActiveMatron;
+
+
+    // job processing cache
+    std::unordered_map<std::string, int> m_ShiftResources;
+
+    struct sInteractionWorker {
+        sGirl* Worker;
+        int Amount;
+    };
+
+    struct sInteractionData {
+        int TotalProvided = 0;
+        int TotalConsumed = 0;
+        std::vector<sInteractionWorker> Workers = {};
+    };
+
+    std::unordered_map<std::string, sInteractionData> m_ShiftInteractions;
+
+    void setup_resources();
 };
 
 // predicates

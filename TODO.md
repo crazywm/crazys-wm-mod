@@ -45,6 +45,9 @@
 ## Movies
 * [ ] More text variety
 * [ ] Trait text influences for scenes
+* [ ] Fame bonus for girls/crew whose movies are good/hyped
+* [ ] Initial hype bonus for movies of famous girls/crew
+
 
 ## UI
 * [ ] Per building/global anti preg setting
@@ -65,12 +68,12 @@
 * [ ] "ERROR: Cannot find the torturer!"
 * [ ] "Could not select the target. If you encounter this error, "
 * [ ] "ERROR: Selected girl is a runaway"
-* [ ] Clicking the item filter in the inventory screen sets focus to left inventory
 * [ ] async scripts and messages may get scrambled
 * [ ] ffmpeg frame duration off by one
 * [ ] bugs in shop/inventory screen
   - [ ] "your inventory is full", but seems to buy anyway
   - [ ] "your inventory is full" for sell button
+  - [ ] Equip / unequip showed simultaneously
 * [ ] gracefully handle missing/corrupt config file
 * [ ] slave market problem from discord
 * [ ] Setting jobs for multiple girls when girl list is not in default sort order
