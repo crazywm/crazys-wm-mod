@@ -135,7 +135,7 @@ int cTariff::advertising_costs(int budget)
 
 int cTariff::add_room_cost(int n)
 {
-    return int(n * 1000 * g_Game->settings().get_integer(settings::MONEY_COST_ROOM));
+    return int(n * g_Game->settings().get_integer(settings::MONEY_COST_ROOM));
 }
 
 
