@@ -759,7 +759,7 @@ bool cInventory::LoadItemsXML(const string& filename)
                 g_LogFile.error("items","Item in '", filename, "' has no name!");
                 continue;
             }
-            g_LogFile.debug("items", "Loading item", *item);
+            g_LogFile.debug("items", "Loading item ", item->m_Name);
             m_Items.push_back(item);
         } catch (std::runtime_error& error) {
             g_LogFile.error("items", "Could not load item from '", filename, "' (", el.GetLineNum(), "): ", error.what());
