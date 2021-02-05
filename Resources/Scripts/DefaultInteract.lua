@@ -40,7 +40,7 @@ function DungeonInteractChoice(girl)
                 girl:pclove(2)
                 wm.UpdateImage(wm.IMG.SEX)
                 Dialog("You both have passionate wild sex, and then bask in each others glow.")
-                PlayerFucksGirl(girl)
+                PlayerFucksGirlUpdate(girl)
             elseif girl:obey_check(wm.ACTIONS.SEX) then
                 girl:happiness(2)
                 girl:libido(1)
@@ -48,7 +48,7 @@ function DungeonInteractChoice(girl)
                 girl:pclove(1)
                 wm.UpdateImage(wm.IMG.SEX)
                 Dialog("You both enjoy fucking one another.")
-                PlayerFucksGirl(girl)
+                PlayerFucksGirlUpdate(girl)
             else
                 Dialog("She refuses to sleep with you.")
             end
