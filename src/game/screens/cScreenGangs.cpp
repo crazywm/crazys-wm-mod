@@ -354,11 +354,8 @@ void cScreenGangs::on_select_mission()
             gang->m_LastMissID = -1;
         }
         gang->m_MissionID = mission_id;
-        /*
-        *                format the display line
-        */
-        init(false);
     });
+    init(false);
 
     int cost = 0;
     if (g_Game->gang_manager().GetNumGangs() > 0)
