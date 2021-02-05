@@ -600,7 +600,7 @@ void cScreenDungeon::torture()
 void cScreenDungeon::change_release(BuildingType building, int index)
 {
     m_ReleaseBuilding = g_Game->buildings().building_with_type(building, index);
-    init(false);
+    init(true);
 }
 
 void cScreenDungeon::release()
