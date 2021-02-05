@@ -172,11 +172,11 @@ void cScreenDungeon::init(bool back)
     selection = g_Game->dungeon().GetNumGirls() > 0 ? 0 : -1;
     for (int i = 0; i < g_Game->dungeon().GetNumGirls(); i++)                                                // add girls
     {
-        sGirl *girl = g_Game->dungeon().GetGirl(i)->m_Girl.get();                                            // get the i-th girl
-        if (selected_girl().get() == girl) selection = i;                                                            // if selected_girl is this girl, update selection
-        girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
-        int col = ((girl->health() <= 30) || (girl->happiness() <= 30)) ? COLOR_RED : COLOR_BLUE;            // if she's low health or unhappy, flag her entry to display in red // Anon21
-        GetListBox(girllist_id)->AddRow(i, girl, col);
+        auto* dgirl = g_Game->dungeon().GetGirl(i);         // get the i-th girl
+        if (selected_girl().get() == dgirl->m_Girl.get()) selection = i;                                                            // if selected_girl is this girl, update selection
+        dgirl->m_Girl->m_DayJob = dgirl->m_Girl->m_NightJob = JOB_INDUNGEON;
+        int col = ((dgirl->m_Girl->health() <= 30) || (dgirl->m_Girl->happiness() <= 30)) ? COLOR_RED : COLOR_BLUE;            // if she's low health or unhappy, flag her entry to display in red // Anon21
+        GetListBox(girllist_id)->AddRow(i, dgirl, col);
     }
     // now add the customers
     int offset = g_Game->dungeon().GetNumGirls();
