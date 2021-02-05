@@ -416,9 +416,11 @@ void sGirl::run_away()
 {
     if(m_Building)
         g_Game->AddGirlToRunaways(m_Building->remove_girl(this));
-    if (m_NightJob == JOB_INDUNGEON)
+    else if (m_NightJob == JOB_INDUNGEON)
         g_Game->AddGirlToRunaways(g_Game->dungeon().RemoveGirl(this));
-    m_RunAway = 6;        // player has 6 weeks to retreive
+    else
+        g_Game->AddGirlToRunaways(shared_from_this());
+    m_RunAway = 6;        // player has 6 weeks to retrieve
     m_NightJob = m_DayJob = JOB_RUNAWAY;
 }
 
