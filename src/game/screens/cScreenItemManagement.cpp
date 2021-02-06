@@ -226,7 +226,7 @@ static SDL_Color RarityColor[9];
 void cScreenItemManagement::load_ids(sItemTransferSide& target, Side side)
 {
     std::string side_str = side == Side::Left ? "Left" : "Right";
-    Side opposite = side == Side::Left ? Side::Right : Side::Left;
+    Side opposite = (side == Side::Left) ? Side::Right : Side::Left;
     target.sell10_id    = get_id("Sell10" + side_str + "Button");
     target.sellall_id   = get_id("SellAll" + side_str + "Button");
     target.buy10_id     = get_id("Buy10" + side_str + "Button");
@@ -237,9 +237,12 @@ void cScreenItemManagement::load_ids(sItemTransferSide& target, Side side)
     target.items_id     = get_id("Items" + side_str + "List");
     target.detail_id     = get_id("Owners" + side_str + "Details", "*Optional*");
 
+    // even though it seems weird that buy and sell have the same source, note that when the left
+    // sell button is visible, only the right buy button will be shown and vice versa, so in practice
+    // these buttons really do have opposite effect
     SetButtonCallback(target.buy10_id, [this, opposite]() { attempt_transfer(opposite, 10); });
-    SetButtonCallback(target.sell10_id, [this, side]() { attempt_transfer(side, 10); });
-    SetButtonCallback(target.sellall_id, [this, side]() { attempt_transfer(side, 999); });
+    SetButtonCallback(target.sell10_id, [this, opposite]() { attempt_transfer(opposite, 10); });
+    SetButtonCallback(target.sellall_id, [this, opposite]() { attempt_transfer(opposite, 999); });
     SetButtonCallback(target.shift_id, [this, opposite]() { attempt_transfer(opposite); });
     SetButtonCallback(target.equip_id, [this, side]() { change_equip(side, true); });
     SetButtonCallback(target.unequip_id, [this, side]() { change_equip(side, false); });
