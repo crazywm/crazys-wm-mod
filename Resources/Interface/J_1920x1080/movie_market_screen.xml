@@ -1,0 +1,53 @@
+<Screen>
+<Window     Name="Market Research"                                       XPos="18"       YPos="20"       Width="1883"    Height="1041"    Border="1"  />
+
+<Text       Name="Target_Groups"        Text="Target Groups"             XPos="14"       YPos="17"       Width="773"     Height="28"           FontSize="22"            />
+<ListBox    Name="GroupsList"                                            XPos="14"       YPos="49"       Width="1054"     Height="387"    FontSize="17"       RowHeight="30"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<Column     Name="Group"                Header="Group"                   Offset="0"  />
+<Column     Name="Size"                 Header="Size"                    Offset="246"  />
+<Column     Name="Saturation"           Header="Sat"                     Offset="351"  />
+<Column     Name="FavScene"             Header="Fav"                     Offset="421"  />
+<Column     Name="Score"                Header="Quality"                 Offset="562"  />
+<Column     Name="SpendingPower"        Header="Money"                   Offset="646"  />
+<Column     Name="Desire_Tease"         Header="Tease"                   Offset="730"  />
+<Column     Name="Desire_Soft"          Header="Soft"                    Offset="800"  />
+<Column     Name="Desire_Hard"          Header="Hard"                    Offset="870"  />
+<Column     Name="Desire_Extreme"       Header="Extr"                    Offset="940"  />
+</ListBox>
+<Button     Name="BackButton"           Image="Back"                        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true" PushWindow="<back>"/>
+
+<Text       Name="Movie_txt"        Text="Movies"                     XPos="14"       YPos="457"       Width="773"     Height="28"           FontSize="22"            />
+
+<ListBox    Name="MoviesList"                                               XPos="14"       YPos="492"       Width="1054"     Height="474"    FontSize="17"       RowHeight="30"      Border="1"          Events="true"      Multi="false"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+    <Column     Name="Name"                 Header="Name"                   Offset="0"  />
+    <Column     Name="Price"                Header="Ticket"                 Offset="246"  />
+    <Column     Name="Age"                  Header="Running"                Offset="351"  />
+    <Column     Name="Estimate"             Header="Estimate"               Offset="456"  />
+    <Column     Name="EarningsLastWeek"     Header="Last Week"              Offset="561"  />
+    <Column     Name="TotalEarnings"        Header="Box Office"             Offset="666"  />
+    <Column     Name="Cost"                 Header="Budget"                 Offset="771"  />
+    <Column     Name="Hype"                 Header="Hype"                   Offset="876"  />
+</ListBox>
+
+    <Text       Name="TicketPrice_txt"          Text="Ticket Price"           XPos="1082"      YPos="492"       Width="611"     Height="28"     FontSize="22"            />
+    <Button     Name="IncreaseTicketPrice"      Image="plus_24x24"                 XPos="1082"      YPos="534"      Width="34"      Height="34"     Transparency="true"/>
+    <Button     Name="DecreaseTicketPrice"      Image="minus_24x24"               XPos="1139"      YPos="534"      Width="34"      Height="34"     Transparency="true"/>
+    <Text       Name="Promo_txt"                Text="Points: "               XPos="1279"      YPos="492"       Width="225"     Height="28"     FontSize="22"            />
+    <Button     Name="AdCampaign"               Image="AdCampaign"            XPos="1279"      YPos="534"      Width="225"      Height="45"     Transparency="true"/>
+    <Text       Name="Survey_txt"               Text="Points: "               XPos="1546"      YPos="492"       Width="611"     Height="28"     FontSize="22"            />
+    <Button     Name="Survey"                   Image="Survey"                XPos="1546"      YPos="534"      Width="225"      Height="45"     Transparency="true"/>
+
+    <Text       Name="Prediction"               Text="Predicted Audience"           XPos="1124"      YPos="17"       Width="611"     Height="28"     FontSize="22"            />
+    <ListBox    Name="PredictionList"                                               XPos="1124"      YPos="49"       Width="611"     Height="394"    FontSize="17"       RowHeight="30"      Border="1"          Events="false"      Multi="false"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+        <Column     Name="TargetGroup"          Header="Target Group"               Offset="0"  />
+        <Column     Name="Rating"               Header="Rating"                     Offset="281"  />
+        <Column     Name="Views"                Header="Views"                      Offset="386"  />
+        <Column     Name="Revenue"              Header="Revenue"                    Offset="491"  />
+    </ListBox>
+
+</Screen>
+
+<!--
+CategoryArray<float> TurnOffs;      // Chance that a scene type is a turn-off to this group of people
+CategoryArray<float> Desires;       // How much of a certain scene type is desired.
+-->
