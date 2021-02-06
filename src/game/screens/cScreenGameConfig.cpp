@@ -144,7 +144,7 @@ void cScreenGameConfig::set_ids() {
                 input_string([this, setting](const std::string& v){
                     float val = std::strtof(v.c_str(), nullptr);
                     m_Settings.set_value(setting->tag, val);
-                    init(true); });
+                    init(true); }, std::to_string(m_Settings.get_float(setting->tag)));
                 break;
             }case 3:
             {
@@ -152,7 +152,7 @@ void cScreenGameConfig::set_ids() {
                     float val = std::strtof(v.c_str(), nullptr);
                     val /= 100.f;
                     m_Settings.set_value(setting->tag, sPercent(val));
-                    init(true); });
+                    init(true); }, std::to_string(100.f * float(m_Settings.get_percent(setting->tag))));
                 break;
             }
             case 4:

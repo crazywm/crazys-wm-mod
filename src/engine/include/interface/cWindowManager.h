@@ -82,7 +82,7 @@ public:
     // input handling
     void InputInteger(std::function<void(int)> callback, int def_value);
     void InputConfirm(std::function<void()> callback);
-    void InputString(std::function<void(const std::string&)> callback);
+    void InputString(std::function<void(const std::string&)> callback, std::string def_value = {});
     void InputChoice(std::string question, std::vector<std::string> options, std::function<void(int)> callback);
 
     // message box

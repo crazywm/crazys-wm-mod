@@ -207,9 +207,10 @@ void cWindowManager::InputConfirm(std::function<void()> callback)
     push("GetInput");
 }
 
-void cWindowManager::InputString(std::function<void(const std::string&)> callback)
+void cWindowManager::InputString(std::function<void(const std::string&)> callback, std::string def_value)
 {
     g_GetInput->ModeGetString(std::move(callback));
+    g_GetInput->SetText(def_value.c_str());
     push("GetInput");
 }
 
