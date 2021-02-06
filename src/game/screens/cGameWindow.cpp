@@ -127,6 +127,7 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "impregsex*.", "impreggroup*.", "impregbdsm*.", "impregbeast*.",                                             // `J` new .06.03.01 for DarkArk
                             "virginsex*.", "virgingroup*.", "virginbdsm*.", "virginbeast*.",                                            // `J` new .06.03.01 for DarkArk
                             "escort*.", "sport*.", "study*.", "teacher*.",                                                                // `J` new .06.03.02 for grishnak
+                            "massage*.",
                             "preg*.",    // pregnant varients
                             "preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
                             "pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
@@ -141,7 +142,8 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "pregbirthhuman*.", "pregbirthmultiplehuman*.", "pregbirthbeast*.",                                         // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "pregimpregsex*.", "pregimpreggroup*.", "pregimpregbdsm*.", "pregimpregbeast*.",                             // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "pregvirginsex*.", "pregvirgingroup*.", "pregvirginbdsm*.", "pregvirginbeast*.",                            // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-                            "pregescort*.", "pregsport*.", "pregstudy*.", "pregteacher*."                                                // `J` new .06.03.02 for grishnak
+                            "pregescort*.", "pregsport*.", "pregstudy*.", "pregteacher*.",                                             // `J` new .06.03.02 for grishnak
+                            "pregmassage*.",
 
                     };
 std::string galtxt[] =
@@ -155,7 +157,7 @@ std::string galtxt[] =
                             "Branding", "Rape", "Beast Rape", "Human Birth", "Human Birth Multiple", "Monster Birth",                    // `J` new .06.03.01 for DarkArk
                             "Impregnate Sex", "Impregnate Group", "Impregnate Bondage", "Impregnate Beast",                             // `J` new .06.03.01 for DarkArk
                             "Virgin Sex", "Virgin Group", "Virgin Bondage", "Virgin Beast",                                                // `J` new .06.03.01 for DarkArk
-                            "Escort", "Sport", "Study", "Teacher",                                                                        // `J` new .06.03.02 for grishnak
+                            "Escort", "Sport", "Study", "Teacher", "Massage",                                                                        // `J` new .06.03.02 for grishnak
 
                             "Pregnant",    // pregnant varients
                             "Pregnant Anal", "Pregnant BDSM", "Pregnant Sex", "Pregnant Beast", "Pregnant Group",
@@ -172,7 +174,8 @@ std::string galtxt[] =
                             "P Human Birth", "P Human Multi-Birth", "P Monster Birth",                                                    // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "P Impreg Sex", "P Impreg Group", "P Impreg Bondage", "P Impreg Beast",                                        // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "P Virgin Sex", "P Virgin Group", "P Virgin Bondage", "P Virgin Beast",                                        // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-                            "Pregnant Escort", "Pregnant Sport", "Pregnant Study", "Pregnant Teacher"                                    // `J` new .06.03.02 for grishnak
+                            "Pregnant Escort", "Pregnant Sport", "Pregnant Study", "Pregnant Teacher",                                    // `J` new .06.03.02 for grishnak
+                            "Pregnant Massage"
 
                     };
 
@@ -950,6 +953,12 @@ int TryImageType(int imagetype, int tries)
     {
         if (t < 15)    return IMGTYPE_BEAST;
         return IMGTYPE_VIRGINBEAST;
+    }break;
+    case IMGTYPE_MASSAGE:
+    case IMGTYPE_PREGMASSAGE:
+    {
+        if (t < 15)    return IMGTYPE_HAND;
+        return IMGTYPE_MASSAGE;
     }break;
 
 

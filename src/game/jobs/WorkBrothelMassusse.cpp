@@ -49,7 +49,7 @@ bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
     int wages = girl.askprice() + 40;
     int tips = 0;
     int work = 0, fame = 0;
-    int imageType = IMGTYPE_PROFILE;
+    int imageType = IMGTYPE_MASSAGE;
 
 #pragma endregion
 #pragma region //    Job Performance            //
