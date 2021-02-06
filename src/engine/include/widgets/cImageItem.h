@@ -31,19 +31,24 @@ class SDL_Surface;
 class cImageItem : public cUIWidget
 {
 public:
-    cImageItem(cInterfaceWindow* parent, int id, int x, int y, int width, int height);
+    cImageItem(cInterfaceWindow* parent, int id, int x, int y, int width, int height, int mw, int mh);
     ~cImageItem();
 
     void SetImage(cSurface image);
     void SetImage(cAnimatedSurface image);
 
-    bool CreateImage(std::string filename, bool statImage, int R, int G, int B);
+    bool CreateImage(std::string filename, bool transparent=true);
     void DrawWidget(const CGraphics& gfx) override;
     void Reset() override;
 
     cAnimatedSurface m_AnimatedImage;
     cSurface m_Image;
+
+
+private:
     bool m_loaded;
+    int m_MinWidth = -1;
+    int m_MinHeight = -1;
 };
 
 #endif

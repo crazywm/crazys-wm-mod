@@ -193,7 +193,7 @@ void cInterfaceWindowXML::add_widget(std::string widget_name, int x, int y, std:
         }
         else if (tag == "Image") {
             DirPath dp = ImagePath(xw.file);
-            AddImage(id, dp, full_x, full_y, xw.w, xw.h, xw.stat, xw.r, xw.g, xw.b);
+            AddImage(id, dp, full_x, full_y, xw.w, xw.h, xw.min_width, xw.min_height);
             register_id(id, name);
             HideWidget(id, xw.hide);
         }
@@ -366,7 +366,7 @@ void cInterfaceWindowXML::read_image_definition(tinyxml2::XMLElement& el)
     widget_image_item(el, wdg);
     DirPath dp = ImagePath(wdg.file);
 
-    AddImage(id, dp, wdg.x, wdg.y, wdg.w, wdg.h, wdg.stat, wdg.r, wdg.g, wdg.b);
+    AddImage(id, dp, wdg.x, wdg.y, wdg.w, wdg.h, wdg.min_width, wdg.min_height);
     HideWidget(id, wdg.hide);
     register_id(id, wdg.name);
 }
@@ -466,6 +466,8 @@ void cInterfaceWindowXML::widget_image_item(tinyxml2::XMLElement& el, sXmlWidget
 
     read_generic(el, xw);
     xw.file = GetStringAttribute(el, "File");
+    xw.min_width = el.IntAttribute("MinWidth", -1);
+    xw.min_height = el.IntAttribute("MinHeight", -1);
 }
 
 void cInterfaceWindowXML::register_id(int id, std::string name)

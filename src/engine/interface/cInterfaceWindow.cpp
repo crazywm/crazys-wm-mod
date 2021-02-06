@@ -170,7 +170,7 @@ void cInterfaceWindow::HideWidget(int id, bool hide)
     m_Widgets.at(id)->SetHidden(hide);
 }
 
-void cInterfaceWindow::AddImage(int & id, string filename, int x, int y, int width, int height, bool statImage, int R, int G, int B)
+void cInterfaceWindow::AddImage(int & id, string filename, int x, int y, int width, int height, int min_width, int min_height)
 {
     width = (int)((float)width);
     height = (int)((float)height);
@@ -179,8 +179,9 @@ void cInterfaceWindow::AddImage(int & id, string filename, int x, int y, int wid
 
     // create image
     id = m_Widgets.size();
-    auto newImage = std::make_unique<cImageItem>(this, id, x + m_XPos, y + m_YPos, width, height);
-    newImage->CreateImage(filename, statImage, R, G, B);
+    auto newImage = std::make_unique<cImageItem>(this, id, x + m_XPos, y + m_YPos, width, height,
+                                                 min_width, min_height);
+    newImage->CreateImage(filename);
 
     // Store button
     m_Widgets.push_back(std::move(newImage));

@@ -89,7 +89,7 @@ public:
     cButton* GetButton(int id);
 
     // Images
-    void AddImage(int & id, std::string filename, int x, int y, int width, int height, bool statImage = false, int R = 0, int G = 0, int B = 0);
+    void AddImage(int & id, std::string filename, int x, int y, int width, int height, int min_width, int min_height);
     void SetImage(int id, std::string image);
     cImageItem* GetImage(int id);
 

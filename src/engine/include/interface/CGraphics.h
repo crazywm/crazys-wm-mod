@@ -46,7 +46,12 @@ public:
     // pass through to image cache
     cImageCache& GetImageCache() { return m_ImageCache; }
     cSurface CreateSurface(int width, int height, sColor color, bool transparent=false);
-    cSurface LoadImage(std::string filename, int width=-1, int height=-1, bool transparency=false, bool keep_ratio=true);
+
+    /*!
+     * Loads an image from the given filename
+     */
+    cSurface LoadImage(std::string filename, sLoadImageParams params);
+    cSurface LoadImage(std::string filename, int width, int height, bool transparent);
 
     // Accessors
     SDL_Surface* GetScreen() const { return m_ScreenBuffer; }

@@ -32,7 +32,7 @@ cScrollBar::cScrollBar(cInterfaceWindow* parent, int ID, int x, int y, int width
 {
     auto make_path = [](const char* file){ return ImagePath("Scroll").str() + file; };
 
-    m_ImgBarBG = GetGraphics().LoadImage(make_path("LongBackground.png"));
+    m_ImgBarBG = GetGraphics().LoadImage(make_path("LongBackground.png"), -1, -1, true);
     m_ImgBarDisabled = GetGraphics().LoadImage(make_path("LongDisabled.png"), -1, -1, true);
     m_ImgBarOff = GetGraphics().LoadImage(make_path("LongOff.png"), -1, -1, true);
     m_ImgBarOn = GetGraphics().LoadImage(make_path("LongOn.png"), -1, -1, true);

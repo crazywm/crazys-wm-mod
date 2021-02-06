@@ -42,6 +42,10 @@ public:
     /// TODO this code really needs to be cleaned up!
     std::string push_window;
     std::string replace_window;
+
+    // for image widget
+    int min_width = -1;
+    int min_height = -1;
 };
 
 class cXmlWidget {

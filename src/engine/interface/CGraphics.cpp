@@ -150,15 +150,20 @@ bool CGraphics::InitGraphics(const std::string& caption, int UIWidth, int UIHeig
     }
 
     // Load the universal background image
-    m_BackgroundImage = LoadImage(ImagePath("background.jpg"), GetWidth(), GetHeight(), false, false);
+    sLoadImageParams lip;
+    lip.Transparency = false;
+    lip.KeepRatio = false;
+    lip.MinWidth = GetWidth();
+    lip.MinHeight = GetHeight();
+    m_BackgroundImage = LoadImage(ImagePath("background.jpg"), lip);
     g_LogFile.info("interface","Background Image Set");
 
     return true;
 }
 
-cSurface CGraphics::LoadImage(std::string filename, int width, int height, bool transparency, bool keep_ratio)
+cSurface CGraphics::LoadImage(std::string filename, sLoadImageParams params)
 {
-    return m_ImageCache.LoadImage(std::move(filename), width, height, transparency, keep_ratio);
+    return m_ImageCache.LoadImage(std::move(filename), params);
 }
 
 cSurface CGraphics::CreateSurface(int width, int height, sColor color, bool transparent)
@@ -177,4 +182,15 @@ extern cConfig cfg;
 
 cFont CGraphics::LoadNormalFont(int size) {
     return LoadFont(cfg.fonts.normal(), size);
+}
+
+cSurface CGraphics::LoadImage(std::string filename, int width, int height, bool transparent) {
+    sLoadImageParams params;
+    params.MinWidth = width;
+    params.MinHeight = height;
+    params.MaxWidth = width;
+    params.MaxHeight = height;
+    params.Transparency = transparent;
+    params.KeepRatio = true;
+    return LoadImage(std::move(filename), params);
 }

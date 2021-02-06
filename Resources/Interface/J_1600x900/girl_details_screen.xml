@@ -3,7 +3,7 @@
 <Text       Name="GirlName"             Text=""                             XPos="12"       YPos="2"        Width="586"     Height="38"     FontSize="28"  />
 <Text       Name="GirlDescription"      Text=""                             XPos="12"       YPos="41"       Width="234"     Height="814"    FontSize="11"          />
 
-<Image      Name="GirlImage"            File="blank.png"                    XPos="246"      YPos="12"       Width="1078"     Height="762"  />
+<Image      Name="GirlImage"            File="blank.png"                    XPos="246"      YPos="12"       Width="1078"     Height="762"  MinWidth="375" MinHeight="375" />
 
 <Text       Name="JobTypeHeader"        Text="Job Types"                    XPos="1324"     YPos="13"       Width="234"     Height="28"     FontSize="19"  />
 <ListBox    Name="JobTypeList"                                              XPos="1324"     YPos="41"       Width="234"     Height="120"    FontSize="14" RowHeight="22" Border="1"          Events="true"  />

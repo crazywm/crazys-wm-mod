@@ -976,7 +976,6 @@ std::vector<std::string> cListBox::GetColumnNames() const
 }
 
 int cListBox::HandleSelectedIndices(std::function<void(int)> handler) {
-    auto start = begin(m_Items);
     int count = 0;
     for(auto& item : m_Items) {
         if(item.m_Selected) {

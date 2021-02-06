@@ -53,19 +53,19 @@ std::size_t combine(const T& b, const Args&... args)
 
 std::size_t std::hash<sImageCacheKey>::operator()(sImageCacheKey const& s) const noexcept
 {
-    return combine(s.file_name, s.transparency, s.width, s.height, s.keep_ratio);
+    return combine(s.file_name, s.transparency, s.width, s.height);
 }
 
 bool sImageCacheKey::operator==(const sImageCacheKey& o) const
 {
-    return std::tie(file_name, transparency, width, height, keep_ratio) == std::tie(
-            o.file_name, o.transparency, o.width, o.height, o.keep_ratio);
+    return std::tie(file_name, transparency, width, height) == std::tie(
+            o.file_name, o.transparency, o.width, o.height);
 }
 
 cSurface cImageCache::CreateSurface(int width, int height, sColor color, bool transparent)
 {
     std::string    fake_name = color.to_hex();
-    sImageCacheKey key{fake_name, width, height, transparent, false};
+    sImageCacheKey key{fake_name, width, height, transparent};
     auto           lookup = m_SurfaceCache.find(key);
     if(lookup != m_SurfaceCache.end()) {
         // otherwise, return from cache
@@ -84,41 +84,126 @@ cSurface cImageCache::CreateSurface(int width, int height, sColor color, bool tr
     return AddToCache(std::move(key), std::move(sf), std::move(fake_name));
 }
 
-cSurface cImageCache::LoadImage(std::string filename, int width, int height, bool transparency, bool keep_ratio)
-{
-    sImageCacheKey key{filename, width, height, transparency, keep_ratio};
-    auto           lookup = m_SurfaceCache.find(key);
+cSurface cImageCache::LoadDefaultSize(std::string filename, bool transparent) {
+    sImageCacheKey key{filename, -1, -1, transparent};
+    auto lookup = m_SurfaceCache.find(key);
     if(lookup != m_SurfaceCache.end()) {
-        // otherwise, return from cache
+        // OK, we have found the original image in the cache
+        return cSurface{lookup->second, m_GFX};
+    } else {
+        auto loaded = surface_ptr_t{IMG_Load(filename.c_str())};
+        if (!loaded) {
+            throw std::runtime_error("Could not load image '" + filename + "': " + IMG_GetError());
+        }
+        ++m_ImageLoadCount;
+
+        // set blend mode based on transparency
+        SDL_SetSurfaceBlendMode(loaded.get(), transparent ? SDL_BLENDMODE_BLEND : SDL_BLENDMODE_NONE);
+
+        return AddToCache(std::move(key), std::move(loaded), std::move(filename));
+    }
+}
+
+namespace {
+    void keep_ratio_rescaling(int width, int height, int& target_width, int& target_height, bool use_minimum=true) {
+        double scale_x = (double) target_width / (double) width;
+        double scale_y = (double) target_height / (double) height;
+        double s = use_minimum ? std::min(scale_x, scale_y) : std::max(scale_x, scale_y);
+        target_width = width * s;
+        target_height = height * s;
+    }
+
+    struct sImageSize {
+        int Width;
+        int Height;
+    };
+
+    sImageSize ensure_minimum_dimensions(int width, int height, int min_width, int min_height, bool keep_ratio) {
+        int target_width = width;
+        int target_height = height;
+        if(min_width > 0 && width < min_width) {
+            target_width = min_width;
+        }
+
+        if(min_height > 0 && height < min_height) {
+            target_height = min_height;
+        }
+
+        if(keep_ratio) {
+            keep_ratio_rescaling(width, height, target_width, target_height, false);
+        }
+
+        return {target_width, target_height};
+    }
+
+    sImageSize ensure_maximum_dimensions(int width, int height, int max_width, int max_height, bool keep_ratio) {
+        int target_width = width;
+        int target_height = height;
+        if(max_width > 0 && width > max_width) {
+            target_width = max_width;
+        }
+
+        if(max_height > 0 && height > max_height) {
+            target_height = max_height;
+        }
+
+        if(keep_ratio) {
+            keep_ratio_rescaling(width, height, target_width, target_height, true);
+        }
+
+        return {target_width, target_height};
+    }
+}
+
+cSurface cImageCache::LoadImage(std::string filename, sLoadImageParams params)
+{
+    auto def_image = LoadDefaultSize(filename, params.Transparency);
+    auto& surface = def_image.RawSurface();
+
+    // now, we need to check whether the original image is compatible with the size constraints
+    // is it too small?
+    sImageSize target = ensure_minimum_dimensions(surface->width(), surface->height(), params.MinWidth, params.MinHeight, params.KeepRatio);
+    target = ensure_maximum_dimensions(target.Width, target.Height, params.MaxWidth, params.MaxHeight, params.KeepRatio);
+
+    // If everything fits, we are done here and can return the surface as is
+    if(surface->width() == target.Width && surface->height() == target.Height) {
+        m_ImageFoundCount++;
+        return std::move(def_image);
+    }
+
+    // otherwise, we can look up whether we already have the correctly sized image
+    sImageCacheKey key{filename, target.Width, target.Height, params.Transparency};
+    auto lookup = m_SurfaceCache.find(key);
+    if(lookup != m_SurfaceCache.end()) {
         m_ImageFoundCount++;
         return cSurface{lookup->second, m_GFX};
     }
 
-    // not cached, need to load
-    auto loaded = surface_ptr_t{IMG_Load(filename.c_str())};
-    if (!loaded) {
-        throw std::runtime_error("Could not load image '" + filename + "': " + IMG_GetError());
-    }
-
-    ++m_ImageLoadCount;
-
-    // decide whether we need to resize
-    if(width != -1 || height != -1) {
-        loaded = ResizeImage(std::move(loaded), width, height, keep_ratio);
-    }
+    // not cached, need to resize
+    auto resized = RawResize(surface->surface(), target.Width, target.Height);
 
     // set blend mode based on transparency
-    SDL_SetSurfaceBlendMode(loaded.get(), transparency ? SDL_BLENDMODE_BLEND : SDL_BLENDMODE_NONE);
+    SDL_SetSurfaceBlendMode(resized.get(), params.Transparency ? SDL_BLENDMODE_BLEND : SDL_BLENDMODE_NONE);
 
-    return AddToCache(std::move(key), std::move(loaded), std::move(filename));
+    return AddToCache(std::move(key), std::move(resized), std::move(filename));
 }
 
-void keep_ratio_rescaling(int width, int height, int& target_width, int& target_height) {
-    double scale_x = (double)target_width / (double)width;
-    double scale_y = (double)target_height / (double)height;
-    double s = std::min(scale_x, scale_y);
-    target_width = width * s;
-    target_height = height * s;
+surface_ptr_t cImageCache::RawResize(SDL_Surface* source, int width, int height) {
+    auto target = CreateSDLSurface(width, height, true);
+    SDL_Rect inp{0, 0, source->w, source->h};
+    SDL_Rect tgt{0, 0, target->w, target->h};
+    // First adapt pixel format, then scale
+    auto intermed = CreateSDLSurface(source->w, source->h, true);
+    SDL_BlitSurface(source, &inp, intermed.get(), nullptr);
+
+    if(SDL_BlitScaled(intermed.get(), &inp, target.get(), &tgt)) {
+        g_LogFile.error("interface", "Could not scale surface: ", SDL_GetError());
+    }
+    SDL_BlendMode mode = SDL_BLENDMODE_INVALID;
+    SDL_GetSurfaceBlendMode(source, &mode);
+    SDL_SetSurfaceBlendMode(target.get(), mode);
+    m_ImageResizeCount++;
+    return target;
 }
 
 surface_ptr_t cImageCache::ResizeImage(surface_ptr_t input, int width, int height, bool keep_ratio)
@@ -131,21 +216,7 @@ surface_ptr_t cImageCache::ResizeImage(surface_ptr_t input, int width, int heigh
             keep_ratio_rescaling(input->w, input->h, width, height);
         }
 
-        auto target = CreateSDLSurface(width, height, true);
-        SDL_Rect inp{0, 0, input->w, input->h};
-        SDL_Rect tgt{0, 0, target->w, target->h};
-        // First adapt pixel format, then scale
-        auto intermed = CreateSDLSurface(input->w, input->h, true);
-        SDL_BlitSurface(input.get(), &inp, intermed.get(), nullptr);
-
-        if(SDL_BlitScaled(intermed.get(), &inp, target.get(), &tgt)) {
-            g_LogFile.error("interface", "Could not scale surface: ", SDL_GetError());
-        }
-        SDL_BlendMode mode = SDL_BLENDMODE_INVALID;
-        SDL_GetSurfaceBlendMode(input.get(), &mode);
-        SDL_SetSurfaceBlendMode(target.get(), mode);
-        m_ImageResizeCount++;
-        return target;
+        return RawResize(input.get(), width, height);
     }
 
     return input;
@@ -247,7 +318,7 @@ cSurface cImageCache::FillRect(const cSurface& source, SDL_Rect area, sColor col
     name << "CustomSurface#";
     name << m_ImageCreateCount;
     name << "@FillRect";
-    return AddToCache(sImageCacheKey{std::move(name.str()), (int)raw.width(), (int)raw.height(), false, false}, std::move(target), source.GetFileName());
+    return AddToCache(sImageCacheKey{std::move(name.str()), (int)raw.width(), (int)raw.height(), false}, std::move(target), source.GetFileName());
 }
 
 cSurface cImageCache::BlitSurface(const cSurface& target, SDL_Rect* target_area, const cSurface& source, SDL_Rect* src_area)
@@ -371,7 +442,7 @@ cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, int target_width, in
         SDL_FreeSurface(sf);
 
         name << movie << "@" << frame_num;
-        auto surface = AddToCache(sImageCacheKey{std::move(name.str()), frame.Width, frame.Height, false, false},
+        auto surface = AddToCache(sImageCacheKey{std::move(name.str()), frame.Width, frame.Height, false},
                                   ResizeImage(std::move(surface_ptr), frame.Width, frame.Height, true), movie);
         // TODO is this off by one? first frame seems to be at time "0"
         surfaces.push_back({std::move(surface), int(frame.Time - last_frame)});
@@ -395,7 +466,7 @@ cSurface cImageCache::CreateTextSurface(TTF_Font* font, std::string text, sColor
     assert(font);
 
     std::string id = text + color.to_hex();
-    sImageCacheKey key{id, -1, TTF_FontHeight(font), antialias, false};
+    sImageCacheKey key{id, -1, TTF_FontHeight(font), antialias};
     auto           lookup = m_SurfaceCache.find(key);
     if(lookup != m_SurfaceCache.end()) {
         // otherwise, return from cache

@@ -24,7 +24,8 @@
 #include "interface/cAnimatedSurface.h"
 #include "interface/cSurface.h"
 
-cImageItem::cImageItem(cInterfaceWindow* parent, int id, int x, int y, int width, int height) : cUIWidget(id, x, y, width, height, parent)
+cImageItem::cImageItem(cInterfaceWindow* parent, int id, int x, int y, int width, int height,
+                       int mw, int mh) : cUIWidget(id, x, y, width, height, parent), m_MinWidth(mw), m_MinHeight(mh)
 {
     m_loaded = false;
 }
@@ -32,12 +33,20 @@ cImageItem::~cImageItem()
 {
 }
 
-bool cImageItem::CreateImage(std::string filename, bool statImage, int R, int G, int B)
+bool cImageItem::CreateImage(std::string filename, bool transparent)
 {
     if (!filename.empty())
     {
         m_loaded = true;
-        m_Image = GetGraphics().LoadImage(filename, m_Width, m_Height, true);
+        sLoadImageParams params;
+        params.KeepRatio = true;
+        params.Transparency = transparent;
+        params.MinWidth = m_MinWidth;
+        params.MinHeight = m_MinHeight;
+        params.MaxWidth = m_Width;
+        params.MaxHeight = m_Height;
+        m_Image = GetGraphics().LoadImage(std::move(filename), params);
+        m_AnimatedImage = {};
     }
     else
         m_loaded = false;
@@ -51,7 +60,8 @@ void cImageItem::DrawWidget(const CGraphics& gfx)
         m_AnimatedImage.UpdateFrame();
         m_AnimatedImage.DrawSurface(m_XPos, m_YPos);
     } else if (m_Image)    {
-        m_Image.DrawSurface(m_XPos, m_YPos);
+        m_Image.DrawSurface(m_XPos + (m_Width - m_Image.GetWidth()) / 2,
+                            m_YPos + (m_Height - m_Image.GetHeight()) / 2);
     }
 }
 

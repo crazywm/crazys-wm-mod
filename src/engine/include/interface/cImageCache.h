@@ -33,7 +33,6 @@ struct sImageCacheKey {
     int width;
     int height;
     bool transparency;
-    bool keep_ratio;
 
     bool operator==(const sImageCacheKey&) const;
 };
@@ -73,6 +72,15 @@ namespace std
     };
 }
 
+struct sLoadImageParams {
+    int MinWidth = -1;
+    int MinHeight = -1;
+    int MaxWidth = -1;
+    int MaxHeight = -1;
+    bool Transparency = false;
+    bool KeepRatio = true;
+};
+
 /*!
  * \brief Responsible for keeping a cache of images to reduce the number of times
  * we need to reload from disk.
@@ -86,7 +94,7 @@ public:
 
     // Generating new surfaces.
     cSurface CreateSurface(int width, int height, sColor color, bool make_unique=false) noexcept(false);
-    cSurface LoadImage(std::string filename, int width=-1, int height=-1, bool transparency=false, bool keep_ratio=true);
+    cSurface LoadImage(std::string filename, sLoadImageParams params);
 
     cSurface CreateTextSurface(TTF_Font* font, std::string text, sColor color, bool antialias);
 
@@ -108,6 +116,8 @@ public:
 
     void Cull();
 private:
+    cSurface LoadDefaultSize(std::string filename, bool transparent);
+    surface_ptr_t RawResize(SDL_Surface* source, int width, int height);
     cSurface AddToCache(sImageCacheKey key, surface_ptr_t surface, std::string name);
 
     surface_ptr_t ResizeImage(surface_ptr_t input, int width, int height, bool keep_ratio);
