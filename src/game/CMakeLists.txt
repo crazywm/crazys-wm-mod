@@ -172,7 +172,10 @@ target_link_libraries(WhoreMaster PUBLIC WmGameObjects)
 add_executable(WhoreMasterFuzz $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> fuzzmain.cpp)
 target_link_libraries(WhoreMasterFuzz PUBLIC WmGameObjects)
 
-add_executable(WhoreMasterTest $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> unittest.cpp ../engine/text/conditions_tests.cpp)
+add_executable(WhoreMasterTest $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> unittest.cpp ../engine/text/conditions_tests.cpp
+        cGirlsTests.cpp
+        )
 target_link_libraries(WhoreMasterTest PUBLIC WmGameObjects)
+target_include_directories(WhoreMasterTest PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 set_target_properties(WhoreMaster WhoreMasterFuzz WhoreMasterTest PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")

@@ -1811,6 +1811,7 @@ std::string AdjustTraitGroup(sGirl& girl, int adjustment, std::initializer_list<
         // nullptr == no-trait
         if(!t) {
             group = count;
+            count += 1;
             continue;
         }
         if (girl.has_active_trait(t)) {
@@ -1858,7 +1859,7 @@ string cGirls::AdjustTraitGroupGagReflex(sGirl& girl, int adjustment, bool showm
 {
     if (adjustment == 0) return "";    // no girl or not changing anything so quit
     return AdjustTraitGroup(girl, adjustment,
-            {"Strong Gag Reflex", "Gag Reflex", "No Gag Reflex", "Deep Throat"}, showmessage,
+            {"Strong Gag Reflex", "Gag Reflex", nullptr, "No Gag Reflex", "Deep Throat"}, showmessage,
             " has lost the trait", " has gained the trait");
 }
 
@@ -1866,7 +1867,7 @@ string cGirls::AdjustTraitGroupBreastSize(sGirl& girl, int adjustment, bool show
 {
     if (adjustment == 0) return "";    // no girl or not changing anything so quit
     return AdjustTraitGroup(girl, adjustment,
-                            {"Flat Chest", "Petite Breasts", "Small Boobs", "Busty Boobs", "Big Boobs", "Giant Juggs",
+                            {"Flat Chest", "Petite Breasts", "Small Boobs", nullptr, "Busty Boobs", "Big Boobs", "Giant Juggs",
                              "Massive Melons", "Abnormally Large Boobs", "Titanic Tits"}, showmessage,
                             "'s breast size has changed from", " to", "Average");
 }
@@ -1875,7 +1876,7 @@ string cGirls::AdjustTraitGroupFertility(sGirl& girl, int steps, bool showmessag
 {
     if (steps == 0) return "";    // not changing anything so quit
     return AdjustTraitGroup(girl, steps,
-                            {"Sterile", "Fertile", "Broodmother"}, showmessage,
+                            {"Sterile", nullptr, "Fertile", "Broodmother"}, showmessage,
                             " has lost the trait", " has gained the trait");
 }
 
