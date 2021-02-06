@@ -154,6 +154,36 @@ namespace {
 
 
 namespace {
+
+    std::string parse_spaces(const std::string& source) {
+        std::string result;
+        result.reserve(source.size());
+
+        // starting this with true means that any initial space will be skipped
+        bool last_was_space = true;
+        bool newline_primed = false;
+        for(const auto& c : source) {
+            if(!std::isspace(c)) {
+                result.push_back(c);
+                last_was_space = false;
+                newline_primed = false;
+                continue;
+            }
+            if(!last_was_space) {
+                result.push_back(' ');
+                last_was_space = true;
+            }
+            if(c == '\n') {
+                if(newline_primed) {
+                    result.push_back('\n');
+                }
+                newline_primed = true;
+            }
+        }
+
+        return result;
+    }
+
     /*!
      * Parses the contents of a text group.
      * \param msg_name Name of the message that is currently parsed. This is needed only for error messages.
@@ -203,8 +233,7 @@ namespace {
             std::string content = prefix;
             if(element_text) content += element_text;
             content += suffix;
-            // TODO this does not convert \n -> ' '
-            boost::algorithm::trim_all(content);
+            content = parse_spaces(std::move(content));
 
             auto var_updates = parse_updates(text.Attribute("Updates"));
             auto condition = parse_conditions(text.Attribute("Condition"));
@@ -336,3 +365,5 @@ TEST_CASE("xml parse group") {
 
     // TODO test cases for group chance, priority and actions
 }
+
+// TODO test case for space normalization / newline handling
