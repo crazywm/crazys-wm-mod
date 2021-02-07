@@ -1,0 +1,141 @@
+<Messages>
+    <Message Name="brothel-one">
+        <Group Condition="Disposition>=80">
+            <Text>
+                She went to your current brothel with a smile on her face happy that such a nice guy bought her.
+            </Text>
+            <Text>
+                She smiled as you offered her your arm, surprised to find such a kindness waiting for her.
+                Hoping such kindness would continue, she went happily with you as her new owner.
+            </Text>
+        </Group>
+        <Group Condition="Disposition>=50^Disposition<80">
+            <Text>
+                Having heard about her new owner's reputation,
+                she was guided to your current brothel without giving any trouble.
+            </Text>
+            <Text>
+                She looked up at you hopefully as you refused the use of a retainer or delivery,
+                instead finding herself taken into your retinue for the day and given a chance to enjoy the fresh air
+                before you bring her to her new home.
+            </Text>
+        </Group>
+        <Group Condition="Disposition>=10^Disposition<50">
+            <Text>
+                She was sent to your current brothel, knowing that she could have been bought by a lot worse owner.
+            </Text>
+            <Text>
+                She was escorted home by one of your slaves who helped her settle in.
+                She seems rather hopeful of a good life in your care.
+            </Text>
+        </Group>
+        <Group Condition="Disposition>=-10^Disposition<10">
+            <Text>
+                As your newest investment, she was sent to your current brothel.
+            </Text>
+            <Text>
+                She has been sent to your establishment under the supervision of your most trusted slaves.
+            </Text>
+        </Group>
+        <Group Condition="Disposition>=-50^Disposition<-10">
+            <Text>
+                Not being very happy about her new owner, she was escorted to your current brothel.
+            </Text>
+            <Text>
+                She struggled as her hands were shackled in front of her. Her eyes locked on the floor,
+                tears gathering in the corners of her eyes, as she was sent off to your brothel.
+            </Text>
+        </Group>
+        <Group Condition="Disposition>=-80^Disposition<-50">
+            <Text>
+                She didn't want to provoke you in any possible way. She went quietly to your current brothel,
+                without any resistance.
+            </Text>
+            <Text>
+                She was dragged away to your brothel crying,
+                one of your guards slapping her face as she tried to resist.
+            </Text>
+        </Group>
+        <Group Condition="Disposition<-80">
+            <Text>
+                She was dragged crying and screaming to your current brothel afraid of what you might do to her as her new owner.
+            </Text>
+            <Text>
+                She looked up at you in fear as you order for her to be taken to your brothel.
+                A hint of some emotion hidden in her eyes draws your attention for a moment before she unconsciously looked away,
+                no doubt afraid of what you'd do to her if she met your gaze.
+            </Text>
+        </Group>
+    </Message>
+
+    <Message Name="brothel-many">
+        <Group Condition="Disposition>=80">
+            <Text>
+                They went to your current brothel with smiles on their faces, happy that such a nice guy bought them.
+            </Text>
+            <Text>
+                They smiled as you offered them your arm, surprised to find such a kindness waiting for them.
+                Hoping such kindness would continue, they went happily with you as their new owner.
+            </Text>
+            <Text>
+                The crowds cheer and congratulate each of the girls that you buy as they walk off the stage and into your custody.
+            </Text>
+        </Group>
+
+        <Group Condition="Disposition>=50^Disposition<80">
+            <Text>
+                Having heard about their new owner's reputation, they were guided to your current brothel without giving any trouble.
+            </Text>
+            <Text>
+                They looked up at you hopefully as you refused the use of a retainer or delivery,
+                instead finding themselves taken into your retinue for the day and given a chance to enjoy the fresh air before you bring them to their new home.
+            </Text>
+        </Group>
+        <Group Condition="Disposition>=10^Disposition<50">
+            <Text>
+                They were sent to your current brothel, knowing that they could have been bought by a lot worse owner.
+            </Text>
+            <Text>
+                They were escorted home by one of your slaves who helped them settle in.
+                They seem rather hopeful of a good life in your care.
+            </Text>
+        </Group>
+        <Group Condition="Disposition>=-10^Disposition<10">
+            <Text>
+                As your newest investments, they were sent to your current brothel.
+            </Text>
+            <Text>
+                They have been sent to your establishment under the supervision of your most trusted slaves.
+            </Text>
+        </Group>
+        <Group Condition="Disposition>=-50^Disposition<-10">
+            <Text>
+                Not being very happy about their new owner, they were escorted to your current brothel.
+            </Text>
+            <Text>
+                They struggled as their hands were shackled in front of them.
+                With their eyes locked on the floor and tears gathering in the corners of their eyes,
+                they were sent off to your brothel.
+            </Text>
+        </Group>
+        <Group Condition="Disposition>=-80^Disposition<-50">
+            <Text>
+                They didn't want to provoke you in any possible way.
+                They went quietly to your current brothel, without any resistance.
+            </Text>
+            <Text>
+                They were dragged away to your brothel crying, some of them getting slapped in the face when she tries to resist.
+            </Text>
+        </Group>
+        <Group Condition="Disposition<-80">
+            <Text>
+                They were dragged crying and screaming to your current brothel afraid of what you might do to them as their new owner.
+            </Text>
+            <Text>
+                They looked up at you in fear as you order for them to be taken to your brothel.
+                A hint of some emotion hidden in one of their eyes draws your attention for a moment before she unconsciously looked away,
+                no doubt afraid of what you'd do to her if she met your gaze.
+            </Text>
+        </Group>
+    </Message>
+</Messages>

@@ -19,6 +19,7 @@
 #pragma once
 
 #include "cGameWindow.h"
+#include "text/repo.h"
 
 class cScreenSlaveMarket : public cGameWindow
 {
@@ -56,6 +57,7 @@ private:
     };
 
     std::vector<RelBtnData> m_ReleaseButtons;
+    std::unique_ptr<ITextRepository> m_TextRepo;
 public:
     cScreenSlaveMarket();
 
@@ -66,7 +68,6 @@ public:
     void update_release_text();
     void preparescreenitems(sGirl* girl);
 
-    bool check_keys();
     int &image_num() { return ImageNum; }
     int &selected_item() { return m_SelectedGirl; }
     bool change_selected_girl(int selected);

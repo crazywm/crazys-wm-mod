@@ -29,6 +29,32 @@
 #include "character/traits/ITraitsCollection.h"
 #include "character/predicates.h"
 #include "character/cGirlPool.h"
+#include "xml/util.h"
+
+namespace {
+    class cSlaveMarketIF : public IInteractionInterface {
+    public:
+        bool LookupBoolean(const std::string& name) const final {
+            throw std::logic_error("N/A");
+        }
+
+        int LookupNumber(const std::string& name) const final {
+            if(name == "Disposition") {
+                return g_Game->player().disposition();
+            } else {
+                throw std::logic_error("N/A");
+            }
+        }
+
+        void TriggerEvent(const std::string& name) const final {
+            throw std::logic_error("N/A");
+        }
+        void SetVariable(const std::string& name, int value) const final {
+            throw std::logic_error("N/A");
+        }
+    };
+
+}
 
 cScreenSlaveMarket::cScreenSlaveMarket() : cGameWindow("slavemarket_screen.xml")
 {
@@ -36,25 +62,34 @@ cScreenSlaveMarket::cScreenSlaveMarket() : cGameWindow("slavemarket_screen.xml")
     ImageNum       = -1;
     DetailLevel    = 0;
     sel_pos        = 0;
+
+    m_TextRepo = ITextRepository::create();
+    DirPath path = DirPath() << "Resources" << "Data" << "SlaveMarket.xml";
+    auto doc = LoadXMLDocument(path.c_str());
+
+    m_TextRepo->load(*doc->RootElement());
 }
 
 void cScreenSlaveMarket::set_ids()
 {
     more_id             = get_id("ShowMoreButton");
     buy_slave_id        = get_id("BuySlaveButton");
-    cur_brothel_id      = get_id("CurrentBrothel","*Unused*");//
+    cur_brothel_id      = get_id("CurrentBrothel","*Unused*");
     slave_list_id       = get_id("SlaveList");
-    trait_list_id       = get_id("TraitList","*Unused*");//
+    trait_list_id       = get_id("TraitList","*Unused*");
     trait_list_text_id  = get_id("TraitListT");
     details_id          = get_id("SlaveDetails");
-    trait_id            = get_id("TraitDesc","*Unused*");//
+    trait_id            = get_id("TraitDesc","*Unused*");
     girl_desc_id        = get_id("GirlDesc");
     image_id            = get_id("GirlImage");
-    header_id           = get_id("ScreenHeader","*Unused*");//
+    header_id           = get_id("ScreenHeader","*Unused*");
     gold_id             = get_id("Gold", "*Unused*");
     slave_market_id     = get_id("SlaveMarket");
     releaseto_id        = get_id("ReleaseTo");
     roomsfree_id        = get_id("RoomsFree");
+
+    /// TODO cannot handle dungeon like the others at the moment
+    dungeon_id          = get_id("Dungeon");
 
     // set up structure with all "release girl to ... " buttons
     m_ReleaseButtons.emplace_back(RelBtnData{get_id("Brothel0"), BuildingType::BROTHEL, 0});
@@ -70,14 +105,13 @@ void cScreenSlaveMarket::set_ids()
     m_ReleaseButtons.emplace_back(RelBtnData{get_id("Arena"), BuildingType::ARENA, 0});
     m_ReleaseButtons.emplace_back(RelBtnData{get_id("Centre"), BuildingType::CENTRE, 0});
     m_ReleaseButtons.emplace_back(RelBtnData{get_id("Farm"), BuildingType::FARM, 0});
-    /// TODO cannot handle dungeon like the others at the moment
-    dungeon_id            /**/ = get_id("Dungeon");
 
     // set button callbacks
     SetButtonCallback(buy_slave_id, [this](){
         buy_slaves();
-        init(false);
+        init(true);
     });
+
     SetButtonHotKey(buy_slave_id, SDLK_SPACE);
 
     for(const auto& btn: m_ReleaseButtons) {
@@ -141,7 +175,9 @@ void cScreenSlaveMarket::init(bool back)
     ImageNum = -1;
     if (cur_brothel_id >= 0)    EditTextItem(active_building().name(), cur_brothel_id);
 
-    m_TargetBuilding = &active_building();
+    if(!back) {
+        m_TargetBuilding = &active_building();
+    }
     update_release_text();
 
     for(const auto& btn: m_ReleaseButtons) {
@@ -155,7 +191,7 @@ void cScreenSlaveMarket::init(bool back)
         auto girl = g_Game->GetSlaveMarket().get_girl(i);
         if (girl->IsUnique())
         {
-            col = COLOR_RED;
+            col = COLOR_YELLOW;
         }
         AddToListBox(slave_list_id, i, girl->FullName(), col);
     }
@@ -201,6 +237,7 @@ void cScreenSlaveMarket::on_select_trait(int selection)
 
 void cScreenSlaveMarket::process()
 {
+    /*
     HideWidget(image_id, (m_SelectedGirl < 0));        // hide/show image based on whether a girl is selected
     if (m_SelectedGirl < 0)                                // if no girl is selected, clear girl info
     {
@@ -208,6 +245,7 @@ void cScreenSlaveMarket::process()
         if (trait_id >= 0) EditTextItem("", trait_id);
     }
     // nothing selected == nothing further to do
+    */
 }
 
 bool cScreenSlaveMarket::buy_slaves()
@@ -293,9 +331,9 @@ bool cScreenSlaveMarket::buy_slaves()
     // `J` we could afford the girls so lets get to it
     ss << "You buy ";
 
-    /* */if (numgirls == 1)    ss << "a girl,   " << girls_bought.front()->FullName() << "   and send her to " << sendtotext.str();
-    else if (numgirls == 2)    ss << "two girls,   " << girls_bought.front()->FullName() << "   and   " << girls_bought[1]->FullName() << ". You send them to " << sendtotext.str();
-    else /*              */    ss << numgirls << " girls and send them to " << sendtotext.str();
+    if (numgirls == 1)       ss << "a girl,   " << girls_bought.front()->FullName() << "   and send her to " << sendtotext.str();
+    else if (numgirls == 2)  ss << "two girls,   " << girls_bought.front()->FullName() << "   and   " << girls_bought[1]->FullName() << ". You send them to " << sendtotext.str();
+    else                     ss << numgirls << " girls and send them to " << sendtotext.str();
     ss << ".\n\n";
 
     // `J` zzzzzz - add in flavor texts here
@@ -338,97 +376,10 @@ bool cScreenSlaveMarket::buy_slaves()
     }
     else if (m_TargetBuilding->type() == BuildingType::BROTHEL)
     {
-        if (g_Game->player().disposition() >= 80)                // Benevolent
-        {
-            if (numgirls == 1)
-            {
-                /* */if (g_Dice % 2)    ss << "She went to your current brothel with a smile on her face happy that such a nice guy bought her.";
-                else/*            */    ss << "She smiled as you offered her your arm, surprised to find such a kindness waiting for her. Hopeing such kindness would continue, she went happily with you as her new owner.";
-            }
-            else
-            {
-                /* */if (g_Dice % 2)    ss << "They went to your current brothel with smiles on their faces, happy that such a nice guy bought them.";
-                else if (g_Dice % 2)    ss << "They smiled as you offered them your arm, surprised to find such a kindness waiting for them. Hopeing such kindness would continue, they went happily with you as their new owner.";
-                else/*            */    ss << "The crowds chear and congradulate each of the girls that you buy as they walk off the stage and into your custody.";
-            }
-        }
-        else if (g_Game->player().disposition() >= 50)            // Nice
-        {
-            if (numgirls == 1)
-            {
-                /* */if (g_Dice % 2)    ss << "Having heard about her new owner's reputation, she was guided to your current brothel without giving any trouble.";
-                else/*            */    ss << "She looked up at you hopefully as you refused the use of a retainer or delivery, instead finding herself taken into your retinue for the day and given a chance to enjoy the fresh air before you bring her to her new home.";
-            }
-            else
-            {
-                /* */if (g_Dice % 2)    ss << "Having heard about their new owner's reputation, they were guided to your current brothel without giving any trouble.";
-                else/*            */    ss << "They looked up at you hopefully as you refused the use of a retainer or delivery, instead finding themselves taken into your retinue for the day and given a chance to enjoy the fresh air before you bring them to their new home.";
-            }
-        }
-        else if (g_Game->player().disposition() >= 10)            // Pleasant
-        {
-            if (numgirls == 1)
-            {
-                /* */if (g_Dice % 2)    ss << "She was sent to your current brothel, knowing that she could have been bought by a lot worse owner.";
-                else/*            */    ss << "She was escorted home by one of your slaves who helped her settle in. She seems rather hopeful of a good life in your care.";
-            }
-            else
-            {
-                /* */if (g_Dice % 2)    ss << "They were sent to your current brothel, knowing that they could have been bought by a lot worse owner.";
-                else/*            */    ss << "They were escorted home by one of your slaves who helped them settle in. They seem rather hopeful of a good life in your care.";
-            }
-        }
-        else if (g_Game->player().disposition() >= -10)            // Neutral
-        {
-            if (numgirls == 1)
-            {
-                /* */if (g_Dice % 2)    ss << "As your newest investment, she was sent to your current brothel.";
-                else/*            */    ss << "She has been sent to your establishment under the supervision of your most trusted slaves.";
-            }
-            else
-            {
-                /* */if (g_Dice % 2)    ss << "As your newest investments, they were sent to your current brothel.";
-                else/*            */    ss << "They have been sent to your establishment under the supervision of your most trusted slaves.";
-            }
-        }
-        else if (g_Game->player().disposition() >= -50)            // Not nice
-        {
-            if (numgirls == 1)
-            {
-                /* */if (g_Dice % 2)    ss << "Not being very happy about her new owner, she was escorted to your current brothel.";
-                else/*            */    ss << "She struggled as her hands were shackled in front of her. Her eyes locked on the floor, tears gathering in the corners of her eyes, as she was sent off to your brothel.";
-            }
-            else
-            {
-                /* */if (g_Dice % 2)    ss << "Not being very happy about their new owner, they were escorted to your current brothel.";
-                else/*            */    ss << "They struggled as their hands were shackled in front of them. With their eyes locked on the floor and tears gathering in the corners of their eyes, they were sent off to your brothel.";
-            }
-        }
-        else if (g_Game->player().disposition() >= -80)            //Mean
-        {
-            if (numgirls == 1)
-            {
-                /* */if (g_Dice % 2)    ss << "She didn't want to provoke you in any possible way. She went quietly to your current brothel, without any resistance.";
-                else/*            */    ss << "She was dragged away to your brothel crying, one of your guards slapping her face as she tried to resist.";
-            }
-            else
-            {
-                /* */if (g_Dice % 2)    ss << "They didn't want to provoke you in any possible way. They went quietly to your current brothel, without any resistance.";
-                else/*            */    ss << "They were dragged away to your brothel crying, some of them getting slapped in the face when she tries to resist.";
-            }
-        }
-        else                                            // Evil
-        {
-            if (numgirls == 1)
-            {
-                /* */if (g_Dice % 2)    ss << "She was dragged crying and screaming to your current brothel afraid of what you might do to her as her new owner.";
-                else/*            */    ss << "She looked up at you in fear as you order for her to be taken to your brothel. A hint of some emotion hidden in her eyes draws your attention for a moment before she unconsciously looked away, no doubt afraid of what you'd do to her if she met your gaze.";
-            }
-            else
-            {
-                /* */if (g_Dice % 2)    ss << "They were dragged crying and screaming to your current brothel afraid of what you might do to them as their new owner.";
-                else/*            */    ss << "They looked up at you in fear as you order for them to be taken to your brothel. A hint of some emotion hidden in one of their eyes draws your attention for a moment before she unconsciously looked away, no doubt afraid of what you'd do to her if she met your gaze.";
-            }
+        if(numgirls == 1) {
+            ss << m_TextRepo->get_text("brothel-one", cSlaveMarketIF{});
+        } else {
+            ss << m_TextRepo->get_text("brothel-many", cSlaveMarketIF{});
         }
         ss << "\n";
     }
@@ -827,45 +778,6 @@ std::string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
         else                                            //Evil
         {
             text += " put up a fight. She was beaten and dragged to your dungeon where you can have some private fun time with her.";
-        }
-    }
-    else
-    {
-        int t = g_Dice % 2;    // `J` because there are currently only 2 text options per disposition this should be ok
-        if (g_Game->player().disposition() >= 80)                //Benevolent
-        {
-            if (t == 1)    text += " went to your current brothel with a smile on her face happy that such a nice guy bought her.";
-            else        text += " smiled as you offered her your arm, surprised to find such a kindness waiting for her. Hopeing such kindness would continue, she went happily with you as her owner.";
-        }
-        else if (g_Game->player().disposition() >= 50)            // nice
-        {
-            if (t == 1)    text += ", having heard about her new owner's reputation, was guided to your current brothel without giving any trouble.";
-            else        text += " looked up at you hopefully as you refused the use of a retainer or delivery, instead finding herself taken into your retinue for the day and given a chance to enjoy the fresh air before you both return home.";
-        }
-        else if (g_Game->player().disposition() >= 10)            //Pleasant
-        {
-            if (t == 1)    text += " was sent to your current brothel, knowing that she could have been bought by a lot worse owner.";
-            else        text += " was escorted home by one of your slaves who helped her settle in. She seems rather hopeful of a good life in your care.";
-        }
-        else if (g_Game->player().disposition() >= -10)            // neutral
-        {
-            if (t == 1)    text += " as your newest investment, she was sent to your current brothel.";
-            else        text += " has been sent to your establishment under the supervision of your most trusted slaves.";
-        }
-        else if (g_Game->player().disposition() >= -50)            // not nice
-        {
-            if (t == 1)    text += " not being very happy about her new owner, was escorted to your current brothel.";
-            else        text += " struggled as her hands were shackled in front of her. Her eyes locked on the floor, tears gathering in the corners of her eyes, as she was sent off to your brothel.";
-        }
-        else if (g_Game->player().disposition() >= -80)            //Mean
-        {
-            if (t == 1)    text += " didn't wanted to provoke you in any possible way. She went quietly to your current brothel, without any resistance.";
-            else        text += " was dragged away to your brothel crying, one of your guards slapping her face as she tried to resist. ";
-        }
-        else                                            //Evil
-        {
-            if (t == 1)    text += " was dragged crying and screaming to your current brothel afraid of what you might do to her as her new owner.";
-            else        text += " looked up at you in fear as you order for her to be taken to your brothel. A hint of some emotion hidden in her eyes draws your attention for a moment before she unconsciously looked away, no doubt afraid of what you'd do to her if she met your gaze.";
         }
     }
     return text;
