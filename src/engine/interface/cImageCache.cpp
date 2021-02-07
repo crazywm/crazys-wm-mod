@@ -95,10 +95,17 @@ cSurface cImageCache::LoadDefaultSize(std::string filename, bool transparent) {
         if (!loaded) {
             throw std::runtime_error("Could not load image '" + filename + "': " + IMG_GetError());
         }
+
+        // convert everything to 32 bit pixel format
+        if(loaded->format->BitsPerPixel != 32) {
+            loaded.reset(SDL_ConvertSurfaceFormat(loaded.get(), SDL_PIXELFORMAT_ARGB8888, 0));
+        }
         ++m_ImageLoadCount;
 
         // set blend mode based on transparency
-        SDL_SetSurfaceBlendMode(loaded.get(), transparent ? SDL_BLENDMODE_BLEND : SDL_BLENDMODE_NONE);
+        SDL_BlendMode mode;
+        SDL_GetSurfaceBlendMode(loaded.get(), &mode);
+        int status = SDL_SetSurfaceBlendMode(loaded.get(), transparent ? SDL_BLENDMODE_BLEND : SDL_BLENDMODE_NONE);
 
         return AddToCache(std::move(key), std::move(loaded), std::move(filename));
     }
@@ -192,16 +199,25 @@ surface_ptr_t cImageCache::RawResize(SDL_Surface* source, int width, int height)
     auto target = CreateSDLSurface(width, height, true);
     SDL_Rect inp{0, 0, source->w, source->h};
     SDL_Rect tgt{0, 0, target->w, target->h};
-    // First adapt pixel format, then scale
-    auto intermed = CreateSDLSurface(source->w, source->h, true);
-    SDL_BlitSurface(source, &inp, intermed.get(), nullptr);
+    if (source->format->format != target->format->format) {
+        // First adapt pixel format, then scale
+        auto intermed = CreateSDLSurface(source->w, source->h, true);
+        if (SDL_BlitSurface(source, &inp, intermed.get(), nullptr)) {
+            g_LogFile.error("interface", "Could not adapt pixel format: ", SDL_GetError());
+        };
 
-    if(SDL_BlitScaled(intermed.get(), &inp, target.get(), &tgt)) {
-        g_LogFile.error("interface", "Could not scale surface: ", SDL_GetError());
+        if (SDL_BlitScaled(intermed.get(), &inp, target.get(), &tgt)) {
+            g_LogFile.error("interface", "Could not scale surface: ", SDL_GetError());
+        }
+    } else {
+        // Scale directly
+        if (SDL_BlitScaled(source, &inp, target.get(), &tgt)) {
+            g_LogFile.error("interface", "Could not scale surface: ", SDL_GetError());
+        }
     }
     SDL_BlendMode mode = SDL_BLENDMODE_INVALID;
-    SDL_GetSurfaceBlendMode(source, &mode);
-    SDL_SetSurfaceBlendMode(target.get(), mode);
+    assert(SDL_GetSurfaceBlendMode(source, &mode) == 0);
+    assert(SDL_SetSurfaceBlendMode(target.get(), mode) == 0);
     m_ImageResizeCount++;
     return target;
 }
