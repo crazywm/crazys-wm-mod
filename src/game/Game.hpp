@@ -50,6 +50,25 @@ struct Date {
     int day;
 };
 
+class Game;
+class cErrorContext {
+public:
+    ~cErrorContext();
+    cErrorContext(const cErrorContext&) = delete;
+    cErrorContext(cErrorContext&& o)  noexcept : m_Game(o.m_Game), m_Unstack(std::move(o.m_Unstack)) {
+        o.m_Unstack = {};
+    };
+
+    friend class Game;
+private:
+    cErrorContext(Game* g, std::function<void()> unstack) :
+        m_Game(g), m_Unstack(std::move(unstack)) {
+    }
+
+    Game* m_Game;
+    std::function<void()> m_Unstack;
+};
+
 /*!
  * \brief Collects all information about a single game.
  * \details This class manages all global objects of a single game. This includes the girls,
@@ -107,6 +126,8 @@ public:
     // messages
     void push_message(std::string text, int color);
     void error(std::string message);
+    cErrorContext push_error_context(std::string text);
+
 
     // customers
     cCustomers& customers();
@@ -238,6 +259,8 @@ private:
     void LoadGirlFiles(const DirPath& location, const std::function<void(const std::string&)>& error_handler);
     void LoadItemFiles(DirPath location);
     void LoadTraitFiles(DirPath location);
+
+    std::vector<std::string> m_ErrorContextStack;
 };
 
 // the global game instance.

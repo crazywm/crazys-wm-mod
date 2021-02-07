@@ -1856,6 +1856,7 @@ bool cJobManager::do_job(sGirl& girl, bool is_night)
 
 bool cJobManager::do_job(JOBS job_id, sGirl& girl, bool is_night)
 {
+    auto ctx{g_Game->push_error_context("job: " + get_job_name(job_id))};
     assert(m_OOPJobs[job_id] != nullptr);
     auto refused = m_OOPJobs[job_id]->Work(girl, is_night, g_Dice);
     if(is_night) {

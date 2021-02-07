@@ -1147,5 +1147,24 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
 }
 
 void Game::error(std::string message) {
+    for(auto& ctx : m_ErrorContextStack) {
+        message = ctx + " >> " + message;
+    }
     window_manager().PushError(std::move(message));
+}
+
+cErrorContext Game::push_error_context(std::string message) {
+    m_ErrorContextStack.push_back(std::move(message));
+    return cErrorContext(this, [this]() {
+        m_ErrorContextStack.pop_back();
+    });
+}
+
+cErrorContext::~cErrorContext() {
+    if(m_Unstack) {
+        if(std::uncaught_exceptions() > 0) {
+            m_Game->error("");
+        }
+        m_Unstack();
+    }
 }
