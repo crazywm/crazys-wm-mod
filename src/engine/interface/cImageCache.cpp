@@ -395,7 +395,12 @@ void ReadMovie(std::string& file_name, int width, int height, F&& callback) {
 
     keep_ratio_rescaling(ctx->width, ctx->height, width, height);
 
-    sConverter converter{ctx->width, ctx->height, ctx->pix_fmt,
+    AVPixelFormat src_fmt = ctx->pix_fmt;
+    if(src_fmt == AV_PIX_FMT_NONE) {
+        g_LogFile.template warning("ffmpeg", "Pixel format not set for file ", file_name, " Note that animated webp's are currently unsupported.");
+        return;
+    }
+    sConverter converter{ctx->width, ctx->height, src_fmt,
                          width, height, AV_PIX_FMT_RGBA};
 
     ffmpeg::sImageBuffer converted(width, height, AV_PIX_FMT_RGBA);
