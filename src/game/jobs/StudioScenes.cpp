@@ -197,7 +197,7 @@ namespace {
             }
 
             if(select_job.selection()) {
-                JOBS chosen = static_cast<JOBS>((long)select_job.selection());
+                JOBS chosen = static_cast<JOBS>((std::ptrdiff_t)select_job.selection());
                 return mgr.do_job(chosen, girl, SHIFT_NIGHT);
             }
 
