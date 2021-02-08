@@ -375,7 +375,8 @@ void cTraitsCollection::_remove_dynamic_trait(std::uint64_t h) {
 }
 
 cTraitsCollection::cTraitsCollection(const ITraitsManager* mgr) : m_TraitsManager(mgr) {
-
+    m_StatEffect.fill(0);
+    m_SkillEffect.fill(0);
 }
 
 void cTraitsCollection::apply_effect(const TraitEffect& effect) {

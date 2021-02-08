@@ -110,6 +110,7 @@ void cScreenDungeon::set_ids()
     SetButtonCallback(releaseall_id, [this]() {
         release_all_girls();
         selection = -1;
+        init(false);
     });
 
     SetButtonCallback(stopfood_id, [this]() {

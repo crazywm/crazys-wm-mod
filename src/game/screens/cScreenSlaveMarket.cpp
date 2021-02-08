@@ -686,14 +686,13 @@ bool cScreenSlaveMarket::change_selected_girl(int selected)
      *    if the last clicked one is actually deselected.
      */
     m_SelectedGirl = selected;
+    HideWidget(image_id, (m_SelectedGirl < 0));        // hide/show image based on whether a girl is selected
     if (m_SelectedGirl < 0)
     {
-        HideWidget(image_id, (m_SelectedGirl < 0));        // hide/show image based on whether a girl is selected
-        if (m_SelectedGirl < 0)                                // if no girl is selected, clear girl info
-        {
-            EditTextItem("No girl selected", details_id);
-            if (trait_id >= 0) EditTextItem("", trait_id);
-        }
+        // if no girl is selected, clear girl info
+        EditTextItem("No girl selected", details_id);
+        if (trait_id >= 0) EditTextItem("", trait_id);
+
     }
     bool MatchSel = false;
     int first_candidate = -1;

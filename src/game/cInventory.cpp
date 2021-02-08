@@ -77,7 +77,7 @@ void cInventory::GivePlayerAllItems()
     sInventoryItem* item;
     for (auto & m_Item : m_Items)
     {
-        item = m_Item;
+        item = m_Item.get();
         g_Game->player().inventory().add_item(item, 999);
     }
 }
@@ -125,12 +125,12 @@ static void do_effects(tinyxml2::XMLElement *parent, sInventoryItem *item)
         item->m_Effects.push_back(std::move(eff));
     }
 }
-
+/*
 void cInventory::AddItem(sInventoryItem* item)
 {
     m_Items.push_back(item);
 }
-
+*/
 int cInventory::HappinessFromItem(const sInventoryItem * item)
 {
     // decrease value by 5% for each point of badness
@@ -179,9 +179,9 @@ ostream& operator<<(ostream& os, sEffect& eff) {
 }
 
 // Deletes all nulls from `items`.
-void cInventory::cull_null_items(std::vector<sInventoryItem *>& items)
+void cull_null_items(std::vector<std::unique_ptr<sInventoryItem>>& items)
 {
-   erase_if(items, [](auto* ptr) {return ptr == nullptr;});
+   erase_if(items, [](const auto& ptr) {return ptr == nullptr;});
 }
 
 sInventoryItem* cInventory::GetRandomCatacombItem()
@@ -190,7 +190,7 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
 
     cull_null_items(m_Items);
     assert(std::none_of(begin(m_Items), end(m_Items),
-                        [](auto* ptr) {return ptr == nullptr;})
+                        [](const auto& ptr) {return ptr == nullptr;})
            && "no nulls in `m_Items`.");
 
     sInventoryItem *temp = nullptr;
@@ -201,7 +201,7 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
     {
         if (tries % 10 == 0) index = g_Dice % (m_Items.size() - 1);
         if (index >= (int)m_Items.size()) index = 0;
-        temp = m_Items[index];
+        temp = m_Items[index].get();
         switch (temp->m_Rarity) {
         case RARITYSHOP25:                                    return temp;    break;
         case RARITYSHOP05:        if (g_Dice.percent(25))        return temp;    break;
@@ -228,7 +228,7 @@ sInventoryItem* cInventory::GetItem(string name)
 {
     for (auto& item : m_Items)
     {
-        if (item->m_Name == name) return item;
+        if (item->m_Name == name) return item.get();
     }
     return nullptr;
 }
@@ -724,9 +724,9 @@ void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
 
 // ----- Load
 
-static sInventoryItem* handle_element(tinyxml2::XMLElement& el)
+static std::unique_ptr<sInventoryItem> handle_element(tinyxml2::XMLElement& el)
 {
-    sInventoryItem* item = new sInventoryItem();
+    auto item = std::make_unique<sInventoryItem>();
     item->m_Name = GetStringAttribute(el, "Name");
     if (auto pt = el.Attribute("Desc"))                        item->m_Desc = pt; else cout << "no desc attribute found" << endl;
     if (auto pt = el.Attribute("Type"))                        item->set_type(pt);
@@ -742,7 +742,7 @@ static sInventoryItem* handle_element(tinyxml2::XMLElement& el)
         item->m_Crafting.from_xml(*crafting);
     }
 
-    do_effects(&el, item);
+    do_effects(&el, item.get());
     //    do_tests(el, item);        //    `J` will be added in the future (hopefully)
     return item;
 }
@@ -754,13 +754,13 @@ bool cInventory::LoadItemsXML(const string& filename)
     for (auto& el : IterateChildElements(*root_el))
     {
         try {
-            sInventoryItem* item = handle_element(el);
+            auto item = handle_element(el);
             if (item->m_Name.empty()) {
                 g_LogFile.error("items","Item in '", filename, "' has no name!");
                 continue;
             }
             g_LogFile.debug("items", "Loading item ", item->m_Name);
-            m_Items.push_back(item);
+            m_Items.push_back(std::move(item));
         } catch (std::runtime_error& error) {
             g_LogFile.error("items", "Could not load item from '", filename, "' (", el.GetLineNum(), "): ", error.what());
         }
@@ -776,7 +776,7 @@ sInventoryItem* cInventory::GetCraftableItem(sGirl& girl, JOBS job, int craft_po
             if(item->m_Crafting.craft_cost() < craft_points / 3)
                 continue;
 
-            selector.process(item, item->m_Crafting.weight());
+            selector.process(item.get(), item->m_Crafting.weight());
         }
     }
     return selector.selection();
@@ -787,7 +787,7 @@ std::vector<sInventoryItem*> cInventory::GetCraftableItems(JOBS job)
     std::vector<sInventoryItem*> result;
     for(auto& item : m_Items) {
         if(item->m_Crafting.is_craftable_by(job)) {
-            result.push_back(item);
+            result.push_back(item.get());
         }
     }
     return std::move(result);

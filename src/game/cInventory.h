@@ -258,9 +258,9 @@ public:
        RandomSelector<sInventoryItem> sel;
 
        std::for_each(begin(m_Items), end(m_Items),
-                     [pred, &sel](sInventoryItem* ptr) {
+                     [pred, &sel](const std::unique_ptr<sInventoryItem>& ptr) {
                        if(ptr && pred(*ptr))
-                          sel.process(ptr, 1.0);
+                          sel.process(ptr.get(), 1.0);
                     });
        return sel.selection();
     }
@@ -288,10 +288,7 @@ public:
 
 
 private:
-    mutable std::vector<sInventoryItem *> m_Items;  // Master list of items?
-
-    static
-    void cull_null_items(std::vector<sInventoryItem *>& items);
+    mutable std::vector<std::unique_ptr<sInventoryItem>> m_Items;  // Master list of items?
 };
 
 #endif

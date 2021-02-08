@@ -87,7 +87,7 @@ private:
 
     BuildingType m_Type;
 
-    sGirl* m_LastSelection;
+    sGirl* m_LastSelection = nullptr;
 
     int m_FFSD_Flag = -1;
 
