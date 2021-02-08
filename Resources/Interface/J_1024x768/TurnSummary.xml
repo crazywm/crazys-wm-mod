@@ -8,7 +8,7 @@
 <Text       Name="LabelEvent"           Text="Event"                        XPos="7"       YPos="330"      Width="150"     Height="20"     FontSize="11"  />
 <ListBox    Name="Event"                                                    XPos="7"       YPos="350"      Width="150"     Height="380"   FontSize="9" RowHeight="19"  Border="1"          Events="true" Multi="false"  />
 
-<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="157"      YPos="10"       Width="690"     Height="720"  />
+<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="157"      YPos="10"       Width="690"     Height="720"    MinWidth="240" MinHeight="320"/>
 
 <Text       Name="LabelDesc"            Text=""                             XPos="847"     YPos="50"       Width="150"     Height="550"    FontSize="9"  />
 <Button     Name="NextWeek"             Image="NextWeek"                    XPos="862"     YPos="10"       Width="120"     Height="32"     Transparency="true" />

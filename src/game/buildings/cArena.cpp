@@ -63,8 +63,8 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
     JOB_CITYGUARD
 
     //*/
-    m_Girls->apply([&](auto& current){
-        auto sw = (is_night ? current.m_NightJob : current.m_DayJob);
+    m_Girls->apply([&](auto& current) {
+        auto sw = current.get_job(is_night);
         if (current.is_dead() || sw == JOB_RESTING || sw == m_MatronJob)// || sw == JOB_RACING)
         {    // skip dead girls, resting girls and the matron and racers
             return;

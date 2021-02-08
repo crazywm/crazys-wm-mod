@@ -1,9 +1,23 @@
 # Version 07.00.alpha12
 
 ## Changes
+* added `massage` images for masseuse job, with fallback to `hand`
+* small images won't be stretched to full screen size
 
 ## Fixes
 * fixed reset when selecting filter in item screen
+* fixed image resetting in dungeon sex
+* less verbose logging for item loading
+* runaway fix
+* fixed dungeon release target building
+* fixed crash in gang screen
+* fixed sell 10/sell all buttons
+* pre-fill text field in game config with current value
+* don't reset target building after buying
+* added missing files for market research screen
+* fixed gag reflex trait changes
+* fixed newlines in xml text
+* fixed crash for animated webp (they are still unsupported)
 
 # Version 07.00.alpha11
 

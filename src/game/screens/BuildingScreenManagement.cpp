@@ -230,8 +230,8 @@ void IBuildingScreenManagement::assign_job(sGirl& girl, JOBS new_job, int girl_s
         SetSelectedItemInList(joblist_id, new_job, false);
     }
 
-    JOBS day_job   = girl.m_DayJob;
-    JOBS night_job = girl.m_NightJob;
+    JOBS day_job   = girl.get_job(false);
+    JOBS night_job = girl.get_job(true);
     std::stringstream ss;
     // update the girl's listing to reflect the job change
     const auto day_job_name = job_manager().get_job_name(day_job);

@@ -5,7 +5,7 @@
 <Button     Name="ShowMoreButton"       Image="ShowMore"                    XPos="34"       YPos="640"      Width="90"     Height="24"     Transparency="true"/>
 <Text       Name="TraitListT"           Text="Traits"                       XPos="7"       YPos="670"      Width="187"     Height="100"    FontSize="7"          />
 
-<Image      Name="GirlImage"            File="blank.png"                    XPos="157"      YPos="10"       Width="690"     Height="650"  />
+<Image      Name="GirlImage"            File="blank.png"                    XPos="157"      YPos="10"       Width="690"     Height="650"    MinWidth="240" MinHeight="320" />
 
 <Text       Name="Gold"                 Text="Gold: 0"                      XPos="847"     YPos="2"        Width="157"     Height="32"     FontSize="15"          />
 <ListBox    Name="SlaveList"                                                XPos="847"     YPos="35"       Width="150"     Height="255" FontSize="9" RowHeight="19" Border="1"         Events="true"         Multi="true"          />
