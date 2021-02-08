@@ -8,8 +8,7 @@ else()
     # on windows, don't put the dlls/exes into their own directory
     set(CMAKE_INSTALL_BINDIR .)
 
-    # TODO copy those from somewhere
-    # libgcc_s_seh-1.dll, libstdc++-6.dll, libwinpthread-1.dll
+    install(DIRECTORY deps/mingw/ DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
