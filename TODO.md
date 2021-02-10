@@ -66,7 +66,6 @@
 * [ ] "ERROR: Selected girl is a runaway"
 * [ ] Clicking the item filter in the inventory screen sets focus to left inventory
 * [ ] async scripts and messages may get scrambled
-* [ ] Bought a dead girl from the market? Got a DEAD girl from an event!
 * [ ] ffmpeg frame duration off by one
 * [ ] bugs in shop/inventory screen
   - [ ] "your inventory is full", but seems to buy anyway

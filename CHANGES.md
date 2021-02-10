@@ -1,3 +1,12 @@
+# Version 07.00.alpha13
+
+## Fixes
+* age problems for new girls
+* release all button in dungeon screen
+* show image in slave market
+
+
+
 # Version 07.00.alpha12
 
 ## Changes
