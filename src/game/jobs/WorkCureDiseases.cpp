@@ -44,9 +44,8 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
         JOBS newjob = JOB_RESTING;
         if (girl.health() < 80 || girl.tiredness() > 20)
         {
-            ss << ". She was not feeling well so she ";
-            if (girl.has_active_trait("Construct"))    { newjob = JOB_GETREPAIRS;    ss << "went to see the mechanic for repairs instead."; }
-            else/*                         */    { newjob = JOB_GETHEALING;    ss << "checked herself in for treatment instead."; }
+            ss << ". She was not feeling well so she checked herself in for treatment instead.";
+            newjob = JOB_GETHEALING;
         }
         else/*                             */    { ss << " so she was sent to the waiting room."; }
         girl.FullJobReset(newjob);

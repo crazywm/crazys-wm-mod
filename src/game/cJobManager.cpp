@@ -610,31 +610,6 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
         }
         g_Game->push_message(ss.str(), 0);
     }
-    else if (JobID == JOB_MECHANIC)
-    {
-        Girl.m_NightJob = Girl.m_DayJob = JOB_MECHANIC;
-    }
-    else if (JobID == JOB_GETHEALING && Girl.has_active_trait("Construct"))
-    {
-        if (fulltime)
-            Girl.m_DayJob = Girl.m_NightJob = JOB_GETREPAIRS;
-        else if (Day0Night1 == SHIFT_DAY)
-            Girl.m_DayJob = JOB_GETREPAIRS;
-        else
-            Girl.m_NightJob = JOB_GETREPAIRS;
-        g_Game->push_message(("The Doctor does not work on Constructs so she sends ") + Girl.FullName() + (" to the Mechanic."), 0);
-    }
-    else if (JobID == JOB_GETREPAIRS && !Girl.has_active_trait("Construct") && !Girl.has_active_trait(
-            "Half-Construct"))
-    {
-        if (fulltime)
-            Girl.m_DayJob = Girl.m_NightJob = JOB_GETHEALING;
-        else if (Day0Night1 == SHIFT_DAY)
-            Girl.m_DayJob = JOB_GETHEALING;
-        else
-            Girl.m_NightJob = JOB_GETHEALING;
-        g_Game->push_message(("The Mechanic only works on Constructs so she sends ") + Girl.FullName() + (" to the Doctor."), 0);
-    }
     // `J` condensed clinic surgery jobs into one check
     else if (
         JobID == JOB_CUREDISEASES ||

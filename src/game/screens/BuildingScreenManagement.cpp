@@ -1010,10 +1010,6 @@ std::string cScreenClinicManagement::get_job_description(int selection)
     std::stringstream jdmessage; jdmessage << job_manager().JobFilters[selection].Description;
     if (DoctorNeeded(active_building()))
         jdmessage << "\n*** A Doctor is required to perform any surgeries. ";
-    if ((active_building().num_girls_on_job(JOB_MECHANIC, SHIFT_DAY) < 1 &&
-         active_building().num_girls_on_job(JOB_GETREPAIRS, SHIFT_DAY) > 0) || (active_building().num_girls_on_job(JOB_MECHANIC, SHIFT_NIGHT) < 1 &&
-                                                                                active_building().num_girls_on_job(JOB_GETREPAIRS, SHIFT_NIGHT) > 0))
-        jdmessage << "\n**** A Mechanic is required to perform any Repairs. ";
     return jdmessage.str();
 }
 

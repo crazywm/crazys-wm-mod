@@ -125,7 +125,7 @@ void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
     /////////////////////////////////////
     m_Girls->apply([is_night](auto& current) {
         auto sw = current.get_job(is_night);
-        if (current.is_dead() || (sw != JOB_INTERN && sw != JOB_NURSE && sw != JOB_JANITOR && sw != JOB_MECHANIC && sw != JOB_DOCTOR) ||
+        if (current.is_dead() || (sw != JOB_INTERN && sw != JOB_NURSE && sw != JOB_JANITOR && sw != JOB_DOCTOR) ||
             // skip dead girls and anyone who is not staff
             (sw == JOB_DOCTOR && ((is_night == SHIFT_DAY && current.m_Refused_To_Work_Day)||(is_night == SHIFT_NIGHT && current.m_Refused_To_Work_Night))))
         {    // and skip doctors who refused to work in the first check
@@ -141,7 +141,7 @@ void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
     ///////////////////////////////////////////////////////////////////////
     m_Girls->apply([is_night](auto& current) {
         auto sw = current.get_job(is_night);
-        if (current.is_dead() || !is_in((JOBS)sw, {JOB_GETHEALING, JOB_GETREPAIRS, JOB_GETABORT, JOB_COSMETICSURGERY,
+        if (current.is_dead() || !is_in((JOBS)sw, {JOB_GETHEALING, JOB_GETABORT, JOB_COSMETICSURGERY,
                                                     JOB_LIPO, JOB_BREASTREDUCTION, JOB_BOOBJOB, JOB_VAGINAREJUV, JOB_FACELIFT,
                                                     JOB_ASSJOB, JOB_TUBESTIED, JOB_CUREDISEASES, JOB_FERTILITY}))
         {    // skip dead girls and anyone not a patient
@@ -190,11 +190,6 @@ void sClinic::auto_assign_job(sGirl& target, std::stringstream& message, bool is
         ss << "get her " << (numdiseases > 1 ? "diseases" : diseases[0]) << " treated.";
     }
         // then make sure there is at least 1 Janitor and 1 Mechanic
-    else if (num_girls_on_job(JOB_MECHANIC, is_night) < 1)
-    {
-        target.m_DayJob = target.m_NightJob = JOB_MECHANIC;
-        ss << "work as a Mechanic.";
-    }
     else if (num_girls_on_job(JOB_JANITOR, is_night) < 1)
     {
         target.m_DayJob = target.m_NightJob = JOB_JANITOR;
@@ -205,11 +200,6 @@ void sClinic::auto_assign_job(sGirl& target, std::stringstream& message, bool is
     {
         target.m_DayJob = target.m_NightJob = JOB_NURSE;
         ss << "work as a Nurse.";
-    }
-    else if (num_girls_on_job(JOB_MECHANIC, is_night) < num_girls() / 20)
-    {
-        target.m_DayJob = target.m_NightJob = JOB_MECHANIC;
-        ss << "work as a Mechanic.";
     }
     else if (num_girls_on_job(JOB_JANITOR, is_night) < num_girls() / 20)
     {
@@ -230,7 +220,7 @@ bool sClinic::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_ni
 
     JOBS psw = (is_night ? girl.m_PrevNightJob : girl.m_PrevDayJob);
     bool backtowork = false;
-    if (psw == JOB_DOCTOR || psw == JOB_NURSE || psw == JOB_INTERN || psw == JOB_MECHANIC)
+    if (psw == JOB_DOCTOR || psw == JOB_NURSE || psw == JOB_INTERN)
     {
         if (girl.has_active_trait("AIDS"))
         {
@@ -286,20 +276,14 @@ bool sClinic::handle_resting_girl(sGirl& girl, bool is_night, bool has_matron, s
 {
     if (has_matron && (girl.health() < 80 || girl.tiredness() > 20))    // if she is not healthy enough to go back to work
     {
-        ss << "The Chairman admits " << girl.FullName() << " to get ";
-        if (girl.has_active_trait("Construct"))    { ss << "repaired";                girl.m_DayJob = girl.m_NightJob = JOB_GETREPAIRS; }
-        else if (girl.has_active_trait("Half-Construct"))    { ss << "healed and repaired";    girl.m_DayJob = JOB_GETHEALING;    girl.m_NightJob = JOB_GETREPAIRS; }
-        else    { ss << "healed";                girl.m_DayJob = girl.m_NightJob = JOB_GETHEALING; }
-        ss << ".\n";
+        ss << "The Chairman admits " << girl.FullName() << " to get healed.\n";
+        girl.m_DayJob = girl.m_NightJob = JOB_GETHEALING;
         return true;
     }
     else if ((girl.health() < 40 || girl.tiredness() > 60) && g_Dice.percent(girl.intelligence()))
     {
-        ss << girl.FullName() << " checks herself in to get ";
-        if (girl.has_active_trait("Construct"))    { ss << "repaired";                girl.m_DayJob = girl.m_NightJob = JOB_GETREPAIRS; }
-        else if (girl.has_active_trait("Half-Construct"))    { ss << "healed and repaired";    girl.m_DayJob = JOB_GETHEALING;    girl.m_NightJob = JOB_GETREPAIRS; }
-        else    { ss << "healed";                girl.m_DayJob = girl.m_NightJob = JOB_GETHEALING; }
-        ss << ".\n";
+        ss << girl.FullName() << " checks herself in to get healed.\n";
+        girl.m_DayJob = girl.m_NightJob = JOB_GETHEALING;
         return true;
     }
     return false;

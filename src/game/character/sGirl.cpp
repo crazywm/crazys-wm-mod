@@ -1090,22 +1090,6 @@ FormattedCellData sGirl::GetDetail_Job(std::string const& detailName) const
          ss << job_name << " ***";
       }
    }
-   else if (DN_Job == JOB_GETREPAIRS)
-   {
-      if (m_Building->num_girls_on_job(JOB_MECHANIC, DN_Day) > 0 &&
-          (has_active_trait("Construct") || has_active_trait("Half-Construct")))
-      {
-         ss << job_name;
-      }
-      else if (has_active_trait("Construct"))
-      {
-         ss << job_name << " ****";
-      }
-      else
-      {
-         ss << job_name << " !!";
-      }
-   }
    else if (DN_Job == JOB_GETABORT)
    {
       int wdays = (2 - (this)->m_WorkingDay);

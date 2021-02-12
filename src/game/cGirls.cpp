@@ -1025,8 +1025,8 @@ string cGirls::GetThirdDetailsString(const sGirl& girl)    // `J` bookmark - Job
     if (g_Game->has_building(BuildingType::CLINIC))
     {
         Clinic_Data << "Clinic Job Ratings\n";
-        JobRating(Clinic_Data, girl, {{JOB_CHAIRMAN, '-'}, {JOB_DOCTOR, '-'}, {JOB_NURSE, '!'}, {JOB_MECHANIC, '-'}, {JOB_INTERN, '!'}});
-        JobRating(Clinic_Data, girl, {{JOB_GETHEALING, '!'}, {JOB_GETREPAIRS, '!'}, {JOB_CUREDISEASES, '!'}, {JOB_GETABORT, '!'},
+        JobRating(Clinic_Data, girl, {{JOB_CHAIRMAN, '-'}, {JOB_DOCTOR, '-'}, {JOB_NURSE, '!'}, {JOB_INTERN, '!'}});
+        JobRating(Clinic_Data, girl, {{JOB_GETHEALING, '!'}, {JOB_CUREDISEASES, '!'}, {JOB_GETABORT, '!'},
                                        {JOB_COSMETICSURGERY, '!'}, {JOB_LIPO, '!'}, {JOB_BREASTREDUCTION, '!'}, {JOB_BOOBJOB, '!'},
                                        {JOB_VAGINAREJUV, '!'}, {JOB_FACELIFT, '!'}, {JOB_ASSJOB, '!'}, {JOB_TUBESTIED, '!'}, {JOB_FERTILITY, '!'}});
         Clinic_Data << div;

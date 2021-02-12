@@ -30,15 +30,6 @@ bool WorkHealing(sGirl& girl, bool Day0Night1, cRng& rng)
     std::stringstream ss;
     cGirls::UnequipCombat(girl);    // not for patients
 
-    if (girl.has_active_trait("Construct"))
-    {
-        ss << "${name} has no biological parts so she was sent to the repair shop.";
-        if (Day0Night1 == SHIFT_DAY) girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-        if (girl.m_DayJob == JOB_GETHEALING)    girl.m_DayJob = JOB_GETREPAIRS;
-        if (girl.m_NightJob == JOB_GETHEALING)    girl.m_NightJob = JOB_GETREPAIRS;
-        return false;    // not refusing
-    }
-
     int numdocs = brothel->num_girls_on_job(JOB_DOCTOR, Day0Night1);
     int numnurse = brothel->num_girls_on_job(JOB_NURSE, Day0Night1);
 
@@ -104,8 +95,6 @@ bool WorkHealing(sGirl& girl, bool Day0Night1, cRng& rng)
         else                        ss << "\n \nShe has been released from the Clinic.";
         if (girl.m_DayJob == JOB_GETHEALING)    girl.m_DayJob = JOB_RESTING;
         if (girl.m_NightJob == JOB_GETHEALING)    girl.m_NightJob = JOB_RESTING;
-        if (girl.m_DayJob == JOB_GETREPAIRS)    girl.m_DayJob = JOB_RESTING;
-        if (girl.m_NightJob == JOB_GETREPAIRS)    girl.m_NightJob = JOB_RESTING;
     }
 
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);

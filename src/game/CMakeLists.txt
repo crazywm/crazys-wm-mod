@@ -64,7 +64,6 @@ set(JOBS_SRC
         jobs/WorkPersonalBedWarmer.cpp
         jobs/WorkPersonalTraining.cpp
         jobs/WorkRecruiter.cpp
-        jobs/WorkRepairShop.cpp
         jobs/WorkSecurity.cpp
         jobs/WorkSleazyBarmaid.cpp
         jobs/WorkSleazyWaitress.cpp

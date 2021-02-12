@@ -234,14 +234,9 @@ int cScreenTransfer::checkjobcolor(const sGirl& temp)
         if (temp.m_WorkingDay == 0) return COLOR_DARKBLUE;
         else return COLOR_RED;
     }
-    else if (temp.m_DayJob == JOB_GETHEALING || temp.m_NightJob == JOB_GETHEALING || temp.m_DayJob == JOB_GETREPAIRS || temp.m_NightJob == JOB_GETREPAIRS)
+    else if (temp.m_DayJob == JOB_GETHEALING || temp.m_NightJob == JOB_GETHEALING)
     {
         if (temp.health() > 70 && temp.tiredness() < 30) return COLOR_DARKBLUE;
-        else return COLOR_RED;
-    }
-    else if (temp.m_DayJob == JOB_MECHANIC || temp.m_NightJob == JOB_MECHANIC)
-    {
-        if (temp.m_Building->num_girls_on_job(JOB_GETREPAIRS, 0) < 1 && temp.m_Building->num_girls_on_job(JOB_GETREPAIRS, 1) < 1)    return COLOR_DARKBLUE;
         else return COLOR_RED;
     }
     else if (temp.m_DayJob == JOB_REHAB || temp.m_NightJob == JOB_REHAB || temp.m_DayJob == JOB_SO_STRAIGHT || temp.m_NightJob == JOB_SO_STRAIGHT

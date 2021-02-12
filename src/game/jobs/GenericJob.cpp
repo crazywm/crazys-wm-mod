@@ -185,7 +185,6 @@ DECL_JOB(Counselor);
 
 // - Clinic - Surgery
 DECL_JOB(Healing);
-DECL_JOB(RepairShop);
 DECL_JOB(CureDiseases);
 DECL_JOB(GetAbort);
 
@@ -269,7 +268,6 @@ void RegisterWrappedJobs(cJobManager& mgr) {
 
 // - Clinic - Surgery
     REGISTER_JOB(JOB_GETHEALING, Healing, "Heal", "She will have her wounds attended.").full_time();
-    REGISTER_JOB(JOB_GETREPAIRS, RepairShop, "Repr", "Construct girls will be quickly repaired here.").full_time();
     REGISTER_JOB(JOB_CUREDISEASES, CureDiseases, "Cure", "She will try to get her diseases cured.").full_time();
     REGISTER_JOB(JOB_GETABORT, GetAbort, "Abrt", "She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)").full_time();
 
