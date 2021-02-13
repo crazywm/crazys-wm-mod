@@ -780,7 +780,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
         if (profit > 1000)        curr->m_BribeRate += (long)(50);    // if doing well financially then increase
         else if (profit < 0)    curr->m_BribeRate -= (long)(50);    // if loosing money decrease
         if (curr->m_BribeRate < 0) curr->m_BribeRate = 0;            // check 0
-        g_Game->UpdateBribeInfluence();                                // update influence
 
 
         // `J` bookmark - rival money at the end of their turn

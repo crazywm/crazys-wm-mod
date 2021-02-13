@@ -1,3 +1,22 @@
+/*
+ * Copyright 2009, 2010, The Pink Petal Development Team.
+ * The Pink Petal Devloment Team are defined as the game's coders
+ * who meet on http://pinkpetal.org
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef CRAZYS_WM_MOD_GAME_HPP
 #define CRAZYS_WM_MOD_GAME_HPP
 
@@ -43,13 +62,6 @@ namespace tinyxml2
     class XMLElement;
 }
 
-struct Date {
-    /// An in-game date
-    int year;
-    int month;
-    int day;
-};
-
 class IGame;
 class cErrorContext {
 public:
@@ -59,14 +71,21 @@ public:
         o.m_Unstack = {};
     };
 
-    friend class IGame;
+    friend class cGame;
 private:
     cErrorContext(IGame* g, std::function<void()> unstack) :
-        m_Game(g), m_Unstack(std::move(unstack)) {
+            m_Game(g), m_Unstack(std::move(unstack)) {
     }
 
     IGame* m_Game;
     std::function<void()> m_Unstack;
+};
+
+struct Date {
+    /// An in-game date
+    int year;
+    int month;
+    int day;
 };
 
 /*!
@@ -81,13 +100,11 @@ public:
 
     static std::unique_ptr<IGame> CreateGame();
 
-    void next_week();
+    virtual void NewGame(const std::function<void(std::string)>& callback) = 0 ;
+    virtual void LoadGame(const tinyxml2::XMLElement& source, const std::function<void(std::string)>& callback) = 0;
+    virtual void SaveGame(tinyxml2::XMLElement& root) = 0;
 
-    void load(tinyxml2::XMLElement& root);
-    void save(tinyxml2::XMLElement& root);
-
-    void NewGame(const std::function<void(std::string)>& callback);
-    void LoadGame(const tinyxml2::XMLElement& source, const std::function<void(std::string)>& callback);
+    virtual void NextWeek() = 0;
 
     // rivals
     cRivalManager& rivals();
@@ -126,9 +143,9 @@ public:
     IKeyValueStore& settings();
 
     // messages
-    void push_message(std::string text, int color);
-    void error(std::string message);
-    cErrorContext push_error_context(std::string text);
+    virtual void push_message(std::string text, int color) = 0;
+    virtual void error(std::string message) = 0;
+    virtual cErrorContext push_error_context(std::string text) = 0;
 
 
     // customers
@@ -158,7 +175,7 @@ public:
     cJobManager& job_manager();
 
     scripting::cScriptManager& script_manager();
-    void PushEvent(const scripting::sEventID& event);
+    virtual void PushEvent(const scripting::sEventID& event) = 0;
 
     // time keeping
     const Date& date() const;
@@ -174,12 +191,10 @@ public:
 
     void check_druggy_girl(std::stringstream& ss);
     sGirl* GetDrugPossessor();
-    void check_raid();
 
     // global stuff
-    long GetBribeRate() const           { return m_BribeRate; }
-    void SetBribeRate(long rate)        { m_BribeRate = rate; }
-    void UpdateBribeInfluence();
+    int GetBribeRate() const           { return m_BribeRate; }
+    void SetBribeRate(int rate)        { m_BribeRate = rate; }
     int  GetInfluence()    const           { return m_Influence; }
 
     void WithdrawFromBank(long amount);
@@ -191,7 +206,6 @@ public:
     int MaxSupplies()                   { return m_SupplyShedLevel * 700; }
 
     cGirlPool& GetSlaveMarket() { return *m_MarketGirls; }
-    void UpdateMarketSlaves();
 
     bool allow_cheats() const;
     void enable_cheating();
@@ -227,9 +241,12 @@ private:
     // slave market stuff
     std::unique_ptr<cGirlPool> m_MarketGirls;
 
+    std::unique_ptr<cGirlPool> m_Prison;
+
+protected:
+    Date m_Date = {1209, 1, 1};
+
     bool m_IsCheating = false;
-
-
 
     int m_BribeRate       = 0;            // the amount of money spent bribing officials per week
     int m_Influence       = 0;            // based on the bribe rate this is the percentage of influence you have
@@ -237,32 +254,7 @@ private:
 
     int m_SupplyShedLevel = 1;            // the level of the supply sheds. the higher the level, the more alcohol and antipreg potions can hold
 
-    std::unique_ptr<cGirlPool> m_Prison;
     std::list<std::shared_ptr<sGirl>> m_Runaways;
-
-    Date m_Date = {1209, 1, 1};
-
-    // helper functions
-    void do_tax();
-    void read_attributes_xml(const tinyxml2::XMLElement& el);
-
-    void UpdateRunaways();
-
-    // This keeps track of all unqiue girl files that are used for this game.
-    std::unordered_set<std::string> m_GirlFiles;
-
-    // event stack
-    struct sScriptEventStack;
-    std::unique_ptr<sScriptEventStack> m_EventStack;
-
-    void RunNextEvent(const scripting::sEventID& event);
-
-private:
-    void LoadGirlFiles(const DirPath& location, const std::function<void(const std::string&)>& error_handler);
-    void LoadItemFiles(DirPath location);
-    void LoadTraitFiles(DirPath location);
-
-    std::vector<std::string> m_ErrorContextStack;
 };
 
 // the global game instance.

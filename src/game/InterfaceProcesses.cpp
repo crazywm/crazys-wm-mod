@@ -83,7 +83,7 @@ void NextWeek()
     g_TalkCount = 10 + (g_Game->player().m_Stats[STAT_CHARISMA] / 10);
     // */ //
 
-    g_Game->next_week();
+    g_Game->NextWeek();
 
     g_LogFile.log(ELogLevel::DEBUG, " *** NextWeek || End ***");
 }
@@ -124,6 +124,6 @@ void SaveGameXML(std::string filename)
     pRoot->SetAttribute("WalkAround", g_WalkAround);
     pRoot->SetAttribute("TalkCount", g_TalkCount);
 
-    g_Game->save(*pRoot);
+    g_Game->SaveGame(*pRoot);
     doc.SaveFile(filename.c_str());
 }

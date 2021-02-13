@@ -143,10 +143,6 @@ bool cScreenPreparingGame::NewGame(std::string name) {
     new_house.m_MaxNumRooms = 200;
     new_house.set_background_image("House.jpg");
 
-    callback("Update Slave Market");
-    g_LogFile.info("prepare", "Update Slave Market");
-    g_Game->UpdateMarketSlaves();
-
     callback("Setting Up Gangs And Rivals");
     g_LogFile.info("prepare", "Setting Up Gangs");
     int start_random_gangs = g_Game->settings().get_integer(settings::INITIAL_RANDOM_GANGS);

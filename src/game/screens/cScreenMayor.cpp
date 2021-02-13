@@ -48,8 +48,6 @@ void cScreenMayor::init(bool back)
     std::stringstream ss;
     ss << "Influence Details\n";
 
-    g_Game->UpdateBribeInfluence();
-
     int PlayersInfluence = g_Game->GetInfluence();
     auto& rivals = g_Game->rivals().GetRivals();
     if (!rivals.empty())
