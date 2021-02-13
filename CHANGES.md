@@ -1,7 +1,18 @@
+# Version 07.00.alpha14
+## Changes
+* The number of scenes per Director, Camera Mage, and Crystal Purifier has been changed to a hard limit.
+* Removed Mechanic and Get Repaired jobs. Construct girls will now also be treated by normal doctors.
+* Cosmetic surgery no longer increases Charisma
+* Liposuction can remove Fat trait, but no longer changes Charisma and Beauty
+* Don't auto-assign new counselors if the counselor refuses for a shift
+* Lots of internal work on the job codes
+
+## Fixes
+* mixup of training and cleaning job
+
 # Version 07.00.alpha13
 
 ## Changes
-* The number of scenes per Director, Camera Mage, and Crystal Purifier has been changed to a hard limit.
 * Apply new image scaling also to animations
 
 ## Fixes

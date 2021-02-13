@@ -30,7 +30,7 @@ struct sFarmJobData {
 class cFarmJob : public cBasicJob {
 public:
     cFarmJob(JOBS job, sFarmJobData data);
-    bool DoWork(sGirl& girl, bool is_night) override;
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     virtual bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) = 0;
 

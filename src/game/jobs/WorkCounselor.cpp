@@ -23,7 +23,7 @@
 #include "cGirls.h"
 
 // `J` Job Centre - Rehab_Job - Full_Time_Job
-bool WorkCounselor(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkCounselor(sGirl& girl, bool Day0Night1, cRng& rng)
 {    // `J` changed "Drug Counselor" to just "Counselor" so she can help the other therapy patients
 
     auto brothel = girl.m_Building;
@@ -41,7 +41,7 @@ bool WorkCounselor(sGirl& girl, bool Day0Night1, cRng& rng)
             ss << "${name} refused to counsel anyone.";
             girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
             girl.upd_Enjoyment(ACTION_WORKREHAB, -1);
-            return true;
+            return {true, 0, 0, 0};
         }
     }
     ss << "${name} counceled patients.\n \n";
@@ -51,7 +51,6 @@ bool WorkCounselor(sGirl& girl, bool Day0Night1, cRng& rng)
     cGirls::UnequipCombat(girl);    // not for doctor
 
     int wages = 25;
-    int tips = 0;
     int enjoy = 0;
 
     /* */if (roll_a <= 10)    { enjoy -= rng % 3 + 1;    ss << "The addicts hasseled her."; }
@@ -66,8 +65,6 @@ bool WorkCounselor(sGirl& girl, bool Day0Night1, cRng& rng)
     roll_max /= 4;
     wages += 10 + rng%roll_max;
     wages += 5 * rehabers;    // `J` pay her 5 for each patient you send to her
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 5 + (rehabers / 2), skill = 2 + (rehabers / 2);
@@ -84,8 +81,8 @@ bool WorkCounselor(sGirl& girl, bool Day0Night1, cRng& rng)
     cGirls::PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made ${name} more Charismatic.", Day0Night1 == SHIFT_NIGHT);
     //lose traits
     cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 30, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
-
-    return false;
+    {}
+    return {false, 0, 0, std::max(0, wages)};
 }
 
 double JP_Counselor(const sGirl& girl, bool estimate)// not used

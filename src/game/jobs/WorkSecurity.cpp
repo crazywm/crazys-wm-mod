@@ -24,7 +24,7 @@
 
 
 // `J` Job Brothel - General
-bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 
@@ -34,7 +34,7 @@ bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         ss << "${name} refused to work security in your brothel " << (Day0Night1 ? "tonight." : "today.");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} worked Security in the brothel.\n \n";
 
@@ -167,8 +167,6 @@ bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 5; }
 
     wages += 70;
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
     //g_Game->gold().staff_wages(70);  // wages come from
     // 'Mute' Updated
@@ -183,7 +181,7 @@ bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
     cGirls::PossiblyGainNewTrait(girl, "Tough", 15, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
     cGirls::PossiblyGainNewTrait(girl, "Adventurer", 45, actiontype, "She has been in enough tough spots to consider herself Adventurer.", Day0Night1);
     cGirls::PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
-    return false;
+    return {false, std::max(0, tips), 0, std::max(0, wages)};
 }
 
 double JP_Security(const sGirl& girl, bool estimate)    // Used inside the WorkSecurity

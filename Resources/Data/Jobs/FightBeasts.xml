@@ -1,0 +1,40 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="FiBs">
+    <Description>
+        She will fight to the death against beasts you own. Dangerous.
+    </Description>
+
+    <Performance>
+        <Factor Skill="Combat" Weight="1"/>
+        <Factor Skill="Magic" Weight="1"/>
+        <Factor Stat="Constitution" Weight="1"/>
+        <Factor Stat="Agility" Weight="1"/>
+        <Factor Stat="Fame" Weight="1"/>
+        <Factor Stat="Beauty" Weight="1"/>
+
+        <Mod>work.fightarena</Mod>
+    </Performance>
+
+    <Gains XP="5" Skill="3">
+        <Skill Name="Combat" Weight="3"/>
+        <Skill Name="Magic" Weight="1"/>
+        <Stat Name="Constitution" Weight="1"/>
+        <Stat Name="Agility" Weight="1"/>
+
+        <GainTrait Trait="Tough" Threshold="20" Action="COMBAT">
+            She has become pretty Tough from all of the fights she's been in.
+        </GainTrait>
+        <GainTrait Trait="Aggressive" Threshold="60" Action="COMBAT">
+            She is getting rather Aggressive from her enjoyment of combat.
+        </GainTrait>
+        <GainTrait Trait="Fleet of Foot" Threshold="30" Action="COMBAT">
+            She is getting rather fast from all the fighting.
+        </GainTrait>
+        <LoseTrait Trait="Fragile" Threshold="75" Action="COMBAT">
+            ${name} has had to heal from so many injuries you can't say she is Fragile anymore.
+        </LoseTrait>
+    </Gains>
+
+    <Messages>
+    </Messages>
+</Job>

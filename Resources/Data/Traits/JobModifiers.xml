@@ -1036,17 +1036,19 @@
         <Trait Name="Fast Orgasms" Value="5"/>
         <Trait Name="Sexy Air" Value="10"/>
         <Trait Name="Charming" Value="5"/>
+        <Trait Name="Flexible" Value="5"/>
 
         <Trait Name="Fragile" Value="-5" />
         <Trait Name="Mind Fucked" Value="-10" />
         <Trait Name="Nervous" Value="-10" />
+        <Trait Name="Chaste" Value="-15" />
 
-        <Trait Name="Clumsy" Value="-4" />
+        <Trait Name="Clumsy" Value="-5" />
         <Trait Name="Aggressive" Value="-10" />
-        <Trait Name="Broken Will" Value="-6" />
-        <Trait Name="Dependant" Value="-4" />
+        <Trait Name="Broken Will" Value="-10" />
+        <Trait Name="Dependant" Value="-5" />
+        <Trait Name="Manly" Value="-10" />
 
-        <Trait Name="Flexible" Value="5"/>
         <Trait Name="Retarded" Value="-20"/>
         <Trait Name="Deaf" Value="-10"/>
         <Trait Name="Broken Will" Value="-10"/>

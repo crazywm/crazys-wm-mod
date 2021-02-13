@@ -38,6 +38,8 @@
 #include "character/sGirl.h"
 #include "character/cGirlPool.h"
 
+struct sWorkJobResult;
+
 class IBuilding
 {
 public:
@@ -172,8 +174,6 @@ public:
 
     void do_daily_items(sGirl& girl);
 
-    void CalculatePay(sGirl& girl, JOBS Job);
-
     // this is called for when the player tries to meet a new girl at this location
     bool CanEncounter() const;
     std::shared_ptr<sGirl> TryEncounter();
@@ -223,6 +223,9 @@ protected:
     // resource management
     void declare_resource(const std::string& name);
     void declare_interaction(const std::string& name);
+
+    // Calls `handler` for all girls that are not dead and are working in one of the given jobs during the shift.
+    void IterateGirls(bool is_night, std::initializer_list<JOBS> jobs, const std::function<void(sGirl&)>& handler);
 private:
     std::unordered_set<SKILLS> m_ForbiddenSexType;
 

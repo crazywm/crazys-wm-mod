@@ -58,4 +58,10 @@
         <Skill Name="Medicine" Weight="2" />
         <Stat Name="Intelligence" Weight="1" />
     </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} worked as a Doctor.</Text>
+        </Message>
+    </Messages>
 </Job>

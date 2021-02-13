@@ -9,6 +9,24 @@
         <Factor Stat="Obedience" Weight="1"/>
         <Factor Stat="Agility" Weight="1"/>
     </Performance>
-    <Gains XP="0" Skill="0">
-    </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} worked cleaning the Clinic.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to clean the Clinic.</Text>
+        </Message>
+        <Message Name="shift.bad">
+            <Text>She spilled a bucket of something unpleasant all over herself.</Text>
+            <Text>She did not like cleaning the Clinic today.</Text>
+        </Message>
+        <Message Name="shift.good">
+            <Text>She cleaned the building while humming a pleasant tune.</Text>
+            <Text>She had a great time working today.</Text>
+        </Message>
+        <Message Name="shift.neutral">
+            <Text>The shift passed uneventfully.</Text>
+        </Message>
+    </Messages>
 </Job>

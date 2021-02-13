@@ -27,7 +27,7 @@
 #include "cGirls.h"
 
 // `J` Job Brothel - General
-bool WorkCustService(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkCustService(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 
@@ -39,7 +39,7 @@ bool WorkCustService(sGirl& girl, bool Day0Night1, cRng& rng)
         //ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
         ss << "${name} refused to provide Customer Service in your brothel " << (Day0Night1 ? "tonight." : "today.");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} worked as Customer Service.\n \n";
 
@@ -143,15 +143,8 @@ bool WorkCustService(sGirl& girl, bool Day0Night1, cRng& rng)
      * than nothing. */
 
     // Bad customer service reps will leave the customer with 2-20 happiness. Bad customer service is at least better than no customer service.
-#if 0
-    string debug = "";
-    debug += ("There were " + intstring(g_Game->GetNumCustomers()) + " customers.\n");
-    debug += ("She could have handled " + intstring(numCusts) + " customers.\n");
-    girl.AddMessage(debug, IMGTYPE_PROFILE, EVENT_DEBUG);
-#endif
     // Now pay the girl.
-
-    girl.m_Pay += 50;
+    // TODO [GOLD] PAYMENT HERE????
     g_Game->gold().staff_wages(50);  // wages come from you
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
@@ -169,7 +162,7 @@ bool WorkCustService(sGirl& girl, bool Day0Night1, cRng& rng)
     else                girl.performance(rng%skill);
     girl.service(rng%skill+1);
 
-    return false;
+    return {false, 0, 0, 50};
 }
 
 double JP_CustService(const sGirl& girl, bool estimate)

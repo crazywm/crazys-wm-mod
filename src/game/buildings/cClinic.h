@@ -39,8 +39,6 @@ struct sClinic : public IBuilding
     bool handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_night) override;
     bool handle_resting_girl(sGirl& girl, bool is_night, bool has_matron, std::stringstream& ss) override;
 
-    static bool promote_to_doctor(sGirl& candidate, JOBS job, bool is_night);
-
 private:
     void GirlBeginShift(sGirl& girl, bool is_night) override;
 };

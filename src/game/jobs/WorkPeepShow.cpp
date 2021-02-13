@@ -28,7 +28,7 @@
 #pragma endregion
 
 // `J` Job Brothel - Brothel
-bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
@@ -40,7 +40,7 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
         //SIN - More informative mssg to show *what* she refuses
         ss << "${name} refused to be in your brothel's peep show " << (Day0Night1 ? "tonight." : "today.");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} let the customers watch her get naked.\n \n";
 
@@ -355,10 +355,6 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
     else /*           */    { enjoy += 1; ss << "\nOtherwise, the shift passed uneventfully."; }
 
 #pragma endregion
-#pragma region    //    Money                    //
-
-
-#pragma endregion
 #pragma region    //    Finish the shift            //
 
 
@@ -366,9 +362,6 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
 
     // work out the pay between the house and the girl
     girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-    // Money
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 15, skill = 3;
@@ -399,7 +392,7 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
     cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKSTRIP, "${name} has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
 
 #pragma endregion
-    return false;
+    return {false, std::max(0, tips), std::max(0, wages), 0};
 }
 
 double JP_PeepShow(const sGirl& girl, bool estimate)// not used

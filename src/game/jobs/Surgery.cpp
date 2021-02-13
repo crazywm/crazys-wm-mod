@@ -22,33 +22,66 @@
 #include "cGirls.h"
 #include "character/sGirl.h"
 #include "buildings/IBuilding.h"
+#include "IGame.h"
 #include <sstream>
 #include "character/predicates.h"
 
 extern const char* const CarePointsBasicId;
 extern const char* const CarePointsGoodId;
+extern const char* const DoctorInteractionId;
 
-struct sExcludeTrait {
+namespace settings {
+    extern const char* PREG_COOL_DOWN;
+}
+
+struct sTraitAndMessage {
     const char* Trait;
     const char* Message;
 };
 
 struct sSurgeryData {
-    const char*  SurgeryMessage;    //!< The message used to indicate that the surgery was performed
-    int          Duration;          //!< How many days until finished.
-    std::vector<sExcludeTrait> TraitExcludes;   //!< IF she has any trait in this list, she will not receive surgery
+    const char*  SurgeryMessage;                //!< The message used to indicate that the surgery was performed
+    int          Duration;                      //!< How many days until finished.
+    std::vector<sTraitAndMessage> TraitExcludes;   //!< If she has any trait in this list, she will not receive surgery
+};
+
+struct sStatGain {
+    STATS Stat;
+    const char* Message;
 };
 
 
-struct SurgeryJob : public IGenericJob {
-    // TODO is_valid exists already as `is_job_valid`
+struct sSurgeryDataII {
+    // Trait Gains
+    std::vector<sTraitAndMessage> GainTrait;
+    std::vector<sTraitAndMessage> LoseTrait;
+    std::vector<sStatGain> GainStat;
+};
+
+class ITreatmentJob : public IGenericJob {
 public:
-    explicit SurgeryJob(JOBS id, const char* short_name, sSurgeryData data) : IGenericJob(id), m_SurgeryData(data) {
+    ITreatmentJob(JOBS job, const char* short_name) : IGenericJob(job) {
         m_Info.ShortName = short_name;
         m_Info.FullTime = true;
     }
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
 
-    bool DoWork(sGirl& girl, bool is_night) final;
+private:
+    virtual void ReceiveTreatment(sGirl& girl, bool is_night) = 0;
+};
+
+sWorkJobResult ITreatmentJob::DoWork(sGirl& girl, bool is_night) {
+    cGirls::UnequipCombat(girl);    // not for patient
+    ReceiveTreatment(girl, is_night);
+    return {false, 0, 0, 0};
+}
+
+struct SurgeryJob : public ITreatmentJob {
+public:
+    explicit SurgeryJob(JOBS id, const char* short_name, sSurgeryData data) : ITreatmentJob(id, short_name), m_SurgeryData(data) {
+    }
+
+    void ReceiveTreatment(sGirl& girl, bool is_night) final;
     sJobValidResult is_job_valid(const sGirl& girl) const override;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 protected:
@@ -61,12 +94,11 @@ private:
     bool nursing_effect(sGirl& girl);
 };
 
-bool SurgeryJob::DoWork(sGirl& girl, bool is_night) {
+void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
     JOBS job_id = job();
 
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
-    cGirls::UnequipCombat(girl);    // not for patient
 
     if (girl.m_YesterDayJob != job_id) { girl.m_WorkingDay = girl.m_PrevWorkingDay = 0; }
 
@@ -98,7 +130,7 @@ bool SurgeryJob::DoWork(sGirl& girl, bool is_night) {
                 girl.strength(-uniform(0, 2));
             }
             girl.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
-            return false;
+            return;
         }
 
         girl.m_WorkingDay++;
@@ -140,7 +172,6 @@ bool SurgeryJob::DoWork(sGirl& girl, bool is_night) {
 
     if (chance(10.f))
         girl.medicine(1);    // `J` she watched what the doctors and nurses were doing
-    return false;
 }
 
 IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) {
@@ -155,8 +186,7 @@ IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) 
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
-    bool hasDoctor = brothel->num_girls_on_job(JOB_DOCTOR, is_night) > 0;
-    if (!hasDoctor) {
+    if (brothel->RequestInteraction(DoctorInteractionId)) {
         ss << "${name} does nothing. You don't have any Doctors working. (require 1) ";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;    // not refusing
@@ -219,7 +249,6 @@ double CosmeticSurgery::GetPerformance(const sGirl& girl, bool estimate) const {
     {
         if (!girl.has_active_trait("Sexy Air")) jobperformance += 100;
         if (!girl.has_active_trait("Cute"))     jobperformance += 100;
-        jobperformance += (100 - girl.charisma());
         jobperformance += (100 - girl.beauty());
     }
     return jobperformance;
@@ -229,7 +258,6 @@ void CosmeticSurgery::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
 
     girl.beauty(rng().bell(5, 12));
-    girl.charisma(rng().bell(0, 3));
 
 
     if (girl.gain_trait("Sexy Air"))
@@ -264,20 +292,21 @@ Liposuction::Liposuction() : SurgeryJob(JOB_LIPO, "Lipo", {"${name} is in the Cl
 void Liposuction::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
 
-    girl.beauty(rng().bell(0, 10));
-    girl.charisma(rng().bell(-1, 2));
-
-
+    // Fat
     if (girl.lose_trait( "Plump"))
     {
         ss << "Thanks to the surgery she is no longer Plump.\n";
+    }
+    else if (girl.lose_trait( "Fat"))
+    {
+        ss << "Thanks to the surgery she is no longer Fat.\n";
     }
     else if (girl.gain_trait( "Great Figure"))
     {
         ss << "Thanks to the surgery she now has a Great Figure.\n";
     }
 
-    if (girl.has_active_trait("Great Figure") && !girl.has_active_trait("Plump"))
+    if (girl.has_active_trait("Great Figure"))
     {
         ss << "She has been released from the Clinic.\n \n";
         girl.FullJobReset(JOB_RESTING);
@@ -286,7 +315,8 @@ void Liposuction::success(sGirl& girl) {
 
 double Liposuction::GetPerformance(const sGirl& girl, bool estimate) const {
     if (girl.is_pregnant())                        return 80;        // D - not recommended while pregnant
-    if (girl.has_active_trait("Plump"))            return 400;        // I - do it
+    if (girl.has_active_trait("Plump"))           return 400;        // I - do it
+    if (girl.has_active_trait("Fat"))             return 400;        // I - do it
     if (girl.has_active_trait("Great Figure"))    return -1000;    // X - not needed
     return 200;                                                    // A - can improve
 }
@@ -316,13 +346,13 @@ void BreastReduction::success(sGirl& girl) {
 }
 
 double BreastReduction::GetPerformance(const sGirl& girl, bool estimate) const {
-    double jobperformance = 0.0;
+    double performance = 0.0;
     if (estimate)    // for third detail string - how much do they need this?
     {
         int values[] = {-1000, 0, 70, 100, 100, 150, 200, 250, 350, 400};
         return values[girl.breast_size() - 1];
     }
-    return jobperformance;
+    return performance;
 }
 
 struct BoobJob: public SurgeryJob {
@@ -532,6 +562,425 @@ double Fertility::GetPerformance(const sGirl& girl, bool estimate) const {
     return 150;                                                    // B - would improve chances greatly
 }
 
+
+class CureDiseases : public ITreatmentJob {
+public:
+    CureDiseases();
+private:
+    void ReceiveTreatment(sGirl& girl, bool is_night) final;
+    double GetPerformance(const sGirl& girl, bool estimate) const final;
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) final;
+};
+
+CureDiseases::CureDiseases() : ITreatmentJob(JOB_CUREDISEASES, "Cure") {
+    m_Info.Description = "She will try to get her diseases cured.";
+}
+
+void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
+    auto brothel = girl.m_Building;
+
+    // if she was not in JOB_CUREDISEASES yesterday, reset working days to 0 before proceeding
+    if (girl.m_YesterDayJob != JOB_CUREDISEASES) girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
+    if (girl.m_WorkingDay < 0) girl.m_WorkingDay = 0;
+    girl.m_DayJob = girl.m_NightJob = JOB_CUREDISEASES;    // it is a full time job
+
+    auto doctor = brothel->RequestInteraction(DoctorInteractionId);
+
+    int cost = 0;
+    std::vector<std::string> diseases;
+    if (girl.has_active_trait("Herpes"))        { diseases.emplace_back("Herpes"); cost += 25; }
+    if (girl.has_active_trait("Chlamydia"))    { diseases.emplace_back("Chlamydia"); cost += 50; }
+    if (girl.has_active_trait("Syphilis"))    { diseases.emplace_back("Syphilis"); cost += 75; }
+    if (girl.has_active_trait("AIDS"))        { diseases.emplace_back("AIDS"); cost += 100; }
+    int num_diseases = diseases.size();
+
+    if (num_diseases > 1)    ss << "${name} is in the Clinic to get her diseases treated";
+    else/*            */    ss << "${name} is in the Clinic to get treatment for " << diseases[0];
+    ss << ".\n \n";
+
+    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
+
+    if(!doctor) {
+        // do you have high-quality nursing
+        if(brothel->TryConsumeResource(CarePointsGoodId, 3)) {
+            ss << "There were no Doctors available ${name}, but you highly qualified nurses made sure that ${name}'s situation "
+                  "did not deteriorate.";
+        } else {
+            ss << "There were no Doctors available ${name} just lay in bed getting sicker.";
+            girl.m_WorkingDay -= uniform(1, 10);
+            cost = 0;    // noone to give her the medicine
+        }
+    } else {
+        ss << "${name} was treated by " << doctor->FullName() << ".";
+        doctor->AddMessage("${name} treated " + girl.FullName() + "'s " + diseases[0],
+                           IMGTYPE_NURSE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        int doc_pts = std::min(5, int(doctor->job_performance(JOB_DOCTOR, false) / 20));
+        int nurse_pts = brothel->ConsumeResource(CarePointsBasicId, 4) + 2 * brothel->ConsumeResource(CarePointsGoodId, 2);
+        if(nurse_pts == 0) {
+            ss << " Your clinic has not enough Nurses to provide adequate care, so her recovery will be slower.";
+        }
+        girl.m_WorkingDay += doc_pts + nurse_pts;
+    }
+
+    girl.m_WorkingDay += girl.constitution() / 10 + girl.get_trait_modifier("disease.recovery");
+
+    if (is_night && girl.m_WorkingDay >= 100)
+    {
+        msgtype = EVENT_GOODNEWS;
+        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
+
+        std::string disease_cured = diseases[uniform(0, num_diseases - 1)];
+        girl.lose_trait(disease_cured.c_str());
+        num_diseases--;
+        ss << "You pay " << cost << " gold for last dose of the medicine used in her treatment.\n \nThe treatment is a success, ${name} no longer has " << disease_cured << "!\n \n";
+
+        if (!has_disease(girl))
+        {
+            ss << "She has been released from the Clinic";
+            girl.FullJobReset(JOB_RESTING);
+        }
+        else
+        {
+            ss << "Her " << (doctor ? "Doctor" : "Nurse");
+            ss << " keeps her in bed so they can treat her other disease" << (num_diseases > 1 ? "s" : "");
+        }
+    }
+    else
+    {
+        ss << "You pay " << cost << " gold for the medicine and equipment used in her treatment";
+    }
+    ss << ".\n \n";
+
+    brothel->m_Finance.clinic_costs(cost);    // pay for it
+
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
+}
+
+double CureDiseases::GetPerformance(const sGirl& girl, bool estimate) const {
+    int numdiseases = 0;
+    if (girl.has_active_trait("AIDS"))            numdiseases++;
+    if (girl.has_active_trait("Herpes"))            numdiseases++;
+    if (girl.has_active_trait("Chlamydia"))        numdiseases++;
+    if (girl.has_active_trait("Syphilis"))        numdiseases++;
+
+    if (numdiseases == 0)    return -1000;
+    return numdiseases * 100;
+}
+
+auto CureDiseases::CheckWork(sGirl& girl, bool is_night) -> eCheckWorkResult {
+    if (!has_disease(girl)) {
+        ss << "${name} has no diseases";
+        JOBS new_job = JOB_RESTING;
+        if (girl.health() < 80 || girl.tiredness() > 20)
+        {
+            ss << ". She was not feeling well so she checked herself in for treatment instead.";
+            new_job = JOB_GETHEALING;
+        } else { ss << " so she was sent to the waiting room."; }
+        girl.FullJobReset(new_job);
+        girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        return IGenericJob::eCheckWorkResult::IMPOSSIBLE;    // not refusing
+    }
+
+    return IGenericJob::eCheckWorkResult::ACCEPTS;
+}
+
+
+class Abortion : public ITreatmentJob {
+public:
+    Abortion();
+private:
+    void ReceiveTreatment(sGirl& girl, bool is_night) final;
+    double GetPerformance(const sGirl& girl, bool estimate) const final;
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) final;
+};
+
+Abortion::Abortion() : ITreatmentJob(JOB_GETABORT, "Abrt") {
+    m_Info.Description = "She will get an abortion, removing pregnancy and/or insemination.";
+}
+
+namespace
+{
+    void process_happiness(std::stringstream& ss, sGirl& girl, int happy, int& hate, std::array<const char*, 7> messages) {
+        if (happy < -50)
+        {
+            ss << messages[0];
+            hate += 10;
+            girl.add_temporary_trait("Pessimist", 20);
+        }
+        else if (happy < -25)
+        {
+            ss << messages[1];
+            hate += 5;
+        }
+        else if (happy < -5)
+        {
+            ss << messages[2];
+        }
+        else if (happy < 10)
+        {
+            ss << messages[3];
+        }
+        else if (happy < 25)
+        {
+            ss << messages[4];
+        }
+        else if (happy < 50)
+        {
+            ss << messages[5];
+        }
+        else
+        {
+            ss << messages[6];
+            hate -= 5;
+            girl.add_temporary_trait("Optimist", 20);
+        }
+
+        ss << "\n";
+    }
+}
+
+void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
+    auto brothel = girl.m_Building;
+    // if she was not in surgery last turn, reset working days to 0 before proceeding
+    if (girl.m_YesterDayJob != JOB_GETABORT) { girl.m_WorkingDay = girl.m_PrevWorkingDay = 0; }
+    girl.m_DayJob = girl.m_NightJob = JOB_GETABORT;    // it is a full time job
+
+    sGirl* doctor = brothel->RequestInteraction(DoctorInteractionId);
+    if (!doctor)
+    {
+        ss << "There is no doctor available to perform ${name}'s abortion!";
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        return;    // not refusing
+    }
+    ss << "${name} is in the Clinic to get an abortion.\n \n";
+
+    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
+
+    if (!is_night)    // the Doctor works on her durring the day
+    {
+        girl.m_WorkingDay++;
+    }
+    else    // and if there are nurses on duty, they take care of her at night
+    {
+        if (brothel->num_girls_on_job(JOB_NURSE, 1) > 0)
+        {
+            girl.m_WorkingDay++;
+            girl.happiness(5);
+            girl.mana(5);
+        }
+    }
+
+    if (girl.m_WorkingDay >= 2 && is_night)
+    {
+        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
+        ss << "The girl had an abortion.\n";
+        msgtype = EVENT_GOODNEWS;
+
+        // `J` first set the base stat modifiers
+        int happy = -10, health = -20, mana = -20, spirit = -5, love = -5, hate = 5;
+
+        if (brothel->TryConsumeResource(CarePointsBasicId, 3))
+        {
+            ss << "The Nurse tried to keep her healthy and happy during her recovery.\n";
+            // `J` then adjust if a nurse helps her through it
+            happy += 10;    health += 10;    mana += 10;    spirit += 5;    love += 1;    hate -= 1;
+        }
+        else
+        {
+            ss << "She is sad and has lost some health during the operation.\n";
+        }
+
+        happy += girl.get_trait_modifier("preg.abort.happy");
+        love += girl.get_trait_modifier("preg.abort.love");
+        hate += girl.get_trait_modifier("preg.abort.hate");
+
+        // `J` next, check traits
+        if (girl.has_active_trait("Fragile"))        // natural adj
+        {
+            health -= 5;
+        }
+        if (girl.has_active_trait("Tough"))        // natural adj
+        {
+            health += 5;
+        }
+
+        // `J` finally see what type of pregnancy it is and get her reaction to the abortion.
+        if (girl.has_status(STATUS_PREGNANT))
+        {
+            process_happiness(ss, girl, happy, hate,
+                              {"She is very distraught about the loss of her baby.",
+                               "She is distraught about the loss of her baby.",
+                               "She is sad about the loss of her baby.",
+                               "She accepts that she is not ready to have her baby.",
+                               "She is glad she is not going to have her baby.",
+                               "She is happy she is not going to have her baby.",
+                               "She is overjoyed not to be forced to carry her baby."
+                              });
+        }
+        else if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))
+        {
+            // `J` adjust her happiness by her hate-love for you
+            happy += int(((girl.pchate() + hate) - (girl.pclove() + love)) / 2);
+            if (girl.has_active_trait("Your Wife"))// "Why?"
+            {
+                happy -= 20;    spirit -= 1;    love -= 3;    hate += 0;
+            }
+
+            process_happiness(ss, girl, happy, hate,
+                              {"She is very distraught about the loss of your baby.",
+                               "She is distraught about the loss of your baby.",
+                               "She is sad about the loss of your baby.",
+                               "She accepts that she is not ready to have your baby.",
+                               "She is glad she is not going to have your baby.",
+                               "She is happy she is not going to have your baby.",
+                               "She is overjoyed not to be forced to carry your hellspawn."
+                              });
+        }
+        else if (girl.has_status(STATUS_INSEMINATED))
+        {
+            // `J` Some traits would react differently to non-human pregnancies.
+            happy += girl.get_trait_modifier("inseminated.abort.happy");
+            love += girl.get_trait_modifier("inseminated.abort.love");
+            hate += girl.get_trait_modifier("inseminated.abort.hate");
+
+            if (girl.has_active_trait("Angel"))        // "DEAR GOD, WHAT WAS THAT THING?"
+            {
+                spirit -= 5;    mana -= 5;
+            }
+
+            process_happiness(ss, girl, happy, hate,
+                              {"She is very distraught about the loss of the creature growing inside her.",
+                               "She is distraught about the loss of the creature growing inside her.",
+                               "She is sad about the loss of the creature growing inside her.",
+                               "She accepts that she is not ready to bring a strange creature into this world.",
+                               "She is glad she is not going to have to carry that strange creature inside her.",
+                               "She is happy she is not going to have to carry that strange creature inside her.",
+                               "She is overjoyed not to be forced to carry that hellspawn anymore."
+                              });
+        }
+        // `J` now apply all the stat changes and finalize the transaction
+        girl.happiness(happy);
+        girl.health(health);
+        girl.mana(mana);
+        girl.spirit(spirit);
+        girl.pclove(love);
+        girl.pchate(hate);
+
+        girl.m_ChildrenCount[CHILD09_ABORTIONS]++;
+        girl.clear_pregnancy();
+        girl.m_PregCooldown = g_Game->settings().get_integer(settings::PREG_COOL_DOWN);
+        girl.FullJobReset(JOB_RESTING);
+        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
+    }
+    else
+    {
+        ss << "The abortion is in progress (1 day remaining).";
+    }
+
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
+
+    // Improve girl
+    int libido = -8;
+    girl.upd_temp_stat(STAT_LIBIDO, libido);
+}
+
+double Abortion::GetPerformance(const sGirl& girl, bool estimate) const {
+    if (!girl.is_pregnant())              return -1000;    // X - not needed
+    if (girl.carrying_players_child())    return 1;        // E - its yours
+    if (girl.carrying_monster())          return 150;      // B - Beast
+    return 100;                                            // C - customer's child
+}
+
+IGenericJob::eCheckWorkResult Abortion::CheckWork(sGirl& girl, bool is_night) {
+    if (!girl.is_pregnant())
+    {
+        ss << "${name} is not pregnant so she was sent to the waiting room.";
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.FullJobReset(JOB_RESTING);
+        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
+        return eCheckWorkResult::IMPOSSIBLE;    // not refusing
+    }
+    return eCheckWorkResult::ACCEPTS;
+}
+
+
+class Healing : public ITreatmentJob {
+public:
+    Healing();
+private:
+    void ReceiveTreatment(sGirl& girl, bool is_night) final;
+    double GetPerformance(const sGirl& girl, bool estimate) const final;
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) final;
+};
+
+Healing::Healing() : ITreatmentJob(JOB_GETHEALING, "Heal") {
+    m_Info.Description = "She will have her wounds attended.";
+}
+
+double Healing::GetPerformance(const sGirl& girl, bool estimate) const {
+    double performance = 1.0;
+    performance += (100 - girl.health());
+    performance += (100 - girl.happiness());
+    performance += girl.tiredness();
+    return performance;
+}
+
+IGenericJob::eCheckWorkResult Healing::CheckWork(sGirl& girl, bool is_night) {
+    return eCheckWorkResult::ACCEPTS;
+}
+
+void Healing::ReceiveTreatment(sGirl& girl, bool is_night) {
+    auto brothel = girl.m_Building;
+
+    sGirl* doctor = brothel->RequestInteraction(DoctorInteractionId);
+
+    // `J` base recovery copied free time recovery
+    int health = 10 + (girl.constitution() / 10);
+    int tiredness = uniform(10, 30);    // build up as positive then apply as negative
+    int happy = uniform(10, 20);
+    int mana = 5 + (girl.magic() / 5);
+    int libido = (girl.has_active_trait("Nymphomaniac") ? 15 : 4);
+
+    if (doctor)
+    {
+        ss << " Doctor" << doctor->FullName() << " takes care of her.";
+        if (girl.has_active_trait("Half-Construct") || girl.has_active_trait("Construct")) {
+            health += 20;    // Less healing for constructs
+        } else {
+            health += 30;
+        }
+
+        if(brothel->TryConsumeResource(CarePointsBasicId, 3)) {
+            health += 10;
+        }
+    } else {
+        if(brothel->TryConsumeResource(CarePointsBasicId, 3)) {
+            ss << "You don't have enough doctors on duty, so ${name} is just cared for by the nurses.";
+            health += 10;
+        } else {
+            ss << "You don't have sufficient Doctors or Nurses on duty so ${name} just rests in her hospital bed.";
+            happy -= 5;
+        }
+    }
+
+    girl.upd_base_stat(STAT_HEALTH, health, false);
+    girl.upd_base_stat(STAT_TIREDNESS, -tiredness, false);
+    girl.happiness(happy);
+    girl.mana(mana);
+    girl.upd_temp_stat(STAT_LIBIDO, libido);
+
+    // send her to the waiting room when she is healthy
+    if (girl.health() > 90 && girl.tiredness() < 10)
+    {
+        ss << "\n \nShe has been released from the Clinic.";
+        girl.m_DayJob = JOB_RESTING;
+        girl.m_NightJob = JOB_RESTING;
+    }
+
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+}
+
 void RegisterSurgeryJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<CosmeticSurgery>());
     mgr.register_job(std::make_unique<Liposuction>());
@@ -542,4 +991,7 @@ void RegisterSurgeryJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<AssJob>());
     mgr.register_job(std::make_unique<TubesTied>());
     mgr.register_job(std::make_unique<Fertility>());
+    mgr.register_job(std::make_unique<CureDiseases>());
+    mgr.register_job(std::make_unique<Abortion>());
+    mgr.register_job(std::make_unique<Healing>());
 }

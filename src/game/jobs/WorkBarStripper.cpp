@@ -24,11 +24,12 @@
 #include "IGame.h"
 #include "character/predicates.h"
 #include "cGirls.h"
+#include "cJobManager.h"
 
 #pragma endregion
 
 // `J` Job Brothel - Sleazy Bar
-bool WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
@@ -40,7 +41,7 @@ bool WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
         //SIN - More informative mssg to show *what* she refuses
         ss << "${name} refused to strip off in front of the creeps in your club " << (Day0Night1 ? "tonight." : "today.");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} worked as a stripper in the club.\n \n";
 
@@ -476,10 +477,6 @@ bool WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
 #pragma endregion
-#pragma region    //    Money                    //
-
-
-#pragma endregion
 #pragma region    //    Finish the shift            //
 
 
@@ -490,9 +487,6 @@ bool WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     int roll_max = (girl.beauty() + girl.charisma());
     roll_max /= 4;
     wages += 10 + rng%roll_max;
-    // Money
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 15, skill = 3;
@@ -526,7 +520,7 @@ bool WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
 #pragma endregion
-    return false;
+    return {false,  std::max(0, tips), std::max(0, wages), 0};
 }
 double JP_BarStripper(const sGirl& girl, bool estimate)// not used
 {

@@ -33,6 +33,7 @@
 #include "character/cPlayer.h"
 #include "character/cGirlPool.h"
 #include "cGirls.h"
+#include "utils/algorithms.hpp"
 
 namespace settings{
     extern const char* PREG_COOL_DOWN;
@@ -123,7 +124,6 @@ void IBuilding::BeginWeek()
             cgirl.m_Tort = false;
 
             cgirl.m_Events.Clear();                // Clear the girls' events from the last turn
-            cgirl.m_Pay = cgirl.m_Tips = 0;
 
             // `J` Check for out of building jobs
             if (cgirl.m_DayJob       < m_FirstJob || cgirl.m_DayJob   > m_LastJob)        cgirl.m_DayJob = JOB_RESTING;
@@ -663,29 +663,16 @@ bool IBuilding::SetupMatron(bool is_night)
     }
     else    // so there is less chance of a matron refusing the entire turn
     {
-        int totalGold = 0;
+        // TODO this should be reworked
         std::string summary;
-        g_Game->job_manager().do_job(m_MatronJob, *matron_candidate, is_night);
-        totalGold += matron_candidate->m_Pay + matron_candidate->m_Tips;
+        auto result = g_Game->job_manager().do_job(m_MatronJob, *matron_candidate, is_night);
+        int totalGold = result.Earnings + result.Tips + result.Wages;
 
         // She does not get paid for the first shift and gets docked some pay from the second shift if she refused once
         if (is_night) totalGold /= 3;
 
-        // TODO this line is useless!
-        matron_candidate->m_Pay += std::max(0, totalGold);
-        matron_candidate->m_Pay = matron_candidate->m_Tips = 0;
-
         m_Fame += matron_candidate->fame();
-        if (totalGold > 0)            { ss << "${name} earned a total of " << totalGold << " gold directly from you. She gets to keep it all."; }
-        else if (totalGold == 0)    { ss << "${name} made no money."; }
-        else if (totalGold < 0)        {
-            sum = EVENT_DEBUG;
-            ss << "ERROR: She has a loss of " << totalGold << " gold.\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n\n";
-            ss << "Girl Name: " << matron_candidate->FullName();
-            ss << "\nJob: " << g_Game->job_manager().get_job_name((is_night ? matron_candidate->m_NightJob : matron_candidate->m_DayJob));
-            ss << "\nPay:     " << matron_candidate->m_Pay << "\nTips:   " << matron_candidate->m_Tips << "\nTotal: " << totalGold;
-
-        }
+        ss << "${name} earned a total of " << totalGold << " gold directly from you. She gets to keep it all.";
         matron_candidate->AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
         m_ActiveMatron = matron_candidate;
         return true;
@@ -1677,80 +1664,6 @@ void IBuilding::do_daily_items(sGirl& girl)
     }
 }
 
-double calc_pilfering(sGirl& girl)
-{
-    double factor = 0.0;
-    if (is_addict(girl) && girl.m_Money < 100)            // on top of all other factors, an addict will steal to feed her habit
-        factor += (is_addict(girl, true) ? 0.5 : 0.1);        // hard drugs will make her steal more
-    // let's work out what if she is going steal anything
-    if (girl.pclove() >= 50 || girl.obedience() >= 50) return factor;            // love or obedience will keep her honest
-    if (girl.pcfear() > girl.pchate()) return factor;                            // if her fear is greater than her hate, she won't dare steal
-    // `J` yes they do // if (girl.is_slave()) return factor;                    // and apparently, slaves don't steal
-    if (girl.pchate() > 40) return factor + 0.15;                                // given all the above, if she hates him enough, she'll steal
-    if (girl.confidence() > 70 && girl.spirit() > 50) return factor + 0.15;    // if she's not motivated by hatred, she needs to be pretty confident
-    return factor;    // otherwise, she stays honest (aside from addict factored-in earlier)
-}
-
-
-void IBuilding::CalculatePay(sGirl& girl, JOBS Job)
-{
-    // no pay or tips, no need to continue
-    if (girl.m_Pay <= 0 && girl.m_Tips <= 0) { girl.m_Pay = girl.m_Tips = 0; return; }
-
-    if (girl.m_Tips > 0)        // `J` check tips first
-    {
-        if (girl.keep_tips())
-        {
-            girl.m_Money += girl.m_Tips;    // give her the tips directly
-        }
-        else    // otherwise add tips into pay
-        {
-            girl.m_Pay += girl.m_Tips;
-        }
-    }
-    girl.m_Tips = 0;
-    // no pay, no need to continue
-    if (girl.m_Pay <= 0) { girl.m_Pay = 0; return; }
-
-    // if the house takes nothing        or if it is a player paid job and you are paying her
-    if (girl.house() == 0 || (g_Game->job_manager().is_job_Paid_Player(Job) && !girl.is_unpaid()))
-    {
-        // TODO check where we are handling the money processing for girl's payment
-        m_Finance.girl_support(girl.m_Pay);
-        girl.m_Money += girl.m_Pay;    // she gets it all
-        girl.m_Pay = 0;
-        return;
-    }
-
-    // so now we are to the house percent.
-    float house_factor = float(girl.house()) / 100.0f;
-
-    // work out how much gold (if any) she steals
-    double steal_factor = calc_pilfering(girl);
-    int stolen = int(steal_factor * girl.m_Pay);
-    girl.m_Pay -= stolen;
-    girl.m_Money += stolen;
-
-
-    int house = int(house_factor * girl.m_Pay);            // the house takes its cut of whatever's left
-    if (house > girl.m_Pay) house = girl.m_Pay;            // this shouldn't happen. That said...
-
-    girl.m_Money += girl.m_Pay - house;                    // The girl collects her part of the pay
-    m_Finance.brothel_work(house);                          // and add the rest to the brothel finances
-    girl.m_Pay = 0;                                        // clear pay
-    if (girl.m_Money < 0) girl.m_Money = 0;                // Not sure how this could happen - suspect it's just a sanity check
-
-    if (!stolen) return;                                    // If she didn't steal anything, we're done
-    sGang* gang = g_Game->gang_manager().GetGangOnMission(MISS_SPYGIRLS);    // if no-one is watching for theft, we're done
-    if (!gang) return;
-    int catch_pc = g_Game->gang_manager().chance_to_catch(girl);            // work out the % chance that the girl gets caught
-    if (!g_Dice.percent(catch_pc)) return;                    // if they don't catch her, we're done
-
-    // OK: she got caught. Tell the player
-    std::stringstream gmess; gmess << "Your Goons spotted " << girl.FullName() << " taking more gold then she reported.";
-    gang->m_Events.AddMessage(gmess.str(), IMGTYPE_PROFILE, EVENT_GANG);
-}
-
 int IBuilding::free_rooms() const
 {
     return m_NumRooms - m_Girls->num();
@@ -1919,4 +1832,15 @@ int IBuilding::GetInteractionProvided(const std::string& name) const {
 
 int IBuilding::GetInteractionConsumed(const std::string& name) const {
     return m_ShiftInteractions.at(name).TotalConsumed;
+}
+
+void IBuilding::IterateGirls(bool is_night, std::initializer_list<JOBS> jobs, const std::function<void(sGirl&)>& handler) {
+    m_Girls->apply([&](sGirl& girl) {
+        if(girl.is_dead()) return;
+        JOBS job = girl.get_job(is_night);
+        if (!is_in(job, jobs)) {
+            return;
+        }
+        handler(girl);
+    });
 }

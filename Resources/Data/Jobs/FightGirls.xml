@@ -1,0 +1,123 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Cage">
+    <Description>
+        She will fight against other girls. Dangerous.
+    </Description>
+
+    <Performance>
+        <Factor Skill="Combat" Weight="1"/>
+        <Factor Skill="Magic" Weight="1"/>
+        <Factor Stat="Constitution" Weight="1"/>
+        <Factor Stat="Agility" Weight="1"/>
+        <Factor Stat="Fame" Weight="1"/>
+        <Factor Stat="Beauty" Weight="1"/>
+
+        <Mod>work.fightarena</Mod>
+    </Performance>
+
+    <Gains XP="5" Skill="3">
+        <Skill Name="Combat" Weight="3"/>
+        <Skill Name="Magic" Weight="1"/>
+        <Stat Name="Constitution" Weight="1"/>
+        <Stat Name="Agility" Weight="1"/>
+
+        <GainTrait Trait="Tough" Threshold="20" Action="COMBAT">
+            She has become pretty Tough from all of the fights she's been in.
+        </GainTrait>
+        <GainTrait Trait="Aggressive" Threshold="60" Action="COMBAT">
+            She is getting rather Aggressive from her enjoyment of combat.
+        </GainTrait>
+        <GainTrait Trait="Fleet of Foot" Threshold="30" Action="COMBAT">
+            She is getting rather fast from all the fighting.
+        </GainTrait>
+        <LoseTrait Trait="Fragile" Threshold="75" Action="COMBAT">
+            ${name} has had to heal from so many injuries you can't say she is Fragile anymore.
+        </LoseTrait>
+    </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to fight during the ${shift} shift.</Text>
+        </Message>
+
+        <Message Name="victory">
+            <Text Condition="Exhibitionist">
+                As she enjoys showing off her body, ${name} lets her opponent cut away her already-skimpy clothing,
+                ending her match all but naked - but victorious.  Many of the patrons seem to enjoy the show.
+            </Text>
+            <Text Condition="Sadistic">
+                As the match draws to a close, ${name} stops trying to win and simply toys with her opponent,
+                practically torturing her in front of the audience.  Many patrons disapprove, although a few respond favorably.
+            </Text>
+            <Text Condition="Dominatrix">
+                ${name}'s verbal abuse, along with her combat prowess, lead to a dramatic defeat of her opponent,
+                although her behavior towards the loser disappoints many patrons.
+            </Text>
+            <Text Condition="Brawler">
+                ${name}'s preference for grappling and clinch-fighting throws her opponent off-balance and gives her an easy,
+                if somewhat boring, victory.
+            </Text>
+            <Text Condition="Flight">
+                Being able to fly is an almost-unfair advantage that most opponents can't counter.
+                Thanks to that, ${name} wins handily.
+            </Text>
+            <Text Condition="Assassin">
+                Utilizing a no-rules, victory-at-any-cost combat style,
+                ${name} won a decisive victory over her orthodox opponent.
+                This was not unnoticed by some people in the audience.
+            </Text>
+            <Text Condition="Masochist">
+                ${name}'s cries of joy and outright pleasure upon being injured distract her opponent,
+                and the pain-loving girl comes back from apparent defeat to achieve a dramatic victory.
+                Despite her many injuries, she smiles happily as she thanks her opponent for the match.
+            </Text>
+            <Text Condition="skill:Magic > 50 ^ skill:Combat < 50">
+                ${name}'s powerful magic demonstrates precisely why mages are feared by many.
+                She even manages to look good while doing it!
+            </Text>
+            <Text Condition="skill:Magic > 75 ^ skill:Combat > 75">
+                Having mastered both weapons and sorcery,
+                ${name} is a nearly unstoppable force of nature in the Arena,
+                easily dispatching opponents who focus on one branch of combat over the other.
+            </Text>
+            <Text>
+                ${name} won her fight.
+            </Text>
+        </Message>
+
+        <Message Name="defeat">
+            <Text Condition="Exhibitionist">
+                As she enjoys showing off her body, ${name} lets her opponent cut away her already-skimpy clothing,
+                but either because of her lack of skill or just bad luck, she takes a real hit and is defeated.
+            </Text>
+            <Text Condition="Sadistic">
+                ${name} tries to torment her opponent,
+                but her overconfidence leads to a stunning defeat when the other fighter feigns injury.
+            </Text>
+            <Text Condition="Flight">
+                ${name} was unable to leverage her greater maneuverability
+                and yielded the match after being forced to the ground.
+            </Text>
+            <Text Condition="Masochist">
+                Overwhelmed by pleasure, ${name} is unable to defend herself from her opponent and is easily defeated.
+                After the match ends, she begs the other fighter for another match - 'just like this one.'
+            </Text>
+            <Text Condition="skill:Magic > 50 ^ skill:Combat < 50">
+                Lacking the physical prowess to hold her opponent off while she readies her spells,
+                ${name} is quickly defeated by her opponent.
+            </Text>
+            <Text Condition="skill:Magic > 75 ^ skill:Combat > 75">
+                You can't believe, ${name} lost. With her skill in combat and magic you thought her unbeatable.
+            </Text>
+            <Text>
+                She lost the fight.
+            </Text>
+        </Message>
+
+        <Message Name="draw">
+            <Text>
+                The fight ended in a draw.
+            </Text>
+        </Message>
+    </Messages>
+</Job>

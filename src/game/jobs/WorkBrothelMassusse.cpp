@@ -24,11 +24,12 @@
 #include "IGame.h"
 #include "character/predicates.h"
 #include "cGirls.h"
+#include "cJobManager.h"
 
 #pragma endregion
 
 // `J` Job Brothel - Brothel
-bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
@@ -40,7 +41,7 @@ bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
         //SIN - More informative mssg to show *what* she refuses
         ss << "${name} refused to massage customers in your brothel " << (Day0Night1 ? "tonight." : "today.");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} worked massaging customers.\n \n";
 
@@ -329,15 +330,7 @@ bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
 #pragma endregion
-#pragma region    //    Money                    //
-
-
-#pragma endregion
 #pragma region    //    Finish the shift            //
-
-    // Money
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
     girl.upd_Enjoyment(actiontype, work);
 
@@ -361,7 +354,7 @@ bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
 #pragma endregion
-    return false;
+    return {false, std::max(0, tips), std::max(0, wages), 0};
 }
 
 double JP_BrothelMasseuse(const sGirl& girl, bool estimate)// not used

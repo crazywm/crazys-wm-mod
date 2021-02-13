@@ -40,7 +40,7 @@ public:
         cBasicJob(id, xml), m_CraftingData(std::move(data)) {
     }
 
-    bool DoWork(sGirl& girl, bool is_night) final;
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) final;
 protected:
     bool WorkCrafting(sGirl& girl, bool is_night);
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night);
@@ -51,6 +51,7 @@ protected:
     // shift processing data
     int enjoy;
     int craftpoints;
+    int sales;
 private:
     virtual void performance_msg();
     virtual void DoWorkEvents(sGirl& girl);

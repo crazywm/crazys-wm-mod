@@ -32,6 +32,7 @@ extern cRng    g_Dice;
 
 extern const char* const CarePointsBasicId = "CarePointsBasic";
 extern const char* const CarePointsGoodId = "CarePointsGood";
+extern const char* const DoctorInteractionId = "DoctorInteraction";
 
 // // ----- Strut sClinic Create / destroy
 sClinic::sClinic() : IBuilding(BuildingType::CLINIC, "Clinic")
@@ -43,6 +44,7 @@ sClinic::sClinic() : IBuilding(BuildingType::CLINIC, "Clinic")
 
     declare_resource(CarePointsBasicId);
     declare_resource(CarePointsGoodId);
+    declare_interaction(DoctorInteractionId);
 }
 
 sClinic::~sClinic()    = default;
@@ -54,104 +56,83 @@ void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
     std::stringstream ss;
     std::string girlName;
 
-    int numDoctors = 0;
-
     BeginShift(is_night);
 
-    ////////////////////////////////////////////////////////
-    //  JOB_DOCTOR needs to be checked before all others  //
-    ////////////////////////////////////////////////////////
-    m_Girls->apply([&](auto& current) {
-        auto sw = current.get_job(is_night);
-        if (current.is_dead() || sw != JOB_DOCTOR)
-        {    // skip dead girls and anyone who is not a doctor
-            return;
-        }
-        auto sum = EVENT_SUMMARY;
-        ss.str("");
-
-        if (current.has_active_trait("AIDS"))
-        {
-            ss << "${name} has AIDS! She has to get it treated before she can go back to work as a Doctor.";
-            current.m_DayJob = current.m_NightJob = JOB_CUREDISEASES;
-        }
-        else if (current.is_slave())
-        {
-            ss << "Doctors can not be slaves so ${name} was demoted to Nurse.";
-            current.m_DayJob = current.m_NightJob = JOB_NURSE;
-        }
-        else if (current.intelligence() < 50 || current.medicine() < 50)
-        {
-            ss << "${name} is not qualified to be a Doctor so she was sent back to being an Intern.";
-            current.m_DayJob = current.m_NightJob = JOB_NURSE;
-        }
-        else if (current.disobey_check(ACTION_WORKDOCTOR, JOB_DOCTOR))
-        {
-            (is_night ? current.m_Refused_To_Work_Night = true : current.m_Refused_To_Work_Day = true);
-            m_Fame -= current.fame();
-            ss << "${name} refused to work as a Doctor so made no money.";
-            sum = EVENT_NOWORK;
-        }
-        else
-        {
-            numDoctors++;
-        }
-        if (ss.str().length() > 0) current.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-    });
-
-    ////////////////////////////////////////////////////////////////
-    //  Interns and Nurses can be promoted to doctor if need be.  //
-    ////////////////////////////////////////////////////////////////
-    if(get_active_matron())
-    {
-        if(numDoctors < 1)
-            m_Girls->apply([&](sGirl& current){
-                if (numDoctors >= 1)
-                    return;
-                if(promote_to_doctor(current, JOB_INTERN, is_night))
-                    numDoctors += 1;
-            });
-        if(numDoctors < 1)
-            m_Girls->apply([&](sGirl& current){
-                if (numDoctors >= 1)
-                    return;
-                if(promote_to_doctor(current, JOB_NURSE, is_night))
-                    numDoctors += 1;
-            });
-    }
-
-    /////////////////////////////////////
-    //  Do all the Clinic staff jobs.  //
-    /////////////////////////////////////
-    m_Girls->apply([is_night](auto& current) {
-        auto sw = current.get_job(is_night);
-        if (current.is_dead() || (sw != JOB_INTERN && sw != JOB_NURSE && sw != JOB_JANITOR && sw != JOB_DOCTOR) ||
-            // skip dead girls and anyone who is not staff
-            (sw == JOB_DOCTOR && ((is_night == SHIFT_DAY && current.m_Refused_To_Work_Day)||(is_night == SHIFT_NIGHT && current.m_Refused_To_Work_Night))))
-        {    // and skip doctors who refused to work in the first check
-            return;
-        }
-
+    //  Do all the Clinic staff jobs.
+    IterateGirls(is_night, {JOB_INTERN, JOB_NURSE, JOB_JANITOR, JOB_DOCTOR},
+                 [is_night](auto& current) {
         g_Game->job_manager().handle_simple_job(current, is_night);
     });
 
-
-    ///////////////////////////////////////////////////////////////////////
-    //  Do all the surgery jobs. Not having a doctor is in all of them.  //
-    ///////////////////////////////////////////////////////////////////////
-    m_Girls->apply([is_night](auto& current) {
-        auto sw = current.get_job(is_night);
-        if (current.is_dead() || !is_in((JOBS)sw, {JOB_GETHEALING, JOB_GETABORT, JOB_COSMETICSURGERY,
-                                                    JOB_LIPO, JOB_BREASTREDUCTION, JOB_BOOBJOB, JOB_VAGINAREJUV, JOB_FACELIFT,
-                                                    JOB_ASSJOB, JOB_TUBESTIED, JOB_CUREDISEASES, JOB_FERTILITY}))
-        {    // skip dead girls and anyone not a patient
-            return;
-        }
-
-        // do their surgery
+    //  Do all the surgery jobs.
+    IterateGirls(is_night, {JOB_GETHEALING, JOB_GETABORT, JOB_COSMETICSURGERY,
+                            JOB_LIPO, JOB_BREASTREDUCTION, JOB_BOOBJOB, JOB_VAGINAREJUV, JOB_FACELIFT,
+                            JOB_ASSJOB, JOB_TUBESTIED, JOB_CUREDISEASES, JOB_FERTILITY}, [is_night](auto& current) {
         g_Game->job_manager().do_job(current, is_night);
     });
 
+    //  Finally, treat external patients. This depends on how many treatment points and free doctors we still have
+    /*
+    while(sGirl* doc = RequestInteraction(DoctorInteractionId)) {
+        auto perf = doc->job_performance(JOB_DOCTOR, false);
+        std::stringstream message;
+        int earnings = 0;
+        if(perf < 150) {
+            // only let her work on simple surgeries
+            int difficulty = g_Dice.in_range(25, 50 + perf / 2);
+            // botched surgery
+            if(difficulty > perf && g_Dice.percent(25)) {
+                message << "${name} tried to perform a simple surgery, but she botched the job. ";
+                if(TryConsumeResource(CarePointsGoodId, 4)) {
+                    message << "Thankfully, your highly qualified nurses could prevent the worst.";
+                } else {
+                    message << "Her patient is now permanently crippled, and you had to pay them 500 gold as compensation.";
+                    earnings = -500;
+                }
+            } else {
+                earnings = 50 + perf/2 + ConsumeResource(CarePointsBasicId, 3) * 10;
+                message << "${name} performed a simple surgery on an external patient, earning you " << earnings << " gold";
+            }
+        } else {
+            // OK, high possibly high quality surgery
+            if(!TryConsumeResource(CarePointsBasicId, 3)) {
+                // Not enough nurses, we can only do the simple stuff
+                earnings = 125 + ConsumeResource(CarePointsBasicId, 3) * 10;
+                message << "${name} performed a simple surgery on an external patient, earning you " << earnings << " gold";
+            } else {
+                if (g_Dice.percent(25) && g_Dice.in_range(0, perf) < 100) {
+                    message << "${name} performed a highly complicated surgery, which unfortunately wasn't successful.";
+                } else {
+                    earnings = 75 + perf / 2 + ConsumeResource(CarePointsBasicId, 4) * 12;
+                    message << "${name} successfully performed a highly complicated surgery. The grateful family pays you "
+                            << earnings << " gold";
+                }
+            }
+        }
+        doc->AddMessage(message.str(), IMGTYPE_NURSE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        doc->m_Pay += earnings;
+    }
+
+    IterateGirls(is_night, {JOB_DOCTOR},
+     [&](sGirl& girl) {
+         bool refused = is_night ? girl.m_Refused_To_Work_Night : girl.m_Refused_To_Work_Day;
+
+         CalculatePay(girl, girl.get_job(is_night));
+         int totalPay  = girl.m_Pay;
+         int totalTips = girl.m_Tips;
+
+         // Summary Messages
+         if (refused)
+         {
+             girl.AddMessage("${name} refused to work so she made no money.", IMGTYPE_PROFILE, EVENT_SUMMARY);
+         }
+         else
+         {
+             girl.AddMessage(g_Game->job_manager().GirlPaymentText(this, girl, totalTips, totalPay, totalTips + totalPay, is_night),
+                             IMGTYPE_PROFILE, EVENT_SUMMARY);
+         }
+     });
+*/
     EndShift(is_night);
 }
 
@@ -313,23 +294,6 @@ std::string sClinic::meet_no_luck() const {
                 "got daddy's gold.  Looks like nothing to gain here today. "
             }
     );
-}
-
-bool sClinic::promote_to_doctor(sGirl& current, JOBS job, bool is_night) {
-    auto sw = current.get_job(is_night);
-    if (current.is_dead() || sw != job || current.is_slave() || current.intelligence() < 50 ||
-        current.medicine() < 50) {
-        // skip dead girls and anyone who is not an intern and make sure they are qualified to be a doctor
-        return false;
-    }
-    auto sum = EVENT_SUMMARY;
-
-    if (!current.disobey_check(ACTION_WORKDOCTOR, JOBS(sw))) {
-        current.m_DayJob = current.m_NightJob = JOB_DOCTOR;
-        current.AddMessage("There was no Doctor available to work so ${name} was promoted to Doctor.", IMGTYPE_PROFILE, sum);
-        return true;
-    }
-    return false;
 }
 
 void sClinic::GirlBeginShift(sGirl& girl, bool is_night) {

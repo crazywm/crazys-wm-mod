@@ -30,7 +30,7 @@ struct sBarJobData {
 class cBarJob : public cBasicJob {
 public:
     cBarJob(JOBS job, const char* xml, sBarJobData data);
-    bool DoWork(sGirl& girl, bool is_night) override;
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
     virtual bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) = 0;
 
 protected:

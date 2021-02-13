@@ -56,7 +56,7 @@ public:
 private:
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     void InitWork() override;
-    bool DoWork(sGirl& girl, bool is_night) override;
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
 
     void load_from_xml_callback(const tinyxml2::XMLElement& job_element) override;
 
@@ -105,7 +105,7 @@ protected:
 class cCrewJob : public cBasicJob {
 public:
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
-    bool DoWork(sGirl& girl, bool is_night) override;
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
     using cBasicJob::cBasicJob;
 protected:
     Image_Types m_EventImage = IMGTYPE_PROFILE;

@@ -33,7 +33,7 @@
 #include "cGirls.h"
 
 
-bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
+sWorkJobResult WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
     /*
     *    WD:    Modified to fix customer service problems.. I hope :)
     *
@@ -641,7 +641,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
                 else Cust.m_Money = 0;
 
                 fuckMessage << "\nShe received a tip of " << tip << " gold.";
-                girl.m_Tips += tip;
+                tips += tip;
 
                 // If the customer is a government official
                 if (Cust.m_Official == 1)
@@ -708,8 +708,6 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
     else if (NumSleptWith < NumCusts)        { ss << "\n \nShe ran out of customers who like her."; }
     summary += ss.str();
 
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
     girl.AddMessage(summary, IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     //gain
@@ -724,7 +722,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
     if (girl.oralsex() > 30 && rng.percent(oralcount))
         cGirls::AdjustTraitGroupGagReflex(girl, +1, true);
 
-    return false;
+    return {false, std::max(0, tips), std::max(0, wages), 0};
 }
 
 

@@ -48,24 +48,17 @@ void sFarm::UpdateGirls(bool is_night)        // Start_Building_Process_B
     //////////////////////////////////////////////////////
     BeginShift(is_night);
 
-    m_Girls->apply([&](sGirl& girl) {
-        auto sw = girl.get_job(is_night);
-        if (girl.is_dead() || sw == JOB_RESTING || sw == m_MatronJob || sw == JOB_MARKETER)
-        {    // skip dead girls, resting girls and the matron
-            return;
-        }
+    IterateGirls(is_night, {JOB_VETERINARIAN, JOB_FARMHAND, JOB_RESEARCH, JOB_FARMER, JOB_GARDENER,
+                            JOB_SHEPHERD, JOB_RANCHER, JOB_CATACOMBRANCHER, JOB_BEASTCAPTURE, JOB_MILKER,
+                            JOB_MILK, JOB_BUTCHER, JOB_BAKER, JOB_BREWER, JOB_MAKEITEM, JOB_MAKEPOTIONS},
+                 [&](sGirl& girl) {
         g_Game->job_manager().handle_simple_job(girl, is_night);
     });
     
     //////////////////////////////////////////////////////////////
     //  Do Marketer last so she can sell what the others made.  //
     //////////////////////////////////////////////////////////////
-    m_Girls->apply([&](sGirl& girl) {
-        auto sw = girl.get_job(is_night);
-        if (girl.is_dead() || sw != JOB_MARKETER)
-        {    // skip dead girls, resting girls and the matron
-            return;
-        }
+    IterateGirls(is_night, {JOB_MARKETER}, [&](sGirl& girl) {
         g_Game->job_manager().handle_simple_job(girl, is_night);
     });
 

@@ -31,7 +31,7 @@
 #pragma endregion
 
 // `J` Job Centre - General
-bool WorkComunityService(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkComunityService(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
@@ -42,7 +42,7 @@ bool WorkComunityService(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         ss << "${name} refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} worked doing community service.\n \n";
 
@@ -50,7 +50,7 @@ bool WorkComunityService(sGirl& girl, bool Day0Night1, cRng& rng)
 
     bool blow = false, sex = false;
     int dispo = 0;
-    int wages = 20, tips = 0;
+    int wages = 100;
     int enjoy = 0, help = 0, fame = 0;
     int imagetype = IMGTYPE_PROFILE;
     auto msgtype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
@@ -180,20 +180,12 @@ bool WorkComunityService(sGirl& girl, bool Day0Night1, cRng& rng)
     else
     {
         ss << "\nThe fact that your paying this girl to do this helps people think your a better person.";
-        g_Game->gold().staff_wages(100);  // wages come from you
+        g_Game->gold().staff_wages(wages);  // wages come from you
         dispo = int(dispo*1.5);
     }
 
 #pragma endregion
-#pragma region    //    Money                    //
-
-
-#pragma endregion
 #pragma region    //    Finish the shift            //
-
-    // Money
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
     g_Game->player().disposition(dispo);
     girl.AddMessage(ss.str(), imagetype, msgtype);
@@ -222,7 +214,7 @@ bool WorkComunityService(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
 #pragma endregion
-    return false;
+    return {false, 0, wages, 0};
 }
 
 double JP_ComunityService(const sGirl& girl, bool estimate)// not used

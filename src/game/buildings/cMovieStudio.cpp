@@ -71,16 +71,9 @@ void sMovieStudio::UpdateGirls(bool is_night)
     //  Handle the start of shift stuff for all girls.  //
     BeginShift(is_night);
 
-    m_Girls->apply([&]( sGirl& current){
-        if (current.is_dead() || (current.m_NightJob != JOB_CAMERAMAGE && current.m_NightJob != JOB_CRYSTALPURIFIER &&
-                                  current.m_NightJob != JOB_PROMOTER && current.m_NightJob != JOB_DIRECTOR &&
-                                  current.m_NightJob != JOB_MARKET_RESEARCH))
-        {    // skip dead girls and anyone not working the jobs we are processing
-            return;
-        }
+    IterateGirls(is_night, {JOB_CAMERAMAGE, JOB_CRYSTALPURIFIER, JOB_PROMOTER, JOB_DIRECTOR, JOB_MARKET_RESEARCH},
+                 [&]( sGirl& current){
         g_Game->job_manager().handle_simple_job(current, SHIFT_NIGHT);
-        if(current.m_Refused_To_Work_Night)
-            return;
     });
 
     // last check, is there a crew to film?
@@ -107,17 +100,11 @@ void sMovieStudio::UpdateGirls(bool is_night)
         });
     } else {
         // Process the Crew.  //
-        m_Girls->apply([](sGirl& girl) {
-            if (girl.is_dead() || (girl.m_NightJob != JOB_STAGEHAND &&
-                                   girl.m_NightJob != JOB_FLUFFER)) {
-                return;
-            }
-
+        IterateGirls(is_night, {JOB_STAGEHAND, JOB_FLUFFER}, [](sGirl& girl) {
             g_Game->job_manager().handle_simple_job(girl, SHIFT_NIGHT);
         });
 
         // Add an event with info
-
         summary << "You have " << NumInteractors(CrystalPurifierInteractionId) << " crystal purifiers, " << NumInteractors(CamMageInteractionId) << " camera mages ";
         summary << "and " << NumInteractors(DirectorInteractionId) << " working.\n";
         summary << "Your stagehands provide a total of " << GetResourceAmount(StageHandPtsId) << " stagehand points.\n";

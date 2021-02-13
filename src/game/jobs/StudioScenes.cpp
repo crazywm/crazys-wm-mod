@@ -174,7 +174,7 @@ namespace {
             return eCheckWorkResult::ACCEPTS;
         }
 
-        bool DoWork(sGirl& girl, bool is_night) override {
+        sWorkJobResult DoWork(sGirl& girl, bool is_night) override {
             cJobManager& mgr = g_Game->job_manager();
             RandomSelector<void> select_job;
 
@@ -202,7 +202,7 @@ namespace {
             }
 
             girl.AddMessage("Could not find a valid scene to film for the random job.", IMGTYPE_PROFILE, EVENT_DEBUG);
-            return false;
+            return {false, 0, 0, 0};
         }
     };
 }

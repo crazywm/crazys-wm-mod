@@ -41,87 +41,16 @@ sCentre::~sCentre()    = default;
 // Run the shifts
 void sCentre::UpdateGirls(bool is_night)
 {
-    // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cCentre.cpp
-    std::stringstream ss;
-    std::string girlName;
-
-    bool counselor = false;
-
     //  Handle the start of shift stuff for all girls.  //
     BeginShift(is_night);
 
-    //////////////////////////////////////////////////////////
-    //  JOB_COUNSELOR needs to be checked before all others //
-    //////////////////////////////////////////////////////////
-    m_Girls->apply([&](auto& current)
+    IterateGirls(is_night, {JOB_FEEDPOOR, JOB_COMUNITYSERVICE, JOB_CLEANCENTRE, JOB_COUNSELOR}, [&](auto& current)
     {
-        auto sw = current.get_job(is_night);
-        if (current.is_dead() || sw != JOB_COUNSELOR)
-        {    // skip dead girls and anyone who is not a counselor
-           return;
-        }
-        ss.str("");
-
-        if (current.disobey_check(ACTION_WORKCOUNSELOR, (JOBS)sw))
-        {
-           (is_night ? current.m_Refused_To_Work_Night = true : current.m_Refused_To_Work_Day = true);
-           m_Fame -= current.fame();
-           ss << "${name} refused to work so made no money.";
-        }
-        else
-        {
-           counselor = true;
-        }
-        if (ss.str().length() > 0) current.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
-    });
-
-    /////////////////////////////////////////////////////////////////////////////////
-    //  Anyone not in the Therapy Cantre can be assigned to counselor if need be.  //
-    /////////////////////////////////////////////////////////////////////////////////
-    if(get_active_matron() && Num_Patients(*this, is_night) > 0) {
-        /////////////////////////////////////////////////////////////////////////////
-        //  Anyone in the Therapy Cantre can be assigned to counselor if need be.  //
-        //  Try them in order of who can better go without their therapy.          //
-        /////////////////////////////////////////////////////////////////////////////
-
-        counselor = FindCounselor(is_night, {JOB_FEEDPOOR, JOB_COMUNITYSERVICE, JOB_CLEANCENTRE});
-        if(!counselor) {
-            counselor = FindCounselor(is_night, {JOB_THERAPY});
-        }
-        if(!counselor) {
-            counselor = FindCounselor(is_night, {JOB_ANGER, JOB_EXTHERAPY});
-        }
-        if(!counselor) {
-            counselor = FindCounselor(is_night, {JOB_REHAB});
-        }
-    }
-
-    /////////////////////////////////////
-    //  Do all the Centre staff jobs.  //
-    /////////////////////////////////////
-    m_Girls->apply([&](auto& current)
-    {
-        auto sw = current.get_job(is_night);
-        if (current.is_dead() || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE && sw != JOB_COUNSELOR) ||
-            // skip dead girls and anyone who is not staff
-            (sw == JOB_COUNSELOR && ((is_night == SHIFT_DAY && current.m_Refused_To_Work_Day) || (is_night == SHIFT_NIGHT && current.m_Refused_To_Work_Night))))
-        {
-            return;
-        }
-
         g_Game->job_manager().handle_simple_job(current, is_night);
     });
 
-
-    ////////////////////////////////////////////////////////////////////
-    //  Do Rehab and therapy last if there is a counselor available.  //
-    ////////////////////////////////////////////////////////////////////
-    m_Girls->apply([&](auto& current){
-        auto sw = current.get_job(is_night);
-        if (current.is_dead() || (sw != JOB_REHAB && sw != JOB_ANGER && sw != JOB_EXTHERAPY && sw != JOB_THERAPY))
-        {
-            return;
-        }
+    IterateGirls(is_night, {JOB_REHAB, JOB_ANGER, JOB_EXTHERAPY, JOB_THERAPY}, [&](auto& current)
+    {
         g_Game->job_manager().do_job(current, is_night);
     });
 
@@ -162,7 +91,7 @@ void sCentre::auto_assign_job(sGirl& target, std::stringstream& message, bool is
     else if (num_girls_on_job(JOB_COMUNITYSERVICE, is_night) < num_girls_on_job(JOB_FEEDPOOR, is_night))
     {
         target.m_DayJob = target.m_NightJob = JOB_COMUNITYSERVICE;
-        ss << "work doing comunity service.";
+        ss << "work doing community service.";
     }
     else
     {
@@ -193,31 +122,5 @@ bool sCentre::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_ni
         return true;
     }
     return false;
-}
-
-bool sCentre::FindCounselor(bool is_night, std::initializer_list<JOBS> current_job) {
-    auto found = m_Girls->get_first_girl([&](auto& current){
-        auto sw = current.get_job(is_night);
-        // skip dead girls
-        if (current.is_dead()) {
-            return false;
-        }
-
-        // skip anyone with a different job
-        bool right_job = std::any_of(begin(current_job), end(current_job), [sw](JOBS job){ return sw == job; });
-        if(!right_job)
-            return false;
-
-        //  we really need a const disobey_check
-        return !const_cast<sGirl&>(current).disobey_check(ACTION_WORKCOUNSELOR, (JOBS)sw);
-    });
-
-    if(found) {
-        std::string message = "There was no Counselor available to work so {name} was assigned to do it.";
-        found->m_DayJob = found->m_NightJob = JOB_COUNSELOR;
-        found->AddMessage(message, IMGTYPE_PROFILE, EVENT_SUMMARY);
-    }
-
-    return found;
 }
 

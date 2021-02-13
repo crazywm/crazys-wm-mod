@@ -71,5 +71,67 @@
         <Message Name="work">
             <Text>${name} worked as a nurse.</Text>
         </Message>
+
+        <Message Name="work.perfect">
+            She must be the perfect nurse, patients go on and on about her and always come to see her when she works.
+
+            <Text>Just the sight of ${name} brings happiness to the patients. She is a blessing to the entire ward.</Text>
+            <Text>Today the knowledge and swift reaction from ${name} saved a patient's life!</Text>
+            <Text>She was doing her routine with a wide, beautiful smile and humming a pleasant tune.</Text>
+            <Text>Her work is her life. She finds fulfillment in every day working in the clinic.</Text>
+            <Text>She spent her day supervising new nurses, showing them how to do the work properly and answering tons of questions.</Text>
+        </Message>
+
+        <Message Name="work.great">
+            She's unbelievable at this and is always getting praised for her work by the patients.
+
+            <Text>${name} is good at her work. Besides helping patients, she gave some pointers to younger, less experience coworkers.</Text>
+            <Text>${name} was on her feet all day long. She was really tired but also felt fulfilled.</Text>
+            <Text>She managed to calm a patient before a major surgery.</Text>
+            <Text>When assisting in a surgery, she knew what tool will be needed, before the surgeon called for them.</Text>
+            <Text>${name} is really committed to her job as a nurse. She's starting to feel enjoyment after every hard worked day.</Text>
+        </Message>
+
+        <Message Name="work.good">
+            She's good at this job and gets praised by the patients often.
+
+            <Text>She made one of the patients heart beat dangerously high, while leaning over his face to rearrange the pillow.</Text>
+            <Text>${name} made her rounds and spend the rest of the day chatting with other staff members.</Text>
+            <Text>When giving medicine to the patient, ${name} noticed that the dosage for one of them was wrong. She corrected her mistake immediately.</Text>
+            <Text>Today she was assigned to the surgery room. She learned something new.</Text>
+            <Text>It was a busy day for ${name}, but she manage to get through it without any slip-ups.</Text>
+        </Message>
+        <Message Name="work.ok">
+            She made a few mistakes but overall she is okay at this.
+
+            <Text>She accidentally gave a patient the wrong dosage of their drugs! Fortunately she understated them.</Text>
+            <Text>${name} made a mistake while changing bandages of one of her patients. The head nurse scolded her.</Text>
+            <Text>She spent her shift following the doctor and learning more about the job.</Text>
+            <Text>She slapped an older patient for groping her ass! Good thing that the doctor was near to help him stay alive!</Text>
+            <Group>
+                When giving a sponge bath to one of male patients she accidentally aroused his manhood
+                <Text Condition="Shy|Meek">. Ashamed from the sight, she ran out the room!</Text>
+                <Text>but it didn't bother her any.</Text>
+            </Group>
+        </Message>
+
+        <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
+
+            <Text>When prepping her patient before a mayor surgery she described all possible bad outcomes forgetting to mentioning the low risk percentage and good sides of this treatment.</Text>
+            <Text>${name} took the temperature of all patients in her block with the same thermometer without sterilizing it!</Text>
+            <Text>She got scolded today by the doctor for laughing at the patients that came in for liposuction about their weight.</Text>
+            <Text>Being responsible for utilizing today's medical waste, ${name} just flushed them down the toilet.</Text>
+            <Text>She spend most of her shift snoozing in the basement medical supply storage.</Text>
+        </Message>
+
+        <Message Name="work.worst">
+            She was nervous and constantly making mistakes. She really isn't very good at this job.
+            <Text>Some could say that her technique of drawing blood is the same way people play pin the tail on the donkey.</Text>
+            <Text>Sponge bath, skinning someone alive, no difference for ${name}.</Text>
+            <Text>${name} covered her mouth while sneezing several times. After that she went to assist in the ongoing surgery without changing her gloves!</Text>
+            <Text>While assisting the doctor, ${name} giggled when the patient was telling about their health problems.</Text>
+            <Text>${name} fainted at the first sight of blood. She wasn't helpful today.</Text>
+        </Message>
     </Messages>
 </Job>

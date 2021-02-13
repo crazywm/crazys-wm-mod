@@ -30,7 +30,7 @@
 #pragma endregion
 
 // `J` Job Centre - General
-bool WorkFeedPoor(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkFeedPoor(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
@@ -41,14 +41,14 @@ bool WorkFeedPoor(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         ss << "${name} refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} worked feeding the poor.";
 
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     bool blow = false, sex = false;
-    int wages = 20, tips = 0;
+    int wages = 20;
     int enjoy = 0, feed = 0, fame = 0;
 
     int imagetype = IMGTYPE_PROFILE;
@@ -316,10 +316,6 @@ bool WorkFeedPoor(sGirl& girl, bool Day0Night1, cRng& rng)
 #pragma endregion
 #pragma region    //    Finish the shift            //
 
-    // Money
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
-
     feed += (int)(jobperformance / 10);        //  1 feed per 10 point of performance
 
     int cost = 0;
@@ -353,7 +349,7 @@ bool WorkFeedPoor(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(actiontype, enjoy);
 
 #pragma endregion
-    return false;
+    return {false, 0, 0, std::max(0, wages)};
 }
 
 double JP_FeedPoor(const sGirl& girl, bool estimate)// not used

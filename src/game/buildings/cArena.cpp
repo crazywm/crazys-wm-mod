@@ -51,26 +51,9 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
     //  Handle the start of shift stuff for all girls.  //
     BeginShift(is_night);
 
-    /////////////////////////////////////////////////////////////////
-    //  All other Jobs in the Arena can be done at the same time.  //
-    /////////////////////////////////////////////////////////////////
-    /* `J` zzzzzz - Need to split up the jobs
-    Done - JOB_ARENAREST, JOB_DOCTORE
-
-    JOB_CLEANARENA
-
-    JOB_FIGHTBEASTS
-    JOB_FIGHTARENAGIRLS
-    JOB_FIGHTTRAIN
-    JOB_CITYGUARD
-
-    //*/
-    m_Girls->apply([&](auto& current) {
+    IterateGirls(is_night, {JOB_CLEANARENA, JOB_FIGHTBEASTS, JOB_FIGHTARENAGIRLS, JOB_FIGHTTRAIN, JOB_CITYGUARD, JOB_DOCTORE},
+                 [&](auto& current) {
         auto sw = current.get_job(is_night);
-        if (current.is_dead() || sw == JOB_RESTING || sw == m_MatronJob)// || sw == JOB_RACING)
-        {    // skip dead girls, resting girls and the matron and racers
-            return;
-        }
         auto sum = EVENT_SUMMARY; ss.str("");
 
         // fight beasts so if there is no beasts dont want them doing nothing
@@ -99,28 +82,7 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
         }
 
         // TODO this does not respect the changed job!
-        // do their job
-        bool refused = g_Game->job_manager().do_job(current, is_night);
-
-        int totalPay   = current.m_Pay;
-        int totalTips  = current.m_Tips;
-        int totalGold  = current.m_Pay + current.m_Tips;
-        CalculatePay(current, sw);
-
-        //        Summary Messages
-        if (refused)
-        {
-            m_Fame -= current.fame();
-            ss << "${name} refused to work so made no money.";
-        }
-        else
-        {
-            ss << g_Game->job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, is_night);
-            if (totalGold < 0) sum = EVENT_DEBUG;
-
-            m_Fame += current.fame();
-        }
-        if (ss.str().length() > 0) current.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+        g_Game->job_manager().handle_simple_job(current, is_night);
     });
 
     EndShift(is_night);

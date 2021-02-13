@@ -1,0 +1,15 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="PTrn">
+    <Description>
+        You will oversee her training personally.
+    </Description>
+
+    <Messages>
+        <Message Name="work">
+            <Text>You oversee ${name}'s training.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to work during the ${shift} shift.</Text>
+        </Message>
+    </Messages>
+</Job>

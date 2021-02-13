@@ -46,35 +46,12 @@ void sHouse::UpdateGirls(bool is_night)    // Start_Building_Process_B
     BeginShift(is_night);
 
     //  Do all Personal Bed Warmers together.  //
-    m_Girls->apply([&](auto& current) {
-        auto sw = current.get_job(is_night);
-        if (current.is_dead() || sw != JOB_PERSONALBEDWARMER)
-        {
-            return;
-        }
+    IterateGirls(is_night, {JOB_PERSONALBEDWARMER}, [&](auto& current) {
         g_Game->job_manager().handle_simple_job(current, is_night);
     });
 
-    /////////////////////////////////////////////////////////////////////
-    //  All the orher Jobs in the House can be done at the same time.  //
-    /////////////////////////////////////////////////////////////////////
-    /* `J` zzzzzz - Need to split up the jobs
-    Done - JOB_HOUSEREST, JOB_HEADGIRL, JOB_PERSONALBEDWARMER
-
-    JOB_CLEANHOUSE
-    JOB_RECRUITER
-    JOB_PERSONALTRAINING
-
-    //*/
-    m_Girls->apply([&](auto& current) {
-        auto sw = current.get_job(is_night);;
-        if (current.is_dead() || sw == JOB_RESTING || sw == m_MatronJob ||    // skip dead girls, resting girls and the matron
-            sw == JOB_PERSONALBEDWARMER ||
-            (is_night && sw == JOB_RECRUITER))                            // skip recruiters on the night shift
-        {
-            return;
-        }
-
+    IterateGirls(is_night, {JOB_RECRUITER, JOB_HOUSECOOK, JOB_CLEANHOUSE, JOB_PERSONALTRAINING,
+                            JOB_FAKEORGASM, JOB_SO_STRAIGHT, JOB_SO_BISEXUAL, JOB_SO_LESBIAN, JOB_HOUSEPET}, [&](auto& current) {
         g_Game->job_manager().handle_simple_job(current, is_night);
     });
 

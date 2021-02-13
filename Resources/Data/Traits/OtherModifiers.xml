@@ -359,119 +359,6 @@
         <Trait Name="Fat" Value="-3" />
     </Modifier>
 
-    <!--
-    <Modifier Name="movie.quality.pg13">
-        <Trait Name="Porn Star" Value="20" />
-        <Trait Name="Actress" Value="10" />
-        <Trait Name="Shape Shifter" Value="10" />
-        <Trait Name="Fake Orgasm Expert" Value="5" />
-        <Trait Name="Fast Orgasms" Value="2" />
-        <Trait Name="Slow Orgasms" Value="-2" />
-        <Trait Name="Great Figure" Value="4" />
-
-
-        <Trait Name="Nymphomaniac" Value="4" />
-        <Trait Name="Good Kisser" Value="2" />
-
-
-        <Trait Name="Psychic" Value="4" />
-        <Trait Name="Dick-Sucking Lips" Value="1" />
-        <Trait Name="Chaste" Value="-2" />
-
-        <Trait Name="Fragile" Value="-2" />
-        <Trait Name="Mind Fucked" Value="-4" />
-        <Trait Name="Nervous" Value="-2" />
-
-        <Trait Name="Clumsy" Value="-2" />
-        <Trait Name="Meek" Value="-2" />
-        <Trait Name="Aggressive" Value="-2" />
-        <Trait Name="Broken Will" Value="-4" />
-        <Trait Name="Dependant" Value="-3" />
-        <Trait Name="Shy" Value="-3" />
-    </Modifier>
-
-    <Modifier Name="movie.quality.titty">
-        <Trait Name="Flat Chest" Value="-8" />
-        <Trait Name="Petite Breasts" Value="-4" />
-        <Trait Name="Small Boobs" Value="-1" />
-        <Trait Name="Busty Boobs" Value="2" />
-        <Trait Name="Big Boobs" Value="3" />
-        <Trait Name="Giant Juggs" Value="4" />
-        <Trait Name="Massive Melons" Value="5" />
-        <Trait Name="Abnormally Large Boobs" Value="6" />
-        <Trait Name="Titanic Tits" Value="7" />
-        <Trait Name="Perky Nipples" Value="1" />
-        <Trait Name="Puffy Nipples" Value="1" />
-        <Trait Name="Pierced Nipples" Value="5" />
-        <Trait Name="Pierced Navel" Value="2" />
-        <Trait Name="Lesbian" Value="-4" />
-    </Modifier>
-
-    <Modifier Name="movie.quality.anal">
-        <Trait Name="Pierced Clit" Value="1" />
-        <Trait Name="Great Arse" Value="10" />
-        <Trait Name="Tight Butt" Value="8" />
-        <Trait Name="Phat Booty" Value="6" />
-        <Trait Name="Wide Bottom" Value="4" />
-        <Trait Name="Plump Tush" Value="2" />
-        <Trait Name="Flat Ass" Value="-10" />
-        <Trait Name="Lesbian" Value="-10" />
-    </Modifier>
-
-    <Modifier Name="movie.quality.bondage">
-        <Trait Name="Pierced Nipples" Value="5" />
-        <Trait Name="Pierced Navel" Value="5" />
-        <Trait Name="Pierced Clit" Value="5" />
-    </Modifier>
-
-    <Modifier Name="movie.quality.sex">
-        <Trait Name="Pierced Nipples" Value="1" />
-        <Trait Name="Pierced Navel" Value="1" />
-        <Trait Name="Pierced Clit" Value="1" />
-        <Trait Name="Lesbian" Value="-5" />
-    </Modifier>
-
-    <Modifier Name="movie.quality.beast">
-        <Trait Name="Pierced Nipples" Value="1" />
-        <Trait Name="Pierced Navel" Value="1" />
-        <Trait Name="Hunter" Value="3" />
-        <Trait Name="Lesbian" Value="-5" />
-    </Modifier>
-
-    <Modifier Name="movie.quality.group">
-        <Trait Name="Pierced Nipples" Value="1" />
-        <Trait Name="Pierced Navel" Value="1" />
-        <Trait Name="Pierced Clit" Value="1" />
-        <Trait Name="Lesbian" Value="-10" />
-    </Modifier>
-
-    <Modifier Name="movie.quality.lesbian">
-        <Trait Name="Pierced Nipples" Value="1" />
-        <Trait Name="Pierced Navel" Value="1" />
-        <Trait Name="Pierced Clit" Value="3" />
-        <Trait Name="Lesbian" Value="10" />
-        <Trait Name="Straight" Value="-5" />
-    </Modifier>
-
-    <Modifier Name="movie.quality.strip">
-        <Trait Name="Pierced Nipples" Value="1" />
-        <Trait Name="Pierced Navel" Value="1" />
-        <Trait Name="Pierced Clit" Value="1" />
-        <Trait Name="Lesbian" Value="10" />
-        <Trait Name="Straight" Value="-5" />
-    </Modifier>
-
-    <Modifier Name="movie.quality.oral">
-        <Trait Name="Pierced Tongue" Value="1" />
-        <Trait Name="Dick-Sucking Lips" Value="2" />
-        <Trait Name="Deep Throat" Value="5" />
-        <Trait Name="No Gag Reflex" Value="2" />
-        <Trait Name="Gag Reflex" Value="-5" />
-        <Trait Name="Strong Gag Reflex" Value="-10" />
-        <Trait Name="Lesbian" Value="-10" />
-    </Modifier>
-    -->
-
     <!-- Pregnancy stuff -->
     <Modifier Name="preg.abort.happy">
         <!-- How happy/unhappy the girl gets by having an abortion - default is -10 -->
@@ -547,4 +434,137 @@
         <Trait Name="Princess" Value="-2" />
         <Trait Name="Noble" Value="-2" />
     </Modifier>
+    
+    <!-- Bonus / Malus to recovery in HealDisease job -->
+    <Modifier Name="disease.recovery">
+        <Trait Name="Construct" Value="3" />            <!-- Not flesh and blood so easier to cleanse -->
+        <Trait Name="Powerful Magic" Value="3" />            <!-- She can use her magic to speed it up a bit -->
+        <Trait Name="Strong Magic" Value="2" />            <!-- She can use her magic to speed it up a bit -->
+        <Trait Name="Doctor" Value="2" />            <!-- She can use her msdicine to speed it up a bit -->
+        <Trait Name="Angel" Value="2" />            <!-- A creature of purity -->
+        <Trait Name="Half-Construct" Value="1" />            <!-- Not all flesh and blood so easier to cleanse -->
+        <Trait Name="Skeleton" Value="1" />            <!-- No flesh or blood so easier to cleanse -->
+        <Trait Name="Dwarf" Value="1" />            <!-- a hearty race -->
+        <Trait Name="Elf" Value="1" />            <!-- a healty race -->
+        <Trait Name="Tough" Value="1" />            <!-- her immune system is a little stronger -->
+        <Trait Name="Fallen Goddess" Value="1" />    <!-- she must have some power left -->
+        <Trait Name="Goddess" Value="1" />    <!-- she must have some power left -->
+        <Trait Name="Country Gal" Value="1" />    <!-- she is used to dirty surroundings so her immune system is a little stronger -->
+        <Trait Name="Farmer" Value="1" />    <!-- she is used to dirty surroundings so her immune system is a little stronger -->
+        <Trait Name="Farmers Daughter" Value="1" />    <!-- she is used to dirty surroundings so her immune system is a little stronger -->
+        <Trait Name="Homeless" Value="1" />    <!-- she is used to dirty surroundings so her immune system is a little stronger -->
+        <Trait Name="Maid" Value="1" />    <!-- she is used to dirty surroundings so her immune system is a little stronger -->
+        <Trait Name="Waitress" Value="1" />    <!-- she is used to dirty surroundings so her immune system is a little stronger -->
+        <Trait Name="Porn Star" Value="1" />    <!-- she is used to dirty surroundings so her immune system is a little stronger -->
+        <Trait Name="Whore" Value="1" />    <!-- she is used to dirty surroundings so her immune system is a little stronger -->
+        <Trait Name="Slitherer" Value="1" />    <!-- more of her body touches the ground so her immune system is a little stronger -->
+        <Trait Name="Succubus" Value="1" />    <!-- she feeds on dark energies so her immune system is a little stronger -->
+
+        <Trait Name="Zombie" Value="-5" />            <!-- she is a rotting corpse, she has no immune system -->
+        <Trait Name="Demon" Value="-3" />            <!-- a creature of taint -->
+        <Trait Name="Demon Possessed" Value="-3" />            <!-- she is posessed by a creature of taint -->
+        <Trait Name="Old" Value="-2" />            <!-- her immune system is diminished due to her age -->
+        <Trait Name="Fragile" Value="-2" />            <!-- she gets sick easier -->
+        <Trait Name="Undead" Value="-1" />            <!-- she is not living, her immune system is not the best -->
+        <Trait Name="Vampire" Value="-1" />            <!-- she needs other peoples' blood to survive so her blood is not all the same -->
+        <Trait Name="Delicate" Value="-1" />            <!-- she gets sick easier -->
+        <Trait Name="Fairy Dust Addict" Value="-1" />            <!-- she is a little worse for wear because of drug abuse -->
+        <Trait Name="Former Addict" Value="-1" />            <!-- she is a little worse for wear because of drug abuse -->
+        <Trait Name="Shroud Addict" Value="-1" />            <!-- she is a little worse for wear because of drug abuse -->
+        <Trait Name="Viras Blood Addict" Value="-1" />            <!-- she is a little worse for wear because of drug abuse -->
+        <Trait Name="Noble" Value="-1" />    <!-- she is not used to dirty surroundings so her immune system is a little weaker -->
+        <Trait Name="Princess" Value="-1" />    <!-- she is not used to dirty surroundings so her immune system is a little weaker -->
+        <Trait Name="Queen" Value="-2" />    <!-- she is not used to dirty surroundings so her immune system is a little weaker -->
+    </Modifier>
+
+    <Modifier Name="so.straight">
+        <!-- How much faster / slower the SO conversion is -->
+        <Trait Name="Broodmother" Value="10" />             <!-- She prefers males who can get her pregnant -->
+        <Trait Name="Succubus" Value="7" />                 <!-- Males are easier to drain energy from -->
+        <Trait Name="Your Wife" Value="5" />                <!-- She wants to be with you only -->
+        <Trait Name="Your Daughter" Value="3" />            <!-- She wants to be "Normal" -->
+        <!-- Negative Traits -->
+        <Trait Name="Broken Will" Value="-15" />            <!-- She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her. -->
+        <Trait Name="Mind Fucked" Value="-15" />            <!-- Does she even know who is fucking her? -->
+        <Trait Name="Retarded" Value="-7" />                <!-- Does she even know who is fucking her? -->
+        <Trait Name="Slow Learner" Value="-5" />
+        <Trait Name="Shape Shifter" Value="-5" />           <!-- If she can become anyone can she really be straight? -->
+        <Trait Name="Iron Will" Value="-5" />               <!-- She is set in her ways -->
+        <Trait Name="Futanari" Value="-3" />                <!-- If she has a dick can she really be straight? -->
+        <Trait Name="Porn Star" Value="-1" />               <!-- She is used to having sex with anyone her director tells her to -->
+        <Trait Name="Whore" Value="-1" />                   <!-- She'll do anyone as long as they can pay -->
+        <Trait Name="Slut" Value="-1" />                    <!-- She'll do anyone -->
+        <Trait Name="Actress" Value="-1" />                 <!-- She will do whatever her director tells her to -->
+    </Modifier>
+    
+    <Modifier Name="so.lesbian">
+        <!-- Positive Traits -->
+        <Trait Name="Futanari" Value="2" />                 <!-- If she has a dick can she really be a lesbian? -->
+        <!-- Negative Traits -->
+        <Trait Name="Broken Will" Value="-15" />            <!-- She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her. -->
+        <Trait Name="Mind Fucked" Value="-15" />            <!-- Does she even know who is fucking her? -->
+        <Trait Name="Retarded" Value="-7" />                <!-- Does she even know who is fucking her? -->
+        <Trait Name="Slow Learner" Value="-5" />
+        <Trait Name="Iron Will" Value="-3" />               <!-- She is set in her ways -->
+
+        <Trait Name="Broodmother" Value="-10" />            <!-- She prefers males who can get her pregnant -->
+        <Trait Name="Porn Star" Value="-5" />               <!-- She is used to having sex with anyone her director tells her to -->
+        <Trait Name="Succubus" Value="-5" />                <!-- Males are easier to drain energy from -->
+        <Trait Name="Your Wife" Value="-5" />               <!-- She wants to be with you (this will changed when player gender is added) -->
+        <Trait Name="Shape Shifter" Value="-5" />           <!-- If she can become anyone can she really be a lesbian? -->
+        <Trait Name="Whore" Value="-3" />                   <!-- She'll do anyone as long as they can pay -->
+        <Trait Name="Slut" Value="-3" />                    <!-- She'll do anyone -->
+        <Trait Name="Actress" Value="-3" />                 <!-- She will do whatever her director tells her to -->
+    </Modifier>
+
+    <Modifier Name="so.bi">
+        <!-- Positive Traits -->
+        <Trait Name="Your Wife" Value="5" />                <!-- She wants to be with you, even if it is with another girl -->
+        <Trait Name="Porn Star" Value="5" />                <!-- She is used to having sex with anyone her director tells her to -->
+        <Trait Name="Whore" Value="4" />                    <!-- She'll do anyone as long as they can pay -->
+        <Trait Name="Slut" Value="3" />                     <!-- She'll do anyone -->
+        <Trait Name="Your Daughter" Value="2" />            <!-- She wants to partake in all that her father has to offer -->
+        <Trait Name="Actress" Value="2" />                  <!-- She will do whatever her director tells her to -->
+        <Trait Name="Shape Shifter" Value="2" />            <!-- If she can become anyone she can have sex with anyone -->
+        <Trait Name="Succubus" Value="2" />                 <!-- Males are easier to drain energy from but girls are ok -->
+        <Trait Name="Broodmother" Value="1" />              <!-- She prefers males who can get her pregnant -->
+        <Trait Name="Futanari" Value="1" />                 <!-- If she has a dick she can put it anywhere -->
+        <!-- Negative Traits -->
+        <Trait Name="Broken Will" Value="-15" />            <!-- She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her. -->
+        <Trait Name="Mind Fucked" Value="-15" />            <!-- Does she even know who is fucking her? -->
+        <Trait Name="Retarded" Value="7" />                 <!-- Does she even know who is fucking her? -->
+        <Trait Name="Slow Learner" Value="5" />
+        <Trait Name="Iron Will" Value="2" />                <!-- She is set in her ways -->
+    </Modifier>
+
+    <Modifier Name="fake-orgasm">
+        <!-- Positive Traits -->
+        <Trait Name="Quick Learner" Value="10" />
+        <Trait Name="Actress" Value="10" />                 <!-- Acting is just faking anyway -->
+        <Trait Name="Porn Star" Value="10" />               <!-- The director just wants everything to cum together -->
+        <Trait Name="Your Daughter" Value="10" />           <!-- Living in a brothel you pick up a few things over the years -->
+        <Trait Name="Your Wife" Value="5" />                <!-- Most wives fake it eventually -->
+        <Trait Name="Shape Shifter" Value="5" />            <!-- She is used to faking who she is -->
+        <Trait Name="Exhibitionist" Value="2" />            <!-- She enjoys making a scene -->
+        <Trait Name="Whore" Value="2" />                    <!-- Doing it so many times makes faking it a little easier -->
+        <Trait Name="Slut" Value="2" />                     <!-- Doing it so many times makes faking it a little easier -->
+        <Trait Name="Succubus" Value="2" />                 <!-- If faking it gets them to cum faster, do it -->
+        <Trait Name="Iron Will" Value="1" />                <!-- She is going to finish her taks, whatever it is -->
+        <Trait Name="Audacity" Value="1" />                 <!-- She doesn't care what it looks like or who sees it -->
+        <!-- Negative Traits -->
+        <Trait Name="Broken Will" Value="-15" />            <!-- Does she even know who is fucking her? -->
+        <Trait Name="Mind Fucked" Value="-15" />            <!-- Does she even know who is fucking her? -->
+        <Trait Name="Retarded" Value="-7" />                <!-- Does she even know who is fucking her? -->
+        <Trait Name="Slow Learner" Value="-5" />
+        <Trait Name="Fast Orgasms" Value="-5" />            <!-- She cums before she can fake it -->
+        <Trait Name="Futanari" Value="-5" />                <!-- Kind of hard to fake an orgasm with a dick -->
+        <Trait Name="Broodmother" Value="-5" />             <!-- faking it kind of defeats the purpose -->
+        <Trait Name="Bimbo" Value="-2" />                   <!-- She enjoys herself to much to remember to fake it -->
+        <Trait Name="Nymphomaniac" Value="-2" />            <!-- She enjoys herself to much to remember to fake it -->
+        <Trait Name="Blind" Value="-2" />                   <!-- She can't see her partner to time it right -->
+        <Trait Name="Deaf" Value="-2" />                    <!-- She can't hear what she sounds like -->
+        <Trait Name="Botox Treatment" Value="-2" />         <!-- Is she faking it? can't tell by her face -->
+
+    </Modifier>
 </TraitMods>
+

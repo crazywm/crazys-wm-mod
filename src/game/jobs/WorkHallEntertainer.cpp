@@ -21,11 +21,12 @@
 #include "cRng.h"
 #include <sstream>
 #include "cGirls.h"
+#include "cJobManager.h"
 
 #pragma endregion
 
 // `J` Job Brothel - Hall
-bool WorkHallEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkHallEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
@@ -38,7 +39,7 @@ bool WorkHallEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
         //ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
         ss << "${name} refused to entertain patrons in the gambling hall " << (Day0Night1 ? "tonight." : "today.");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} worked as an entertainer in the gambling hall.\n \n";
 
@@ -528,10 +529,6 @@ bool WorkHallEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     wages += (rng % ((int)(((girl.beauty() + girl.charisma()) / 2)*0.5f))) + 10;
-    // Money
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
-
 
     // Improve girl
     int xp = 10, skill = 2;
@@ -550,7 +547,7 @@ bool WorkHallEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
 #pragma endregion
-    return false;
+    return {false, std::max(0, tips), std::max(0, wages), 0};
 }
 
 double JP_HallEntertainer(const sGirl& girl, bool estimate)

@@ -52,7 +52,8 @@ namespace {
         if(girl.is_unpaid()) {
             return girl.askprice();
         } else {
-            return girl.m_Pay;
+            // TODO where can we get this information now?
+            return 0; //girl.m_Pay;
         }
     }
 }
@@ -137,15 +138,6 @@ const MovieScene& film_scene(cMovieManager& mgr, sGirl& girl, int quality, Scene
         director.tiredness(tire);
         event << "Your lack of stage hands hurt the quality of the scene by " << int(10 - stage_ratio * 10) << "%, "
               << "and made the filming more stressful for the crew.";
-    }
-
-    // You own her so you don't have to pay her.
-    if(girl.is_unpaid())
-    {
-        // estimate the "cost" of using the girl in this scene by the askprice
-        girl.m_Pay = 0;
-    } else {
-        girl.m_Pay = 50 + scene.ContentQuality;
     }
 
     // TODO fix this

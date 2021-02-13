@@ -28,10 +28,7 @@
   - [ ] Gambling
   - [ ] Strip Club
   - [ ] Brothel
-  - [ ] House
-  - [ ] Sex Training
-  - [ ] Arena
-  - [ ] Studio -- almost done
+  - [ ] PersonalBedWarmer
   - [ ] Centre
 * [ ] adjustable unique chance for overworld encounters
 
@@ -41,6 +38,7 @@
   - [ ] Player inventory
 * [ ] New Triggers:
   - [ ] OnBought
+  - [ ] Next Week
   
 ## Movies
 * [ ] More text variety
@@ -58,7 +56,6 @@
 * [ ] LoadGame more info
 * [ ] Inventory screen resets
 * [ ] load game: select most recent by default
-* [ ] MinWidth/Height for animations
 
 ## Bugs
 * [ ] some parts of the old scripts are still missing

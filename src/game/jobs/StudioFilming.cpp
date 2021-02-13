@@ -235,7 +235,7 @@ bool cFilmSceneJob::RefusedTieUp(sGirl& girl) {
     return false;
 }
 
-bool cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
+sWorkJobResult cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
     auto brothel = dynamic_cast<sMovieStudio*>(girl.m_Building);
     assert(brothel);
 
@@ -308,13 +308,13 @@ bool cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
             if (girl.lose_trait("Iron Will", 2))
             {
                 girl.AddMessage("${name}'s unwilling degradation has shattered her iron will.", IMGTYPE_TORTURE, EVENT_GOODNEWS);
-                return true;
+                return {true, 0, 0, 0};
             }
         } else {
             if (girl.gain_trait("Mind Fucked", 2))
             {
                 girl.AddMessage("${name} has become Mind Fucked from the forced degradation.", IMGTYPE_TORTURE, EVENT_WARNING);
-                return true;
+                return {true, 0, 0, 0};
             }
         }
     }
@@ -344,7 +344,7 @@ bool cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
 
     produce_debug_message(girl);
 
-    return false;
+    return {false, 0};
 }
 
 void cFilmSceneJob::produce_debug_message(sGirl& girl) const { girl.AddMessage(m_Dbg_Msg.str(), IMGTYPE_PROFILE, EVENT_DEBUG); }

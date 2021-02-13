@@ -29,9 +29,11 @@ namespace settings {
     extern const char* MONEY_SELL_ITEM;
 }
 
-bool GenericCraftingJob::DoWork(sGirl& girl, bool is_night) {
+sWorkJobResult GenericCraftingJob::DoWork(sGirl& girl, bool is_night) {
     enjoy = 0;
-    return WorkCrafting(girl, is_night);
+    sales = 0;
+    int wages = m_CraftingData.Wages * (1.0 + (m_Performance - 70) / 100.0);
+    return {WorkCrafting(girl, is_night), 0, sales, wages};
 }
 
 bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
@@ -58,7 +60,6 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
         ss << m_CraftingData.MsgRepair << "\n";
     }
 
-    int wages = m_CraftingData.Wages * (1.0 + (m_Performance - 70) / 100.0);
     performance_msg();
     ss << "\n \n";
 
@@ -79,16 +80,12 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
         float item_worth = DoCrafting(girl, craftpoints);
         if(item_worth > 0) {
             msgtype = EVENT_GOODNEWS;
-            wages += item_worth * girl_pay;
+            sales += item_worth * girl_pay;
         }
     }
 
     // Push out the turn report
     girl.AddMessage(ss.str(), imagetype, msgtype);
-
-    // Money
-    girl.m_Tips = 0;
-    girl.m_Pay = std::max(0, wages);
 
     apply_gains(girl, m_Performance);
 

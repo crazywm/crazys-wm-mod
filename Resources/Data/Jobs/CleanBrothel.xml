@@ -1,0 +1,49 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Cln">
+    <Description>
+        She will clean the building, as filth will put off some customers.
+    </Description>
+
+    <Performance>
+        <Factor Skill="Service" Weight="3"/>
+        <Factor Stat="Obedience" Weight="1"/>
+        <Factor Stat="Morality" Weight="1"/>
+        <Factor Stat="Agility" Weight="1"/>
+
+        <Mod>work.cleaning</Mod>
+    </Performance>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} worked cleaning the brothel.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to clean during the ${shift} shift.</Text>
+        </Message>
+        <Message Name="shift.bad">
+            <Text>She spilled a bucket of something unpleasant all over herself.</Text>
+            <Group>
+                While cleaning a bedroom, she put her hand right in a disgusting sticky patch.
+                <Text Condition="Cum Addict" Priority="1">
+                    It was her duty to stop and lick it clean.
+                </Text>
+                <Text>
+                    She wouldn't carry on until she had thoroughly washed her hands.
+                </Text>
+            </Group>
+            <Text>She did not like cleaning the brothel today.</Text>
+            <Text>She walked into a room early,
+                surprising the customer and landing her with some accidental 'crossfire'.</Text>
+            <Text>An impatient group of customers got bored of waiting and roughly tried to 'use' her.
+                She had to hide in a janitor closet for a while.</Text>
+        </Message>
+        <Message Name="shift.good">
+            <Text>She cleaned the building while humming a pleasant tune.</Text>
+            <Text>She had a great time working today.</Text>
+            <Text>A waiting customer chatted with her as she worked, and even helped her out a little.</Text>
+        </Message>
+        <Message Name="shift.neutral">
+            <Text>The shift passed uneventfully.</Text>
+        </Message>
+    </Messages>
+</Job>

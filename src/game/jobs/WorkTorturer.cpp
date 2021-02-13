@@ -25,21 +25,21 @@
 #include "cGirls.h"
 
 // `J` Job Brothel - General
-bool WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     Action_Types actiontype = ACTION_WORKTORTURER;
-    if (Day0Night1) return false;        // Do this only once a day
+    if (Day0Night1) return {false, 0, 0, 0};        // Do this only once a day
     std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_TORTURER))
     {
         ss << "${name} refused to torture anyone.";
         girl.morality(1);
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} is assigned to torture people in the dungeon.";
     girl.morality(-1);
-    int wages = 0, tips = 0;
+    int wages = 0;
 
     cGirls::EquipCombat(girl);    // ready armor and weapons!
 
@@ -156,8 +156,6 @@ bool WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
         wages += 65;
         //g_Game->gold().staff_wages(65);  // wages come from you
     }
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
     girl.exp(xp);
     girl.morality(-2);
@@ -171,7 +169,7 @@ bool WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
     cGirls::PossiblyGainNewTrait(girl, "Sadistic", 30, actiontype, "${name} has come to enjoy her job so much that she has become rather Sadistic.", Day0Night1);
     cGirls::PossiblyGainNewTrait(girl, "Merciless", 50, actiontype, "${name} extensive experience with torture has made her absolutely Merciless.", Day0Night1);
 
-    return false;
+    return {false, 0, 0, std::max(0, wages)};
 }
 
 double JP_Torturer(const sGirl& girl, bool estimate)        // not used

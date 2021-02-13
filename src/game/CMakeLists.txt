@@ -30,46 +30,29 @@ set(SCREENS_SRC
 set(JOBS_SRC
         jobs/WorkAdvertising.cpp
         jobs/Surgery.cpp
+        jobs/Training.cpp
         jobs/WorkBarStripper.cpp
         jobs/WorkBeastCare.cpp
         jobs/WorkBrothelMassusse.cpp
         jobs/WorkBrothelStripper.cpp
         jobs/WorkWhore.cpp
         jobs/StudioCrew.cpp
-        jobs/WorkCityGuard.cpp
-        jobs/WorkCleaning.cpp
-        jobs/WorkCombatTraining.cpp
         jobs/WorkComunityService.cpp
         jobs/WorkCounselor.cpp
-        jobs/WorkCureDiseases.cpp
         jobs/WorkCustService.cpp
         jobs/WorkEscort.cpp
         jobs/WorkExploreCatacombs.cpp
-        jobs/WorkFakeOrgasm.cpp
         jobs/WorkFarmPonyGirl.cpp
         jobs/WorkFeedPoor.cpp
-        jobs/WorkFightArenaGirls.cpp
-        jobs/WorkFightBeast.cpp
-        jobs/WorkFilmStagehand.cpp
         jobs/WorkFreetime.cpp
-        jobs/WorkGetAbort.cpp
         jobs/WorkHallDealer.cpp
         jobs/WorkHallEntertainer.cpp
         jobs/WorkHallXXXEntertainer.cpp
-        jobs/WorkHealing.cpp
-        jobs/WorkHouseCook.cpp
-        jobs/WorkHousePet.cpp
-        jobs/WorkHouseVacation.cpp
         jobs/WorkPeepShow.cpp
         jobs/WorkPersonalBedWarmer.cpp
-        jobs/WorkPersonalTraining.cpp
-        jobs/WorkRecruiter.cpp
         jobs/WorkSecurity.cpp
         jobs/WorkSleazyBarmaid.cpp
         jobs/WorkSleazyWaitress.cpp
-        jobs/WorkSOBisexual.cpp
-        jobs/WorkSOLesbian.cpp
-        jobs/WorkSOStraight.cpp
         jobs/WorkTorturer.cpp
         jobs/StudioFilming.cpp
         jobs/Crafting.cpp
@@ -82,7 +65,8 @@ set(JOBS_SRC
         jobs/JobData.cpp
         jobs/StudioScenes.cpp
         jobs/StudioOther.cpp
-        )
+        jobs/ArenaJobs.cpp
+        jobs/Cleaning.cpp jobs/House.cpp)
 
 set(BUILDINGS_SRC
         buildings/cArena.cpp

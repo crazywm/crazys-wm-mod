@@ -34,8 +34,6 @@ struct sCentre : public IBuilding
     void auto_assign_job(sGirl& target, std::stringstream& message, bool is_night) override;
     void UpdateGirls(bool is_night) override;
     bool handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_night) override;
-
-    bool FindCounselor(bool is_night, std::initializer_list<JOBS> current_job);
 };
 
 #endif  /* __CCENTRE_H */

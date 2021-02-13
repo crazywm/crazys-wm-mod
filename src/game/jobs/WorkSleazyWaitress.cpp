@@ -24,11 +24,12 @@
 #include <sstream>
 #include "IGame.h"
 #include "cGirls.h"
+#include "cJobManager.h"
 
 #pragma endregion
 
 // `J` Job Brothel - Sleazy Bar
-bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
@@ -40,7 +41,7 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
         //SIN - More informative mssg to show *what* she refuses
         ss << "${name} refused to be a waitress for the creeps in your strip club " << (Day0Night1 ? "tonight." : "today.");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} is instructed to work at your sleazy restaurant as a waitress. She is informed that the customers here want good service, but they chose this place because of the promise of attractive women in skimpy clothing. If she wants to be successful, she will need to impress them with her body as well as her service.\n \n";
     ss << "She worked as a waitress in the strip club.\n";
@@ -720,9 +721,6 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
     roll_max /= 4;
     wages += 10 + rng%roll_max;
 
-    girl.m_Tips = std::max(0, (int)tips);
-    girl.m_Pay = std::max(0, wages);
-
 #pragma endregion
 #pragma region    //    Finish the shift            //
 
@@ -765,7 +763,7 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
 #pragma endregion
-    return false;
+    return {false,  std::max(0, (int)tips), std::max(0, wages), 0};
 }
 
 

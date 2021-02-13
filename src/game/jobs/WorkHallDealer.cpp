@@ -24,11 +24,12 @@
 #include "IGame.h"
 #include "character/predicates.h"
 #include "cGirls.h"
+#include "cJobManager.h"
 
 #pragma endregion
 
 // `J` Job Brothel - Hall
-bool WorkHallDealer(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkHallDealer(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
@@ -41,7 +42,7 @@ bool WorkHallDealer(sGirl& girl, bool Day0Night1, cRng& rng)
         //ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
         ss << "${name} refused to work as a card dealer in the gambling hall " << (Day0Night1 ? "tonight." : "today.");
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} worked as a dealer in the gambling hall.\n \n";
 
@@ -601,10 +602,6 @@ bool WorkHallDealer(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
 #pragma endregion
-#pragma region    //    Money                    //
-
-
-#pragma endregion
 #pragma region    //    Finish the shift            //
 
 
@@ -613,9 +610,6 @@ bool WorkHallDealer(sGirl& girl, bool Day0Night1, cRng& rng)
 
     // work out the pay between the house and the girl
     wages += (rng % ((int)(((girl.beauty() + girl.charisma()) / 2)*0.5f))) + 10;
-    // Money
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
 
 
@@ -641,7 +635,7 @@ bool WorkHallDealer(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
 #pragma endregion
-    return false;
+    return {false, std::max(0, tips), std::max(0, wages), 0};
 }
 
 double JP_HallDealer(const sGirl& girl, bool estimate)

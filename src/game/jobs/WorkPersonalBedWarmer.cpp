@@ -27,7 +27,7 @@
 #include "cGirls.h"
 
 // `J` Job House - General
-bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 
@@ -195,7 +195,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                         headGirl->lesbian(+2);
                         girl.lesbian(+2);
                         girl.AddMessage(ss.str(), IMGTYPE_LESBIAN, EVENT_NOWORK);
-                        return true;
+                        return {true, 0, 0, 0};
                     }
                     else
                     {
@@ -232,7 +232,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                     {
                         ss << ". ${name} snaps, grabbing " << headName << " by the throat and telling her to go fuck herself.\n";
                         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-                        return true;
+                        return {true, 0, 0, 0};
                     }
                     else
                     {
@@ -259,7 +259,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                     {
                         ss << "She refuses.\n";
                         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-                        return true;
+                        return {true, 0, 0, 0};
                     }
                 }
 
@@ -268,7 +268,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     ss << " but is unable to change her mind.\n";
                     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-                    return true;
+                    return {true, 0, 0, 0};
                 }
             }
         }
@@ -428,7 +428,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                     {
                         ss << "She refuses.\n";
                         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-                        return true;
+                        return {true, 0, 0, 0};
                     }
                 }
                 //if you are pure evil and very lucky
@@ -447,7 +447,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     ss << "She leaves.\n";
                     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-                    return true;
+                    return {true, 0, 0, 0};
                 }
             }
         }
@@ -466,7 +466,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             ss << "${name} is diseased and refuses to put you at risk.\n";
             girl.morality(2);
             girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-            return true;
+            return {true, 0, 0, 0};
         }
         else if (HateLove > -40)  //if she doesn't care...
         {
@@ -1310,8 +1310,6 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
 #endif
     if (wages < 0) wages = 0;
     g_Game->gold().girl_support(wages);  // wages come from you
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 10;
@@ -1324,17 +1322,11 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.exp(xp);
     girl.upd_temp_stat(STAT_LIBIDO, 2);
     girl.AddMessage(ss.str(), imagetype, msgtype);
-    return false;
+    return {false, std::max(0, tips), 0, wages};
 }
 
 
 double JP_PersonalBedWarmer(const sGirl& girl, bool estimate)// not used
 {
     return 0;
-}
-
-bool WorkPersonalBedWarmers(sBrothel* brothel)
-{
-
-    return false;
 }

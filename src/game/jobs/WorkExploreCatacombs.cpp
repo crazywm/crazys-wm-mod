@@ -37,7 +37,7 @@ namespace settings {
 }
 
 // `J` Job Brothel - General
-bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 
@@ -47,7 +47,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         ss << "${name} refused to go into the catacombs during the " << (Day0Night1 ? "night" : "day") << " shift.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} went into the catacombs to see what she can find.\n \n";
 
@@ -159,7 +159,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
         girl.upd_Enjoyment(ACTION_SEX, sex);
         girl.upd_Enjoyment(actiontype, combat);
 
-        return false;
+        return {false, 0, 0, 0};
     }
 
     g_Game->storage().add_to_beasts(type_beasts);
@@ -274,8 +274,6 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
     wages += gold;
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
     // Improve girl
     int num = type_monster_girls + type_unique_monster_girls + type_beasts + 1;
@@ -306,7 +304,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
     //lose traits
     cGirls::PossiblyLoseExistingTrait(girl, "Fragile", 75, actiontype, "${name} has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
 
-    return false;
+    return {false, std::max(0, tips), std::max(0, wages), 0};
 }
 
 double JP_ExploreCatacombs(const sGirl& girl, bool estimate)

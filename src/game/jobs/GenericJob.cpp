@@ -33,7 +33,7 @@
 class sBrothel;
 
 
-bool IGenericJob::Work(sGirl& girl, bool is_night, cRng& rng) {
+sWorkJobResult IGenericJob::Work(sGirl& girl, bool is_night, cRng& rng) {
     ss.str("");
     m_Rng = &rng;
     m_ActiveGirl = &girl;
@@ -41,6 +41,14 @@ bool IGenericJob::Work(sGirl& girl, bool is_night, cRng& rng) {
 
     if(m_Info.FullTime && girl.m_DayJob != girl.m_NightJob) {
         g_LogFile.error("jobs", "Full time job was assigned for a single shift!");
+        girl.m_DayJob = job();
+        girl.m_NightJob = job();
+    }
+
+    if(is_night) {
+        girl.m_Refused_To_Work_Night = false;
+    } else {
+        girl.m_Refused_To_Work_Day = false;
     }
 
     InitWork();
@@ -53,9 +61,9 @@ bool IGenericJob::Work(sGirl& girl, bool is_night, cRng& rng) {
             } else {
                 girl.m_Refused_To_Work_Day = true;
             }
-            return true;
+            return {true, 0, 0, 0};
         case eCheckWorkResult::IMPOSSIBLE:
-            return false;
+            return {false, 0, 0, 0};
     }
     assert(false);
 }
@@ -68,7 +76,9 @@ bool IGenericJob::chance(float percent) const {
     return m_Rng->percent(percent);
 }
 
-int IGenericJob::uniform(int min, int max) const {
+int IGenericJob::uniform(int min_, int max_) const {
+    int min = std::min(min_, max_);
+    int max = std::max(min_, max_);
     return m_Rng->in_range(min, max + 1);
 }
 
@@ -98,7 +108,7 @@ bool IGenericJob::is_night_shift() const {
 
 class cJobWrapper: public IGenericJob {
 public:
-    cJobWrapper(JOBS j, std::function<bool(sGirl&, bool, cRng&)> w, std::function<double(const sGirl&, bool)> p,
+    cJobWrapper(JOBS j, std::function<sWorkJobResult(sGirl&, bool, cRng&)> w, std::function<double(const sGirl&, bool)> p,
                 std::string brief, std::string desc) :
             IGenericJob(j), m_Work(std::move(w)), m_Perf(std::move(p)) {
         m_Info.ShortName = std::move(brief);
@@ -116,16 +126,18 @@ public:
     }
 private:
     double GetPerformance(const sGirl& girl, bool estimate) const override { return m_Perf(girl, estimate); }
-    bool DoWork(sGirl& girl, bool is_night) override { return m_Work(girl, is_night, rng()); }
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) override {
+        return m_Work(girl, is_night, rng());
+    }
 
-    std::function<bool(sGirl&, bool, cRng&)> m_Work;
+    std::function<sWorkJobResult(sGirl&, bool, cRng&)> m_Work;
     std::function<double(const sGirl&, bool)> m_Perf;
 };
 
 
 // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cJobManager.h > class cJobManager
 
-#define DECL_JOB(Fn) bool Work##Fn(sGirl& girl, bool Day0Night1, cRng& rng); \
+#define DECL_JOB(Fn) sWorkJobResult Work##Fn(sGirl& girl, bool Day0Night1, cRng& rng); \
 double JP_##Fn(const sGirl& girl, bool estimate)
 
 // - General
@@ -140,12 +152,7 @@ DECL_JOB(ExploreCatacombs);
 DECL_JOB(BeastCare);
 
 // - Bar
-DECL_JOB(Barmaid);
-DECL_JOB(BarWaitress);
-DECL_JOB(BarSinger);
-DECL_JOB(BarPiano);
 DECL_JOB(Escort);
-DECL_JOB(BarCook);
 
 // - Gambling Hall
 DECL_JOB(HallDealer);
@@ -163,48 +170,18 @@ DECL_JOB(BrothelStripper);
 DECL_JOB(PeepShow);
 DECL_JOB(Whore);
 
-// - Movie Studio
-DECL_JOB(FilmStagehand);
-
-// - Arena - Fighting
-DECL_JOB(FightBeast);
-DECL_JOB(FightArenaGirls);
-DECL_JOB(CombatTraining);
-DECL_JOB(ArenaJousting);
-DECL_JOB(ArenaRacing);
-
-// - Arena - Staff
-DECL_JOB(CityGuard);
-bool WorkCleanArena(sGirl& girl, bool Day0Night1, cRng& rng);
-
 //Comunity Centre
 DECL_JOB(FeedPoor);
 DECL_JOB(ComunityService);
-bool WorkCleanCentre(sGirl& girl, bool Day0Night1, cRng& rng);
 DECL_JOB(Counselor);
 
-// - Clinic - Surgery
-DECL_JOB(Healing);
-DECL_JOB(CureDiseases);
-DECL_JOB(GetAbort);
-
 // house
-DECL_JOB(Recruiter);
-DECL_JOB(PersonalTraining);
 DECL_JOB(PersonalBedWarmer);
-DECL_JOB(HouseVacation);
-bool WorkCleanHouse(sGirl& girl, bool Day0Night1, cRng& rng);
-DECL_JOB(HouseCook);
-DECL_JOB(HousePet);
-bool WorkFarmPonyGirl(sGirl& girl, bool Day0Night1, cRng& rng);
-DECL_JOB(SOStraight);
-DECL_JOB(SOBisexual);
-DECL_JOB(SOLesbian);
-DECL_JOB(FakeOrgasm);
+sWorkJobResult WorkFarmPonyGirl(sGirl& girl, bool Day0Night1, cRng& rng);
 
 namespace {
-  bool WorkNullJob(sGirl&, bool, cRng&) { return false; }
-  double JP_NullJob(const sGirl&, bool) { return 0.0; }
+    sWorkJobResult WorkNullJob(sGirl&, bool, cRng&) { return {false}; }
+    double JP_NullJob(const sGirl&, bool) { return 0.0; }
 }
 
 #define REGISTER_JOB_MANUAL(J, Wf, Pf, Brief, Desc)                                     \
@@ -219,8 +196,7 @@ namespace {
 
 void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_RESTING, Freetime, "TOff", "She will take some time off, maybe do some shopping or walk around town. If the girl is unhappy she may try to escape.");
-    REGISTER_JOB(JOB_CLEANING, Cleaning, "Prtc", "She will train either alone or with others to improve her skills.");
-    REGISTER_JOB(JOB_TRAINING, Training, "Cln", "She will clean the building, as filth will put off some customers.");
+    REGISTER_JOB(JOB_TRAINING, Training, "Prtc", "She will train either alone or with others to improve her skills.");
     REGISTER_JOB(JOB_SECURITY, Security, "Sec", "She will patrol the building, stopping mis-deeds.");
     REGISTER_JOB(JOB_ADVERTISING, Advertising, "Adv", "She will advertise the building's features in the city.");
     REGISTER_JOB(JOB_CUSTOMERSERVICE, CustService, "CS", "She will look after customer needs.");
@@ -246,43 +222,15 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_WHOREBROTHEL, Whore, "BWhr", "She will whore herself to customers within the building's walls. This is safer but a little less profitable.");
     REGISTER_JOB(JOB_WHORESTREETS, Whore, "StWr", "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable.");
 
-// - Movie Studio - Crew
-    REGISTER_JOB_MANUAL(JOB_STAGEHAND, FilmStagehand, Cleaning, "StgH", "She helps setup equipment, and keeps the studio clean.");
-
-// - Arena - Fighting
-    REGISTER_JOB(JOB_FIGHTBEASTS, FightBeast, "FiBs", "She will fight to the death against beasts you own. Dangerous.");
-    REGISTER_JOB(JOB_FIGHTARENAGIRLS, FightArenaGirls, "Cage", "She will fight against other girls. Dangerous.");
-    REGISTER_JOB(JOB_FIGHTTRAIN, CombatTraining, "CT", "She will practice combat.");
-
-// - Arena - Staff
-    REGISTER_JOB(JOB_CITYGUARD, CityGuard, "CGrd", "She will help keep Crossgate safe.").free_only();
-    REGISTER_JOB_MANUAL(JOB_CLEANARENA, CleanArena, Cleaning, "GKpr", "She will clean the arena.");
-
 //Comunity Centre
     REGISTER_JOB(JOB_FEEDPOOR, FeedPoor, "Feed", "She will work in a soup kitchen.");
     REGISTER_JOB(JOB_COMUNITYSERVICE, ComunityService, "CmSr", "She will go around town and help out where she can.");
-    REGISTER_JOB_MANUAL(JOB_CLEANCENTRE, CleanCentre, Cleaning, "ClnC", "She will clean the centre.");
 
 // Counseling Centre
     REGISTER_JOB(JOB_COUNSELOR, Counselor, "Cnsl", "She will help girls get over their addictions and problems.").full_time().free_only();
 
-// - Clinic - Surgery
-    REGISTER_JOB(JOB_GETHEALING, Healing, "Heal", "She will have her wounds attended.").full_time();
-    REGISTER_JOB(JOB_CUREDISEASES, CureDiseases, "Cure", "She will try to get her diseases cured.").full_time();
-    REGISTER_JOB(JOB_GETABORT, GetAbort, "Abrt", "She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)").full_time();
-
 // house
-    REGISTER_JOB(JOB_RECRUITER, Recruiter, "Rcrt", "She will go out and try and recruit girls for you.").full_time();
-    REGISTER_JOB(JOB_PERSONALTRAINING, PersonalTraining, "PTrn", "You will oversee her training personally.");
     REGISTER_JOB(JOB_PERSONALBEDWARMER, PersonalBedWarmer, "BdWm", "She will stay in your bed at night with you.");
-    //REGISTER_JOB(JOB_HOUSEVAC, HouseVacation);
-    REGISTER_JOB_MANUAL(JOB_CLEANHOUSE, CleanHouse, Cleaning, "ClnH", "She will clean your house.");
-    REGISTER_JOB(JOB_HOUSECOOK, HouseCook, "Hcok", "She will cook for your house.");
-    REGISTER_JOB(JOB_HOUSEPET, HousePet, "Hpet", "She will be trained to become the house pet.").full_time();
-    REGISTER_JOB(JOB_SO_STRAIGHT, SOStraight, "SOSt", "You will make sure she only likes having sex with men.").full_time();
-    REGISTER_JOB(JOB_SO_BISEXUAL, SOBisexual, "SOBi", "You will make sure she likes having sex with both men and women.").full_time();
-    REGISTER_JOB(JOB_SO_LESBIAN, SOLesbian, "SOLe", "You will make sure she only likes having sex with women.").full_time();
-    REGISTER_JOB(JOB_FAKEORGASM, FakeOrgasm, "FOEx", "You will teach her how to fake her orgasms.").full_time();
 
     // Some pseudo-jobs
     REGISTER_JOB(JOB_INDUNGEON, NullJob, "", "She is languishing in the dungeon.");
@@ -389,10 +337,16 @@ std::stringstream& cBasicJob::add_text(const std::string& prompt) {
             return active_girl().FullName();
         } else if (var == "shift") {
             return is_night_shift() ? "night" : "day";
+        } else if (m_Replacements.count(var) != 0) {
+            return m_Replacements.at(var);
         }
         assert(false);
     }, rng());
     return ss;
+}
+
+void cBasicJob::SetSubstitution(std::string key, std::string replace) {
+    m_Replacements[key] = replace;
 }
 
 void cBasicJob::InitWork() {

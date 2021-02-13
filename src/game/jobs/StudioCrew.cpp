@@ -29,6 +29,7 @@ extern const char* const FluffPointsId;
 extern const char* const DirectorInteractionId;
 extern const char* const CamMageInteractionId;
 extern const char* const CrystalPurifierInteractionId;
+extern const char* const StageHandPtsId;
 
 class cJobCameraMage : public cCrewJob {
 public:
@@ -86,7 +87,7 @@ cCrewJob::eCheckWorkResult cCrewJob::CheckWork(sGirl& girl, bool is_night) {
     return IGenericJob::eCheckWorkResult::ACCEPTS;
 }
 
-bool cCrewJob::DoWork(sGirl& girl, bool is_night) {
+sWorkJobResult cCrewJob::DoWork(sGirl& girl, bool is_night) {
     add_text("work") << "\n";
     cGirls::UnequipCombat(girl);    // not for studio crew
     int wages = 50;
@@ -131,15 +132,13 @@ bool cCrewJob::DoWork(sGirl& girl, bool is_night) {
     }
 
     girl.AddMessage(ss.str(), m_EventImage, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-    girl.m_Tips = 0;
-    girl.m_Pay = std::max(0, wages);
 
     HandleUpdate(girl, m_Performance);
 
     // Improve stats
     apply_gains(girl, m_Performance);
 
-    return false;
+    return {false, 0, 0, wages};
 }
 
 
@@ -161,9 +160,169 @@ cJobDirector::cJobDirector() : cCrewJob(JOB_DIRECTOR, "Director.xml") {
     m_EventImage = IMGTYPE_FORMAL;
 }
 
+class cJobStageHand : public cBasicJob {
+public:
+    cJobStageHand() : cBasicJob(JOB_STAGEHAND) {};
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
+    double GetPerformance(const sGirl& girl, bool estimate) const override;
+};
+
+IGenericJob::eCheckWorkResult cJobStageHand::CheckWork(sGirl& girl, bool is_night) {
+    int roll_a = d100();
+    if (roll_a <= 50 && (girl.disobey_check(ACTION_MOVIECREW, JOB_STAGEHAND) || girl.disobey_check(ACTION_WORKCLEANING, JOB_STAGEHAND)))
+    {
+        ss << "${name} refused to work as a stagehand today.";
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        return eCheckWorkResult::REFUSES;
+    }
+    return eCheckWorkResult::ACCEPTS;
+}
+
+sWorkJobResult cJobStageHand::DoWork(sGirl& girl, bool is_night) {
+    auto brothel = dynamic_cast<sMovieStudio*>(girl.m_Building);
+    int roll_a = d100();
+    ss << "${name} worked as a stagehand.\n \n";
+
+    cGirls::UnequipCombat(girl);    // not for studio crew
+    int enjoyc = 0, enjoym = 0;
+    int wages = 50;
+    int tips = 0;
+    int imagetype = IMGTYPE_PROFILE;
+    bool filming = true;
+
+
+    // `J` - jobperformance and CleanAmt need to be worked out specially for this job.
+    double jobperformance = 0;
+    double CleanAmt = ((girl.service() / 10.0) + 5) * 5;
+    CleanAmt += girl.get_trait_modifier("work.stagehand.clean-amount");
+    jobperformance += girl.get_trait_modifier("work.stagehand.performance");
+
+    if (brothel->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 ||
+        brothel->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0 ||
+        GetNumberActresses(*brothel) < 1)
+    {
+        ss << "There were no scenes being filmed, so she just cleaned the set.\n \n";
+        filming = false;
+        imagetype = IMGTYPE_MAID;
+    }
+
+    if (roll_a <= 10)
+    {
+        enjoyc -= uniform(1, 3); if (filming) enjoym -= uniform(1, 3);
+        CleanAmt *= 0.8;
+        ss << "She did not like working in the studio today.";
+    }
+    else if (roll_a >= 90)
+    {
+        enjoyc += uniform(1, 3); if (filming) enjoym += uniform(1, 3);
+        CleanAmt *= 1.1;
+        ss << "She had a great time working today.";
+    }
+    else
+    {
+        enjoyc += std::max(0, uniform(-1, 2)); if (filming) enjoym += std::max(0, uniform(-1, 2));
+        ss << "Otherwise, the shift passed uneventfully.";
+    }
+    jobperformance += enjoyc + enjoym;
+    ss << "\n \n";
+
+    CleanAmt = std::min((int)CleanAmt, brothel->m_Filthiness);
+
+    if (filming)
+    {
+        jobperformance += (girl.crafting() / 5) + (girl.constitution() / 10) + (girl.service() / 10);
+        jobperformance += girl.level();
+        jobperformance += uniform(-1, 3);    // should add a -1 to +3 random element --PP
+
+        // Cleaning reduces the points remaining for actual stage hand work
+        jobperformance -= CleanAmt / 2;
+        if(jobperformance < 0 && CleanAmt > 0) {
+            ss << "Your studio was so messy that ${name} spent the entire shift cleaning up, and had no time to "
+                  "assist in movie production. She improved the cleanliness rating by " << (int)CleanAmt << ".";
+            jobperformance = 0;
+        } else {
+            ss << "She assisted the crew in movie production and provided " << (int)jobperformance << " stage hand points.";
+        }
+    }
+
+
+    // slave girls not being paid for a job that normally you would pay directly for do less work
+    if (girl.is_unpaid())
+    {
+        CleanAmt *= 0.9;
+        wages = 0;
+    }
+    else if (filming)
+    {
+        wages += int(CleanAmt + jobperformance);
+    }
+    else
+    {
+        wages += int(CleanAmt);
+    }
+
+    if (!filming && brothel->m_Filthiness < CleanAmt / 2) // `J` needs more variation
+    {
+        ss << "\n \n${name} finished her cleaning early so she hung out around the Studio a bit.";
+        girl.upd_temp_stat(STAT_LIBIDO, uniform(1, 3), true);
+        girl.happiness(uniform(1, 3));
+    }
+
+
+    girl.AddMessage(ss.str(), imagetype, EVENT_NIGHTSHIFT);
+
+    brothel->ProvideResource(StageHandPtsId, int(jobperformance));
+    brothel->m_Filthiness = std::max(0, brothel->m_Filthiness - int(CleanAmt));
+
+    // Improve girl
+    int xp = filming ? 10 : 5, skill = 3;
+    if (enjoyc + enjoym > 2)                            { xp += 1; skill += 1; }
+    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
+    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
+
+    girl.exp(xp);
+    girl.service(uniform(2, skill+1));
+
+    if (filming) girl.upd_Enjoyment(ACTION_MOVIECREW, enjoym);
+    girl.upd_Enjoyment(ACTION_WORKCLEANING, enjoyc);
+    // Gain Traits
+    if (chance(girl.service()))
+        cGirls::PossiblyGainNewTrait(girl, "Maid", 90, ACTION_WORKCLEANING, "${name} has cleaned enough that she could work professionally as a Maid anywhere.", is_night);
+    //lose traits
+    cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", is_night);
+
+    return {false, tips, 0, wages};
+}
+
+double cJobStageHand::GetPerformance(const sGirl& girl, bool estimate) const {
+    //SIN - standardizing job performance calc per J's instructs
+    double jobperformance =
+            //main stat - first 100
+            girl.service() +
+            //secondary stats - second 100
+            ((girl.morality() + girl.obedience() + girl.agility()) / 3) +
+            //add level
+            girl.level();
+
+    //tiredness penalty
+    if (!estimate)
+    {
+        int t = girl.tiredness() - 80;
+        if (t > 0)
+            jobperformance -= (t + 2) * (t / 3);
+    }
+
+    jobperformance += girl.get_trait_modifier("work.cleaning");
+
+    return jobperformance;
+}
+
+
 void RegisterFilmCrewJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cJobCameraMage>());
     mgr.register_job(std::make_unique<cJobFluffer>());
     mgr.register_job(std::make_unique<cJobCrystalPurifier>());
     mgr.register_job(std::make_unique<cJobDirector>());
+    mgr.register_job(std::make_unique<cJobStageHand>());
 }

@@ -23,11 +23,12 @@
 #include "IGame.h"
 #include "sStorage.h"
 #include "cGirls.h"
+#include "cJobManager.h"
 
 #pragma endregion
 
 // `J` Job Brothel - General
-bool WorkBeastCare(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkBeastCare(sGirl& girl, bool Day0Night1, cRng& rng)
 {
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKCARING;
@@ -37,7 +38,7 @@ bool WorkBeastCare(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         ss << "${name} refused to take care of beasts during the " << (Day0Night1 ? "night" : "day") << " shift.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} worked taking care of beasts.\n \n";
 
@@ -151,10 +152,6 @@ bool WorkBeastCare(sGirl& girl, bool Day0Night1, cRng& rng)
     g_Game->storage().add_to_beasts(addbeasts);
     girl.AddMessage(ss.str(), imagetype, msgtype);
 
-    // Money
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
-
     // Improve girl
     int xp = 5 + (g_Game->storage().beasts() / 10), skill = 2 + (g_Game->storage().beasts() / 20);
 
@@ -169,7 +166,7 @@ bool WorkBeastCare(sGirl& girl, bool Day0Night1, cRng& rng)
     cGirls::PossiblyLoseExistingTrait(girl, "Elegant", 40, actiontype, " Working with dirty, smelly beasts has damaged ${name}'s hair, skin and nails making her less Elegant.", Day0Night1);
 
 #pragma endregion
-    return false;
+    return {false, std::max(0, tips), 0, std::max(0, wages)};
 }
 
 double JP_BeastCare(const sGirl& girl, bool estimate)

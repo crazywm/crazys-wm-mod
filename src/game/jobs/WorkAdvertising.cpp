@@ -22,11 +22,12 @@
 #include "IGame.h"
 #include "cGirls.h"
 #include <sstream>
+#include "cJobManager.h"
 
 #pragma endregion
 
 // `J` Job Brothel - General
-bool WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
@@ -37,7 +38,7 @@ bool WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         ss << "${name} refused to advertise the brothel today.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} is assigned to advertise the brothel.\n \n";
 
@@ -158,10 +159,6 @@ bool WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
     // now to boost the brothel's advertising level accordingly
     brothel->m_AdvertisingLevel += (multiplier / 100);
 
-    // Money
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
-
     // Base Improvement and trait modifiers
     int xp = 5, skill = 3;
     /* */if (girl.has_active_trait("Quick Learner"))    { skill += 1; xp += 3; }
@@ -187,7 +184,7 @@ bool WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
     cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 40, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
 
 #pragma endregion
-    return false;
+    return {false, std::max(0, tips), 0, std::max(0, wages)};
 }
 
 double JP_Advertising(const sGirl& girl, bool estimate)

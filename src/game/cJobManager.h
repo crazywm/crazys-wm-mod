@@ -54,14 +54,29 @@ struct sJobFilter {
     std::vector<JOBS> Contents;
 };
 
+struct sWorkJobResult {
+    bool Refused;       // Whether she actually worked
+    int Tips;           // how much she received in tips
+    int Earnings;       // how much money did she make you directly
+    int Wages;          // how much do you pay her for the job
+};
+
+struct sPaymentData {
+    int Tips;
+    int Earnings;
+    int Wages;
+    int GirlGets;
+    int PlayerGets;
+};
+
 //mainly a list of functions 
 class cJobManager
 {
 public:
     cJobManager();
     ~cJobManager();
-    bool do_job(sGirl& girl, bool is_night);
-    bool do_job(JOBS job, sGirl& girl, bool is_night);
+    sWorkJobResult do_job(sGirl& girl, bool is_night);
+    sWorkJobResult do_job(JOBS job, sGirl& girl, bool is_night);
     bool job_filter(int Filter, JOBS jobs) const;
 
     const IGenericJob* get_job(JOBS job) const;
@@ -99,14 +114,11 @@ public:
     static void do_training(sBrothel* brothel, bool Day0Night1);
     static void do_training_set(std::vector<sGirl*> girls, bool Day0Night1);
     static void do_solo_training(sGirl& girl, bool Day0Night1);
-    void do_advertising(IBuilding& brothel, bool Day0Night1);
-    void do_whorejobs(IBuilding& brothel, bool Day0Night1);
-    void do_custjobs(IBuilding& brothel, bool Day0Night1);
 
     bool is_job_Paid_Player(JOBS Job);        //    WD:    Test for all jobs paid by player
     bool FullTimeJob(JOBS Job);            //    `J`    Test if job is takes both shifts
-    std::string GirlPaymentText(IBuilding * brothel, sGirl& girl, int totalTips, int totalPay, int totalGold,
-                                bool Day0Night1);
+    sPaymentData CalculatePay(sGirl& girl, sWorkJobResult pay);
+    std::string GirlPaymentText(IBuilding * brothel, sGirl& girl, const sPaymentData& result, bool Day0Night1);
 
     static bool is_Surgery_Job(int testjob);
 

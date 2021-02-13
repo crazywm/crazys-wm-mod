@@ -1,0 +1,32 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Rcrt">
+    <Description>
+        She will go out and try and recruit girls for you.
+    </Description>
+
+    <Gains XP="10" Skill="3">
+        <Skill Name="Service" Weight="1"/>
+        <Skill Name="Lesbian" Weight="1"/>
+        <Stat Name="Charisma" Weight="1" />
+        <Stat Name="Intelligence" Weight="1" />
+
+        <GainTrait Trait="Charismatic" Threshold="60" Action="WORKRECRUIT">
+            Dealing with people all day has made ${name} more Charismatic.
+        </GainTrait>
+        <GainTrait Trait="Psychic" Threshold="80" Action="WORKRECRUIT">
+            ${name} has been doing this for so long it's as if she can read minds now.
+        </GainTrait>
+        <LoseTrait Trait="Nervous" Threshold="20" Action="WORKRECRUIT">
+            ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
+        </LoseTrait>
+    </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} worked trying to recruit girls for you.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to work during the ${shift} shift.</Text>
+        </Message>
+    </Messages>
+</Job>

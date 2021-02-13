@@ -43,6 +43,22 @@
 
 extern cRng g_Dice;
 
+void RegisterCraftingJobs(cJobManager& mgr);
+void RegisterSurgeryJobs(cJobManager& mgr);
+void RegisterWrappedJobs(cJobManager& mgr);
+void RegisterManagerJobs(cJobManager& mgr);
+void RegisterTherapyJobs(cJobManager& mgr);
+void RegisterBarJobs(cJobManager& mgr);
+void RegisterFarmJobs(cJobManager& mgr);
+void RegisterClinicJobs(cJobManager& mgr);
+void RegisterFilmCrewJobs(cJobManager& mgr);
+void RegisterFilmingJobs(cJobManager& mgr);
+void RegisterOtherStudioJobs(cJobManager& mgr);
+void RegisterTrainingJobs(cJobManager& mgr);
+void RegisterArenaJobs(cJobManager& mgr);
+void RegisterCleaningJobs(cJobManager& mgr);
+void RegisterHouseJobs(cJobManager& mgr);
+
 namespace settings {
     extern const char* WORLD_RAPE_STREETS;
     extern const char* WORLD_RAPE_BROTHEL;
@@ -94,9 +110,6 @@ void cJobManager::Setup()
     //JobData[JOB_SOUNDTRACK] = sJobData("Sound Track", "SndT", WorkSoundTrack, JP_SoundTrack);
     //JobData[JOB_SOUNDTRACK].description = ("She will clean up the audio and add music to the scenes. (not required but helpful)");
 
-
-    // `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cJobManager.cpp > Setup
-
     // Studio - Non-Sex Scenes
     JobFilters[JOBFILTER_STUDIOTEASE] = sJobFilter{"Teasing Scenes", "These are scenes without sex."};
     register_filter(JOBFILTER_STUDIOTEASE, JOB_FILMACTION, JOB_FILMTEASE, {});
@@ -123,7 +136,7 @@ void cJobManager::Setup()
     register_filter(JOBFILTER_ARENA, JOB_FIGHTBEASTS, JOB_FIGHTTRAIN, {});
     //- Arena Staff
     JobFilters[JOBFILTER_ARENASTAFF] = sJobFilter{"Arena Staff", "These are jobs that help run an arena."};
-    register_filter(JOBFILTER_ARENASTAFF, JOB_FIGHTBEASTS, JOB_CLEANARENA, {JOB_RESTING});
+    register_filter(JOBFILTER_ARENASTAFF, JOB_DOCTORE, JOB_CLEANARENA, {JOB_RESTING});
 
     // - Community Centre Jobs
     JobFilters[JOBFILTER_COMMUNITYCENTRE] = sJobFilter{"Community Centre", "These are jobs for running a community centre."};
@@ -161,16 +174,6 @@ void cJobManager::Setup()
     JobFilters[JOBFILTER_HOUSETTRAINING] = sJobFilter{"Sex Training", "You will take a personal interest in training the girl in sexual matters."};
     register_filter(JOBFILTER_HOUSETTRAINING, JOB_PERSONALTRAINING, JOB_HOUSEPET, {});
 
-
-/*
-    JobData[JOB_INDUNGEON].name    = ("In the Dungeon");
-    JobData[JOB_INDUNGEON].brief    = "Dngn";
-    JobData[JOB_INDUNGEON].description    = ("She is languishing in the dungeon.");
-    JobData[JOB_RUNAWAY].name    = ("Runaway");
-    JobData[JOB_RUNAWAY].brief    = "RunA";
-    JobData[JOB_RUNAWAY].description    = ("She has run away.");
-*/
-
     RegisterCraftingJobs(*this);
     RegisterSurgeryJobs(*this);
     RegisterWrappedJobs(*this);
@@ -182,6 +185,10 @@ void cJobManager::Setup()
     RegisterBarJobs(*this);
     RegisterFarmJobs(*this);
     RegisterClinicJobs(*this);
+    RegisterTrainingJobs(*this);
+    RegisterArenaJobs(*this);
+    RegisterCleaningJobs(*this);
+    RegisterHouseJobs(*this);
 }
 
 sCustomer cJobManager::GetMiscCustomer(IBuilding& brothel)
@@ -192,66 +199,6 @@ sCustomer cJobManager::GetMiscCustomer(IBuilding& brothel)
 }
 
 // ----- Job related
-
-void cJobManager::do_advertising(IBuilding& brothel, bool Day0Night1)
-{  // advertising jobs are handled before other jobs, more particularly before customer generation
-    brothel.m_AdvertisingLevel = 1.0;  // base multiplier
-    brothel.girls().apply([&](sGirl& current){
-        // Added test for current shift, was running each shift twice -PP
-        if ((current.m_DayJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_DAY))
-        {
-            current.m_Refused_To_Work_Day = do_job(current, false);
-        }
-        if ((current.m_NightJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_NIGHT))
-        {
-            current.m_Refused_To_Work_Night = do_job(current, true);
-        }
-    });
-}
-
-void cJobManager::do_whorejobs(IBuilding& brothel, bool Day0Night1)
-{ // Whores get first crack at any customers.
-    brothel.girls().apply([&](sGirl& current)
-    {
-        switch (current.get_job(Day0Night1))
-        {
-        case JOB_WHOREBROTHEL:
-        case JOB_BARWHORE:
-        case JOB_WHOREGAMBHALL:
-            do_job(current, Day0Night1);
-            break;
-        default:
-            break;
-        }
-    });
-}
-
-void cJobManager::do_custjobs(IBuilding& brothel, bool Day0Night1)
-{ // Customer taking jobs get first crack at any customers before customer service.
-    brothel.girls().apply([&](sGirl& current)
-    {
-        switch (current.get_job(Day0Night1))
-        {
-        case JOB_BARMAID:
-        case JOB_WAITRESS:
-        case JOB_SINGER:
-        case JOB_PIANO:
-        case JOB_DEALER:
-        case JOB_ENTERTAINMENT:
-        case JOB_XXXENTERTAINMENT:
-        case JOB_SLEAZYBARMAID:
-        case JOB_SLEAZYWAITRESS:
-        case JOB_BARSTRIPPER:
-        case JOB_MASSEUSE:
-        case JOB_BROTHELSTRIPPER:
-        case JOB_PEEP:
-            do_job(current, Day0Night1);
-            break;
-        default:
-            break;
-        }
-    });
-}
 
 bool cJobManager::FullTimeJob(JOBS Job)
 {
@@ -1744,54 +1691,77 @@ void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
     }
 }
 
-// ----- Film & related
-
-std::string cJobManager::GirlPaymentText(IBuilding * brothel, sGirl& girl, int totalTips, int totalPay, int totalGold,
-                                    bool Day0Night1)
+double calc_pilfering(sGirl& girl)
 {
-    std::stringstream ss;
-    std::string girlName = girl.FullName();
-    auto sw = girl.get_job(Day0Night1);
+    double factor = 0.0;
+    if (is_addict(girl) && girl.m_Money < 100)            // on top of all other factors, an addict will steal to feed her habit
+        factor += (is_addict(girl, true) ? 0.5 : 0.1);        // hard drugs will make her steal more
+    // let's work out what if she is going steal anything
+    if (girl.pclove() >= 50 || girl.obedience() >= 50) return factor;            // love or obedience will keep her honest
+    if (girl.pcfear() > girl.pchate()) return factor;                            // if her fear is greater than her hate, she won't dare steal
+    // `J` yes they do // if (girl.is_slave()) return factor;                    // and apparently, slaves don't steal
+    if (girl.pchate() > 40) return factor + 0.15;                                // given all the above, if she hates him enough, she'll steal
+    if (girl.confidence() > 70 && girl.spirit() > 50) return factor + 0.15;    // if she's not motivated by hatred, she needs to be pretty confident
+    return factor;    // otherwise, she stays honest (aside from addict factored-in earlier)
+}
 
-    // `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
-    if (girl.is_unpaid() && is_job_Paid_Player(sw))
-    {
-        ss << "\nYou own her and you don't pay your slaves.";
-    }
-    else if (totalGold > 0)
-    {
-        ss << girlName << " earned a total of " << totalGold << " gold";
+sPaymentData cJobManager::CalculatePay(sGirl& girl, sWorkJobResult result)
+{
+    sPaymentData retval{0, 0, 0, 0, 0};
+    // no pay or tips, no need to continue
+    if(result.Wages == 0 && result.Tips == 0 && result.Earnings == 0) return retval;
 
-        // if it is a player paid job and she is not a slave or she is a slave but you pay slaves out of pocket.
-        if (is_job_Paid_Player(sw) && !girl.is_unpaid())
+    retval.Wages = result.Wages;
+    retval.Earnings = result.Earnings;
+    retval.Tips = result.Tips;
+
+    if (result.Tips > 0)        // `J` check tips first
+    {
+        if (girl.keep_tips())
         {
-            ss << " directly from you.\nShe gets to keep it all.";
+            girl.m_Money += result.Tips;    // give her the tips directly
+            retval.GirlGets += result.Tips;
         }
-        else if (girl.house() <= 0)
+        else    // otherwise add tips into pay
         {
-            ss << " and she gets to keep it all.";
-        }
-        else if (totalTips > 0 && girl.keep_tips())                                        // if there are tips
-        {
-            int hpay = int(double(totalPay * double(girl.house() * 0.01)));
-            int gpay = totalPay - hpay;
-            ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut ("
-                << 100 - girl.house() << "%) of the payment amounting to " << gpay
-                << " gold.\n \nYou got " << hpay << " gold (" << girl.house() << "%).";
-        }
-        else
-        {
-            int hpay = int(double(totalGold * double(girl.house() * 0.01)));
-            int gpay = totalGold - hpay;
-            ss << ".\nShe keeps " << gpay << " gold. (" << 100 - girl.house()
-                << "%)\nYou keep " << hpay << " gold (" << girl.house() << "%).";
+            result.Earnings += result.Tips;
         }
     }
-    else if (totalGold == 0)    { ss << girlName << " made no money."; }
-    else if (totalGold < 0)        {
-        ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << girl.FullName() << "\nJob: " << get_job_name(Day0Night1 ? girl.m_NightJob : girl.m_DayJob) << "\nPay:     " << girl.m_Pay << "\nTips:   " << girl.m_Tips << "\nTotal: " << totalGold;
-    }
-    return ss.str();
+
+    auto& finance = girl.m_Building->m_Finance;
+
+    // TODO check where we are handling the money processing for girl's payment
+    finance.girl_support(result.Wages);
+    retval.PlayerGets -= result.Wages;
+    girl.m_Money += result.Wages;    // she gets it all
+    retval.GirlGets += result.Wages;
+
+
+    // work out how much gold (if any) she steals
+    double steal_factor = calc_pilfering(girl);
+    int stolen = int(steal_factor * result.Earnings);
+    result.Earnings -= stolen;
+    retval.Earnings -= stolen;
+    girl.m_Money += stolen;
+
+    // so now we are to the house percent.
+    int house = (girl.house() * result.Earnings) / 100;       // the house takes its cut of whatever's left
+    retval.PlayerGets += house;
+
+    girl.m_Money += result.Earnings - house;               // The girl collects her part of the pay
+    retval.GirlGets += result.Earnings - house;
+    finance.brothel_work(house);                         // and add the rest to the brothel finances
+
+    if (!stolen) return retval;                                    // If she didn't steal anything, we're done
+    sGang* gang = g_Game->gang_manager().GetGangOnMission(MISS_SPYGIRLS);    // if no-one is watching for theft, we're done
+    if (!gang) return retval;
+    int catch_pc = g_Game->gang_manager().chance_to_catch(girl);            // work out the % chance that the girl gets caught
+    if (!g_Dice.percent(catch_pc)) return retval;                    // if they don't catch her, we're done
+
+    // OK: she got caught. Tell the player
+    std::stringstream gmess; gmess << "Your Goons spotted " << girl.FullName() << " taking more gold then she reported.";
+    gang->m_Events.AddMessage(gmess.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    return retval;
 }
 
 void cJobManager::handle_simple_job(sGirl& girl, bool is_night)
@@ -1804,42 +1774,42 @@ void cJobManager::handle_simple_job(sGirl& girl, bool is_night)
     }
 
     // do their job
-    bool refused = do_job(girl, is_night);
-
-    brothel->CalculatePay(girl, sw);
-    int totalPay  = girl.m_Pay;
-    int totalTips = girl.m_Tips;
+    auto result = do_job(girl, is_night);
 
     //        Summary Messages
-    if (refused)
+    if (result.Refused)
     {
         brothel->m_Fame -= girl.fame();
-        girl.AddMessage("${name} refused to work so made no money.", IMGTYPE_PROFILE, EVENT_SUMMARY);
+        girl.AddMessage("${name} refused to work so she made no money.", IMGTYPE_PROFILE, EVENT_SUMMARY);
     }
     else
     {
         brothel->m_Fame += girl.fame();
-        girl.AddMessage(GirlPaymentText(brothel, girl, totalTips, totalPay, totalTips + totalPay, is_night),
-                IMGTYPE_PROFILE, EVENT_SUMMARY);
+        std::stringstream ss;
+        auto money_data = CalculatePay(girl, result);
+        ss << "${name} made " << money_data.Earnings << " and " << money_data.Tips << "in tips. You paid her a salary of " << money_data.Wages << ".";
+        ss << "In total, she got " << money_data.GirlGets << " gold and you got " << money_data.PlayerGets << "gold.";
+
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
     }
 }
 
-bool cJobManager::do_job(sGirl& girl, bool is_night)
+sWorkJobResult cJobManager::do_job(sGirl& girl, bool is_night)
 {
     return do_job(girl.get_job(is_night), girl, is_night);
 }
 
-bool cJobManager::do_job(JOBS job_id, sGirl& girl, bool is_night)
+sWorkJobResult cJobManager::do_job(JOBS job_id, sGirl& girl, bool is_night)
 {
     auto ctx{g_Game->push_error_context("job: " + get_job_name(job_id))};
     assert(m_OOPJobs[job_id] != nullptr);
-    auto refused = m_OOPJobs[job_id]->Work(girl, is_night, g_Dice);
+    auto result = m_OOPJobs[job_id]->Work(girl, is_night, g_Dice);
     if(is_night) {
-        girl.m_Refused_To_Work_Night = refused;
+        girl.m_Refused_To_Work_Night = result.Refused;
     } else {
-        girl.m_Refused_To_Work_Day = refused;
+        girl.m_Refused_To_Work_Day = result.Refused;
     }
-    return refused;
+    return result;
 }
 
 // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cClinic.cpp >> is_Surgery_Job

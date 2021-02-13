@@ -57,7 +57,7 @@ public:
         m_Info.FullTime = true;
     }
 
-    bool DoWork(sGirl& girl, bool is_night) final;
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) final;
     sJobValidResult is_job_valid(const sGirl& girl) const override;
 protected:
     // common data
@@ -71,7 +71,7 @@ protected:
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-bool TherapyJob::DoWork(sGirl& girl, bool is_night) {
+sWorkJobResult TherapyJob::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKTHERAPY;
@@ -165,15 +165,11 @@ bool TherapyJob::DoWork(sGirl& girl, bool is_night) {
         ss << "The " << m_TherapyData.TreatmentName << " is in progress (" << (m_TherapyData.Duration - girl.m_WorkingDay) << " day remaining).";
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
-
     // Improve girl
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
     girl.upd_Enjoyment(actiontype, enjoy);
 
-#pragma endregion
-    return false;
+    return {false, 0, 0, 0};
 }
 
 bool TherapyJob::needs_therapy(const sGirl& girl) const {

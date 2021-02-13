@@ -1,0 +1,35 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="GKpr">
+    <Description>
+        She will clean the arena.
+    </Description>
+
+    <Performance>
+        <Factor Skill="Service" Weight="3"/>
+        <Factor Stat="Obedience" Weight="1"/>
+        <Factor Stat="Morality" Weight="1"/>
+        <Factor Stat="Agility" Weight="1"/>
+
+        <Mod>work.cleaning</Mod>
+    </Performance>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} worked cleaning the arena.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to clean the arena.</Text>
+        </Message>
+        <Message Name="shift.bad">
+            <Text>She spilled a bucket of something unpleasant all over herself.</Text>
+            <Text>She did not like cleaning the arena today.</Text>
+        </Message>
+        <Message Name="shift.good">
+            <Text>She cleaned the building while humming a pleasant tune.</Text>
+            <Text>She had a great time working today.</Text>
+        </Message>
+        <Message Name="shift.neutral">
+            <Text>The shift passed uneventfully.</Text>
+        </Message>
+    </Messages>
+</Job>

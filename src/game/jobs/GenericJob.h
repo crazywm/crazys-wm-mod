@@ -25,7 +25,7 @@
 #include <memory>
 #include <sstream>
 #include <unordered_map>
-#include <cJobManager.h>
+#include "cJobManager.h"
 #include "Constants.h"
 #include "text/repo.h"
 #include "JobData.h"
@@ -69,7 +69,7 @@ public:
     virtual sJobValidResult is_job_valid(const sGirl& girl) const;
 
     /// Lets the girl do the job
-    bool Work(sGirl& girl, bool is_night, cRng& rng);
+    sWorkJobResult Work(sGirl& girl, bool is_night, cRng& rng);
 
     /// called by the job manager when the job gets registered.
     void OnRegisterJobManager(const cJobManager& manager);
@@ -93,7 +93,12 @@ protected:
 
 private:
     virtual void InitWork() {}
-    virtual bool DoWork(sGirl& girl, bool is_night) = 0;
+    virtual sWorkJobResult DoWork(sGirl& girl, bool is_night) = 0;
+
+    /*! Checks whether the girl will work. There are two reasons why she might not:
+        She could refuse, or the job could not be possible because of external
+        circumstances. This function should report which reason applies.
+    */
     virtual eCheckWorkResult CheckWork(sGirl& girl, bool is_night) = 0;
 
     cRng* m_Rng;
@@ -143,6 +148,8 @@ protected:
     void InitWork() override;
     void RegisterVariable(std::string name, int& value);
 
+    void SetSubstitution(std::string key, std::string replace);
+
     int m_Performance;
 
 private:
@@ -156,18 +163,8 @@ private:
     virtual void load_from_xml_callback(const tinyxml2::XMLElement& job_element) {};
 
     friend class cBasicJobTextInterface;
-};
 
-void RegisterCraftingJobs(cJobManager& mgr);
-void RegisterSurgeryJobs(cJobManager& mgr);
-void RegisterWrappedJobs(cJobManager& mgr);
-void RegisterManagerJobs(cJobManager& mgr);
-void RegisterTherapyJobs(cJobManager& mgr);
-void RegisterBarJobs(cJobManager& mgr);
-void RegisterFarmJobs(cJobManager& mgr);
-void RegisterClinicJobs(cJobManager& mgr);
-void RegisterFilmCrewJobs(cJobManager& mgr);
-void RegisterFilmingJobs(cJobManager& mgr);
-void RegisterOtherStudioJobs(cJobManager& mgr);
+    std::unordered_map<std::string, std::string> m_Replacements;
+};
 
 #endif //WM_GENERICJOB_H

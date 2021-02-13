@@ -1,0 +1,38 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="CGrd">
+    <Description>
+        She will help keep Crossgate safe.
+    </Description>
+
+    <Performance>
+        <Factor Skill="Combat" Weight="3"/>
+        <Factor Skill="Magic" Weight="1"/>
+        <Factor Stat="Agility" Weight="1"/>
+        <Factor Stat="Constitution" Weight="1"/>
+    </Performance>
+
+    <Gains XP="8" Skill="3">
+        <GainTrait Trait="Tough" Threshold="20" Action="WORKSECURITY">
+            She has become pretty Tough from all of the fights she's been in.
+        </GainTrait>
+        <GainTrait Trait="Aggressive" Threshold="60" Action="WORKSECURITY">
+            She is getting rather Aggressive from her enjoyment of combat.
+        </GainTrait>
+        <GainTrait Trait="Fleet of Foot" Threshold="30" Action="WORKSECURITY">
+            She is getting rather fast from all the fighting.
+        </GainTrait>
+        <Skill Name="Combat" Weight="3"/>
+        <Skill Name="Magic" Weight="1" Max="50"/>
+        <Stat Name="Agility" Weight="1"/>
+        <Stat Name="Constitution" Weight="1"/>
+    </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} helps guard the city.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to work during the ${shift} shift.</Text>
+        </Message>
+    </Messages>
+</Job>

@@ -26,10 +26,10 @@
 #include "buildings/cBuildingManager.h"
 #include "character/sGirl.h"
 
-bool cBarJob::DoWork(sGirl& girl, bool is_night) {
+sWorkJobResult cBarJob::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
     cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
-    return JobProcessing(girl, *brothel, is_night);
+    return {JobProcessing(girl, *brothel, is_night), m_Tips, m_Wages, 0};
 }
 
 cBarJob::cBarJob(JOBS job, const char* xml, sBarJobData data) : cBasicJob(job, xml), m_Data(data) {
@@ -176,9 +176,6 @@ bool cBarCookJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     int roll_max = (girl.beauty() + girl.charisma());
     roll_max /= 4;
     m_Wages += uniform(10, 10 + roll_max);
-    // Money
-    girl.m_Tips = 0;
-    girl.m_Pay = std::max(0, m_Wages);
 
     // Improve stats
     HandleGains(girl, enjoy, fame);
@@ -586,10 +583,6 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
 
 #endif
 
-    // Money
-    girl.m_Tips = std::max(0, (int)m_Tips);
-    girl.m_Pay = std::max(0, m_Wages);
-
     g_Game->gold().bar_income(profit);
 
 #pragma endregion
@@ -758,9 +751,6 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     int roll_max = (girl.beauty() + girl.charisma());
     roll_max /= 4;
     m_Wages += uniform(10, 10+roll_max);
-    // Money
-    girl.m_Tips = std::max(0, m_Tips);
-    girl.m_Pay = std::max(0, m_Wages);
 
     // Improve stats
     HandleGains(girl, enjoy, fame);
@@ -789,14 +779,14 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     const sGirl* singeronduty = random_girl_on_job(brothel, JOB_SINGER, is_night);
     std::string singername = (singeronduty ? "Singer " + singeronduty->FullName() + "" : "the Singer");
 
-    int wages = 20, tips = 0;
+    m_Wages = 20;
     int enjoy = 0, fame = 0;
     int imagetype = IMGTYPE_PROFILE;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
 #pragma region //    Job Performance            //
 
-    tips = (int)((m_Performance / 8.0) * ((rng() % (girl.beauty() + girl.charisma()) / 20.0) + (girl.performance() / 5.0)));
+    m_Tips = (int)((m_Performance / 8.0) * ((rng() % (girl.beauty() + girl.charisma()) / 20.0) + (girl.performance() / 5.0)));
 
     perf_text();
 
@@ -815,12 +805,12 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         if (m_Performance < 125)
         {
             ss << "${name} played poorly with " << singername << " making people leave.\n";
-            tips = int(tips * 0.8);
+            m_Tips = int(m_Tips * 0.8);
         }
         else
         {
             ss << "${name} played well with " << singername << " increasing tips.\n";
-            tips = int(tips * 1.1);
+            m_Tips = int(m_Tips * 1.1);
         }
     }
 
@@ -832,13 +822,13 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     {
         ss << "Some of the patrons abused her during the shift.";
         enjoy -= uniform(1, 3);
-        tips = int(tips * 0.9);
+        m_Tips = int(m_Tips * 0.9);
     }
     else if (roll_b >= 90)
     {
         ss << "She had a pleasant time working.";
         enjoy += uniform(1, 3);
-        tips = int(tips * 1.1);
+        m_Tips = int(m_Tips * 1.1);
     }
     else
     {
@@ -852,8 +842,8 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
     {
-        wages = 0;
-        tips = int(tips * 0.9);
+        m_Wages = 0;
+        m_Tips = int(m_Tips * 0.9);
     }
     else
     {
@@ -861,10 +851,6 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
 
 #pragma endregion
 #pragma region    //    Finish the shift            //
-
-    // Money
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
     // Update Enjoyment
     if (m_Performance < 50) enjoy -= 1;
@@ -962,10 +948,6 @@ bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
     int roll_max = (girl.beauty() + girl.charisma());
     roll_max /= 4;
     m_Wages += uniform(10, 10 + roll_max);
-
-    // Money
-    girl.m_Tips = std::max(0, m_Tips);
-    girl.m_Pay = std::max(0, m_Wages);
 
     // Improve stats
     HandleGains(girl, enjoy, fame);

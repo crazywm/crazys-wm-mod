@@ -100,12 +100,20 @@ void sBrothel::save_additional_xml(tinyxml2::XMLElement& root) const
 
 void sBrothel::UpdateGirls(bool is_night)
 {
-    g_Game->job_manager().do_advertising(*this, is_night);
+    m_AdvertisingLevel = 1.0;  // base multiplier
+    IterateGirls(is_night, {JOB_ADVERTISING},
+                 [&](auto& current) {
+                     g_Game->job_manager().handle_simple_job(current, is_night);
+                 });
     g_Game->customers().GenerateCustomers(*this, is_night);
     m_TotalCustomers += g_Game->GetNumCustomers();
 
-    g_Game->job_manager().do_whorejobs(*this, is_night);
-    g_Game->job_manager().do_custjobs(*this, is_night);
+    IterateGirls(is_night, {JOB_BARMAID, JOB_WAITRESS, JOB_SINGER, JOB_PIANO, JOB_DEALER, JOB_ENTERTAINMENT,
+                            JOB_XXXENTERTAINMENT, JOB_SLEAZYBARMAID, JOB_SLEAZYWAITRESS, JOB_BARSTRIPPER, JOB_MASSEUSE,
+                            JOB_BROTHELSTRIPPER, JOB_PEEP, JOB_WHOREBROTHEL, JOB_BARWHORE, JOB_WHOREGAMBHALL},
+                 [&](auto& current) {
+                     g_Game->job_manager().handle_simple_job(current, is_night);
+    });
 
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cBrothel.cpp
     bool matron = num_girls_on_job(m_MatronJob, false) >= 1;
@@ -121,7 +129,6 @@ void sBrothel::UpdateGirls(bool is_night)
     *    as for the rest of them...
     */
     m_Girls->apply([&](sGirl& current){
-        int totalPay = 0, totalTips = 0, totalGold = 0;
         bool refused = false;
         auto sum = EVENT_SUMMARY;
 
@@ -190,79 +197,8 @@ void sBrothel::UpdateGirls(bool is_night)
             // these jobs are already done so we skip them
         }
         else {
-            refused = g_Game->job_manager().do_job(current, is_night);
+            g_Game->job_manager().handle_simple_job(current, is_night);
         }
-
-        totalPay += current.m_Pay;
-        totalTips += current.m_Tips;
-        totalGold += current.m_Pay + current.m_Tips;
-
-        // work out the pay between the house and the girl
-        CalculatePay(current, sw);
-
-        m_Fame += current.fame();
-
-        /*
-        *        Summary Messages
-        */
-
-        ss.str("");
-        std::string summary;
-        /* */if (sw == JOB_RESTING)            summary += "${name} was resting so made no money.";
-        else if (sw == JOB_MATRON && is_night == SHIFT_NIGHT)
-            summary += "${name} continued to help the other girls throughout the night.";
-
-            // `J` temporary -1 until I reflow brothel jobs
-        else if (sw == JOB_TRAINING || sw == JOB_ADVERTISING)    sum = EVENT_NONE;
-            // WD:    No night shift summary message needed for Torturer job
-        else if (sw == JOB_TORTURER && is_night == SHIFT_NIGHT)    sum = EVENT_NONE;
-
-        // TODO this seems to contain some copy/paste form IBuilding::CalculatePlay
-            // `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
-        else if (current.is_unpaid() && g_Game->job_manager().is_job_Paid_Player(sw))
-        {
-            summary += "\nYou own her and you don't pay your slaves.";
-        }
-            // WD:    Bad girl did not work. Moved from cJobManager::Preprocessing()
-        else if (refused) summary += "${name} refused to work so made no money.";
-        else if (totalGold > 0)
-        {
-            ss << "${name} earned a total of " << totalGold << " gold";
-            JOBS job = current.get_job(is_night);
-            // if it is a player paid job and you pay her
-            if ((g_Game->job_manager().is_job_Paid_Player(job) && !current.is_unpaid()))
-                ss << " directly from you. She gets to keep it all.";
-            else if (current.house() <= 0)                ss << " and she gets to keep it all.";
-            else if (totalTips>0 && current.keep_tips())
-            {
-                int hpay = int(double(totalPay * double(current.house() * 0.01)));
-                int gpay = totalPay - hpay;
-                ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current.house() << "%) of the payment amounting to " << gpay << " gold.\n \nYou got " << hpay << " gold (" << current.house() << "%).";
-            }
-            else
-            {
-                int hpay = int(double(totalGold * double(current.house() * 0.01)));
-                int gpay = totalGold - hpay;
-                ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current.house() << "%)\nYou keep " << hpay << " gold (" << current.house() << "%).";
-            }
-            summary += ss.str();
-        }
-
-        else if (totalGold == 0)        summary += "${name} made no money.";
-        else if (totalGold < 0)
-        {
-            ss.str("");
-            ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << current.FullName()
-               << "\nJob: " << g_Game->job_manager().get_job_name((is_night ? current.m_NightJob : current.m_DayJob)) << "\nPay:     " << current.m_Pay << "\nTips:   " << current.m_Tips << "\nTotal: " << totalGold;
-            summary += ss.str();
-            sum = EVENT_DEBUG;
-        }
-        if (sum != EVENT_NONE)    // `J` temporary -1 not to show until I reflow brothel jobs
-            current.AddMessage(summary, IMGTYPE_PROFILE, sum);
-
-        summary = "";
-
-
 
         // Runaway, Depression & Drug checking
         if (runaway_check(current))

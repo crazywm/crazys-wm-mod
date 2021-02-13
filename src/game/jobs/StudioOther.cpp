@@ -38,7 +38,7 @@ namespace {
     public:
         cJobMarketResearch();
 
-        bool DoWork(sGirl& girl, bool is_night) override;
+        sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
 
     };
 
@@ -57,7 +57,7 @@ namespace {
     }
 
 
-    bool cJobMarketResearch::DoWork(sGirl& girl, bool is_night) {
+    sWorkJobResult cJobMarketResearch::DoWork(sGirl& girl, bool is_night) {
         cGirls::UnequipCombat(girl);    // not for studio crew
         int wages = 50;
 
@@ -115,25 +115,23 @@ namespace {
         }
 
         girl.AddMessage(ss.str(), Image_Types::IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-        girl.m_Tips = 0;
-        girl.m_Pay = std::max(0, wages);
 
         // Improve stats
         apply_gains(girl, m_Performance);
 
-        return false;
+        return {false, 0, 0, wages};
     }
 }
 class cJobMoviePromoter : public cJobMovieOther {
 public:
     cJobMoviePromoter();
-    bool DoWork(sGirl& girl, bool is_night) override;
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
 };
 
 cJobMoviePromoter::cJobMoviePromoter() : cJobMovieOther(JOB_PROMOTER, "Promoter.xml") {
 }
 
-bool cJobMoviePromoter::DoWork(sGirl& girl, bool is_night) {
+sWorkJobResult cJobMoviePromoter::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 
     bool movies = !g_Game->movie_manager().get_movies().empty();
@@ -215,14 +213,12 @@ bool cJobMoviePromoter::DoWork(sGirl& girl, bool is_night) {
     }
 
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NIGHTSHIFT);
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
 
 
     // Improve girl
     apply_gains(girl, m_Performance);
 
-    return false;
+    return {false, 0, 0, wages};
 }
 
 void RegisterOtherStudioJobs(cJobManager& mgr) {

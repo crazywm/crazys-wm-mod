@@ -157,9 +157,6 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     bool m_Tort;                                // if true then have already tortured today
     bool m_JustGaveBirth;                        // did she give birth this current week?
 
-    int m_Pay;                                    // used to keep track of pay this turn
-    int m_Tips;                                    // used to keep track of tips this turn
-
     std::set<Fetishs> m_FetishTypes;            // the types of fetishes this girl has
 
     void AddMessage(std::string message, int nImgType, EventType event);

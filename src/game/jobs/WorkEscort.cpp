@@ -25,7 +25,7 @@
 #include "cGirls.h"
 
 // `J` Job Brothel - Bar
-bool WorkEscort(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkEscort(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     Action_Types actiontype = ACTION_WORKESCORT;
     std::stringstream ss;
@@ -33,19 +33,19 @@ bool WorkEscort(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         ss << "${name} refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
     ss << "${name} has been assigned to work as an Escort. She is informed that various men will ask for her to accompany them on dates, whether because they need a date for a social engagement of some kind or because of their own loneliness. Her skills in service, her beauty, her charisma, her intelligence, and her refinement may all be tested to provide the ideal date that each client requests. And, of course, should she decide to spend some \"extra\" time with the client, she will need to perform well with each of their sexual proclivities. This is her choice, however.\n \n";
 
     if (girl.has_active_trait("Deaf") && rng.percent(50))
     {
         ss << "${name} is deaf, meaning she would be unable to hear the conversation that is so critical to being successful as an escort. As there is practically no chance that a client will want to have an entire date in sign language, assuming he even knows it, ${name} is particularly unsuited to work as an escort. You should consider alternate employment for her. Nobody chooses her this week.\n";
-        return false;
+        return {false, 0, 0, 0};
     }
     else if (girl.has_active_trait("Mute") && rng.percent(50))
     {
         ss << "${name} is mute, and while some men enjoy a woman who stays silent, these men are not paying escorts to engage them in conversation. As it is severely unlikely that a client will want to spend the entire date deciphering sign language, even if they do know it, ${name} is particularly unsuited for work as an escort. You should consider alternate employment for her. Nobody chooses her this week.\n";
-        return false;
+        return {false, 0, 0, 0};
     }
 
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
@@ -1920,10 +1920,6 @@ break;    // end Es_DeadBeat
     //tips = (jobperformance > 0) ? (rng%jobperformance) * cust_type * cust_wealth : 0;
     ss << "\n \n${name} receives " << wages << " in payment for her work as an Escort for a " << cust_type_text << " client. Her fame as an Escort has changed by " << fame << ".";
 
-    // Money
-    girl.m_Tips = std::max(0, tips);
-    girl.m_Pay = std::max(0, wages);
-
     // Improve stats
     int xp = 20, skill = 3;
 
@@ -1946,7 +1942,7 @@ break;    // end Es_DeadBeat
     cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 40, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
     cGirls::PossiblyLoseExistingTrait(girl, "Aggressive", 70, actiontype, "Controlling her temper has greatly reduced ${name}'s Aggressive tendencies.", Day0Night1);
 
-    return false;
+    return {false, std::max(0, tips), std::max(0, wages), 0};
 }
 
 double JP_Escort(const sGirl& girl, bool estimate)// not used

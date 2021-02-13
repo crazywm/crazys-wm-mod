@@ -70,7 +70,7 @@ sGirl::sGirl(bool unique) : ICharacter( g_Game->create_traits_collection(), uniq
     m_WorkingDay = m_PrevWorkingDay = 0;
 
     m_Refused_To_Work_Day = m_Refused_To_Work_Night = false;
-    m_Money = m_Pay = m_Tips = 0;
+    m_Money = 0;
     m_NumCusts = m_NumCusts_old = 0;
 
     // Sex
@@ -900,7 +900,6 @@ FormattedCellData sGirl::GetDetail(const std::string& detailName) const
             return mk_text("???");
         }
     }
-    else if (detailName == "Pay")                { return mk_num(m_Pay); }
 
         // 'J' Added for .06.03.01
     else if (detailName == "DayJobShort")

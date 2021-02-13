@@ -1,0 +1,17 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="CT">
+    <Description>
+        She will practice combat.
+    </Description>
+
+    <Performance />
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to work during the ${shift} shift.</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} trains for combat.</Text>
+        </Message>
+    </Messages>
+</Job>

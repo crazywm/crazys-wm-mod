@@ -36,9 +36,9 @@ public:
         m_Info.FreeOnly = true;
     }
     double GetPerformance(const sGirl& girl, bool estimate) const override;
-    bool DoWork(sGirl& girl, bool is_night) override;
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
 protected:
-    void MatronGains(sGirl& girl, bool Day0Night1, int conf);
+    int MatronGains(sGirl& girl, bool Day0Night1, int conf);
     void HandleMatronResult(sGirl& girl, int &conf);
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override {
         return eCheckWorkResult::ACCEPTS;
@@ -50,7 +50,7 @@ protected:
 class BrothelMatronJob : public MatronJob {
 public:
     using MatronJob::MatronJob;
-    bool DoWork(sGirl& girl, bool is_night) override;
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
 };
 
 double MatronJob::GetPerformance(const sGirl& girl, bool estimate) const {
@@ -91,7 +91,7 @@ double MatronJob::GetPerformance(const sGirl& girl, bool estimate) const {
     return jobperformance;
 }
 
-bool MatronJob::DoWork(sGirl& girl, bool is_night) {
+sWorkJobResult MatronJob::DoWork(sGirl& girl, bool is_night) {
     // DisobeyCheck is done in the building flow.
     girl.m_DayJob = girl.m_NightJob = job();    // it is a full time job
 
@@ -104,11 +104,11 @@ bool MatronJob::DoWork(sGirl& girl, bool is_night) {
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve girl
-    MatronGains(girl, is_night, conf);
-    return false;
+    int wages = MatronGains(girl, is_night, conf);
+    return {false, 0, 0, 0};
 }
 
-void MatronJob::MatronGains(sGirl& girl, bool Day0Night1,  int conf) {
+int MatronJob::MatronGains(sGirl& girl, bool Day0Night1,  int conf) {
     int numgirls = girl.m_Building->num_girls();
     int xp = numgirls / 10, libido = 0, skill = 3;
 
@@ -120,8 +120,6 @@ void MatronJob::MatronGains(sGirl& girl, bool Day0Night1,  int conf) {
     int stat_sum = girl.get_skill(SKILL_SERVICE) + girl.get_stat(STAT_CHARISMA) + girl.get_stat(STAT_INTELLIGENCE) +
                    girl.get_stat(STAT_CONFIDENCE) + girl.get_skill(SKILL_MEDICINE);
     int wages = int((100.f + (stat_sum / 50.f + 1) * numgirls));
-    girl.m_Tips = 0;
-    girl.m_Pay = std::max(0, wages);
 
     if (conf>-1) conf += uniform(0, skill);
     girl.confidence(conf);
@@ -133,6 +131,8 @@ void MatronJob::MatronGains(sGirl& girl, bool Day0Night1,  int conf) {
 
     cGirls::PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
     cGirls::PossiblyGainNewTrait(girl, "Psychic", 60, ACTION_WORKMATRON, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);
+
+    return std::max(0, wages);
 }
 
 void MatronJob::HandleMatronResult(sGirl& girl, int &conf) {
@@ -166,12 +166,12 @@ void MatronJob::HandleMatronResult(sGirl& girl, int &conf) {
     }
 }
 
-bool BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
+sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_WORKMATRON;
     girl.m_DayJob = girl.m_NightJob = JOB_MATRON;    // it is a full time job
-    if (is_night) return false;    // and is only checked once
+    if (is_night) return {false, 0, 0, 0};    // and is only checked once
 
     ss << "Matron ${name} ";
 
@@ -180,7 +180,7 @@ bool BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
     {
         ss << "refused to work during the " << (is_night ? "night" : "day") << " shift.";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return true;
+        return {true, 0, 0, 0};
     }
 
     int conf = 0;
@@ -360,9 +360,9 @@ bool BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve girl
-    MatronGains(girl, is_night, conf);
+    int wages = MatronGains(girl, is_night, conf);
 
-    return false;
+    return {false, 0, 0, wages};
 }
 
 void RegisterManagerJobs(cJobManager& mgr) {
