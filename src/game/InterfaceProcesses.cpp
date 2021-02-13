@@ -24,7 +24,7 @@
 #include "utils/DirPath.h"
 #include "buildings/cBuildingManager.h"
 #include "cObjectiveManager.hpp"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cGangs.h"
 #include "cInventory.h"
 #include "cNameList.h"

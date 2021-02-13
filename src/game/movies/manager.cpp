@@ -27,7 +27,7 @@
 #include <map>
 #include "utils/algorithms.hpp"
 #include "utils/string.hpp"
-#include "Game.hpp"
+#include "IGame.h"
 #include "CLog.h"
 #include "buildings/IBuilding.h"
 

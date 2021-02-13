@@ -23,7 +23,7 @@
 #include "cTariff.h"
 #include "cJobManager.h"
 #include "cGangs.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "CLog.h"
 #include "character/traits/ITraitSpec.h"
 

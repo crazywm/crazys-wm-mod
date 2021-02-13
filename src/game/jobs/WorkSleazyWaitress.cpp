@@ -22,7 +22,7 @@
 #include "cRng.h"
 #include "cInventory.h"
 #include <sstream>
-#include "Game.hpp"
+#include "IGame.h"
 #include "cGirls.h"
 
 #pragma endregion

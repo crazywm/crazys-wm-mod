@@ -21,7 +21,7 @@
 #include "cInventory.h"
 #include "cGameWindow.h"
 #include "interface/cWindowManager.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "buildings/cBuildingManager.h"
 #include "CLog.h"
 #include "widgets/cImageItem.h"

@@ -21,7 +21,7 @@
 #include "cShop.h"
 #include "character/sGirl.h"
 #include "cGirls.h"
-#include "Game.hpp"
+#include "IGame.h"
 
 bool is_warrior(const sGirl& girl) {
     return girl.has_active_trait("Adventurer") || girl.has_active_trait("Assassin") ||

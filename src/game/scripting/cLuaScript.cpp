@@ -26,7 +26,7 @@
 
 #include "CLog.h"
 #include "cNameList.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cGold.h"
 #include "cInventory.h"
 #include "sStorage.h"

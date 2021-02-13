@@ -10,7 +10,7 @@ extern "C" {
 #include "character/cPlayer.h"
 
 #include "character/sGirl.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "buildings/cDungeon.h"
 #include "buildings/IBuilding.h"
 #include "sLuaGirl.h"

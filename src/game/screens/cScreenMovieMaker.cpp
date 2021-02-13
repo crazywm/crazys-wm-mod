@@ -23,7 +23,7 @@
 #include "cTariff.h"
 #include "cJobManager.h"
 #include <sstream>
-#include "Game.hpp"
+#include "IGame.h"
 #include "movies/manager.h"
 
 namespace settings {

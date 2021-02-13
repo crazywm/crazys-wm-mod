@@ -24,7 +24,7 @@
 #include "buildings/IBuilding.h"
 #include <sstream>
 #include "character/predicates.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cGirlGangFight.h"
 #include "buildings/cBuildingManager.h"
 

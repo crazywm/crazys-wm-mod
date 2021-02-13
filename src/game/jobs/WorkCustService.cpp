@@ -22,7 +22,7 @@
 #include <sstream>
 #include "cGold.h"
 #include <algorithm>
-#include "Game.hpp"
+#include "IGame.h"
 #include "cJobManager.h"
 #include "cGirls.h"
 

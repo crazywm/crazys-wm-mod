@@ -21,7 +21,7 @@
 
 #include "cCentre.h"
 #include "cGangs.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "queries.h"
 #include "cJobManager.h"
 #include "character/predicates.h"

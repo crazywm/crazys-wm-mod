@@ -1,4 +1,4 @@
-#include "Game.hpp"
+#include "IGame.h"
 #include "cRival.h"
 #include "character/cPlayer.h"
 #include "buildings/cDungeon.h"
@@ -28,6 +28,7 @@
 #include "character/cGirlPool.h"
 #include "sConfig.h"
 #include "movies/manager.h"
+#include <chrono>
 
 namespace settings {
     extern const char* TAXES_RATE;
@@ -38,22 +39,22 @@ namespace settings {
     extern const char* SLAVE_MARKET_UNIQUE_CHANCE;
 }
 
-struct Game::sScriptEventStack {
+struct IGame::sScriptEventStack {
     scripting::sAsyncScriptHandle ActiveScript;
     std::deque<scripting::sEventID> EventStack;
 };
 
-cRivalManager& Game::rivals()
+cRivalManager& IGame::rivals()
 {
     return *m_Rivals;
 }
 
-cRival* Game::random_rival()
+cRival* IGame::random_rival()
 {
     return m_Rivals->GetRandomRival();
 }
 
-Game::Game() :
+IGame::IGame() :
     m_Rivals(new cRivalManager()),
     m_ObjectiveManager(new cObjectiveManager()),
     m_Player(nullptr ),
@@ -88,32 +89,32 @@ Game::Game() :
     m_ScriptManager->RegisterEventMapping(std::move(ge));
 }
 
-ITraitsManager& Game::traits()
+ITraitsManager& IGame::traits()
 {
     return *m_Traits;
 }
 
-cObjectiveManager& Game::objective_manager()
+cObjectiveManager& IGame::objective_manager()
 {
     return *m_ObjectiveManager;
 }
 
-sObjective * Game::get_objective()
+sObjective * IGame::get_objective()
 {
     return objective_manager().GetObjective();
 }
 
-cPlayer& Game::player()
+cPlayer& IGame::player()
 {
     return *m_Player;
 }
 
-cDungeon& Game::dungeon()
+cDungeon& IGame::dungeon()
 {
     return *m_Dungeon;
 }
 
-void Game::next_week()
+void IGame::next_week()
 {
     g_LogFile.info("turn", "Start processing next week");
     gang_manager().GangStartOfShift();
@@ -189,9 +190,7 @@ void Game::next_week()
         {
             auto girl = m_Girls->CreateRandomGirl(17);
             ss << "A man cannot pay so he sells you his daughter " << girl->FullName() << " to clear his debt to you.\n";
-            std::stringstream ssg;
-            ssg << girl->FullName() << "'s father could not pay his debt to you so he gave her to you as payment.";
-            girl->m_Events.AddMessage(ssg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+            girl->AddMessage("${name}'s father could not pay his debt to you so he gave her to you as payment.", IMGTYPE_PROFILE, EVENT_DUNGEON);
             dungeon().AddGirl(std::move(girl), DUNGEON_NEWGIRL);
             gang_manager().NumBusinessExtorted(-1);
         }
@@ -294,7 +293,7 @@ void Game::next_week()
     g_LogFile.info("turn", "End Turn");
 }
 
-void Game::UpdateRunaways() {
+void IGame::UpdateRunaways() {
     for(auto it = m_Runaways.begin(); it != m_Runaways.end(); )
     {
         auto rgirl = *it;
@@ -324,7 +323,7 @@ void Game::UpdateRunaways() {
     }
 }
 
-void Game::read_attributes_xml(const tinyxml2::XMLElement& el)
+void IGame::read_attributes_xml(const tinyxml2::XMLElement& el)
 {
     // load cheating
     int cheat = 0;
@@ -361,7 +360,7 @@ void Game::read_attributes_xml(const tinyxml2::XMLElement& el)
     objective_manager().LoadFromXML(el);
 }
 
-void Game::save(tinyxml2::XMLElement& root)
+void IGame::save(tinyxml2::XMLElement& root)
 {
     auto& el = root;
 
@@ -424,7 +423,7 @@ void Game::save(tinyxml2::XMLElement& root)
 }
 
 
-void Game::UpdateBribeInfluence()
+void IGame::UpdateBribeInfluence()
 {
     m_Influence = GetBribeRate();
     auto& rival_list = rivals().GetRivals();
@@ -461,20 +460,20 @@ void Game::UpdateBribeInfluence()
 }
 
 // ----- Bank & money
-void Game::WithdrawFromBank(long amount)
+void IGame::WithdrawFromBank(long amount)
 {
     if (m_Bank - amount >= 0)
         m_Bank -= amount;
 }
 
-void Game::DepositInBank(long amount)
+void IGame::DepositInBank(long amount)
 {
     if (amount > 0)
         m_Bank += amount;
 }
 
 
-void Game::do_tax()
+void IGame::do_tax()
 {
     double taxRate      = settings().get_float(settings::TAXES_RATE);
     double min_tax_rate = settings().get_float(settings::TAXES_MINIMUM);
@@ -526,52 +525,52 @@ void Game::do_tax()
 }
 
 // ----- Runaways
-void Game::RemoveGirlFromRunaways(sGirl* girl)
+void IGame::RemoveGirlFromRunaways(sGirl* girl)
 {
     m_Runaways.remove_if([&](auto& ptr){ return ptr.get() == girl; });
 }
 
-void Game::AddGirlToRunaways(std::shared_ptr<sGirl> girl)
+void IGame::AddGirlToRunaways(std::shared_ptr<sGirl> girl)
 {
     girl->m_DayJob = girl->m_NightJob = JOB_RUNAWAY;
     m_Runaways.push_back(std::move(girl));
 }
 
-cGold& Game::gold()
+cGold& IGame::gold()
 {
     return *m_Gold;
 }
 
-const Date& Game::date() const
+const Date& IGame::date() const
 {
     return m_Date;
 }
 
-cGangManager& Game::gang_manager()
+cGangManager& IGame::gang_manager()
 {
     return *m_Gangs;
 }
 
-cJobManager& Game::job_manager()
+cJobManager& IGame::job_manager()
 {
     return *m_JobManager;
 }
 
-sStorage& Game::storage()
+sStorage& IGame::storage()
 {
     return *m_Storage;
 }
 
-cMovieManager& Game::movie_manager()
+cMovieManager& IGame::movie_manager()
 {
     return *m_MovieManager;
 }
 
-Game::~Game() = default;
+IGame::~IGame() = default;
 
 
 // ----- Drugs & addiction
-void Game::check_druggy_girl(std::stringstream& ss)
+void IGame::check_druggy_girl(std::stringstream& ss)
 {
     if (g_Dice.percent(90)) return;
     sGirl* girl = GetDrugPossessor();
@@ -585,7 +584,7 @@ void Game::check_druggy_girl(std::stringstream& ss)
         m_Prison->AddGirl(girl->m_Building->remove_girl(girl));
 }
 
-sGirl* Game::GetDrugPossessor()
+sGirl* IGame::GetDrugPossessor()
 {
     /*for(auto& current : buildings())
     {
@@ -602,7 +601,7 @@ sGirl* Game::GetDrugPossessor()
     return nullptr;
 }
 
-void Game::check_raid()
+void IGame::check_raid()
 {
     cRival *rival = nullptr;
     cRivalManager& rival_mgr = rivals();
@@ -738,17 +737,17 @@ void Game::check_raid()
     g_Game->push_message(ss.str(), COLOR_RED);
 }
 
-cBuildingManager& Game::buildings()
+cBuildingManager& IGame::buildings()
 {
     return *m_Buildings;
 }
 
-bool Game::has_building(BuildingType type) const
+bool IGame::has_building(BuildingType type) const
 {
     return m_Buildings->has_building(type);
 }
 
-void Game::UpdateMarketSlaves()
+void IGame::UpdateMarketSlaves()
 {
     g_LogFile.debug("game", "Updating slave market");
     int numgirls = g_Dice.bell(settings().get_integer(settings::SLAVE_MARKET_MIN_WEEKLY_NEW),
@@ -792,7 +791,7 @@ void Game::UpdateMarketSlaves()
     }
 }
 
-bool Game::NameExists(const std::string& name) const
+bool IGame::NameExists(const std::string& name) const
 {
     auto girl = m_Girls->GetGirl(0);
     for(int i = 0; girl;)
@@ -808,7 +807,7 @@ bool Game::NameExists(const std::string& name) const
     return false;
 }
 
-bool Game::SurnameExists(const std::string& name) const
+bool IGame::SurnameExists(const std::string& name) const
 {
     auto girl = m_Girls->GetGirl(0);
     for(int i = 0; girl;)
@@ -824,58 +823,58 @@ bool Game::SurnameExists(const std::string& name) const
     return false;
 }
 
-cCustomers& Game::customers()
+cCustomers& IGame::customers()
 {
     return *m_Customers;
 }
 
-int Game::GetNumCustomers() const
+int IGame::GetNumCustomers() const
 {
     return m_Customers->GetNumCustomers();
 }
 
-sCustomer Game::GetCustomer(IBuilding& brothel)
+sCustomer IGame::GetCustomer(IBuilding& brothel)
 {
     return m_Customers->GetCustomer(brothel);
 }
 
-cInventory& Game::inventory_manager()
+cInventory& IGame::inventory_manager()
 {
     return *m_InvManager;
 }
 
-std::shared_ptr<sGirl> Game::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
+std::shared_ptr<sGirl> IGame::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
 {
     return m_Girls->GetRandomGirl(slave, catacomb, arena, daughter, isdaughter);
 }
 
-cGirls& Game::girl_pool()
+cGirls& IGame::girl_pool()
 {
     return *m_Girls;
 }
 
-std::shared_ptr<sGirl> Game::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool childnaped,
-                                              bool arena, bool daughter, bool isdaughter, std::string findbyname)
+std::shared_ptr<sGirl> IGame::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool childnaped,
+                                               bool arena, bool daughter, bool isdaughter, std::string findbyname)
 {
     return m_Girls->CreateRandomGirl(age, slave, undead, Human0Monster1, childnaped, arena, daughter, isdaughter, findbyname);
 }
 
-void Game::push_message(std::string text, int color)
+void IGame::push_message(std::string text, int color)
 {
     window_manager().PushMessage(std::move(text), color);
 }
 
-cTariff& Game::tariff()
+cTariff& IGame::tariff()
 {
     return *m_Tariff;
 }
 
-bool Game::allow_cheats() const
+bool IGame::allow_cheats() const
 {
     return m_IsCheating;
 }
 
-void Game::enable_cheating()
+void IGame::enable_cheating()
 {
     gold().cheat();
     inventory_manager().GivePlayerAllItems();
@@ -883,17 +882,17 @@ void Game::enable_cheating()
     m_IsCheating = true;
 }
 
-cShop &Game::shop() {
+cShop &IGame::shop() {
     return *m_Shop;
 }
 
-scripting::cScriptManager &Game::script_manager() {
+scripting::cScriptManager &IGame::script_manager() {
     return *m_ScriptManager;
 }
 
 extern    int    g_TalkCount;
 
-void Game::TalkToGirl(sGirl &target) {
+void IGame::TalkToGirl(sGirl &target) {
     if (g_TalkCount <= 0) return;    // if we have no talks left, we can go home
 
     /*
@@ -917,7 +916,7 @@ void Game::TalkToGirl(sGirl &target) {
 
 }
 
-void Game::PushEvent(const scripting::sEventID& event) {
+void IGame::PushEvent(const scripting::sEventID& event) {
     if(m_EventStack->ActiveScript) {
         m_EventStack->EventStack.push_back(event);
     } else {
@@ -925,7 +924,7 @@ void Game::PushEvent(const scripting::sEventID& event) {
     }
 }
 
-void Game::RunNextEvent(const scripting::sEventID& event) {
+void IGame::RunNextEvent(const scripting::sEventID& event) {
     m_EventStack->ActiveScript = m_ScriptManager->GetGlobalEventMapping()->RunAsync(event, {});
     if(!m_EventStack->ActiveScript)
         return;
@@ -942,17 +941,17 @@ void Game::RunNextEvent(const scripting::sEventID& event) {
     });
 }
 
-IKeyValueStore& Game::settings()
+IKeyValueStore& IGame::settings()
 {
     return *m_GameSettings;
 }
 
-std::unique_ptr<ITraitsCollection> Game::create_traits_collection() {
+std::unique_ptr<ITraitsCollection> IGame::create_traits_collection() {
     return m_Traits->create_collection();
 }
 
-void Game::LoadGirlFiles(const DirPath& location,
-                         const std::function<void(const std::string&)>& error_handler) {
+void IGame::LoadGirlFiles(const DirPath& location,
+                          const std::function<void(const std::string&)>& error_handler) {
     g_LogFile.debug("girls", "Loading girl files from ", location.c_str());
     // first, load unique girls. Process only those that are not
     // already present in the current game.
@@ -989,7 +988,7 @@ void Game::LoadGirlFiles(const DirPath& location,
     }
 }
 
-void Game::LoadTraitFiles(DirPath location) {
+void IGame::LoadTraitFiles(DirPath location) {
     FileList fl_t(location, "*.xml");                // get a file list
     if (fl_t.size() > 0)
     {
@@ -1004,7 +1003,7 @@ void Game::LoadTraitFiles(DirPath location) {
 }
 
 
-void Game::LoadItemFiles(DirPath location) {
+void IGame::LoadItemFiles(DirPath location) {
     FileList fl(location, "*.itemsx");
     g_LogFile.log(ELogLevel::NOTIFY, "Found ", fl.size(), " itemsx files");
     fl.scan("*.itemsx");
@@ -1022,7 +1021,7 @@ void Game::LoadItemFiles(DirPath location) {
 }
 
 
-void Game::NewGame(const std::function<void(std::string)>& callback) {
+void IGame::NewGame(const std::function<void(std::string)>& callback) {
     cConfig cfg;
     g_LogFile.info("prepare", "Loading Game Data");
     // setup gold
@@ -1056,7 +1055,7 @@ void Game::NewGame(const std::function<void(std::string)>& callback) {
     m_Shop->RestockShop();
 }
 
-void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void(std::string)>& callback) {
+void IGame::LoadGame(const tinyxml2::XMLElement& source, const std::function<void(std::string)>& callback) {
     cConfig cfg;
     g_LogFile.info("prepare", "Loading Game Data");
 
@@ -1072,11 +1071,16 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     read_attributes_xml(source);
 
     callback("Loading Items");
+    auto start_time_items = std::chrono::steady_clock::now();
     g_LogFile.info("prepare", "Loading Items");
-    for(auto path : DirPath::split_search_path(cfg.folders.items()))
+    for(const auto& path : DirPath::split_search_path(cfg.folders.items()))
        LoadItemFiles(DirPath::expand_path(path).c_str());
+    int duration = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::steady_clock::now() - start_time_items ).count();
+    g_LogFile.info("prepare", "Loaded items in ", duration, "ms");
+    callback("Loaded items in " + std::to_string(duration) + "ms");
 
     // girl file list
+    auto start_time_girls = std::chrono::steady_clock::now();
     g_LogFile.info("prepare", "Loading Girl List");
     auto gf = source.FirstChildElement("GirlFiles");
     if(gf) {
@@ -1089,6 +1093,10 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     g_LogFile.info("prepare", "Loading Girl Files");
     for(auto path : DirPath::split_search_path(cfg.folders.characters()))
        LoadGirlFiles(DirPath::expand_path(path).c_str(), callback);
+
+    duration = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::steady_clock::now() - start_time_girls ).count();
+    g_LogFile.info("prepare", "Loaded girls in ", duration, "ms");
+    callback("Loaded girls in " + std::to_string(duration) + "ms");
 
     g_LogFile.log(ELogLevel::NOTIFY, "Loading Rivals");
     callback("Loading Rivals");
@@ -1146,14 +1154,14 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     m_Shop->RestockShop();
 }
 
-void Game::error(std::string message) {
+void IGame::error(std::string message) {
     for(auto& ctx : m_ErrorContextStack) {
         message = ctx + " >> " + message;
     }
     window_manager().PushError(std::move(message));
 }
 
-cErrorContext Game::push_error_context(std::string message) {
+cErrorContext IGame::push_error_context(std::string message) {
     m_ErrorContextStack.push_back(std::move(message));
     return cErrorContext(this, [this]() {
         m_ErrorContextStack.pop_back();
@@ -1167,4 +1175,8 @@ cErrorContext::~cErrorContext() {
         }
         m_Unstack();
     }
+}
+
+std::unique_ptr<IGame> IGame::CreateGame() {
+    return std::make_unique<IGame>();
 }

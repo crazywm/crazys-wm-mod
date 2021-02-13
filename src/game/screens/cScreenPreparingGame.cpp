@@ -26,7 +26,7 @@
 #include "cGangs.h"
 #include "cRival.h"
 #include "buildings/cBrothel.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "character/cCustomers.h"
 #include "cInventory.h"
 #include "CLog.h"
@@ -73,7 +73,7 @@ void cScreenPreparingGame::init(bool back)
     EditTextItem("", text3_id);
 
     if(!g_Game) {
-        g_Game = std::make_unique<Game>();
+        g_Game = IGame::CreateGame();
     }
 
     // make sure we clear any remaining active girl from the previous game

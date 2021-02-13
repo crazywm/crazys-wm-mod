@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <Game.hpp>
+#include <IGame.h>
 #include <cGirls.h>
 #include "pregnancy.h"
 #include "ICharacter.h"

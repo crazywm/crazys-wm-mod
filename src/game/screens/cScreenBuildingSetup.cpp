@@ -21,7 +21,7 @@
 #include "interface/cWindowManager.h"
 #include "cGold.h"
 #include "cTariff.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "CLog.h"
 
 static std::stringstream ss;

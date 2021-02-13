@@ -21,7 +21,7 @@
 #include "cInventory.h"
 #include <sstream>
 #include "cObjectiveManager.hpp"
-#include "Game.hpp"
+#include "IGame.h"
 #include "sStorage.h"
 #include "CLog.h"
 #include "cGirlGangFight.h"

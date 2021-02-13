@@ -19,7 +19,7 @@
 
 #include "Inventory.h"
 #include "cInventory.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include <algorithm>
 #include <tinyxml2.h>
 #include "xml/util.h"

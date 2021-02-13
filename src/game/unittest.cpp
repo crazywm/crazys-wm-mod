@@ -1,7 +1,7 @@
 #include "CLog.h"
 #include "sConfig.h"
 #include "cRng.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cNameList.h"
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
@@ -12,7 +12,7 @@ class cScreenGetInput;
 CLog g_LogFile;
 cConfig cfg;
 cRng g_Dice;
-std::unique_ptr<Game> g_Game;
+std::unique_ptr<IGame> g_Game;
 cNameList g_GirlNameList;
 cNameList g_BoysNameList;
 cNameList g_SurnameList;

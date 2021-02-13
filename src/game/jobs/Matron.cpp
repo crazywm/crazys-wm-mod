@@ -23,7 +23,7 @@
 #include "character/sGirl.h"
 #include "character/predicates.h"
 #include "buildings/IBuilding.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cInventory.h"
 
 class MatronJob : public IGenericJob {

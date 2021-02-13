@@ -23,7 +23,7 @@
 #include "character/sGirl.h"
 #include "character/cPlayer.h"
 #include "cGirlGangFight.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "character/traits/ITraitsCollection.h"
 
 extern    cRng            g_Dice;

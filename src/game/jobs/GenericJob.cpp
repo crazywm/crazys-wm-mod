@@ -27,7 +27,7 @@
 #include "cGirls.h"
 #include "cRng.h"
 #include "character/sGirl.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "character/traits/ITraitsManager.h"
 
 class sBrothel;

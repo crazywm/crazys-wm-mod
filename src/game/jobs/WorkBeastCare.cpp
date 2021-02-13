@@ -20,7 +20,7 @@
 #include <sstream>
 #include "cRng.h"
 #include "buildings/cBuildingManager.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "sStorage.h"
 #include "cGirls.h"
 

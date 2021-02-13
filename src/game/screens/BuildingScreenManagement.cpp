@@ -5,7 +5,7 @@
 #include "widgets/IListBox.h"
 #include "cTariff.h"
 #include "InterfaceProcesses.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "buildings/queries.h"
 #include "character/cPlayer.h"
 #include <sstream>

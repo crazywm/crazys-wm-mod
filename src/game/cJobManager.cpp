@@ -29,7 +29,7 @@
 #include "cTariff.h"
 #include "cGold.h"
 #include "cGangs.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "scripting/GameEvents.h"
 #include "combat/combat.h"
 #include "jobs/Crafting.h"

@@ -22,7 +22,7 @@
 #include <iomanip>
 #include <tinyxml2.h>
 #include "xml/util.h"
-#include "Game.hpp"
+#include "IGame.h"
 
 namespace settings {
     extern const char* INITIAL_GOLD;

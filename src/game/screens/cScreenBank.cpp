@@ -18,7 +18,7 @@
 */
 #include "cScreenBank.h"
 #include "cGold.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include <sstream>
 
 cScreenBank::cScreenBank() : cInterfaceWindowXML("bank_screen.xml")

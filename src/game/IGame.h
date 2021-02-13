@@ -50,7 +50,7 @@ struct Date {
     int day;
 };
 
-class Game;
+class IGame;
 class cErrorContext {
 public:
     ~cErrorContext();
@@ -59,13 +59,13 @@ public:
         o.m_Unstack = {};
     };
 
-    friend class Game;
+    friend class IGame;
 private:
-    cErrorContext(Game* g, std::function<void()> unstack) :
+    cErrorContext(IGame* g, std::function<void()> unstack) :
         m_Game(g), m_Unstack(std::move(unstack)) {
     }
 
-    Game* m_Game;
+    IGame* m_Game;
     std::function<void()> m_Unstack;
 };
 
@@ -74,10 +74,12 @@ private:
  * \details This class manages all global objects of a single game. This includes the girls,
  *          buildings, gangs, player, rivals etc.
  */
-class Game {
+class IGame {
 public:
-    Game();
-    ~Game();
+    IGame();
+    ~IGame();
+
+    static std::unique_ptr<IGame> CreateGame();
 
     void next_week();
 
@@ -264,6 +266,6 @@ private:
 };
 
 // the global game instance.
-extern std::unique_ptr<Game> g_Game;
+extern std::unique_ptr<IGame> g_Game;
 
 #endif //CRAZYS_WM_MOD_GAME_HPP

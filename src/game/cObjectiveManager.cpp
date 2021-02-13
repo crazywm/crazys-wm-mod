@@ -23,7 +23,7 @@
 #include "character/cPlayer.h"
 #include "cGangs.h"
 #include "cRival.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cInventory.h"
 #include <sstream>
 #include "xml/util.h"

@@ -29,7 +29,7 @@
 #include "interface/cWindowManager.h"
 #include "interface/CGraphics.h"
 #include "cGirls.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cInventory.h"
 #include "cShop.h"
 #include "sConfig.h"

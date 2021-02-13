@@ -24,7 +24,7 @@
 #include "combatant.h"
 #include "combat.h"
 #include "character/ICharacter.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "character/sGirl.h" // TODO only needed to determine the pronoun
 #include "traits.h"
 #include "cInventory.h"

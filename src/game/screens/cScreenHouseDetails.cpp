@@ -21,7 +21,7 @@
 #include "interface/cWindowManager.h"
 #include "cGangs.h"
 #include "cObjectiveManager.hpp"
-#include "Game.hpp"
+#include "IGame.h"
 #include <sstream>
 
 extern    int    g_TalkCount;

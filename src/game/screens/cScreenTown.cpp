@@ -24,7 +24,7 @@
 #include "cGangs.h"
 #include "utils/FileList.h"
 #include "cObjectiveManager.hpp"
-#include "Game.hpp"
+#include "IGame.h"
 #include <sstream>
 #include "cGirls.h"
 

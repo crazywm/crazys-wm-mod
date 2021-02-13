@@ -20,7 +20,7 @@
 #include "cScreenGameConfig.h"
 #include "widgets/IListBox.h"
 #include "CLog.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include <algorithm>
 #include "utils/string.hpp"
 #include "utils/algorithms.hpp"

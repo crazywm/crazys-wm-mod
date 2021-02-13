@@ -5,7 +5,7 @@
 #include "cJobManager.h"
 #include "cTariff.h"
 #include "buildings/IBuilding.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cGangs.h"
 #include "character/cCustomers.h"
 #include "cInventory.h"

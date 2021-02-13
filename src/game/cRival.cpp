@@ -19,7 +19,7 @@
 #include "cRival.h"
 #include <sstream>
 #include "scripting/GameEvents.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "utils/algorithms.hpp"
 #include "character/cPlayer.h"
 #include "character/sGirl.h"

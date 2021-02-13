@@ -18,7 +18,7 @@
  */
 
 #include "Crafting.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cGirls.h"
 #include "character/sGirl.h"
 #include "buildings/IBuilding.h"

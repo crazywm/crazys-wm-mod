@@ -21,7 +21,7 @@
 #include "cRng.h"
 #include "cGold.h"
 #include <sstream>
-#include "Game.hpp"
+#include "IGame.h"
 #include "character/cCustomers.h"
 #include "cJobManager.h"
 #include "character/predicates.h"

@@ -20,7 +20,7 @@
 #include "xml/util.h"
 #include "BarJobs.h"
 #include "cGirls.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "sStorage.h"
 #include "buildings/IBuilding.h"
 #include "buildings/cBuildingManager.h"

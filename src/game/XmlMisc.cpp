@@ -20,7 +20,7 @@
 #include "XmlMisc.h"
 #include "cGirls.h"
 #include "buildings/cBrothel.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cInventory.h"
 #include "CLog.h"
 #include "xml/util.h"

@@ -20,7 +20,7 @@
 #include "cRival.h"
 #include "cScreenMayor.h"
 #include "cGold.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include <sstream>
 #include "character/cGirlPool.h"
 

@@ -21,7 +21,7 @@
 #include "cGold.h"
 #include "cTariff.h"
 #include "buildings/cBuildingManager.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include <sstream>
 
 

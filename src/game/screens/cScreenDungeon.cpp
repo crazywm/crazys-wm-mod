@@ -27,7 +27,7 @@
 #include "cTariff.h"
 #include "cGirlGangFight.h"
 #include "cGirlTorture.h"
-#include "Game.hpp"
+#include "IGame.h"
 
 extern cRng                    g_Dice;
 extern int                    g_TalkCount;

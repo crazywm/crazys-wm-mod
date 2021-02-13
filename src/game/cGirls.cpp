@@ -24,7 +24,7 @@
 #include "utils/algorithms.hpp"
 #include "cGangs.h"
 #include "buildings/IBuilding.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "sStorage.h"
 #include "character/sGirl.h"
 #include "character/cCustomers.h"

@@ -22,7 +22,7 @@
 #include <sstream>
 #include "scripting/GameEvents.h"
 
-#include "Game.hpp"
+#include "IGame.h"
 #include "cGirls.h"
 #include "cShop.h"
 #include "cJobManager.h"

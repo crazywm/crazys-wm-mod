@@ -23,7 +23,7 @@
 #include "character/predicates.h"
 #include "cGirls.h"
 #include "buildings/IBuilding.h"
-#include "Game.hpp"
+#include "IGame.h"
 
 struct DoctorJob : public cBasicJob {
     DoctorJob();

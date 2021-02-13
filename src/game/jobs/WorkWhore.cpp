@@ -26,7 +26,7 @@
 #include <sstream>
 #include "cGangs.h"
 #include <algorithm>
-#include "Game.hpp"
+#include "IGame.h"
 #include "CLog.h"
 #include "scripting/GameEvents.h"
 #include "cJobManager.h"

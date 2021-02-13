@@ -22,7 +22,7 @@
 #include "utils/string.hpp"
 #include "xml/util.h"
 #include "CLog.h"
-#include "Game.hpp"
+#include "IGame.h"
 
 #include "cMovieStudio.h"
 #include "cArena.h"

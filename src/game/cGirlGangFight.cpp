@@ -19,7 +19,7 @@
 #include "utils/streaming_random_selection.hpp"
 #include "cGirlGangFight.h"
 #include "cGangs.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "character/sGirl.h"
 #include "character/cPlayer.h"
 #include "combat/combat.h"

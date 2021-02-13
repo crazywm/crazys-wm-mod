@@ -20,11 +20,11 @@
 #include "cGirls.h"
 #include "character/sGirl.h"
 #include "doctest.h"
-#include "Game.hpp"
+#include "IGame.h"
 
 TEST_CASE("trait group gag reflex") {
     if(!g_Game) {
-        g_Game = std::make_unique<Game>();
+        g_Game = std::make_unique<IGame>();
         g_Game->NewGame([](std::string) {});
     }
 

@@ -24,7 +24,7 @@
 #include "character/cPlayer.h"
 #include "cScreenSlaveMarket.h"
 #include "cTariff.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "character/traits/ITraitSpec.h"
 #include "character/traits/ITraitsCollection.h"
 #include "character/predicates.h"

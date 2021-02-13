@@ -27,7 +27,7 @@
 #include "cGangs.h"
 #include "XmlMisc.h"
 #include "cObjectiveManager.hpp"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cJobManager.h"
 #include "cTariff.h"
 #include "utils/string.hpp"

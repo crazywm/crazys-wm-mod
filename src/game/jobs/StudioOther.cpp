@@ -20,7 +20,7 @@
 #include "StudioJobs.h"
 #include "character/sGirl.h"
 #include "cGirls.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "movies/manager.h"
 #include "utils/streaming_random_selection.hpp"
 #include <cmath>

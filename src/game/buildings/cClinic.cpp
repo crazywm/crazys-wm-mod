@@ -20,7 +20,7 @@
 #include <sstream>
 #include "cClinic.h"
 #include "cGangs.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cJobManager.h"
 #include "utils/algorithms.hpp"
 #include "character/predicates.h"

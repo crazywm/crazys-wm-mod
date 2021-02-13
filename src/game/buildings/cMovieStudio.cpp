@@ -24,7 +24,7 @@
 #include "cMovieStudio.h"
 #include "cGangs.h"
 #include "buildings/cBuildingManager.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "xml/util.h"
 #include "interface/constants.h"
 #include "scripting/GameEvents.h"

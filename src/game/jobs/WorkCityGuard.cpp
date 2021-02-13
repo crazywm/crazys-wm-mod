@@ -19,7 +19,7 @@
 #include "buildings/cBuildingManager.h"
 #include "character/cPlayer.h"
 #include <sstream>
-#include "Game.hpp"
+#include "IGame.h"
 #include "CLog.h"
 #include "cGirlGangFight.h"
 #include "cJobManager.h"

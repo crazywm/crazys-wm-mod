@@ -21,7 +21,7 @@
 #include "cRng.h"
 #include <sstream>
 #include "cJobManager.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cGirls.h"
 
 namespace settings {

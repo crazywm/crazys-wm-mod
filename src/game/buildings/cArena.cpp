@@ -22,7 +22,7 @@
 #include "cArena.h"
 #include "cGangs.h"
 #include "IBuilding.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "sStorage.h"
 #include "cJobManager.h"
 #include "scripting/GameEvents.h"

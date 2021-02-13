@@ -24,7 +24,7 @@
 #include "character/sGirl.h"
 #include "character/cCustomers.h"
 #include "character/cPlayer.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "utils/streaming_random_selection.hpp"
 #include "CLog.h"
 #include "xml/util.h"

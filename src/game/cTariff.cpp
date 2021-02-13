@@ -20,7 +20,7 @@
 #include "cTariff.h"
 #include "cGirls.h"
 #include "buildings/cBrothel.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "character/predicates.h"
 
 namespace settings {

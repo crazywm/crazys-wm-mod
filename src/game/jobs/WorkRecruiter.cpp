@@ -19,7 +19,7 @@
 #pragma region //    Includes and Externs            //
 #include "buildings/cBuildingManager.h"
 #include <sstream>
-#include "Game.hpp"
+#include "IGame.h"
 #include "character/traits/ITraitsCollection.h"
 #include "character/cPlayer.h"
 #include "buildings/cDungeon.h"

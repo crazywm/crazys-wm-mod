@@ -28,7 +28,7 @@
 #include "InterfaceProcesses.h"
 
 #include "widgets/cImageItem.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cJobManager.h"
 #include <sstream>
 #include "cRival.h"

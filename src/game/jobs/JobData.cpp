@@ -24,7 +24,7 @@
 #include "utils/streaming_random_selection.hpp"
 #include "cRng.h"
 #include "cGirls.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "character/traits/ITraitsManager.h"
 
 extern cRng g_Dice;

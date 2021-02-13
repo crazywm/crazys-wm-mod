@@ -22,7 +22,7 @@
 #include <memory>
 #include "buildings/cBrothel.h"
 #include "cTariff.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "sStorage.h"
 #include "cGangs.h"
 #include <sstream>

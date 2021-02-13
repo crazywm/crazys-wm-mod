@@ -23,7 +23,7 @@
 #include "character/cPlayer.h"
 #include "cScreenBrothelManagement.h"
 #include "utils/FileList.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "sStorage.h"
 #include "scripting/GameEvents.h"
 #include <sstream>

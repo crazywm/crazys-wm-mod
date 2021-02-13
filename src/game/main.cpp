@@ -21,7 +21,7 @@
 #include "sConfig.h"
 #include "interface/CGraphics.h"
 #include "Revision.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "CLog.h"
 #include "cRng.h"
 #include "cNameList.h"
@@ -60,7 +60,7 @@ cConfig cfg;
 cRng g_Dice;
 
 // Game manager
-std::unique_ptr<Game> g_Game;
+std::unique_ptr<IGame> g_Game;
 
 cNameList g_GirlNameList;
 cNameList g_BoysNameList;

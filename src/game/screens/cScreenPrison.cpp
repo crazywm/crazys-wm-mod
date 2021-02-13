@@ -20,7 +20,7 @@
 #include "buildings/cDungeon.h"
 #include "cScreenPrison.h"
 #include "interface/cWindowManager.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include <sstream>
 #include "character/predicates.h"
 #include "character/cGirlPool.h"

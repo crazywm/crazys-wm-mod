@@ -20,7 +20,7 @@
 #include "cRng.h"
 #include "cInventory.h"
 #include <sstream>
-#include "Game.hpp"
+#include "IGame.h"
 #include "sStorage.h"
 #include "CLog.h"
 #include "cGirlGangFight.h"

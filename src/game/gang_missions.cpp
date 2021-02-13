@@ -21,7 +21,7 @@
 
 #include <sstream>
 
-#include "Game.hpp"
+#include "IGame.h"
 #include "cGangs.h"
 #include "character/sGirl.h"
 #include "cRival.h"

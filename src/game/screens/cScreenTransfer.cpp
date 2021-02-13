@@ -28,7 +28,7 @@
 #include "interface/cWindowManager.h"
 #include "utils/FileList.h"
 
-#include "Game.hpp"
+#include "IGame.h"
 
 #pragma endregion
 

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Game.hpp"
+#include "IGame.h"
 #include "CLog.h"
 #include "cInventory.h"
 #include "XmlMisc.h"

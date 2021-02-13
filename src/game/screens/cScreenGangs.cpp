@@ -22,7 +22,7 @@
 #include "cTariff.h"
 #include "InterfaceProcesses.h"
 #include "cGangs.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "CLog.h"
 
 static std::stringstream ss;

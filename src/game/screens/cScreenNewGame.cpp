@@ -18,7 +18,7 @@
 */
 #include "cScreenNewGame.h"
 #include "character/cPlayer.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "cGirls.h"
 #include "cNameList.h"
 #include "InterfaceProcesses.h"
@@ -64,7 +64,7 @@ void cScreenNewGame::init(bool back)
     // randomize the player
     LoadNames();
     if(!back) {
-        g_Game = std::make_unique<Game>();
+        g_Game = IGame::CreateGame();
         g_Game->player().SetBirthDay(g_Dice.in_range(1, 30));
         g_Game->player().SetBirthMonth(g_Dice.in_range(1, 12));
         g_Game->player().SetName(g_BoysNameList.random(), " ", g_SurnameList.random());

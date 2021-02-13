@@ -20,7 +20,7 @@
 #include "cRandomGirl.h"
 #include "cGirls.h"
 #include "CLog.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "character/sGirl.h"
 #include "cInventory.h"
 #include <iomanip>

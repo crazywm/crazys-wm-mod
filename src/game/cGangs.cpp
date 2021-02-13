@@ -27,7 +27,7 @@
 #include "XmlMisc.h"
 #include "cObjectiveManager.hpp"
 #include "cInventory.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include "sStorage.h"
 #include "gang_missions.h"
 #include "cRival.h"

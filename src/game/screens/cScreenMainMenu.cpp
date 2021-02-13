@@ -20,7 +20,7 @@
 #include "utils/FileList.h"
 #include "Revision.h"
 #include <SDL.h>
-#include "Game.hpp"
+#include "IGame.h"
 
 extern std::string g_ReturnText;
 extern int g_ReturnInt;

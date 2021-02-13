@@ -18,7 +18,7 @@
  */
 #include "character/cCustomers.h"
 #include "buildings/IBuilding.h"
-#include "Game.hpp"
+#include "IGame.h"
 #include <sstream>
 #include "character/traits/ITraitsCollection.h"
 extern cRng g_Dice;
