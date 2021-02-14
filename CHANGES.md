@@ -4,7 +4,7 @@
 * age problems for new girls
 * release all button in dungeon screen
 * show image in slave market
-
+* fixed counseling jobs
 
 
 # Version 07.00.alpha12

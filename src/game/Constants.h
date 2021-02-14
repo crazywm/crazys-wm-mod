@@ -344,9 +344,9 @@ enum JOBS {
     // `J` Job Centre - Rehab
     JOB_COUNSELOR,            //     
     JOB_REHAB,                //     
-    JOB_ANGER,                //     
-    JOB_EXTHERAPY,            //     
-    JOB_THERAPY,            //         
+    JOB_THERAPY,            //
+    JOB_EXTHERAPY,            //
+    JOB_ANGER,                //
 
     // `J` Job Clinic - Surgery
     JOB_GETHEALING,            // takes 1 days for each wound trait received.
