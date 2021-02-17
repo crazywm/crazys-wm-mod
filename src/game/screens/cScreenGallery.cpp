@@ -68,6 +68,8 @@ void cScreenGallery::set_ids()
         if (Img > numimages[Mode]) Img = 0;
         change_image();
     });
+
+    SetListBoxHotKeys(imagelist_id, SDLK_UP, SDLK_DOWN);
 }
 
 void cScreenGallery::change_image()
@@ -113,25 +115,4 @@ void cScreenGallery::init(bool back)
     Mode = startmode;
     Img = 0;
     change_image();
-}
-
-void cScreenGallery::OnKeyPress(SDL_Keysym keysym)
-{
-    auto key = keysym.sym;
-    bool up = key == SDLK_w || key == SDLK_UP;
-    if (up || key == SDLK_s || key == SDLK_DOWN)
-    {
-        while (true)
-        {
-            Mode += (up ? -1 : 1);
-            if (Mode < 0) Mode = NUM_IMGTYPES - 1;
-            if (Mode >= NUM_IMGTYPES) Mode = 0;
-            Img = 0;
-            if (numimages[Mode] > 0)
-            {
-                change_image();
-                return;
-            }
-        }
-    }
 }

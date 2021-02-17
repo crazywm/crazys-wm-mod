@@ -5,7 +5,7 @@
 * release all button in dungeon screen
 * show image in slave market
 * fixed counseling jobs
-
+* fixed keyboard shortcuts for gallery
 
 # Version 07.00.alpha12
 

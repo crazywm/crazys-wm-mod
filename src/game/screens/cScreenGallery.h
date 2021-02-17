@@ -32,8 +32,6 @@ private:
     void set_ids() override;
 
     sGirl* m_SelectedGirl;
-
-    void OnKeyPress(SDL_Keysym keysym) override;
 public:
     cScreenGallery();
 
