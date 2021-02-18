@@ -38,6 +38,9 @@ public:
     void SetImage(cAnimatedSurface image);
 
     bool CreateImage(std::string filename, bool transparent=true);
+    bool CreateAnimation(std::string filename);
+
+
     void DrawWidget(const CGraphics& gfx) override;
     void Reset() override;
 

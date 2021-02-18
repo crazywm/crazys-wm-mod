@@ -384,7 +384,7 @@ private:
 };
 
 template<class F>
-void ReadMovie(std::string& file_name, int width, int height, F&& callback) {
+void ReadMovie(std::string& file_name, sLoadImageParams params, F&& callback) {
     auto format = ffmpeg::open_format(file_name.c_str());
     find_stream_info(format);
 
@@ -404,12 +404,10 @@ void ReadMovie(std::string& file_name, int width, int height, F&& callback) {
     pkt.data = nullptr;
     pkt.size = 0;
 
-    if(width == 0)
-        width = ctx->width;
-    if(height == 0)
-        height = ctx->height;
+    sImageSize target = ensure_minimum_dimensions(ctx->width, ctx->height, params.MinWidth, params.MinHeight, params.KeepRatio);
+    target = ensure_maximum_dimensions(target.Width, target.Height, params.MaxWidth, params.MaxHeight, params.KeepRatio);
 
-    keep_ratio_rescaling(ctx->width, ctx->height, width, height);
+    keep_ratio_rescaling(ctx->width, ctx->height, target.Width, target.Height);
 
     AVPixelFormat src_fmt = ctx->pix_fmt;
     if(src_fmt == AV_PIX_FMT_NONE) {
@@ -417,14 +415,14 @@ void ReadMovie(std::string& file_name, int width, int height, F&& callback) {
         return;
     }
     sConverter converter{ctx->width, ctx->height, src_fmt,
-                         width, height, AV_PIX_FMT_RGBA};
+                         target.Width, target.Height, AV_PIX_FMT_RGBA};
 
-    ffmpeg::sImageBuffer converted(width, height, AV_PIX_FMT_RGBA);
+    ffmpeg::sImageBuffer converted(target.Width, target.Height, AV_PIX_FMT_RGBA);
     auto converter_callback = [&](ffmpeg::Frame& frame) {
 
         converter.scale(frame.get(), converted);
         sFrameData data{converted.Data[0], converted.Linesize[0],
-                        width, height, (1000 * frame->best_effort_timestamp * stream->time_base.num) / stream->time_base.den};
+                        target.Width, target.Height, (1000 * frame->best_effort_timestamp * stream->time_base.num) / stream->time_base.den};
         callback(data);
     };
 
@@ -440,7 +438,7 @@ void ReadMovie(std::string& file_name, int width, int height, F&& callback) {
     decode_packet(ctx, frame, nullptr, converter_callback);
 }
 
-cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, int target_width, int target_height) {
+cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, sLoadImageParams params) {
     std::vector<sAnimationFrame> surfaces;
     auto start = std::chrono::steady_clock::now();
     int frame_num = 0;
@@ -471,7 +469,7 @@ cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, int target_width, in
         ++frame_num;
     };
     try {
-        ReadMovie(movie, target_width, target_height, frame_handler);
+        ReadMovie(movie, params, frame_handler);
     } catch (std::exception& error) {
         g_LogFile.error("ffmpeg", "Error when trying to load image/video from '", movie, "': ", error.what());
         return {};

@@ -1198,7 +1198,7 @@ void cGameWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool rand, in
 
     auto images = FindImage(*girl, imagetype, gallery, ImageName);
     if(images.empty()) {
-        image->SetImage(GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(), true));
+        image->CreateImage(ImagePath("blank.png"), true);
         return;
     }
 
@@ -1212,13 +1212,12 @@ void cGameWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool rand, in
         // this is the list of supported formats found on SDL_image's website
         // BMP, PNM (PPM/PGM/PBM), XPM, LBM, PCX, GIF, JPEG, PNG, TGA, and TIFF
         if(is_in(ext, {"jpg", "jpeg", "png", "bmp", "tga", "tiff"})) {
-            image->CreateImage(file, true);
+            if(!image->CreateImage(file, true)) {
+                images.erase(images.begin() + num);
+                continue;
+            }
         } else {
-            auto gif = GetGraphics().GetImageCache().LoadFfmpeg(file, image->GetWidth(), image->GetHeight());
-            if (gif) {
-                image->SetImage(gif);
-            } else {
-                // OK, loading didn't work, try another image
+            if(!image->CreateAnimation(file)) {
                 images.erase(images.begin() + num);
                 continue;
             }

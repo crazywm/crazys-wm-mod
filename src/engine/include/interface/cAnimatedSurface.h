@@ -42,6 +42,9 @@ public:
     void DrawSurface(int x, int y, SDL_Rect* clip = nullptr) const;
     void UpdateFrame();
 
+    int GetWidth() const;
+    int GetHeight() const;
+
     std::string GetFileName() const { return m_FileName; }
 private:
     std::chrono::high_resolution_clock::time_point m_LastTime {};

@@ -1,5 +1,8 @@
 # Version 07.00.alpha13
 
+## Changes
+* Apply new image scaling also to animations
+
 ## Fixes
 * age problems for new girls
 * release all button in dungeon screen

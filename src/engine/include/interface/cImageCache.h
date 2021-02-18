@@ -98,7 +98,7 @@ public:
 
     cSurface CreateTextSurface(TTF_Font* font, std::string text, sColor color, bool antialias);
 
-    cAnimatedSurface LoadFfmpeg(std::string movie, int target_width, int target_height);
+    cAnimatedSurface LoadFfmpeg(std::string movie, sLoadImageParams params);
 
     // Modifying functions
     cSurface FillRect(const cSurface& source, SDL_Rect area, sColor color);

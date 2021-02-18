@@ -54,3 +54,11 @@ void cAnimatedSurface::UpdateFrame()
         m_LastTime = std::chrono::high_resolution_clock::now();
     }
 }
+
+int cAnimatedSurface::GetWidth() const {
+    return m_Frames.at(m_CurrentFrame).surface.GetWidth();
+}
+
+int cAnimatedSurface::GetHeight() const {
+    return m_Frames.at(m_CurrentFrame).surface.GetHeight();
+}

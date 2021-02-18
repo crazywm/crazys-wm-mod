@@ -47,18 +47,20 @@ bool cImageItem::CreateImage(std::string filename, bool transparent)
         params.MaxHeight = m_Height;
         m_Image = GetGraphics().LoadImage(std::move(filename), params);
         m_AnimatedImage = {};
+        return (bool)m_Image;
     }
     else
         m_loaded = false;
 
-    return true;
+    return false;
 }
 
 void cImageItem::DrawWidget(const CGraphics& gfx)
 {
     if (m_AnimatedImage) {
         m_AnimatedImage.UpdateFrame();
-        m_AnimatedImage.DrawSurface(m_XPos, m_YPos);
+        m_AnimatedImage.DrawSurface(m_XPos + (m_Width - m_AnimatedImage.GetWidth()) / 2,
+                                    m_YPos + (m_Height - m_AnimatedImage.GetHeight()) / 2);
     } else if (m_Image)    {
         m_Image.DrawSurface(m_XPos + (m_Width - m_Image.GetWidth()) / 2,
                             m_YPos + (m_Height - m_Image.GetHeight()) / 2);
@@ -80,4 +82,25 @@ void cImageItem::SetImage(cAnimatedSurface image)
 {
     m_Image = {};
     m_AnimatedImage = std::move(image);
+}
+
+bool cImageItem::CreateAnimation(std::string filename) {
+    if (!filename.empty())
+    {
+        m_loaded = true;
+        sLoadImageParams params;
+        params.KeepRatio = true;
+        params.Transparency = false;
+        params.MinWidth = m_MinWidth;
+        params.MinHeight = m_MinHeight;
+        params.MaxWidth = m_Width;
+        params.MaxHeight = m_Height;
+        m_AnimatedImage = GetGraphics().GetImageCache().LoadFfmpeg(std::move(filename), params);
+        m_Image = {};
+        return (bool)m_AnimatedImage;
+    }
+    else
+        m_loaded = false;
+
+    return false;
 }
