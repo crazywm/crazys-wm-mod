@@ -33,6 +33,7 @@
   - [ ] Arena
   - [ ] Studio -- almost done
   - [ ] Centre
+* [ ] adjustable unique chance for overworld encounters
 
 ## Scripting
 * [ ] Extend lua scripting to cover everything the old scripts did
