@@ -24,7 +24,7 @@
 
 TEST_CASE("trait group gag reflex") {
     if(!g_Game) {
-        g_Game = std::make_unique<IGame>();
+        g_Game = IGame::CreateGame();
         g_Game->NewGame([](std::string) {});
     }
 
