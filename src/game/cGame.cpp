@@ -183,8 +183,10 @@ void cGame::LoadGame(const tinyxml2::XMLElement& source, const std::function<voi
     dungeon().LoadDungeonDataXML(source.FirstChildElement("Dungeon"));
 
     // initialize new market
-    // TODO load
-    UpdateMarketSlaves();
+    auto* slave_market = source.FirstChildElement("SlaveMarket");
+    if(slave_market) {
+        GetSlaveMarket().LoadXML(*slave_market);
+    }
 
     // load the buildings!
     g_LogFile.log(ELogLevel::NOTIFY, "Loading Buildings");
@@ -365,6 +367,9 @@ void cGame::SaveGame(tinyxml2::XMLElement& root) {
 
     // output girls
     girl_pool().SaveGirlsXML(el);    // this is all the girls that have not been acquired
+
+    auto& market = PushNewElement(el, "SlaveMarket");
+    GetSlaveMarket().SaveXML(market);
 
     // output gangs
     gang_manager().SaveGangsXML(el);
@@ -845,11 +850,12 @@ void cGame::UpdateMarketSlaves()
 
         if (g_Dice.percent(settings().get_percent(settings::SLAVE_MARKET_UNIQUE_CHANCE)))
         {
-            auto girl = girl_pool().GetRandomGirl(true);
+            auto girl = girl_pool().GetRandomGirl(true, false, false, false, false, true);
             if(girl) {
                 GetSlaveMarket().AddGirl(girl);
                 continue;
             }
+            g_LogFile.warning("Tried to create a unique girl for the market, but could not find one.");
         }
 
         // we didn't make a unique girl so we need a random one

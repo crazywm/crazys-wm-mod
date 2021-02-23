@@ -4,5 +4,5 @@ const int g_MinorVersionA   = 7;
 const int g_MinorVersionB   = 0;
 const int g_StableVersion   = 13;
 
-static char svn_revision[] = "Crazy and PP's mod version .07.01.13a";
+static char svn_revision[] = "Crazy and PP's mod version 7.01.13a";
 

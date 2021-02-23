@@ -9,6 +9,7 @@
 * show image in slave market
 * fixed counseling jobs
 * fixed keyboard shortcuts for gallery
+* slave market is saved and loaded. should fix unique girls vanishing problem
 
 # Version 07.00.alpha12
 

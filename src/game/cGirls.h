@@ -115,7 +115,8 @@ public:
                      bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false,
                      std::string findbyname = "");
 
-    std::shared_ptr<sGirl> GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false, bool isdaughter = false);
+    std::shared_ptr<sGirl> GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false, bool isdaughter = false,
+                                         bool require_unique = false);
     std::shared_ptr<sGirl> GetUniqueYourDaughterGirl(int Human0Monster1 = -1);    // -1 either, 0 human, 1 monster
     std::shared_ptr<sGirl> GetDaughterByName(const std::string& name, bool slave, bool non_human, bool player_dad);
     std::shared_ptr<sGirl> CreateDaughter(sGirl& mother, bool player_dad);

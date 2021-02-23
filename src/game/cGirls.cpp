@@ -1169,23 +1169,26 @@ std::shared_ptr<sGirl> cGirls::GetUniqueYourDaughterGirl(int Human0Monster1)
     return m_Girls->TakeGirl(ptr);
 }
 
-std::shared_ptr<sGirl> cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
+std::shared_ptr<sGirl> cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter, bool require_unique)
 {
     int num_girls = m_Girls->num();
-    int num_monster = m_Girls->count([](const sGirl& girl){ return girl.is_monster(); });
-    int num_arena = m_Girls->count([](const sGirl& girl){ return girl.is_arena(); });
-    int num_daughter = m_Girls->count([](const sGirl& girl){ return girl.is_isdaughter(); });
-    int num_slave = m_Girls->count([](const sGirl& girl){ return girl.is_slave(); });
+    int num_monster = m_Girls->count([](const sGirl& girl) { return girl.is_monster(); });
+    int num_arena = m_Girls->count([](const sGirl& girl) { return girl.is_arena(); });
+    int num_daughter = m_Girls->count([](const sGirl& girl) { return girl.is_isdaughter(); });
+    int num_slave = m_Girls->count([](const sGirl& girl) { return girl.is_slave(); });
+
     if ((num_girls == num_slave + num_monster + num_arena + GetNumYourDaughterGirls() + num_daughter) || num_girls == 0)
     {
-        int r = 3;
-        while (r)
+        for(int r = 0; r < 3; ++r)
         {
             AddGirl(CreateRandomGirl(0));
-            r--;
         }
     }
-    auto choice = m_Girls->get_random_girl([&](const sGirl& girl){
+
+    auto choice = m_Girls->get_random_girl([&](const sGirl& girl) {
+        if(require_unique && !girl.IsUnique()) {
+            return false;
+        }
         return  girl.is_slave() == slave
                 &&    girl.is_monster() == catacomb
                 &&    girl.is_arena() == arena
