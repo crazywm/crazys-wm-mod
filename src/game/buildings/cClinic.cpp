@@ -36,6 +36,7 @@ sClinic::sClinic() : IBuilding(BuildingType::CLINIC, "Clinic")
     m_FirstJob = JOB_GETHEALING;
     m_LastJob = JOB_JANITOR;
     m_MatronJob = JOB_CHAIRMAN;
+    m_MeetGirlData.Event = EDefaultEvent::MEET_GIRL_CLINIC;
 }
 
 sClinic::~sClinic()    = default;
@@ -322,14 +323,6 @@ std::string sClinic::meet_no_luck() const {
                 "got daddy's gold.  Looks like nothing to gain here today. "
             }
     );
-}
-
-std::shared_ptr<sGirl> sClinic::meet_girl() const {
-    auto girl = g_Game->GetRandomGirl();
-    if(girl) {
-        girl->TriggerEvent(EDefaultEvent::MEET_GIRL_CLINIC);
-    }
-    return girl;
 }
 
 bool sClinic::promote_to_doctor(sGirl& current, JOBS job, bool is_night) {

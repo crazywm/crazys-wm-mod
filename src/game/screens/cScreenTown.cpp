@@ -33,6 +33,7 @@ extern bool                        g_AllTogle;
 
 namespace settings {
     extern const char* WORLD_ENCOUNTER_CHANCE;
+    extern const char* WORLD_ENCOUNTER_UNIQUE;
 }
 
 
@@ -180,16 +181,26 @@ void cScreenTown::do_walk()
         push_message("You can only do this once per week.", COLOR_RED);
         return;
     }
-    auto girl = g_Game->GetRandomGirl();                        // let's get a girl for the player to meet
-    if (girl == nullptr)                                                // if there's no girl, no meeting
-    {
-        push_message(walk_no_luck(), COLOR_RED);
-        return;
-    }
     // most of the time, you're not going to find anyone unless you're cheating, of course.
     if (!g_Dice.percent(g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_CHANCE)) && !g_Game->allow_cheats())
     {
         push_message(walk_no_luck(), COLOR_BLUE);
+        return;
+    }
+
+    std::shared_ptr<sGirl> girl;
+    if(g_Dice.percent( g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_UNIQUE) )) {
+        girl = g_Game->GetRandomGirl(false, false, false, false, false, true);
+    }
+
+    // if we don't want or can't find a unique girl, get a random one
+    if(!girl) {
+        girl = g_Game->GetRandomGirl();
+    }
+
+    if (girl == nullptr)
+    {
+        push_message(walk_no_luck(), COLOR_RED);
         return;
     }
 

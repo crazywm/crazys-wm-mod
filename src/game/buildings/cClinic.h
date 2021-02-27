@@ -30,7 +30,6 @@ struct sClinic : public IBuilding
     sClinic();
     ~sClinic() override;
 
-    std::shared_ptr<sGirl> meet_girl() const override;
     std::string meet_no_luck() const override;
 
     void save_additional_xml(tinyxml2::XMLElement& root) const override {};

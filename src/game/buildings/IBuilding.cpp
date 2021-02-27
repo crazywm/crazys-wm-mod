@@ -37,6 +37,7 @@
 namespace settings{
     extern const char* PREG_COOL_DOWN;
     extern const char* WORLD_ENCOUNTER_CHANCE;
+    extern const char* WORLD_ENCOUNTER_UNIQUE;
 }
 
 void do_food_and_digs(IBuilding& brothel, sGirl& girl);
@@ -1765,7 +1766,16 @@ void IBuilding::set_background_image(std::string img)
 
 std::shared_ptr<sGirl> IBuilding::meet_girl() const
 {
-    return g_Game->GetRandomGirl();
+    std::shared_ptr<sGirl> girl;
+    if(g_Dice.percent( g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_UNIQUE) )) {
+        girl = g_Game->GetRandomGirl(false, false, m_MeetGirlData.Arena, false, false, true);
+    }
+    if(!girl)
+        girl = g_Game->GetRandomGirl(false, false, m_MeetGirlData.Arena, false, false, false);
+    if(girl) {
+        girl->TriggerEvent(m_MeetGirlData.Event);
+    }
+    return girl;
 }
 
 void IBuilding::EndWeek() {

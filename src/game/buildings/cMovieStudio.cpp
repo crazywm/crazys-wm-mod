@@ -44,6 +44,7 @@ sMovieStudio::sMovieStudio() : IBuilding(BuildingType::STUDIO, "Studio")
     m_FirstJob = JOB_EXECUTIVE;
     m_LastJob = JOB_FILMRANDOM;
     m_MatronJob = JOB_EXECUTIVE;
+    m_MeetGirlData.Event = EDefaultEvent::MEET_GIRL_STUDIO;
 }
 
 sMovieStudio::~sMovieStudio() = default;
@@ -238,14 +239,6 @@ std::string sMovieStudio::meet_no_luck() const {
                 "There is not much going on here in the studio."
             }
             );
-}
-
-std::shared_ptr<sGirl> sMovieStudio::meet_girl() const {
-    auto girl = g_Game->GetRandomGirl();
-    if(girl) {
-        girl->TriggerEvent(EDefaultEvent::MEET_GIRL_STUDIO);
-    }
-    return girl;
 }
 
 void sMovieStudio::auto_create_movies() {

@@ -38,7 +38,6 @@ struct sMovieStudio : public IBuilding
 
     void Update() override;
 
-    std::shared_ptr<sGirl> meet_girl() const override;
     std::string meet_no_luck() const override;
 
     int GetNumScenes() const;

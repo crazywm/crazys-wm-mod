@@ -183,6 +183,11 @@ protected:
     virtual void GirlBeginShift(sGirl& girl, bool is_night);
 
     sGirl* get_active_matron() { return m_ActiveMatron; }
+
+    struct sMeetGirlData {
+        bool Arena = false;
+        EDefaultEvent Event;
+    } m_MeetGirlData;
 private:
     std::unordered_set<SKILLS> m_ForbiddenSexType;
 

@@ -40,6 +40,7 @@ namespace settings {
 
     const char* WORLD_ENCOUNTER_CHANCE   = "world.encounter_chance";
     const char* WORLD_CATACOMB_UNIQUE    = "world.catacombs.unique_chance";
+    const char* WORLD_ENCOUNTER_UNIQUE   = "world.encounter.unique_chance";
     const char* WORLD_RAPE_STREETS       = "world.rape-chance.streets";
     const char* WORLD_RAPE_BROTHEL       = "world.rape-chance.brothel";
 
@@ -121,6 +122,8 @@ cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
     add_setting(WORLD_ENCOUNTER_CHANCE, "Encounter Chance", "Chance to meet a girl when walking in town/arena tryouts/casting",
                 sPercent(30));
     add_setting(WORLD_CATACOMB_UNIQUE, "Catacombs Unique Chance", "Percentage of unique girls in catacomb encounters",
+                sPercent(50));
+    add_setting(WORLD_ENCOUNTER_UNIQUE, "Town Unique Chance", "Percentage of unique girls in town encounters",
                 sPercent(50));
     add_setting(WORLD_RAPE_STREETS, "Rape Streets", "Chance that a customer will try to rape a girl when working the streets",
                 sPercent(5));

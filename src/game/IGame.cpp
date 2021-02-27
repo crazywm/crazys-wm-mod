@@ -236,9 +236,9 @@ cInventory& IGame::inventory_manager()
     return *m_InvManager;
 }
 
-std::shared_ptr<sGirl> IGame::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
+std::shared_ptr<sGirl> IGame::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter, bool require_unique)
 {
-    return m_Girls->GetRandomGirl(slave, catacomb, arena, daughter, isdaughter);
+    return m_Girls->GetRandomGirl(slave, catacomb, arena, daughter, isdaughter, require_unique);
 }
 
 cGirls& IGame::girl_pool()

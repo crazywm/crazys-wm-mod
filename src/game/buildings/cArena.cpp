@@ -36,6 +36,8 @@ sArena::sArena() : IBuilding(BuildingType::ARENA, "Arena")
     m_FirstJob = JOB_FIGHTBEASTS;
     m_LastJob = JOB_CLEANARENA;
     m_MatronJob = JOB_DOCTORE;
+    m_MeetGirlData.Arena = true;
+    m_MeetGirlData.Event = EDefaultEvent::MEET_GIRL_ARENA;
 }
 
 sArena::~sArena() = default;
@@ -211,16 +213,6 @@ void sArena::auto_assign_job(sGirl& target, std::stringstream& message, bool is_
         target.m_DayJob = target.m_NightJob = JOB_FIGHTTRAIN;
         ss << "train for the arena.";
     }
-}
-
-std::shared_ptr<sGirl> sArena::meet_girl() const
-{
-    // let's get a girl for the player to meet was to get arena.. dont think this should happen this is tryouts arena girl should be ready to fight. CRAZY
-    auto girl = g_Game->GetRandomGirl(false, false, true);
-    if(girl) {
-        girl->TriggerEvent(EDefaultEvent::MEET_GIRL_ARENA);
-    }
-    return girl;
 }
 
 std::string sArena::meet_no_luck() const {
