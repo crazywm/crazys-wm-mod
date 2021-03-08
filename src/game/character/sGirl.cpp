@@ -1292,7 +1292,7 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
          }
        };
 
-    if (root.QueryStringAttribute("Desc", &pt))
+    if (root.QueryStringAttribute("Desc", &pt) == tinyxml2::XML_SUCCESS)
       girl->m_Desc = pt;
     girl->m_Money = root.IntAttribute("Gold", 0);
 
