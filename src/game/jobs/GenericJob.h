@@ -45,6 +45,9 @@ struct sJobInfo {
 
     bool FullTime = false;
     bool FreeOnly = false;
+
+    std::vector<std::string> Consumes;
+    std::vector<std::string> Provides;
 };
 
 struct sJobValidResult {

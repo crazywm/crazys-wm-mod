@@ -54,6 +54,7 @@ namespace {
 
 MistressJob::MistressJob() : cBasicJob(JOB_MISTRESS, "Mistress.xml") {
     m_Info.FreeOnly = true;
+    m_Info.Provides.emplace_back(TrainingInteractionId);
 }
 
 sWorkJobResult MistressJob::DoWork(sGirl& girl, bool is_night) {
@@ -94,7 +95,7 @@ IGenericJob::eCheckWorkResult MistressJob::CheckWork(sGirl& girl, bool is_night)
 }
 
 PracticeJob::PracticeJob() : cBasicJob(JOB_TRAINING, "Training.xml") {
-
+    m_Info.Consumes.emplace_back(TrainingInteractionId);
 }
 
 namespace {
@@ -273,6 +274,7 @@ public:
     TrainingJob(JOBS job, const char* brief, sTrainingData dat) : IGenericJob(job), m_Data(dat) {
         m_Info.FullTime = true;
         m_Info.ShortName = brief;
+        m_Info.Consumes.emplace_back(TrainingInteractionId);
     }
 
     sWorkJobResult DoWork(sGirl& girl, bool is_night) override;

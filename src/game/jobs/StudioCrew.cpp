@@ -142,13 +142,16 @@ sWorkJobResult cCrewJob::DoWork(sGirl& girl, bool is_night) {
 }
 
 
-cJobCameraMage::cJobCameraMage() : cCrewJob(JOB_CAMERAMAGE, "CameraMage.xml"){
+cJobCameraMage::cJobCameraMage() : cCrewJob(JOB_CAMERAMAGE, "CameraMage.xml") {
+    m_Info.Provides.emplace_back(CamMageInteractionId);
 }
 
-cJobCrystalPurifier::cJobCrystalPurifier() : cCrewJob(JOB_CRYSTALPURIFIER, "CrystalPurifier.xml"){
+cJobCrystalPurifier::cJobCrystalPurifier() : cCrewJob(JOB_CRYSTALPURIFIER, "CrystalPurifier.xml") {
+    m_Info.Provides.emplace_back(CrystalPurifierInteractionId);
 }
 
 cJobFluffer::cJobFluffer() : cCrewJob(JOB_FLUFFER, "Fluffer.xml") {
+    m_Info.Provides.emplace_back(FluffPointsId);
     m_EventImage = IMGTYPE_ORAL;
 }
 
@@ -157,12 +160,15 @@ void cJobFluffer::HandleUpdate(sGirl& girl, float performance) {
 }
 
 cJobDirector::cJobDirector() : cCrewJob(JOB_DIRECTOR, "Director.xml") {
+    m_Info.Provides.emplace_back(DirectorInteractionId);
     m_EventImage = IMGTYPE_FORMAL;
 }
 
 class cJobStageHand : public cBasicJob {
 public:
-    cJobStageHand() : cBasicJob(JOB_STAGEHAND) {};
+    cJobStageHand() : cBasicJob(JOB_STAGEHAND) {
+        m_Info.Provides.emplace_back(StageHandPtsId);
+    };
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
     double GetPerformance(const sGirl& girl, bool estimate) const override;

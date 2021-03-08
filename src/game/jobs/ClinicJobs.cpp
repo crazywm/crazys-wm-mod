@@ -38,6 +38,7 @@ struct DoctorJob : public cBasicJob {
 DoctorJob::DoctorJob() : cBasicJob(JOB_DOCTOR, "Doctor.xml") {
     m_Info.FullTime = true;
     m_Info.FreeOnly = true;
+    m_Info.Provides.emplace_back(DoctorInteractionId);
 }
 
 sWorkJobResult DoctorJob::DoWork(sGirl& girl, bool is_night) {
@@ -121,6 +122,8 @@ struct NurseJob : public cBasicJob {
 
 NurseJob::NurseJob() : cBasicJob(JOB_NURSE, "Nurse.xml") {
     m_Info.FullTime = true;
+    m_Info.Provides.emplace_back(CarePointsBasicId);
+    m_Info.Provides.emplace_back(CarePointsGoodId);
 }
 
 sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
@@ -400,7 +403,7 @@ struct InternJob : public cBasicJob {
 };
 
 InternJob::InternJob() : cBasicJob(JOB_INTERN, "Intern.xml") {
-
+    m_Info.Provides.emplace_back(CarePointsBasicId);
 }
 
 double InternJob::GetPerformance(const sGirl& girl, bool estimate) const {
@@ -426,6 +429,9 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
     ss << get_text("work") << "\n \n";
 
     cGirls::UnequipCombat(girl);    // put that shit away
+
+    // less than even a bad nurse, but still something
+    brothel->ProvideResource(CarePointsBasicId, 2);
 
     int enjoy = 0;                                                //
     int wages = 0;                                                //

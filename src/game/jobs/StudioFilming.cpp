@@ -30,6 +30,8 @@
 extern const char* const DirectorInteractionId;
 extern const char* const CamMageInteractionId;
 extern const char* const CrystalPurifierInteractionId;
+extern const char* const FluffPointsId;
+extern const char* const StageHandPtsId;
 
 auto cFilmSceneJob::CheckWork(sGirl& girl, bool is_night) -> eCheckWorkResult {
     if(!CheckCanWork(girl)) {
@@ -409,6 +411,12 @@ void cFilmSceneJob::PrintForcedSceneEval() {
 cFilmSceneJob::cFilmSceneJob(JOBS job, const char* xml, Image_Types event_image, SceneType scene, SexAction sex) :
     cBasicJob(job), m_EventImage(event_image), m_SceneType(scene), m_SexAction(sex) {
     load_from_xml(xml);
+
+    m_Info.Consumes.emplace_back(DirectorInteractionId);
+    m_Info.Consumes.emplace_back(CamMageInteractionId);
+    m_Info.Consumes.emplace_back(CrystalPurifierInteractionId);
+    m_Info.Consumes.emplace_back(FluffPointsId);
+    m_Info.Consumes.emplace_back(StageHandPtsId);
 }
 
 void cFilmSceneJob::load_from_xml_callback(const tinyxml2::XMLElement& job_element) {

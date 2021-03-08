@@ -63,6 +63,9 @@ public:
     ITreatmentJob(JOBS job, const char* short_name) : IGenericJob(job) {
         m_Info.ShortName = short_name;
         m_Info.FullTime = true;
+        m_Info.Consumes.emplace_back(DoctorInteractionId);
+        m_Info.Consumes.emplace_back(CarePointsBasicId);
+        m_Info.Consumes.emplace_back(CarePointsGoodId);
     }
     sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
 
