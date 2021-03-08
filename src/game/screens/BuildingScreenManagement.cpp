@@ -861,7 +861,7 @@ bool IBuildingScreenManagement::is_job_allowed(JOBS job)
 
     JOBS singleton_jobs[] = {
             JOB_CENTREMANAGER, JOB_DOCTORE, JOB_CHAIRMAN, JOB_FARMMANGER, JOB_MARKETER,
-            JOB_MATRON, JOB_TORTURER, JOB_HEADGIRL, JOB_DIRECTOR, JOB_PROMOTER
+            JOB_MATRON, JOB_TORTURER, JOB_HEADGIRL, JOB_DIRECTOR, JOB_PROMOTER, JOB_PERSONALTRAINING
     };
 
     for(auto& sj : singleton_jobs) {

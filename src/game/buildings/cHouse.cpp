@@ -27,12 +27,15 @@
 #include "cGirls.h"
 extern cRng             g_Dice;
 
+extern const char* const TrainingInteractionId = "TrainingInteraction";
+
 // // ----- Strut sHouse Create / destroy
 sHouse::sHouse() : IBuilding(BuildingType::HOUSE, "House")
 {
     m_FirstJob = JOB_HEADGIRL;
     m_LastJob = JOB_HOUSEPET;
     m_MatronJob = JOB_HEADGIRL;
+    declare_interaction(TrainingInteractionId);
 }
 
 sHouse::~sHouse() = default;
@@ -45,12 +48,12 @@ void sHouse::UpdateGirls(bool is_night)    // Start_Building_Process_B
 
     BeginShift(is_night);
 
-    //  Do all Personal Bed Warmers together.  //
-    IterateGirls(is_night, {JOB_PERSONALBEDWARMER}, [&](auto& current) {
+    //  Do all Personal Bed Warmers together. Mistress needs to run before all the training jobs
+    IterateGirls(is_night, {JOB_PERSONALBEDWARMER, JOB_MISTRESS}, [&](auto& current) {
         g_Game->job_manager().handle_simple_job(current, is_night);
     });
 
-    IterateGirls(is_night, {JOB_RECRUITER, JOB_HOUSECOOK, JOB_CLEANHOUSE, JOB_PERSONALTRAINING,
+    IterateGirls(is_night, {JOB_RECRUITER, JOB_HOUSECOOK, JOB_CLEANHOUSE, JOB_PERSONALTRAINING, JOB_TRAINING,
                             JOB_FAKEORGASM, JOB_SO_STRAIGHT, JOB_SO_BISEXUAL, JOB_SO_LESBIAN, JOB_HOUSEPET}, [&](auto& current) {
         g_Game->job_manager().handle_simple_job(current, is_night);
     });

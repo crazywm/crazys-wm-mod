@@ -115,15 +115,8 @@ void sBrothel::UpdateGirls(bool is_night)
                      g_Game->job_manager().handle_simple_job(current, is_night);
     });
 
-    // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cBrothel.cpp
     bool matron = num_girls_on_job(m_MatronJob, false) >= 1;
     std::stringstream ss;
-
-
-    /*
-    *    handle any girls training during this shift
-    */
-    cJobManager::do_training(this, is_night);
 
     /*
     *    as for the rest of them...

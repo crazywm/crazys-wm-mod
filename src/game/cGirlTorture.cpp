@@ -328,7 +328,7 @@ void cGirlTorture::UpdateStats()
         m_Girl->confidence(-5);
         m_Girl->obedience(10);
         m_Girl->spirit(-5);
-        m_Girl->tiredness(-5);
+        m_Girl->tiredness(5);
         m_Girl->pchate(3);
         m_Girl->pclove(-5);
         m_Girl->pcfear(5);
@@ -342,7 +342,7 @@ void cGirlTorture::UpdateStats()
         m_Girl->confidence(-2);
         m_Girl->obedience(4);
         m_Girl->spirit(-2);
-        m_Girl->tiredness(-2);
+        m_Girl->tiredness(2);
         m_Girl->pchate(1);
         m_Girl->pclove(-2);
         m_Girl->pcfear(3);

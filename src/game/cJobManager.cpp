@@ -25,7 +25,6 @@
 #include "cInventory.h"
 #include <sstream>
 #include "CLog.h"
-#include "cTrainable.h"
 #include "cTariff.h"
 #include "cGold.h"
 #include "cGangs.h"
@@ -80,9 +79,6 @@ void cJobManager::Setup()
         }
     };
 
-    // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cJobManager.cpp > Setup
-
-    // much simplier then trying to get the sJob working with this (plus a smaller memory footprint...?maybe)
     // General Jobs
     JobFilters[JOBFILTER_GENERAL] = sJobFilter{"General", "These are general jobs that work individually in any building."};
     register_filter(JOBFILTER_GENERAL, JOB_RESTING, JOB_BEASTCARER, {});
@@ -99,10 +95,6 @@ void cJobManager::Setup()
     // - Brothel Jobs
     JobFilters[JOBFILTER_BROTHEL] = sJobFilter{"Brothel", "These are jobs for running a brothel."};
     register_filter(JOBFILTER_BROTHEL, JOB_MASSEUSE, JOB_WHORESTREETS, {});
-
-
-
-
 
     // Studio Crew
     JobFilters[JOBFILTER_STUDIOCREW] = sJobFilter{"Studio Crew", "These are jobs for running a movie studio."};
@@ -171,8 +163,8 @@ void cJobManager::Setup()
     //JobData[JOB_PONYGIRL].description = ("She will be trained to become a pony girl.");
     //JobFunc[JOB_PONYGIRL] = &WorkFarmPonyGirl;
 
-    JobFilters[JOBFILTER_HOUSETTRAINING] = sJobFilter{"Sex Training", "You will take a personal interest in training the girl in sexual matters."};
-    register_filter(JOBFILTER_HOUSETTRAINING, JOB_PERSONALTRAINING, JOB_HOUSEPET, {});
+    JobFilters[JOBFILTER_HOUSETTRAINING] = sJobFilter{"Sex Training", "Training the girl in sexual matters."};
+    register_filter(JOBFILTER_HOUSETTRAINING, JOB_MISTRESS, JOB_HOUSEPET, {});
 
     RegisterCraftingJobs(*this);
     RegisterSurgeryJobs(*this);
@@ -221,7 +213,6 @@ bool cJobManager::is_job_Paid_Player(JOBS Job)
 
         // - General
         //Job ==    JOB_RESTING                ||    // relaxes and takes some time off
-        Job ==    JOB_TRAINING            ||    // trains skills at a basic level
         Job ==    JOB_CLEANING            ||    // cleans the building
         Job ==    JOB_SECURITY            ||    // Protects the building and its occupants
         Job ==    JOB_ADVERTISING            ||    // Goes onto the streets to advertise the buildings services
@@ -294,6 +285,7 @@ bool cJobManager::is_job_Paid_Player(JOBS Job)
         Job ==    JOB_SO_STRAIGHT            ||    //
         Job ==    JOB_SO_BISEXUAL            ||    //
         Job ==    JOB_SO_LESBIAN            ||    //
+        Job ==    JOB_TRAINING            ||    // trains skills at a basic level
         Job ==    JOB_HOUSEPET            ||    //
 
         // - Brothel
@@ -1448,55 +1440,6 @@ std::string cJobManager::GetGirlAttackedString(int attacktype)
     return ss.str();
 }
 
-// ------ Training
-
-/*
- * let's look at this a little differently...
- */
-void cJobManager::get_training_set(std::vector<sGirl*> &v, std::vector<sGirl*> &t_set)
-{
-    int max = 4;
-    // empty out the trainable set
-    t_set.clear();
-    if(v.empty())
-        return;                 // if there's nothing in the vector, return with t_set empty
-    int v_siz = v.size();
-
-    if (v_siz == 1)            // if there's just one, return with t_set containing that
-    {
-        t_set.push_back(v.back());
-        v.pop_back();
-        return;
-    }
-/*
- *    we want to split the girls into groups of four
- *    but if possible we don't want any singletons
- *
- *    So... if there would be one left over,
- *    we make the first group a group of three.
- *    subsequent groups will have modulus 2 and thus
- *    generate quads, until the end when we have a pair left.
- *
- *    Easier to explain in code than words, really.
- */
-     if((v_siz % 4) == 1)
-        max --;        // reduce it by one, this time only
-/*
- *    get the limiting variable for the loop
- *    we don't compare against v.size() because
- *    that will change as the loop progresses
- */
-    int lim = (max < v_siz ? max : v_siz);
-/*
- *    now loop until we hit max, or run out of girls
- */
-     for(int i = 0; i < lim; i++)
-    {
-        t_set.push_back(v.back());
-        v.pop_back();
-    }
-}
-
 bool WorkTraining(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     return false;
@@ -1511,184 +1454,6 @@ double JP_Training(const sGirl& girl, bool estimate)
         ;
 
     return jobperformance;
-}
-
-void cJobManager::do_solo_training(sGirl& girl, bool Day0Night1)
-{
-    TrainableGirl trainee(&girl);
-    girl.AddMessage(("She trained during this shift by herself, so learning anything worthwhile was difficult."), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-/*
- *    50% chance nothing happens
- */
-     if(g_Dice.percent(50))
-    {
-        girl.AddMessage(("Sadly, she didn't manage to improve herself in any way."), IMGTYPE_PROFILE, EVENT_SUMMARY);
-        return;
-    }
-/*
- *    otherwise, pick a random attribute and raise it 1-3 points
- */
-    int amt = 1 + g_Dice%3;
-    std::string improved = trainee.update_random(amt);
-    std::stringstream ss;
-    ss.str("");
-    ss << ("She managed to gain ") << amt << " " << improved << (".");
-    girl.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
-}
-
-void cJobManager::do_training_set(std::vector<sGirl*> girls, bool Day0Night1)
-{
-    std::stringstream ss;
-    /*
-    *    we're getting a vector of 1-4 girls here
-    *    (the one is possible if only one girl trains)
-    */
-    if (girls.empty())
-    {  // no girls? that shouldn't happen
-        g_LogFile.log(ELogLevel::ERROR, "Logic Error in cJobManager::do_training_set: empty set passed for training!");
-        return;
-    }
-    else if (girls.size() == 1)
-    {  // special case for only one girl
-        do_solo_training(*girls[0], Day0Night1);
-        return;
-    }
-    /*
-    *    OK. Now, as I was saying. We have an array of sGirl* pointers..
-    *    We need that to be a list of TrainableGirl objects:
-    */
-    std::vector<TrainableGirl> set;
-    /*
-    *    4 is the maximum set size. I should probably consider
-    *    making that a class constant - or a static class member
-    *    initialised from the config file. Later for that.
-    */
-    for (auto& girl : girls)
-    {
-        if (girl == nullptr) break;
-        set.emplace_back(girl);
-    }
-    /*
-    *    now get an idealized composite of the girls in the set
-    *
-    *    and the get a vector of the indices of the most efficient
-    *    three attributes for them to train
-    */
-    IdealGirl ideal(set);
-    std::vector<int> indices = ideal.training_indices();
-    /*
-    *    OK. Loop over the girls, and then over the indices
-    */
-    for (int g_idx = 0; g_idx < set.size(); g_idx++)
-    {
-        TrainableGirl &trainee = set[g_idx];
-
-        for (int i_idx = 0; i_idx < indices.size(); i_idx++)
-        {
-            int index = indices[i_idx];
-            /*
-            *            the base value for any increase is the difference
-            *            between the value of girl's stat, and the value of best
-            *            girl in the set
-            */
-            int aaa = ideal[index].value(); //    [index].value();
-            int bbb = trainee[index].value();
-            int diff = aaa - bbb;
-            if (diff < 0)  // don't want a negative training value
-                diff = 0;
-            /*
-            *            plus one - just so the teacher gets a chance to
-            *            learn something
-            */
-            diff++;
-            /*
-            *            divide by 10 for the increase
-            */
-            int inc = (int)floor(1.0 * (double)diff / 10.0);
-            /*
-            *            if there's any left over (or if the diff
-            *            was < 10 to begin with, there's a 10%
-            *            point for each difference point
-            */
-            int mod = diff % 10;
-            if (g_Dice.percent(mod * 10)) inc++;
-            trainee[index].upd(inc);
-        }
-
-        sGirl *girl = trainee.girl();
-        /*
-        *        need to do the  "she trained hard with ..." stuff here
-        */
-        //int n_girls = set.size();
-        ss.str("");
-        ss << ("She trained during this shift in the following grouping: ");
-        for (int i = 0; i < girls.size(); i++)
-        {
-            ss << girls[i]->FullName();
-            if (i == 0 && girls.size() == 2)    ss << (" and ");
-            else if (i < girls.size() - 2)        ss << (", ");
-            else if (i == girls.size() - 2)    ss << (", and ");
-        }
-        ss << (".");
-
-        girl->AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-        ss.str("");
-        ss << ("She trained during this shift");
-
-        bool raised = false;
-        for (int i_idx = 0; i_idx < indices.size(); i_idx++)
-        {
-            int index = indices[i_idx];
-            int gain = trainee[index].gain();
-            if (gain == 0) continue;
-            if (!raised)
-            {
-                raised = true;
-                ss << (" and gained ");
-            }
-            else ss << (", ");
-
-            ss << ("+") << gain << " " << trainee[index].name();
-        }
-        ss << (".");
-        girl->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
-        if (girl->has_active_trait("Lesbian") && set.size() > 1) girl->upd_temp_stat(STAT_LIBIDO, set.size() - 1, true);
-    }
-}
-
-void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
-{
-    std::vector<sGirl*> t_set;
-    std::vector<sGirl*> girls = brothel->girls_on_job(JOB_TRAINING, Day0Night1);
-
-    for (int i = girls.size(); i-- > 0;)
-    {  // no girls sneaking in training if she gave birth
-        if ((girls[i]->m_WeeksPreg > 0 &&
-            girls[i]->m_WeeksPreg + 1 >= girls[i]->get_preg_duration())
-            || (girls[i]->m_JustGaveBirth && Day0Night1 == SHIFT_NIGHT))
-            girls.erase(girls.begin() + i);
-    }
-    random_shuffle(girls.begin(), girls.end());
-    for (;;)
-    {
-        get_training_set(girls, t_set);
-        if (t_set.empty()) break;
-        do_training_set(t_set, Day0Night1);
-    }
-    /*
-    *    a few bookkeeping details here
-    *    dirt and training costs, for a start
-    */
-    brothel->m_Filthiness += girls.size();
-    /*
-    *    and then each girl gets to feel tired and horny
-    *    as a result of training
-    */
-    for (auto& girl : girls)
-    {
-        int libido = (girl->has_active_trait("Nymphomaniac")) ? 4 : 2;
-        girl->upd_temp_stat(STAT_LIBIDO, libido);
-    }
 }
 
 double calc_pilfering(sGirl& girl)
@@ -1787,8 +1552,13 @@ void cJobManager::handle_simple_job(sGirl& girl, bool is_night)
         brothel->m_Fame += girl.fame();
         std::stringstream ss;
         auto money_data = CalculatePay(girl, result);
-        ss << "${name} made " << money_data.Earnings << " and " << money_data.Tips << "in tips. You paid her a salary of " << money_data.Wages << ".";
-        ss << "In total, she got " << money_data.GirlGets << " gold and you got " << money_data.PlayerGets << "gold.";
+        ss << "${name} made " << money_data.Earnings << " and " << money_data.Tips << " in tips. You paid her a salary of " << money_data.Wages << ". ";
+        ss << "In total, she got " << money_data.GirlGets << " gold and you ";
+        if(money_data.PlayerGets > 0) {
+           ss << "got " << money_data.PlayerGets << " gold.";
+        } else {
+            ss << "spent " << -money_data.PlayerGets << " gold.";
+        }
 
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
     }

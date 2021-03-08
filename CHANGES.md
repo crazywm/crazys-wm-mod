@@ -6,6 +6,14 @@
 * Liposuction can remove Fat trait, but no longer changes Charisma and Beauty
 * Don't auto-assign new counselors if the counselor refuses for a shift
 * Lots of internal work on the job codes
+* Changes to Training jobs:
+  - Practice Skills is now a House job
+  - Practice Skill only increases sex skills and Performance
+  - Only one girl can be personally trained at the same time
+* New Mistress job:
+  - strongly boosts the Practice Skills results for one or two girls, depending on Mistress skill
+  - can give temporary obedience increase to disobedient girls around the house
+  
 
 ## Fixes
 * mixup of training and cleaning job

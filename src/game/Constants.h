@@ -214,7 +214,6 @@ enum JOBS {
     // `J` Job Brothel - General
     JOB_RESTING = 0,        // relaxes and takes some time off
 
-    JOB_TRAINING,            // trains skills at a basic level
     JOB_CLEANING,            // cleans the building
     JOB_SECURITY,            // Protects the building and its occupants
     JOB_ADVERTISING,        // Goes onto the streets to advertise the buildings services
@@ -405,7 +404,9 @@ enum JOBS {
     JOB_CLEANHOUSE,            //
 
     // `J` Job House - Training
+    JOB_MISTRESS,
     JOB_PERSONALTRAINING,    //
+    JOB_TRAINING,            // trains skills at a basic level
     JOB_FAKEORGASM,            //
     JOB_SO_STRAIGHT,        //
     JOB_SO_BISEXUAL,        //

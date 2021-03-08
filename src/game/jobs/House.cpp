@@ -442,7 +442,7 @@ IGenericJob::eCheckWorkResult HousePet::CheckWork(sGirl& girl, bool is_night) {
 }
 
 PersonalTraining::PersonalTraining() : cBasicJob(JOB_PERSONALTRAINING, "PersonalTraining.xml") {
-
+    m_Info.FullTime = true; // TODO for now, maybe later we can remove this and make it a per-shift singleton
 }
 
 sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {

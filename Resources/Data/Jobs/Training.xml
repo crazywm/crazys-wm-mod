@@ -1,0 +1,219 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Prtc">
+    <Description>
+        She will train either alone or with others to improve her skills.
+    </Description>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to practice her skills.</Text>
+        </Message>
+
+        <Message Name="refuse.forced">
+            <Text>
+                ${name} refused to practice her skills, so Mistress ${mistress} had some of your goons tie
+                her up and whipped her for her disobedience. Next time she'll think twice before
+                disobeying ${mistress}.
+            </Text>
+        </Message>
+
+        <Message Name="no-mistress">
+            <Text>
+                There was no Mistress available to train ${name}, so she tried practicing her skills on her own.
+            </Text>
+        </Message>
+
+        <Message Name="lack-of-skill">
+            <Text>
+                ${mistress}'s attempts to improve ${name}'s ${skill} skills are ineffective because her own abilities
+                are too low.
+            </Text>
+        </Message>
+
+        <Message Name="train.NormalSex">
+            <Text Condition="skill:NormalSex < 20">
+                Noticing ${girl}'s utter lack of experience, ${mistress} decides to start the lessons gently. She
+                produces a small dildo. "You just lie back and relax", she tells ${girl} as she slowly inserts it,
+                "you need to get used to the sensation."
+            </Text>
+            <Text Condition="skill:NormalSex > 15 ^ skill:NormalSex < 35">
+                Given ${girl}'s relative inexperience, ${mistress} decides to bring in $[Felix][Alejandro][Myles][Wilmer],
+                one of your more soft-hearted boys. "You just lie back and relax", she tells ${girl}, "he is going to
+                do all the work."
+
+                In the beginning, ${girl} shows all the enthusiasm of a dead fish, but after some time ${mistress}
+                notices that she starts moving her hips and moaning softly. Seems like some progress after all.
+            </Text>
+            <Text>
+                Normal Sex training.
+            </Text>
+        </Message>
+
+        <Message Name="train.Strip">
+            <Text>
+                Strip training.
+            </Text>
+        </Message>
+
+        <Message Name="train.BDSM">
+            <Text>
+                BDSM training.
+            </Text>
+        </Message>
+
+        <Message Name="train.Beastiality">
+            <Text>
+                Bestiality training.
+            </Text>
+        </Message>
+
+        <Message Name="train.Handjob">
+            <Text>
+                Handjob training.
+            </Text>
+        </Message>
+
+        <Message Name="train.Footjob">
+            <Text>
+                Footjob training.
+            </Text>
+        </Message>
+
+        <Message Name="train.TittySex">
+            <Group Condition="skill:TittySex < 33">
+                <Text Condition="Flat Chest|Petite Breasts" Priority="1">
+                    "Well, this is gonna be a challenge!" ${mistress} sighs as she looks at ${name}'s flat chest.
+                    But that's why I'm here.
+
+                    They spent the lesson trying to figure out how to use what passes for ${name}'s boobs to achieve
+                    something resembling a titty fuck. The results were rather disappointing.
+                </Text>
+                <Text Condition="Abnormally Large Boobs|Giant Juggs|Massive Melons|Titanic Tits" Priority="1">
+                    ${mistress} had ${name} give a titjob to one of the guards.
+                    "I would have though someone as well equipped as you would have no trouble with this",
+                    ${mistress} criticises, "but this was just bad!"
+                </Text>
+                <Text>
+                    "Just press your tits together, $[Otto][Bruno][Albert] here will do the rest", ${mistress}
+                    instructs in exasperation. She hadn't expected this to be so difficult. It appears that
+                    some more training sessions will be necessary before ${name} can give a passable titjob.
+                </Text>
+            </Group>
+            <Group Condition="skill:TittySex > 33 ^ skill:TittySex < 66">
+                <Text>
+                    Titty Sex medium skill
+                </Text>
+            </Group>
+            <Group Condition="skill:TittySex > 60 ^ skill:TittySex < 85">
+                <Text Condition="Flat Chest|Petite Breasts" Priority="1">
+                    ${mistress} brought one of your guards to the training session:
+                    "Now ${name}, show me what you've learned and give him a nice titty fuck"
+                    "Really, her?", the guard looks sceptically at ${name}'s chest.
+
+                    An hour later, satiated, he looks incredulously back at ${name} as he is leaving the room.
+                    "Sorry I ever doubted you."
+                </Text>
+                <Text>
+                    Titty Sex high skill
+                </Text>
+            </Group>
+            <Group Condition="skill:TittySex > 80">
+                <Text>
+                    Titty Sex very high skill
+                </Text>
+            </Group>
+        </Message>
+
+        <Message Name="train.OralSex">
+            <Text Condition="skill:OralSex < 20">
+                "Let's practice your cock-sucking", ${mistress} says as she calls over one of your gang members.
+                He starts wincing almost immediately after ${name} takes his still flaccid dick in her mouth.
+                "Oh dear!". ${mistress} sends him away with an apology. "I guess we need to start with the basics."
+                She pulls out a small dildo: "Maybe you should practice with something that doesn't feel pain".
+
+                By the end of the lesson, ${name} almost manages to suck the dildo without scraping her teeth.
+            </Text>
+            <Text Condition="skill:OralSex > 15 ^ skill:OralSex < 30">
+                "Let's practice your cock-sucking", ${mistress} says as she calls over one of your gang members.
+                ${name} looks at his flaccid penis quizzically. "You've got to caress it gently, before the real
+                work starts", the Mistress explains. She demonstrates this by running her tongue along the length
+                of his shaft while softly cupping his balls. "Go on, ${name}, it's your turn now!".
+            </Text>
+            <Text Condition="skill:OralSex > 25 ^ skill:OralSex < 50">
+                ${mistress} brings one of your gang members to the lesson. "I think you know the basics of
+                giving a blowjob, now it's time to practice." ${name} spent the next few hours sucking his cock.
+                Her jaw was aching, but she dare not complain under ${mistress}'s stern gaze.
+            </Text>
+            <Text Condition="skill:OralSex > 45 ^ skill:OralSex < 60">
+                "It is time you learnt the finer points of giving an unforgettable blowjob", ${mistress} says to
+                ${name}. "Eye contact, your posture and demeanour, what you do with your hands, all this is important
+                if you want him to leave you a large tip. Let me show you how it's done."
+
+                Even after many trials, ${name} still seems to do something wrong. When she caresses his balls, she
+                keeps looking at her hands, when she keeps her posture her sucking is lacklustre at best. A lot if
+                practice is still in order.
+            </Text>
+            <Text Condition="skill:OralSex > 55 ^ skill:OralSex < 70">
+                "It is time you learnt the finer points of giving an unforgettable blowjob", ${mistress} says to
+                ${name}. "Eye contact, your posture and demeanour, what you do with your hands, all this is important
+                if you want him to leave you a large tip. Let me show you how it's done."
+
+                ${name} does a decent job. The guard that ${mistress} brought for practice just after his shift ended
+                does not seem to mind the overtime.
+            </Text>
+            <Text Condition="skill:OralSex > 66 ^ skill:OralSex < 85">
+                "Well, that was fast", comments ${mistress} as the guard she brought for practice shoots his load down
+                ${name}'s throat. "But remember, you are paid by the hour! Let's try again, but this time, keep him
+                excited for a while before you make him cum."
+
+                ${name} starts working her magic again, and soon feels the next guy tensing up. She takes his
+                $[dick][cock] out of her mouth and shoots a questioning glance at ${mistress}. Just in that moment,
+                he splurges his load, catching her in the eye. ${mistress} chuckles: "Well, looks like we need to
+                practice this some more. Should be good for the morale of the boys, eh"
+            </Text>
+            <Text Condition="skill:OralSex > 80">
+                "I'm not sure there is much more I can teach you." ${mistress} tells ${name}. "Your cock-sucking seems
+                to be on-point." After a moment of thinking, she leaves the room, and soon reenters with a rather burly
+                man. "This is $[Olaf][Corb][Doug][Ralph]. He has trouble finding a woman that can handle someone as
+                well-equipped as him. You do like a challenge, don't you?"
+            </Text>
+        </Message>
+
+        <Message Name="train.Performance">
+            <Text>
+                Performance training.
+            </Text>
+        </Message>
+
+        <Message Name="train.Anal">
+            <Text Condition="skill:Anal < 20">
+                Noticing ${girl}'s utter lack of experience, ${mistress} decides to start the lessons gently.
+                She takes out the smallest dildo she could find, and proceeds to apply generous amounts of lube.
+                "This may be a bit uncomfortable at first, but I'm sure you'll come to love it", she tells ${name}
+                as she starts to slowly probe her asshole.
+            </Text>
+            <Text>
+                Anal training.
+            </Text>
+        </Message>
+
+        <Message Name="train.Group">
+            <Text>
+                Anal training.
+            </Text>
+        </Message>
+
+        <Message Name="train.Lesbian">
+            <Text>
+                Lesbian training.
+            </Text>
+            <Group Condition="skill:Lesbian > 80">
+                <Text>
+                    ${mistress} sits down, spreads her legs, and guides ${name}'s head between her thighs. As ${name}
+                    dutifully begins to explore her pussy with her tongue, she leans back with a sigh. If only all of
+                    her assignments could be this enjoyable.
+                </Text>
+            </Group>
+        </Message>
+    </Messages>
+</Job>

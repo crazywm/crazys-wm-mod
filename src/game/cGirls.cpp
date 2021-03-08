@@ -983,7 +983,7 @@ string cGirls::GetThirdDetailsString(const sGirl& girl)    // `J` bookmark - Job
     Brothel_Data << "Brothel Job Ratings\n";
     JobRating(Brothel_Data, girl, {{JOB_MATRON, '-'}, {JOB_SECURITY, '-'}, {JOB_EXPLORECATACOMBS, '-'},
                               {JOB_ADVERTISING, '-'}, {JOB_CUSTOMERSERVICE, '-'}, {JOB_BEASTCARER, '-'},
-                              {JOB_TRAINING, '!'}, {JOB_CLEANING, '?'}});
+                              {JOB_CLEANING, '?'}});
     JobRating(Brothel_Data, girl, {{JOB_BARMAID, '-'}, {JOB_WAITRESS, '-'}, {JOB_SINGER, '-'}, {JOB_PIANO, '-'}, {JOB_ESCORT, '?'}});
     JobRating(Brothel_Data, girl, {{JOB_DEALER, '-'}, {JOB_ENTERTAINMENT, '-'}, {JOB_XXXENTERTAINMENT, '-'}, {JOB_WHOREGAMBHALL, '?'}});
     JobRating(Brothel_Data, girl, {{JOB_SLEAZYBARMAID, '-'}, {JOB_SLEAZYWAITRESS, '-'}, {JOB_BARSTRIPPER, '-'}, {JOB_BARWHORE, '?'}});
@@ -1045,7 +1045,7 @@ string cGirls::GetThirdDetailsString(const sGirl& girl)    // `J` bookmark - Job
     //HOUSE
     stringstream House_Data;
     House_Data << "House Job Ratings\n";
-    JobRating(House_Data, girl, {{JOB_HEADGIRL, '-'}, {JOB_RECRUITER, '-'}, {JOB_PERSONALTRAINING, '!'},
+    JobRating(House_Data, girl, {{JOB_HEADGIRL, '-'}, {JOB_RECRUITER, '-'}, {JOB_PERSONALTRAINING, '!'}, {JOB_TRAINING, '!'},
                                  {JOB_FAKEORGASM, '!'}, {JOB_SO_STRAIGHT, '!'}, {JOB_SO_BISEXUAL, '!'}, {JOB_SO_LESBIAN, '!'}});
 
     // House_Data += JobRating(*girl, m_JobManager.JP_PersonalBedWarmer(girl, true), "* PersonalBedWarmer");

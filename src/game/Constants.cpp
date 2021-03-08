@@ -274,7 +274,7 @@ const std::array<const char*, NUM_IMGTYPES>& get_imgtype_names() {
 
 const std::array<const char*, NUM_JOBS>& get_job_names() {
     static std::array<const char*, NUM_JOBS> names {
-            "Free Time", "Practice Skills", "Cleaning", "Security",
+            "Free Time", "Cleaning", "Security",
             "Advertising", "Customer Service", "Matron", "Torturer",
             "Explore Catacombs", "Beast Carer", "Barmaid", "Waitress",
             "Singer", "Piano", "Escort", "Bar Cook",
@@ -306,7 +306,7 @@ const std::array<const char*, NUM_JOBS>& get_job_names() {
             "Get Milked", "Butcher", "Baker", "Brewer",
             "Tailor", "Make Items", "Make Potions",
             "Head Girl", "Recruiter", "Bed Warmer", "House Cook",
-            "Clean House", "Personal Training", "Fake Orgasm Expert",
+            "Clean House", "Mistress", "Personal Training", "Practice Skills", "Fake Orgasm Expert",
             "SO Straight", "SO Bisexual", "SO Lesbian",
             "House Pet", "In the Dungeon", "Runaway"
     };

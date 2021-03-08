@@ -142,8 +142,6 @@ double JP_##Fn(const sGirl& girl, bool estimate)
 
 // - General
 DECL_JOB(Freetime);
-DECL_JOB(Cleaning);
-DECL_JOB(Training);
 DECL_JOB(Security);
 DECL_JOB(Advertising);
 DECL_JOB(CustService);
@@ -177,7 +175,6 @@ DECL_JOB(Counselor);
 
 // house
 DECL_JOB(PersonalBedWarmer);
-sWorkJobResult WorkFarmPonyGirl(sGirl& girl, bool Day0Night1, cRng& rng);
 
 namespace {
     sWorkJobResult WorkNullJob(sGirl&, bool, cRng&) { return {false}; }
@@ -196,7 +193,6 @@ namespace {
 
 void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_RESTING, Freetime, "TOff", "She will take some time off, maybe do some shopping or walk around town. If the girl is unhappy she may try to escape.");
-    REGISTER_JOB(JOB_TRAINING, Training, "Prtc", "She will train either alone or with others to improve her skills.");
     REGISTER_JOB(JOB_SECURITY, Security, "Sec", "She will patrol the building, stopping mis-deeds.");
     REGISTER_JOB(JOB_ADVERTISING, Advertising, "Adv", "She will advertise the building's features in the city.");
     REGISTER_JOB(JOB_CUSTOMERSERVICE, CustService, "CS", "She will look after customer needs.");

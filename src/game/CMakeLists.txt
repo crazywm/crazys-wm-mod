@@ -126,7 +126,6 @@ set(SRC cEvents.cpp
         cRival.cpp
         cShop.cpp
         cTariff.cpp
-        cTrainable.cpp
         IGame.cpp
         gang_missions.cpp
         buildings/IBuilding.cpp

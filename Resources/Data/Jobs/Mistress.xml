@@ -1,0 +1,64 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Msts">
+    <Description>
+        She will train the other girls. This will boost the effectiveness of Practice Skills drastically.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Spirit" Weight="1" />
+        <Factor Stat="Constitution" Weight="1" />
+        <Factor Stat="Confidence" Weight="2" />
+
+        <Trait Name="Mute" Value="-20" />
+        <Trait Name="Deaf" Value="-10" />
+        <Trait Name="Retarded" Value="-20" />
+        <Trait Name="Muscular" Value="5" />
+        <Trait Name="Giant" Value="5" />
+        <Trait Name="Tall" Value="2" />
+        <Trait Name="Teacher" Value="10" />
+        <Trait Name="Broken Will" Value="-100" />
+        <Trait Name="Mind Fucked" Value="-100" />
+        <Trait Name="Dependant" Value="-20" />
+        <Trait Name="Meek" Value="-20" />
+        <Trait Name="Nervous" Value="-10" />
+        <Trait Name="Dominatrix" Value="10" />
+        <Trait Name="Fragile" Value="-5" />
+        <Trait Name="Delicate" Value="-5" />
+        <Trait Name="Tough" Value="5" />
+        <Trait Name="Charismatic" Value="10" />
+        <Trait Name="Noble" Value="5" />
+        <Trait Name="Princess" Value="5" />
+        <Trait Name="Queen" Value="5" />
+    </Performance>
+
+    <Gains XP="5" Skill="3">
+        <Stat Name="Spirit" Max="80" />
+        <Stat Name="Confidence" Max="80" />
+        <!--
+        <GainTrait Trait="Teacher" Threshold="50" Action="" />
+        -->
+    </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to train your other girls.</Text>
+        </Message>
+        <Message Name="work.normal">
+            <Text>
+                ${name} spent the ${shift} shift training other girls and generally 'motivating' your slaves.
+            </Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>
+                ${name} spent the ${shift} shift training other girls and generally 'motivating' your slaves.
+                She is an experienced Mistress and can train two girls at the same time.
+            </Text>
+        </Message>
+        <Message Name="slacker">
+            <Text>
+                She found ${slacker} slacking off instead of working.
+                Nothing a few cracks of her whip couldn't solve, though.
+            </Text>
+        </Message>
+    </Messages>
+</Job>

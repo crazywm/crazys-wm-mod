@@ -55,10 +55,10 @@ struct sJobFilter {
 };
 
 struct sWorkJobResult {
-    bool Refused;       // Whether she actually worked
-    int Tips;           // how much she received in tips
-    int Earnings;       // how much money did she make you directly
-    int Wages;          // how much do you pay her for the job
+    bool Refused;           // Whether she actually worked
+    int Tips = 0;           // how much she received in tips
+    int Earnings = 0;       // how much money did she make you directly
+    int Wages = 0;          // how much do you pay her for the job
 };
 
 struct sPaymentData {
@@ -110,15 +110,9 @@ public:
 
     static sCustomer GetMiscCustomer(IBuilding& brothel);
 
-    static void get_training_set(std::vector<sGirl*> &v, std::vector<sGirl*> &set);
-    static void do_training(sBrothel* brothel, bool Day0Night1);
-    static void do_training_set(std::vector<sGirl*> girls, bool Day0Night1);
-    static void do_solo_training(sGirl& girl, bool Day0Night1);
-
     bool is_job_Paid_Player(JOBS Job);        //    WD:    Test for all jobs paid by player
     bool FullTimeJob(JOBS Job);            //    `J`    Test if job is takes both shifts
     sPaymentData CalculatePay(sGirl& girl, sWorkJobResult pay);
-    std::string GirlPaymentText(IBuilding * brothel, sGirl& girl, const sPaymentData& result, bool Day0Night1);
 
     static bool is_Surgery_Job(int testjob);
 
