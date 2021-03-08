@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(WM VERSION 7.01.13)
+project(WM VERSION 7.01.14)
 
 # this needs to happen before the find_package calls, because they register the dlls
 # for install under windows
