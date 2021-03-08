@@ -67,9 +67,10 @@ namespace settings {
     const char* USER_COMBAT_POPUP        = "user.combat-popup";
     const char* USER_SHOW_NUMBERS        = "user.show-numbers";
 
-    const char* SLAVE_MARKET_MIN_WEEKLY_NEW = "slave_market.min_weekly_new";
-    const char* SLAVE_MARKET_MAX_WEEKLY_NEW = "slave_market.max_weekly_new";
+    const char* SLAVE_MARKET_MIN = "slave_market.min_weekly_new";
+    const char* SLAVE_MARKET_MAX = "slave_market.max_weekly_new";
     const char* SLAVE_MARKET_UNIQUE_CHANCE  = "slave_market.unique_chance";
+    const char* SLAVE_MARKET_TURNOVER_RATE  = "slave_market.turnover";
 
     const char* TAXES_RATE    = "tax.rate";
     const char* TAXES_MINIMUM = "tax.minimum";
@@ -155,9 +156,10 @@ cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
     add_setting(USER_COMBAT_POPUP, "Combat Popup", "Whether combat details are shown in a popup", true);
     add_setting(USER_SHOW_NUMBERS, "Show Numbers", "Whether to show additional numbers in certain game texts.", false);
 
-    add_setting(SLAVE_MARKET_MIN_WEEKLY_NEW, "Slaves Per Week Min", "Minimum amount of new girls at the slave market each week", 5);
-    add_setting(SLAVE_MARKET_MAX_WEEKLY_NEW, "Slaves Per Week Max", "Maximum amount of new girls at the slave market each week", 12);
+    add_setting(SLAVE_MARKET_MIN, "Minimum Slaves", "Minimum amount of girls at the slave market", 5);
+    add_setting(SLAVE_MARKET_MAX, "Maximum Slaves", "Maximum amount of girls at the slave market", 12);
     add_setting(SLAVE_MARKET_UNIQUE_CHANCE, "Unique Market", "Chance that a slave market girl will be a unique girl", sPercent(0.35f));
+    add_setting(SLAVE_MARKET_TURNOVER_RATE, "Turnover", "Rate with which the girls will be replaced each week", sPercent(0.5f));
 
     add_setting(TAXES_RATE, "Rate", "The default tax rate. The effective tax rate can be lower due to influence at city hall.", sPercent(0.06f));
     add_setting(TAXES_MINIMUM, "Minimum", "Minimum tax rate that can be achieved due to city hall influence.", sPercent(0.01f));

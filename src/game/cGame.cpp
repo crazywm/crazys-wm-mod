@@ -48,9 +48,10 @@ namespace settings {
     extern const char* TAXES_RATE;
     extern const char* TAXES_MINIMUM;
     extern const char* TAXES_LAUNDRY;
-    extern const char* SLAVE_MARKET_MIN_WEEKLY_NEW;
-    extern const char* SLAVE_MARKET_MAX_WEEKLY_NEW;
+    extern const char* SLAVE_MARKET_MIN;
+    extern const char* SLAVE_MARKET_MAX;
     extern const char* SLAVE_MARKET_UNIQUE_CHANCE;
+    extern const char* SLAVE_MARKET_TURNOVER_RATE;
 }
 
 struct cGame::sScriptEventStack {
@@ -829,20 +830,22 @@ void cGame::UpdateRunaways() {
 void cGame::UpdateMarketSlaves()
 {
     g_LogFile.debug("game", "Updating slave market");
-    int numgirls = g_Dice.bell(settings().get_integer(settings::SLAVE_MARKET_MIN_WEEKLY_NEW),
-                               settings().get_integer(settings::SLAVE_MARKET_MAX_WEEKLY_NEW));
-    if (numgirls > 20)    numgirls = 20;
-    if (numgirls < 1)    numgirls = 1;
+    int numgirls = g_Dice.bell(settings().get_integer(settings::SLAVE_MARKET_MIN),
+                               settings().get_integer(settings::SLAVE_MARKET_MAX));
 
     // first, we may copy some girls over
     g_LogFile.debug("game", "Removing slaves from market");
+    sPercent turnover = settings().get_percent(settings::SLAVE_MARKET_TURNOVER_RATE);
     for(int i = 0; i < GetSlaveMarket().num(); ++i) {
-        if(g_Dice % 2 == 0) {
+        if(g_Dice.percent(turnover)) {
             auto taken = GetSlaveMarket().TakeGirl(i);
             girl_pool().GiveGirl(std::move(taken));
             --i;  // need to decrement the iterator because the market has just lost a girl
         }
     }
+
+    if (numgirls > 20)    numgirls = 20;
+    if (numgirls < 1)    numgirls = 1;
 
     g_LogFile.debug("game", "Filling up slave market again");
     // next, fill up
