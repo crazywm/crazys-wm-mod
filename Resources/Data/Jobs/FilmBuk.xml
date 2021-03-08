@@ -48,6 +48,10 @@
         <GainTrait Trait="Cum Addict" Threshold="80" Action="SEX">
             ${name} has become addicted to cum.
         </GainTrait>
+
+        <LoseTrait Trait="Chaste" Threshold="20" Action="PORNSTAR">
+            She has been filmed having sex so often that she is no longer Chaste.
+        </LoseTrait>
     </Gains>
 
     <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" CanBeForced="1">

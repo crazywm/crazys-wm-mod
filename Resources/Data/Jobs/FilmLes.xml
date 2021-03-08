@@ -10,6 +10,8 @@
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Lesbian" Weight="1"/>
         <Mod>work.pornstar</Mod>
+        <Trait Name="Lesbian" Value="10" />
+        <Trait Name="Straight" Value="-10" />
     </Performance>
 
     <Gains XP="10" Skill="3">
@@ -22,6 +24,9 @@
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
             She has become quite the Faker.
         </GainTrait>
+        <LoseTrait Trait="Chaste" Threshold="20" Action="PORNSTAR">
+            She has been filmed having sex so often that she is no longer Chaste.
+        </LoseTrait>
     </Gains>
 
     <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" CanBeForced="1">
@@ -34,26 +39,52 @@
         </Message>
 
         <Message Name="work.perfect">
-            <Text>${name} doesn't care who she works with. She always give a Perfect scene.</Text>
+            <Text>${name} doesn't care who she works with. She always gives a Perfect scene.</Text>
+            <Text Condition="Straight">
+                ${name} is an amazing actress. Even though she very much prefers fucking men, as soon
+                as the director yells "Action!" she starts eating out her co-star with such vigor that you
+                fear she might not be able to walk for the next hours. This is going to be one hell of a scene.
+            </Text>
         </Message>
         <Message Name="work.great">
             <Text>${name} pleased her lover in amazing ways.</Text>
+            <Text Condition="Straight">
+                ${name} really prefers dick over pussy, but she is a competent actress and does not let it show in
+                the scene. In fact, the end result is a pretty great movie clip.
+            </Text>
         </Message>
         <Message Name="work.good">
-            <Text>${name} gave serveral good orgasm's to her lover.</Text>
+            <Text>${name} gave several good orgasm's to her lover.</Text>
+            <Text Condition="Straight">
+                Despite being Straight, ${name} gave a decent performance in this Lesbian
+                scene.
+            </Text>
         </Message>
         <Message Name="work.ok">
             <Text>${name} didn't care for her assigned actress, she did an ok job.</Text>
+            <Text Condition="Straight">
+                ${name} is only interested in men, and is not quite able to hide her revulsion
+                while performing with another woman. Still, with some clever editing a halfway
+                decent scene could be produced.
+            </Text>
         </Message>
         <Message Name="work.bad">
             <Text>${name} visually wasn't interested in her lover at all. Terrible scene.</Text>
+            <Text Condition="Straight">
+                ${name} is as Straight as they come, and her disgust with this Lesbian scene can
+                be clearly seen on camera. The result is pretty terrible. Maybe you should find a
+                girl who is more into this.
+            </Text>
         </Message>
         <Message Name="work.worst">
-            <Text>${name} was totaly horrible today.  She was scorned for hours by the entire crew.</Text>
+            <Text>${name} was totally horrible today.  She was scorned for hours by the entire crew.</Text>
         </Message>
 
         <Message Name="disobey.free">
             <Text>${name} refused to perform in a Lesbian scene today.</Text>
+            <Text Condition="Straight">
+                "Eww, I'm not gonna do it with a woman", ${name} exclaims before leaving the set.
+            </Text>
         </Message>
         <Message Name="disobey.slave.nice">
             <Text>

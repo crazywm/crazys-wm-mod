@@ -45,6 +45,10 @@
         <GainTrait Trait="Porn Star" Threshold="70" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
+
+        <LoseTrait Trait="Chaste" Threshold="20" Action="PORNSTAR">
+            She has been filmed having sex so often that she is no longer Chaste.
+        </LoseTrait>
     </Gains>
 
     <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX">

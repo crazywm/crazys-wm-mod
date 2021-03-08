@@ -67,6 +67,10 @@
         <GainTrait Trait="Masochist" Threshold="65" Action="SEX">
             ${name} has turned into a Masochist from filming so many BDSM scenes.
         </GainTrait>
+
+        <LoseTrait Trait="Chaste" Threshold="20" Action="PORNSTAR">
+            She has been filmed having sex so often that she is no longer Chaste.
+        </LoseTrait>
     </Gains>
 
     <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" MinimumHealth="40" RefuseIfPregnant="1" CanBeForced="1">

@@ -22,6 +22,10 @@
         <GainTrait Trait="Fake Orgasm Expert" Threshold="50" Action="SEX">
             She has become quite the Faker.
         </GainTrait>
+
+        <LoseTrait Trait="Chaste" Threshold="20" Action="PORNSTAR">
+            She has been filmed having sex so often that she is no longer Chaste.
+        </LoseTrait>
     </Gains>
 
     <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX">

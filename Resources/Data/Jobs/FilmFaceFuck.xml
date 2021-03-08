@@ -54,10 +54,13 @@
         <GainTrait Trait="Porn Star" Threshold="70" Action="PORNSTAR" MinPerformance="200">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
-        <GainTrait Trait="Iron Will" Threshold="80" Action="SEX" Chance="5">
+        <LoseTrait Trait="Iron Will" Threshold="80" Action="SEX" Chance="5">
             Somewhere between having a dick in her throat, balls slapping her eyes and a camera watching her retch,
             ${name} has lost her iron will.
-        </GainTrait>
+        </LoseTrait>
+        <LoseTrait Trait="Chaste" Threshold="20" Action="PORNSTAR">
+            She has been filmed having sex so often that she is no longer Chaste.
+        </LoseTrait>
     </Gains>
 
     <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" MinimumHealth="25" CanBeForced="1">

@@ -49,11 +49,6 @@ function g:obedience(change) end
 function g:libido(change) end
 function g:confidence(change) end
 
----@module Girl
-local g = {}
----@param girl wm.Girl
-function g.AcquireGirl(girl) end
-function g.CreateRandomGirl(age, slave, non_human, kidnapped, arena, daughter) end
 g.ACTIONS = {}
 
 
@@ -65,11 +60,22 @@ function c:happiness(change) end
 local wm = {}
 function wm.ChoiceBox(question, ...) end
 function wm.Dialog(text) end
+function wm.UpdateImage(image_type) end
 function wm.SetPlayerDisposition(change) end
 function wm.SetPlayerSuspicion(change) end
+function wm.GetPlayerDisposition() end
+function wm.GetPlayerSuspicion() end
 function wm.AddPlayerGold(change) end
+function wm.TakePlayerGold(change) end
+function wm.GivePlayerRandomSpecialItem() end
 function wm.AddBeasts(change) end
 function wm.GetBeasts() end
+function wm.AddCustomerToDungeon(reason, daughters, wife) end
+function wm.AddFamilyToDungeon(num_daughters, mother, kidnapped, slave) end
 function wm.Percent(percent) end
 function wm.Range(min, max) end
 function wm.GameOver() end
+
+function wm.AcquireGirl(girl) end
+function wm.CreateRandomGirl(age, slave, non_human, kidnapped, arena, daughter) end
+function wm.ToDungeon(girl, reason) end

@@ -5,11 +5,13 @@
     </Description>
 
     <Performance>
-        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Stat="Charisma" Weight="1"/>
         <Factor Stat="Beauty" Weight="1"/>
-        <Factor Skill="Performance" Weight="2"/>
-        <Factor Skill="Strip" Weight="1"/>
+        <Factor Skill="Performance" Weight="1"/>
+        <Factor Skill="Strip" Weight="2"/>
         <Mod>work.pornstar</Mod>
+        <Trait Name="Clumsy" Value="-15" />
+        <Trait Name="Manly" Value="-10" />
     </Performance>
 
     <Gains XP="10" Skill="3">
@@ -19,6 +21,10 @@
         <GainTrait Trait="Sexy Air" Threshold="80" Action="WORKSTRIP" MinPerformance="150" Chance="25">
             ${name} has been stripping for so long, when she walks, it seems her clothes just want to fall off.
         </GainTrait>
+
+        <LoseTrait Trait="Chaste" Threshold="20" Action="PORNSTAR">
+            She has been filmed having sex so often that she is no longer Chaste.
+        </LoseTrait>
     </Gains>
 
     <Config PrimaryAction="PORNSTAR" SecondaryAction="WORKSTRIP">
@@ -34,7 +40,7 @@
         </Message>
 
         <Message Name="work.perfect">
-            <Text>${name} is so in love with her body, she strips eroticaly making the best Perfect Art.</Text>
+            <Text>${name} is so in love with her body, she strips erotically making the best Perfect Art.</Text>
         </Message>
         <Message Name="work.great">
             <Text>${name} greatly teased the camera by slowly stripping of her clothes with many kisses.</Text>
@@ -47,9 +53,27 @@
         </Message>
         <Message Name="work.bad">
             <Text>${name} quickly striped off her clothes, acting like this was her times being processed at the jail.</Text>
+            <Text Condition="Clumsy|Dojikko">
+                ${name} began to take off her clothes slowly. Not because she was particularly sensual about it, it just
+                took her three tries to open her bra. "Cut!" comes the instruction from the director. "Let's try this again."
+
+                This time, everything seems to go smoothly, until her heels get entangled in her panties and she falls over.
+                The director sighs, looking at ${name}'s bloody nose. "I guess we need to work with the footage we have now."
+            </Text>
         </Message>
         <Message Name="work.worst">
             <Text>${name} is the worst stripper you have EVER seen. Way to shy to even look up and she blushed the entire remakes.</Text>
+            <Text Condition="Chaste|Shy|Nervous">
+                ${name} looks so uncomfortable when the director orders her to take her clothes off that you imagine
+                even blind people would be turned off by this scene.
+            </Text>
+        </Message>
+
+        <Message Name="post-work-event">
+            <Text Condition="Performance < 100 ^ stat:Beauty < 33">
+                At the end of the filming, the director looks at you apologetically. "I've tried", she says, "but
+                I think ${name} is just too ugly for this"
+            </Text>
         </Message>
     </Messages>
 </Job>

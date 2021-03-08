@@ -61,6 +61,10 @@
         <GainTrait Trait="Sexy Air" Threshold="80" Action="WORKSTRIP" MinPerformance="140" Chance="25">
             ${name} has been having to be sexy for so long she now reeks of sexiness.
         </GainTrait>
+
+        <LoseTrait Trait="Chaste" Threshold="20" Action="PORNSTAR">
+            She has been filmed having sex so often that she is no longer Chaste.
+        </LoseTrait>
     </Gains>
 
     <Config PrimaryAction="ACTRESS" SecondaryAction="WORKSTRIP">

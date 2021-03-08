@@ -5,7 +5,10 @@
 * Cosmetic surgery no longer increases Charisma
 * Liposuction can remove Fat trait, but no longer changes Charisma and Beauty
 * Don't auto-assign new counselors if the counselor refuses for a shift
+* New configuration variable for slave market turnover 
 * Lots of internal work on the job codes
+* Working as Pornstar makes girls lose the Chaste trait
+* Some more text variations for film jobs
 * Changes to Training jobs:
   - Practice Skills is now a House job
   - Practice Skill only increases sex skills and Performance
@@ -17,6 +20,7 @@
 
 ## Fixes
 * mixup of training and cleaning job
+* fixed loading of girl descriptions
 
 # Version 07.00.alpha13
 

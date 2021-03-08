@@ -26,6 +26,10 @@
         <GainTrait Trait="Slut" Threshold="80" Action="SEX" Event="2">
             ${name} has turned into quite a Slut.
         </GainTrait>
+
+        <LoseTrait Trait="Chaste" Threshold="20" Action="PORNSTAR">
+            She has been filmed having sex so often that she is no longer Chaste.
+        </LoseTrait>
     </Gains>
 
     <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX" CanBeForced="1">

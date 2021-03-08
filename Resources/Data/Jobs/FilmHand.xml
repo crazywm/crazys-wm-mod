@@ -8,7 +8,10 @@
         <Factor Stat="Charisma" Weight="2"/>
         <Factor Skill="Performance" Weight="2"/>
         <Factor Skill="Handjob" Weight="1"/>
+
         <Mod>work.pornstar</Mod>
+        <Trait Name="Lesbian" Value="-15" />
+        <Trait Name="Clumsy" Value="-5" />
     </Performance>
 
     <Gains XP="10" Skill="3">
@@ -18,6 +21,10 @@
         <GainTrait Trait="Porn Star" Threshold="70" Action="PORNSTAR">
             She has performed in enough sex scenes that she has become a well known Porn Star.
         </GainTrait>
+
+        <LoseTrait Trait="Chaste" Threshold="20" Action="PORNSTAR">
+            She has been filmed having sex so often that she is no longer Chaste.
+        </LoseTrait>
     </Gains>
 
     <Config PrimaryAction="PORNSTAR" SecondaryAction="SEX">
@@ -26,7 +33,7 @@
 
     <Messages>
         <Message Name="work">
-            <Text>${name} worked as an actress filming hand job scenes.</Text>
+            <Text>${name} worked as an actress filming handjob scenes.</Text>
         </Message>
         <Message Name="refuse">
             <Text>${name} refused to film a handjob scene today.</Text>
@@ -34,22 +41,64 @@
 
 
         <Message Name="work.perfect">
-            <Text>${name} expertly worked his cock and balls.  She almost worshipped it!</Text>
+            <Text>${name} expertly worked his cock and balls. She almost worshipped it!</Text>
+            <Text Condition="One Arm|One Hand">
+                ${name} may have only one hand, but she sure knows how to use it.
+            </Text>
         </Message>
+
         <Message Name="work.great">
             <Text>${name} loved giving him a great handjob.</Text>
         </Message>
+
         <Message Name="work.good">
             <Text>${name} enjoyed tickling him a bit while she gave a decent handjob.</Text>
+            <Text Condition="Lesbian">
+                ${name} is a decent actress, so despite her personal aversion, she managed to make a good handjob scene.
+            </Text>
         </Message>
+
         <Message Name="work.ok">
             <Text>${name} was ok with the handjob today. She almost wants to do other scenes.</Text>
+            <Text Condition="Lesbian">
+                ${name}'s handjob was ok, considering that she prefers pussy over cock.
+            </Text>
         </Message>
+
         <Message Name="work.bad">
             <Text>${name} sucked doing the handjob, she was like a drone.</Text>
+            <Text Condition="Lesbian">
+                ${name} performed a very lacklustre handjob. Maybe it is because she herself has no interest in cock.
+            </Text>
+
+            <Text Condition="stat:Beauty>80|Great Figure|Hourglass Figure">
+                The Director instructed the Camera Mage to focus more on her figure than on the action. But even with
+                clever editing, the scene will be bad.
+            </Text>
         </Message>
+
         <Message Name="work.worst">
-            <Text>${name} was the worst actress to Director ever saw. She might be better at behind the scenes jobs.</Text>
+            <Text>${name} was the worst actress the Director ever saw. She might be better at behind the scenes jobs.</Text>
+            <Text Condition="Lesbian">
+                With her dislike of $[cock][dick][penises] so clearly written on her face, ${name} really is unsuited for a handjob scene.
+            </Text>
+            <Text Condition="One Arm|One Hand">
+                One-handed ${name}'s attempts at a handjob succeeded in keeping you crew entertained, but will probably
+                only make the blooper reel of your next movie.
+            </Text>
+        </Message>
+
+        <Message Name="post-work-event">
+            <Text Condition="Dick-Sucking Lips ^ Performance < 125" Chance="50">
+                With those lips of hers, maybe you should have instructed her to to a blowjob scene.
+            </Text>
+            <Text Condition="Porn Star ^ Performance < 125" Chance="50">
+                From a Porn Star as experienced as ${name} you would have expected better results.
+            </Text>
+            <Text Condition="skill:Handjob > 80 ^ Performance < 125" Chance="50">
+                Even though it doesn't really show on film, ${name}'s costar swears that this was one of the best
+                handjobs he's ever had.
+            </Text>
         </Message>
     </Messages>
 </Job>
