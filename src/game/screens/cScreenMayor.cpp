@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "buildings/cBrothel.h"
+#include "buildings/IBuilding.h"
 #include "cRival.h"
 #include "cScreenMayor.h"
 #include "cGold.h"

@@ -20,7 +20,7 @@
 #ifndef WM_BARJOBS_H
 #define WM_BARJOBS_H
 
-#include "GenericJob.h"
+#include "jobs/GenericJob.h"
 #include "utils/piecewise_linear.h"
 
 struct sBarJobData {

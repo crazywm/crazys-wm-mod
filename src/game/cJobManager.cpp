@@ -18,7 +18,7 @@
  */
 #include <algorithm>
 #include "cJobManager.h"
-#include "buildings/cBrothel.h"
+#include "buildings/IBuilding.h"
 #include "buildings/queries.h"
 #include "character/cCustomers.h"
 #include "cRng.h"

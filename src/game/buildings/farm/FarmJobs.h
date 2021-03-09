@@ -20,7 +20,7 @@
 #ifndef WM_FARMJOBS_H
 #define WM_FARMJOBS_H
 
-#include "GenericJob.h"
+#include "jobs/GenericJob.h"
 
 struct sFarmJobData {
     Action_Types Action;

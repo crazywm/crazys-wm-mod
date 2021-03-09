@@ -22,7 +22,7 @@
 #include "cGirls.h"
 #include "character/cPlayer.h"
 #include "character/cCustomers.h"
-#include "buildings/cMovieStudio.h"
+#include "cMovieStudio.h"
 #include "IGame.h"
 #include "CLog.h"
 #include "xml/getattr.h"

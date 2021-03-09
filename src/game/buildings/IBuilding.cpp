@@ -20,7 +20,7 @@
 #include "IBuilding.h"
 
 #include <memory>
-#include "buildings/cBrothel.h"
+#include "brothel/cBrothel.h"
 #include "cTariff.h"
 #include "IGame.h"
 #include "sStorage.h"

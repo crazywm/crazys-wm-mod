@@ -19,7 +19,7 @@
 #include "CLog.h"
 #include "cTariff.h"
 #include "cGirls.h"
-#include "buildings/cBrothel.h"
+#include "buildings/IBuilding.h"
 #include "IGame.h"
 #include "character/predicates.h"
 

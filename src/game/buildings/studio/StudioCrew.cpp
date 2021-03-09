@@ -18,11 +18,11 @@
 */
 
 #include <sstream>
-#include <buildings/cMovieStudio.h>
+#include <buildings/studio/cMovieStudio.h>
 #include "buildings/IBuilding.h"
 #include "buildings/queries.h"
 #include "cGirls.h"
-#include "GenericJob.h"
+#include "jobs/GenericJob.h"
 #include "StudioJobs.h"
 
 extern const char* const FluffPointsId;

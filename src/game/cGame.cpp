@@ -33,7 +33,7 @@
 #include "character/cPlayer.h"
 #include "character/cCustomers.h"
 #include "character/traits/ITraitsManager.h"
-#include "movies/manager.h"
+#include "buildings/studio/manager.h"
 #include "scripting/cScriptManager.h"
 #include "utils/DirPath.h"
 #include "utils/FileList.h"

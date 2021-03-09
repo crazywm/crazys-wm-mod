@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "InterfaceProcesses.h"
-#include "buildings/cBrothel.h"
+#include "buildings/IBuilding.h"
 #include "scripting/cScriptManager.h"
 #include "interface/cWindowManager.h"
 #include "character/cPlayer.h"

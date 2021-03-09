@@ -21,7 +21,7 @@
 
 #include "cArena.h"
 #include "cGangs.h"
-#include "IBuilding.h"
+#include "buildings/IBuilding.h"
 #include "IGame.h"
 #include "sStorage.h"
 #include "cJobManager.h"

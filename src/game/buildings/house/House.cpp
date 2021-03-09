@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "GenericJob.h"
+#include "jobs/GenericJob.h"
 #include "character/sGirl.h"
 #include "character/cPlayer.h"
 #include "character/cCustomers.h"

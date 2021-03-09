@@ -22,7 +22,7 @@
 #include "xml/util.h"
 #include "character/traits/ITraitsCollection.h"
 #include "character/cGirlPool.h"
-#include "movies/manager.h"
+#include "buildings/studio/manager.h"
 #include <sstream>
 
 cRivalManager& IGame::rivals()

@@ -20,7 +20,7 @@
 #include <algorithm>
 
 #include "cGangs.h"
-#include "buildings/cBrothel.h"
+#include "buildings/IBuilding.h"
 #include "character/cCustomers.h"
 #include "cGirls.h"
 #include "cTariff.h"

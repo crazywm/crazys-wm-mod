@@ -24,7 +24,7 @@
 #include "cJobManager.h"
 #include <sstream>
 #include "IGame.h"
-#include "movies/manager.h"
+#include "buildings/studio/manager.h"
 
 namespace settings {
     extern const char* USER_MOVIES_AUTO;

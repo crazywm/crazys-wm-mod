@@ -22,7 +22,7 @@
 #include "cCentre.h"
 #include "cGangs.h"
 #include "IGame.h"
-#include "queries.h"
+#include "buildings/queries.h"
 #include "cJobManager.h"
 #include "character/predicates.h"
 

@@ -20,7 +20,7 @@
 #include "fwd.h"
 #include "manager.h"
 #include "character/sGirl.h"
-#include "buildings/cMovieStudio.h"
+#include "cMovieStudio.h"
 #include "buildings/cBuildingManager.h"
 #include <sstream>
 

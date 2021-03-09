@@ -22,7 +22,7 @@
 #ifndef __CCLINIC_H
 #define __CCLINIC_H
 
-#include "IBuilding.h"
+#include "buildings/IBuilding.h"
 
 // defines a single clinic
 struct sClinic : public IBuilding

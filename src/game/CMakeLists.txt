@@ -28,58 +28,61 @@ set(SCREENS_SRC
         screens/cScreenGameConfig.cpp)
 
 set(JOBS_SRC
-        jobs/WorkAdvertising.cpp
-        jobs/Surgery.cpp
-        jobs/Training.cpp
-        jobs/WorkBarStripper.cpp
-        jobs/WorkBeastCare.cpp
-        jobs/WorkBrothelMassusse.cpp
-        jobs/WorkBrothelStripper.cpp
-        jobs/WorkWhore.cpp
-        jobs/StudioCrew.cpp
-        jobs/WorkComunityService.cpp
-        jobs/WorkCounselor.cpp
-        jobs/WorkCustService.cpp
-        jobs/WorkEscort.cpp
-        jobs/WorkExploreCatacombs.cpp
-        jobs/WorkFarmPonyGirl.cpp
-        jobs/WorkFeedPoor.cpp
         jobs/WorkFreetime.cpp
-        jobs/WorkHallDealer.cpp
-        jobs/WorkHallEntertainer.cpp
-        jobs/WorkHallXXXEntertainer.cpp
-        jobs/WorkPeepShow.cpp
-        jobs/WorkPersonalBedWarmer.cpp
-        jobs/WorkSecurity.cpp
-        jobs/WorkSleazyBarmaid.cpp
-        jobs/WorkSleazyWaitress.cpp
-        jobs/WorkTorturer.cpp
-        jobs/StudioFilming.cpp
         jobs/Crafting.cpp
         jobs/GenericJob.cpp
         jobs/Matron.cpp
-        jobs/Therapy.cpp
-        jobs/BarJobs.cpp
-        jobs/FarmJobs.cpp
-        jobs/ClinicJobs.cpp
         jobs/JobData.cpp
-        jobs/StudioScenes.cpp
-        jobs/StudioOther.cpp
-        jobs/ArenaJobs.cpp
-        jobs/Cleaning.cpp jobs/House.cpp)
+        jobs/Cleaning.cpp)
 
 set(BUILDINGS_SRC
-        buildings/cArena.cpp
-        buildings/cBrothel.cpp
-        buildings/cCentre.cpp
-        buildings/cClinic.cpp
+        buildings/arena/cArena.cpp
+        buildings/brothel/cBrothel.cpp
+        buildings/centre/cCentre.cpp
         buildings/cDungeon.cpp
-        buildings/cFarm.cpp
-        buildings/cHouse.cpp
-        buildings/cMovieStudio.cpp
+        buildings/farm/cFarm.cpp
+        buildings/house/cHouse.cpp
+        buildings/studio/cMovieStudio.cpp
         buildings/queries.cpp
         buildings/cBuildingManager.cpp
-        )
+        buildings/brothel/WorkAdvertising.cpp
+        buildings/house/Training.cpp
+        buildings/brothel/WorkBarStripper.cpp
+        buildings/brothel/WorkBeastCare.cpp
+        buildings/brothel/WorkBrothelMassusse.cpp
+        buildings/brothel/WorkBrothelStripper.cpp
+        buildings/brothel/WorkWhore.cpp
+        buildings/studio/StudioCrew.cpp
+        buildings/centre/WorkComunityService.cpp
+        buildings/centre/WorkCounselor.cpp
+        buildings/brothel/WorkCustService.cpp
+        buildings/brothel/WorkEscort.cpp
+        buildings/brothel/WorkExploreCatacombs.cpp
+        buildings/farm/WorkFarmPonyGirl.cpp
+        buildings/centre/WorkFeedPoor.cpp
+        buildings/clinic/cClinic.cpp
+        buildings/clinic/Surgery.cpp
+        buildings/clinic/ClinicJobs.cpp
+        buildings/brothel/WorkHallDealer.cpp
+        buildings/brothel/WorkHallEntertainer.cpp
+        buildings/brothel/WorkHallXXXEntertainer.cpp
+        buildings/brothel/WorkPeepShow.cpp
+        buildings/house/WorkPersonalBedWarmer.cpp
+        buildings/brothel/WorkSecurity.cpp
+        buildings/brothel/WorkSleazyBarmaid.cpp
+        buildings/brothel/WorkSleazyWaitress.cpp
+        buildings/brothel/WorkTorturer.cpp
+        buildings/studio/StudioFilming.cpp
+        buildings/centre/Therapy.cpp
+        buildings/brothel/BarJobs.cpp
+        buildings/farm/FarmJobs.cpp
+        buildings/studio/StudioScenes.cpp
+        buildings/studio/StudioOther.cpp
+        buildings/arena/ArenaJobs.cpp
+        buildings/house/House.cpp
+)
+
+
 
 set(CHARACTER_SRC
         character/cCustomers.cpp
@@ -106,9 +109,9 @@ set(SCRIPTING_SRC
         )
 
 set(MOVIES_SRC
-        movies/manager.cpp
-        movies/data.cpp
-        movies/filming.cpp
+        buildings/studio/manager.cpp
+        buildings/studio/data.cpp
+        buildings/studio/filming.cpp
         )
 
 set(SRC cEvents.cpp

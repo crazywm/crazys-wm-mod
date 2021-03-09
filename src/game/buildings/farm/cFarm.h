@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,21 +19,21 @@
 
 #pragma once
 
-#ifndef __CCENTRE_H
-#define __CCENTRE_H
+#ifndef __CFARM_H
+#define __CFARM_H
 
-#include "IBuilding.h"
+#include "buildings/IBuilding.h"
 
-// defines a single centre
-struct sCentre : public IBuilding
+// defines a single farm
+struct sFarm : public IBuilding
 {
-    sCentre();
-    ~sCentre();
+    sFarm();
+    ~sFarm();
 
     void save_additional_xml(tinyxml2::XMLElement& root) const override {};
     void auto_assign_job(sGirl& target, std::stringstream& message, bool is_night) override;
     void UpdateGirls(bool is_night) override;
-    bool handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_night) override;
 };
 
-#endif  /* __CCENTRE_H */
+
+#endif  /* __CFARM_H */

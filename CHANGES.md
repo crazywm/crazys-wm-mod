@@ -1,4 +1,10 @@
+# Version 07.00.alpha15
+
+
 # Version 07.00.alpha14
+Reworked the "Practice Skills" job, now moved to the house, and requiring a mistress for
+optimal results. Also, lots of internal work on the job and building processing code.
+
 ## Changes
 * The number of scenes per Director, Camera Mage, and Crystal Purifier has been changed to a hard limit.
 * Removed Mechanic and Get Repaired jobs. Construct girls will now also be treated by normal doctors.
@@ -17,7 +23,6 @@
   - strongly boosts the Practice Skills results for one or two girls, depending on Mistress skill
   - can give temporary obedience increase to disobedient girls around the house
   
-
 ## Fixes
 * mixup of training and cleaning job
 * fixed loading of girl descriptions

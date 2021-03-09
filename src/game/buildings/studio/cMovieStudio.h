@@ -22,9 +22,9 @@
 #ifndef __CMOVIESTUDIO_H
 #define __CMOVIESTUDIO_H
 
-#include "IBuilding.h"
+#include "buildings/IBuilding.h"
 #include "cJobManager.h"
-#include "movies/fwd.h"
+#include "fwd.h"
 #include <vector>
 
 // defines a single studio

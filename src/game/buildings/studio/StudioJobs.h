@@ -20,8 +20,8 @@
 #ifndef WM_STUDIOJOBS_H
 #define WM_STUDIOJOBS_H
 
-#include "GenericJob.h"
-#include "movies/data.h"
+#include "jobs/GenericJob.h"
+#include "data.h"
 
 struct sFilmPleasureData {
     int Factor = 0;                             // Determines the influence of libido

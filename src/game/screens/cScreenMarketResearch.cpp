@@ -24,7 +24,7 @@
 #include "cJobManager.h"
 #include <sstream>
 #include "IGame.h"
-#include "movies/manager.h"
+#include "buildings/studio/manager.h"
 
 // defined in cScreenMovieMaker
 FormattedCellData get_prediction_detail(const sTargetGroup& group, const cMovieManager::sRevenueEstimate& rating, const std::string& name);

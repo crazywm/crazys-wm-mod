@@ -23,7 +23,7 @@
 #include "character/cPlayer.h"
 #include "CLog.h"
 
-#include "buildings/cBrothel.h"
+#include "cBrothel.h"
 #include "cGangs.h"
 #include "XmlMisc.h"
 #include "cObjectiveManager.hpp"

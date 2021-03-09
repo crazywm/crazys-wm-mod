@@ -18,11 +18,6 @@
 */
 #include "Constants.h"
 #include "XmlMisc.h"
-#include "cGirls.h"
-#include "buildings/cBrothel.h"
-#include "IGame.h"
-#include "cInventory.h"
-#include "CLog.h"
 #include "xml/util.h"
 
 const char* trainingTypeNames[] =

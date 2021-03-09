@@ -21,7 +21,7 @@
 #include "character/sGirl.h"
 #include "cGirls.h"
 #include "IGame.h"
-#include "movies/manager.h"
+#include "manager.h"
 #include "utils/streaming_random_selection.hpp"
 #include <cmath>
 #include "buildings/cBuildingManager.h"

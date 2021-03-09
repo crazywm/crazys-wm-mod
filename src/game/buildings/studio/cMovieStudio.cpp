@@ -18,7 +18,7 @@
 */
 
 #include <sstream>
-#include "queries.h"
+#include "buildings/queries.h"
 
 #include <vector>
 #include <utils/string.hpp>
@@ -30,7 +30,7 @@
 #include "interface/constants.h"
 #include "scripting/GameEvents.h"
 #include "cGirls.h"
-#include "movies/manager.h"
+#include "manager.h"
 
 extern const char* const FluffPointsId = "FluffPoints";
 extern const char* const StageHandPtsId = "StageHandPoints";
