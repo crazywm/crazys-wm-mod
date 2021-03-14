@@ -48,6 +48,7 @@ private:
     int girlimage_id;       // Girl image
 
     bool m_first_walk;
+    std::shared_ptr<sGirl> m_MeetingGirl;
 
     void set_ids() override;
     bool buy_building(static_brothel_data* bck);
@@ -59,4 +60,6 @@ public:
     void process() override;
     void do_walk();
     std::string walk_no_luck();
+
+    void UpdateImage(int imagetype) override;
 };

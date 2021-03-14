@@ -45,9 +45,6 @@ sArena::~sArena() = default;
 // Run the shifts
 void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
 {
-    // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cArena.cpp
-    std::stringstream ss;
-
     //  Handle the start of shift stuff for all girls.  //
     BeginShift(is_night);
 

@@ -36,9 +36,6 @@ namespace settings {
     extern const char* WORLD_ENCOUNTER_UNIQUE;
 }
 
-
-static int ImageNum = -1;
-
 struct static_brothel_data {
     int    price;
     int business;
@@ -188,17 +185,16 @@ void cScreenTown::do_walk()
         return;
     }
 
-    std::shared_ptr<sGirl> girl;
     if(g_Dice.percent( g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_UNIQUE) )) {
-        girl = g_Game->GetRandomGirl(false, false, false, false, false, true);
+        m_MeetingGirl = g_Game->GetRandomGirl(false, false, false, false, false, true);
     }
 
     // if we don't want or can't find a unique girl, get a random one
-    if(!girl) {
-        girl = g_Game->GetRandomGirl();
+    if(!m_MeetingGirl) {
+        m_MeetingGirl = g_Game->GetRandomGirl();
     }
 
-    if (girl == nullptr)
+    if (m_MeetingGirl == nullptr)
     {
         push_message(walk_no_luck(), COLOR_RED);
         return;
@@ -206,11 +202,11 @@ void cScreenTown::do_walk()
 
     if (girlimage_id != -1)
     {
-        PrepareImage(girlimage_id, girl.get(), IMGTYPE_PROFILE, true, ImageNum);
+        PrepareImage(girlimage_id, m_MeetingGirl.get(), IMGTYPE_PROFILE, true);
         HideWidget(girlimage_id, false);
     }
 
-    girl->TriggerEvent("girl:meet:town");
+    m_MeetingGirl->TriggerEvent("girl:meet:town");
 }
 
 bool cScreenTown::buy_building(static_brothel_data* bck)
@@ -276,5 +272,10 @@ void cScreenTown::check_building(int BrothelNum)
         set_active_building(own_building);
         replace_window("Building Management");
     }
+}
+
+void cScreenTown::UpdateImage(int imagetype) {
+    PrepareImage(girlimage_id, m_MeetingGirl.get(), imagetype, true);
+    HideWidget(girlimage_id, false);
 }
 
