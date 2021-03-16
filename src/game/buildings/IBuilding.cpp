@@ -159,7 +159,7 @@ void IBuilding::BeginWeek()
     });
 
     if(!dead_girls.empty()) {
-        // increase all the girls fear and hate of the player for letting her die (weather his fault or not)
+        // increase all the girls fear and hate of the player for letting her die (whether his fault or not)
         m_Girls->apply([&](auto& girl) {
             girl.pcfear(2 * dead_girls.size());
             girl.pchate(1 * dead_girls.size());

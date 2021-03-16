@@ -84,6 +84,8 @@ public:
     const std::string& get_job_brief(JOBS job) const;
     const std::string& get_job_description(JOBS job) const;
 
+    bool is_free_only(JOBS job) const;
+
     // does the whole package of job processing: Runs the job, in case of refusal creates an event, and processes
     // pay for the building.
     void handle_simple_job(sGirl& girl, bool is_night);

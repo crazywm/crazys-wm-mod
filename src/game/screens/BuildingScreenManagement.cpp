@@ -9,6 +9,7 @@
 #include "buildings/queries.h"
 #include "character/cPlayer.h"
 #include <sstream>
+#include <CLog.h>
 #include "cJobManager.h"
 #include "cGirls.h"
 
@@ -78,14 +79,6 @@ void IBuildingScreenManagement::ViewSelectedGirl()
     }
 }
 
-void IBuildingScreenManagement::GetSelectedGirls(std::vector<int> *girl_array)
-{  // take passed vector and fill it with sorted list of selected girl IDs
-    ForAllSelectedItems(girllist_id, [&](int sel){
-        girl_array->push_back(sel);
-    });
-    sort(girl_array->begin(), girl_array->end());
-}
-
 void IBuildingScreenManagement::RefreshJobList()
 {
     ClearListBox(joblist_id);
@@ -103,16 +96,6 @@ void IBuildingScreenManagement::RefreshJobList()
         SetSelectedItemInList(joblist_id, sel_job, false);
         EditTextItem(g_Game->job_manager().get_job_description(sel_job) + update_job_description(*selected_girl), jobdesc_id);
         SetSelectedItemText(joblist_id, sel_job, jobname_with_count((JOBS)sel_job, Day0Night1));
-    }
-}
-
-void IBuildingScreenManagement::handle_ffsd(int flag)
-{
-    std::vector<int> girl_array;
-    GetSelectedGirls(&girl_array);
-    if(!girl_array.empty()) {
-        ffsd_choice(flag, girl_array);
-        m_FFSD_Flag = flag;
     }
 }
 
@@ -172,9 +155,9 @@ void IBuildingScreenManagement::set_ids() {
     SetButtonCallback(viewdetails_id, [this](){
         ViewSelectedGirl();
     });
-    SetButtonCallback(firegirl_id, [this](){  handle_ffsd(FFSD_fire); });
-    SetButtonCallback(freeslave_id, [this](){  handle_ffsd(FFSD_free); });
-    SetButtonCallback(sellslave_id, [this](){  handle_ffsd(FFSD_sell); });
+    SetButtonCallback(firegirl_id, [this](){  fire_girls(); });
+    SetButtonCallback(freeslave_id, [this](){  free_girls(); });
+    SetButtonCallback(sellslave_id, [this](){  fire_girls(); });
 
     SetButtonCallback(day_id, [this](){ SetShift(SHIFT_DAY); });
     SetButtonCallback(night_id, [this](){ SetShift(SHIFT_NIGHT); });
@@ -197,6 +180,7 @@ void IBuildingScreenManagement::set_ids() {
         ViewSelectedGirl();
     });
     SetListBoxHotKeys(girllist_id, g_AltKeys ? SDLK_a : SDLK_UP, g_AltKeys ? SDLK_d : SDLK_DOWN);
+    SetListBoxHotKeys(joblist_id, SDLK_e, SDLK_q);
 }
 
 void IBuildingScreenManagement::on_select_job(int selection)
@@ -331,440 +315,6 @@ void IBuildingScreenManagement::init(bool back)
     update_image();
 }
 
-static std::vector<int> ffsd_choicelist;
-
-void IBuildingScreenManagement::ffsd_outcome(int selected)
-{
-    std::vector<int> girl_array;
-    GetSelectedGirls(&girl_array);
-
-    bool free = false, fire = false, sell = false, dump = false;
-    int option = ffsd_choicelist[selected];
-    switch (option)
-    {
-    case FFSD_fire:        fire = true;    break;
-
-    case FFSD_free1:    // Throw a freedom party
-    case FFSD_free:        free = true;    break;
-
-    case FFSD_sell:        sell = true;    break;
-
-    case FFSD_fidu:        fire = true;    dump = true;    break;
-
-    case FFSD_fise:        fire = true;    sell = true;    break;
-
-    case FFSD_fisd:        free = true;    sell = true;    dump = true;    break;
-
-    case FFSD_frdu1:    // dump the bodies and get your freedom
-    case FFSD_frdu:        free = true;    dump = true;    break;
-
-    case FFSD_sedu1:    // Sell all the girls, living and dead
-    case FFSD_sedu:        sell = true;    dump = true;    break;
-
-    case FFSD_dump1:    // Proper funeral
-    case FFSD_dump2:    // Unmarked grave
-    case FFSD_dump3:    // Side of the road
-    case FFSD_dump4:    // Sell the bodies
-    case FFSD_frdu2:    // Dump then get back to work
-    case FFSD_dump:        dump = true;    break;
-
-
-    default:    break;    // keep
-    }
-
-    if (free || fire || sell || dump)
-    {
-        std::stringstream ss;
-        std::vector<int>    sellgirl_price;
-        std::vector<std::string> freegirl_names;
-        std::vector<std::string> firegirl_names;
-        std::vector<std::string> sellgirl_names;
-        std::vector<std::string> dumpgirl_names;
-
-        for (int i = girl_array.size(); i-- > 0;)    // OK, we have the array, now step through it backwards
-        {
-            selected_girl = active_building().get_girl(girl_array[i]);
-
-            if (selected_girl->is_dead())
-            {
-                if (dump)
-                {
-                    dumpgirl_names.push_back(selected_girl->FullName());
-                    active_building().remove_girl(selected_girl);
-                    selected_girl = nullptr;
-                }
-                continue;
-            }
-            else if (selected_girl->is_slave())
-            {
-                if (option == FFSD_free1)    // Throw a freedom party
-                {
-                    freegirl_names.push_back(selected_girl->FullName());
-                    selected_girl->remove_status(STATUS_SLAVE);
-                    g_Game->player().disposition(7);
-                    selected_girl->pclove(20);
-                    selected_girl->pcfear(-40);
-                    selected_girl->pchate(-50);
-                    selected_girl->obedience(10);
-                    selected_girl->happiness(100);
-                    selected_girl->health(10);
-                    selected_girl->tiredness(10);
-                    selected_girl->charisma(5);
-                    selected_girl->fame(2);
-                    selected_girl->confidence(5);
-                    selected_girl->obedience(10);
-                    selected_girl->dignity(5);
-                    selected_girl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_FREE);
-                    selected_girl->set_default_house_percent();
-                }
-                if (option == FFSD_frdu1)    // dump the bodies and get your freedom
-                {
-                    firegirl_names.push_back(selected_girl->FullName());
-                    selected_girl->remove_status(STATUS_SLAVE);
-                    g_Game->player().disposition(3);
-                    selected_girl->pclove(5);
-                    selected_girl->pcfear(5);
-                    selected_girl->pchate(-5);
-                    selected_girl->obedience(20);
-                    selected_girl->happiness(40);
-                    selected_girl->tiredness(5);
-                    selected_girl->dignity(-2);
-                    selected_girl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_SLAVE);
-                    selected_girl->set_default_house_percent();
-                }
-                else if (option == FFSD_frdu2)    // dump the bodies then get back to work
-                {
-                    freegirl_names.push_back(selected_girl->FullName());
-                    g_Game->player().disposition(-1);
-                    selected_girl->pclove(-2);
-                    selected_girl->pcfear(10);
-                    selected_girl->pchate(5);
-                    selected_girl->obedience(5);
-                    selected_girl->happiness(-10);
-                    selected_girl->tiredness(5);
-                    selected_girl->dignity(-5);
-                }
-                else if (free)
-                {
-                    freegirl_names.push_back(selected_girl->FullName());
-                    selected_girl->remove_status(STATUS_SLAVE);
-                    g_Game->player().disposition(5);
-                    selected_girl->pclove(10);
-                    selected_girl->pcfear(-20);
-                    selected_girl->pchate(-25);
-                    selected_girl->obedience(10);
-                    selected_girl->happiness(70);
-
-                    selected_girl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_FREE);
-                    selected_girl->set_default_house_percent();
-                }
-                else if (sell)
-                {
-                    sellgirl_names.push_back(selected_girl->FullName());
-                    sellgirl_price.push_back(g_Game->tariff().slave_sell_price(*selected_girl));
-                    g_Game->gold().slave_sales(g_Game->tariff().slave_sell_price(*selected_girl));
-
-                    auto girl_ptr = active_building().remove_girl(selected_girl);
-                    g_Game->girl_pool().GiveGirl(std::move(girl_ptr));
-                    selected_girl = nullptr;
-                }
-                continue;
-            }
-            else if (selected_girl)        // the girl is free
-            {
-                if (option == FFSD_free1)    // Throw a freedom party - Guest
-                {
-                    selected_girl->pclove(5);
-                    selected_girl->pcfear(-5);
-                    selected_girl->pchate(-5);
-                    selected_girl->obedience(2);
-                    selected_girl->happiness(100);
-                    selected_girl->health(10);
-                    selected_girl->tiredness(10);
-                    selected_girl->confidence(2);
-                    selected_girl->spirit(5);
-                    selected_girl->dignity(1);
-                }
-                else if (fire)
-                {
-                    firegirl_names.push_back(selected_girl->FullName());
-                    auto girl_ptr = active_building().remove_girl(selected_girl);
-                    g_Game->girl_pool().GiveGirl(std::move(girl_ptr));
-                    selected_girl = nullptr;
-                }
-            }
-        }
-
-        if (!freegirl_names.empty())
-        {
-            ss << "You grant " << freegirl_names[0];
-            if (freegirl_names.size() == 1)            ss << " her";
-            else if (freegirl_names.size() == 2)    ss << " and " << freegirl_names[1] << " thier";
-            else
-            {
-                for (int i = 1; i < (int)freegirl_names.size() - 1; i++) ss << ", " << freegirl_names[i];
-                ss << " and " << freegirl_names[freegirl_names.size() - 1] << " their";
-            }
-            ss << " freedom.\n \n";
-        }
-        if (!firegirl_names.empty())
-        {
-            ss << "You fire " << firegirl_names[0];
-            if (firegirl_names.size() == 2)    ss << " and " << firegirl_names[1];
-            else if (firegirl_names.size() > 2)
-            {
-                for (int i = 1; i < (int)firegirl_names.size() - 1; i++) ss << ", " << firegirl_names[i];
-                ss << " and " << firegirl_names[firegirl_names.size() - 1];
-            }
-            ss << ".\n \n";
-        }
-        if (!sellgirl_names.empty())
-        {
-            int sell = 0;
-            int sellsize = sellgirl_names.size();
-            ss << "You sell ";
-            if (sellsize == 1)        ss << sellgirl_names[0] << " for " << sellgirl_price[0] << " gold";
-            else if (sellsize == 2)    ss << "two slaves:\n" << sellgirl_names[0] << " for " << sellgirl_price[0] << " gold and\n" << sellgirl_names[1] << " for " << sellgirl_price[0] << " gold";
-            else
-            {
-                ss << sellsize << " slaves:\n" << sellgirl_names[0] << " for " << sellgirl_price[0] << " gold";
-                for (int i = 1; i < (int)sellsize - 1; i++)
-                {
-                    ss << ",\n" << sellgirl_names[i] << " for " << sellgirl_price[i] << " gold";
-                }
-                ss << " and\n" << sellgirl_names[sellsize - 1] << " for " << sellgirl_price[sellsize - 1] << " gold";
-            }
-            if (sellsize > 1)
-            {
-                for (int i = 0; i < (int)sellsize; i++) sell += sellgirl_price[i];
-                ss << ".\nYour total take was " << sell << " gold";
-            }
-            ss << ".\n \n";
-        }
-        if (!dumpgirl_names.empty())
-        {
-            int sell = 0;
-            int dumpsize = dumpgirl_names.size();
-            switch (option)
-            {
-            case FFSD_dump1:    // proper funeral
-                if (dumpsize == 1) ss << "You spend 100 gold for a proper funeral for ";
-                else ss << "You spend 100 gold each for proper funerals for ";
-                active_building().m_Finance.building_upkeep(100 * dumpsize);
-
-                g_Game->player().customerfear(-dumpsize);
-                g_Game->player().suspicion(-dumpsize);
-                g_Game->player().disposition(dumpsize);
-                break;
-            case FFSD_dump2:    // unmarked grave
-                ss << "You have your goons dig " << (dumpsize > 1 ? "graves " : "a grave") << " for ";
-                g_Game->player().disposition(-dumpsize);
-                break;
-            case FFSD_dump3:    // side of the road
-                ss << "You have your goons dump the bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
-                g_Game->player().customerfear(dumpsize);
-                g_Game->player().suspicion(dumpsize);
-                g_Game->player().disposition(-dumpsize);
-                break;
-            case FFSD_dump4:    // Sell the bodies
-            case FFSD_sedu1:    // Sell all the girls, living and dead
-                for (int i = 0; i < (int)dumpsize; i++) sell += g_Dice % 250 + g_Dice % 50 + 1;
-                ss << "You make " << sell << " gold for selling the dead bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
-                active_building().m_Finance.slave_sales(sell);
-
-                g_Game->player().customerfear(dumpsize * 2);
-                g_Game->player().suspicion(dumpsize * 2);
-                g_Game->player().disposition(-dumpsize * 2);
-                break;
-            default:
-                ss << "You have your goons remove the bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
-                break;
-            }
-            ss << dumpgirl_names[0];
-            if (dumpsize == 2)    ss << " and " << dumpgirl_names[1];
-            else
-            {
-                for (int i = 1; i < (int)dumpsize - 1; i++) ss << ", " << dumpgirl_names[i];
-                ss << " and " << dumpgirl_names[dumpsize - 1];
-            }
-            if (option == FFSD_dump2) ss << " and dump their bod" << (dumpsize > 1 ? "ies" : "y") << " in.";
-            if (option == FFSD_dump3) ss << " on the side of the road.";
-            ss << ".\n \n";
-        }
-        if (ss.str().length() > 0)    push_message(ss.str(), 0);
-
-        freegirl_names.clear(); firegirl_names.clear(); sellgirl_names.clear(); dumpgirl_names.clear();
-        sellgirl_price.clear();
-    }
-}
-
-void IBuildingScreenManagement::ffsd_choice(int ffsd, std::vector<int> girl_array) // `J` added for .06.02.37
-{
-    int slavegirls = 0, freegirls = 0, deadgirls = 0, selltotal = 0;
-    std::stringstream firstgirlname;
-
-    for (int i = girl_array.size(); i-- > 0;)    // OK, we have the array, now step through it backwards
-    {
-        selected_girl = active_building().get_girl(girl_array[i]);
-
-        if (firstgirlname.str().length() == 0)    firstgirlname << selected_girl->FullName();
-
-        if (selected_girl->is_dead())    deadgirls++;
-        else if (selected_girl->is_slave())
-        {
-            slavegirls++;
-            selltotal += g_Game->tariff().slave_sell_price(*selected_girl);
-        }
-        else if (selected_girl)                freegirls++;
-    }
-
-    int totalgirls = freegirls + slavegirls + deadgirls;
-    if (totalgirls == 0) return;                            // No girls so quit
-
-    std::stringstream ask, question, keep, fire, free, dump, sell, dump1, dump2, dump3, dump4,
-                 frdu1, frdu2, fidu, fise, fisd, frdu, sedu, sedu1, free1;
-    keep << "\"Nevermind, Back to work.\"";
-
-    /* Free girls only */
-    if (freegirls > 0 && slavegirls == 0 && deadgirls == 0)
-    {
-        question << "Do you want to fire ";
-        if (freegirls == 1)    { question << firstgirlname.str();                    fire << "Fire her."; }
-        else if (freegirls == 2)    { question << "these two girls";                    fire << "Fire them both."; }
-        else    { question << "these " << totalgirls << " girls";    fire << "Fire them all."; }
-        question << "?";
-    }
-        /* Slave girls only */
-    else if (freegirls == 0 && slavegirls > 0 && deadgirls == 0)
-    {
-        if (ffsd == FFSD_free && g_Game->player().disposition() > -10)
-        {
-            question << "Do you want to free ";
-            /* */if (slavegirls == 1)    { question << firstgirlname.str();    free << "Free her."; }
-            else if (slavegirls == 2)    { question << "these two girls";    free << "Free them both."; }
-            else        { question << "these " << totalgirls << " girls";    free << "Free them all."; }
-            question << "?";
-        }
-        else if (ffsd == FFSD_sell && g_Game->player().disposition() < 10)
-        {
-            question << "Do you want to sell ";
-            /* */if (slavegirls == 1)    { question << firstgirlname.str();        sell << "Sell her."; }
-            else if (slavegirls == 2)    { question << "these two girls";        sell << "Sell them both."; }
-            else        { question << "these " << totalgirls << " girls";        sell << "Sell them all."; }
-            question << "?\nYou could get " << selltotal << " gold for selling them.";
-        }
-        else
-        {
-            question << "Do you want to free or sell ";
-            /* */if (slavegirls == 1)    { question << firstgirlname.str();        free << "Free her.";        sell << "Sell her."; }
-            else if (slavegirls == 2)    { question << "these two girls";        free << "Free them both.";    sell << "Sell them both."; }
-            else        { question << "these " << totalgirls << " girls";        free << "Free them all.";    sell << "Sell them all."; }
-            question << "?\nYou could get " << selltotal << " gold for selling them.";
-        }
-    }
-        /* Dead girls only */
-    else if (freegirls == 0 && slavegirls == 0 && deadgirls > 0)
-    {
-        question << "What do you want to do with ";
-        /* */if (deadgirls == 1)    question << firstgirlname.str() << "'s dead body";
-        else if (deadgirls == 2)    question << "the two dead bodies";
-        else/*                */    question << "the " << totalgirls << " dead bodies";
-        question << "?";
-        keep << "Nevermind, I'll deal with them later.";
-        dump1 << "Give " << (deadgirls == 1 ? "her" : "them") << " a proper funeral.";
-        dump2 << "Bury the bod" << (deadgirls == 1 ? "y" : "ies") << " in a shollow unmarked grave.";
-        dump3 << "Dump the bod" << (deadgirls == 1 ? "y" : "ies") << " on the side of the road.";
-        dump4 << "Sell the bod" << (deadgirls == 1 ? "y" : "ies") << " to the highest bidder" << (deadgirls == 1 ? "" : "s") << ".";
-    }
-        /* Slave and Dead girls */
-    else if (freegirls == 0 && slavegirls > 0 && deadgirls > 0)
-    {
-        if (ffsd == FFSD_free)
-        {
-            question << "Free slaves or dispose bodies?";
-            ask << "You have chosen to free ";
-            if (slavegirls == 1) ask << "a"; else if (slavegirls == 2) ask << "two"; else ask << slavegirls;
-            ask << " slave girl" << (slavegirls > 1 ? "s" : "") << ". Do you want them to:\nDispose of the bodies of the dead girl"
-                << (deadgirls > 1 ? "s" : "") << " as their last act as your slave" << (slavegirls > 1 ? "s?" : "?")
-                << "\nDispose of the bodies and get back to work?";
-
-            if (g_Game->player().disposition() < -10)
-            {
-                ask << "\nOr you can sell all the girls, living and dead.";
-                sedu1 << "\"Show me the MONEY\"";
-            }
-            free << "Free them and deal with the bod" << (deadgirls > 1 ? "ies" : "y") << " later.";
-            frdu1 << "\"Dispose of them and you get your freedom.\"";
-            frdu2 << "\"Dispose of them then get back to work.\"";
-
-        }
-        else    // fire or sell buttons
-        {
-            question << "Sell who?";
-            ask << "You have chosen to sell ";
-            if (slavegirls == 1) ask << "a"; else if (slavegirls == 2) ask << "two"; else ask << slavegirls;
-            ask << " living slave girl" << (slavegirls > 1 ? "s" : "") << " and ";
-            if (deadgirls == 1) ask << "a"; else if (deadgirls == 2) ask << "two"; else ask << deadgirls;
-            ask << " dead bod" << (deadgirls > 1 ? "ies" : "y") << ".";
-            ask << "\nYou could get " << selltotal << " gold for selling the living girl" << (slavegirls > 1 ? "s" : "") << ".";
-
-            sell << "Sell just the living.";
-            dump4 << "Sell just the dead.";
-            sedu1 << "Sell them all.";
-        }
-    }
-        /* Free and Slave girls */
-    else if (freegirls > 0 && slavegirls > 0 && deadgirls == 0)
-    {
-        ask << "You call in " << totalgirls << " girls, " << slavegirls << " slave girl" << (slavegirls > 1 ? "s" : "") << " and " << freegirls << " free girl" << (freegirls > 1 ? "s" : "") << ".\n";
-        if (ffsd == FFSD_free)
-        {
-            ask << "Do you want to throw them a Freedom Party or just get it over with quickly?";
-            question << "Is it Party Time?";
-            free << "Just free " << (slavegirls > 1 ? "them" : "her") << ".";
-            free1 << "Throw a Freedom Party!";
-        }
-        else    // fire or sell
-        {
-            ask << "Do you want to make room for new girls by firing or selling some old girls?";
-            question << "Get rid of who?";
-            fire << "Fire the free girl" << (freegirls > 1 ? "s" : "") << ".";
-            sell << "Sell the slave" << (slavegirls > 1 ? "s" : "") << ".";
-            fise << "Get rid of them all.";
-        }
-
-    }
-        /* Any girls */
-    else
-    {
-        ask << "You have chosen " << totalgirls << " girls, what do you want to do with them?";
-        question << "What do you want to do?";
-        fire << "Fire the free girls.";
-        free << "Free the slaves.";
-        sell << "Sell the slaves.";
-        dump << "Dump the bodies.";
-        fisd << "Get rid of them all.";
-    }
-
-    std::array<std::stringstream*, FFSD_COUNT> options = {
-            &keep, &fire, &free, &sell, &dump, &fidu, &fise, &fisd, &frdu, &sedu, &dump1, &dump2, &dump3, &dump4,
-            &frdu1, &frdu2, &sedu1, &free1
-    };
-
-    ffsd_choicelist.clear();
-    std::vector<std::string> choices;
-    choices.reserve(FFSD_COUNT);
-    for(unsigned i = 0; i < options.size(); ++i) {
-        // has the option been used?
-        if(options[i]->tellp() != std::streampos(0)) {
-            ffsd_choicelist.push_back(i);
-            choices.push_back(options[i]->str());
-        }
-    }
-    if (ask.str().length() > 0)    push_message(ask.str(), 0);
-    input_choice(question.str(), std::move(choices), [this](int selected){ ffsd_outcome(selected); });
-}
-
 std::string IBuildingScreenManagement::jobname_with_count(JOBS job_id, bool is_night)
 {
     std::stringstream text;
@@ -806,21 +356,6 @@ void IBuildingScreenManagement::OnKeyPress(SDL_Keysym keysym)
     if (key == SDLK_SPACE || key == SDLK_KP_ENTER)    {
         ViewSelectedGirl();
     }
-
-    else if (key == SDLK_q || key == SDLK_e) {
-        int selection = -1;
-        if (key == SDLK_q) selection = ArrowUpListBox(joblist_id);
-        if (key == SDLK_e) selection = ArrowDownListBox(joblist_id);
-
-        if (!is_job_allowed((JOBS) selection)) {
-            if (key == SDLK_q) ArrowUpListBox(joblist_id);
-            if (key == SDLK_e) ArrowDownListBox(joblist_id);
-            // the purpose of this is to clear the extra event from the event queue, which prevents an error --PP
-            /// TODO figure this out!
-            // g_InterfaceEvents.CheckListbox(joblist_id);
-        }
-    }
-
     cInterfaceWindowXML::OnKeyPress(keysym);
 
 }
@@ -833,56 +368,116 @@ void IBuildingScreenManagement::SetShift(int shift)
     RefreshSelectedJobType();
 }
 
-bool IBuildingScreenManagement::is_job_allowed(JOBS job)
-{
-    JOBS free_jobs[] = {
-            JOB_DOCTORE, JOB_CITYGUARD, JOB_CENTREMANAGER, JOB_COUNSELOR, JOB_CHAIRMAN,
-            JOB_DOCTOR, JOB_FARMMANGER, JOB_MARKETER, JOB_MATRON, JOB_TORTURER,
-            JOB_HEADGIRL, JOB_RECRUITER, JOB_DIRECTOR, JOB_PROMOTER
-    };
-
-    // prohibit free jobs for slave girls
-    if (selected_girl && selected_girl->is_slave()) {
-        for(auto& fj : free_jobs) {
-            if(job == fj) return false;
-        }
-    }
-
-    JOBS slave_jobs[] = {
-            JOB_HOUSEPET
-    };
-
-    // prohibit free jobs for slave girls
-    if (selected_girl && selected_girl->is_free()) {
-        for(auto& fj : slave_jobs) {
-            if(job == fj) return false;
-        }
-    }
-
-    JOBS singleton_jobs[] = {
-            JOB_CENTREMANAGER, JOB_DOCTORE, JOB_CHAIRMAN, JOB_FARMMANGER, JOB_MARKETER,
-            JOB_MATRON, JOB_TORTURER, JOB_HEADGIRL, JOB_DIRECTOR, JOB_PROMOTER, JOB_PERSONALTRAINING
-    };
-
-    for(auto& sj : singleton_jobs) {
-        if(job == sj){
-            if(active_building().num_girls_on_job(sj, 0) > 0 ||
-               active_building().num_girls_on_job(sj, 1) > 0) {
-                return false;
-            }
-        }
-    }
-
-    // special cases
-    if (selected_girl && selected_girl->has_active_trait("AIDS") && (job == JOB_DOCTOR || job == JOB_NURSE || job == JOB_INTERN))
-        return false;
-
-    return true;
-}
-
 std::string IBuildingScreenManagement::get_job_description(int selection)
 {
     return job_manager().JobFilters[selection].Description;
+}
+
+void IBuildingScreenManagement::free_girls() {
+    std::vector<sGirl*> girls;
+    ForAllSelectedItems(girllist_id, [&](int sel){
+        sGirl* girl = active_building().get_girl(sel);
+        if(!girl->is_dead() && girl->is_slave()) {
+            girls.push_back(girl);
+        }
+    });
+
+    if(girls.empty()) {
+        g_LogFile.error("ui", "No living slave girl in selection");
+        return;
+    }
+
+    std::vector<std::string> options;
+    if(girls.size() == 1) {
+        options.push_back("Free " + girls.front()->FullName());
+        options.emplace_back("Throw a freedom party [100G]");
+        options.emplace_back("Keep her as a slave");
+    } else {
+        options.emplace_back("Just free the slaves");
+        options.emplace_back("Throw a freedom party [" + std::to_string(100 * girls.size()) + "G]");
+        options.emplace_back("Keep them as slaves");
+    }
+
+
+    std::stringstream ask;
+    ask << "You call in ";
+    if(girls.size() == 1) {
+        ask << girls.front()->FullName() << "because you want to grant her freedom.";
+    } else {
+        ask << girls.size() << " slaves because you want to grant them their freedom.";
+    }
+
+    ask << " Do you want to throw a Freedom Party or just get it over with quickly?";
+    g_Game->push_message(ask.str(), COLOR_BLUE);
+
+    input_choice("Is it party time?", std::move(options), [girls=std::move(girls)](int selected) {
+        if(selected == 0) {
+            cGirls::FreeGirls(girls, false);
+        } else if (selected == 1) {
+            cGirls::FreeGirls(girls, true);
+        }
+    });
+}
+
+void IBuildingScreenManagement::fire_girls() {
+    std::vector<sGirl*> free_girls;
+    std::vector<sGirl*> slave_girls;
+    ForAllSelectedItems(girllist_id, [&](int sel){
+        sGirl* girl = active_building().get_girl(sel);
+        if(girl->is_dead()) return;
+        if(girl->is_slave()) {
+            slave_girls.push_back(girl);
+        } else {
+            free_girls.push_back(girl);
+        }
+    });
+
+    if(free_girls.empty() && slave_girls.empty()) {
+        g_LogFile.error("ui", "FireGirls called but no live girls selected.");
+        return;
+    }
+
+    std::vector<std::string> options;
+    if(!free_girls.empty()) {
+        if(free_girls.size() == 1) {
+            options.push_back("Fire " + free_girls.front()->FullName());
+        } else if(slave_girls.empty()) {
+            options.emplace_back("Fire them");
+        } else {
+            options.emplace_back("Fire the free girls");
+        }
+    }
+
+    if(!slave_girls.empty()) {
+        int price = 0;
+        for(auto& girl : slave_girls) {
+            price += g_Game->tariff().slave_sell_price(*girl);
+        }
+        if(slave_girls.size() == 1) {
+            options.push_back("Sell " + slave_girls.front()->FullName());
+        } else if(slave_girls.empty()) {
+            options.emplace_back("Sell them");
+        } else {
+            options.emplace_back("Sell the slaves");
+        }
+        options.back() += " for " + std::to_string(price);
+    }
+    options.emplace_back("Do nothing");
+
+    input_choice("", options, [free_girls=std::move(free_girls), slave_girls=std::move(slave_girls)](int selected) {
+        if(selected == 0) {
+            if(!free_girls.empty()) {
+                cGirls::FireGirls(free_girls);
+            } else {
+                cGirls::SellSlaves(slave_girls);
+            }
+        } else if (selected == 1) {
+            if(!free_girls.empty() && !slave_girls.empty()) {
+                cGirls::SellSlaves(slave_girls);
+            }
+            // do nothing
+        }
+    });
 }
 
 void CBuildingManagementScreenDispatch::init(bool back)

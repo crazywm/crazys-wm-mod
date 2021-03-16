@@ -164,7 +164,9 @@ public:
 
     static void TakeGold(sGirl& girl);
 
-
+    static void FireGirls(const std::vector<sGirl*>& target);
+    static void FreeGirls(const std::vector<sGirl*>& target, bool party);
+    static void SellSlaves(const std::vector<sGirl*>& target);
 private:
     std::unique_ptr<cGirlPool> m_Girls;    // list of girls who are dead, gone or in use
 

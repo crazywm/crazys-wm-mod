@@ -2381,26 +2381,6 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
     return false;
 }
 
-bool cJobManager::AddictBuysDrugs(std::string Addiction, std::string Drug, sGirl& girl, IBuilding * brothel, bool Day0Night1)
-{
-    int avail = g_Game->shop().CountItem(Drug);
-    if(avail == 0) return false;                        // quit if the shop does not have the item
-
-    auto item = g_Game->inventory_manager().GetItem(Drug);
-    // try to buy the item
-    if(!g_Game->shop().GirlBuyItem(girl, *item))   return false;
-
-    // If a matron is on shift, she may catch the girl buying drugs
-    if ((brothel->num_girls_on_job(JOB_MATRON, true) >= 1 || brothel->num_girls_on_job(JOB_MATRON, false) >= 1)
-        && g_Dice.percent(70))
-    {
-        girl.AddMessage("Matron confiscates drugs", IMGTYPE_PROFILE, EVENT_WARNING);
-        return girl.remove_item(item) == 0;
-        return false;
-    }
-    return true;
-}
-
 double JP_Freetime(const sGirl& girl, bool estimate)    // not used
 {
     return 0;

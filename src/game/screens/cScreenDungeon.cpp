@@ -355,9 +355,12 @@ void cScreenDungeon::set_slave_stats(sGirl *girl)
 {
     girl->set_slave();
     girl->obedience(-10);
-    girl->pcfear(5);
-    girl->pclove(-10);
-    girl->pchate(5);
+    girl->pcfear(10);
+    girl->pclove(-20);
+    girl->pchate(15);
+    girl->happiness(-50);
+    girl->spirit(-5);
+    girl->dignity(-5);
     girl->set_default_house_percent();
 }
 

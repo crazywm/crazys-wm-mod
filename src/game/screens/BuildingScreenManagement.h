@@ -24,7 +24,6 @@
 #include "cGameWindow.h"
 #include "Constants.h"
 
-class cBrothelManager;
 class cJobManager;
 
 class IBuildingScreenManagement : public cGameWindow
@@ -36,7 +35,6 @@ public:
 protected:
     void update_image();
     void ViewSelectedGirl();
-    void GetSelectedGirls(std::vector<int>* girl_array);
     void RefreshJobList();
 
     void add_job_filter(JOBFILTER filter);
@@ -76,20 +74,16 @@ private:
 
     void SetShift(int shift);
 
-    void handle_ffsd(int flag);
     void init(bool back) override;
 
     void RefreshSelectedJobType();
 
-    void ffsd_outcome(int option);
-    void ffsd_choice(int ffsd, std::vector<int> girl_array);
-    bool is_job_allowed(JOBS job);
+    void free_girls();
+    void fire_girls();
 
     BuildingType m_Type;
 
     sGirl* m_LastSelection = nullptr;
-
-    int m_FFSD_Flag = -1;
 
     std::vector<JOBFILTER> m_JobFilters;
 protected:

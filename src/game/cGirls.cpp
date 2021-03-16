@@ -4127,3 +4127,132 @@ std::shared_ptr<sGirl> cGirls::CreateDaughter(sGirl& mom, bool player_dad) {
     return CreateRandomGirl(17, slave, false, non_human, false, false, player_dad);
 }
 
+void cGirls::FireGirls(const std::vector<sGirl*>& targets) {
+    std::stringstream ss;
+    ss << "You fire ";
+
+    for(int i = 0; i < targets.size(); ++i) {
+        auto girl = targets[i];
+        if(i == 0) {
+            ss << girl->FullName();
+        } else if (i == targets.size() - 2) {
+            ss << ", and " << girl->FullName();
+        } else {
+            ss << ", " << girl->FullName();
+        }
+        assert(girl->m_Building);
+        g_Game->girl_pool().GiveGirl(girl->m_Building->remove_girl(girl));
+    }
+    ss << ".";
+
+    g_Game->push_message(ss.str(), COLOR_BLUE);
+}
+
+void cGirls::FreeGirls(const std::vector<sGirl*>& targets, bool party) {
+    std::stringstream ss;
+    ss << "You grant ";
+
+    if(party) {
+        if(!g_Game->gold().misc_debit(100 * targets.size())) {
+            g_Game->push_message("You cannot afford the freedom party", COLOR_RED);
+            party = false;
+        }
+    }
+
+    for(int i = 0; i < targets.size(); ++i) {
+        auto girl = targets[i];
+        assert(girl->is_slave());
+        if(i == 0) {
+            ss << girl->FullName();
+        } else if (i == targets.size() - 1) {
+            ss << ", and " << girl->FullName();
+        } else {
+            ss << ", " << girl->FullName();
+        }
+        assert(girl->m_Building);
+
+        girl->remove_status(STATUS_SLAVE);
+        girl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_FREE);
+        girl->set_default_house_percent();
+
+        if(party) {
+            g_Game->player().disposition(7);
+            // if she really hates you, a freedom party alone won't sway her
+            if(girl->pchate() > 50) {
+                girl->pcfear(-10);
+                girl->pchate(-25);
+                girl->happiness(20);
+                girl->dignity(5);
+            } else {
+                girl->pclove(10);
+                girl->pcfear(-20);
+                girl->pchate(-25);
+                girl->obedience(5);
+                girl->happiness(50);
+                girl->obedience(10);
+                girl->dignity(5);
+            }
+            girl->confidence(5);
+            girl->tiredness(5);
+        } else {
+            g_Game->player().disposition(5);
+            girl->pclove(10);
+            girl->pcfear(-20);
+            girl->pchate(-25);
+            girl->happiness(35);
+        }
+        g_Game->girl_pool().GiveGirl(girl->m_Building->remove_girl(girl));
+    }
+
+    if(targets.size() == 1) {
+        ss << " her freedom";
+    } else {
+        ss << " their freedom";
+    }
+
+    if(party) {
+        ss << " and celebrate with a big party.";
+    } else {
+        ss << ".";
+    }
+
+    g_Game->push_message(ss.str(), COLOR_BLUE);
+}
+
+void cGirls::SellSlaves(const std::vector<sGirl*>& target) {
+    int sellsize = target.size();
+    std::stringstream ss;
+    ss << "You sell ";
+
+    auto price_of = [&](int i) {
+        return g_Game->tariff().slave_sell_price(*target.at(i));
+    };
+
+    if (sellsize == 1) ss << target.front()->FullName() << " for " << price_of(0) << " gold";
+    else if (sellsize == 2) {
+        ss << "two slaves:\n" << target.front()->FullName() << " for " << price_of(0) << " gold and\n"
+           << target.at(1)->FullName() << " for " << price_of(1) << " gold";
+    } else {
+        ss << sellsize << " slaves:\n";
+        for (int i = 0; i < sellsize; i++) {
+            if (i != 0) ss << ",\n";
+            else if (i == sellsize - 1) ss << ", and\n";
+            ss << target.at(i)->FullName() << " for " << price_of(i) << " gold";
+        }
+    }
+    if (sellsize > 1) {
+        int total = 0;
+        for (int i = 0; i < (int) sellsize; i++) total += price_of(i);
+        ss << ".\nYour total take was " << total << " gold";
+    }
+    ss << ".";
+
+    // now do the actual sale
+    for (sGirl* girl : target) {
+        assert(girl->is_slave());
+        g_Game->gold().slave_sales(g_Game->tariff().slave_sell_price(*girl));
+        g_Game->girl_pool().GiveGirl(girl->m_Building->remove_girl(girl));
+    }
+
+    g_Game->push_message(ss.str(), COLOR_BLUE);
+}

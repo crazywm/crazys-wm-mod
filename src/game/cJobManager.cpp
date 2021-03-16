@@ -39,6 +39,7 @@
 #include "character/cPlayer.h"
 #include "buildings/cBuildingManager.h"
 #include "cGirlGangFight.h"
+#include "cShop.h"
 
 extern cRng g_Dice;
 
@@ -391,9 +392,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     {
         Girl.m_WorkingDay = Girl.m_PrevWorkingDay;    // `J` ...it will restore the previous days
     }
-    JOBS rest = JOB_RESTING;
-    if(Girl.m_Building)
-        rest = JOB_RESTING;
+
 
     assert(m_OOPJobs[JobID] != nullptr);
     auto check = m_OOPJobs[JobID]->is_job_valid(Girl);
@@ -403,7 +402,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     }
 
     // rest jobs
-    if (JobID == rest)
+    if (JobID == JOB_RESTING)
     {
         /*   */if (fulltime)    Girl.m_NightJob = Girl.m_DayJob = JobID;
         else if (Day0Night1)    Girl.m_NightJob = JobID;
@@ -498,8 +497,8 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     else if (JobID == JOB_FIGHTTRAIN && (Girl.combat() > 99 && Girl.magic() > 99 && Girl.agility() > 99 && Girl.constitution() > 99))
     {    // `J` added then modified
         g_Game->push_message("There is nothing more she can learn here.", 0);
-        if (Girl.m_DayJob == JOB_FIGHTTRAIN)    Girl.m_DayJob = rest;
-        if (Girl.m_NightJob == JOB_FIGHTTRAIN)    Girl.m_NightJob = rest;
+        if (Girl.m_DayJob == JOB_FIGHTTRAIN)    Girl.m_DayJob = JOB_RESTING;
+        if (Girl.m_NightJob == JOB_FIGHTTRAIN)    Girl.m_NightJob = JOB_RESTING;
     }
     // Special Clinic Jobs
     else if (JobID == JOB_CHAIRMAN)
@@ -514,9 +513,9 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     {
         g_Game->push_message("Health laws prohibit anyone with AIDS from working in the Medical profession", 0);
         if (Girl.m_DayJob == JOB_INTERN || Girl.m_DayJob == JOB_NURSE || Girl.m_DayJob == JOB_DOCTOR)
-            Girl.m_DayJob = rest;
+            Girl.m_DayJob = JOB_RESTING;
         if (Girl.m_NightJob == JOB_INTERN || Girl.m_NightJob == JOB_NURSE || Girl.m_NightJob == JOB_DOCTOR)
-            Girl.m_NightJob = rest;
+            Girl.m_NightJob = JOB_RESTING;
     }
     else if (JobID == JOB_DOCTOR)
     {
@@ -548,98 +547,6 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
             ss << Girl.FullName() << " has been assigned as a Nurse instead.";
         }
         g_Game->push_message(ss.str(), 0);
-    }
-    // `J` condensed clinic surgery jobs into one check
-    else if (
-        JobID == JOB_CUREDISEASES ||
-        JobID == JOB_GETABORT ||
-        JobID == JOB_COSMETICSURGERY ||
-        JobID == JOB_BREASTREDUCTION ||
-        JobID == JOB_BOOBJOB ||
-        JobID == JOB_ASSJOB ||
-        JobID == JOB_FACELIFT ||
-        JobID == JOB_VAGINAREJUV ||
-        JobID == JOB_LIPO ||
-        JobID == JOB_TUBESTIED ||
-        JobID == JOB_FERTILITY)
-    {
-        bool jobgood = true;
-        if (Girl.m_Building->num_girls_on_job(JOB_DOCTOR, Day0Night1) == 0)
-        {
-            g_Game->push_message(("You must have a Doctor on duty to perform surgery."), 0);
-            jobgood = false;
-        }
-        else if (JobID == JOB_CUREDISEASES && !has_disease(Girl))
-        {
-            g_Game->push_message(("Oops, the girl does not have any diseases."), 0);
-            jobgood = false;
-        }
-        else if (JobID == JOB_GETABORT && !Girl.is_pregnant())
-        {
-            g_Game->push_message(("Oops, the girl is not pregant."), 0);
-            jobgood = false;
-        }
-        else if (JobID == JOB_COSMETICSURGERY)
-        {
-        }
-        else if (JobID == JOB_BREASTREDUCTION && Girl.has_active_trait("Flat Chest"))
-        {
-            g_Game->push_message(("Her boobs can't get no smaller."), 0);
-            jobgood = false;
-        }
-        else if (JobID == JOB_BOOBJOB && Girl.has_active_trait("Titanic Tits"))
-        {
-            g_Game->push_message(("Her boobs can't get no bigger."), 0);
-            jobgood = false;
-        }
-        else if (JobID == JOB_ASSJOB && Girl.has_active_trait("Great Arse"))
-        {
-            g_Game->push_message(("Her ass can't get no better."), 0);
-            jobgood = false;
-        }
-        else if (JobID == JOB_FACELIFT && Girl.age() <= 21)
-        {
-            g_Game->push_message(("She is to young for a face lift."), 0);
-            jobgood = false;
-        }
-        else if (JobID == JOB_VAGINAREJUV && is_virgin(Girl))
-        {
-            g_Game->push_message(("She is a virgin and has no need of this operation."), 0);
-            jobgood = false;
-        }
-        else if (JobID == JOB_LIPO && Girl.has_active_trait("Great Figure"))
-        {
-            g_Game->push_message(("She already has a great figure and doesn't need this."), 0);
-            jobgood = false;
-        }
-        else if (JobID == JOB_TUBESTIED)
-        {
-            if (Girl.is_pregnant())
-            {
-                g_Game->push_message(Girl.FullName() + (" is pregant.\nShe must either have her baby or get an abortion before She can get her Tubes Tied."), 0);
-                jobgood = false;
-            }
-            else if (Girl.has_active_trait("Sterile"))
-            {
-                g_Game->push_message(("She is already Sterile and doesn't need this."), 0);
-                jobgood = false;
-            }
-        }
-        else if (JobID == JOB_FERTILITY)
-        {
-            if (Girl.is_pregnant())
-            {
-                g_Game->push_message(Girl.FullName() +
-                                     " is pregant.\nShe must either have her baby or get an abortion before She can get recieve any more fertility treatments.", 0);
-                jobgood = false;
-            }
-            else if (Girl.has_active_trait("Broodmother"))
-            {
-                g_Game->push_message("She is already as Fertile as she can be and doesn't need any more fertility treatments.", 0);
-                jobgood = false;
-            }
-        }
-        Girl.m_DayJob = Girl.m_NightJob = jobgood ? JobID : rest;
     }
     // Special Centre Jobs
     else if (JobID == JOB_CENTREMANAGER)
@@ -700,7 +607,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     else if (Girl.m_Building && Girl.m_Building->type() == BuildingType::STUDIO)
     {
         MadeChanges = false;
-        Girl.m_DayJob = rest;
+        Girl.m_DayJob = JOB_RESTING;
         Girl.m_NightJob = JobID;
     }
     else
@@ -716,7 +623,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     {
         // if old job was full time but new job is not, switch leftover day or night job back to resting
         if (!fulltime && FullTimeJob(OldJobID) && !FullTimeJob(JobID))        // `J` greatly simplified the check
-            (Day0Night1 ? Girl.m_DayJob = rest : Girl.m_NightJob = rest);
+            (Day0Night1 ? Girl.m_DayJob = JOB_RESTING : Girl.m_NightJob = JOB_RESTING);
 
     }
 
@@ -1705,22 +1612,42 @@ const IGenericJob* cJobManager::get_job(JOBS job) const {
 }
 
 const std::string& cJobManager::get_job_name(JOBS job) const {
-    assert(get_job(job) != nullptr);
     return get_job(job)->get_info().Name;
 }
 
 const std::string& cJobManager::get_job_brief(JOBS job) const {
-    assert(get_job(job) != nullptr);
     return get_job(job)->get_info().ShortName;
 }
 
 const std::string& cJobManager::get_job_description(JOBS job) const {
-    assert(get_job(job) != nullptr);
     return get_job(job)->get_info().Description;
 }
 
+bool cJobManager::is_free_only(JOBS job) const {
+    return get_job(job)->get_info().FreeOnly;
+}
 
 bool cJobManager::job_filter(int Filter, JOBS job) const {
     auto& filter = JobFilters[Filter];
     return std::count(begin(filter.Contents), end(filter.Contents), job) > 0;
+}
+
+bool cJobManager::AddictBuysDrugs(std::string Addiction, std::string Drug, sGirl& girl, IBuilding * brothel, bool Day0Night1)
+{
+    int avail = g_Game->shop().CountItem(Drug);
+    if(avail == 0) return false;                        // quit if the shop does not have the item
+
+    auto item = g_Game->inventory_manager().GetItem(Drug);
+    // try to buy the item
+    if(!g_Game->shop().GirlBuyItem(girl, *item))   return false;
+
+    // If a matron is on shift, she may catch the girl buying drugs
+    if ((brothel->num_girls_on_job(JOB_MATRON, true) >= 1 || brothel->num_girls_on_job(JOB_MATRON, false) >= 1)
+        && g_Dice.percent(70))
+    {
+        girl.AddMessage("Matron confiscates drugs", IMGTYPE_PROFILE, EVENT_WARNING);
+        return girl.remove_item(item) == 0;
+        return false;
+    }
+    return true;
 }

@@ -58,7 +58,7 @@ struct sJobValidResult {
 
 class IGenericJob {
 public:
-    IGenericJob(JOBS j);
+    explicit IGenericJob(JOBS j);
     virtual ~IGenericJob() noexcept = default;
 
     // queries
