@@ -1,0 +1,25 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="CmSr">
+    <Description>
+        She will go around town and help out where she can.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Intelligence" Weight="1" />
+        <Factor Skill="Cooking" Weight="1" />
+        <Factor Skill="Service" Weight="2" />
+        <Mod>work.communityservice</Mod>
+    </Performance>
+
+    <Gains XP="10" Skill="3">
+        <Stat Name="Intelligence" Weight="1" Max="50"/>
+        <Skill Name="Cooking" Weight="1" Max="70"/>
+        <Skill Name="Service" Weight="1" Max="70"/>
+    </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to work during the ${shift} shift.</Text>
+        </Message>
+    </Messages>
+</Job>

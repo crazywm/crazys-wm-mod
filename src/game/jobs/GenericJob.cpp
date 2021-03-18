@@ -169,8 +169,6 @@ DECL_JOB(PeepShow);
 DECL_JOB(Whore);
 
 //Comunity Centre
-DECL_JOB(FeedPoor);
-DECL_JOB(ComunityService);
 DECL_JOB(Counselor);
 
 // house
@@ -217,10 +215,6 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_BARWHORE, Whore, "SWhr", "She will provide sex to the customers.");
     REGISTER_JOB(JOB_WHOREBROTHEL, Whore, "BWhr", "She will whore herself to customers within the building's walls. This is safer but a little less profitable.");
     REGISTER_JOB(JOB_WHORESTREETS, Whore, "StWr", "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable.");
-
-//Comunity Centre
-    REGISTER_JOB(JOB_FEEDPOOR, FeedPoor, "Feed", "She will work in a soup kitchen.");
-    REGISTER_JOB(JOB_COMUNITYSERVICE, ComunityService, "CmSr", "She will go around town and help out where she can.");
 
 // Counseling Centre
     REGISTER_JOB(JOB_COUNSELOR, Counselor, "Cnsl", "She will help girls get over their addictions and problems.").full_time().free_only();

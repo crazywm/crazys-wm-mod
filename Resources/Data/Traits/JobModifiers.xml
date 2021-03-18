@@ -552,25 +552,6 @@
         <Trait Name="Meek" Value="-20"/>
     </Modifier>
 
-    <Modifier Name="work.feedpoor">
-        <!-- good traits -->
-        <Trait Name="Charismatic" Value="20"/>
-        <Trait Name="Sexy Air" Value="10"/>
-        <Trait Name="Cool Person" Value="10"/>  <!-- people love to be around her -->
-        <Trait Name="Cute" Value="5"/>
-        <Trait Name="Charming" Value="15"/>  <!-- people like charming people -->
-        <Trait Name="Optimist" Value="10"/>
-
-
-        <!-- bad traits -->
-        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
-        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
-        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
-        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
-        <Trait Name="Meek" Value="-20"/>
-
-    </Modifier>
-
     <Modifier Name="work.fightarena">
     </Modifier>
 

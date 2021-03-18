@@ -1,0 +1,111 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Feed">
+    <Description>
+        She will work in a soup kitchen.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Intelligence" Weight="1" />
+        <Factor Stat="Charisma" Weight="1" />
+        <Factor Skill="Service" Weight="2" />
+        <Mod>work.communityservice</Mod>
+    </Performance>
+
+    <Gains XP="10" Skill="3">
+        <Stat Name="Intelligence" Weight="1" Max="50"/>
+        <Stat Name="Charisma" Weight="1" Max="50"/>
+        <Skill Name="Service" Weight="1" Max="70"/>
+    </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to work during the ${shift} shift.</Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            She must be perfect at this.
+            <Text>
+                Today ${name} was managing the kitchen giving orders to other cooks and checking the quality of their work.
+            </Text>
+            <Text>
+                ${name} was helping in the kitchen. Her task was to stir-fry vegetables. One word: Perfection. Food that she prepared was great!
+            </Text>
+            <Text>
+                Being done with the main dish earlier, ${name} decided to bake cookies for desert!
+            </Text>
+            <Text>
+                Excellent dish! Some world class chefs should learn from ${name}!
+            </Text>
+            <Text>
+                ${name} knife skill is impressive. She's cutting precisely and really fast, almost like a machine.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            She's unbelievable at this and is always getting praised by people for her work.
+            <Text>
+                ${name} is in charge of the cooking for several weeks now.
+                You could swear that the population of rodents and small animals in the area went down.
+            </Text>
+            <Text>
+                While preparing for today's cooking, ${name} noticed that one of the crucial ingredients is missing.
+                She manage to change the menu and fully use available ingredients.
+            </Text>
+            <Text>
+                She speedily served all in line at the food counter. All the portions handed out were equal.
+            </Text>
+            <Text>
+                Preparing something new she mixed up the proportions from the recipe. The outcome tasted great!
+            </Text>
+            <Text>
+                ${name} was helping in the kitchen. Her task was to prepare the souse for today's meatballs.
+                The texture and flavor was top notch.
+            </Text>
+        </Message>
+        <Message Name="work.good">
+            She's good at this job and gets praised by people often.
+            <Text>While cooking she used everything that was in the kitchen. Nothing was wasted.</Text>
+            <Text>While cooking she accidentally sneezed into the pot. Luckily nobody saw that.</Text>
+            <Text>"${name} was helping in the kitchen.
+                Her task was to carve the meat.
+                Smile on her face that appear while doing this, was somehow scary and disturbing.</Text>
+            <Text>${name} was doing the dishes. Most of them "survived" and will be used next time.</Text>
+            <Text>She spent her shift at the food counter without any trouble.</Text>
+        </Message>
+        <Message Name="work.ok">
+            She made a few mistakes but overall she is okay at this.
+            <Text>Her cooking isn't very good. But You probably would risk serving the prepared dish to a dog.</Text>
+            <Text>Today she was assign as the cook. Not being able to focus on the task at hand, she overcooked the pasta.</Text>
+            <Text>She served all in line at the food counter. Some portions were smaller than others.</Text>
+            <Text>${name} was helping in the kitchen. Her task was to make a salad. She manage to do this much.</Text>
+            <Text>When walking with a pile of clean dished she slipped and fall. All the plates got broken.</Text>
+        </Message>
+        <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
+            <Text>Today she was assign as the cook. Meatballs that she prepared could be used as lethal projectiles.</Text>
+            <Text>${name} was doing the dishes.
+                Let's say it would be a lot quicker to throw them all right away,
+                then wait for her to break so many during this simple chore.
+            </Text>
+            <Text>While cooking she burned two brand new pots!</Text>
+            <Text>
+                ${name} was helping in the kitchen. Her task was to dice the carrots.
+                Surely the carrots were cut, but to called them diced would be an exaggeration.
+            </Text>
+            <Text>Just wanting to serve the food fast to end her shift. She did a sloppy job at the food counter.</Text>
+        </Message>
+        <Message Name="work.worst">
+            She was nervous and constantly making mistakes. She really isn't very good at this job.
+            <Text>While preparing ingredients for the soup she almost cut off her hand!</Text>
+            <Text>
+                ${name} was helping in the kitchen. Her task was to peel the potatoes.
+                The peels were thick and had a lot of the vegetable left on them. What a waste!
+            </Text>
+            <Text>Today she was assigned as the cook. The thing that she created hardly could be called food.</Text>
+            <Text>
+                Today she was assigned to work at the food counter.
+                While handing out food she served different portions to people in line.
+            </Text>
+            <Text>Being assigned to the food counter, she put a sign "self serving" and went out.</Text>
+        </Message>
+    </Messages>
+</Job>

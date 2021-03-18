@@ -23,6 +23,7 @@
 #include "character/sGirl.h"
 #include "buildings/IBuilding.h"
 #include <sstream>
+#include <utility>
 #include "character/predicates.h"
 #include "IGame.h"
 #include "cGirlGangFight.h"
@@ -51,7 +52,7 @@ struct sTherapyData {
 
 class TherapyJob : public IGenericJob {
 public:
-    explicit TherapyJob(JOBS id, const char* short_name, const char* description, sTherapyData data) : IGenericJob(id), m_TherapyData(data) {
+    explicit TherapyJob(JOBS id, const char* short_name, const char* description, sTherapyData data) : IGenericJob(id), m_TherapyData(std::move(data)) {
         m_Info.ShortName = short_name;
         m_Info.Description = description;
         m_Info.FullTime = true;
