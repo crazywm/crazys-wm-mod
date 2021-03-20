@@ -587,14 +587,7 @@ IGenericJob::eCheckWorkResult InternJob::CheckWork(sGirl& girl, bool is_night) {
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;
     }
 
-    if (girl.disobey_check(ACTION_WORKTRAINING, JOB_INTERN))            // they refuse to work
-    {
-        ss << "${name} refused to work during the " << (is_night ? "night" : "day") << " shift.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return IGenericJob::eCheckWorkResult::REFUSES;
-    }
-
-    return IGenericJob::eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, ACTION_WORKTRAINING);
 }
 
 void RegisterClinicJobs(cJobManager& mgr) {

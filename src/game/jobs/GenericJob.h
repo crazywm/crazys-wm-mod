@@ -155,6 +155,8 @@ protected:
 
     int m_Performance;
 
+    eCheckWorkResult SimpleRefusalCheck(sGirl& girl, Action_Types action);
+
 private:
     cJobPerformance m_PerformanceData;
     cJobGains       m_Gains;

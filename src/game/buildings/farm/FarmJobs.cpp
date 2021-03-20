@@ -65,13 +65,7 @@ void cFarmJob::HandleGains(sGirl& girl, int enjoy) {
 }
 
 IGenericJob::eCheckWorkResult cFarmJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(m_Data.Action, job()))
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return IGenericJob::eCheckWorkResult::REFUSES;
-    }
-    return IGenericJob::eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, m_Data.Action);
 }
 
 

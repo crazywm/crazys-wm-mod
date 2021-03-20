@@ -43,21 +43,14 @@ namespace {
     };
 
     IGenericJob::eCheckWorkResult cJobMovieOther::CheckWork(sGirl& girl, bool is_night) {
-        if (girl.disobey_check(ACTION_MOVIECREW, job())) {
-            add_text("refuse");
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-            return eCheckWorkResult::REFUSES;
-        }
-        add_text("work") << "\n";
-        return eCheckWorkResult::ACCEPTS;
+        return SimpleRefusalCheck(girl, ACTION_MOVIECREW);
     }
-
 
     cJobMarketResearch::cJobMarketResearch() : cJobMovieOther(JOB_MARKET_RESEARCH, "MarketResearch.xml") {
     }
 
-
     sWorkJobResult cJobMarketResearch::DoWork(sGirl& girl, bool is_night) {
+        add_text("work") << "\n";
         cGirls::UnequipCombat(girl);    // not for studio crew
         int wages = 50;
 
@@ -132,6 +125,7 @@ cJobMoviePromoter::cJobMoviePromoter() : cJobMovieOther(JOB_PROMOTER, "Promoter.
 }
 
 sWorkJobResult cJobMoviePromoter::DoWork(sGirl& girl, bool is_night) {
+    add_text("work") << "\n";
     auto brothel = girl.m_Building;
 
     bool movies = !g_Game->movie_manager().get_movies().empty();

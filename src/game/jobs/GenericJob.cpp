@@ -383,3 +383,13 @@ void cBasicJobTextInterface::TriggerEvent(const std::string& name) const {
 void cBasicJobTextInterface::RegisterVariable(std::string name, int& value) {
     m_MappedValues[std::move(name)] = &value;
 }
+
+IGenericJob::eCheckWorkResult cBasicJob::SimpleRefusalCheck(sGirl& girl, Action_Types action) {
+    if (girl.disobey_check(action, job()))
+    {
+        add_text("refuse");
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        return eCheckWorkResult::REFUSES;
+    }
+    return eCheckWorkResult::ACCEPTS;
+}

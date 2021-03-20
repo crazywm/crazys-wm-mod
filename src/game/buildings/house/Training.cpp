@@ -85,13 +85,7 @@ sWorkJobResult MistressJob::DoWork(sGirl& girl, bool is_night) {
 }
 
 IGenericJob::eCheckWorkResult MistressJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(ACTION_WORKMATRON, JOB_MISTRESS))            // they refuse to work
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
-    }
-    return eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, ACTION_WORKMATRON);
 }
 
 PracticeJob::PracticeJob() : cBasicJob(JOB_TRAINING, "Training.xml") {

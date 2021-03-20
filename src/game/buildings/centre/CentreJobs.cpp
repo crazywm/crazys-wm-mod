@@ -49,13 +49,7 @@ CommunityService::CommunityService() : cBasicJob(JOB_COMUNITYSERVICE, "Community
 }
 
 IGenericJob::eCheckWorkResult CommunityService::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(ACTION_WORKCENTRE, JOB_COMUNITYSERVICE))            // they refuse to work
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
-    }
-    return eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, ACTION_WORKCENTRE);
 }
 
 sWorkJobResult CommunityService::DoWork(sGirl& girl, bool is_night) {
@@ -405,13 +399,7 @@ sWorkJobResult FeedPoor::DoWork(sGirl& girl, bool is_night) {
 }
 
 auto FeedPoor::CheckWork(sGirl& girl, bool is_night) -> eCheckWorkResult {
-    if (girl.disobey_check(ACTION_WORKCENTRE, JOB_FEEDPOOR))
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
-    }
-    return eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, ACTION_WORKCENTRE);
 }
 
 void RegisterCentreJobs(cJobManager& mgr) {

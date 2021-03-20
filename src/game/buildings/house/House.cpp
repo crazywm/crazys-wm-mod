@@ -62,13 +62,7 @@ HouseCook::HouseCook() : cBasicJob(JOB_HOUSECOOK, "HouseCook.xml") {
 }
 
 IGenericJob::eCheckWorkResult HouseCook::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(ACTION_WORKCOOKING, JOB_HOUSECOOK))
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
-    }
-    return eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, ACTION_WORKCOOKING);
 }
 
 sWorkJobResult HouseCook::DoWork(sGirl& girl, bool is_night) {
@@ -733,13 +727,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
 }
 
 IGenericJob::eCheckWorkResult PersonalTraining::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(ACTION_SEX, JOB_PERSONALTRAINING))
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return IGenericJob::eCheckWorkResult::REFUSES;
-    }
-    return IGenericJob::eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, ACTION_SEX);
 }
 
 double PersonalTraining::GetPerformance(const sGirl& girl, bool estimate) const {
@@ -755,13 +743,7 @@ Recruiter::Recruiter() : cBasicJob(JOB_RECRUITER, "Recruiter.xml") {
 }
 
 IGenericJob::eCheckWorkResult Recruiter::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(ACTION_WORKRECRUIT, JOB_RECRUITER))
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return IGenericJob::eCheckWorkResult::REFUSES;
-    }
-    return IGenericJob::eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, ACTION_WORKRECRUIT);
 }
 
 sWorkJobResult Recruiter::DoWork(sGirl& girl, bool is_night) {

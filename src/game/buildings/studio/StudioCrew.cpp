@@ -78,13 +78,7 @@ cCrewJob::eCheckWorkResult cCrewJob::CheckWork(sGirl& girl, bool is_night) {
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
-    if (girl.disobey_check(ACTION_MOVIECREW, job()))
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return IGenericJob::eCheckWorkResult::REFUSES;
-    }
-    return IGenericJob::eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, ACTION_MOVIECREW);
 }
 
 sWorkJobResult cCrewJob::DoWork(sGirl& girl, bool is_night) {

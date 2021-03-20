@@ -72,13 +72,7 @@ CityGuard::CityGuard() : cBasicJob(JOB_CITYGUARD, "CityGuard.xml") {
 }
 
 IGenericJob::eCheckWorkResult CityGuard::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(ACTION_WORKSECURITY, JOB_CITYGUARD))            // they refuse to work
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
-    }
-    return eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, ACTION_WORKSECURITY);
 }
 
 sWorkJobResult CityGuard::DoWork(sGirl& girl, bool is_night) {
@@ -339,13 +333,7 @@ FightGirls::FightGirls() : cBasicJob(JOB_FIGHTARENAGIRLS, "FightGirls.xml"){
 }
 
 IGenericJob::eCheckWorkResult FightGirls::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(ACTION_COMBAT, JOB_FIGHTARENAGIRLS))            // they refuse to work
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
-    }
-    return eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, ACTION_COMBAT);
 }
 
 sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
@@ -518,13 +506,7 @@ IGenericJob::eCheckWorkResult FightTraining::CheckWork(sGirl& girl, bool is_nigh
         girl.m_NightJob = girl.m_DayJob = JOB_RESTING;
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
-    if (girl.disobey_check(ACTION_COMBAT, JOB_FIGHTTRAIN))            // they refuse to work
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
-    }
-    return eCheckWorkResult::ACCEPTS;
+    return SimpleRefusalCheck(girl, ACTION_COMBAT);
 }
 
 sWorkJobResult FightTraining::DoWork(sGirl& girl, bool is_night) {
