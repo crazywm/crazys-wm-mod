@@ -16,8 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include"cRng.h"
-#include <ctime>
+#include "cRng.h"
 
 /*
  * easier to use the method internally than an operator
@@ -25,15 +24,13 @@
  */
 int cRng::random(int n)
 {
-    float scaling_factor = rand() / float(RAND_MAX);
-    if (scaling_factor == 1) scaling_factor = 0.9999f;
-    return  int(scaling_factor * n);
+    std::uniform_int_distribution<int> dist(0, n-1);
+    return dist(m_Generator);
 }
 double cRng::randomd(double n)
 {
-    float scaling_factor = rand() / float(RAND_MAX);
-    if (scaling_factor == 1) scaling_factor = 0.9999f;
-    return  double(scaling_factor * n);
+    std::uniform_real_distribution<float> dist(0, n);
+    return dist(m_Generator);
 }
 
 
@@ -65,22 +62,10 @@ int cRng::bell(int min, int max)    // `J` added - not sure how well it will wor
     if (test > max) return max;
     return (int)test;
 }
-#if 0
-int cRng::bell(int min, int max, int mid)
-{
-    if (min == max) return max;
-    return min + random(bdif);
-}
-int cRng::bell(int min, int max, int mlo, int mhi)
-{
-    if (min == max) return max;
-    return min + random(bdif);
-}
-#endif
 
 cRng::cRng()
 {
-    srand((int)time(nullptr));
+    m_Generator.seed((long)time(nullptr));
 }
 
 const char* cRng::select_text(std::initializer_list<const char*> options) {

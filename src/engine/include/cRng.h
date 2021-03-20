@@ -24,6 +24,7 @@
 #include <cstdlib>
 #include <initializer_list>
 #include <utils/sPercent.h>
+#include <random>
  
 struct cRng
 {
@@ -104,6 +105,9 @@ struct cRng
 
     /// Chooses one string to return, with equal probability.
     const char* select_text(std::initializer_list<const char*> options);
+
+private:
+    std::mt19937 m_Generator;
 };
 
 #endif
