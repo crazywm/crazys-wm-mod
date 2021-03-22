@@ -1,4 +1,7 @@
 # Version 07.00.alpha15
+## Fixes
+* Improved RNG on windows
+
 ## Changes
 * Meet scripts can set image on town screen
 * Removed Dump Bodies option for sell/fire girls

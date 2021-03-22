@@ -20,7 +20,6 @@ function PlayerRapeGirl(girl)
     girl:happiness(-5);
     girl:health(-10);
     girl:libido(-1);
-    girl:upd_temp_stat(STAT_LIBIDO, 2, true);
     girl:confidence(-1);
     girl:obedience(2);
     girl:pcfear(2);

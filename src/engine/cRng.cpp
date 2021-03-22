@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cRng.h"
+#include <ctime>
 
 /*
  * easier to use the method internally than an operator

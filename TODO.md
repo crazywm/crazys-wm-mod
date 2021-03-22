@@ -83,4 +83,3 @@
   and if the girl refuses a customer due to sexual preference.
 * [ ] Recruiters, cooks and cleaners in the house do not appear to cost any money???
 * [ ] matron putting back to old job
-* [ ] random seed does not seem to work on windows
