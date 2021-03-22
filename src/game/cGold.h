@@ -62,7 +62,7 @@ protected:
     */
     bool    debit_if_ok(double price, bool force = false);
     // `J` added interest rate for .06.03.01
-    double m_interest_rate;
+    double m_interest_rate = 0.000;
 
 public:
     cGoldBase(int initial = 0);

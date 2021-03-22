@@ -30,7 +30,7 @@
 #include "buildings/cDungeon.h"
 
 // `J` Job Brothel - General
-bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
+sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 
@@ -860,7 +860,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                         girl.m_DayJob = girl.m_NightJob = JOB_INDUNGEON;
                         assert(girl.m_Building);
                         g_Game->dungeon().AddGirl(girl.m_Building->remove_girl(&girl), DUNGEON_GIRLSTEAL);
-                        return false;
+                        return {false, 0, 0, 0};
                     }
                     else if (girl.m_Money >= 200 && rng.percent(50))            // 'Mute' Pay 200 gold fine, if not enough gold goes to prision
                     {
@@ -873,7 +873,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                         ss << "She got caught by the clinic guards and was unable to pay so they sent her to jail.\n";
                         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
                         g_Game->GetPrison().AddGirl(girl.m_Building->remove_girl(&girl));
-                        return false;
+                        return {false, 0, 0, 0};
                     }
                     else if (rng.percent(20)) // 'Mute' Gets raped by guards
                     {
@@ -2362,7 +2362,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             girldiedmsg << ".";
         }
         g_Game->push_message(girldiedmsg.str(), COLOR_RED);
-        return false;
+        return {false, 0, 0, 0};
     }
 
     // update stats and skills
@@ -2378,7 +2378,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
     // update money
     girl.m_Money += U_Money;
 
-    return false;
+    return {false, 0, 0, 0};
 }
 
 double JP_Freetime(const sGirl& girl, bool estimate)    // not used
