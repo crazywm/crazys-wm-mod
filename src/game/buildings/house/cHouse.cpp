@@ -43,9 +43,6 @@ sHouse::~sHouse() = default;
 // Run the shifts
 void sHouse::UpdateGirls(bool is_night)    // Start_Building_Process_B
 {
-    // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cHouse.cpp
-    std::stringstream ss;
-
     BeginShift(is_night);
 
     //  Do all Personal Bed Warmers together. Mistress needs to run before all the training jobs

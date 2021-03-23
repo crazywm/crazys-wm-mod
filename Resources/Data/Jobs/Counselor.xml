@@ -1,0 +1,34 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Cnsl">
+    <Description>
+        She will help girls get over their addictions and problems.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Intelligence" Weight="1"/>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Stat="Morality" Weight="1"/>
+        <Factor Stat="Charisma" Weight="1"/>
+        <Mod>work.counselor</Mod>
+    </Performance>
+
+    <Gains XP="5" Skill="2">
+        <Skill Name="Service" Weight="1" />
+        <Stat Name="Charisma" Weight="1" />
+        <GainTrait Trait="Charismatic" Threshold="60" Action="WORKCOUNSELOR">
+            Dealing with patients and talking with them about their problems has made ${name} more Charismatic.
+        </GainTrait>
+        <LoseTrait Trait="Nervous" Threshold="30" Action="WORKCOUNSELOR">
+            ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
+        </LoseTrait>
+    </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to counsel anyone.</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} counseled patients.</Text>
+        </Message>
+    </Messages>
+</Job>

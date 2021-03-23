@@ -29,7 +29,6 @@
   - [ ] Strip Club
   - [ ] Brothel
   - [ ] PersonalBedWarmer
-  - [ ] Centre
 * [ ] adjustable unique chance for overworld encounters
 
 ## Scripting

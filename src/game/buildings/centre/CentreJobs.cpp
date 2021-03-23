@@ -42,6 +42,14 @@ namespace {
         sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
         eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     };
+
+    class Counselor : public cBasicJob {
+    public:
+        Counselor();
+
+        sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
+        eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+    };
 }
 
 CommunityService::CommunityService() : cBasicJob(JOB_COMUNITYSERVICE, "CommunityService.xml") {
@@ -371,11 +379,6 @@ sWorkJobResult FeedPoor::DoWork(sGirl& girl, bool is_night) {
     }
 
 #pragma endregion
-#pragma region    //    Money                    //
-
-
-#pragma endregion
-#pragma region    //    Finish the shift            //
 
     feed += (int)(jobperformance / 10);        //  1 feed per 10 point of performance
 
@@ -394,7 +397,6 @@ sWorkJobResult FeedPoor::DoWork(sGirl& girl, bool is_night) {
 
     girl.upd_Enjoyment(ACTION_WORKCENTRE, enjoy);
 
-#pragma endregion
     return {false, 0, 0, std::max(0, wages)};
 }
 
@@ -402,7 +404,48 @@ auto FeedPoor::CheckWork(sGirl& girl, bool is_night) -> eCheckWorkResult {
     return SimpleRefusalCheck(girl, ACTION_WORKCENTRE);
 }
 
+Counselor::Counselor() : cBasicJob(JOB_COUNSELOR, "Counselor.xml") {
+    m_Info.FullTime = true;
+    m_Info.FreeOnly = true;
+}
+
+IGenericJob::eCheckWorkResult Counselor::CheckWork(sGirl& girl, bool is_night) {
+    return SimpleRefusalCheck(girl, ACTION_WORKCOUNSELOR);
+}
+
+sWorkJobResult Counselor::DoWork(sGirl& girl, bool is_night) {
+    Action_Types actiontype = ACTION_WORKCOUNSELOR;
+    auto brothel = girl.m_Building;
+    add_text("work") << "\n\n";
+
+    cGirls::UnequipCombat(girl);    // not for doctor
+
+    int roll_a = d100();
+    int wages = 25;
+    int enjoy = 0;
+
+    if (roll_a <= 10)       { enjoy -= uniform(1, 3);    ss << "The addicts hasseled her."; }
+    else if (roll_a >= 90)  { enjoy += uniform(1, 3);    ss << "She had a pleasant time working."; }
+    else                    { enjoy += uniform(0, 1);        ss << "Otherwise, the shift passed uneventfully."; }
+
+    girl.AddMessage(ss.str(), IMGTYPE_TEACHER, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+
+    int rehabers = brothel->num_girls_on_job(JOB_REHAB, is_night);
+    // work out the pay between the house and the girl
+    int roll_max = girl.spirit() + girl.intelligence();
+    roll_max /= 4;
+    wages += uniform(10, 10 + roll_max);
+    wages += 5 * rehabers;    // `J` pay her 5 for each patient you send to her
+
+    girl.upd_Enjoyment(actiontype, enjoy);
+
+    apply_gains(girl, m_Performance);
+
+    return {false, 0, 0, std::max(0, wages)};
+}
+
 void RegisterCentreJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<CommunityService>());
     mgr.register_job(std::make_unique<FeedPoor>());
+    mgr.register_job(std::make_unique<Counselor>());
 }
