@@ -4201,7 +4201,6 @@ void cGirls::FreeGirls(const std::vector<sGirl*>& targets, bool party) {
             girl->pchate(-25);
             girl->happiness(35);
         }
-        g_Game->girl_pool().GiveGirl(girl->m_Building->remove_girl(girl));
     }
 
     if(targets.size() == 1) {

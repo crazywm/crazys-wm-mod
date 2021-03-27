@@ -25,6 +25,7 @@
  */
 int cRng::random(int n)
 {
+    if(n <= 0) return 0;
     std::uniform_int_distribution<int> dist(0, n-1);
     return dist(m_Generator);
 }

@@ -29,6 +29,8 @@
 #include "cGirlGangFight.h"
 #include "buildings/cBuildingManager.h"
 
+extern const char* const CounselingInteractionId;
+
 struct sRemoveTrait {
     const char* Trait;
     const char* Message;
@@ -79,6 +81,8 @@ sWorkJobResult TherapyJob::DoWork(sGirl& girl, bool is_night) {
     // if she was not in thearpy yesterday, reset working days to 0 before proceding
     if (girl.m_YesterDayJob != job()) { girl.m_WorkingDay = girl.m_PrevWorkingDay = 0; }
 
+    sGirl* counselor = brothel->RequestInteraction(CounselingInteractionId);
+
     if (chance(m_TherapyData.BasicFightChance) || girl.disobey_check(actiontype, job()))    // `J` - yes, OR, not and.
     {
         FightEvent(girl, is_night);
@@ -101,8 +105,7 @@ sWorkJobResult TherapyJob::DoWork(sGirl& girl, bool is_night) {
 
     // `J` % chance a counselor will save her if she almost dies
     int healthmod = uniform(-m_TherapyData.HealthDanger, 2);
-    if (girl.health() + healthmod < 1 && chance(95 + (girl.health() + healthmod)) &&
-        (brothel->num_girls_on_job(JOB_COUNSELOR, true) > 0 || brothel->num_girls_on_job(JOB_COUNSELOR, false) > 0))
+    if (girl.health() + healthmod < 1 && chance(95 + (girl.health() + healthmod)))
     {    // Don't kill the girl from therapy if a Counselor is on duty
         girl.set_stat(STAT_HEALTH, 1);
         girl.pcfear(5);
@@ -181,7 +184,7 @@ bool TherapyJob::needs_therapy(const sGirl& girl) const {
 }
 
 void TherapyJob::FightEvent(sGirl& girl, bool is_night) {
-    ss << " fought with her counselor and did not make any progress this week.";
+    ss << "${name} fought with her counselor and did not make any progress this week.";
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
     girl.upd_Enjoyment(ACTION_WORKTHERAPY, -1);
     if (is_night) girl.m_WorkingDay--;
@@ -207,8 +210,8 @@ IGenericJob::eCheckWorkResult TherapyJob::CheckWork(sGirl& girl, bool is_night) 
         girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         return eCheckWorkResult::IMPOSSIBLE; // not refusing
     }
-    bool hasCounselor = brothel->num_girls_on_job(JOB_COUNSELOR, is_night) > 0;
-    if (!hasCounselor)
+
+    if (!brothel->HasInteraction(CounselingInteractionId))
     {
         girl.AddMessage(m_TherapyData.NoCounselorMessage, IMGTYPE_PROFILE, EVENT_WARNING);
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
@@ -274,7 +277,7 @@ void AngerManagement::FightEvent(sGirl& girl, bool is_night) {
     }
     else
     {
-        ss << " fought with her counselor and did not make any progress this week.";
+        ss << "${name} fought with her counselor and did not make any progress this week.";
     }
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 }
@@ -296,7 +299,7 @@ void RegisterTherapyJobs(cJobManager& mgr) {
         "${name} doesn't need anger management.",
         "She should stay in anger management to treat her other anger issues.",
         "She died in anger management.",
-        "$[name} has no counselor to help her on the ${shift} Shift.",
+        "${name} has no counselor to help her on.",
         "She has been released from therapy.",
         "therapy",
         3, 20, 10, 10,
@@ -309,7 +312,7 @@ void RegisterTherapyJobs(cJobManager& mgr) {
         "${name} doesn't need extreme therapy for anything.",
         "She should stay in extreme therapy to treat her other disorders.",
         "She died in therapy.",
-        "$[name} has no counselor to help her on the ${shift} Shift.",
+        "${name} has no counselor to help her.",
         "She has been released from therapy.",
         "therapy",
         3, 5, 5, 4,
@@ -322,7 +325,7 @@ void RegisterTherapyJobs(cJobManager& mgr) {
         "${name} doesn't need therapy for anything.",
         "She should stay in therapy to treat her other disorders.",
         "She died in therapy.",
-        "$[name} has no counselor to help her on the ${shift} Shift.",
+        "${name} has no counselor to help her.",
         "She has been released from therapy.",
         "therapy",
         3, 10, 5, 4,

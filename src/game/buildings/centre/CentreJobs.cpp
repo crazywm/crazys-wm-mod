@@ -26,6 +26,8 @@
 #include "IGame.h"
 #include "character/cPlayer.h"
 
+extern const char* const CounselingInteractionId;
+
 namespace {
     class CommunityService : public cBasicJob {
     public:
@@ -436,6 +438,7 @@ sWorkJobResult Counselor::DoWork(sGirl& girl, bool is_night) {
     roll_max /= 4;
     wages += uniform(10, 10 + roll_max);
     wages += 5 * rehabers;    // `J` pay her 5 for each patient you send to her
+    brothel->ProvideInteraction(CounselingInteractionId, &girl, 1);
 
     girl.upd_Enjoyment(actiontype, enjoy);
 
