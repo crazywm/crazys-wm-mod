@@ -98,8 +98,9 @@ private:
 };
 
 void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
-    auto brothel = girl.m_Building;
     JOBS job_id = job();
+
+    sGirl* doctor = RequestInteraction(DoctorInteractionId);
 
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
@@ -112,9 +113,9 @@ void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
     {
         if(girl.health() < 50) {
             int bp = uniform(4, 7);
-            if(brothel->TryConsumeResource(CarePointsBasicId, bp)) {
+            if(TryConsumeResource(CarePointsBasicId, bp)) {
                 int req_gp = uniform(2, 4);
-                if(brothel->TryConsumeResource(CarePointsGoodId, req_gp)) {
+                if(TryConsumeResource(CarePointsGoodId, req_gp)) {
                     ss << "${name}'s health condition does not allow surgery to be performed. "
                           "Your highly qualified nursing staff are making sure she get well enough for her treatment soon.";
                     girl.health( uniform(5, 10) );
@@ -143,8 +144,8 @@ void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
     } else    // and if there are nurses on duty, they take care of her at night
     {
         int req_gp = uniform(3, 6);
-        if(brothel->TryConsumeResource(CarePointsGoodId, req_gp)) {
-            brothel->ConsumeResource(CarePointsBasicId, req_gp);
+        if(TryConsumeResource(CarePointsGoodId, req_gp)) {
+            ConsumeResource(CarePointsBasicId, req_gp);
             girl.m_WorkingDay++;
             ss << "Your professional nurses ensure a speedy recovery.";
             girl.health( uniform(3, 5) );
@@ -178,7 +179,6 @@ void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
 }
 
 IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) {
-    auto brothel = girl.m_Building;
     // check validity of the job
     auto valid = is_job_valid(girl);
     if (!valid) {
@@ -189,7 +189,7 @@ IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) 
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
-    if (brothel->RequestInteraction(DoctorInteractionId)) {
+    if (!HasInteraction(DoctorInteractionId)) {
         ss << "${name} does nothing. You don't have any Doctors working. (require 1) ";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;    // not refusing
@@ -209,7 +209,7 @@ sJobValidResult SurgeryJob::is_job_valid(const sGirl& girl) const {
 
 bool SurgeryJob::nursing_effect(sGirl& girl) {
     int health_dmg = uniform(4, 7);
-    health_dmg -= girl.m_Building->ConsumeResource(CarePointsBasicId, health_dmg);
+    health_dmg -= ConsumeResource(CarePointsBasicId, health_dmg);
 
     if(health_dmg > 0) {
         if(girl.gain_trait("Small Scars", 2)) {
@@ -587,7 +587,7 @@ void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
     if (girl.m_WorkingDay < 0) girl.m_WorkingDay = 0;
     girl.m_DayJob = girl.m_NightJob = JOB_CUREDISEASES;    // it is a full time job
 
-    auto doctor = brothel->RequestInteraction(DoctorInteractionId);
+    auto doctor = RequestInteraction(DoctorInteractionId);
 
     int cost = 0;
     std::vector<std::string> diseases;
@@ -605,7 +605,7 @@ void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
 
     if(!doctor) {
         // do you have high-quality nursing
-        if(brothel->TryConsumeResource(CarePointsGoodId, 3)) {
+        if(TryConsumeResource(CarePointsGoodId, 3)) {
             ss << "There were no Doctors available ${name}, but you highly qualified nurses made sure that ${name}'s situation "
                   "did not deteriorate.";
         } else {
@@ -618,7 +618,7 @@ void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
         doctor->AddMessage("${name} treated " + girl.FullName() + "'s " + diseases[0],
                            IMGTYPE_NURSE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         int doc_pts = std::min(5, int(doctor->job_performance(JOB_DOCTOR, false) / 20));
-        int nurse_pts = brothel->ConsumeResource(CarePointsBasicId, 4) + 2 * brothel->ConsumeResource(CarePointsGoodId, 2);
+        int nurse_pts = ConsumeResource(CarePointsBasicId, 4) + 2 * ConsumeResource(CarePointsGoodId, 2);
         if(nurse_pts == 0) {
             ss << " Your clinic has not enough Nurses to provide adequate care, so her recovery will be slower.";
         }
@@ -749,7 +749,7 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
     if (girl.m_YesterDayJob != JOB_GETABORT) { girl.m_WorkingDay = girl.m_PrevWorkingDay = 0; }
     girl.m_DayJob = girl.m_NightJob = JOB_GETABORT;    // it is a full time job
 
-    sGirl* doctor = brothel->RequestInteraction(DoctorInteractionId);
+    sGirl* doctor = RequestInteraction(DoctorInteractionId);
     if (!doctor)
     {
         ss << "There is no doctor available to perform ${name}'s abortion!";
@@ -783,7 +783,7 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
         // `J` first set the base stat modifiers
         int happy = -10, health = -20, mana = -20, spirit = -5, love = -5, hate = 5;
 
-        if (brothel->TryConsumeResource(CarePointsBasicId, 3))
+        if (TryConsumeResource(CarePointsBasicId, 3))
         {
             ss << "The Nurse tried to keep her healthy and happy during her recovery.\n";
             // `J` then adjust if a nurse helps her through it
@@ -936,7 +936,7 @@ IGenericJob::eCheckWorkResult Healing::CheckWork(sGirl& girl, bool is_night) {
 void Healing::ReceiveTreatment(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 
-    sGirl* doctor = brothel->RequestInteraction(DoctorInteractionId);
+    sGirl* doctor = RequestInteraction(DoctorInteractionId);
 
     // `J` base recovery copied free time recovery
     int health = 10 + (girl.constitution() / 10);
@@ -954,11 +954,11 @@ void Healing::ReceiveTreatment(sGirl& girl, bool is_night) {
             health += 30;
         }
 
-        if(brothel->TryConsumeResource(CarePointsBasicId, 3)) {
+        if(TryConsumeResource(CarePointsBasicId, 3)) {
             health += 10;
         }
     } else {
-        if(brothel->TryConsumeResource(CarePointsBasicId, 3)) {
+        if(TryConsumeResource(CarePointsBasicId, 3)) {
             ss << "You don't have enough doctors on duty, so ${name} is just cared for by the nurses.";
             health += 10;
         } else {

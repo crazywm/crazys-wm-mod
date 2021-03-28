@@ -3,6 +3,7 @@
 ## Changes
 * Meet scripts can set image on town screen
 * Removed Dump Bodies option for sell/fire girls
+* Added new image tags for the studio crew jobs
 
 ## Fixes
 * Improved RNG on windows

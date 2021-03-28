@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jobs/GenericJob.h"
+#include "jobs/BasicJob.h"
 #include "character/sGirl.h"
 #include "cGirls.h"
 #include "buildings/IBuilding.h"
@@ -59,11 +59,11 @@ MistressJob::MistressJob() : cBasicJob(JOB_MISTRESS, "Mistress.xml") {
 
 sWorkJobResult MistressJob::DoWork(sGirl& girl, bool is_night) {
     if (m_Performance > 150) {
-        girl.m_Building->ProvideInteraction(TrainingInteractionId, &girl, 2);
+        ProvideInteraction(TrainingInteractionId, 2);
         add_text("work.good");
     } else {
         add_text("work.normal");
-        girl.m_Building->ProvideInteraction(TrainingInteractionId, &girl, 1);
+        ProvideInteraction(TrainingInteractionId, 1);
     }
 
     apply_gains(girl, m_Performance);
@@ -128,7 +128,7 @@ namespace {
 
 sWorkJobResult PracticeJob::DoWork(sGirl& girl, bool is_night) {
     auto building = girl.m_Building;
-    sGirl* mistress = building->RequestInteraction(TrainingInteractionId);
+    sGirl* mistress = RequestInteraction(TrainingInteractionId);
     SetSubstitution("mistress", mistress ? mistress->FullName() : "The Mistress");
     girl.tiredness(2);
 
@@ -239,7 +239,7 @@ IGenericJob::eCheckWorkResult PracticeJob::CheckWork(sGirl& girl, bool is_night)
     {
 
         sGirl* mistress = nullptr;
-        if(girl.is_slave() && (mistress = girl.m_Building->RequestInteraction(TrainingInteractionId))) {
+        if(girl.is_slave() && (mistress = RequestInteraction(TrainingInteractionId))) {
             SetSubstitution("mistress", mistress->FullName() );
             add_text("refuse.forced");
             // smaller changes than for dungeon torture, but still we should combine the code at some point
@@ -351,7 +351,7 @@ IGenericJob::eCheckWorkResult TrainingJob::CheckWork(sGirl& girl, bool is_night)
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
-    m_Mistress = girl.m_Building->RequestInteraction(TrainingInteractionId);
+    m_Mistress = RequestInteraction(TrainingInteractionId);
     if(!m_Mistress) {
         ss << "There is no Mistress available to train ${name}\n";
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jobs/GenericJob.h"
+#include "jobs/BasicJob.h"
 #include "character/sGirl.h"
 #include "character/cCustomers.h"
 #include "character/predicates.h"
@@ -438,7 +438,7 @@ sWorkJobResult Counselor::DoWork(sGirl& girl, bool is_night) {
     roll_max /= 4;
     wages += uniform(10, 10 + roll_max);
     wages += 5 * rehabers;    // `J` pay her 5 for each patient you send to her
-    brothel->ProvideInteraction(CounselingInteractionId, &girl, 1);
+    ProvideInteraction(CounselingInteractionId, 2);
 
     girl.upd_Enjoyment(actiontype, enjoy);
 

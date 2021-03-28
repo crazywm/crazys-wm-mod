@@ -127,7 +127,7 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "impregsex*.", "impreggroup*.", "impregbdsm*.", "impregbeast*.",                                             // `J` new .06.03.01 for DarkArk
                             "virginsex*.", "virgingroup*.", "virginbdsm*.", "virginbeast*.",                                            // `J` new .06.03.01 for DarkArk
                             "escort*.", "sport*.", "study*.", "teacher*.",                                                                // `J` new .06.03.02 for grishnak
-                            "massage*.",
+                            "massage*.", "studiocrew*.", "cameramage*.", "director*.", "crystalpurifier*.", "stagehand*.",
                             "preg*.",    // pregnant varients
                             "preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
                             "pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
@@ -143,7 +143,7 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "pregimpregsex*.", "pregimpreggroup*.", "pregimpregbdsm*.", "pregimpregbeast*.",                             // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "pregvirginsex*.", "pregvirgingroup*.", "pregvirginbdsm*.", "pregvirginbeast*.",                            // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "pregescort*.", "pregsport*.", "pregstudy*.", "pregteacher*.",                                             // `J` new .06.03.02 for grishnak
-                            "pregmassage*.",
+                            "pregmassage*.", "pregstudiocrew*.", "pregcameramage*.", "pregdirector*.", "pregcrystalpurifier*.", "pregstagehand*.",
 
                     };
 std::string galtxt[] =
@@ -158,6 +158,7 @@ std::string galtxt[] =
                             "Impregnate Sex", "Impregnate Group", "Impregnate Bondage", "Impregnate Beast",                             // `J` new .06.03.01 for DarkArk
                             "Virgin Sex", "Virgin Group", "Virgin Bondage", "Virgin Beast",                                                // `J` new .06.03.01 for DarkArk
                             "Escort", "Sport", "Study", "Teacher", "Massage",                                                                        // `J` new .06.03.02 for grishnak
+                            "Studio Crew", "Camera Mage", "Director", "Crystal Purifier", "Stage Hand",
 
                             "Pregnant",    // pregnant varients
                             "Pregnant Anal", "Pregnant BDSM", "Pregnant Sex", "Pregnant Beast", "Pregnant Group",
@@ -175,10 +176,12 @@ std::string galtxt[] =
                             "P Impreg Sex", "P Impreg Group", "P Impreg Bondage", "P Impreg Beast",                                        // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "P Virgin Sex", "P Virgin Group", "P Virgin Bondage", "P Virgin Beast",                                        // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "Pregnant Escort", "Pregnant Sport", "Pregnant Study", "Pregnant Teacher",                                    // `J` new .06.03.02 for grishnak
-                            "Pregnant Massage"
+                            "Pregnant Massage", "Pregnant Studio Crew", "Pregnant Camera Mage", "Pregnant Director",
+                            "Pregnant Crystal Purifier", "Pregnant Stage Hand",
 
                     };
 
+static_assert(sizeof(galtxt) == sizeof(pic_types), "Mismatch between pic types and names");
 
 
 /* `J` image tree for each image type
@@ -960,8 +963,23 @@ int TryImageType(int imagetype, int tries)
         if (t < 15)    return IMGTYPE_HAND;
         return IMGTYPE_MASSAGE;
     }break;
-
-
+    case IMGTYPE_CAMERA_MAGE:
+    case IMGTYPE_PURIFIER:
+    case IMGTYPE_STAGEHAND:
+    case IMGTYPE_DIRECTOR:
+        return IMGTYPE_STUDIO_CREW;
+    case IMGTYPE_PREG_CAMERA_MAGE:
+        return IMGTYPE_CAMERA_MAGE;
+    case IMGTYPE_PREG_DIRECTOR:
+        return IMGTYPE_DIRECTOR;
+    case IMGTYPE_PREG_PURIFIER:
+        return IMGTYPE_PURIFIER;
+    case IMGTYPE_PREG_STAGEHAND:
+        return IMGTYPE_STAGEHAND;
+    case IMGTYPE_PREG_STUDIO_CREW:
+        return IMGTYPE_STUDIO_CREW;
+    case IMGTYPE_STUDIO_CREW:
+        return IMGTYPE_PROFILE;
 
 
 

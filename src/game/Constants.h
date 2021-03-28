@@ -721,6 +721,11 @@ enum Image_Types {
     IMGTYPE_STUDY,                        // `J` new .06.03.02 for grishnak - reading a book or looking clever
     IMGTYPE_TEACHER,                    // `J` new .06.03.02 for grishnak - dressed or acting as a teacher
     IMGTYPE_MASSAGE,
+    IMGTYPE_STUDIO_CREW,
+    IMGTYPE_CAMERA_MAGE,
+    IMGTYPE_DIRECTOR,
+    IMGTYPE_PURIFIER,
+    IMGTYPE_STAGEHAND,
 
     /*
 IMGTYPE_WATER            - "water*."            - "Watersports"        - watersports
@@ -812,6 +817,11 @@ IMGTYPE_PETLICK            - "petlick*."        - "PetLick"            - lick, o
     IMGTYPE_PREGSTUDY,                    // `J` new .06.03.02 for grishnak - reading a book or looking clever
     IMGTYPE_PREGTEACHER,                // `J` new .06.03.02 for grishnak - dressed or acting as a teacher
     IMGTYPE_PREGMASSAGE,
+    IMGTYPE_PREG_STUDIO_CREW,
+    IMGTYPE_PREG_CAMERA_MAGE,
+    IMGTYPE_PREG_DIRECTOR,
+    IMGTYPE_PREG_PURIFIER,
+    IMGTYPE_PREG_STAGEHAND,
 
     NUM_IMGTYPES    // `J` All image types can have a pregnant variation (except pregnant-pregnant)
 };

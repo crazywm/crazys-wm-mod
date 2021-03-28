@@ -35,7 +35,7 @@ class cJobCameraMage : public cCrewJob {
 public:
     cJobCameraMage();
     void HandleUpdate(sGirl& girl, float performance) override {
-        girl.m_Building->ProvideInteraction(CamMageInteractionId, &girl, 3);
+        ProvideInteraction(CamMageInteractionId, 3);
     }
 };
 
@@ -43,7 +43,7 @@ class cJobCrystalPurifier : public cCrewJob {
 public:
     cJobCrystalPurifier();
     void HandleUpdate(sGirl& girl, float performance) override {
-        girl.m_Building->ProvideInteraction(CrystalPurifierInteractionId, &girl, 3);
+        ProvideInteraction(CrystalPurifierInteractionId, 3);
     }
 };
 
@@ -58,7 +58,7 @@ class cJobDirector : public cCrewJob {
 public:
     cJobDirector();
     void HandleUpdate(sGirl& girl, float performance) override {
-        girl.m_Building->ProvideInteraction(DirectorInteractionId, &girl, 3);
+        ProvideInteraction(DirectorInteractionId, 3);
     };
 
 };
@@ -138,6 +138,7 @@ sWorkJobResult cCrewJob::DoWork(sGirl& girl, bool is_night) {
 
 cJobCameraMage::cJobCameraMage() : cCrewJob(JOB_CAMERAMAGE, "CameraMage.xml") {
     m_Info.Provides.emplace_back(CamMageInteractionId);
+    m_EventImage = IMGTYPE_CAMERA_MAGE;
 }
 
 cJobCrystalPurifier::cJobCrystalPurifier() : cCrewJob(JOB_CRYSTALPURIFIER, "CrystalPurifier.xml") {
@@ -150,12 +151,12 @@ cJobFluffer::cJobFluffer() : cCrewJob(JOB_FLUFFER, "Fluffer.xml") {
 }
 
 void cJobFluffer::HandleUpdate(sGirl& girl, float performance) {
-    girl.m_Building->ProvideResource(FluffPointsId, (int)performance);
+    ProvideResource(FluffPointsId, (int)performance);
 }
 
 cJobDirector::cJobDirector() : cCrewJob(JOB_DIRECTOR, "Director.xml") {
     m_Info.Provides.emplace_back(DirectorInteractionId);
-    m_EventImage = IMGTYPE_FORMAL;
+    m_EventImage = IMGTYPE_DIRECTOR;
 }
 
 class cJobStageHand : public cBasicJob {
@@ -188,7 +189,7 @@ sWorkJobResult cJobStageHand::DoWork(sGirl& girl, bool is_night) {
     int enjoyc = 0, enjoym = 0;
     int wages = 50;
     int tips = 0;
-    int imagetype = IMGTYPE_PROFILE;
+    int imagetype = IMGTYPE_STAGEHAND;
     bool filming = true;
 
 
@@ -272,7 +273,7 @@ sWorkJobResult cJobStageHand::DoWork(sGirl& girl, bool is_night) {
 
     girl.AddMessage(ss.str(), imagetype, EVENT_NIGHTSHIFT);
 
-    brothel->ProvideResource(StageHandPtsId, int(jobperformance));
+    ProvideResource(StageHandPtsId, int(jobperformance));
     brothel->m_Filthiness = std::max(0, brothel->m_Filthiness - int(CleanAmt));
 
     // Improve girl

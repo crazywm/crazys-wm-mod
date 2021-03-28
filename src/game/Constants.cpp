@@ -257,7 +257,9 @@ const std::array<const char*, NUM_IMGTYPES>& get_imgtype_names() {
             "sexdoggy", "jail", "puppygirl", "ponygirl", "catgirl", "brand", "rape", "rapebeast",
             "birthhuman", "birthhumanmultiple", "birthbeast", "impregsex", "impreggroup", "impegbdsm",
             "impregbeast", "virginsex", "virgingroup", "virginbdsm", "virginbeast", "escort",
-            "sport", "study", "teacher", "massage", "pregnant", "preganal", "pregbdsm", "pregsex", "pregbeast", "preggroup",
+            "sport", "study", "teacher", "massage",
+            "studiocrew", "cameramage", "director", "crystalpurifier", "stagehand",
+            "pregnant", "preganal", "pregbdsm", "pregsex", "pregbeast", "preggroup",
             "preglesbian", "pregtorture", "pregdeath", "pregprofile", "pregcombat", "pregoral",
             "pregecchi", "pregstrip", "pregmaid", "pregsing", "pregwait", "pregcard", "pregbunny",
             "pregnude", "pregmast", "pregtitty", "pregmilk", "preghand", "pregfoot", "pregbed",
@@ -267,7 +269,8 @@ const std::array<const char*, NUM_IMGTYPES>& get_imgtype_names() {
             "preglick", "pregsuckballs", "pregcowgirl", "pregrevcowgirl", "pregdoggy", "pregjail",
             "pregpuppy", "pregpony", "pregcat", "pregbrand", "pregrape", "pregrapebeast",
             "", "", "", "", "", "", "", "", "", "", "", "pregescort", "pregsport", "pregstudy",
-            "pregteacher", "pregmassage"
+            "pregteacher", "pregmassage",
+            "pregstudiocrew", "pregcameramage", "pregdirector", "pregcrystalpurifier", "pregstagehand",
     };
     return names;
 }

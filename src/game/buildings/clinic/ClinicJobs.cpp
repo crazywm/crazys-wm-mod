@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "jobs/GenericJob.h"
+#include "jobs/BasicJob.h"
 #include "character/sGirl.h"
 #include "character/cCustomers.h"
 #include "character/predicates.h"
@@ -42,8 +42,6 @@ DoctorJob::DoctorJob() : cBasicJob(JOB_DOCTOR, "Doctor.xml") {
 }
 
 sWorkJobResult DoctorJob::DoWork(sGirl& girl, bool is_night) {
-    auto brothel = girl.m_Building;
-
     Action_Types actiontype = ACTION_WORKDOCTOR;
     add_text("work");
 
@@ -58,7 +56,7 @@ sWorkJobResult DoctorJob::DoWork(sGirl& girl, bool is_night) {
     // Doctor is a full time job now
     girl.m_DayJob = girl.m_NightJob = JOB_DOCTOR;
 
-    brothel->ProvideInteraction(DoctorInteractionId, &girl, 1);
+    ProvideInteraction(DoctorInteractionId, 1);
 
     //enjoyed the work or not
     int roll = d100();
@@ -195,8 +193,8 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
     }
     ss << "\n \n";
 
-    brothel->ProvideResource(CarePointsBasicId, basic_care);
-    brothel->ProvideResource(CarePointsGoodId, quality_care);
+    ProvideResource(CarePointsBasicId, basic_care);
+    ProvideResource(CarePointsGoodId, quality_care);
 
     //try and add randomness here
     if (girl.beauty() > 85 && chance(20))
@@ -431,7 +429,7 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
     cGirls::UnequipCombat(girl);    // put that shit away
 
     // less than even a bad nurse, but still something
-    brothel->ProvideResource(CarePointsBasicId, 2);
+    ProvideResource(CarePointsBasicId, 2);
 
     int enjoy = 0;                                                //
     int wages = 0;                                                //

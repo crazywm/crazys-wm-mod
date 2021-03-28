@@ -33,7 +33,7 @@ set(JOBS_SRC
         jobs/GenericJob.cpp
         jobs/Matron.cpp
         jobs/JobData.cpp
-        jobs/Cleaning.cpp buildings/centre/CentreJobs.cpp)
+        jobs/Cleaning.cpp buildings/centre/CentreJobs.cpp jobs/BasicJob.cpp)
 
 set(BUILDINGS_SRC
         buildings/arena/cArena.cpp

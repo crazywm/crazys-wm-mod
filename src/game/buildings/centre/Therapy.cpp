@@ -81,7 +81,7 @@ sWorkJobResult TherapyJob::DoWork(sGirl& girl, bool is_night) {
     // if she was not in thearpy yesterday, reset working days to 0 before proceding
     if (girl.m_YesterDayJob != job()) { girl.m_WorkingDay = girl.m_PrevWorkingDay = 0; }
 
-    sGirl* counselor = brothel->RequestInteraction(CounselingInteractionId);
+    sGirl* counselor = RequestInteraction(CounselingInteractionId);
 
     if (chance(m_TherapyData.BasicFightChance) || girl.disobey_check(actiontype, job()))    // `J` - yes, OR, not and.
     {

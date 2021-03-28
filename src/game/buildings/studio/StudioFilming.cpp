@@ -53,9 +53,9 @@ bool cFilmSceneJob::CheckCanWork(sGirl& girl) {
     }
 
     // No film crew.. then go home
-    if (!brothel->HasInteraction(DirectorInteractionId) ||
-        !brothel->HasInteraction(CamMageInteractionId)  ||
-        !brothel->HasInteraction(CrystalPurifierInteractionId) )
+    if (!HasInteraction(DirectorInteractionId) ||
+        !HasInteraction(CamMageInteractionId)  ||
+        !HasInteraction(CrystalPurifierInteractionId) )
     {
         if(brothel->NumInteractors(DirectorInteractionId) != 0 && brothel->NumInteractors(CamMageInteractionId) != 0 &&
         brothel->NumInteractors(CrystalPurifierInteractionId) != 0) {
@@ -67,9 +67,9 @@ bool cFilmSceneJob::CheckCanWork(sGirl& girl) {
         }
         // still, we notify the building that we wanted these interactions.
         // TODO maybe have a separate function for this.
-        brothel->RequestInteraction(DirectorInteractionId);
-        brothel->RequestInteraction(CamMageInteractionId);
-        brothel->RequestInteraction(CrystalPurifierInteractionId);
+        RequestInteraction(DirectorInteractionId);
+        RequestInteraction(CamMageInteractionId);
+        RequestInteraction(CrystalPurifierInteractionId);
         return false;
     }
 

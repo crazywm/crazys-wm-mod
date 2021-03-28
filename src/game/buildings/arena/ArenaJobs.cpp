@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jobs/GenericJob.h"
+#include "jobs/BasicJob.h"
 #include "character/sGirl.h"
 #include "character/cPlayer.h"
 #include "character/predicates.h"

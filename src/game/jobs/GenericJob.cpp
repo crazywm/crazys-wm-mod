@@ -20,15 +20,10 @@
 #include "GenericJob.h"
 #include <functional>
 #include <boost/throw_exception.hpp>
-#include <CLog.h>
-#include "xml/util.h"
-#include "xml/getattr.h"
-#include "utils/string.hpp"
-#include "cGirls.h"
+#include "CLog.h"
 #include "cRng.h"
 #include "character/sGirl.h"
-#include "IGame.h"
-#include "character/traits/ITraitsManager.h"
+#include "buildings/IBuilding.h"
 
 class sBrothel;
 
@@ -97,6 +92,11 @@ void IGenericJob::OnRegisterJobManager(const cJobManager& manager) {
     m_JobManager = &manager;
 }
 
+sGirl& IGenericJob::active_girl() {
+    assert(m_ActiveGirl);
+    return *m_ActiveGirl;
+}
+
 const sGirl& IGenericJob::active_girl() const {
     assert(m_ActiveGirl);
     return *m_ActiveGirl;
@@ -105,6 +105,42 @@ const sGirl& IGenericJob::active_girl() const {
 bool IGenericJob::is_night_shift() const {
     return m_CurrentShift;
 };
+
+int IGenericJob::ConsumeResource(const std::string& name, int amount) {
+    auto brothel = active_girl().m_Building;
+    assert(brothel);
+    return brothel->ConsumeResource(name, amount);
+}
+
+void IGenericJob::ProvideResource(const std::string& name, int amount) {
+    auto brothel = active_girl().m_Building;
+    assert(brothel);
+    brothel->ProvideResource(name, amount);
+}
+
+bool IGenericJob::TryConsumeResource(const std::string& name, int amount) {
+    auto brothel = active_girl().m_Building;
+    assert(brothel);
+    return brothel->TryConsumeResource(name, amount);
+}
+
+void IGenericJob::ProvideInteraction(const std::string& name, int amount) {
+    auto brothel = active_girl().m_Building;
+    assert(brothel);
+    return brothel->ProvideInteraction(name, &active_girl(), amount);
+}
+
+sGirl* IGenericJob::RequestInteraction(const std::string& name) {
+    auto brothel = active_girl().m_Building;
+    assert(brothel);
+    return brothel->RequestInteraction(name);
+}
+
+bool IGenericJob::HasInteraction(const std::string& name) const {
+    auto brothel = active_girl().m_Building;
+    assert(brothel);
+    return brothel->RequestInteraction(name);
+}
 
 class cJobWrapper: public IGenericJob {
 public:
@@ -219,171 +255,4 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     // Some pseudo-jobs
     REGISTER_JOB(JOB_INDUNGEON, NullJob, "", "She is languishing in the dungeon.");
     REGISTER_JOB(JOB_RUNAWAY, NullJob, "", "She has escaped.");
-}
-
-double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {
-    return m_PerformanceData.eval(girl, estimate);
-}
-
-cBasicJob::cBasicJob(JOBS job, const char* xml_file) : IGenericJob(job), m_Interface(this) {
-    if(xml_file) {
-        load_from_xml(xml_file);
-    }
-
-    RegisterVariable("Performance", m_Performance);
-}
-
-void cBasicJob::apply_gains(sGirl& girl, int performance) {
-    m_Gains.apply(girl, performance);
-}
-
-void cBasicJob::load_from_xml(const char* xml_file) {
-    try {
-        load_from_xml_internal(xml_file);
-    } catch (std::exception& error) {
-        g_LogFile.error("job", "Error loading job xml '", xml_file, "': ", error.what());
-        throw;
-    }
-}
-
-void cBasicJob::load_from_xml_internal(const char* xml_file) {
-    DirPath path = DirPath() << "Resources" << "Data" << "Jobs" << xml_file;
-    auto doc = LoadXMLDocument(path.c_str());
-    auto job_data = doc->FirstChildElement("Job");
-    if(!job_data) {
-        throw std::runtime_error("Job xml does not contain <Job> element!");
-    }
-
-    // Info
-    m_Info.ShortName = GetStringAttribute(*job_data, "ShortName");
-    if(const auto* desc_el = job_data->FirstChildElement("Description")) {
-        if(const char* description = desc_el->GetText()) {
-            m_Info.Description = description;
-        } else {
-            g_LogFile.error("jobs", "<Description> element does not contain text. File: ", xml_file);
-        }
-    } else {
-        g_LogFile.error("jobs", "<Job> element does not contain <Description>. File: ", xml_file);
-    }
-
-    std::string prefix = "job." + std::string(xml_file);
-
-    // Performance Criteria
-    const auto* performance_el = job_data->FirstChildElement("Performance");
-    if(performance_el) {
-        m_PerformanceData.load(*performance_el, prefix);
-    }
-
-    // Gains
-    const auto* gains_el = job_data->FirstChildElement("Gains");
-    if(gains_el) {
-        m_Gains.load(*gains_el);
-    }
-
-    // Modifiers
-    const auto* modifiers_el = job_data->FirstChildElement("Modifiers");
-    if(modifiers_el) {
-        // TODO automatically prefix with the jobs name, and allow for loading "local" modifiers
-        // which start with .
-        g_Game->traits().load_modifiers(*modifiers_el, prefix);
-    }
-
-    // Texts
-    const auto* text_el = job_data->FirstChildElement("Messages");
-    if(text_el) {
-        m_TextRepo = ITextRepository::create();
-        m_TextRepo->load(*text_el);
-    }
-    const auto* config_el = job_data->FirstChildElement("Config");
-    if(config_el) {
-        load_from_xml_callback(*config_el);
-    }
-}
-
-const std::string& cBasicJob::get_text(const std::string& prompt) const {
-    assert(m_TextRepo);
-    try {
-        return m_TextRepo->get_text(prompt, m_Interface);
-    } catch (const std::out_of_range& oor) {
-        g_LogFile.error("job", "Trying to get missing text '", prompt, "\' in job ", m_Info.Name);
-        throw;
-    }
-}
-
-bool cBasicJob::has_text(const std::string& prompt) const {
-    return m_TextRepo->has_text(prompt);
-}
-
-std::stringstream& cBasicJob::add_text(const std::string& prompt) {
-    auto& tpl = get_text(prompt);
-    interpolate_string(ss, tpl, [&](const std::string& var) -> std::string {
-        if(var == "name") {
-            return active_girl().FullName();
-        } else if (var == "shift") {
-            return is_night_shift() ? "night" : "day";
-        } else if (m_Replacements.count(var) != 0) {
-            return m_Replacements.at(var);
-        }
-        assert(false);
-    }, rng());
-    return ss;
-}
-
-void cBasicJob::SetSubstitution(std::string key, std::string replace) {
-    m_Replacements[key] = replace;
-}
-
-void cBasicJob::InitWork() {
-    m_Performance = GetPerformance(active_girl(), false);
-}
-
-void cBasicJob::RegisterVariable(std::string name, int& value) {
-    m_Interface.RegisterVariable(std::move(name), value);
-}
-
-bool cBasicJobTextInterface::LookupBoolean(const std::string& name) const {
-    return m_Job->active_girl().has_active_trait(name.c_str());
-}
-
-int cBasicJobTextInterface::LookupNumber(const std::string& name) const {
-    auto split_point = name.find(':');
-    auto type = name.substr(0, split_point);
-    if(type == "stat") {
-        return m_Job->active_girl().get_stat(get_stat_id(name.substr(split_point+1)));
-    } else if(type == "skill") {
-        return m_Job->active_girl().get_skill(get_skill_id(name.substr(split_point+1)));
-    } else if (type.size() == name.size()) {
-        try {
-            return *m_MappedValues.at(name);
-        } catch (const std::out_of_range& oor) {
-            g_LogFile.error("job", "Unknown job variable '", name, '\'');
-            BOOST_THROW_EXCEPTION(std::runtime_error("Unknown job variable: " + name));
-        }
-    } else {
-        g_LogFile.error("job", "Unknown value category ", type, " of variable ", name);
-        BOOST_THROW_EXCEPTION(std::runtime_error("Unknown value category: " + type));
-    }
-}
-
-void cBasicJobTextInterface::SetVariable(const std::string& name, int value) const {
-    int* looked_up = m_MappedValues.at(name);
-    *looked_up = value;
-}
-
-void cBasicJobTextInterface::TriggerEvent(const std::string& name) const {
-    throw std::logic_error("Event triggers are not implemented yet");
-}
-
-void cBasicJobTextInterface::RegisterVariable(std::string name, int& value) {
-    m_MappedValues[std::move(name)] = &value;
-}
-
-IGenericJob::eCheckWorkResult cBasicJob::SimpleRefusalCheck(sGirl& girl, Action_Types action) {
-    if (girl.disobey_check(action, job()))
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
-    }
-    return eCheckWorkResult::ACCEPTS;
 }

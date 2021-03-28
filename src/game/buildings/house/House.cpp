@@ -17,13 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jobs/GenericJob.h"
+#include "jobs/BasicJob.h"
 #include "character/sGirl.h"
 #include "character/cPlayer.h"
 #include "character/cCustomers.h"
 #include "character/predicates.h"
 #include "character/traits/ITraitsCollection.h"
-#include "buildings/IBuilding.h"
 #include "buildings/cBuildingManager.h"
 #include "buildings/cDungeon.h"
 #include "cGirls.h"

@@ -20,7 +20,7 @@
 #ifndef WM_JOBS_CRAFTING_H
 #define WM_JOBS_CRAFTING_H
 
-#include "GenericJob.h"
+#include "BasicJob.h"
 #include <sstream>
 #include <vector>
 
