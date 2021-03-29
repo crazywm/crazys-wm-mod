@@ -4,6 +4,8 @@
 * Meet scripts can set image on town screen
 * Removed Dump Bodies option for sell/fire girls
 * Added new image tags for the studio crew jobs
+* Some text additions
+* At the centre, you need one counselor for each therapy
 
 ## Fixes
 * Improved RNG on windows

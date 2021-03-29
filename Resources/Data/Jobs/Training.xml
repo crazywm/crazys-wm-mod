@@ -44,8 +44,32 @@
                 In the beginning, ${name} shows all the enthusiasm of a dead fish, but after some time ${mistress}
                 notices that she starts moving her hips and moaning softly. Seems like some progress after all.
             </Text>
-            <Text>
-                Normal Sex training.
+            <Text Condition="skill:NormalSex > 30 ^ skill:NormalSex < 45">
+                "Well, if your body were cold, I think you would make a necrophile quite happy. But for anyone else,
+                you have to show a bit more activity than a corpse!", ${mistress} criticises after seeing ${name} in
+                "action". "The boys are probably too enthusiastic, doing all the work for you. Here, lets try this."
+
+                She shows ${name} an anatomically rather accurate dildo and pushes the tip into her pussy. "Now you
+                have to do the actual fucking. Come on, show me what you've got!"
+            </Text>
+            <Text Condition="skill:NormalSex > 40 ^ skill:NormalSex < 66">
+                ${mistress} decides that it is time for ${name} to learn other positions than just missionary.
+                "Today, you are going to practice the $[Cowgirl][Doggy style][Reverse Cowgirl][Leap Frog] position."
+
+                After hours of sweaty exercise, ${mistress} is sure that ${name} has made some progress.
+            </Text>
+            <Text Condition="skill:NormalSex > 60 ^ skill:NormalSex < 85">
+                ${girl} is already quite good, so ${mistress} decides that it is time to teach her
+                the finer points of professional intercourse: How to make sure he doesn't cum too fast,
+                what to say afterwards, etc.
+
+                ${mistress} brought one of your goons as a practice partner. The lucky guy has never been
+                happier with his choice of career.
+            </Text>
+            <Text Condition="skill:NormalSex > 80">
+                ${girl} is already basically a sex goddess, so ${mistress} just fetched some of your goons.
+                This will boost morale greatly, and makes sure ${girl} doesn't get rusty. And some of the more
+                athletic positions definitely also count as cardio.
             </Text>
         </Message>
 
@@ -68,6 +92,15 @@
         </Message>
 
         <Message Name="train.Handjob">
+            <Text Condition="skill:Handjob < 20">
+                After a very painful accident when practicing with one of your
+                guys, ${mistress} decides that for now, ${girl} should give
+                handjobs only to inanimate objects.
+
+                Once she manages to stroke a dildo in a way that does not look
+                like it would cause serious physical injury, maybe she can try again.
+            </Text>
+
             <Text>
                 Handjob training.
             </Text>
@@ -192,6 +225,28 @@
                 "This may be a bit uncomfortable at first, but I'm sure you'll come to love it", she tells ${name}
                 as she starts to slowly probe her asshole.
             </Text>
+            <Text Condition="skill:Anal>15 ^ skill:Anal<30">
+                ${mistress} hands ${name} a string of anal beads and a bottle of lubricant.
+                "We're doing some stretching exercises today."
+            </Text>
+            <Text Condition="skill:Anal>25 ^ skill:Anal<45">
+                "I'll go and fetch Jonny", ${mistress} tells {girl} as she hands her some lube and a butt-plug.
+                "You'd better start stretching your anus, otherwise this will be painful".
+
+                Despite her preparations, it hurt when Jonny slowly pushed in his dick. He started fucking her gently,
+                and while she still thought it a bit uncomfortable after a while, the pain subsided. Her training
+                is starting to pay off.
+            </Text>
+            <Text Condition="skill:Anal>90">
+                ${mistress} presents an enormous butt-plug to ${name}. "I've heard you like a challenge",
+                she says, "so go on an impress me!"
+
+                It took ${girl} more than half an hour and a copious amount of split, but finally, she manages to
+                insert the device up to the base into her ass.
+
+                "It seems like I need to get an even bigger one specifically manufactured for you. I really did not
+                think this monstrosity would fit. Well done, you can take the rest of the day off"
+            </Text>
             <Text>
                 Anal training.
             </Text>
@@ -199,7 +254,7 @@
 
         <Message Name="train.Group">
             <Text>
-                Anal training.
+                Group training.
             </Text>
         </Message>
 
@@ -207,6 +262,29 @@
             <Text>
                 Lesbian training.
             </Text>
+            <Text Condition="skill:Lesbian < 25^Straight">
+                "I don't care if you think this is disgusting, when a client wants you to lick her pussy, you will
+                do it! And I will make sure that you do it so well that once you are finished, they will have trouble
+                remembering their name!", ${mistress} shouts after ${name} insisted that she is Straight and won't have
+                sex with a woman.
+
+                Not trusting ${name}, ${mistress} calls in another one of your girls as training subject. "We'll start
+                slowly, then. Make her come! This time, I allow you to use your fingers".
+
+                What followed was a rather uncomfortable experience for the unfortunate practice partner.
+            </Text>
+            <Text Condition="skill:Lesbian < 20">
+                Given ${name}'s utter lack of skill in pleasuring women, ${mistress} decided that the best course of
+                action was to have her figure out how to pleasure herself first. But after watching ${name} poke
+                her vagina for half an hour without much signs of even getting aroused, ${mistress} opts for a demonstration
+                instead.
+
+                "Just lay back and relax, but try to pay attention to what I do", she says, before starting to caress
+                ${name}'s pussy gently with her fingers. After a minute or so, ${name}'s breathing starts to quicken,
+                and ${mistress} begins finger-fucking her in earnest. Just when ${name} is ready to cum, she stops.
+                "The rest", she says with a hint of sadism in her smile, "the rest you have to do yourself".
+            </Text>
+
             <Group Condition="skill:Lesbian > 80">
                 <Text>
                     ${mistress} sits down, spreads her legs, and guides ${name}'s head between her thighs. As ${name}
