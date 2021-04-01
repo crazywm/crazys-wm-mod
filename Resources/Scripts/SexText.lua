@@ -492,7 +492,7 @@ function GetBDSMMessage(girl, customer)
                 girl:enjoyment(ACTION_SEX, -5)
                 girl:happiness(-5)
             else
-                if girl:weeks_pregnant() < ((3 * term) / 4) then
+                if girl:weeks_pregnant() < ((3 * girl:pregnancy_term()) / 4) then
                     -- if she's showing
                     message = "Both ${name} and her customer were reluctant to do any real bondage while she is bearing child."
                     customer:happiness(-20)
@@ -554,7 +554,7 @@ function GetBDSMMessage(girl, customer)
                 girl:enjoyment(ACTION_SEX, -2)
                 girl:happiness(-2)
             else
-                if girl:weeks_pregnant() < ((3 * term) / 4) then
+                if girl:weeks_pregnant() < ((3 * girl:pregnancy_term()) / 4) then
                     -- if she's showing
                     message = "The customer was reluctant to do bondage while ${name} is bearing child, but she told him some things would be okay."
                     customer:happiness(-5)
@@ -592,7 +592,7 @@ function GetBDSMMessage(girl, customer)
                 girl:enjoyment(ACTION_SEX, -2)
                 girl:happiness(-2)
             else
-                if girl:weeks_pregnant() < ((3 * term) / 4) then
+                if girl:weeks_pregnant() < ((3 * girl:pregnancy_term()) / 4) then
                     -- if she's showing
                     message = "Seeing her condition, the customer was reluctant to do bondage. ${name} reassured him and showed him there was lots he could still do to her.";
                 else
@@ -649,7 +649,7 @@ function GetBDSMMessage(girl, customer)
                 girl:enjoyment(ACTION_SEX, -2)
                 girl:health(-4)
             else
-                if girl:weeks_pregnant() < ((3 * term) / 4) then
+                if girl:weeks_pregnant() < ((3 * girl:pregnancy_term()) / 4) then
                     -- if she's showing
                     message = "Due to her obvious pregnancy, the customer was reluctant to do bondage.\n${name} shoved her hands into his pants and grabbed him by the balls. "
                             .. "\"If you're not man enough, I can take charge?\"\nWith just the right blend of goading and encouragement, ${name} pushed the customer past his inhibitions, "
