@@ -19,6 +19,7 @@
 #include "cScreenLoadGame.hpp"
 #include "utils/FileList.h"
 #include "widgets/IListBox.h"
+#include "SavesList.h"
 
 extern std::string g_ReturnText;
 extern int g_ReturnInt;
@@ -51,25 +52,32 @@ void cScreenLoadGame::OnKeyPress(SDL_Keysym keysym)
 {
     if(keysym.sym == SDLK_BACKSPACE) {
         pop_window();
-    } else if (keysym.sym == SDLK_UP) {
-        ArrowUpListBox(id_saveslist);
-    } else if (keysym.sym == SDLK_DOWN) {
-        ArrowDownListBox(id_saveslist);
-    }else if (keysym.sym == SDLK_KP_ENTER) {
-        load_game();
     }
 }
 
 void cScreenLoadGame::init(bool back)
 {
-    const char *pattern = "*.gam";
-    FileList   fl       = FileList(m_SavesPath, pattern);
+    SavesList list;
+    list.BuildSaveGameList(m_SavesPath);
 
     Focused();
-    ClearListBox(id_saveslist);    // clear the list box with the save games
-    for (int i = 0; i < fl.size(); i++)                        // loop through the files, adding them to the box
+    auto lb = GetListBox(id_saveslist);
+    lb->Clear();
+    int i = 0;
+    for (auto& save : list.get_saves())                        // loop through the files, adding them to the box
     {
-        if (fl[i].leaf() != "autosave.gam")    AddToListBox(id_saveslist, i, fl[i].leaf());
+        lb->AddRow(i, [&](const std::string& query) -> FormattedCellData {
+            if(query == "Name") {
+                return mk_text(save.File);
+            } else if (query == "Money") {
+                return mk_num(save.Data.Money);
+            } else if (query == "WeeksPlayed") {
+                return mk_num(save.Data.WeeksPlayed);
+            } else {
+                return mk_error(query);
+            }
+        }, COLOR_BLUE);
+        ++i;
     }
 }
 
@@ -78,5 +86,7 @@ void cScreenLoadGame::set_ids() {
     int id_load = get_id("LoadGame");
 
     SetButtonCallback(id_load, [this]() { load_game(); });
+    SetButtonHotKey(id_load, SDLK_KP_ENTER);
     SetListBoxDoubleClickCallback(id_saveslist, [this](int sel) { load_game(); });
+    SetListBoxHotKeys(id_saveslist, SDLK_UP, SDLK_DOWN);
 }

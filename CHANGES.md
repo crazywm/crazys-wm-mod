@@ -3,6 +3,7 @@
 ## Changes
 * Added text for strip training
 * Balancing: Mistress can train two girls per shift, or three if she is very skilled
+* More info in Load Game screen 
 
 ## Fixes
 * Fixed pregnant sex error reported by power guido

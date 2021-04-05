@@ -29,8 +29,7 @@
 #include "cInventory.h"
 #include "cNameList.h"
 #include "sConfig.h"
-
-#undef bool
+#include "SavesList.h"
 
 #ifdef LINUX
 #else
@@ -98,7 +97,13 @@ void SaveGame()
     std::string filename = g_Game->buildings().get_building(0).name();
     std::string filenamedotgam = filename + ".gam";
 
-    SaveGameXML(DirPath(DirPath::expand_path(cfg.folders.saves()).c_str()) << filenamedotgam);
+    auto save_dir = DirPath::expand_path(cfg.folders.saves());
+    SavesList list;
+    list.BuildSaveGameList(save_dir);
+
+    SaveGameXML(DirPath(save_dir.c_str()) << filenamedotgam);
+    list.NotifySaveGame(filenamedotgam, *g_Game);
+    list.SaveXML(DirPath(save_dir.c_str()) << ".saves.xml");
 }
 
 void SaveGameXML(std::string filename)

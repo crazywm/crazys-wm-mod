@@ -136,7 +136,8 @@ set(SRC cEvents.cpp
         combat/combat.cpp
         combat/action.cpp
         combat/combatant.cpp
-        cGame.cpp)
+        cGame.cpp
+        SavesList.cpp)
 
 add_library(WmGameObjects OBJECT ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${MOVIES_SRC} ${SRC})
 target_link_libraries(WmGameObjects PUBLIC WMEngineObjects pthread doctest::doctest)

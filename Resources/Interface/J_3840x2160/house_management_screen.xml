@@ -33,6 +33,6 @@
 <Column     Name="Age"          Header="Age"                        Offset="2252" />
 <Column     Name="SO"           Header="SO"                         Offset="2393" />
 <Column     Name="STAT_PCLove"  Header="Love"                       Offset="2534" />
-<Column     Name="SkillAverage" Header="Skill Avg."                 Offset="2675" />
+<Column     Name="SexAverage" Header="Avg.Sex"                 Offset="2675" />
 </ListBox>
 </Screen>

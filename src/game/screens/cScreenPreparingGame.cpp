@@ -31,6 +31,7 @@
 #include "cInventory.h"
 #include "CLog.h"
 #include "utils/string.hpp"
+#include "SavesList.h"
 
 namespace settings {
     extern const char* INITIAL_RANDOM_GANGS;
@@ -186,6 +187,8 @@ bool cScreenPreparingGame::LoadGame(const std::string& file_path) {
         m_NewMessages.push_back(std::move(str));
     };
 
+    SavesList::LoadGame(file_path, callback, *g_Game);
+
     tinyxml2::XMLDocument doc;
     if (doc.LoadFile(file_path.c_str()) != tinyxml2::XML_SUCCESS) {
         m_Loading = false;
@@ -196,21 +199,8 @@ bool cScreenPreparingGame::LoadGame(const std::string& file_path) {
     if (pRoot == nullptr) {
         return false;
     }
-    // load the version
-    int minorA = -1;
-    pRoot->QueryIntAttribute("MinorVersionA", &minorA);
-    if (minorA != 7) {
-        callback("You must start a new game with this version");
-        return false;
-    }
-    std::string version("<blank>");
-    if (pRoot->Attribute("ExeVersion")) { version = pRoot->Attribute("ExeVersion"); }
-    if (version != "official") {
-        callback("Warning, the exe was not detected as official, it was detected as " + version + ".  Attempting to load anyways.");
-    }
 
-    g_Game->LoadGame(*pRoot, callback);
-
+    // TODO make this part of IGame
     g_WalkAround = false;       pRoot->QueryAttribute("WalkAround", &g_WalkAround);
     g_TalkCount = 0;            pRoot->QueryIntAttribute("TalkCount", &g_TalkCount);
     if (g_Game->allow_cheats()) { g_WalkAround = false; g_TalkCount = 10; }
