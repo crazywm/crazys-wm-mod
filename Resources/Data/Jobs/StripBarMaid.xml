@@ -1,0 +1,111 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="SBmd">
+    <Description>
+        She will staff the bar and serve drinks while dressed in lingerie or fetish costumes.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Beauty" Weight="2"/>
+        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Skill="Performance" Weight="2"/>
+        <Factor Skill="Brewing" Weight="1"/>
+
+        <Mod>work.barmaid</Mod>
+
+        <Trait Name="Charismatic" Value="5"/>
+        <Trait Name="Sexy Air" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Great Figure" Value="5"/>
+        <Trait Name="Great Arse" Value="5"/>
+        <Trait Name="Shy" Value="-10"/>
+    </Performance>
+
+    <Gains XP="15" Skill="3">
+        <LoseTrait Trait="Nervous" Threshold="20" Action="WORKBAR">
+            ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
+        </LoseTrait>
+        <GainTrait Trait="Charismatic" Threshold="60" Action="WORKBAR">
+            Dealing with customers at the bar and talking with them about their problems has made ${name} more Charismatic.
+        </GainTrait>
+        <Skill Name="Service" Weight="3" />
+        <Stat Name="Charisma" Weight="2"/>
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="Brewing" Weight="1" />
+    </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} worked as a bartender in the strip club.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to be a barmaid in your strip club to${shift}</Text>
+        </Message>
+        <Message Name="event.nympho">
+            <Text>
+                ${name} dragged one of the less sober clients outside into a back alley and ordered him to fuck her senseless against a wall.
+                After the deed, the poor fellow passed out and ${name} returned to her job as if nothing happened.
+            </Text>
+            <Text Updates="Tips+=50">
+                ${name} spotted a relatively good-looking guy walking into the bathroom alone.
+                She followed him inside, and as he tried to exit the bathroom stall, he got pushed back in by her.
+                ${name} didn't waste any time and in a matter of seconds was vigorously fucking the client.
+                After the deed, the client made sure ${name} had a pretty hefty wad of money stuck behind her skirt.
+            </Text>
+        </Message>
+
+        <Message Name="event.grab-boob">
+            A drunken patron decide to grab ${name}'s boob.
+            <Text Condition="Meek">
+                She was shocked and didn't react. The man molested her for a few minutes!
+            </Text>
+            <Text Condition="Tough">
+                She knocked him out! You could swear that she knocked a couple of his teeth out too!
+            </Text>
+            <Text Condition="Your Daughter">
+                She screamed: "Do you know who my dad is? He will have your head for this!"
+            </Text>
+            <Text Condition="Your Wife">
+                She screamed: "Do you know who my husband is? He will have your head for this!"
+            </Text>
+            <Text Condition="stat:pclove > 80">
+                She screamed do you know who my love is? He will have your head for this!
+            </Text>
+            <Text>
+                She screamed and shook his hand off.
+            </Text>
+        </Message>
+
+        <Message Name="event.post">
+            <Text Condition="stat:Beauty>85" Chance="20" Updates="Tips+=25">
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+            <Text Condition="stat:Beauty>99" Chance="5" Updates="Tips+=50">
+                ${name} looked absolutely stunning during her shift and was unable to hide it.
+                Instead of her ass or tits, the patrons couldn't glue their eyes off her face,
+                and spent a lot more than usual on tipping her.
+            </Text>
+            <Text Condition="stat:Charisma>85" Chance="20" Updates="Tips+=35">
+                ${name} surprised a couple of gentlemen discussing some complicated issue by her
+                insightful comments when she was taking her order.
+                They decided her words were worth a heavy tip.
+            </Text>
+            <Group Condition="Pessimist" Chance="5">
+                <Text Condition="Performance > 125" Updates="Tips+=10">
+                    ${name} was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.
+                </Text>
+                <Text Condition="Performance <= 125" Updates="Tips-=10">
+                    Her pessimistic mood depressed the customers making them tip less.
+                </Text>
+            </Group>
+            <Group Condition="Optimist" Chance="5">
+                <Text Condition="Performance > 125" Updates="Tips+=10">
+                    Her optimistic mood made patrons cheer up increasing the amount they tip.
+                </Text>
+                <Text Condition="Performance <= 125" Updates="Tips-=10">
+                    ${name} was in a cheerful mood but the patrons thought she needed to work more on her services.
+                </Text>
+            </Group>
+            <Text Priority="-1"/>
+        </Message>
+    </Messages>
+</Job>

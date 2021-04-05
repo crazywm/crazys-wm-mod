@@ -1,0 +1,137 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="SSrp">
+    <Description>
+        She will strip on the tables and stage for the customers.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Beauty" Weight="2"/>
+        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Skill="Performance" Weight="1"/>
+        <Factor Skill="Strip" Weight="2"/>
+
+        <Mod>work.stripper</Mod>
+
+        <!--
+        The original code had a fame bonus and a pregnancy malus
+        -->
+    </Performance>
+
+    <Gains XP="15" Skill="3">
+        <LoseTrait Trait="Nervous" Threshold="20" Action="WORKSTRIP">
+            ${name} has had so many people see her naked she is no longer nervous about anything.
+        </LoseTrait>
+        <GainTrait Trait="Sexy Air" Threshold="80" Action="WORKSTRIP">
+            ${name} has been stripping and having to be sexy for so long she now reeks of sexyness.
+        </GainTrait>
+        <GainTrait Trait="Exhibitionist" Threshold="60" Action="WORKSTRIP">
+            ${name} has been stripping for so long she loves to be naked now.
+        </GainTrait>
+        <Stat Name="Charisma" Weight="1"/>
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="Strip" Weight="2" />
+        <Stat Name="Confidence" Weight="1" Max="33"/>
+    </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} worked as a stripper in the club.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>"${name} refused to strip off in front of the creeps in your club to${shift}</Text>
+        </Message>
+        <Message Name="event.nympho">
+            <Text>
+                ${name} dragged one of the less sober clients outside into a back alley and ordered him to fuck her senseless against a wall.
+                After the deed, the poor fellow passed out and ${name} returned to her job as if nothing happened.
+            </Text>
+            <Text Updates="Tips+=50">
+                ${name} spotted a relatively good-looking guy walking into the bathroom alone.
+                She followed him inside, and as he tried to exit the bathroom stall, he got pushed back in by her.
+                ${name} didn't waste any time and in a matter of seconds was vigorously fucking the client.
+                After the deed, the client made sure ${name} had a pretty hefty wad of money stuck behind her skirt.
+            </Text>
+        </Message>
+
+
+        <Message Name="event.post">
+            <Text Condition="stat:Beauty>85" Chance="20" Updates="Tips+=25">
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+            <Text Condition="Clumsy" Chance="5" Updates="Earnings-=15">
+                Her clumsy nature caused her to slide off the pole causing her to have to stop stripping for a few hours.
+            </Text>
+            <Group Condition="Pessimist" Chance="5">
+                <Text Condition="Performance > 125" Updates="Tips+=10">
+                    ${name} was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.
+                </Text>
+                <Text Condition="Performance <= 125" Updates="Tips-=10">
+                    Her pessimistic mood depressed the customers making them tip less.
+                </Text>
+            </Group>
+            <Group Condition="Optimist" Chance="5">
+                <Text Condition="Performance > 125" Updates="Tips+=10">
+                    Her optimistic mood made patrons cheer up increasing the amount they tip.
+                </Text>
+                <Text Condition="Performance <= 125" Updates="Tips-=10">
+                    ${name} was in a cheerful mood but the patrons thought she needed to work more on her services.
+                </Text>
+            </Group>
+            <Group Condition="Great Figure" Chance="20">
+                <Text Condition="Performance > 125" Updates="Tips+=15">
+                    ${name}'s great figure draws a large crowed to the stage and her skill at stripping makes them pay up to see the show up close.
+                </Text>
+                <Text Condition="Performance <= 125" Updates="Tips+=5">
+                    ${name} has a great figure so she draws a few extra patrons even if she needed to work more on her stripping.
+                </Text>
+            </Group>
+            <Text Priority="-1"/>
+        </Message>
+
+        <Message Name="lapdance.great">
+            ${name} doesn't have to try to sell private dances the patrons beg her to buy one off her.
+            <Text Chance="5" Updates="Tips+=200">
+                She sold a champagne dance.
+            </Text>
+            <Text Chance="15" Updates="Tips+=100">
+                She sold a shower dance.
+            </Text>
+            <Text Chance="20" Updates="Tips+=125">
+                She was able to sell a few VIP dances.
+            </Text>
+            <Text Chance="20" Updates="Tips+=50">
+                  She sold a VIP dance.
+            </Text>
+            <Text Priority="-1" Updates="Tips+=40">
+                She sold several lap dances.
+            </Text>
+        </Message>
+        <Message Name="lapdance.good">
+            ${name}'s skill at selling private dances is impressive.
+            <Text Chance="5" Updates="Tips+=50">
+                She convinced a patron to buy a shower dance.
+            </Text>
+            <Text Chance="15" Updates="Tips+=45">
+                Sold a VIP dance to a patron.
+            </Text>
+            <Text Priority="-1" Updates="Tips+=40">
+                "Sold a few lap dance.
+            </Text>
+        </Message>
+        <Message Name="lapdance.ok">
+            ${name} tried to sell private dances
+            <Text Chance="5" Updates="Tips+=33">
+                and was able to sell a VIP dance against all odds.
+            </Text>
+            <Text Chance="15" Updates="Tips+=15">
+                and was able to sell a lap dance.
+            </Text>
+            <Text Priority="-1">
+                "but wasn't able to sell any.
+            </Text>
+        </Message>
+        <Message Name="lapdance.bad">
+            ${name} doesn't seem to understand the real money in stripping is selling private dances.
+        </Message>
+    </Messages>
+</Job>

@@ -37,6 +37,9 @@ cBasicJob::cBasicJob(JOBS job, const char* xml_file) : IGenericJob(job), m_Inter
     }
 
     RegisterVariable("Performance", m_Performance);
+    RegisterVariable("Tips", m_Tips);
+    RegisterVariable("Wages", m_Wages);
+    RegisterVariable("Earnings", m_Earnings);
 }
 
 void cBasicJob::apply_gains(sGirl& girl, int performance) {
@@ -141,6 +144,9 @@ void cBasicJob::SetSubstitution(std::string key, std::string replace) {
 
 void cBasicJob::InitWork() {
     m_Performance = GetPerformance(active_girl(), false);
+    m_Earnings = 0;
+    m_Wages = 0;
+    m_Tips = 0;
 }
 
 void cBasicJob::RegisterVariable(std::string name, int& value) {

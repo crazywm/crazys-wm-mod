@@ -47,7 +47,8 @@ sWorkJobResult DoctorJob::DoWork(sGirl& girl, bool is_night) {
 
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the patients!
 
-    int enjoy = 0, wages = 100, tips = 0;
+    int enjoy = 0;
+    m_Wages = 100;
 
     // this will be added to the clinic's code eventually - for now it is just used for her pay
     int patients = 0;            // `J` how many patients the Doctor can see in a shift
@@ -84,7 +85,7 @@ sWorkJobResult DoctorJob::DoWork(sGirl& girl, bool is_night) {
     // Improve stats
     girl.upd_Enjoyment(actiontype, enjoy);
     apply_gains(girl, m_Performance);
-    return {false, tips, 0, wages};
+    return {false, m_Tips, 0, m_Wages};
 }
 
 IGenericJob::eCheckWorkResult DoctorJob::CheckWork(sGirl& girl, bool is_night) {
@@ -133,7 +134,6 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
     ss << get_text("work") << "\n \n";
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the patients!
 
-    int wages = 0, tips = 0;
     int enjoy = 0, fame = 0;
     bool hand = false, sex = false, les = false;
 
@@ -156,40 +156,40 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
     {
         basic_care = 20;
         quality_care = 10;
-        wages += 155;
+        m_Wages += 155;
         add_text("work.perfect");
     }
     else if (m_Performance >= 185)
     {
         basic_care = 16;
         quality_care = 6;
-        wages += 95;
+        m_Wages += 95;
         add_text("work.great");
     }
     else if (m_Performance >= 135)
     {
         basic_care = 12;
         quality_care = 2;
-        wages += 55;
+        m_Wages += 55;
         add_text("work.good");
     }
     else if (m_Performance >= 85)
     {
         basic_care = 8;
-        wages += 15;
+        m_Wages += 15;
         add_text("work.ok");
     }
     else if (m_Performance >= 65)
     {
         basic_care = 6;
-        wages -= 5;
+        m_Wages -= 5;
         add_text("work.bad");
     }
     else
     {
         basic_care = 4;
         add_text("work.worst");
-        wages -= 15;
+        m_Wages -= 15;
     }
     ss << "\n \n";
 
@@ -199,13 +199,13 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
     //try and add randomness here
     if (girl.beauty() > 85 && chance(20))
     {
-        tips += 25;
+        m_Tips += 25;
         ss << "Stunned by her beauty a customer left her a great tip.\n";
     }
 
     if (girl.has_active_trait("Clumsy") && chance(20))
     {
-        wages -= 15;
+        m_Wages -= 15;
         ss << "Her clumsy nature caused her to spill some medicine everywhere.\n";
     }
 
@@ -213,12 +213,12 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
     {
         if (m_Performance < 125)
         {
-            wages -= 10;
+            m_Wages -= 10;
             ss << "Her pessimistic mood depressed the patients making them tip less.\n";
         }
         else
         {
-            tips += 10;
+            m_Tips += 10;
             ss << "${name} was in a poor mood so the patients gave her a bigger tip to try and cheer her up.\n";
         }
     }
@@ -227,12 +227,12 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
     {
         if (m_Performance < 125)
         {
-            wages -= 10;
+            m_Wages -= 10;
             ss << "${name} was in a cheerful mood but the patients thought she needed to work more on her services.\n";
         }
         else
         {
-            tips += 10;
+            m_Tips += 10;
             ss << "Her optimistic mood made patients cheer up increasing the amount they tip.\n";
         }
     }
@@ -249,7 +249,7 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
     {
         if (girl.libido() > 65 && (brothel->is_sex_type_allowed(SKILL_NORMALSEX) || brothel->is_sex_type_allowed(SKILL_ANAL)))
         {
-            tips += 50;
+            m_Tips += 50;
             sex = true;
             enjoy += 1;
             ss << "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. The man took advantage and fucked her brains out!\n";
@@ -331,12 +331,12 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
     {
         m_Performance *= 0.9;
         patients += (int)(m_Performance / 5);        // `J` 1 patient per 5 point of performance
-        wages = 0;
+        m_Wages = 0;
     }
     else
     {
         patients += (int)(m_Performance / 5);        // `J` 1 patient per 5 point of performance
-        wages += patients * 2;                // `J` pay her 2 for each patient you send to her
+        m_Wages += patients * 2;                // `J` pay her 2 for each patient you send to her
     }
 
 #pragma endregion
@@ -367,7 +367,7 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
     girl.upd_Enjoyment(actiontype, enjoy);
 
 #pragma endregion
-    return {false, tips, wages, 25};
+    return {false, m_Tips, 0, m_Wages};
 }
 
 IGenericJob::eCheckWorkResult NurseJob::CheckWork(sGirl& girl, bool is_night) {
@@ -432,8 +432,6 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
     ProvideResource(CarePointsBasicId, 2);
 
     int enjoy = 0;                                                //
-    int wages = 0;                                                //
-    int tips = 0;                                                //
     int train = 0;                                                // main skill trained
     int tmed = girl.medicine();                                // Starting level - train = 1
     int tint = girl.intelligence();                            // Starting level - train = 2
@@ -543,8 +541,8 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
 
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
-    if (girl.is_unpaid()) { wages = 0; }
-    else { wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
+    if (girl.is_unpaid()) { m_Wages = 0; }
+    else { m_Wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
 
     // Improve stats
     int xp = 5 + skill;
@@ -565,7 +563,7 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
     }
 
-    return {false, 0, 0, wages};
+    return {false, 0, 0, m_Wages};
 }
 
 IGenericJob::eCheckWorkResult InternJob::CheckWork(sGirl& girl, bool is_night) {

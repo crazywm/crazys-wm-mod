@@ -84,20 +84,20 @@ cCrewJob::eCheckWorkResult cCrewJob::CheckWork(sGirl& girl, bool is_night) {
 sWorkJobResult cCrewJob::DoWork(sGirl& girl, bool is_night) {
     add_text("work") << "\n";
     cGirls::UnequipCombat(girl);    // not for studio crew
-    int wages = 50;
+    m_Wages = 50;
 
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
     {
         m_Performance *= 0.9;
-        wages = 0;
+        m_Wages = 0;
     }
     else    // work out the pay between the house and the girl
     {
         // `J` zzzzzz - need to change pay so it better reflects how well she filmed the films
         int roll_max = m_Performance;
         roll_max /= 4;
-        wages += uniform(10, 10 + roll_max);
+        m_Wages += uniform(10, 10 + roll_max);
     }
 
     if (m_Performance >= 166)
@@ -132,7 +132,7 @@ sWorkJobResult cCrewJob::DoWork(sGirl& girl, bool is_night) {
     // Improve stats
     apply_gains(girl, m_Performance);
 
-    return {false, 0, 0, wages};
+    return {false, 0, 0, m_Wages};
 }
 
 
@@ -187,8 +187,7 @@ sWorkJobResult cJobStageHand::DoWork(sGirl& girl, bool is_night) {
 
     cGirls::UnequipCombat(girl);    // not for studio crew
     int enjoyc = 0, enjoym = 0;
-    int wages = 50;
-    int tips = 0;
+    m_Wages = 50;
     int imagetype = IMGTYPE_STAGEHAND;
     bool filming = true;
 
@@ -252,15 +251,15 @@ sWorkJobResult cJobStageHand::DoWork(sGirl& girl, bool is_night) {
     if (girl.is_unpaid())
     {
         CleanAmt *= 0.9;
-        wages = 0;
+        m_Wages = 0;
     }
     else if (filming)
     {
-        wages += int(CleanAmt + jobperformance);
+        m_Wages += int(CleanAmt + jobperformance);
     }
     else
     {
-        wages += int(CleanAmt);
+        m_Wages += int(CleanAmt);
     }
 
     if (!filming && brothel->m_Filthiness < CleanAmt / 2) // `J` needs more variation
@@ -293,7 +292,7 @@ sWorkJobResult cJobStageHand::DoWork(sGirl& girl, bool is_night) {
     //lose traits
     cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", is_night);
 
-    return {false, tips, 0, wages};
+    return {false, 0, 0, m_Wages};
 }
 
 double cJobStageHand::GetPerformance(const sGirl& girl, bool estimate) const {

@@ -69,7 +69,6 @@ sWorkJobResult HouseCook::DoWork(sGirl& girl, bool is_night) {
     add_text("work") << "\n \n";
 
     int enjoy = 0;
-    int wages = 30;
 
     cGirls::UnequipCombat(girl);    // put that shit away
 
@@ -77,36 +76,36 @@ sWorkJobResult HouseCook::DoWork(sGirl& girl, bool is_night) {
     {
         ss << " She must be the perfect at this.";
         brothel->update_all_girls_stat(STAT_HAPPINESS, 3);
-        wages += 20;
+        m_Wages += 20;
     }
     else if (m_Performance >= 185)
     {
         ss << " She's unbelievable at this.";
         brothel->update_all_girls_stat(STAT_HAPPINESS, 2);
-        wages += 15;
+        m_Wages += 15;
     }
     else if (m_Performance >= 145)
     {
         ss << " She's good at this job.";
         brothel->update_all_girls_stat(STAT_HAPPINESS, 1);
-        wages += 10;
+        m_Wages += 10;
     }
     else if (m_Performance >= 100)
     {
         ss << " She made a few mistakes but overall she is okay at this.";
-        wages += 5;
+        m_Wages += 5;
     }
     else if (m_Performance >= 70)
     {
         ss << " She was nervous and made a few mistakes. She isn't that good at this.";
         brothel->update_all_girls_stat(STAT_HAPPINESS, -1);
-        wages -= 5;
+        m_Wages -= 5;
     }
     else
     {
         ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
         brothel->update_all_girls_stat(STAT_HAPPINESS, -2);
-        wages -= 15;
+        m_Wages -= 15;
     }
     ss << "\n \n";
 
@@ -131,7 +130,7 @@ sWorkJobResult HouseCook::DoWork(sGirl& girl, bool is_night) {
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
     {
-        wages = 0;
+        m_Wages = 0;
     }
 
 
@@ -142,7 +141,7 @@ sWorkJobResult HouseCook::DoWork(sGirl& girl, bool is_night) {
 
     girl.upd_Enjoyment(ACTION_WORKCOOKING, enjoy);
 
-    return {false, 0, 0, wages};
+    return {false, 0, 0, m_Wages};
 }
 
 
@@ -749,7 +748,7 @@ sWorkJobResult Recruiter::DoWork(sGirl& girl, bool is_night) {
     Action_Types actiontype = ACTION_WORKRECRUIT;
     add_text("work") << "\n\n";
 
-    int wages = 100;
+    m_Wages = 100;
     int enjoy = 0, fame = 0;
 
     int imagetype = IMGTYPE_PROFILE;
@@ -932,7 +931,7 @@ sWorkJobResult Recruiter::DoWork(sGirl& girl, bool is_night) {
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     int roll_max = (girl.charisma() + girl.service());
     roll_max /= 4;
-    wages += 10 + uniform(0, roll_max);
+    m_Wages += 10 + uniform(0, roll_max);
 
     // Improve stats
     if (girl.fame() < 10 && jobperformance >= 70)        { fame += 1; }
@@ -945,7 +944,7 @@ sWorkJobResult Recruiter::DoWork(sGirl& girl, bool is_night) {
     apply_gains(girl, m_Performance);
 
 #pragma endregion
-    return {false, 0, 0, std::max(0, wages)};
+    return {false, 0, 0, std::max(0, m_Wages)};
 }
 
 double Recruiter::GetPerformance(const sGirl& girl, bool estimate) const {

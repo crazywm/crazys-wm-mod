@@ -52,18 +52,18 @@ namespace {
     sWorkJobResult cJobMarketResearch::DoWork(sGirl& girl, bool is_night) {
         add_text("work") << "\n";
         cGirls::UnequipCombat(girl);    // not for studio crew
-        int wages = 50;
+        m_Wages = 50;
 
         // slave girls not being paid for a job that normally you would pay directly for do less work
         if (girl.is_unpaid()) {
             m_Performance *= 0.9;
-            wages = 0;
+            m_Wages = 0;
         } else    // work out the pay between the house and the girl
         {
             // `J` zzzzzz - need to change pay so it better reflects how well she filmed the films
             int roll_max = m_Performance;
             roll_max /= 4;
-            wages += uniform(10, 10 + roll_max);
+            m_Wages += uniform(10, 10 + roll_max);
         }
 
         int points = 0;
@@ -112,7 +112,7 @@ namespace {
         // Improve stats
         apply_gains(girl, m_Performance);
 
-        return {false, 0, 0, wages};
+        return {false, 0, 0, m_Wages};
     }
 }
 class cJobMoviePromoter : public cJobMovieOther {
@@ -133,7 +133,7 @@ sWorkJobResult cJobMoviePromoter::DoWork(sGirl& girl, bool is_night) {
 
     cGirls::UnequipCombat(girl);    // not for studio crew
 
-    int wages = 50, tips = 0;
+    m_Wages = 50;
     int enjoy = 0;
 
     int roll = d100();
@@ -158,14 +158,14 @@ sWorkJobResult cJobMoviePromoter::DoWork(sGirl& girl, bool is_night) {
     if (girl.is_unpaid())
     {
         m_Performance *= 0.9;
-        wages = 0;
+        m_Wages = 0;
     }
     else    // work out the pay between the house and the girl
     {
         // `J` zzzzzz - need to change pay so it better reflects how well she promoted the films
         int roll_max = girl.spirit() + girl.intelligence();
         roll_max /= 4;
-        wages += uniform(10, 10 + roll_max);
+        m_Wages += uniform(10, 10 + roll_max);
     }
 
     m_Performance = std::max(m_Performance, 1);
@@ -182,7 +182,7 @@ sWorkJobResult cJobMoviePromoter::DoWork(sGirl& girl, bool is_night) {
                 // not much chance in improving the movie, don't promote it
                 continue;
             } else {
-                mm.hype_movie(index, promotion_effect / 100.f, ad_money + wages);
+                mm.hype_movie(index, promotion_effect / 100.f, ad_money + m_Wages);
                 ss << " She promoted your movie '" << movie.Name << "' and improved hype by " << int(promotion_effect)
                    << " points\n";
                 break;
@@ -212,7 +212,7 @@ sWorkJobResult cJobMoviePromoter::DoWork(sGirl& girl, bool is_night) {
     // Improve girl
     apply_gains(girl, m_Performance);
 
-    return {false, 0, 0, wages};
+    return {false, 0, 0, m_Wages};
 }
 
 void RegisterOtherStudioJobs(cJobManager& mgr) {

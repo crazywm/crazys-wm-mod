@@ -70,7 +70,7 @@ sWorkJobResult CommunityService::DoWork(sGirl& girl, bool is_night) {
 
     bool blow = false, sex = false;
     int dispo = 0;
-    int wages = 100;
+    m_Wages = 100;
     int enjoy = 0, help = 0, fame = 0;
     int imagetype = IMGTYPE_PROFILE;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
@@ -197,12 +197,12 @@ sWorkJobResult CommunityService::DoWork(sGirl& girl, bool is_night) {
     if (girl.is_slave())
     {
         ss << "\nThe fact that she is your slave makes people think its less of a good deed on your part.";
-        wages = 0;
+        m_Wages = 0;
     }
     else
     {
         ss << "\nThe fact that your paying this girl to do this helps people think your a better person.";
-        g_Game->gold().staff_wages(wages);  // wages come from you
+        g_Game->gold().staff_wages(m_Wages);  // wages come from you
         dispo = int(dispo*1.5);
     }
 
@@ -220,7 +220,7 @@ sWorkJobResult CommunityService::DoWork(sGirl& girl, bool is_night) {
     // Improve stats
     apply_gains(girl, m_Performance);
 
-    return {false, 0, wages, 0};
+    return {false, 0, 0, m_Wages};
 }
 
 FeedPoor::FeedPoor() : cBasicJob(JOB_FEEDPOOR, "FeedPoor.xml") {
@@ -235,7 +235,7 @@ sWorkJobResult FeedPoor::DoWork(sGirl& girl, bool is_night) {
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     bool blow = false, sex = false;
-    int wages = 20;
+    m_Wages = 20;
     int enjoy = 0, feed = 0, fame = 0;
     int roll_b = d100();
 
@@ -307,12 +307,12 @@ sWorkJobResult FeedPoor::DoWork(sGirl& girl, bool is_night) {
     {
         ss << "\nThe fact that she is your slave makes people think its less of a good deed on your part.";
         g_Game->player().disposition(dispo);
-        wages = 0;
+        m_Wages = 0;
     }
     else
     {
         ss << "\nThe fact that your paying this girl to do this helps people think your a better person.";
-        g_Game->gold().staff_wages(100);  // wages come from you
+        g_Game->gold().staff_wages(m_Wages);  // wages come from you
         g_Game->player().disposition(int(dispo*1.5));
     }
 
@@ -399,7 +399,7 @@ sWorkJobResult FeedPoor::DoWork(sGirl& girl, bool is_night) {
 
     girl.upd_Enjoyment(ACTION_WORKCENTRE, enjoy);
 
-    return {false, 0, 0, std::max(0, wages)};
+    return {false, 0, 0, m_Wages};
 }
 
 auto FeedPoor::CheckWork(sGirl& girl, bool is_night) -> eCheckWorkResult {
@@ -423,7 +423,7 @@ sWorkJobResult Counselor::DoWork(sGirl& girl, bool is_night) {
     cGirls::UnequipCombat(girl);    // not for doctor
 
     int roll_a = d100();
-    int wages = 25;
+    m_Wages = 25;
     int enjoy = 0;
 
     if (roll_a <= 10)       { enjoy -= uniform(1, 3);    ss << "The addicts hasseled her."; }
@@ -436,15 +436,15 @@ sWorkJobResult Counselor::DoWork(sGirl& girl, bool is_night) {
     // work out the pay between the house and the girl
     int roll_max = girl.spirit() + girl.intelligence();
     roll_max /= 4;
-    wages += uniform(10, 10 + roll_max);
-    wages += 5 * rehabers;    // `J` pay her 5 for each patient you send to her
+    m_Wages += uniform(10, 10 + roll_max);
+    m_Wages += 5 * rehabers;    // `J` pay her 5 for each patient you send to her
     ProvideInteraction(CounselingInteractionId, 2);
 
     girl.upd_Enjoyment(actiontype, enjoy);
 
     apply_gains(girl, m_Performance);
 
-    return {false, 0, 0, std::max(0, wages)};
+    return {false, 0, 0, m_Wages};
 }
 
 void RegisterCentreJobs(cJobManager& mgr) {

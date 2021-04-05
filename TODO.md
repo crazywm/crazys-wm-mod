@@ -82,3 +82,6 @@
   and if the girl refuses a customer due to sexual preference.
 * [ ] Recruiters, cooks and cleaners in the house do not appear to cost any money???
 * [ ] matron putting back to old job
+* [ ] when the player buys the anti-preg pills in the brothel and then
+  exempts the girl from taking them the girl dosnt get pregnent even with 100% chance of getting pregnant
+* [ ] SexText.lua line 649

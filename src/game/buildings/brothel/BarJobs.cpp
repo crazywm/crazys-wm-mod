@@ -29,12 +29,10 @@
 sWorkJobResult cBarJob::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
     cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
-    return {JobProcessing(girl, *brothel, is_night), m_Tips, m_Wages, 0};
+    return {JobProcessing(girl, *brothel, is_night), m_Tips, m_Earnings, m_Earnings};
 }
 
 cBarJob::cBarJob(JOBS job, const char* xml, sBarJobData data) : cBasicJob(job, xml), m_Data(data) {
-    RegisterVariable("Wages", m_Wages);
-    RegisterVariable("Tips", m_Tips);
 }
 
 void cBarJob::HandleGains(sGirl& girl, int enjoy, int fame) {
@@ -52,19 +50,14 @@ void cBarJob::HandleGains(sGirl& girl, int enjoy, int fame) {
 }
 
 IGenericJob::eCheckWorkResult cBarJob::CheckWork(sGirl& girl, bool is_night) {
-    auto brothel = girl.m_Building;
     if (girl.libido() >= 90 && girl.has_active_trait("Nymphomaniac") && chance(20))
     {
         add_text("event.nympho-nowork");
         girl.upd_temp_stat(STAT_LIBIDO, -20);
         girl.AddMessage(ss.str(), IMGTYPE_MAST, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
-    }
-    else if (girl.disobey_check(m_Data.Action, job()))
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
+    } else {
+        return SimpleRefusalCheck(girl, m_Data.Action);
     }
     /*else if (brothel->m_TotalCustomers < 1)
     {
@@ -79,7 +72,7 @@ IGenericJob::eCheckWorkResult cBarJob::CheckWork(sGirl& girl, bool is_night) {
 void cBarJob::load_from_xml_callback(const tinyxml2::XMLElement& job_element) {
     auto wages = job_element.FirstChildElement("WageFunction");
     if(wages) {
-        PerformanceToWages = LoadLinearFunction(*wages, "Performance", "Wages");
+        PerformanceToEarnings = LoadLinearFunction(*wages, "Performance", "Wages");
     }
 }
 
@@ -128,7 +121,7 @@ bool cBarCookJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
 
     int enjoy = 0, fame = 0;
-    m_Wages = PerformanceToWages((float)m_Performance);
+    m_Earnings = PerformanceToEarnings((float)m_Performance);
 
     int imagetype = IMGTYPE_COOK;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
@@ -175,7 +168,7 @@ bool cBarCookJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
 
     int roll_max = (girl.beauty() + girl.charisma());
     roll_max /= 4;
-    m_Wages += uniform(10, 10 + roll_max);
+    m_Earnings += uniform(10, 10 + roll_max);
 
     // Improve stats
     HandleGains(girl, enjoy, fame);
@@ -201,8 +194,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     int roll_jp = d100(), roll_e = d100(), roll_c = d100();
     add_text("work") << "\n \n";
 
-    m_Wages = PerformanceToWages(m_Performance);
-    m_Tips = 0;
+    m_Earnings = PerformanceToEarnings(m_Performance);
     int enjoy = 0, fame = 0;                // girl
     int Bhappy = 0, Bfame = 0, Bfilth = 0;    // brothel
     int imagetype = IMGTYPE_WAIT;
@@ -339,7 +331,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
         else
         {
             ss << "So she over-charged them for drinks while they were too busy drooling to notice the price.\n";
-            m_Wages += 15;
+            m_Earnings += 15;
         }
     }
 
@@ -461,47 +453,47 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
         bool keep_tips = girl.keep_tips();
         if (!keep_tips)
         {
-            m_Wages += (int)m_Tips;
+            m_Earnings += (int)m_Tips;
             m_Tips = 0;
         }
-        /* */if ((int)m_Wages > 0)    ss << "\n${name} turned in an extra " << (int)m_Wages << " gold from other sources.";
-        else if ((int)m_Wages < 0)    ss << "\nShe cost you " << (int)m_Wages << " gold from other sources.";
+        /* */if ((int)m_Earnings > 0)    ss << "\n${name} turned in an extra " << (int)m_Earnings << " gold from other sources.";
+        else if ((int)m_Earnings < 0)    ss << "\nShe cost you " << (int)m_Earnings << " gold from other sources.";
         if ((int)m_Tips > 0 && keep_tips)
         {
             ss << "\nShe made " << (int)m_Tips << " gold in tips";
-            if ((int)m_Wages < 0)
+            if ((int)m_Earnings < 0)
             {
                 ss << " but you made her pay back what she could of the losses";
-                int l = (int)m_Tips + (int)m_Wages;
+                int l = (int)m_Tips + (int)m_Earnings;
                 if (l > 0)        // she can pay it all
                 {
                     m_Tips -= l;
-                    m_Wages += l;
+                    m_Earnings += l;
                 }
                 else
                 {
-                    m_Wages += (int)m_Tips;
+                    m_Earnings += (int)m_Tips;
                     m_Tips = 0;
                 }
             }
             ss << ".";
         }
-        profit += (int)m_Wages;    // all of it goes to the house
-        m_Wages = 0;
+        profit += (int)m_Earnings;    // all of it goes to the house
+        m_Earnings = 0;
     }
     else
     {
         if (profit >= 10)    // base pay is 10 unless she makes less
         {
             ss << "\n \n"<< "${name} made the bar a profit so she gets paid 10 gold for the shift.";
-            m_Wages += 10;
+            m_Earnings += 10;
             profit -= 10;
         }
         if (profit > 0)
         {
             int b = profit / 50;
             if (b > 0) ss << "\nShe gets 2% of the profit from her drink sales as a bonus totaling " << b << " gold.";
-            m_Wages += b;                    // 2% of profit from drinks sold
+            m_Earnings += b;                    // 2% of profit from drinks sold
             profit -= b;
             girl.happiness(b / 5);
         }
@@ -509,28 +501,28 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
         {
             girl.happiness(-(dw / 5));
 
-            int c = std::min(dw, (int)m_Wages);
+            int c = std::min(dw, (int)m_Earnings);
             int d = std::min(dw - c, (int)m_Tips);
             int e = std::min(0, dw - d);
             bool left = false;
-            if (dw < (int)m_Wages)                    // she pays for all wasted drinks out of wages
+            if (dw < (int)m_Earnings)                    // she pays for all wasted drinks out of wages
             {
                 ss << "\nYou take 1 gold out of her pay for each drink she wasted ";
-                m_Wages -= c;
+                m_Earnings -= c;
                 profit += c;
                 left = true;
             }
-            else if (dw < (int)m_Wages + (int)m_Tips)    // she pays for all wasted drinks out of wages and tips
+            else if (dw < (int)m_Earnings + (int)m_Tips)    // she pays for all wasted drinks out of wages and tips
             {
                 ss << "\nYou take 1 gold from her wages and tips for each drink she wasted ";
-                m_Wages -= c;
+                m_Earnings -= c;
                 m_Tips -= d;
                 profit += c + d;
                 left = true;
             }
             else                                    // no pay plus she has to pay from her pocket
             {
-                m_Wages -= c;
+                m_Earnings -= c;
                 m_Tips -= d;
                 profit += c + d;
                 if (girl.m_Money < 1)                // she can't pay so you scold her
@@ -560,9 +552,9 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
             if (left)
             {
                 ss << "leaving her with ";
-                /* */if ((int)m_Wages + (int)m_Tips < 1)    ss << "nothing";
-                else if ((int)m_Wages + (int)m_Tips < 2)    ss << "just one gold";
-                else/*                            */    ss << (int)m_Wages + (int)m_Tips << "gold";
+                /* */if ((int)m_Earnings + (int)m_Tips < 1)    ss << "nothing";
+                else if ((int)m_Earnings + (int)m_Tips < 2)    ss << "just one gold";
+                else/*                            */    ss << (int)m_Earnings + (int)m_Tips << "gold";
             }
             ss << ".";
         }
@@ -622,8 +614,7 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
 
     int enjoy = 0, fame = 0;
 
-    m_Wages = PerformanceToWages((float)m_Performance);
-    m_Tips = 0;
+    m_Earnings = PerformanceToEarnings((float)m_Performance);
 
     int imagetype = IMGTYPE_WAIT;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
@@ -638,7 +629,7 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     add_text("post-work-text");
 
     //base tips, aprox 10-20% of base wages
-    m_Tips += (int)(((10 + m_Performance / 22) * m_Wages) / 100);
+    m_Tips += (int)(((10 + m_Performance / 22) * m_Earnings) / 100);
 
     //try and add randomness here
     if (girl.libido() > 90 && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Succubus") ||
@@ -750,7 +741,7 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
 
     int roll_max = (girl.beauty() + girl.charisma());
     roll_max /= 4;
-    m_Wages += uniform(10, 10+roll_max);
+    m_Earnings += uniform(10, 10+roll_max);
 
     // Improve stats
     HandleGains(girl, enjoy, fame);
@@ -779,7 +770,7 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     const sGirl* singeronduty = random_girl_on_job(brothel, JOB_SINGER, is_night);
     std::string singername = (singeronduty ? "Singer " + singeronduty->FullName() + "" : "the Singer");
 
-    m_Wages = 20;
+    m_Earnings = 20;
     int enjoy = 0, fame = 0;
     int imagetype = IMGTYPE_PROFILE;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
@@ -842,7 +833,7 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
     {
-        m_Wages = 0;
+        m_Earnings = 0;
         m_Tips = int(m_Tips * 0.9);
     }
     else
@@ -883,8 +874,7 @@ bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
     int imagetype = IMGTYPE_SING;
     EventType msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-    m_Wages = PerformanceToWages((float)m_Performance);
-    m_Tips = 0;
+    m_Earnings = PerformanceToEarnings((float)m_Performance);
 
 #pragma endregion
 #pragma region //    Job Performance            //
@@ -900,7 +890,7 @@ bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
     perf_text();
 
     //base tips, aprox 5-30% of base wages
-    m_Tips += (int)(((5 + m_Performance / 8) * m_Wages) / 100);
+    m_Tips += (int)(((5 + m_Performance / 8) * m_Earnings) / 100);
 
     //try and add randomness here
     add_text("post-work-text");
@@ -947,7 +937,7 @@ bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
     girl.AddMessage(ss.str(), imagetype, msgtype);
     int roll_max = (girl.beauty() + girl.charisma());
     roll_max /= 4;
-    m_Wages += uniform(10, 10 + roll_max);
+    m_Earnings += uniform(10, 10 + roll_max);
 
     // Improve stats
     HandleGains(girl, enjoy, fame);

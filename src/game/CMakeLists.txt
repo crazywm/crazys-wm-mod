@@ -33,7 +33,7 @@ set(JOBS_SRC
         jobs/GenericJob.cpp
         jobs/Matron.cpp
         jobs/JobData.cpp
-        jobs/Cleaning.cpp buildings/centre/CentreJobs.cpp jobs/BasicJob.cpp)
+        jobs/Cleaning.cpp buildings/centre/CentreJobs.cpp jobs/BasicJob.cpp buildings/brothel/StripClub.cpp)
 
 set(BUILDINGS_SRC
         buildings/arena/cArena.cpp
@@ -47,7 +47,6 @@ set(BUILDINGS_SRC
         buildings/cBuildingManager.cpp
         buildings/brothel/WorkAdvertising.cpp
         buildings/house/Training.cpp
-        buildings/brothel/WorkBarStripper.cpp
         buildings/brothel/WorkBeastCare.cpp
         buildings/brothel/WorkBrothelMassusse.cpp
         buildings/brothel/WorkBrothelStripper.cpp
@@ -66,7 +65,6 @@ set(BUILDINGS_SRC
         buildings/brothel/WorkPeepShow.cpp
         buildings/house/WorkPersonalBedWarmer.cpp
         buildings/brothel/WorkSecurity.cpp
-        buildings/brothel/WorkSleazyBarmaid.cpp
         buildings/brothel/WorkSleazyWaitress.cpp
         buildings/brothel/WorkTorturer.cpp
         buildings/studio/StudioFilming.cpp

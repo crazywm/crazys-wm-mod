@@ -150,6 +150,7 @@
         <Modifiers>
             <Modifier Name="fetish:NonHuman" Value="20" />
             <Modifier Name="fetish:Freak" Value="5" />
+            <Modifier Name="stat:Tiredness" Value="-1000" />
         </Modifiers>
 
         <Properties>

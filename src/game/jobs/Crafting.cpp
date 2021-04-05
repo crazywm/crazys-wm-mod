@@ -32,8 +32,8 @@ namespace settings {
 sWorkJobResult GenericCraftingJob::DoWork(sGirl& girl, bool is_night) {
     enjoy = 0;
     sales = 0;
-    int wages = m_CraftingData.Wages * (1.0 + (m_Performance - 70) / 100.0);
-    return {WorkCrafting(girl, is_night), 0, sales, wages};
+    m_Wages = m_CraftingData.Wages * (1.0 + (m_Performance - 70) / 100.0);
+    return {WorkCrafting(girl, is_night), 0, sales, m_Wages};
 }
 
 bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {

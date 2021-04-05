@@ -53,9 +53,10 @@ sWorkJobResult cFarmJob::DoWork(sGirl& girl, bool is_night) {
     ss << get_text("work") << "\n \n";
 
     // farm jobs are generally not tipping jobs
-    wages = m_Data.BaseWages;
+    m_Wages = m_Data.BaseWages;
 
-    return {JobProcessing(girl, *girl.m_Building, is_night, m_Performance), 0, 0, wages};
+    bool refused = JobProcessing(girl, *girl.m_Building, is_night, m_Performance);
+    return {refused, 0, 0, m_Wages};
 }
 
 void cFarmJob::HandleGains(sGirl& girl, int enjoy) {
@@ -120,7 +121,7 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     else
     {
         ss << "She seems to take more of the unuseable parts of the plants than she takes the edible parts.";
-        wages -= 10; foodproduced *= 0.8; roll_a -= 5; roll_b -= 10;
+        m_Wages -= 10; foodproduced *= 0.8; roll_a -= 5; roll_b -= 10;
     }
     ss << "\n \n";
 
@@ -219,11 +220,11 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     if (girl.is_unpaid())
     {
         foodproduced *= 0.9;
-        wages = 0;
+        m_Wages = 0;
     }
     else
     {
-        wages += (int)foodproduced / 100; // `J` Pay her based on how much she brought in
+        m_Wages += (int)foodproduced / 100; // `J` Pay her based on how much she brought in
     }
 
 #pragma endregion
@@ -443,9 +444,9 @@ bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
             ss << " Alchemy Items.\n";
         }
         ss << "She made a total of " << (int)gold << " from it all.\nShe gets 1% of the sales: " << (int)(gold / 100)<<".\nThe rest goes directly into your coffers.\n \n";
-        wages += (int)(gold / 100); // `J` Pay her based on how much she brought in
+        m_Wages += (int)(gold / 100); // `J` Pay her based on how much she brought in
         gold -= (int)(gold / 100);
-        enjoy += (int)(wages / 100);        // the more she gets paid, the more she likes selling
+        enjoy += (int)(m_Wages / 100);        // the more she gets paid, the more she likes selling
     }
 
 #pragma endregion
@@ -483,33 +484,33 @@ bool cFarmJobVeterinarian::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
     int fame = 0;
     if (performance >= 245)
     {
-        wages += 155;    fame += 2;
+        m_Wages += 155;    fame += 2;
         ss << " She must be the perfect at this.\n \n";
     }
     else if (performance >= 185)
     {
-        wages += 95;    fame += 1;
+        m_Wages += 95;    fame += 1;
         ss << " She's unbelievable at this.\n \n";
     }
     else if (performance >= 145)
     {
-        wages += 55;
+        m_Wages += 55;
         ss << " She's good at this job.\n \n";
     }
     else if (performance >= 100)
     {
-        wages += 15;
+        m_Wages += 15;
         ss << " She made a few mistakes but overall she is okay at this.\n \n";
     }
     else if (performance >= 70)
     {
         ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
-        wages -= 5;
+        m_Wages -= 5;
     }
     else
     {
         ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
-        wages -= 15;
+        m_Wages -= 15;
     }
 
 
@@ -605,7 +606,7 @@ bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     else
     {
         ss << "${name} has no idea what she is doing.";
-        beasts *= 0.5; food *= 0.5; wages -= 10; roll_a -= 5; roll_b -= 10;
+        beasts *= 0.5; food *= 0.5; m_Wages -= 10; roll_a -= 5; roll_b -= 10;
     }
     ss << "\n \n";
 
@@ -673,12 +674,12 @@ bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     {
         beasts *= 0.9;
         food *= 0.9;
-        wages = 0;
+        m_Wages = 0;
     }
     else    // `J` Pay her based on how much she brought in
     {
-        if (food > 0)        wages += (int)food / 100;
-        if (beasts > 0)        wages += (int)beasts;
+        if (food > 0)        m_Wages += (int)food / 100;
+        if (beasts > 0)        m_Wages += (int)beasts;
     }
 
 #pragma endregion
@@ -762,7 +763,7 @@ bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     else
     {
         ss << "${name} has no idea what she is doing.";
-        beasts *= 0.5; food *= 0.5; wages -= 10; roll_a -= 5; roll_b -= 10;
+        beasts *= 0.5; food *= 0.5; m_Wages -= 10; roll_a -= 5; roll_b -= 10;
     }
     ss << "\n \n";
 
@@ -829,12 +830,12 @@ bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     {
         beasts *= 0.9;
         food *= 0.9;
-        wages = 0;
+        m_Wages = 0;
     }
     else    // `J` Pay her based on how much she brought in
     {
-        if (food > 0)        wages += (int)food / 100;
-        if (beasts > 0)        wages += (int)beasts;
+        if (food > 0)        m_Wages += (int)food / 100;
+        if (beasts > 0)        m_Wages += (int)beasts;
     }
 
 #pragma endregion
@@ -919,7 +920,7 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     else
     {
         ss << "She can't seem to get the hang of this.";
-        wages -= 10; drinks *= 0.8; roll_a -= 5; roll_b -= 10;
+        m_Wages -= 10; drinks *= 0.8; roll_a -= 5; roll_b -= 10;
     }
     ss << "\n \n";
 
@@ -982,11 +983,11 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     if (girl.is_unpaid())
     {
         drinks *= 0.9;
-        wages = 0;
+        m_Wages = 0;
     }
     else
     {
-        wages += (int)drinks / 100; // `J` Pay her based on how much she brought in
+        m_Wages += (int)drinks / 100; // `J` Pay her based on how much she brought in
     }
 
 #pragma endregion
@@ -1268,21 +1269,17 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
     {
-        wages = 0;
+        m_Wages = 0;
     }
     else
     {
-        wages += gain * 10; // `J` Pay her based on how much she brings back
+        m_Wages += gain * 10; // `J` Pay her based on how much she brings back
     }
 
 #pragma endregion
 #pragma region    //    Finish the shift            //
 
     g_Game->storage().add_to_beasts(gain);
-
-    // Money
-    // TODO this is cheating
-    m_Data.BaseWages = std::max(0, wages);
 
     // Improve girl
     if (tired > 0) girl.tiredness(tired);
@@ -1749,12 +1746,12 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
                     ssextra << "The trader sends back 100 gold and a note apologizing, and promising this will never happen again. He says you can do what you like with the "
                             << "delivery boy, \"But if you ever release the fool, tell him he'll need a new job.\"\n";
                     g_Game->dungeon().AddCust(DUNGEON_CUSTBEATGIRL, 0, false);
-                    wages += 100;
+                    m_Wages += 100;
                     break;
                 case 1:
                     ssextra << "The trader arrives soon after, begging for his son's release. Eventually you agree, adding that if his boy EVER enters your farm again "
                             << "his balls will be staying here. The trader thanks you repeatedly for your kindness and apologizes to ${name}, giving her 200 extra gold for her... discomfort.\n";
-                    wages += 200;
+                    m_Wages += 200;
                     break;
                 case 2:
                     ssextra << "You never hear a word from the market trader.\n";
@@ -1781,7 +1778,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
         //Ditched the above - too cumbersome.
         ss << "Something happened here today (see extra message).\n";
     }
-    wages += milkValue;
+    m_Wages += milkValue;
 
     //Output
     //
@@ -1794,13 +1791,13 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     {
         ss << "a trickle of ";
         if (girl.has_active_trait("Cat Girl"))    ss << "Cat-Girl ";
-        ss << "breast-milk, earning just " << wages << " gold.";
+        ss << "breast-milk, earning just " << m_Wages << " gold.";
     }
     else
     {
         ss << "just over " << (int)milkProduced << " ounces. This fine, freshly-squeezed ";
         if (girl.has_active_trait("Cat Girl"))    ss << "Cat-Girl ";
-        ss << "breast-milk earns " << wages << " gold.";
+        ss << "breast-milk earns " << m_Wages << " gold.";
     }
 
     // `J` Farm Bookmark - adding in items that can be created in the farm
@@ -1850,32 +1847,32 @@ bool cFarmJobCatacombRancher::JobProcessing(sGirl& girl, IBuilding& brothel, boo
     if (performance >= 245)
     {
         ss << " She must be the perfect at this.";
-        wages += 155;
+        m_Wages += 155;
     }
     else if (performance >= 185)
     {
         ss << " She's unbelievable at this.";
-        wages += 95;
+        m_Wages += 95;
     }
     else if (performance >= 145)
     {
         ss << " She's good at this job.";
-        wages += 55;
+        m_Wages += 55;
     }
     else if (performance >= 100)
     {
         ss << " She made a few mistakes but overall she is okay at this.";
-        wages += 15;
+        m_Wages += 15;
     }
     else if (performance >= 70)
     {
         ss << " She was nervous and made a few mistakes. She isn't that good at this.";
-        wages -= 5;
+        m_Wages -= 5;
     }
     else
     {
         ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
-        wages -= 15;
+        m_Wages -= 15;
     }
     ss << "\n \n";
 
@@ -1904,7 +1901,7 @@ bool cFarmJobCatacombRancher::JobProcessing(sGirl& girl, IBuilding& brothel, boo
 
     int roll_max = (girl.beauty() + girl.charisma());
     roll_max /= 4;
-    wages += uniform(10, 10 + roll_max);
+    m_Wages += uniform(10, 10 + roll_max);
 
     HandleGains(girl, enjoy);
     
@@ -2185,8 +2182,8 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
 #pragma endregion
 #pragma region    //    Money                    //
 
-    if (girl.is_unpaid()) { wages = 0; }
-    else { wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
+    if (girl.is_unpaid()) { m_Wages = 0; }
+    else { m_Wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
 
 
 #pragma endregion

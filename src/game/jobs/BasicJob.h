@@ -69,6 +69,11 @@ protected:
 
     int m_Performance;
 
+    // payment data
+    int m_Earnings;
+    int m_Wages;
+    int m_Tips;
+
     eCheckWorkResult SimpleRefusalCheck(sGirl& girl, Action_Types action);
 
 private:

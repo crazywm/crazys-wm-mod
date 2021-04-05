@@ -38,9 +38,6 @@ protected:
     cFarmJob(JOBS job, const char* xml, sFarmJobData data);
     void HandleGains(sGirl& girl, int enjoy);
     sFarmJobData m_Data;
-
-    // cached data
-    int wages;
 };
 
 #endif //WM_FARMJOBS_H

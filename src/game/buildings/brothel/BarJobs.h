@@ -38,13 +38,10 @@ protected:
     void HandleGains(sGirl& girl, int enjoy, int fame);
     sBarJobData m_Data;
 
-    PiecewiseLinearFunction PerformanceToWages;
+    PiecewiseLinearFunction PerformanceToEarnings;
 
     void load_from_xml_callback(const tinyxml2::XMLElement& job_element) override;
     void perf_text();
-
-    int m_Wages;
-    int m_Tips;
 };
 
 #endif //WM_BARJOBS_H

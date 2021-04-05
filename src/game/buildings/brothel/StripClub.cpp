@@ -16,57 +16,234 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#pragma region //    Includes and Externs            //
-#include "buildings/cBuildingManager.h"
-#include "cRng.h"
-#include "cInventory.h"
-#include <sstream>
-#include "IGame.h"
+
+#include "jobs/BasicJob.h"
+#include "character/sGirl.h"
 #include "character/predicates.h"
+#include "character/cCustomers.h"
+#include "IGame.h"
 #include "cGirls.h"
-#include "cJobManager.h"
+#include "buildings/IBuilding.h"
+#include "cInventory.h"
+
+namespace {
+    class Barmaid : public cBasicJob {
+    public:
+        Barmaid();
+        eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+        sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
+    };
+    class Stripper : public cBasicJob {
+    public:
+        Stripper();
+        eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+        sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
+    };
+}
+
+Barmaid::Barmaid() : cBasicJob(JOB_SLEAZYBARMAID) {
+
+}
+
+IGenericJob::eCheckWorkResult Barmaid::CheckWork(sGirl& girl, bool is_night) {
+    return SimpleRefusalCheck(girl, ACTION_WORKCLUB);
+}
+
+sWorkJobResult Barmaid::DoWork(sGirl& girl, bool is_night) {
+    Action_Types actiontype = ACTION_WORKCLUB;
+    add_text("work");
+
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
+
+    int enjoy = 0, fame = 0;
+    int imagetype = IMGTYPE_ECCHI;
 
 #pragma endregion
+#pragma region //    Job Performance            //
 
-// `J` Job Brothel - Sleazy Bar
-sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
-{
+    double jobperformance = girl.job_performance(JOB_SLEAZYBARMAID, false);
+
+
+
+    if (jobperformance >= 245)
+    {
+        ss << " She must be the perfect bar tender customers go on and on about her and always come to see her when she works.\n \n";
+        m_Earnings = 170;
+    }
+    else if (jobperformance >= 185)
+    {
+        ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n \n";
+        m_Earnings = 110;
+    }
+    else if (jobperformance >= 145)
+    {
+        ss << " She's good at this job and gets praised by the customers often.\n \n";
+        m_Earnings = 70;
+    }
+    else if (jobperformance >= 100)
+    {
+        ss << " She made a few mistakes but overall she is okay at this.\n \n";
+        m_Earnings = 30;
+    }
+    else if (jobperformance >= 70)
+    {
+        ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
+        m_Earnings = 10;
+    }
+    else
+    {
+        ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
+        m_Earnings = 0;
+    }
+
+
+    //base tips, aprox 10-20% of base m_Earnings
+    m_Tips += (int)(((10 + jobperformance / 22) * m_Earnings) / 100);
+
+    //try and add randomness here
+    add_text("event.post");
+
+    if (girl.has_active_trait("Clumsy") && chance(15))
+    {
+        ss << "Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.\n"; m_Earnings -= 15;
+    }
+
+    // `J` slightly higher percent compared to regular barmaid, I would think sleazy barmaid's uniform is more revealing
+    if ((chance(5) && girl.has_active_trait("Busty Boobs")) ||
+        (chance(10) && girl.has_active_trait("Big Boobs")) ||
+        (chance(15) && girl.has_active_trait("Giant Juggs")) ||
+        (chance(20) && girl.has_active_trait("Massive Melons")) ||
+        (chance(25) && girl.has_active_trait("Abnormally Large Boobs")) ||
+        (chance(30) && girl.has_active_trait("Titanic Tits")))
+    {
+        if (jobperformance < 150)
+        {
+            ss << "A patron was staring obviously at her large breasts. But she had no idea how to take advantage of it.\n";
+        }
+        else
+        {
+            ss << "A patron was staring obviously at her large breasts. So she over charged them for drinks while they drooled not paying any mind to the price.\n"; m_Earnings += 15;
+        }
+    }
+
+    if (girl.has_active_trait("Meek") && chance(5) && jobperformance < 125)
+    {
+        ss << "${name} spilled a drink all over a man's lap. He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
+        imagetype = IMGTYPE_ORAL;
+        enjoy -= 3;
+    }
+
+    if (chance(5)) //may get moved to waitress
+    {
+        add_text("event.grab-boob");
+    }
+
+    if ((girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Succubus")) && girl.libido() > 80 && chance(20) && !is_virgin(girl) && !girl.has_active_trait(
+            "Lesbian"))
+    {
+        add_text("event.nympho");
+        imagetype = IMGTYPE_SEX;
+        girl.upd_temp_stat(STAT_LIBIDO, -20, true);
+        girl.normalsex(1);
+        sCustomer Cust = g_Game->GetCustomer(*girl.m_Building);
+        Cust.m_Amount = 1;
+        if (!girl.calc_pregnancy(Cust, 1.0))
+        {
+            g_Game->push_message(girl.FullName() + " has gotten pregnant.", 0);
+        }
+        girl.m_NumCusts++;
+    }
+
+#pragma endregion
+#pragma region    //    Enjoyment and Tiredness        //
+
+    //enjoyed the work or not
+    int roll_a = d100();
+    if (roll_a <= 5)
+    {
+        ss << "\nSome of the patrons abused her during the shift.";
+        enjoy -= 1;
+    }
+    else if (roll_a <= 25)
+    {
+        ss << "\nShe had a pleasant time working.";
+        enjoy += 3;
+    }
+    else
+    {
+        ss << "\nOtherwise, the shift passed uneventfully.";
+        enjoy += 1;
+    }
+
+
+#pragma endregion
+#pragma region    //    Finish the shift            //
+
+
+    girl.upd_Enjoyment(actiontype, enjoy);
+    girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+
+
+    int roll_max = (girl.beauty() + girl.charisma());
+    roll_max /= 4;
+    m_Earnings += 10 + uniform(0, roll_max);
+
+    // Improve stats
+    if (girl.fame() < 10 && jobperformance >= 70)        { fame += 1; }
+    if (girl.fame() < 20 && jobperformance >= 100)        { fame += 1; }
+    if (girl.fame() < 40 && jobperformance >= 145)        { fame += 1; }
+    if (girl.fame() < 60 && jobperformance >= 185)        { fame += 1; }
+
+    girl.fame(fame);
+
+    //gained
+    if (jobperformance < 100 && roll_a <= 2) { cGirls::PossiblyGainNewTrait(girl, "Assassin", 10, actiontype, "${name}'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", is_night); }
+    if (chance(25) && girl.dignity() < 0 && (imagetype == IMGTYPE_SEX || imagetype == IMGTYPE_ORAL))
+    {
+        cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
+    }
+
+
+#pragma endregion
+    return {false, m_Tips, m_Earnings, 0};
+}
+
+Stripper::Stripper() : cBasicJob(JOB_BARSTRIPPER, "StripStripper.xml") {
+
+}
+
+IGenericJob::eCheckWorkResult Stripper::CheckWork(sGirl& girl, bool is_night) {
+    return SimpleRefusalCheck(girl, ACTION_WORKSTRIP);
+}
+
+sWorkJobResult Stripper::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKSTRIP;
     std::stringstream ss;
-    int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
-    if (girl.disobey_check(actiontype, JOB_BARSTRIPPER))
-    {
-        //SIN - More informative mssg to show *what* she refuses
-        ss << "${name} refused to strip off in front of the creeps in your club " << (Day0Night1 ? "tonight." : "today.");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return {true, 0, 0, 0};
-    }
-    ss << "${name} worked as a stripper in the club.\n \n";
+    int roll_a = d100(), roll_b = d100(), roll_c = d100();
 
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
-    int wages = 30, tips = 0;
-    int enjoy = 0, fame = 0;
+    m_Earnings = 30;
+    int enjoy = 0;
     int imagetype = IMGTYPE_STRIP;
-    auto msgtype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
+    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
 #pragma endregion
 #pragma region //    Job Performance            //
 
     double jobperformance = girl.job_performance(JOB_BARSTRIPPER, false);
     int lapdance = (girl.intelligence() / 2 +
-        girl.performance() / 2 +
-        girl.strip()) / 2;
-    //int drinks;
+                    girl.performance() / 2 +
+                    girl.strip()) / 2;
 
 
     //what is she wearing?
     if (girl.has_item("Rainbow Underwear"))
     {
         ss << "${name} stripped down to reveal her Rainbow Underwear to the approval of the patrons watching her.\n \n";
-        brothel->m_Happiness += 5; jobperformance += 5; tips += 10;
+        brothel->m_Happiness += 5; jobperformance += 5; m_Tips += 10;
     }
     else if (girl.has_item("Black Leather Underwear"))
     {
@@ -87,7 +264,7 @@ sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (girl.has_item("Adorable Underwear"))
     {
         ss << "${name} stripped down to reveal her Adorable Underwear which slightly help her out on tips.\n \n";
-        tips += 5;
+        m_Tips += 5;
     }
     else if (girl.has_item("Classy Underwear"))
     {
@@ -98,7 +275,7 @@ sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
         }
         else
         {
-            ss << "and it helped her tips.\n \n"; tips += 20;
+            ss << "and it helped her tips.\n \n"; m_Tips += 20;
         }
     }
     else if (girl.has_item("Comfortable Underwear"))
@@ -114,14 +291,14 @@ sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (girl.has_item("Sexy Underwear"))
     {
         ss << "${name} stripped down to reveal her Sexy Underwear which brought many people to the stage to watch her.\n \n";
-        jobperformance += 5; tips += 15;
+        jobperformance += 5; m_Tips += 15;
     }
 
 
     if (jobperformance >= 245)
     {
         ss << " She must be the perfect stripper, customers go on and on about her and always come to see her when she works.\n \n";
-        wages += 155;
+        m_Earnings += 155;
         if (roll_b <= 20)
         {
             ss << "${name} use of the pole amazes the patrons. They truly have no idea how she does the things she does.\n";
@@ -142,20 +319,20 @@ sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             ss << "${name}'s smile is enough to bring in the tips. You sometimes wonder if she even needs to take her clothes off.\n";
             brothel->m_Happiness += 10;
-            tips += 15;
+            m_Tips += 15;
         }
         else
         {
             ss << "Somehow, ${name} managed to be so sexy that you thought you might need to close just to clean up the mess the crowd made.\n";
             brothel->m_Happiness += 10;
             brothel->m_Filthiness += 5;
-            wages += 10;
+            m_Earnings += 10;
         }
     }
     else if (jobperformance >= 185)
     {
         ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n \n";
-        wages += 95;
+        m_Earnings += 95;
         if (roll_b <= 20)
         {
             ss << "${name} use of the pole makes every head in the place turn to watch.\n";
@@ -185,7 +362,7 @@ sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (jobperformance >= 145)
     {
         ss << " She's good at this job and gets praised by the customers often.\n \n";
-        wages += 55;
+        m_Earnings += 55;
         if (roll_b <= 20)
         {
             ss << "${name} can spin on the pole in a way that excites the crowd.\n";
@@ -199,7 +376,7 @@ sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
         else if (roll_b <= 60)
         {
             ss << "Seeing the large crowd waiting outside, ${name} smirked and slowly walked on stage knowing she was going get good tips today.\n";
-            tips += 10;
+            m_Tips += 10;
         }
         else if (roll_b <= 80)
         {
@@ -213,7 +390,7 @@ sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (jobperformance >= 100)
     {
         ss << " She made a few mistakes but overall she is okay at this.\n \n";
-        wages += 15;
+        m_Earnings += 15;
         if (roll_b <= 20)
         {
             ss << "While she won't win any contests, ${name} isn't a terrible striper.\n";
@@ -238,11 +415,11 @@ sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (jobperformance >= 70)
     {
         ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
-        wages -= 5;
+        m_Earnings -= 5;
         if (roll_b <= 20)
         {
             ss << "${name} spun around on the pole too much and got dizzy, causing her to fall off-stage buck-naked into the crowd. "
-                << "A lot of hands grabbed onto her and helped her back up... at least, that's what they said they were doing.\n";
+               << "A lot of hands grabbed onto her and helped her back up... at least, that's what they said they were doing.\n";
             brothel->m_Fame -= 5;
             brothel->m_Happiness += 5;  //cop a feel
         }
@@ -269,7 +446,7 @@ sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     else
     {
         ss << "${name} was stiff and nervous, constantly making mistakes. She really isn't good at this job.\n \n";
-        wages -= 15;
+        m_Earnings -= 15;
         if (roll_b <= 20)
         {
             ss << "${name} slipped of the pole and fell flat on her ass.\n";
@@ -297,133 +474,33 @@ sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
 
-    //base tips, aprox 5-40% of base wages
-    tips += (int)(((5 + jobperformance / 6) * wages) / 100);
+    //base tips, aprox 5-40% of base m_Earnings
+    m_Tips += (int)(((5 + jobperformance / 6) * m_Earnings) / 100);
 
-    //try and add randomness here
-    if (girl.beauty() > 85 && rng.percent(20))
-    {
-        ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
-    }
-
-    if (girl.has_active_trait("Clumsy") && rng.percent(5))
-    {
-        ss << "Her clumsy nature caused her to slide off the pole causing her to have to stop stripping for a few hours.\n"; wages -= 15;
-    }
-
-    if (girl.has_active_trait("Pessimist") && rng.percent(5))
-    {
-        if (jobperformance < 125)
-        {
-            ss << "Her pessimistic mood depressed the customers making them tip less.\n"; tips -= 10;
-        }
-        else
-        {
-            ss << "${name} was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; tips += 10;
-        }
-    }
-
-    if (girl.has_active_trait("Optimist") && rng.percent(5))
-    {
-        if (jobperformance < 125)
-        {
-            ss << "${name} was in a cheerful mood but the patrons thought she needed to work more on her stripping.\n"; tips -= 10;
-        }
-        else
-        {
-            ss << "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; tips += 10;
-        }
-    }
-
-    if (girl.has_active_trait("Great Figure") && rng.percent(20))
-    {
-        if (jobperformance < 125)
-        {
-            ss << "${name} has a great figure so she draws a few extra patrons even if she needed to work more on her stripping.\n"; tips += 5;
-        }
-        else
-        {
-            ss << "${name}'s great figure draws a large crowed to the stage and her skill at stripping makes them pay up to see the show up close.\n"; tips += 15;
-        }
-    }
-
+    add_text("event.post");
 
     // lap dance code.. just test stuff for now
     if (lapdance >= 90)
     {
-        ss << "${name} doesn't have to try to sell private dances the patrons beg her to buy one off her.\n";
-        if (roll_c < 5)
-        {
-            ss << "She sold a champagne dance.";
-            tips += 250;
-        }
-        if (roll_c < 20)
-        {
-            ss << "She sold a shower dance.";
-            tips += 125;
-        }
-        if (roll_c < 40)
-        {
-            ss << "She was able to sell a few VIP dances.";
-            tips += 160;
-        }
-        if (roll_c < 60)
-        {
-            ss << "She sold a VIP dance.";
-            tips += 75;
-        }
-        else
-        {
-            ss << "She sold several lap dances.";
-            tips += 85;
-        }
+        add_text("lapdance.great");
     }
     else if (lapdance >= 65)
     {
-        ss << "${name}'s skill at selling private dances is impressive.\n";
-        if (roll_c < 5)
-        {
-            ss << "She convinced a patron to buy a shower dance.";
-            tips += 75;
-        }
-        if (roll_c < 20)
-        {
-            ss << "Sold a VIP dance to a patron.";
-            tips += 70;
-        }
-        else
-        {
-            ss << "Sold a few lap dance.";
-            tips += 65;
-        }
+        add_text("lapdance.good");
     }
     else if (lapdance >= 40)
     {
-        ss << "${name} tried to sell private dances ";
-        if (roll_c < 5)
-        {
-            ss << "and was able to sell a VIP dance against all odds.";
-            tips += 50;
-        }
-        if (roll_c < 20)
-        {
-            ss << "and was able to sell a lap dance.";
-            tips += 25;
-        }
-        else
-        {
-            ss << "but wasn't able to sell any.";
-        }
+        add_text("lapdance.ok");
     }
     else
     {
-        ss << "${name} doesn't seem to understand the real money in stripping is selling private dances.\n";
+        add_text("lapdance.bad");
     }
 
-    if (wages < 0)
-        wages = 0;
+    if (m_Earnings < 0)
+        m_Earnings = 0;
 
-    if (is_addict(girl, true) && rng.percent(20))
+    if (is_addict(girl, true) && chance(20))
     {
         const char* warning = "Noticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
         ss << "\n" << warning << "\n";
@@ -486,73 +563,35 @@ sWorkJobResult WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
 
     int roll_max = (girl.beauty() + girl.charisma());
     roll_max /= 4;
-    wages += 10 + rng%roll_max;
+    m_Earnings += uniform(10, 10+roll_max);
 
     // Improve stats
-    int xp = 15, skill = 3;
-
-    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
+    int fame = 0;
     if (girl.fame() < 10 && jobperformance >= 70)        { fame += 1; }
     if (girl.fame() < 30 && jobperformance >= 100)        { fame += 1; }
     if (girl.fame() < 60 && jobperformance >= 145)        { fame += 1; }
     if (girl.fame() < 80 && jobperformance >= 185)        { fame += 1; }
 
     girl.fame(fame);
-    girl.exp(xp);
-    girl.performance(rng%skill);
-    girl.strip(rng%skill + 2);
-    girl.upd_temp_stat(STAT_CONFIDENCE, rng % 2); //SIN - slow boost to confidence
 
     //gained
-    cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, actiontype, "${name} has been stripping and having to be sexy for so long she now reeks of sexyness.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(girl, "Exhibitionist", 60, actiontype, "${name} has been stripping for so long she loves to be naked now.", Day0Night1);
-    if (jobperformance >= 140 && rng.percent(25))
+    if (jobperformance >= 140 && chance(25))
     {
-        cGirls::PossiblyGainNewTrait(girl, "Agile", 40, actiontype, "${name} has been working the pole long enough to become quite Agile.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Agile", 40, actiontype, "${name} has been working the pole long enough to become quite Agile.", is_night);
     }
 
     //lose
-    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, "${name} has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
     if (jobperformance > 150 && girl.confidence() > 65)
     {
-        cGirls::PossiblyLoseExistingTrait(girl, "Shy", 60, actiontype, "${name} has been stripping for so long now that her confidence is super high and she is no longer Shy.", Day0Night1);
+        cGirls::PossiblyLoseExistingTrait(girl, "Shy", 60, actiontype, "${name} has been stripping for so long now that her confidence is super high and she is no longer Shy.", is_night);
     }
 
 #pragma endregion
-    return {false,  std::max(0, tips), std::max(0, wages), 0};
+    return {false, std::max(0, m_Tips), std::max(0, m_Earnings), 0};
 }
-double JP_BarStripper(const sGirl& girl, bool estimate)// not used
-{
-#if 1  //SIN - standardizing job performance calc per J's instructs
-    double jobperformance =
-        //basing this on payout logic from code above
-        //main stats - first 100 - charisma and beauty are used above to calc typical payout
-        (girl.charisma() + girl.beauty() / 2) +
-        //secondary stats - second 100 - these set her lapdance chance (so chance of higher payout)
-        ((girl.intelligence() + girl.performance() + girl.strip()) / 3) +
-        //add level
-        girl.level();
 
-    // next up tiredness penalty
-#else
-    double jobperformance =
-        (girl.charisma() / 2 +
-        girl.beauty() / 2 +
-        girl.performance() / 2 +
-        girl.strip() / 2);
-#endif
-    if (!estimate)
-    {
-        int t = girl.tiredness() - 80;
-        if (t > 0)
-            jobperformance -= (t + 2) * (t / 3);
-    }
-
-    if (girl.fame() > 85)      jobperformance += 10;
-    if (girl.is_pregnant())                        jobperformance -= 10; //can't move so well
-
-    jobperformance += girl.get_trait_modifier("work.stripper");
-
-    return jobperformance;
+void RegisterStripClubJobs(cJobManager& mgr) {
+    mgr.register_job(std::make_unique<Barmaid>());
+    mgr.register_job(std::make_unique<Stripper>());
 }
+

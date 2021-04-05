@@ -1,3 +1,9 @@
+# Version 07.00.alpha16
+
+## Fixes
+* Fixed pregnant sex error reported by power guido
+
+
 # Version 07.00.alpha15
 
 ## Changes
@@ -6,6 +12,7 @@
 * Added new image tags for the studio crew jobs
 * Some text additions
 * At the centre, you need one counselor for each therapy
+* New image types for studio crew
 
 ## Fixes
 * Improved RNG on windows

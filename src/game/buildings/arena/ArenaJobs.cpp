@@ -81,7 +81,8 @@ sWorkJobResult CityGuard::DoWork(sGirl& girl, bool is_night) {
     cGirls::EquipCombat(girl);    // ready armor and weapons!
 
     int roll_a = d100(), roll_b = d100();
-    int wages = 150, enjoy = 0, enjoyc = 0, sus = 0;
+    m_Wages = 150;
+    int enjoy = 0, enjoyc = 0, sus = 0;
     int imagetype = IMGTYPE_PROFILE;
 
     int agl = (girl.agility() / 2 + uniform(0, girl.combat() / 2));
@@ -157,7 +158,7 @@ sWorkJobResult CityGuard::DoWork(sGirl& girl, bool is_night) {
 
     apply_gains(girl, m_Performance);
 
-    return sWorkJobResult{false, 0, wages, 0};
+    return sWorkJobResult{false, 0, m_Wages, 0};
 }
 
 FightBeasts::FightBeasts() : cBasicJob(JOB_FIGHTBEASTS, "FightBeasts.xml") {
@@ -213,7 +214,8 @@ sWorkJobResult FightBeasts::DoWork(sGirl& girl, bool is_night) {
     }
     ss << "\n \n";
 
-    int wages = 175, tips = 0, enjoy = 0;
+    m_Wages = 175;
+    int enjoy = 0;
     double jobperformance = girl.job_performance(JOB_FIGHTBEASTS, false);
 
     // TODO need better dialog
@@ -236,7 +238,7 @@ sWorkJobResult FightBeasts::DoWork(sGirl& girl, bool is_night) {
         girl.AddMessage(ss.str(), IMGTYPE_COMBAT, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         int roll_max = girl.fame() + girl.charisma();
         roll_max /= 4;
-        wages += uniform(10, 10+roll_max);
+        m_Wages += uniform(10, 10+roll_max);
         girl.fame(2);
     }
     else  // she lost or it was a draw
@@ -303,7 +305,7 @@ sWorkJobResult FightBeasts::DoWork(sGirl& girl, bool is_night) {
 
     if (girl.is_unpaid())
     {
-        wages = 0;
+        m_Wages = 0;
     }
 
     int earned = 0;
@@ -325,7 +327,7 @@ sWorkJobResult FightBeasts::DoWork(sGirl& girl, bool is_night) {
         cGirls::PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", is_night);
     }
 
-    return {false, tips, wages, 0};
+    return {false, m_Tips, m_Wages, 0};
 }
 
 FightGirls::FightGirls() : cBasicJob(JOB_FIGHTARENAGIRLS, "FightGirls.xml"){
@@ -340,7 +342,6 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
     ss << "${name} was assigned to fight other girls in the arena.\n \n";
 
-    int wages = 0, tips = 0;
     int enjoy = 0, fame = 0;
 
     int imagetype = IMGTYPE_COMBAT;
@@ -383,7 +384,7 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
                 else
                 {
                     Tmsg << " put up a good fight so you let her live as long as she came work for you.\n \n";
-                    wages = uniform(100, 100 + girl.fame() + girl.charisma());
+                    m_Wages = uniform(100, 100 + girl.fame() + girl.charisma());
                 }
                 msg << Tmsg.str();
                 Umsg << Tmsg.str();
@@ -396,7 +397,7 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
             else
             {
                 add_text("victory") << "\n";
-                wages = uniform(100, 100 + girl.fame() + girl.charisma());
+                m_Wages = uniform(100, 100 + girl.fame() + girl.charisma());
             }
         }
         else if (fight_outcome == EFightResult::DEFEAT) // she lost
@@ -448,7 +449,7 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
     // Improve girl
     if (girl.is_unpaid())
     {
-        wages = 0;
+        m_Wages = 0;
     }
 
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
@@ -480,7 +481,7 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
     }
 
 #pragma endregion
-    return {false, std::max(0, tips), 0, std::max(0, wages)};
+    return {false, m_Tips, 0, m_Wages};
 }
 
 FightTraining::FightTraining() : cBasicJob(JOB_FIGHTTRAIN, "FightTrain.xml") {
@@ -516,7 +517,6 @@ sWorkJobResult FightTraining::DoWork(sGirl& girl, bool is_night) {
     cGirls::EquipCombat(girl);    // Ready for combat training
 
     int enjoy = 0;                                                //
-    int wages = 0;                                                //
     int train = 0;                                                // main skill trained
     int tcom = girl.combat();                                    // Starting level - train = 1
     int tmag = girl.magic();                                    // Starting level - train = 2
@@ -745,8 +745,8 @@ sWorkJobResult FightTraining::DoWork(sGirl& girl, bool is_night) {
 
     girl.AddMessage(ss.str(), IMGTYPE_COMBAT, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     brothel->m_Filthiness += 2;    // fighting is dirty
-    if (girl.is_unpaid()) { wages = 0; }
-    else { wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
+    if (girl.is_unpaid()) { m_Wages = 0; }
+    else { m_Wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
 
     // Improve stats
     int xp = 5 + skill;
@@ -757,7 +757,7 @@ sWorkJobResult FightTraining::DoWork(sGirl& girl, bool is_night) {
     girl.exp(uniform(1, xp));
     girl.upd_temp_stat(STAT_LIBIDO, int(skill / 2));
 
-    return {false, 0, 0, wages};
+    return {false, 0, 0, m_Wages};
 }
 
 

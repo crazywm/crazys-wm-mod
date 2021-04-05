@@ -59,6 +59,7 @@ void RegisterArenaJobs(cJobManager& mgr);
 void RegisterCleaningJobs(cJobManager& mgr);
 void RegisterHouseJobs(cJobManager& mgr);
 void RegisterCentreJobs(cJobManager& mgr);
+void RegisterStripClubJobs(cJobManager& mgr);
 
 namespace settings {
     extern const char* WORLD_RAPE_STREETS;
@@ -184,6 +185,7 @@ void cJobManager::Setup()
     RegisterCleaningJobs(*this);
     RegisterHouseJobs(*this);
     RegisterCentreJobs(*this);
+    RegisterStripClubJobs(*this);
 }
 
 sCustomer cJobManager::GetMiscCustomer(IBuilding& brothel)

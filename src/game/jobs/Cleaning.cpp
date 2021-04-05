@@ -111,8 +111,6 @@ sWorkJobResult Cleaning::DoWork(sGirl& girl, bool is_night) {
 
     double CleanAmt = girl.job_performance(JOB_CLEANARENA, false);
     int enjoy = 0;
-    int wages = 0;
-    int tips = 0;
     bool playtime = false;
 
     int roll_a = d100();
@@ -140,11 +138,11 @@ sWorkJobResult Cleaning::DoWork(sGirl& girl, bool is_night) {
     if (girl.is_unpaid())
     {
         CleanAmt *= 0.9;
-        wages = 0;
+        m_Wages = 0;
     }
     else
     {
-        wages = std::min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
+        m_Wages = std::min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
     }
 
     // `J` if she can clean more than is needed, she has a little free time after her shift
@@ -159,7 +157,7 @@ sWorkJobResult Cleaning::DoWork(sGirl& girl, bool is_night) {
     girl.AddMessage(ss.str(), ImageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     CleaningUpdateGirl(girl, is_night, enjoy, CleanAmt);
-    return {false, tips, 0, wages};
+    return {false, m_Tips, 0, m_Wages};
 }
 
 CleanArena::CleanArena() : Cleaning(JOB_CLEANARENA, "CleanArena.xml") {
