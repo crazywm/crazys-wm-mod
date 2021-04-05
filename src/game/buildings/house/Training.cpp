@@ -59,11 +59,11 @@ MistressJob::MistressJob() : cBasicJob(JOB_MISTRESS, "Mistress.xml") {
 
 sWorkJobResult MistressJob::DoWork(sGirl& girl, bool is_night) {
     if (m_Performance > 150) {
-        ProvideInteraction(TrainingInteractionId, 2);
+        ProvideInteraction(TrainingInteractionId, 3);
         add_text("work.good");
     } else {
         add_text("work.normal");
-        ProvideInteraction(TrainingInteractionId, 1);
+        ProvideInteraction(TrainingInteractionId, 2);
     }
 
     apply_gains(girl, m_Performance);

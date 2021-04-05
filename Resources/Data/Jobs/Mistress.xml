@@ -6,16 +6,17 @@
 
     <Performance>
         <Factor Stat="Spirit" Weight="1" />
+        <Factor Stat="Charisma" Weight="1" />
         <Factor Stat="Constitution" Weight="1" />
         <Factor Stat="Confidence" Weight="2" />
 
         <Trait Name="Mute" Value="-20" />
         <Trait Name="Deaf" Value="-10" />
-        <Trait Name="Retarded" Value="-20" />
+        <Trait Name="Retarded" Value="-100" />
         <Trait Name="Muscular" Value="5" />
         <Trait Name="Giant" Value="5" />
         <Trait Name="Tall" Value="2" />
-        <Trait Name="Teacher" Value="10" />
+        <Trait Name="Teacher" Value="15" />
         <Trait Name="Broken Will" Value="-100" />
         <Trait Name="Mind Fucked" Value="-100" />
         <Trait Name="Dependant" Value="-20" />
