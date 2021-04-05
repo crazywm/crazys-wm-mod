@@ -8,6 +8,7 @@
 * Fixed pregnant sex error reported by power guido
 * Fixed dungeon "(error)" for captured customer girls
 * Fixed error in non-paying customer lua script
+* Fixed missing enjoyment function in lua script
 
 
 # Version 07.00.alpha15

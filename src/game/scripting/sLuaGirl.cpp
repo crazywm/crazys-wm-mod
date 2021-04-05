@@ -35,6 +35,7 @@ void sLuaGirl::init(lua_State* L) {
     luaL_Reg methods[] = {
             {"stat", sLuaGirl::getset_stat},
             {"skill", sLuaGirl::getset_skill},
+            {"enjoyment", sLuaGirl::getset_enjoyment},
             {"add_trait", sLuaGirl::add_trait},
             {"has_trait", sLuaGirl::has_trait},
             {"remove_trait", sLuaGirl::remove_trait},
@@ -236,6 +237,20 @@ int sLuaGirl::calc_group_pregnancy(lua_State *L) {
     }
     lua_pushboolean(L, !not_preg);
     return 1;
+}
+
+int sLuaGirl::getset_enjoyment(lua_State* L) {
+    auto& girl = check_type(L, 1);
+    auto cat = static_cast<Action_Types>(luaL_checkinteger(L, 2));
+    if(lua_gettop(L) == 3) {
+        int value = luaL_checkinteger(L, 3);
+        girl.upd_Enjoyment(cat, value);
+        return 0;
+    } else {
+        int value = girl.get_enjoyment(cat);
+        lua_pushinteger(L, value);
+        return 1;
+    }
 }
 
 int sLuaGirl::acquire_girl(lua_State* L) {

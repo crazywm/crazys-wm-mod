@@ -71,6 +71,8 @@ struct sLuaGirl : public sCharacter<sLuaGirl>{
 
     static int skill_check(lua_State* L);
 
+    static int getset_enjoyment(lua_State* L);
+
     // sex
 
 
