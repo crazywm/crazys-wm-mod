@@ -685,7 +685,7 @@ void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::str
     }
     m_Font.SetFontBold(false);
 
-    if (!m_HeaderDividers) return;
+    if (!m_HeaderDividers || !m_ShowHeaders) return;
 
     // while we're here, let's pre-draw the header dividers on the stored header background image
     for (int i = 1; i < name.size(); i++)
@@ -698,7 +698,7 @@ void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::str
         m_Divider.w = 1;
         m_Divider.y++;
         m_Divider.h--;
-        m_HeaderBackground = m_HeaderBackground.FillRect(m_Divider,g_ListBoxHeaderBorderColor);
+        m_HeaderBackground = m_HeaderBackground.FillRect(m_Divider, g_ListBoxHeaderBorderColor);
         m_Divider.y--;
         m_Divider.h++;
     }
