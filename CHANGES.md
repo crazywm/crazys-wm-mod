@@ -2,6 +2,8 @@
 
 ## Fixes
 * Fixed pregnant sex error reported by power guido
+* Fixed dungeon "(error)" for captured customer girls
+* Fixed error in non-paying customer lua script
 
 
 # Version 07.00.alpha15

@@ -1575,7 +1575,7 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
 
         }
         // `J` do all the messages
-        CGmsg << custgirl->FullName() << " was caught trying to run out without paying for services provided by "
+        CGmsg << "${name} was caught trying to run out without paying for services provided by "
               << girl.FullName() << ".\n \n" << itemtext.str();
         custgirl->add_temporary_trait("Emprisoned Customer", emprisontraittime);    // add temp trait
         if (g_Dice.percent(75)) custgirl->lose_trait("Virgin");                // most of the time she will not be a virgin
@@ -1584,7 +1584,7 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
         g_Game->player().customerfear(g_Dice % 10);
         custgirl->m_Money = 0;
 
-        custgirl->m_Events.AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
+        custgirl->AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
         // `J` add the customer to the dungeon
         g_Game->dungeon().AddGirl(custgirl, DUNGEON_CUSTNOPAY);
     } else {

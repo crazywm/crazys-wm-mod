@@ -104,7 +104,6 @@ function FollowHome(event)
         Dialog("Your men leave and return with some crying women and drag them to the dungeon.")
         wm.SetPlayerSuspicion(15)
         wm.SetPlayerDisposition(-15)
-        wm.AddFamilyToDungeon()
         wm.AddFamilyToDungeon(event, true, true, false, false, false)
     elseif choice == 3 then
         Ransack()

@@ -304,6 +304,7 @@ FormattedCellData sDungeonGirl::GetDetail(const std::string& detailName) const
            case DUNGEON_KID:              return mk_text("Child of one of your girls.");
            case DUNGEON_NEWARENA:         return mk_text("This is a girl won in the arena.");
            case DUNGEON_RECRUITED:        return mk_text("This girl was recruited for you.");
+           case DUNGEON_CUSTNOPAY:        return mk_text("Not paying.");
            default:                       return mk_error("(error)");
         }
     }
