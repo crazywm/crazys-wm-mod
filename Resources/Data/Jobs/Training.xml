@@ -74,8 +74,89 @@
         </Message>
 
         <Message Name="train.Strip">
-            <Text>
-                Strip training.
+            <Text Condition="Clumsy^skill:Strip < 30">
+                While practicing a strip dance with ${mistress}, Clumsy ${girl} managed to get her panties
+                caught in her heels and fell. After patching her up, ${mistress} decided to end the lesson
+                for the day.
+            </Text>
+            <Group Condition="skill:Strip < 20">
+                <Text Condition="Nymphomaniac|Exhibitionist">
+                    ${girl} is so eager to get out of her clothes that ${mistress} spends the entire lesson trying to
+                    slow her down so that the "strip tease" can take longer than 10 seconds. So far, she hasn't been
+                    very successful at this.
+                </Text>
+                <Text Condition="Chaste|Shy">
+                    ${girl} is extremely uncomfortable with the thought of getting naked in front of strangers.
+                    For now, ${mistress} allows her to keep on her underwear. Even still, ${girl} is shivering
+                    uncontrollably at the end of the lesson.
+                </Text>
+                <Text>
+                    "Wow, that was the least sexy strip tease I've ever seen", ${mistress} complains once ${girl}
+                    has finished. ${mistress} decides to start very simple and lets ${girl} ignore the pole for now,
+                    and just asks her to remove her clothing slowly. It looks very awkward.
+                </Text>
+            </Group>
+            <Group Condition="skill:Strip > 15 ^ skill:Strip < 30">
+                <Text Condition="Chaste|Shy">
+                    ${girl} is still very uncomfortable with the thought of getting naked in front of strangers, but
+                    she must learn to cope with this. ${mistress} orders her to strip, but she immediately tries
+                    to cover herself with her hands as soon as her bra comes off. ${mistress} gently moves ${girl}'s
+                    hands away. "See, this isn't so bad"
+                </Text>
+                <Text Condition="Nymphomaniac|Exhibitionist">
+                    ${girl} is so too eager to get out of her clothes quickly. ${mistress} explains to her that is she
+                    strips more slowly, her audience will admire her body even more and become more aroused. The idea
+                    clearly appeals to ${girl}, and on her next try she deliberately slows down her movements. While
+                    it looks a bit stiff and awkward, this is a major improvement.
+                </Text>
+                <Text>
+                    ${mistress} ties to get ${girl} to make sensual movements while removing her clothing. However,
+                    her success in this is rather limited.
+                </Text>
+            </Group>
+            <Group Condition="skill:Strip > 25 ^ skill:Strip < 45">
+                <Text Condition="Chaste|Shy">
+                    Even though ${girl} is clearly uncomfortable with the situation, she manages to present ${mistress}
+                    with a fairly decent strip tease.
+
+                    "Good, we're finally getting somewhere. I think it is time you practiced in front of an actual
+                    audience."
+
+                    "A..Audience?", ${girl} stammers, her face suddenly very pale.
+
+                    Mistress calls into the hallway: "Mark, Pete, come in here, there is something I want you to see!"
+                </Text>
+                <Text>
+                    By now, ${girl} has learned to remove her clothing in a way that could, by a generous definition
+                    of the word, be considered alluring. Thus ${mistress} thinks it is time to have her practice some
+                    basic exercises at the pole.
+                </Text>
+            </Group>
+            <Group Condition="skill:Strip > 40 ^ skill:Strip < 66">
+                <Text Condition="Chaste|Shy">
+                    ${girl} feels uncomfortable when stripping in front of an audience, but has learned to hide
+                    this very well. ${mistress} is pleased with her progress, and starts instructing her on how
+                    to include the pole in her performance.
+                </Text>
+                <Text>
+                    ${girl} knows all the basic moves of a stripper, so ${mistress} focuses her instruction on
+                    some finer points. "A successful stripper has to interact with her audience, then she'll be able
+                    to sell private lap dances. This is were the real money is", she explains while she has ${girl}
+                    practice eye contact with the goons she invited for the lesson.
+                </Text>
+            </Group>
+            <Group Condition="skill:Strip > 60 ^ skill:Strip < 85">
+                <Text>
+                    ${girl} is a fairly skillful stripper, so ${mistress} is confident that she will attract the interest
+                    of some patrons once you let her perform in one of your establishments. She will need to transform
+                    that interest into monetary gain, and therefore ${mistress} has her practicing lap dances with a few
+                    of you staff who are currently on break.
+                </Text>
+            </Group>
+            <Text Condition="skill:Strip>80">
+                ${mistress} has ${girl} practice some challenging acrobatic moves on the stripper pole. Even for someone
+                as skilled as ${girl}, they are no easy feat, and she has to repeat them several times until ${mistress}
+                is happy with the results.
             </Text>
         </Message>
 

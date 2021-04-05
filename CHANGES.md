@@ -1,5 +1,8 @@
 # Version 07.00.alpha16
 
+## Changes
+* Added text for strip training
+
 ## Fixes
 * Fixed pregnant sex error reported by power guido
 * Fixed dungeon "(error)" for captured customer girls
