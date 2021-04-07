@@ -43,6 +43,7 @@ namespace settings {
 // TODO make this a config
 static bool AutoUseItems = false;
 
+
 struct cInventoryProviderPlayer: public IInventoryProvider {
     FormattedCellData get_data(int filter, const std::string& column) const override {
         if(column == "Name") {
@@ -186,7 +187,7 @@ struct cInventoryProviderGirl : public IInventoryProvider {
             }
 
             m_Girl->add_item(item);
-            if (AutoUseItems || (type == sInventoryItem::Food || type == sInventoryItem::Makeup)) {
+            if (AutoUseItems && (type == sInventoryItem::Food || type == sInventoryItem::Makeup)) {
                 m_Girl->equip(item, false);
             }
 

@@ -10,7 +10,7 @@
 * Fixed dungeon "(error)" for captured customer girls
 * Fixed error in non-paying customer lua script
 * Fixed missing enjoyment function in lua script
-
+* Fixed auto-use consumable
 
 # Version 07.00.alpha15
 
