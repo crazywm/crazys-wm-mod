@@ -193,10 +193,6 @@ DECL_JOB(HallDealer);
 DECL_JOB(HallEntertainer);
 DECL_JOB(HallXXXEntertainer);
 
-// - Sleazy Bar
-DECL_JOB(SleazyBarmaid);
-DECL_JOB(SleazyWaitress);
-
 // - Brothel
 DECL_JOB(BrothelMasseuse);
 DECL_JOB(BrothelStripper);
@@ -236,7 +232,6 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_ENTERTAINMENT, HallEntertainer, "Entn", "She will provide entertainment to the customers.");
     REGISTER_JOB(JOB_XXXENTERTAINMENT, HallXXXEntertainer, "XXXE", "She will provide sexual entertainment to the customers.");
 
-    REGISTER_JOB(JOB_SLEAZYWAITRESS, SleazyWaitress, "SWtr", "She will bring drinks and food to the customers at the tables while dressed in lingerie or fetish costumes.");
     REGISTER_JOB(JOB_MASSEUSE, BrothelMasseuse, "Msus", "She will give massages to the customers.");
     REGISTER_JOB(JOB_BROTHELSTRIPPER, BrothelStripper, "BStp", "She will strip for the customers.");
     REGISTER_JOB(JOB_PEEP, PeepShow, "Peep",  "She will let people watch her change and maybe more...");

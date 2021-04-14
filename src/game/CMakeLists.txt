@@ -65,7 +65,6 @@ set(BUILDINGS_SRC
         buildings/brothel/WorkPeepShow.cpp
         buildings/house/WorkPersonalBedWarmer.cpp
         buildings/brothel/WorkSecurity.cpp
-        buildings/brothel/WorkSleazyWaitress.cpp
         buildings/brothel/WorkTorturer.cpp
         buildings/studio/StudioFilming.cpp
         buildings/centre/Therapy.cpp

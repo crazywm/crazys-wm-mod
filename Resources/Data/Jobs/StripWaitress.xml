@@ -1,0 +1,223 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="SWtr">
+    <Description>
+        She will bring drinks and food to the customers at the tables while dressed in lingerie or fetish costumes.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Beauty" Weight="2"/>
+        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Skill="Performance" Weight="2"/>
+        <Factor Skill="Brewing" Weight="1"/>
+
+        <Mod>work.sleazywaitress</Mod>
+    </Performance>
+
+    <Gains XP="15" Skill="3">
+        <LoseTrait Trait="Clumsy" Threshold="30" Action="WORKCLUB">
+            It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.
+        </LoseTrait>
+        <GainTrait Trait="Charming" Threshold="70" Action="WORKCLUB">
+            ${name} has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.
+        </GainTrait>
+        <Skill Name="Service" Weight="3" />
+        <Stat Name="Charisma" Weight="2"/>
+        <Skill Name="Performance" Weight="2" />
+    </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>
+                ${name} is instructed to work at your sleazy restaurant as a waitress.
+                She is informed that the customers here want good service,
+                but they chose this place because of the promise of attractive women in skimpy clothing.
+                If she wants to be successful, she will need to impress them with her body as well as her service.
+
+                She worked as a waitress in the strip club.
+            </Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to be a waitress for the creeps in your strip club to${shift}</Text>
+        </Message>
+        <Message Name="work.perfect">
+            She must be the perfect waitress customers go on and on about her and always come to see her when she works.
+            <Text>
+                ${name} is amazing as a waitress, and dances about the room from table to table keeping all the customers satisfied.
+                She recalls their orders by perfect memory, watches everyone to make sure they have everything they want,
+                and appears as if by magic the moment anyone places a menu back on the table or returns their fork to the plate.
+                Her sexy body keeps everyone thinking about her long after she walks away.
+            </Text>
+            <Text>
+                ${name} does a great job, and her memorization of the menu and the specials,
+                paired with her timely service and polite demeanor,
+                pays dividends as she moves from table to table collecting orders.
+                The patrons are pleased, and while ${name} knows better than to interrupt anyone while they are eating,
+                the customers have no complaints when she is forced to do so.
+                She walks with just the right sexy strut that she is a welcome sight whenever she appears.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            She's unbelievable at this and is always getting praised by the customers for her work.
+            <Text>
+                ${name} is a very good waitress, and collects the orders promptly and politely.
+                She has almost everything on the menu memorized and can speak knowledgeably about the beer list and customer favorites.
+                She occasionally spends too much time at each table or appears while customers are still considering their orders,
+                but this does not seriously detract from her service,
+                and the patrons who enjoy her extra attention flirt with her constantly.
+            </Text>
+            <Text>
+                ${name} impresses the patrons with her efficiency, politeness, and knowledge.
+                She deftly deters the patrons away from dishes that are not perfected,
+                and also from dishes that are too inexpensive.
+                She talks a number of customers into ordering a more expensive special,
+                and they are all happy with the results, especially as she hovers long and low over them,
+                brushing them repeatedly with her breasts as she sets it on the table.
+            </Text>
+        </Message>
+        <Message Name="work.good">
+            She's good at this job and gets praised by the customers often.
+            <Text>
+                ${name} provides satisfactory service. She tends to show up too early,
+                and occasionally the customers feel rushed,
+                but ${name} is nevertheless polite and courteous and everyone is generally pleased with her work.
+                She needs to learn more about the menu items and the specials,
+                and her flirtations with the customers feel forced and unnatural, but all in all, her work is good.
+            </Text>
+            <Text>
+                ${name} is fairly good as a waitress.
+                She is attentive and prompt, and while she has to write all the orders down in order not to forget,
+                the customers are not too put out by her efforts.
+                She does not understand the cooks' capabilities well enough to steer customers away from poorer dishes,
+                but she is good enough at flirting with them and occasionally grinding against them that they are distracted from the meal.
+            </Text>
+        </Message>
+        <Message Name="work.ok">
+            She made a few mistakes but overall she is okay at this.
+            <Text>
+                ${name} manages to get all the food ordered and delivered,
+                but that is the extent of her skills.
+                Her unease at this job translates into customers that feel rushed to order sooner than they would like,
+                and her inability to speak with knowledge about the menu items and specials leads them to make hasty and usually inexpensive selections.
+                When she tries to bend low and give them a good view of her tits as they order,
+                it ends up looking awkward and forced. The patrons are satisfied by her work, but only just.
+            </Text>
+            <Text>
+                ${name} is still learning how to be a decent waitress.
+                She is able to get the right food to the right patron on time,
+                but it is clear that she is still training in her job.
+                Her attempts at grinding her ass against them are badly timed and usually come across as clumsiness rather than flirtation,
+                and the customers show limited patience while she asks them to repeat their orders as she writes everything down.
+            </Text>
+        </Message>
+        <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
+            <Text>
+                ${name} is not very good at working as a waitress.
+                She forgets orders and has to return to the tables for clarification regularly.
+                Some patrons get the wrong meal, and a few choose to leave without paying rather than wait for her to place the corrected order.
+                She stumbles over the menu options and her flirtatious comments sound like a terrible actress rehearsing even worse lines.
+                The customers are not very pleased with her work, and her tips reflect this.
+            </Text>
+            <Text>
+                ${name} barely makes it through her shift without running every customer out of the restaurant.
+                Her skills need a lot of work. She asks patrons for their orders before they even pick up the menu,
+                and rather than giving them time to look it over and select,
+                she stands there staring until they place the order.
+                She tries to make up for this by "gently" brushing her tits against their heads when she adjusts something on the table,
+                but it ends up being a weird boob mash in their ears.
+                Most patrons find this very unnerving, but it would probably be forgiven if she brought them the right orders.
+                She does not, usually. Some patrons walk out, promising that they will tell their friends about the poor service.
+                Almost nobody tips her.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            She was nervous and constantly making mistakes. She really isn't very good at this job.
+            <Text>
+                ${name} is really bad at serving as a waitress.
+                Awful, really. She hassles customers for food orders, interrupts them constantly while they eat,
+                and constantly screws up their order.
+                She makes practically no effort to flirt or entice the customers with her body.
+                The kitchen is constantly compelled to send complimentary food out to cover for her poor service,
+                but most customers are not so easily placated and deride ${name} to her face.
+                They leave, promising that they will never come back. Nobody tips her.
+            </Text>
+            <Text>
+                ${name} understands nothing about being a waitress. The menu confuses her,
+                the specials are completely outside her understanding,
+                and she has no idea how to use her body to her advantage.
+                Those customers that stick around after her terrible initial service are not very surprised to find
+                that a completely different meal than the one they ordered finds its way to their table.
+                She hovers over them while they eat, clearly waiting for them to finish and pay so she can bus the table.
+                Nobody tips her, and most tell her that they will not come back again as long as she works here.
+            </Text>
+        </Message>
+
+        <Message Name="event.post">
+            <Text Condition="stat:Beauty>85" Chance="20" Updates="Tips+=25">
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+            <Text Condition="stat:Beauty>99" Chance="5" Updates="Tips+=50">
+                ${name} looked absolutely stunning during her shift and was unable to hide it.
+                Instead of her ass or tits, the patrons couldn't glue their eyes off her face,
+                and spent a lot more than usual on tipping her.
+            </Text>
+            <Text Condition="stat:Charisma>85" Chance="20" Updates="Tips+=35">
+                ${name} surprised a couple of gentlemen discussing some complicated issue by her
+                insightful comments when she was taking her order.
+                They decided her words were worth a heavy tip.
+            </Text>
+
+            <Group Condition="Clumsy" Chance="15" Updates="Earnings-=25">
+                <Text>
+                    Her clumsy nature cause her to spill food on a customer resulting in them storming off without paying.
+                </Text>
+                <Text>
+                    ${name} is clumsy, which is not a great attribute for someone that carries food for others all day.
+                    All the customers are jarred to hear a pile of plates come crashing down to the floor,
+                    as ${name} sheepishly stares at the heap of broken dishes and scattered food.
+                    A customer is forced to wait while she apologizes and places a new order.
+                </Text>
+            </Group>
+
+            <Group Condition="Pessimist" Chance="5">
+                <Text Condition="Performance > 125" Updates="Tips+=10">
+                    ${name} was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.
+                </Text>
+                <Text Condition="Performance <= 125" Updates="Tips-=10">
+                    Her pessimistic mood depressed the customers making them tip less.
+                </Text>
+            </Group>
+            <Group Condition="Optimist" Chance="5">
+                <Text Condition="Performance > 125" Updates="Tips+=10">
+                    Her optimistic mood made patrons cheer up increasing the amount they tip.
+                </Text>
+                <Text Condition="Performance <= 125" Updates="Tips-=10">
+                    ${name} was in a cheerful mood but the patrons thought she needed to work more on her services.
+                </Text>
+            </Group>
+            <Group Condition="Great Figure" Chance="25">
+                <Text Condition="Performance > 125" Updates="Tips+=10">
+                    Not only does she have an amazing figure but she is also an amazing waitress the patrons really love her and her tips prove it.
+                </Text>
+                <Text Condition="Performance <= 125">
+                    ${name}'s amazing figure wasn't enough to keep the patrons happy when her service was so bad.
+                </Text>
+            </Group>
+            <Group Condition="Exhibitionist|stat:Dignity<=-20" Chance="20">
+                <Text Updates="Tips+=20">
+                    During her shift, ${name} deliberately dropped the pen she uses to write down orders in front of one of the customers.
+                    Exploiting her skimpy outfit,
+                    she made sure to bend over to pick it up in a way that allowed her to directly flash her butt on the sitting client's eye level.
+                    This earned her an extra tip.
+                </Text>
+                <Text Updates="Tips+=30">
+                    An inebriated patron said half-jokingly to ${name} that he'll leave a heavy tip if she takes his order while sitting on his lap.
+                    Much to his surprise, ${name} was almost too eager to comply, sitting directly on his crotch instead,
+                    making sure to grind her butt into it.
+                    The customer lived up to his word and ${name} left the table with some extra cash.
+                </Text>
+            </Group>
+            <Text Priority="-1"/>
+        </Message>
+    </Messages>
+</Job>

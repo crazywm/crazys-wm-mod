@@ -26,7 +26,6 @@
   - [ ] General
   - [ ] Bar
   - [ ] Gambling
-  - [ ] Strip Club
   - [ ] Brothel
   - [ ] PersonalBedWarmer
 * [ ] adjustable unique chance for overworld encounters
