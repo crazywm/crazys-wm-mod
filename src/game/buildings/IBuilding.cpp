@@ -198,7 +198,7 @@ void IBuilding::HandleRestingGirls(bool is_night)
         }
         else if (m_ActiveMatron)    // send her back to work
         {
-            int psw = current.get_job(is_night);
+            int psw = is_night ? current.m_PrevNightJob : current.m_PrevDayJob;
             if (psw != JOB_RESTING && psw != 255)
             {    // if she had a previous job, put her back to work.
                 if(!handle_back_to_work(current, ss, is_night)) {
