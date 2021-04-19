@@ -191,9 +191,46 @@
                 Once she manages to stroke a dildo in a way that does not look
                 like it would cause serious physical injury, maybe she can try again.
             </Text>
+            <Text Condition="skill:Handjob > 15 ^ skill:Handjob < 33>">
+                ${mistress} picks one of your goons and orders ${girl} to
+                give him a handjob. Going by the expression on your goon's face,
+                she is not doing a very good job.
 
-            <Text>
-                Handjob training.
+                In the end, ${mistress} decides to demonstrate how it is done and
+                finishes him off.
+            </Text>
+            <Text Condition="skill:Handjob > 28 ^ skill:Handjob < 50>">
+                ${mistress} picks one of your goons and orders ${girl} to
+                give him a handjob. She is experienced enough to get him to
+                cum quickly, but the performance is probably not very memorable.
+
+                ${mistress} uses the rest of the lesson to explain to ${girl} that
+                her goal is not to make him cum as quickly as possible, but to have
+                him enjoy the experience so much that he will visit again and pay
+                more money.
+            </Text>
+            <Text Condition="skill:Handjob > 45 ^ skill:Handjob < 66>">
+                ${girl} knows how to give decent handjobs, so ${mistress} decides
+                to give her some more advanced instructions. She has ${girl}
+                practice varying her speed, rhythm, and movements. The guard who
+                was brought in for practice certainly appreciated ${mistress}'s
+                command to give his balls some love too.
+            </Text>
+            <Text Condition="skill:Handjob > 60 ^ skill:Handjob < 85>">
+                ${girl} knows how to give good handjobs, so ${mistress} decides
+                to give her some more advanced instructions. Left-handed, right-handed,
+                both hands, fast, slow, only the tip or along the entire shaft, ${mistress}
+                has her practice all sorts of variations. She also makes sure that ${girl}
+                uses the rest of her body to properly tease the lucky guy.
+            </Text>
+            <Text Condition="skill:Handjob > 80 ^ skill:Handjob < 100>">
+                ${girl} is an expert at giving handjobs, so ${mistress} decides to
+                present her with a real challenge today. One of your guards, only called
+                $[Limp Leo|Soft Sven|Flaccid Frederick] by the others, has certain performance
+                problems. Yet after a few minutes, ${girl} is pumping away on his rock-hard cock,
+                and soon he splurges a huge load all over her.
+
+                "I guess you've been really saving that, eh", ${mistress} comments dryly, "Good work, ${girl}!".
             </Text>
         </Message>
 
@@ -320,26 +357,52 @@
                 ${mistress} hands ${name} a string of anal beads and a bottle of lubricant.
                 "We're doing some stretching exercises today."
             </Text>
-            <Text Condition="skill:Anal>25 ^ skill:Anal<45">
+            <Text Condition="skill:Anal>25 ^ skill:Anal<40">
                 "I'll go and fetch Jonny", ${mistress} tells {girl} as she hands her some lube and a butt-plug.
                 "You'd better start stretching your anus, otherwise this will be painful".
 
                 Despite her preparations, it hurt when Jonny slowly pushed in his dick. He started fucking her gently,
-                and while she still thought it a bit uncomfortable after a while, the pain subsided. Her training
+                and while she still thought it a bit uncomfortable, after a while the pain subsided. Her training
                 is starting to pay off.
             </Text>
+            <Group Condition="skill:Anal>35 ^ skill:Anal<66">
+                ${girl} has some anal experience, and ${mistress} decides that today they are going to
+                increase the intensity of the training a bit. She calls in three of your goons, who spent
+                the next few hours taking turns fucking ${girl} in the ass.
+                <Text Condition="skill:Anal < 55">
+                    After the lesson ends, you can see ${girl} wincing as she sits down.
+                </Text>
+                <Text Condition="skill:Anal > 45">
+                    She is a little sore after the lesson, but overall her training seems to pay off nicely.
+                </Text>
+            </Group>
+
+            <Text Condition="skill:Anal > 55 ^ skill:Anal < 75">
+                ${girl} has enough anal experience for ${mistress} to start the more advanced training.
+                Instead of just passively getting penetrated, she now has to take an active part. While
+                she does so in the beginning, after a short while the man ends up doing all the work.
+
+                "Thanks, $[Peter|Bob|Steve], you did good work, but I think for this lesson I need someone a little
+                less cooperative." Mistress takes out a dildo and mounts it on the wall. "Now, get on all fours and
+                fuck that", ${mistress} instructs, "There will be no slacking off now"
+            </Text>
+
+            <Text Condition="skill:Anal > 70 ^ skill:Anal <= 90">
+                "Your anal sex skills are pretty good", ${mistress} tells ${girl}, "but I think we still can improve
+                the variety you provide. Lets practice the
+                $[Lotus|Cowgirl|Piledriver|Turtle|Leap Frog|Bodyguard|Burning Man|Cross|Pump|Bulldog|See Saw|Jockey]
+                position today.
+            </Text>
+
             <Text Condition="skill:Anal>90">
                 ${mistress} presents an enormous butt-plug to ${name}. "I've heard you like a challenge",
-                she says, "so go on an impress me!"
+                she says, "so go on and impress me!"
 
-                It took ${girl} more than half an hour and a copious amount of split, but finally, she manages to
+                It took ${girl} more than half an hour and a copious amount of spit, but finally, she managed to
                 insert the device up to the base into her ass.
 
                 "It seems like I need to get an even bigger one specifically manufactured for you. I really did not
-                think this monstrosity would fit. Well done, you can take the rest of the day off"
-            </Text>
-            <Text>
-                Anal training.
+                think this monstrosity would fit. Well done, you can take the rest of the day off."
             </Text>
         </Message>
 
