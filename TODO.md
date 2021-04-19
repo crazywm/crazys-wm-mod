@@ -21,7 +21,6 @@
 * [ ] Improve performance of animations (upscale only when blitting?)
 * [ ] Pre-generate list of all images for each girl on game start
 * [ ] De-interlacing
-* [ ] IListBox conversion
 * [ ] Convert job functions to classes
   - [ ] General
   - [ ] Bar
@@ -52,7 +51,6 @@
 * [ ] Active Building Widget
 * [ ] LoadGame delete button
 * [ ] Inventory screen resets
-* [ ] load game: select most recent by default
 * [ ] Restore Property Management screen
 
 ## Bugs

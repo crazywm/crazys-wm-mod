@@ -72,7 +72,7 @@ void cScreenMainMenu::init(bool back)
     bool d_load = (fla.size() < 1 || (fla.size() == 1 && !d_continue));
     DisableWidget(continue_id, d_continue);    // `J` disable continue button if autosave.gam is not found
     DisableWidget(load_id, d_load);            // `J` disable load game button if there are no save games found
-    if (version_id >= 0) EditTextItem(svn_revision, version_id);
+    if (version_id >= 0) EditTextItem(VERSION_STRING, version_id);
 
     g_Game = nullptr;
 }

@@ -1,0 +1,7 @@
+// game version
+constexpr const int g_MajorVersion    = ${PROJECT_VERSION_MAJOR};
+constexpr const int g_MinorVersion    = ${PROJECT_VERSION_MINOR};
+constexpr const int g_PatchVersion    = ${PROJECT_VERSION_PATCH};
+
+constexpr const char* VERSION_STRING  = "WhoreMaster ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}a";
+

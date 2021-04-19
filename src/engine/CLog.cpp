@@ -27,8 +27,7 @@ CLog::CLog() {
         std::cerr << "Could not open game log file!" << std::endl;
     }
 
-    m_ofile << "Whore Master v" << g_MajorVersion << "." << g_MinorVersionA << g_MinorVersionB << "." << g_StableVersion << " BETA" << " Svn: " << svn_revision;
-    m_ofile << '\n';
+    m_ofile << VERSION_STRING << '\n';
     m_ofile << "------------------------------------------------------------------------------------------------------------------------" << std::endl;
 
     // set up streams

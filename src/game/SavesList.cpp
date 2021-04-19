@@ -28,6 +28,7 @@
 #include "utils/DirPath.h"
 #include "utils/FileList.h"
 #include <boost/numeric/conversion/cast.hpp>
+#include "Revision.h"
 
 void SavesList::NotifySaveGame(const std::string& file_name, IGame& game) {
     auto& target = m_SaveData[file_name];
@@ -121,9 +122,8 @@ bool SavesList::LoadGame(const std::string& source_file, const std::function<voi
     }
 
     // load the version
-    int minorA = -1;
-    pRoot->QueryIntAttribute("MinorVersionA", &minorA);
-    if (minorA != 7) {
+    int major = GetIntAttribute(*pRoot, "MajorVersion");
+    if (major != g_MajorVersion) {
         callback("You must start a new game with this version");
         return false;
     }

@@ -116,10 +116,9 @@ void SaveGameXML(std::string filename)
 
     // output game version
     pRoot->SetAttribute("MajorVersion", g_MajorVersion);
-    pRoot->SetAttribute("MinorVersionA", g_MinorVersionA);
-    pRoot->SetAttribute("MinorVersionB", g_MinorVersionB);
-    pRoot->SetAttribute("StableVersion", g_StableVersion);
-    pRoot->SetAttribute("ApproxRevision", svn_revision);
+    pRoot->SetAttribute("MinorVersion", g_MinorVersion);
+    pRoot->SetAttribute("PatchVersion", g_PatchVersion);
+    pRoot->SetAttribute("ApproxRevision", VERSION_STRING);
 
     //if a user mods the exe, he can tell us that here
     //by changing it to anything besides official
