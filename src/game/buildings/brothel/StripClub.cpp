@@ -50,7 +50,7 @@ namespace {
 
 }
 
-Barmaid::Barmaid() : cBasicJob(JOB_SLEAZYBARMAID) {
+Barmaid::Barmaid() : cBasicJob(JOB_SLEAZYBARMAID, "StripBarMaid.xml") {
 
 }
 
