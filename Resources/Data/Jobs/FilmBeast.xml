@@ -89,9 +89,11 @@
             </Text>
         </Message>
         <Message Name="disobey.slave.evil">
+            <Text>
             ${name} refused to be fucked by animals on film.
             Amused, you have your men flog this slave for a while to remind her of her place.
             You offer the film-crew first choice of your more exotic beasts.
+            </Text>
         </Message>
 
         <Message Name="work.perfect">

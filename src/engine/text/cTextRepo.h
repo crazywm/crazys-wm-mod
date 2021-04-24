@@ -61,6 +61,8 @@ public:
                   std::unique_ptr<ICondition> condition, std::unique_ptr<IAction> action) override;
     const std::string& get_text(const std::string& prompt, const IInteractionInterface& lookup) override;
     bool has_text(const std::string& prompt) override;
+
+    bool verify() const override;
 private:
     std::unordered_map<std::string, TextGroup> m_Texts;
 };

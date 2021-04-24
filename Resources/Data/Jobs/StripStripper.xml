@@ -131,7 +131,9 @@
             </Text>
         </Message>
         <Message Name="lapdance.bad">
-            ${name} doesn't seem to understand the real money in stripping is selling private dances.
+            <Text>
+                ${name} doesn't seem to understand the real money in stripping is selling private dances.
+            </Text>
         </Message>
     </Messages>
 </Job>

@@ -123,6 +123,17 @@ const std::string& cTextRepository::get_text(const std::string& prompt,
     return texts.get_text(lookup);
 }
 
+bool cTextRepository::verify() const {
+    bool good = true;
+    for(const auto& text : m_Texts) {
+        if(text.second.empty()) {
+            g_LogFile.warning("text", "Text entry '", text.first, "' is empty!");
+            good = false;
+        }
+    }
+    return good;
+}
+
 
 namespace {
     std::unique_ptr<ICondition> parse_conditions(const char* source) {

@@ -102,6 +102,10 @@ void cBasicJob::load_from_xml_internal(const char* xml_file) {
     if(text_el) {
         m_TextRepo = ITextRepository::create();
         m_TextRepo->load(*text_el);
+        if(!m_TextRepo->verify()) {
+            g_LogFile.error("jobs", "Detected some problems when loading ", xml_file);
+            g_Game->error("Detected some problems when loading " + std::string(xml_file));
+        }
     }
     const auto* config_el = job_data->FirstChildElement("Config");
     if(config_el) {
