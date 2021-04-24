@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
-project(WM VERSION 7.01.16)
+project(WM VERSION 7.1.1.1)
+set(PROJECT_VERSION_TYPE beta)
 
 # this needs to happen before the find_package calls, because they register the dlls
 # for install under windows
@@ -34,6 +35,9 @@ install(DIRECTORY
         Resources/Images
         DESTINATION Resources)
 install(FILES Resources/Characters/randoms.rgirlsx DESTINATION Resources/Characters)
+if(NOT ${PROJECT_VERSION_TYPE} STREQUAL "alpha")
+    install(DIRECTORY Resources/DefaultImages DESTINATION Resources)
+endif()
 install(FILES README.md CHANGES.md "Special Thanks.txt" gpl.txt config.xml segoeui.ttf DESTINATION .)
 install(TARGETS WhoreMaster lua tinyxml2)
 set(CPACK_GENERATOR "ZIP")
