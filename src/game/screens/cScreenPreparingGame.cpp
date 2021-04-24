@@ -99,6 +99,7 @@ void cScreenPreparingGame::init(bool back)
             // TODO strip the save path here?
             ss1 << "Loading Game:   " << g_ReturnText;
             EditTextItem(ss1.str(), text1_id);
+            g_LogFile.info("prepare", "Loading game from ", g_ReturnText);
             m_AsyncLoad = std::async(std::launch::async,
                                      [this](){
                                          return LoadGame(g_ReturnText);
@@ -187,7 +188,11 @@ bool cScreenPreparingGame::LoadGame(const std::string& file_path) {
         m_NewMessages.push_back(std::move(str));
     };
 
-    SavesList::LoadGame(file_path, callback, *g_Game);
+    bool loaded = SavesList::LoadGame(file_path, callback, *g_Game);
+    if(!loaded) {
+        m_Loading = false;
+        return false;
+    }
 
     tinyxml2::XMLDocument doc;
     if (doc.LoadFile(file_path.c_str()) != tinyxml2::XML_SUCCESS) {
@@ -253,6 +258,10 @@ void cScreenPreparingGame::process()
             return;
         }
         g_LogFile.info("prepare", "Finished");
+        if(g_Game->buildings().num_buildings() == 0) {
+            g_LogFile.error("Could not find building in save game");
+            m_Loading = false;
+        }
         set_active_building(&g_Game->buildings().get_building(0));
         push_window("Building Management");
         if(load0new1 == 1) {

@@ -211,15 +211,10 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
 {
     g_LogFile.log(ELogLevel::NOTIFY, "*** Initializing ***");
     /*
-    *       build the caption string
-    */
-    std::stringstream ss;
-    ss << "Whore Master v" << g_MajorVersion << "." << g_MinorVersionA << g_MinorVersionB << "." << g_StableVersion << " BETA" << " Svn: " << svn_revision;
-    /*
     *       init the graphics, with the caption on the titlebar
     */
 
-    if (!gfx.InitGraphics(ss.str(), cfg.resolution.width(), cfg.resolution.height(), cfg.resolution.width(), cfg.resolution.height(), false))
+    if (!gfx.InitGraphics("", cfg.resolution.width(), cfg.resolution.height(), cfg.resolution.width(), cfg.resolution.height(), false))
     {
         g_LogFile.log(ELogLevel::ERROR,"Initializing Graphics");
         return false;
