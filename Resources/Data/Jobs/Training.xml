@@ -161,6 +161,16 @@
         </Message>
 
         <Message Name="train.BDSM">
+            <Group Condition="skill:BDSM < 20">
+                ${girl} has no experience with BDSM, so ${mistress} decides to start her training slowly.
+                <Text>
+                    ${girl} is blindfolded and tied naked to the bed.
+                </Text>
+                <Text>
+                    She has ${girl} wear a $[ball|ring|bit|cleave] gag for the duration of the lesson. She has to
+                    get used to this.
+                </Text>
+            </Group>
             <Text>
                 BDSM training.
             </Text>

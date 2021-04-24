@@ -305,6 +305,7 @@ FormattedCellData sDungeonGirl::GetDetail(const std::string& detailName) const
            case DUNGEON_NEWARENA:         return mk_text("This is a girl won in the arena.");
            case DUNGEON_RECRUITED:        return mk_text("This girl was recruited for you.");
            case DUNGEON_CUSTNOPAY:        return mk_text("Not paying.");
+           case DUNGEON_DEAD:             return mk_text("DEAD");
            default:                       return mk_error("(error)");
         }
     }
@@ -344,6 +345,7 @@ FormattedCellData sDungeonCust::GetDetail(const std::string& detailName) const
         case DUNGEON_CUSTBEATGIRL:      return mk_text("Beating your girls.");
         case DUNGEON_CUSTSPY:           return mk_text("Being a rival's spy.");
         case DUNGEON_RIVAL:             return mk_text("Is a rival.");
+        case DUNGEON_DEAD:             return mk_text("DEAD");
         default:                        return mk_error("(error)");
         }
     }

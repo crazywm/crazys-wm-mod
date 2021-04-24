@@ -471,6 +471,7 @@ enum Dungeon_Reasons{
     DUNGEON_RIVAL,                            // a captured rival
     DUNGEON_GIRLWHIM,                        // a girl placed here on a whim
     DUNGEON_GIRLSTEAL,                        // a girl that was placed here after being found stealing extra
+    // TODO investigate why we even need this
     DUNGEON_DEAD,                            // this person has died and will be removed next turn
     DUNGEON_GIRLRUNAWAY,                    // girl ran away but was recaptured
     DUNGEON_NEWSLAVE,                        // a newly brought slave

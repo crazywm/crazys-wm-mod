@@ -51,7 +51,6 @@
 * [ ] separate logical and actual render size and make configurable
 * [ ] Active Building Widget
 * [ ] LoadGame delete button
-* [ ] LoadGame more info
 * [ ] Inventory screen resets
 * [ ] load game: select most recent by default
 * [ ] Restore Property Management screen
@@ -61,9 +60,6 @@
 * [ ] Scrollbar release mouse while outside problem
 * [ ] Pregnancies of runaway/prison girls currently don't work
 * [ ] GetRandomRivalToSabotage function is wrong
-* [ ] "ERROR: Cannot find the torturer!"
-* [ ] "Could not select the target. If you encounter this error, "
-* [ ] "ERROR: Selected girl is a runaway"
 * [ ] async scripts and messages may get scrambled
 * [ ] ffmpeg frame duration off by one
 * [ ] bugs in shop/inventory screen
@@ -71,7 +67,6 @@
   - [ ] "your inventory is full" for sell button
   - [ ] Equip / unequip showed simultaneously
 * [ ] gracefully handle missing/corrupt config file
-* [ ] slave market problem from discord
 * [ ] Setting jobs for multiple girls when girl list is not in default sort order
 * [ ] animated webps don't load
 * [ ] order of events:
@@ -81,7 +76,4 @@
   This appears to also be a problem with girls who get in fights or are attacked, 
   and if the girl refuses a customer due to sexual preference.
 * [ ] Recruiters, cooks and cleaners in the house do not appear to cost any money???
-* [ ] matron putting back to old job
-* [ ] when the player buys the anti-preg pills in the brothel and then
-  exempts the girl from taking them the girl dosnt get pregnent even with 100% chance of getting pregnant
 * [ ] SexText.lua line 649
