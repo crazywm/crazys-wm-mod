@@ -38,5 +38,5 @@ public:
     void init(bool back) override;
     void process() override {};
 
-    void change_image();
+    void change_image(int mode);
 };

@@ -32,7 +32,6 @@ private:
     int predict_list_id;
 
     int releasemovie_id;    // Release movie
-    int girlimage_id;        // Girl image
     int scrapscene_id;        // Scrap scene
     int addscene_id;        // add selected scene
     int removescene_id;        // removes selected scene
@@ -47,7 +46,6 @@ public:
 
     void init(bool back) override;
     void process() override { };
-    void update_image();
 
     void movie_add_scene();
     void movie_remove_scene();

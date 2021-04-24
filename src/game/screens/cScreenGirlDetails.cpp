@@ -50,8 +50,6 @@ void cScreenGirlDetails::set_ids()
     interact_id       = get_id("InteractButton");
     interactc_id      = get_id("InteractCount");
     takegold_id       = get_id("TakeGoldButton");
-    accomup_id        = get_id("AccomUpButton");//
-    accomdown_id      = get_id("AccomDownButton");//
     accom_id          = get_id("AccomSlider");
     accomval_id       = get_id("AccomValue");
     houseperc_id      = get_id("HousePercSlider");
@@ -82,8 +80,6 @@ void cScreenGirlDetails::set_ids()
     SetButtonCallback(senddungeon_id, [this]( ) { send_to_dungeon(); });
     SetButtonCallback(reldungeon_id, [this]( ) { release_from_dungeon(); });
     SetButtonCallback(takegold_id, [this]( ) { take_gold(*m_SelectedGirl); });
-    SetButtonCallback(accomup_id, [this]( ) { update_accomodation(1); });
-    SetButtonCallback(accomdown_id, [this]( ) { update_accomodation(-1); });
     SetButtonCallback(more_id, [this]( ) {
         if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(*m_SelectedGirl), girldesc_id, true); }
         else if (DetailLevel == 1)    { DetailLevel = 2; EditTextItem(cGirls::GetThirdDetailsString(*m_SelectedGirl), girldesc_id, true); }
@@ -166,8 +162,6 @@ void cScreenGirlDetails::init(bool back)
     ClearListBox(jobtypelist_id);
 
     // `J` Replacing accom buttons with slider
-    if (accomdown_id != -1) DisableWidget(accomdown_id, m_SelectedGirl->m_AccLevel < 1);
-    if (accomup_id != -1) DisableWidget(accomup_id, m_SelectedGirl->m_AccLevel > 9);
     if (accom_id != -1)
     {
         SliderRange(accom_id, 0, 9, m_SelectedGirl->m_AccLevel, 1);
@@ -188,8 +182,6 @@ void cScreenGirlDetails::init(bool back)
         EditTextItem(ss.str(), interactc_id);
     }
     DisableWidget(takegold_id, (m_SelectedGirl->m_Money <= 0));
-    DisableWidget(accomup_id, (m_SelectedGirl->m_AccLevel >= 9));
-    DisableWidget(accomdown_id, (m_SelectedGirl->m_AccLevel <= 0));
     SetCheckBox(antipreg_id, (m_SelectedGirl->m_UseAntiPreg));
 
     IBuilding* pBuilding = m_SelectedGirl->m_Building;

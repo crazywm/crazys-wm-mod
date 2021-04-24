@@ -316,8 +316,10 @@ void cScreenItemManagement::init_side(sItemTransferSide& target, int owner, int 
     }
 
     /// this works because here ID == index
-    target.owners_list->SetSelectedIndex(owner);
-    SetSelectedItemInList(target.items_id, item);
+    if(owner >= 0) {
+        target.owners_list->SetSelectedIndex(owner);
+        SetSelectedItemInList(target.items_id, item);
+    }
 
     update_details(target);
 

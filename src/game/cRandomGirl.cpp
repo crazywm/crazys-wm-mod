@@ -121,6 +121,11 @@ void sRandomGirl::load_from_xml(tinyxml2::XMLElement *el)
         // OK: is it a stat?
         if (tag == "Stat")
         {
+            // TODO remove this at some point
+            if(child->Attribute("Name", "House")) {
+                g_LogFile.warning("girl", "Girl ", m_Name, " specified House stat, which is obsolete.");
+                continue;
+            }
             process_stat_xml(child);
             continue;
         }

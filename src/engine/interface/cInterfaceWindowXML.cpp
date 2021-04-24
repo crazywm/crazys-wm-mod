@@ -497,3 +497,10 @@ int cInterfaceWindowXML::get_id(std::string a, std::string b, std::string c, std
                         "- acceptable names for this item are : '", a, "', '", b, "', '", c, "', '", d, "'. Please check ", m_ScreenName); }
     return -1;
 }
+
+int cInterfaceWindowXML::get_id_optional(const std::string& name) const {
+    auto found = name_to_id.find(name);
+    if (found != name_to_id.end())    return found->second;
+
+    return -1;
+}

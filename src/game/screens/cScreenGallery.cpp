@@ -49,39 +49,41 @@ void cScreenGallery::set_ids()
     std::vector<std::string> ILColumns{ "ILName", "ILTotal" };
     SortColumns(imagelist_id, ILColumns);
 
-    SetButtonCallback(prev_id, [this](){
+    SetButtonCallback(prev_id, [this]() {
         Img--;
         if (Img < 0) Img = numimages[Mode] - 1;
-        change_image();
+        change_image(Mode);
     });
     SetButtonHotKey(prev_id, SDLK_LEFT);
 
     SetButtonCallback(next_id, [this](){
         Img++;
         if (Img == numimages[Mode]) Img = 0;
-        change_image();
+        change_image(Mode);
     });
     SetButtonHotKey(next_id, SDLK_RIGHT);
 
     SetListBoxSelectionCallback(imagelist_id, [this](int selection) {
-        Mode = selection;
+        if(selection >= 0) {
+            Mode = selection;
+        }
         if (Img > numimages[Mode]) Img = 0;
-        change_image();
+        change_image(Mode);
     });
 
     SetListBoxHotKeys(imagelist_id, SDLK_UP, SDLK_DOWN);
 }
 
-void cScreenGallery::change_image()
+void cScreenGallery::change_image(int mode)
 {
-    PrepareImage(image_id, m_SelectedGirl, Mode, false, Img, true);
+    PrepareImage(image_id, m_SelectedGirl, mode, false, Img, true);
     cImageItem* image_ui = GetImage(image_id);
     if (image_ui->m_Image)
         EditTextItem(image_ui->m_Image.GetFileName(), imagename_id);
     else if(image_ui->m_AnimatedImage)
         EditTextItem(image_ui->m_AnimatedImage.GetFileName(), imagename_id);
 
-    SetSelectedItemInList(imagelist_id, Mode, false);
+    SetSelectedItemInList(imagelist_id, mode, false);
 }
 
 void cScreenGallery::init(bool back)
@@ -114,5 +116,6 @@ void cScreenGallery::init(bool back)
     }
     Mode = startmode;
     Img = 0;
-    change_image();
+    if(Mode != -1)
+        change_image(Mode);
 }

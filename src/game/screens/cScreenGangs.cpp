@@ -105,7 +105,7 @@ void cScreenGangs::set_ids()
     SetButtonCallback(healbuy10_id, [this]() { buy_potions(10);});
     SetButtonCallback(healbuy20_id, [this]() { buy_potions(20);});
 
-    SetListBoxSelectionCallback(missionlist_id, [this](int sel) { on_select_mission(); });
+    SetListBoxSelectionCallback(missionlist_id, [this](int sel) { on_select_mission(sel); });
     SetListBoxHotKeys(missionlist_id, SDLK_w, SDLK_s);
     SetListBoxSelectionCallback(ganglist_id, [this](int sel) { on_select_gang(sel); });
     SetListBoxHotKeys(ganglist_id, SDLK_a, SDLK_d);
@@ -316,11 +316,12 @@ void cScreenGangs::on_select_gang(int selection)
     update_wpn_info();
 }
 
-void cScreenGangs::on_select_mission()
+void cScreenGangs::on_select_mission(int mission_id)
 {
-    // get the index into the missions list
-    int mission_id            = GetLastSelectedItemFromList(missionlist_id);
-    set_mission_desc(mission_id);        // set the textfield with the long description and price for this mission
+    if(mission_id != -1) {
+        set_mission_desc(mission_id);        // set the textfield with the long description and price for this mission
+    }
+
     ForAllSelectedItems(ganglist_id, [&](int selection) {
         sGang* gang = g_Game->gang_manager().GetGang(selection);
         /*

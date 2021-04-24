@@ -18,7 +18,6 @@ set(SCREENS_SRC
         screens/cScreenNewGame.cpp
         screens/cScreenPreparingGame.cpp
         screens/cScreenPrison.cpp
-        screens/cScreenPropertyManagement.cpp
         screens/cScreenSettings.cpp
         screens/cScreenSlaveMarket.cpp
         screens/cScreenTown.cpp

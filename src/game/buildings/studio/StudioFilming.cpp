@@ -336,7 +336,11 @@ sWorkJobResult cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
         girl.fame(1);
     }
 
-    auto& scene = film_scene(g_Game->movie_manager(), girl, quality, m_SceneType, m_IsForced);
+    try {
+        auto& scene = film_scene(g_Game->movie_manager(), girl, quality, m_SceneType, m_IsForced);
+    } catch (std::runtime_error& error)  {
+        g_Game->error(error.what());
+    }
 
     girl.AddMessage(ss.str(), m_EventImage, EVENT_DAYSHIFT);
 
@@ -349,7 +353,9 @@ sWorkJobResult cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
     return {false, 0};
 }
 
-void cFilmSceneJob::produce_debug_message(sGirl& girl) const { girl.AddMessage(m_Dbg_Msg.str(), IMGTYPE_PROFILE, EVENT_DEBUG); }
+void cFilmSceneJob::produce_debug_message(sGirl& girl) const {
+//    girl.AddMessage(m_Dbg_Msg.str(), IMGTYPE_PROFILE, EVENT_DEBUG);
+}
 
 void cFilmSceneJob::update_enjoyment(sGirl& girl) const {
     m_Dbg_Msg << "Enjoyment: " << m_Enjoyment << " [" << girl.get_enjoyment(m_PrimaryAction) << "]\n";

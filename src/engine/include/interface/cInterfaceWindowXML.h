@@ -110,6 +110,7 @@ public:
     void widget_slider_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw);
 
     int get_id(std::string a, std::string b = "", std::string c = "", std::string d = "");
+    int get_id_optional(const std::string& name) const;
     void add_widget(std::string widget_name,int x,int y,std::string seq, const widget_map_t& widgets);
 
 private:

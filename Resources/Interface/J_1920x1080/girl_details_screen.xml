@@ -27,10 +27,6 @@
 
 <Slider     Name="AccomSlider"                                              XPos="562"      YPos="942"      Width="365"     MinValue="0"    MaxValue="9" Value="1" Increment="1" LiveUpdate="true" Hidden="false" Disabled="false"  />
 <Text       Name="AccomValue"           Text="Accommodation: Very Poor"     XPos="703"      YPos="963"      Width="253"     Height="30"     FontSize="15"  />
-<!-- Use either AccomSlider and AccomValue or  AccomUpButton and AccomDownButton or you can use all or some of them but you will have to move them around                                                   
-<Button     Name="AccomUpButton"        Image="AcomUp"                      XPos="11"        YPos="752"      Width="101"      Height="45"     Transparency="true" Scale="true"  />
-<Button     Name="AccomDownButton"      Image="AcomDown"                    XPos="135"       YPos="752"      Width="101"      Height="45"     Transparency="true" Scale="true"  />
--->
 
 <Slider     Name="HousePercSlider"                                          XPos="956"      YPos="942"      Width="365"     MinValue="0"    MaxValue="100" Value="0" Increment="10" LiveUpdate="true" Hidden="false" Disabled="false"  />
 <Text       Name="HousePercValue"       Text="House Percentage: 100%"       XPos="984"      YPos="963"      Width="253"     Height="30"     FontSize="15"  />

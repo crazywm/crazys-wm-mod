@@ -1128,7 +1128,7 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
             {
                 IBuilding* brothel = g_Game->buildings().random_building_with_type(BuildingType::BROTHEL);
                 sGirl* girl = brothel->girls().get_random_girl();
-                if (girl->add_item(item))                        // see if a girl can take it
+                if (girl && girl->add_item(item))                        // see if a girl can take it
                 {
                     std::stringstream gss;
                     gss << "While " << gang.name() << " was bringing in the ";

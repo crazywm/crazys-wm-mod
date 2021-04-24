@@ -67,7 +67,7 @@
             <Text Condition="Your Wife">
                 She screamed: "Do you know who my husband is? He will have your head for this!"
             </Text>
-            <Text Condition="stat:pclove > 80">
+            <Text Condition="stat:PCLove > 80">
                 She screamed do you know who my love is? He will have your head for this!
             </Text>
             <Text>

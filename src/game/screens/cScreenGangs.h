@@ -72,7 +72,7 @@ public:
 
     void buy_potions(int buypots);
 
-    void on_select_mission();
+    void on_select_mission(int missing_id);
 
     void on_select_gang(int selection);
 

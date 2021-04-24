@@ -19,6 +19,7 @@
 #pragma once
 
 #include "cGameWindow.h"
+#include "Constants.h"
 
 class cScreenBuildingSetup : public cGameWindow
 {

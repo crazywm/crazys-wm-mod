@@ -646,7 +646,7 @@ function GetBDSMMessage(girl, customer)
                 message = "${name} was bound and roughly used by some sicko who got off on her pregnancy. She loved it: "
                         .. "it was great to be treated like a real whore again, and not some little china doll. She completely forgot herself and gave him an amazing time."
                 customer:happiness(20)
-                girl:enjoyment(ACTION_SEX, -2)
+                girl:enjoyment(wm.ACTIONS.SEX, -2)
                 girl:health(-4)
             else
                 if girl:weeks_pregnant() < ((3 * girl:pregnancy_term()) / 4) then

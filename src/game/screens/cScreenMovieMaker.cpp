@@ -40,7 +40,6 @@ void cScreenMovieMaker::set_ids()
     sceneslist_id       = get_id("ScenesList");
     makethismovie_id    = get_id("MakeThisMovie");
     releasemovie_id     = get_id("ReleaseMovieButton");
-    girlimage_id        = get_id("GirlImage");
     scrapscene_id       = get_id("ScrapScene");
     addscene_id         = get_id("AddScene");
     removescene_id      = get_id("RemoveScene");
@@ -240,19 +239,6 @@ void cScreenMovieMaker::movie_remove_scene() {
     SetEditBoxText(moviename_id, generate_name());
 
     init(false);
-}
-
-void cScreenMovieMaker::update_image()
-{
-    if (selected_girl()/*&& !IsMultiSelected(girllist_id)*/)
-    {
-        PrepareImage(girlimage_id, selected_girl().get(), IMGTYPE_PROFILE, true, 1);
-        HideWidget(girlimage_id, false);
-    }
-    else
-    {
-        HideWidget(girlimage_id, true);
-    }
 }
 
 std::string cScreenMovieMaker::generate_name() {

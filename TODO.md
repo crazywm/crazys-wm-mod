@@ -54,6 +54,7 @@
 * [ ] LoadGame more info
 * [ ] Inventory screen resets
 * [ ] load game: select most recent by default
+* [ ] Restore Property Management screen
 
 ## Bugs
 * [ ] some parts of the old scripts are still missing

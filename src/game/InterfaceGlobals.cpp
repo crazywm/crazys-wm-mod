@@ -21,7 +21,6 @@
 #include "interface/cColor.h"
 #include "utils/DirPath.h"
 #include "interface/cWindowManager.h"
-#include "screens/cScreenPropertyManagement.h"    // `J` added
 #include "screens/cScreenPrison.h"
 #include "screens/cScreenTown.h"
 #include "screens/cScreenSlaveMarket.h"
@@ -113,7 +112,6 @@ void LoadInterface()
     load_window<cScreenGangs>("Gangs");
     load_window<cScreenItemManagement>("Item Management");
     load_window<cMovieScreen>("Movie Screen");
-    load_window<cScreenPropertyManagement>("Property Management");
     load_window<cScreenTransfer>("Transfer Screen");
     load_window<cScreenTurnSummary>("Turn Summary");
     load_window<cScreenGallery>("Gallery");
@@ -277,11 +275,6 @@ void register_global_nav_keys(cInterfaceWindow& window) {
     window.AddKeyCallback(SDLK_F11, []() {
         window_manager().PopToWindow("Brothel Management");
         window_manager().push("Turn Summary");
-    });
-
-    window.AddKeyCallback(SDLK_F12, []() {
-        window_manager().PopToWindow("Brothel Management");
-        window_manager().push("Property Management");
     });
     /*
     1-7: Select Brothel

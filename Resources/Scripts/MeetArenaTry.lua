@@ -5,7 +5,7 @@ function MeetArena(girl)
     Dialog("You hold open try outs to all girls willing to step into the arena and fight for their life.")
     IsStrongGirl = false
     if girl:has_trait("tough") or girl:has_trait("strong") or
-            girl:magic() >= 50 or girl.combat() >= 50
+            girl:magic() >= 50 or girl:combat() >= 50
     then
         IsStrongGirl = true
         Dialog("You hear there is a natural-born warrior applying today.")

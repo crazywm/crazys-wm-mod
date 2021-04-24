@@ -19,6 +19,7 @@
 #pragma once
 
 #include "cGameWindow.h"
+#include "Constants.h"
 #include "text/repo.h"
 
 class cScreenSlaveMarket : public cGameWindow

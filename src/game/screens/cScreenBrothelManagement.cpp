@@ -40,8 +40,7 @@ void IBuildingScreen::set_ids()
 {
     buildinglabel_id = get_id("BuildingLabel", "Header");
     background_id    = get_id("Background");
-    // TODO walk button does not exist for all building types.
-    walk_id          = get_id("WalkButton");
+    walk_id          = get_id_optional("WalkButton");
 
     weeks_id         = get_id("Next Week", "Weeks");
 
@@ -55,8 +54,9 @@ void IBuildingScreen::set_ids()
     quit_id          = get_id("Quit");
 
     // set button callbacks
-    // TODO walk button does not exist for all building types.
-    SetButtonCallback(walk_id, [this]() { try_walk(); });
+    if(walk_id >= 0) {
+        SetButtonCallback(walk_id, [this]() { try_walk(); });
+    }
     SetButtonCallback(prevbrothel_id, [this]() {
         cycle_building(-1);
         replace_window("Building Management");
