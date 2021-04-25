@@ -185,7 +185,7 @@ void cScreenDungeon::init(bool back)
     {
         sDungeonCust* cust = g_Game->dungeon().GetCust(i);
         int col = (cust->m_Health <= 30) ? COLOR_RED : COLOR_BLUE;
-        GetListBox(girllist_id)->AddRow(i, cust, col);
+        GetListBox(girllist_id)->AddRow(i + g_Game->dungeon().GetNumGirls(), cust, col);
     }
 
     // disable some buttons
