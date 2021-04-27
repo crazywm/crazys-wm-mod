@@ -489,7 +489,7 @@ function GetBDSMMessage(girl, customer)
             elseif wm.Percent(10) then
                 message = "${name} was bound and roughly used by some sicko who seemed to get off on her pregnancy."
                 customer:happiness(20)
-                girl:enjoyment(ACTION_SEX, -5)
+                girl:enjoyment(wm.ACTIONS.SEX, -5)
                 girl:happiness(-5)
             else
                 if girl:weeks_pregnant() < ((3 * girl:pregnancy_term()) / 4) then
@@ -551,7 +551,7 @@ function GetBDSMMessage(girl, customer)
             elseif wm.Percent(10) then
                 message = "${name} was bound and roughly used by some sicko who seemed to get off on her pregnancy."
                 customer:happiness(20)
-                girl:enjoyment(ACTION_SEX, -2)
+                girl:enjoyment(wm.ACTIONS.SEX, -2)
                 girl:happiness(-2)
             else
                 if girl:weeks_pregnant() < ((3 * girl:pregnancy_term()) / 4) then
@@ -589,7 +589,7 @@ function GetBDSMMessage(girl, customer)
             elseif wm.Percent(10) then
                 message = "${name} was bound and roughly used by some sicko who got off on her pregnancy. She enjoyed it."
                 customer:happiness(20)
-                girl:enjoyment(ACTION_SEX, -2)
+                girl:enjoyment(wm.ACTIONS.SEX, -2)
                 girl:happiness(-2)
             else
                 if girl:weeks_pregnant() < ((3 * girl:pregnancy_term()) / 4) then
@@ -1271,7 +1271,7 @@ function GetNormalMessage(girl, customer)
             customer:happiness(20)
             girl:happiness(2)
             girl:obedience(2)
-            -- TODO girl->upd_Enjoyment(ACTION_SEX, 2);
+            girl:enjoyment(wm.ACTIONS.SEX, 2)
         elseif wm.Percent(35) and girl:refinement() > 66 then
             message = "${name} didn't do much as the customer fucked her pussy, but was clearly horrified when he dumped a load of cum inside."
         elseif wm.Percent(60) then
@@ -1313,7 +1313,7 @@ function GetNormalMessage(girl, customer)
             customer:happiness(20);
             girl:happiness(2)
             girl:obedience(2)
-            -- girl->upd_Enjoyment(ACTION_SEX, 2);
+            girl:enjoyment(wm.ACTIONS.SEX, 2)
         elseif wm.Percent(35) and girl:pclove() - girl:pchate() > 60 then  -- if she likes you
             message = "When ${name} couldn't get in the mood for the customer, she closed her eyes and imagined it was you. She fucked him with some real passion."
             customer:happiness(15)
@@ -1359,7 +1359,7 @@ function GetNormalMessage(girl, customer)
             customer:happiness(20)
             girl:happiness(2)
             girl:obedience(2)
-            -- girl->upd_Enjoyment(ACTION_SEX, 2);
+            girl:enjoyment(wm.ACTIONS.SEX, 2)
         elseif wm.Percent(35) and girl:pclove() - girl:pchate() > 60 then  -- if she likes you
             message = "${name} closed her eyes and imagined it was you. She fucked him dry."
             customer:happiness(15)
@@ -1423,7 +1423,7 @@ function GetNormalMessage(girl, customer)
             customer:happiness(20)
             girl:happiness(2)
             girl:obedience(2)
-            -- girl->upd_Enjoyment(ACTION_SEX, 2)
+            girl:enjoyment(wm.ACTIONS.SEX, 2)
         else
             message = RandomChoice("${name} passionately rode the customer's cock until it erupted inside her.",
                     "${name} loved having a cock buried in her cunt and fucked back as much as she got.",
