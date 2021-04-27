@@ -176,7 +176,7 @@ void cScreenGirlDetails::init(bool back)
     if (interactc_id >= 0)
     {
         ss.str(""); ss << "Interactions Left: ";
-        if (g_Game->allow_cheats()) ss << "Infinate Cheat";
+        if (g_Game->allow_cheats()) ss << "Infinite Cheat";
         else if (g_TalkCount <= 0) ss << "0 (buy in House screen)";
         else ss << g_TalkCount;
         EditTextItem(ss.str(), interactc_id);
@@ -219,7 +219,7 @@ void cScreenGirlDetails::init(bool back)
             case BuildingType::FARM:
                 jobfilters.push_back(JOBFILTER_FARMSTAFF);
                 jobfilters.push_back(JOBFILTER_LABORERS);
-                jobfilters.push_back(JOBFILTER_LABORERS);
+                jobfilters.push_back(JOBFILTER_PRODUCERS);
                 break;
             case BuildingType::BROTHEL:
                 jobfilters.push_back(JOBFILTER_GENERAL);
