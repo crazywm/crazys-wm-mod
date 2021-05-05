@@ -1,3 +1,8 @@
+# Version 7.1.1beta2
+## Fixes
+* fixed releasing customers from dungeon
+* fixed missing half of arena meet script
+
 # Version 7.1.1beta
 
 ## Major Changes

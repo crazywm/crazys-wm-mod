@@ -29,6 +29,7 @@ function MeetArena(girl)
         PersonalSupervision(girl)
     else
         Dialog("You enjoy watching the fights in the privacy of your luxury box.")
+        WatchFromSuite(girl)
     end
 
 end
