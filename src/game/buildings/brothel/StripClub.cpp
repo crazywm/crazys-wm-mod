@@ -203,6 +203,8 @@ sWorkJobResult Barmaid::DoWork(sGirl& girl, bool is_night) {
     if (girl.fame() < 40 && jobperformance >= 145)        { fame += 1; }
     if (girl.fame() < 60 && jobperformance >= 185)        { fame += 1; }
 
+    apply_gains(girl, jobperformance);
+
     girl.fame(fame);
 
     //gained
@@ -584,6 +586,7 @@ sWorkJobResult Stripper::DoWork(sGirl& girl, bool is_night) {
     if (girl.fame() < 80 && jobperformance >= 185)        { fame += 1; }
 
     girl.fame(fame);
+    apply_gains(girl, jobperformance);
 
     //gained
     if (jobperformance >= 140 && chance(25))
@@ -1186,6 +1189,8 @@ sWorkJobResult Waitress::DoWork(sGirl& girl, bool is_night) {
     if (girl.fame() < 60 && jobperformance >= 185)        { fame += 1; }
 
     girl.fame(fame);
+
+    apply_gains(girl, jobperformance);
 
     //gained traits
     if (jobperformance > 150 && girl.constitution() > 65) { cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKCLUB, "${name} has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", is_night); }
