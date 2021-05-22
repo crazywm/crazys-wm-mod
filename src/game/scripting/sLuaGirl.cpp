@@ -20,6 +20,9 @@ extern "C" {
 #include "character/predicates.h"
 #include "buildings/cBuildingManager.h"
 
+// to get the currently active building
+#include "interface/cWindowManager.h"
+
 using namespace scripting;
 
 void sLuaGirl::init(lua_State* L) {
@@ -280,8 +283,8 @@ int sLuaGirl::acquire_girl(lua_State* L) {
 *    She qualifies for brothel duty - is there room?
 *    let's get some numbers
 */
-    // TODO figure out which building is used here
-    IBuilding& building = g_Game->buildings().get_building(0);
+    /// TODO this accesses a global window manager; should not!
+    IBuilding& building = *window_manager().GetActiveBuilding();
     int total_rooms = building.m_NumRooms;
     int rooms_used  = building.num_girls();
     int diff = total_rooms - rooms_used;
