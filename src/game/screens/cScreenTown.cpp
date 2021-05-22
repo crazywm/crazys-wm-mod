@@ -44,13 +44,13 @@ struct static_brothel_data {
 
 // stats of each brothel: price to buy, starting rooms, maximum rooms, required # of businesses owned
 static static_brothel_data brothel_data[] = {
-        { 0, 0, 20, 200, "Brothel1.jpg", BuildingType::BROTHEL},
-        { 10000, 30, 25, 250, "Brothel2.jpg", BuildingType::BROTHEL},
-        { 30000, 70, 30, 300, "Brothel3.jpg", BuildingType::BROTHEL },
-        { 70000, 100, 35, 350, "Brothel4.jpg", BuildingType::BROTHEL },
-        { 150000, 140, 40, 400, "Brothel5.jpg", BuildingType::BROTHEL },
-        { 300000, 170, 50, 500, "Brothel6.jpg", BuildingType::BROTHEL },
-        { 1000000, 220, 80, 600, "Brothel7.jpg", BuildingType::BROTHEL },
+        { 0, 0, 20, 200, "Brothel0.jpg", BuildingType::BROTHEL},
+        { 10000, 30, 25, 250, "Brothel1.jpg", BuildingType::BROTHEL},
+        { 30000, 70, 30, 300, "Brothel2.jpg", BuildingType::BROTHEL },
+        { 70000, 100, 35, 350, "Brothel3.jpg", BuildingType::BROTHEL },
+        { 150000, 140, 40, 400, "Brothel4.jpg", BuildingType::BROTHEL },
+        { 300000, 170, 50, 500, "Brothel5.jpg", BuildingType::BROTHEL },
+        { 1000000, 220, 80, 600, "Brothel6.jpg", BuildingType::BROTHEL },
         { 5000, 5, 20, 200, "Centre.jpg", BuildingType::CENTRE },
         { 10000, 10, 20, 200, "Farm.png", BuildingType::FARM },
         { 15000, 15, 20, 200, "Arena.png", BuildingType::ARENA },
