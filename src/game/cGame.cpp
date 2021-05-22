@@ -375,7 +375,8 @@ void cGame::SaveGame(tinyxml2::XMLElement& root) {
     // output gangs
     gang_manager().SaveGangsXML(el);
 
-    // TODO save objective
+    // save objectives.
+    objective_manager().SaveToXML(el);
 
     // output year, month and day
     el.SetAttribute("Year", date().year);

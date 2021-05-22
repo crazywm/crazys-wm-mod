@@ -485,7 +485,7 @@ void cObjectiveManager::LoadFromXML(const tinyxml2::XMLElement& root)
     auto pObjective = root.FirstChildElement("Objective");
     if (pObjective)
     {
-        m_Objective.reset(new sObjective());
+        m_Objective = std::make_unique<sObjective>();
         pObjective->QueryIntAttribute("Difficulty", &m_Objective->m_Difficulty);
         pObjective->QueryIntAttribute("Limit", &m_Objective->m_Limit);
         pObjective->QueryAttribute("Objective", &m_Objective->m_Objective);

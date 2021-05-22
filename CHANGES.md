@@ -1,7 +1,13 @@
 # Version 7.1.1beta2
+## Changes
+* included new meeting script by CaptC
+
 ## Fixes
 * fixed releasing customers from dungeon
 * fixed missing half of arena meet script
+* girls from arena tryouts are now send to arena
+* fixed naming error for brothel background images
+* fixed saving/loading of missions
 
 # Version 7.1.1beta
 
