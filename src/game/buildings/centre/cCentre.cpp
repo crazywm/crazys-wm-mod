@@ -34,7 +34,7 @@ extern const char* const CounselingInteractionId = "CounselingInteraction";
 sCentre::sCentre() : IBuilding(BuildingType::CENTRE, "Centre")
 {
     m_FirstJob = JOB_CENTREMANAGER;
-    m_LastJob = JOB_THERAPY;
+    m_LastJob = JOB_ANGER;
     m_MatronJob = JOB_DIRECTOR;
     declare_interaction(CounselingInteractionId);
 }

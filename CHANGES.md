@@ -8,6 +8,7 @@
 * girls from arena tryouts are now send to arena
 * fixed naming error for brothel background images
 * fixed saving/loading of missions
+* fixed anger management/extreme therapy jobs
 
 # Version 7.1.1beta
 
