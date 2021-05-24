@@ -171,6 +171,26 @@
                     get used to this.
                 </Text>
             </Group>
+            <Group Condition="skill:BDSM < 30 ^ skill:BDSM > 10">
+                <Text>
+                    ${mistress} is trying to get ${girl} used to some light BDSM play. She orders her
+                    to lie on her stomach, and proceeds to spank her ass until the the skin turns bright red.
+                    She takes out a flogger, and ${girl} -- with panic in her eyes -- begs her to stop. Given
+                    ${girl}'s lack of BDSM experience, ${mistress} decides to take it easy. She lets ${girl}
+                    beg for a few more minutes, but then puts the flogger away.
+                </Text>
+                <Text Condition="Nymphomaniac|stat:Libido>90">
+                    "I really don't like pain, but just the thought of getting fucked while tied up makes me wet",
+                    ${girl} proclaims as ${mistress} announces that they will do some BDSM training today.
+                    "I can arrange that", she smirks, and five minutes later ${girl} is cuffed to the bed and a
+                    well-equipped man enters the room. ${girl} looks at him hungrily, but her attention is captured
+                    by ${mistress} who produces a pair of nipple clamps. "Oh, I forgot to mention - you're not getting
+                    fucked without these. And I'm only putting them on if you beg for it!"
+
+                    "Please" "Please what?" "Please put the clamps on my nipples." "Are you sure? I though you didn't
+                    like pain" "Please, mistress, I want the clamps!"
+                </Text>
+            </Group>
             <Text>
                 BDSM training.
             </Text>
@@ -191,7 +211,7 @@
                 Once she manages to stroke a dildo in a way that does not look
                 like it would cause serious physical injury, maybe she can try again.
             </Text>
-            <Text Condition="skill:Handjob > 15 ^ skill:Handjob < 33>">
+            <Text Condition="skill:Handjob > 15 ^ skill:Handjob < 33">
                 ${mistress} picks one of your goons and orders ${girl} to
                 give him a handjob. Going by the expression on your goon's face,
                 she is not doing a very good job.
@@ -199,7 +219,7 @@
                 In the end, ${mistress} decides to demonstrate how it is done and
                 finishes him off.
             </Text>
-            <Text Condition="skill:Handjob > 28 ^ skill:Handjob < 50>">
+            <Text Condition="skill:Handjob > 28 ^ skill:Handjob < 50">
                 ${mistress} picks one of your goons and orders ${girl} to
                 give him a handjob. She is experienced enough to get him to
                 cum quickly, but the performance is probably not very memorable.
@@ -209,21 +229,21 @@
                 him enjoy the experience so much that he will visit again and pay
                 more money.
             </Text>
-            <Text Condition="skill:Handjob > 45 ^ skill:Handjob < 66>">
+            <Text Condition="skill:Handjob > 45 ^ skill:Handjob < 66">
                 ${girl} knows how to give decent handjobs, so ${mistress} decides
                 to give her some more advanced instructions. She has ${girl}
                 practice varying her speed, rhythm, and movements. The guard who
                 was brought in for practice certainly appreciated ${mistress}'s
                 command to give his balls some love too.
             </Text>
-            <Text Condition="skill:Handjob > 60 ^ skill:Handjob < 85>">
+            <Text Condition="skill:Handjob > 60 ^ skill:Handjob < 85">
                 ${girl} knows how to give good handjobs, so ${mistress} decides
                 to give her some more advanced instructions. Left-handed, right-handed,
                 both hands, fast, slow, only the tip or along the entire shaft, ${mistress}
                 has her practice all sorts of variations. She also makes sure that ${girl}
                 uses the rest of her body to properly tease the lucky guy.
             </Text>
-            <Text Condition="skill:Handjob > 80 ^ skill:Handjob < 100>">
+            <Text Condition="skill:Handjob > 80">
                 ${girl} is an expert at giving handjobs, so ${mistress} decides to
                 present her with a real challenge today. One of your guards, only called
                 $[Limp Leo|Soft Sven|Flaccid Frederick] by the others, has certain performance
