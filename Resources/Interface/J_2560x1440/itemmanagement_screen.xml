@@ -1,0 +1,42 @@
+<Screen>
+<Window     Name="Item Management Window"                                   XPos="24"       YPos="26"       Width="2511"    Height="1388"    Border="1"  />
+<Text       Name="OwnersLeftHeader"     Text="Owner"                        XPos="564"      YPos="0"        Width="225"     Height="60"  FontSize="34"  />
+<ListBox    Name="OwnersLeftList"                                           XPos="412"       YPos="45"       Width="562"     Height="529" FontSize="22" RowHeight="36" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
+<Column     Name="Name"                 Header="Name"                       Offset="0"  />
+<Column     Name="Number"               Header="Items"                      Offset="337"  />
+<Column     Name="CatNum"               Header="Cat."                       Offset="431"  />
+</ListBox>                                                                                                                  
+<Text       Name="ItemsLeftHeader"      Text="Inventory"                    XPos="536"       YPos="566"      Width="225"     Height="60"  FontSize="34"  />
+<ListBox    Name="ItemsLeftList"                                            XPos="412"       YPos="615"      Width="562"     Height="754" FontSize="22" RowHeight="36" Border="1"       Events="true" Multi="true"  />
+<Text       Name="OwnersRightHeader"    Text="Owner"                        XPos="1692"      YPos="0"        Width="225"     Height="60"  FontSize="34"  />
+<ListBox    Name="OwnersRightList"                                          XPos="1518"      YPos="45"       Width="562"     Height="529" FontSize="22" RowHeight="36" Border="1"      Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
+<Column     Name="Name"                 Header="Name"                       Offset="0"  />
+<Column     Name="Number"               Header="Items"                      Offset="337"  />
+<Column     Name="CatNum"               Header="Cat."                       Offset="431"  />
+</ListBox>                                                                                                                  
+<Text       Name="ItemsRightHeader"     Text="Inventory"                    XPos="1664"      YPos="566"      Width="225"     Height="60"     FontSize="34"  />
+<ListBox    Name="ItemsRightList"                                           XPos="1518"      YPos="615"      Width="562"     Height="754"    FontSize="22" RowHeight="36" Border="1"          Events="true" Multi="true"  />
+<Text       Name="CurrentBrothel"       Text=""                             XPos="986"      YPos="0"        Width="937"     Height="60"     FontSize="22"  />
+<ListBox    Name="FilterList"                                               XPos="1124"      YPos="38"       Width="244"     Height="454"    FontSize="22" RowHeight="36" Border="1"          Events="true" Multi="false"  />
+<Button     Name="Sell10LeftButton"     Image="Sell10"                      XPos="1005"      YPos="56"       Width="90"      Height="41"     Transparency="true"/>
+<Button     Name="Sell10RightButton"    Image="Sell10"                      XPos="1398"      YPos="56"       Width="90"      Height="41"     Transparency="true"/>
+<Button     Name="SellAllLeftButton"    Image="SellAll"                     XPos="1005"      YPos="103"       Width="90"      Height="41"     Transparency="true"/>
+<Button     Name="SellAllRightButton"   Image="SellAll"                     XPos="1398"      YPos="103"       Width="90"      Height="41"     Transparency="true"/>
+<Button     Name="Buy10LeftButton"      Image="Buy10"                       XPos="1005"      YPos="328"      Width="90"      Height="41"     Transparency="true"/>
+<Button     Name="Buy10RightButton"     Image="Buy10"                       XPos="1398"      YPos="328"      Width="90"      Height="41"     Transparency="true"/>
+<Button     Name="ShiftLeftButton"      Image="ShiftLeft"                   XPos="1005"      YPos="469"      Width="90"      Height="90"     Transparency="true"/>
+<Button     Name="ShiftRightButton"     Image="ShiftRight"                  XPos="1398"      YPos="469"      Width="90"      Height="90"     Transparency="true"/>
+<Text       Name="ShiftHeader"          Text="Transfer Item(s)"             XPos="1124"      YPos="491"      Width="281"     Height="47"     FontSize="30"  />
+<Text       Name="PlayerGold"           Text="Your Gold"                    XPos="1031"      YPos="572"      Width="469"     Height="60"     FontSize="30"  />
+<Text       Name="ItemDesc"             Text=""                             XPos="984"      YPos="656"      Width="525"     Height="469"    FontSize="19"  />
+<Image      Name="IndicateLeft"         File="imgArrowLeft.png"             XPos="976"      YPos="1166"      Width="82"      Height="112"     />
+<Button     Name="EquipLeftButton"      Image="Equip"                       XPos="1008"      YPos="1162"      Width="150"      Height="60"     Transparency="true" />
+<Button     Name="UnequipLeftButton"    Image="Unequip"                     XPos="1008"      YPos="1222"      Width="150"      Height="60"     Transparency="true" />
+<Image      Name="IndicateRight"        File="imgArrowRight.png"            XPos="1434"      YPos="1166"      Width="82"      Height="112"     />
+<Button     Name="EquipRightButton"     Image="Equip"                       XPos="1334"      YPos="1162"      Width="150"      Height="60"     Transparency="true" />
+<Button     Name="UnequipRightButton"   Image="Unequip"                     XPos="1334"      YPos="1222"      Width="150"      Height="60"     Transparency="true" />
+<Checkbox   Name="AutoUseItems"         Text="Autouse Consumables"          XPos="1108"      YPos="1312"      Width="30"      Height="30"     FontSize="22" />
+<Text       Name="OwnersLeftDetails"    Text=" "                            XPos="19"       YPos="19"       Width="375"     Height="1350"    FontSize="17" />
+<Text       Name="OwnersRightDetails"   Text=" "                            XPos="2099"     YPos="19"       Width="375"     Height="1350"    FontSize="17" />
+<Button     Name="BackButton"           Image="Back"                        XPos="2118"     YPos="1294"      Width="375"     Height="75"     Transparency="true"  PushWindow="<back>"/>
+</Screen>

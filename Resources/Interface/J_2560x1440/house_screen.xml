@@ -1,0 +1,11 @@
+<Screen>
+<Window     Name="Player House Window"                                      XPos="718"      YPos="319"      Width="1124"     Height="750"    Border="1"/>
+<Image      Name="HouseIcon"            File="House.png"                    XPos="19"       YPos="19"       Width="94"      Height="94"  />
+<Text       Name="ScreenHeader"         Text="Your House"                   XPos="112"       YPos="19"       Width="262"     Height="60"  FontSize="37"  />
+<Text       Name="InteractText"         Text="Interactions: 0"              XPos="19"       YPos="300"      Width="337"     Height="75" FontSize="26"  />
+<Button     Name="BuyInteract"          Image="Buy"                         XPos="37"       YPos="375"      Width="135"      Height="60"  Transparency="true"/>
+<Button     Name="BuyInteract10"        Image="Buy10"                       XPos="221"      YPos="375"      Width="135"      Height="60"  Transparency="true"/>
+<Text       Name="BuildingDetails"      Text=""                             XPos="375"      YPos="19"       Width="712"     Height="712" FontSize="26"  />
+<Button     Name="Settings"             Image="Settings"                    XPos="37"       YPos="562"      Width="356"     Height="71"  Transparency="true" />
+<Button     Name="BackButton"           Image="Back"                        XPos="960"      YPos="1005"      Width="356"     Height="71"  Transparency="true" PushWindow="<back>"/>
+</Screen>

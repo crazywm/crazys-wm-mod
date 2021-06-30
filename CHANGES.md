@@ -1,5 +1,8 @@
 # Version 7.1.1beta3
 
+## Changes
+* added 1440p interface files
+
 ## Fixes
 * text in new game screen no longer resets on tab / when returning from more details screen
 

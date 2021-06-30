@@ -1,0 +1,22 @@
+<Screen>
+<Window     Name="Settings"                                                 XPos="343"       YPos="26"       Width="1874"    Height="1388"    Border="1"  />
+<Text       Name="ScreenHeader"             Text="Settings"                 XPos="4"        YPos="0"        Width="375"     Height="112"     FontSize="75"  />
+<Button     Name="OkButton"                 Image="Ok"                      XPos="881"      YPos="1309"      Width="240"     Height="60"     Transparency="true"/>
+<Button     Name="RevertButton"             Image="Revert"                  XPos="1243"      YPos="1309"      Width="135"      Height="60"     Transparency="true"/>
+<Button     Name="BackButton"               Image="Back"                    XPos="1499"      YPos="1298"      Width="356"     Height="71"     Transparency="true" ReplaceWindow="Main Menu"/>
+
+<Text       Name="CharactersLabel"          Text="Characters"               XPos="19"       YPos="154"       Width="187"     Height="38"     FontSize="22"  />
+<Text       Name="SavesLabel"               Text="Saves"                    XPos="19"       YPos="191"      Width="187"     Height="38"     FontSize="22"  />
+<Text       Name="DefaultImagesLabel"       Text="DefaultImages"            XPos="19"       YPos="229"      Width="187"     Height="38"     FontSize="22"  />
+<Text       Name="ItemsLabel"               Text="Items"                    XPos="19"       YPos="266"      Width="187"     Height="38"     FontSize="22"  />
+<EditBox    Name="Characters"                                               XPos="206"      YPos="150"       Width="562"     Height="38"     FontSize="19"                  Border="1"  />
+<EditBox    Name="Saves"                                                    XPos="206"      YPos="188"      Width="562"     Height="38"     FontSize="19"                  Border="1"  />
+<EditBox    Name="DefaultImages"                                            XPos="206"      YPos="225"      Width="562"     Height="38"     FontSize="19"                  Border="1"  />
+<EditBox    Name="Items"                                                    XPos="206"      YPos="262"      Width="562"     Height="38"     FontSize="19"                  Border="1"  />
+<Checkbox   Name="PreferDefault"            Text="Prefer Default"           XPos="487"      YPos="319"      Width="30"      Height="30"     FontSize="22" LeftOrRight="false" />
+
+<Text       Name="ThemeLabel"               Text="Theme"                    XPos="19"       YPos="412"      Width="187"     Height="38"     FontSize="22"  />
+<ListBox    Name="ThemeList"                                                XPos="206"      YPos="412"      Width="394"     Height="112"     FontSize="22" RowHeight="38"   Border="1" Events="true" Multi="false" />
+<Checkbox   Name="Fullscreen"               Text="Fullscreen"               XPos="112"       YPos="544"      Width="30"      Height="30"     FontSize="22" LeftOrRight="false" />
+
+</Screen>

@@ -37,12 +37,17 @@ products = {
     'J_1024x768': [512 / 683, 1],
     'J_1600x900': [800 / 683, 75 / 64],
     'J_1920x1080': [960 / 683, 45 / 32],
-    'J_3840x2160': [1920 / 683, 45 / 16]
+    'J_3840x2160': [1920 / 683, 45 / 16],
+    'J_2560x1440': [1280 / 683, 30 / 16],
 }
 
 def resize(source, dest, xMultiplier, yMultiplier):
     for xml in ls(source):
         if xml.endswith(".xml"):
+            # don't change the config file
+            if xml.endswith("config.xml"):
+                continue
+
             rXml = source / xml
             data = []
             with open(rXml, 'r') as edit:

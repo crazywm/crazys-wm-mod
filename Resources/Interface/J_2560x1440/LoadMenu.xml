@@ -1,0 +1,12 @@
+<Screen>
+<Window     Name="LoadMenu"                                                 XPos="530"      YPos="158"       Width="1499"     Height="1125" Border="1"  />
+<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="1499"     Height="1125"  />
+<Text       Name="WhoreMaster"          Text="Whore Master"                 XPos="364"      YPos="0"        Width="1499"     Height="161"  FontSize="120"  Red="200"   Green="30"  Blue="30"    />
+<ListBox    Name="FileName"                                                 XPos="390"      YPos="188"      Width="750"     Height="750" FontSize="22" RowHeight="36" Border="1" ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true">
+    <Column     Name="Name"         Header="Name"                  Offset="0" />
+    <Column     Name="Money"        Header="Money"                 Offset="469" />
+    <Column     Name="WeeksPlayed"  Header="Weeks"                 Offset="610" />
+</ListBox>
+<Button     Name="LoadGame"             Image="Load"                        XPos="375"      YPos="994"      Width="300"     Height="60"  Transparency="true" />
+<Button     Name="BackButton"           Image="Back"                        XPos="825"      YPos="994"      Width="300"     Height="60"  Transparency="true" ReplaceWindow="Main Menu"/>
+</Screen>

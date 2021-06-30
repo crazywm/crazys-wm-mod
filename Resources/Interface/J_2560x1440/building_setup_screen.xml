@@ -1,0 +1,44 @@
+
+<Screen>
+<Window     Name="Building Setup Window"                                    XPos="718"  YPos="319"  Width="1124"     Height="750"    Border="1"/>
+<Text       Name="CurrentBrothel"           Text=""                         XPos="19"   YPos="19"   Width="937"     Height="60"     FontSize="30"/>
+<Text       Name="Gold"                     Text="Player Gold: 0"           XPos="750"  YPos="19"   Width="375"     Height="60"     FontSize="30" />
+
+<Text       Name="PotionCost"   Text="Anti-Preg Potions: 2 gold each"       XPos="30"   YPos="94"   Width="450"     Height="49"     FontSize="24"/>
+<Button     Name="10PotionsButton"          Image="Buy10"                   XPos="60"   YPos="142"   Width="135"      Height="60"     Transparency="true" Scale="true"/>
+<Button     Name="20PotionsButton"          Image="Buy20"                   XPos="210"  YPos="142"   Width="135"      Height="60"     Transparency="true" Scale="true"/>
+<Checkbox   Name="AutoBuyPotionToggle"      Text="Auto Buy"                 XPos="187"   YPos="219"  Width="30"      Height="30"     FontSize="22"/>
+<Text       Name="AvailablePotions"         Text="You have: 0"              XPos="94"   YPos="251"  Width="450"     Height="75"     FontSize="24"/>
+
+<Slider     Name="AdvertisingSlider"                                        XPos="469"  YPos="120"   Width="637"                     MinValue="0" MaxValue="2000"     Value="0" Increment="100" LiveUpdate="true" Hidden="false" Disabled="false"/>
+<Text       Name="AdvertisingValue"         Text="0 gold / week"            XPos="562"  YPos="141"   Width="562"     Height="60"     FontSize="24"/>
+
+<Button     Name="BuildRoomsButton"         Image="BuildMoreRooms"          XPos="684"  YPos="281"  Width="300"     Height="60"     Transparency="true" Scale="true"/>
+<Text       Name="RoomAddCost"              Text="Add Rooms: 5000 gold"     XPos="656"  YPos="347"  Width="356"     Height="188"     FontSize="24"/>
+
+<Define     Widget="Restrictions">              
+<Text       Name="SexRestrictions"          Text="Sex Restrictions:"        XPos="0"    YPos="0"    Width="356"     Height="60"     FontSize="36"/>
+<Checkbox   Name="ProhibitNormalToggle"     Text="Prohibit Normal Sex"      XPos="37"   YPos="66"   Width="30"      Height="30"     FontSize="22" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitBeastToggle"      Text="Prohibit Bestiality"      XPos="356"  YPos="66"   Width="30"      Height="30"     FontSize="22" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitOralToggle"       Text="Prohibit Oral Sex"        XPos="693"  YPos="66"   Width="30"      Height="30"     FontSize="22" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitLesbianToggle"    Text="Prohibit Lesbian"         XPos="37"   YPos="112"   Width="30"      Height="30"     FontSize="22" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitBDSMToggle"       Text="Prohibit BDSM"            XPos="356"  YPos="112"   Width="30"      Height="30"     FontSize="22" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitTittyToggle"      Text="Prohibit Titty Sex"       XPos="693"  YPos="112"   Width="30"      Height="30"     FontSize="22" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitGroupToggle"      Text="Prohibit Group Sex"       XPos="37"   YPos="159"   Width="30"      Height="30"     FontSize="22" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitAnalToggle"       Text="Prohibit Anal"            XPos="356"  YPos="159"   Width="30"      Height="30"     FontSize="22" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitHandJobToggle"    Text="Prohibit Handjob"         XPos="693"  YPos="159"   Width="30"      Height="30"     FontSize="22" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitStripToggle"      Text="Prohibit Strip"           XPos="37"   YPos="206"  Width="30"      Height="30"     FontSize="22" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitFootJobToggle"    Text="Prohibit Footjob"         XPos="693"  YPos="206"  Width="30"      Height="30"     FontSize="22" LeftOrRight="false"/>
+</Define>   
+<Widget     Definition="Restrictions"       Seq="Res"                       XPos="94"   YPos="469"/>
+<Button     Name="BackButton"           Image="Back"                        XPos="1147"  YPos="1005"      Width="356"     Height="71"     Transparency="true"  PushWindow="<back>" />
+
+<!--
+<Image   Name="Shader"    File="FacilityBG.png"    XPos="0"    YPos="0"    Width="975"    Height="161"/>
+<Text    Name="BarStaffCost"    Text="Bar Staff: 0 gold / week"    XPos="512"    YPos="71"    Width="367"    Height="60"    FontSize="24"/>
+<Button  Name="BarHireButton"    Image="Hire"    XPos="502"    YPos="120"    Width="150"    Height="60"    Transparency="true"    Scale="true"/>
+<Button  Name="BarFireButton"    Image="Fire"    XPos="667"    YPos="120"    Width="150"    Height="60"    Transparency="true"    Scale="true"/>
+<Text    Name="CasinoStaffCost"    Text="Casino Staff: 0 gold / week"    XPos="948"    YPos="71"    Width="367"    Height="60"    FontSize="24"/>
+<Button  Name="CasinoHireButton"    Image="Hire"    XPos="958"    YPos="120"    Width="150"    Height="60"    Transparency="true"    Scale="true"/>
+<Button  Name="CasinoFireButton"    Image="Fire"    XPos="1123"    YPos="120"    Width="150"    Height="60"    Transparency="true"    Scale="true"/>-->
+</Screen>
