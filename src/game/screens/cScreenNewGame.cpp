@@ -68,8 +68,8 @@ void cScreenNewGame::init(bool back)
         g_Game->player().SetBirthDay(g_Dice.in_range(1, 30));
         g_Game->player().SetBirthMonth(g_Dice.in_range(1, 12));
         g_Game->player().SetName(g_BoysNameList.random(), " ", g_SurnameList.random());
+        update_ui();
     }
-    update_ui();
 }
 
 void cScreenNewGame::update_birthday()
@@ -120,7 +120,6 @@ void cScreenNewGame::OnKeyPress(SDL_Keysym keysym)
     if (keysym.sym == SDLK_TAB)
     {
         TabFocus();
-        update_ui();
         return;
     }
 

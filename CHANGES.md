@@ -1,3 +1,8 @@
+# Version 7.1.1beta3
+
+## Fixes
+* text in new game screen no longer resets on tab / when returning from more details screen
+
 # Version 7.1.1beta2
 ## Changes
 * included new meeting script by CaptC
