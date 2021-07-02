@@ -250,8 +250,8 @@ void cScreenTurnSummary::change_event(int selection)
 
     std::string text;
     if (selected_girl() && (m_ActiveCategory == Summary_DUNGEON || m_ActiveCategory == Summary_GIRLS)) {
-        if (!selected_girl()->m_Events.IsEmpty()) {
-            const CEvent& event = selected_girl()->m_Events.GetMessage(selection);
+        if (!selected_girl()->GetEvents().IsEmpty()) {
+            const CEvent& event = selected_girl()->GetEvents().GetMessage(selection);
             text       = event.GetMessage();
             Image_Type = event.GetMessageType();
             if(event.IsCombat()) {
@@ -262,8 +262,8 @@ void cScreenTurnSummary::change_event(int selection)
     } else if (m_ActiveCategory == Summary_GANGS) {
         int active_gang = GetSelectedItemFromList(item_id);
         auto* gang = g_Game->gang_manager().GetGang(active_gang);
-        if (gang && !gang->m_Events.IsEmpty()) {
-            const CEvent& event = gang->m_Events.GetMessage(selection);
+        if (gang && !gang->GetEvents().IsEmpty()) {
+            const CEvent& event = gang->GetEvents().GetMessage(selection);
             text = event.GetMessage();
             if(event.IsCombat()) {
                 m_ActiveReport = event.GetReport();
@@ -279,8 +279,8 @@ void cScreenTurnSummary::change_event(int selection)
             EditTextItem(brothel->name(), brothel_id);
         }
     } else if (m_ActiveCategory == Summary_RIVALS) {
-        if (!g_Game->rivals().events().IsEmpty()) {
-            text = g_Game->rivals().events().GetMessage(selection).GetMessage();
+        if (!g_Game->rivals().GetEvents().IsEmpty()) {
+            text = g_Game->rivals().GetEvents().GetMessage(selection).GetMessage();
             EditTextItem("Rival", brothel_id);
         }
     }
@@ -398,13 +398,14 @@ void cScreenTurnSummary::Fill_Events(sGirl* girl)
 
     Image_Change = true;
     Image_Type = IMGTYPE_PROFILE;
-    if (!girl->m_Events.IsEmpty())
+    auto& events = girl->GetEvents();
+    if (!events.IsEmpty())
     {
-        girl->m_Events.DoSort();        // Sort Events to put Warnings & Dangers first.
-        for (int l = 0; l < girl->m_Events.GetNumEvents(); l++)
+        events.DoSort();        // Sort Events to put Warnings & Dangers first.
+        for (int l = 0; l < events.GetNumEvents(); l++)
         {
-            std::string            sTitle = girl->m_Events.GetMessage(l).TitleText();
-            unsigned int    uiListboxColour = girl->m_Events.GetMessage(l).ListboxColour();
+            std::string            sTitle = events.GetMessage(l).TitleText();
+            unsigned int    uiListboxColour = events.GetMessage(l).ListboxColour();
             AddToListBox(event_id, l, sTitle, uiListboxColour);
         }
     }
@@ -415,14 +416,15 @@ void cScreenTurnSummary::Fill_Events_Gang(int gang_id)
 {
     sGang* gang = g_Game->gang_manager().GetGang(gang_id);
     if (gang == nullptr) return;
-    if (!gang->m_Events.IsEmpty())
+    auto& events = gang->GetEvents();
+    if (!events.IsEmpty())
     {
-        gang->m_Events.DoSort();                        // Sort Events to put Warnings & Dangers first.
+        events.DoSort();                        // Sort Events to put Warnings & Dangers first.
 
-        for (int l = 0; l < gang->m_Events.GetNumEvents(); l++)
+        for (int l = 0; l < gang->GetEvents().GetNumEvents(); l++)
         {
-            std::string            sTitle = gang->m_Events.GetMessage(l).TitleText();
-            unsigned int    uiListboxColour = gang->m_Events.GetMessage(l).ListboxColour();
+            std::string            sTitle = events.GetMessage(l).TitleText();
+            unsigned int    uiListboxColour = events.GetMessage(l).ListboxColour();
             AddToListBox(event_id, l, sTitle, uiListboxColour);
         }
     }
@@ -452,15 +454,15 @@ struct EventRating {
 // ordering methods
 //  default
 EventRating default_rating(const sGirl& g) {
-    if (g.m_Events.HasDanger())
+    if (g.GetEvents().HasDanger())
     {
         return {3.0, COLOR_RED};
     }
-    else if (g.m_Events.HasGoodNews())
+    else if (g.GetEvents().HasGoodNews())
     {
         return {2.0, COLOR_GREEN};
     }
-    else if (g.m_Events.HasWarning())
+    else if (g.GetEvents().HasWarning())
     {
         return {1.0, COLOR_DARKBLUE};
     }
@@ -490,13 +492,13 @@ bool is_sex_job(JOBS job) {
 EventRating brothel_rating(const sGirl& g) {
     bool sexjob = is_sex_job((JOBS)g.m_DayJob) || is_sex_job((JOBS)g.m_NightJob);
 
-    if(!g.m_Events.HasUrgent() && sexjob) {
+    if(!g.GetEvents().HasUrgent() && sexjob) {
         return {0.0, COLOR_BLUE};
-    } else if (g.m_Events.HasDanger()) {
+    } else if (g.GetEvents().HasDanger()) {
         return {4.0, COLOR_RED};
-    } else if (g.m_Events.HasGoodNews()) {
+    } else if (g.GetEvents().HasGoodNews()) {
         return {3.0, COLOR_GREEN};
-    } else if (g.m_Events.HasWarning()) {
+    } else if (g.GetEvents().HasWarning()) {
         return {2.0, COLOR_DARKBLUE};
     }
 
@@ -562,12 +564,12 @@ EventRating studio_rating_default(const sGirl& g)
         break;
     }
 
-    if (!g.m_Events.HasUrgent() && sexjob)    {
+    if (!g.GetEvents().HasUrgent() && sexjob)    {
         return {1.0, COLOR_BLUE};
     }
-    else if (!g.m_Events.HasUrgent())        { return {2.0, COLOR_BLUE}; }
-    else if (g.m_Events.HasDanger())        { return {5.0, COLOR_RED}; }
-    else if (g.m_Events.HasGoodNews())        { return {4.0, COLOR_GREEN}; }
+    else if (!g.GetEvents().HasUrgent())        { return {2.0, COLOR_BLUE}; }
+    else if (g.GetEvents().HasDanger())        { return {5.0, COLOR_RED}; }
+    else if (g.GetEvents().HasGoodNews())        { return {4.0, COLOR_GREEN}; }
     else                                        { return {3.0, COLOR_DARKBLUE}; }
 }
 
@@ -636,12 +638,12 @@ void cScreenTurnSummary::Fill_Items_RIVALS() {
 
 void cScreenTurnSummary::Fill_Events_Rivals() {
     auto& rivals = g_Game->rivals();
-    if (!rivals.events().IsEmpty())
+    if (!rivals.GetEvents().IsEmpty())
     {
-        for (int l = 0; l < rivals.events().GetNumEvents(); l++)
+        for (int l = 0; l < rivals.GetEvents().GetNumEvents(); l++)
         {
-            std::string     sTitle          = rivals.events().GetMessage(l).TitleText();
-            unsigned int    uiListboxColour = rivals.events().GetMessage(l).ListboxColour();
+            std::string     sTitle          = rivals.GetEvents().GetMessage(l).TitleText();
+            unsigned int    uiListboxColour = rivals.GetEvents().GetMessage(l).ListboxColour();
             AddToListBox(event_id, l, sTitle, uiListboxColour);
         }
     }

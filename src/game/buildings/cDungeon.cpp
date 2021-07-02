@@ -408,7 +408,7 @@ void cDungeon::ClearDungeonGirlEvents()
 {
     for(auto& current : m_Girls) {
         // Clear the girls' events from the last turn
-        current.m_Girl->m_Events.Clear();
+        current.m_Girl->GetEvents().Clear();
     }
 }
 
@@ -568,7 +568,7 @@ void cDungeon::Update()
     {
         msg.str("");
         msg << TorturerGirlref->FullName() << " has tortured " << m_NumGirlsTort << " girls in the Dungeon.";
-        TorturerGirlref->m_Events.AddMessage(msg.str(), IMGTYPE_DOM, EVENT_DUNGEON);
+        TorturerGirlref->AddMessage(msg.str(), IMGTYPE_DOM, EVENT_DUNGEON);
     }
 
 

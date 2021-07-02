@@ -206,7 +206,7 @@ public:
     int GetInteractionProvided(const std::string& name) const;
     int GetInteractionConsumed(const std::string& name) const;
 
-
+    void AddMessage(std::string message, EventType event = EventType::EVENT_BUILDING);
 protected:
     std::string m_Name;
     std::unique_ptr<cGirlPool> m_Girls;

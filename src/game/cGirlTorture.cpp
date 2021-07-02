@@ -47,12 +47,12 @@ cGirlTorture::~cGirlTorture()        // deconstructor
         if (m_TorturedByPlayer)
         {
             g_Game->push_message(m_Message, color);
-            m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);    // `J` added
+            m_Girl->AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);    // `J` added
         }
         else
         {
             if (m_Girl->health()>0)        // Make sure girl is alive
-                m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);
+                m_Girl->AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);
         }
     }
 }
@@ -142,7 +142,7 @@ void cGirlTorture::DoTorture()
             sMsg = sGirlName + " gave birth and had the week off so was not tortured this week.\n";
             m_Message += "Since " + sGirlName + " gave birth she was not tortured this week.\n";
             //m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);
-            m_Torturer->m_Events.AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);
+            m_Torturer->AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);
         }
         return;
     }
@@ -227,7 +227,7 @@ void cGirlTorture::DoTorture()
         if (m_Girl->is_dead())
         {
             sMsg = "While torturing " + sGirlName + " in the dungeon she died from her wounds.";
-            m_Torturer->m_Events.AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DANGER);
+            m_Torturer->AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DANGER);
         }
         else if (m_Girl->health() < 20)
         {
@@ -239,15 +239,15 @@ void cGirlTorture::DoTorture()
                        "  to eat because her health was low.\n";
                 m_Message += m_Torturer->FullName() +
                              " was allowed her food because her health was low.\n";
-                m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_DANGER);
-                m_Torturer->m_Events.AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DANGER);
+                m_Girl->AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_DANGER);
+                m_Torturer->AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DANGER);
             }
             else
             {
                 sMsg = sGirlName + "'s health is low from ongoing torture.";
                 // WD    Low health warnings done as part of cDungeon::Update()
                 //m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_DANGER);
-                m_Torturer->m_Events.AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DANGER);
+                m_Torturer->AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DANGER);
             }
 
         }
@@ -396,7 +396,7 @@ bool cGirlTorture::IsGirlInjured()
     if (m_TorturedByPlayer && !m_Message.empty() && m_Message != sGirlName + ": ")
     {
         g_Game->push_message(m_Message, COLOR_RED);
-        m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_DAYSHIFT);    // `J` added
+        m_Girl->AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_DAYSHIFT);    // `J` added
 
         m_Message = sGirlName + ": ";
     }

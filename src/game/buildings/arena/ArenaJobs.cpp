@@ -229,7 +229,7 @@ sWorkJobResult FightBeasts::DoWork(sGirl& girl, bool is_night) {
     auto result = combat.run(15);
     auto report = std::make_shared<CombatReport>();
     report->rounds = combat.round_summaries();
-    girl.m_Events.AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
+    girl.GetEvents().AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
 
     if (result == ECombatResult::VICTORY)    // she won
     {
@@ -390,7 +390,7 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
                 Umsg << Tmsg.str();
                 ss << msg.str();
                 g_Game->push_message(msg.str(), 0);
-                ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+                ugirl->AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 
                 g_Game->dungeon().AddGirl(ugirl, DUNGEON_NEWARENA);
             }

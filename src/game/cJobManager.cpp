@@ -874,7 +874,7 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
                          << SecName << " gave her attacker a " << item << ", all the while scolding her for her actions.";
                     CGmsg << custgirl->FullName() << " was caught attacking a girl under your employ. She was given a "
                           << item << " and sent to the dungeon as your newest slave.";
-                    custgirl->m_Events.AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
+                    custgirl->AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
                     // `J` add the customer to the dungeon
                     g_Game->dungeon().AddGirl(custgirl, DUNGEON_CUSTBEATGIRL);
                 }
@@ -913,7 +913,7 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
             Gmsg << Tmsg.str();
             SGmsg << Tmsg.str();
         }
-        SecGuard->m_Events.AddMessage(SGmsg.str(), IMGTYPE_COMBAT, EVENT_WARNING);
+        SecGuard->AddMessage(SGmsg.str(), IMGTYPE_COMBAT, EVENT_WARNING);
         girl.AddMessage(Gmsg.str(), IMGTYPE_COMBAT, EVENT_WARNING);
         return true;
     }
@@ -921,7 +921,7 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
         std::stringstream ss;
         ss << "Security Problem:\n" << "Trying to defend " << girl.FullName() << ". You defeated "
            << num << " of " << OrgNumMem << ". By now the guarding gangs have arrived, and will deal with the offenders.";
-        SecGuard->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+        SecGuard->AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
         return false;
     }
     else  // Loss
@@ -937,7 +937,7 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
         ss << ("Security Problem:\n") << ("Trying to defend ") << girl.FullName() << (". You defeated ")
            << num << (" of ") << OrgNumMem << (" before:\n") << SecGuard->FullName() << GetGirlAttackedString(attacktype);
 
-        SecGuard->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+        SecGuard->AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 
         // Bad stuff
         SecGuard->happiness(-40);
@@ -971,7 +971,7 @@ bool cJobManager::gang_stops_rape(sGirl& girl, std::vector<sGang *> gangs_guardi
         std::stringstream gang_s, girl_s;
         gang_s << guarding_gang->name() << " was defeated defending " << girl.FullName() << ".";
         girl_s << guarding_gang->name() << " was defeated defending you from a gang of rapists.";
-        guarding_gang->m_Events.AddMessage(gang_s.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        guarding_gang->AddMessage(gang_s.str(), EVENT_WARNING);
         girl.AddMessage(girl_s.str(), IMGTYPE_DEATH, EVENT_WARNING);
         return false;
     }
@@ -1008,7 +1008,7 @@ bool cJobManager::gang_stops_rape(sGirl& girl, std::vector<sGang *> gangs_guardi
     }
 
     girl.AddMessage(girl_ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-    guarding_gang->m_Events.AddMessage(gang_ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    guarding_gang->AddMessage(gang_ss.str());
 
     return true;
 }
@@ -1028,7 +1028,7 @@ bool cJobManager::girl_fights_rape(sGirl& girl, sGang *enemy_gang, int day_night
 
     auto report = std::make_shared<CombatReport>();
     report->rounds = combat.round_summaries();
-    girl.m_Events.AddMessage(combat.round_summaries().back(), EVENT_DANGER, report);
+    girl.GetEvents().AddMessage(combat.round_summaries().back(), EVENT_DANGER, report);
 
     // Earn xp for all kills, even if defeated
     int xp = 3;
@@ -1088,7 +1088,7 @@ void cJobManager::customer_rape(sGirl& girl, int numberofattackers)
     std::stringstream ss;
     ss << girl.FullName() << GetGirlAttackedString(attacktype);
 
-    girl.m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+    girl.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 
     // Made this more harsh, so the player hopefully notices it
     //girl.health(-(g_Dice%10 + 5));  // Oops, can drop health below zero after combat is considered
@@ -1436,7 +1436,7 @@ sPaymentData cJobManager::CalculatePay(sGirl& girl, sWorkJobResult result)
 
     // OK: she got caught. Tell the player
     std::stringstream gmess; gmess << "Your Goons spotted " << girl.FullName() << " taking more gold then she reported.";
-    gang->m_Events.AddMessage(gmess.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    gang->AddMessage(gmess.str());
     return retval;
 }
 

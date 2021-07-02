@@ -295,7 +295,7 @@ void cObjectiveManager::CreateNewObjective()
         {
             g_Game->push_message(sst.str(), COLOR_DARKBLUE);
             // TODO give objectives their own message category
-            g_Game->buildings().get_building(0).m_Events.AddMessage(sst.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+            g_Game->buildings().get_building(0).AddMessage(sst.str(), EVENT_GOODNEWS);
         }
     }
 }
@@ -356,7 +356,7 @@ void cObjectiveManager::PassObjective()
                 std::stringstream ssg;
                 ss << girl->FullName() << "\n";
                 ssg << girl->FullName() << " was given to you as a reward for completing your objective.";
-                girl->m_Events.AddMessage(ssg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+                girl->AddMessage(ssg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
                 g_Game->dungeon().AddGirl(std::move(girl), DUNGEON_NEWGIRL);
                 girls--;
             }
@@ -472,7 +472,7 @@ void cObjectiveManager::PassObjective()
         if (ss.str().length() > 0)
         {
             g_Game->push_message(ss.str(), COLOR_GREEN);
-            g_Game->buildings().get_building(0).m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+            g_Game->buildings().get_building(0).AddMessage(ss.str(), EVENT_GOODNEWS);
         }
 
         m_Objective.reset();

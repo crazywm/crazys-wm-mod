@@ -584,6 +584,10 @@ void sGang::use_potion()
     }
 }
 
+void sGang::AddMessage(std::string message, EventType event_type) {
+    m_Events.AddMessage(std::move(message), IMGTYPE_PROFILE, event_type);
+}
+
 // ----- Combat
 
 // MYR: This is similar to GangCombat, but instead of one of the players gangs
@@ -626,9 +630,8 @@ void cGangManager::UpdateGangs()
                 break;
             }
             else
-                currentGang->m_Events.AddMessage(
-                        "This gang was sent to look for runaways but there are none so they went looking for any girl to kidnap instead.",
-                        IMGTYPE_PROFILE, EVENT_GANG);
+                currentGang->AddMessage(
+                        "This gang was sent to look for runaways but there are none so they went looking for any girl to kidnap instead.");
         case MISS_SABOTAGE:
         case MISS_EXTORTION:
         case MISS_PETYTHEFT:
@@ -644,7 +647,7 @@ void cGangManager::UpdateGangs()
             std::stringstream sse;
             g_LogFile.log(ELogLevel::ERROR, "no mission set or mission not found : ", currentGang->m_MissionID);
             sse << "Error: no mission set or mission not found : " << currentGang->m_MissionID;
-            currentGang->m_Events.AddMessage(sse.str(), IMGTYPE_PROFILE, EVENT_GANG);
+            currentGang->AddMessage(sse.str());
         }
             break;
         }
@@ -665,9 +668,8 @@ void cGangManager::UpdateGangs()
     // healing
     for(auto& gang : m_PlayersGangs) {
         if(gang->m_MedicalCost > 0) {
-            gang->m_Events.AddMessage("Some of your goons have been hurt in the line of duty. You pay "
-                    + std::to_string(gang->m_MedicalCost) + " gold so a doctor keeps them fit for work.",
-                    0, EVENT_GANG);
+            gang->AddMessage("Some of your goons have been hurt in the line of duty. You pay "
+                    + std::to_string(gang->m_MedicalCost) + " gold so a doctor keeps them fit for work.");
             g_Game->gold().goon_wages( gang->m_MedicalCost );
             gang->m_MedicalCost = 0;
         }
@@ -848,7 +850,7 @@ void cGangManager::check_gang_recruit(sGang& gang)
     else if (gang.m_Num <= 5 && gang.m_MissionID != MISS_RECRUIT)
     {
         ss << "Gang   " << gang.name() << "   were set to recruit due to low numbers";
-        gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        gang.AddMessage(ss.str(), EVENT_WARNING);
         gang.m_AutoRecruit = true;
         gang.m_LastMissID = gang.m_MissionID;
         gang.m_MissionID = MISS_RECRUIT;
@@ -866,7 +868,7 @@ void cGangManager::check_gang_recruit(sGang& gang)
             ss << "Gang   " << gang.name() << "   were placed on guard duty from recruitment as their numbers are full.";
             gang.m_MissionID = MISS_GUARDING;
         }
-        gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        gang.AddMessage(ss.str(), EVENT_WARNING);
     }
 }
 
@@ -895,13 +897,13 @@ void cGangManager::GangStartOfShift()
     for(auto& gang: m_PlayersGangs)
     {
         gang->m_Combat = false;
-        gang->m_Events.Clear();
+        gang->GetEvents().Clear();
         cost += g_Game->tariff().goon_mission_cost(gang->m_MissionID);    // sum up the cost of all the goon missions
 
         check_gang_recruit(*gang);
 
-        if (gang->m_MissionID == MISS_SPYGIRLS)    gang->m_Events.AddMessage("Gang   " + gang->name() + "   is spying on your girls.", IMGTYPE_PROFILE, EVENT_GANG);
-        if (gang->m_MissionID == MISS_GUARDING)    gang->m_Events.AddMessage("Gang   " + gang->name() + "   is guarding.", IMGTYPE_PROFILE, EVENT_GANG);
+        if (gang->m_MissionID == MISS_SPYGIRLS)    gang->AddMessage("Gang   " + gang->name() + "   is spying on your girls.");
+        if (gang->m_MissionID == MISS_GUARDING)    gang->AddMessage("Gang   " + gang->name() + "   is guarding.");
     }
     g_Game->gold().goon_wages(cost);
 

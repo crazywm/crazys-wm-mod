@@ -34,7 +34,7 @@ class CEvent
 public:
     CEvent(EventType event, unsigned char type, std::string message, std::shared_ptr<CombatReport> rep);
 
-    std::string        TitleText()     const;        //    Default listbox Text
+    std::string     TitleText()     const;        //    Default listbox Text
     unsigned int    ListboxColour() const;        //    Default Listbox Colour
 
     bool            IsGoodNews() const;
@@ -68,7 +68,7 @@ public:
     void            AddMessage(std::string message, int nImgType, EventType event_type);
     void            AddMessage(std::string summary, EventType event, std::shared_ptr<CombatReport> rep);
     const CEvent&   GetMessage(int id) const;
-    int                GetNumEvents() const { return events.size(); }
+    int             GetNumEvents() const { return events.size(); }
     bool            IsEmpty()      const { return events.empty() ; }
     bool            HasGoodNews() const;
     bool            HasUrgent() const;

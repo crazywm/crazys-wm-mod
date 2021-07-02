@@ -94,7 +94,7 @@ EAttemptCaptureResult AttemptCapture(sGang& gang, sGirl& girl) {
     auto result = combat.run(10);
     auto report = std::make_shared<CombatReport>();
     report->rounds = combat.round_summaries();
-    gang.m_Events.AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
+    gang.GetEvents().AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
     gang.m_Combat = true;
 
     if (result == ECombatResult::VICTORY)
@@ -117,8 +117,8 @@ EFightResult GangBrawl(sGang& a, sGang& b) {
     /// TODO return the report instead of pushing? So we can attach a custom summary
     std::string a_result = " \nThey lost " + std::to_string(start_num_a - a.m_Num) + " members.";
     std::string b_result = " \nThey lost " + std::to_string(start_num_b - b.m_Num) + " members.";
-    a.m_Events.AddMessage(combat.round_summaries().back() + a_result, EVENT_GANG, report);
-    b.m_Events.AddMessage(combat.round_summaries().back() + b_result, EVENT_GANG, report);
+    a.GetEvents().AddMessage(combat.round_summaries().back() + a_result, EVENT_GANG, report);
+    b.GetEvents().AddMessage(combat.round_summaries().back() + b_result, EVENT_GANG, report);
 
     a.m_Combat = true;
     b.m_Combat = true;
@@ -145,8 +145,8 @@ EFightResult GirlFightsGirl(sGirl& a, sGirl& b) {
     auto result = combat.run(10);
     auto report = std::make_shared<CombatReport>();
     report->rounds = combat.round_summaries();
-    a.m_Events.AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
-    b.m_Events.AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
+    a.GetEvents().AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
+    b.GetEvents().AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
 
     switch(result) {
         case ECombatResult::VICTORY:

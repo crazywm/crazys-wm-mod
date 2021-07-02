@@ -123,7 +123,7 @@ void IBuilding::BeginWeek()
             cgirl.m_Building = this;
             cgirl.m_Tort = false;
 
-            cgirl.m_Events.Clear();                // Clear the girls' events from the last turn
+            cgirl.GetEvents().Clear();                // Clear the girls' events from the last turn
 
             // `J` Check for out of building jobs
             if (cgirl.m_DayJob       < m_FirstJob || cgirl.m_DayJob   > m_LastJob)        cgirl.m_DayJob = JOB_RESTING;
@@ -234,7 +234,7 @@ void IBuilding::HandleRestingGirls(bool is_night)
             sum = EVENT_WARNING;
         }
 
-        if (ss.str().length() > 0) current.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+        if (ss.str().length() > 0) current.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
     });
 }
 
@@ -1843,4 +1843,8 @@ void IBuilding::IterateGirls(bool is_night, std::initializer_list<JOBS> jobs, co
         }
         handler(girl);
     });
+}
+
+void IBuilding::AddMessage(std::string message, EventType event) {
+    m_Events.AddMessage(std::move(message), IMGTYPE_PROFILE, event);
 }

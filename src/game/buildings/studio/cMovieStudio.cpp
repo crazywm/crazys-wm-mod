@@ -138,7 +138,7 @@ void sMovieStudio::UpdateGirls(bool is_night)
 
     EndShift(is_night);
 
-    m_Events.AddMessage(summary.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
+    AddMessage(summary.str(), EVENT_SUMMARY);
 }
 
 void sMovieStudio::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)
@@ -261,7 +261,6 @@ void sMovieStudio::check_overuse(const std::string& resource, const std::string&
             assert(false);
         };
         ;
-        m_Events.AddMessage(interpolate_string(message, lookup, g_Dice),
-                            0, EventType::EVENT_WARNING);
+        AddMessage(interpolate_string(message, lookup, g_Dice),EventType::EVENT_WARNING);
     }
 }

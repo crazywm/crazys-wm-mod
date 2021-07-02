@@ -198,7 +198,7 @@ sWorkJobResult WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
             std::stringstream Umsg;
             ugirl->add_temporary_trait("Kidnapped", 2 + rng % 15);
             Umsg << ugirl->FullName() << " was captured in the catacombs by ${name}.\n";
-            ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+            ugirl->AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
             g_Game->dungeon().AddGirl(ugirl, DUNGEON_GIRLCAPTURED);    // Either type of girl goes to the dungeon
         }
     }

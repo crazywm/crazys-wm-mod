@@ -366,7 +366,7 @@ bool sBrothel::runaway_check(sGirl& girl)
     {
         if (g_Dice.percent(g_Game->job_manager().guard_coverage() - girl.m_DaysUnhappy)) return false;
 
-        girl.m_Events.AddMessage("She ran away.", IMGTYPE_PROFILE, EVENT_DANGER);
+        girl.AddMessage("She ran away.", IMGTYPE_PROFILE, EVENT_DANGER);
         girl.set_stat(STAT_TIREDNESS, 0);
         girl.set_stat(STAT_HEALTH, 100);
         girl.m_RunAway = 6;
@@ -437,7 +437,7 @@ bool sBrothel::runaway_check(sGirl& girl)
     */
     std::stringstream ss;
     ss << "This girl's unhappiness has turned her into " << (drug == "Alcoholic" ? "an" : "a") << " " << drug << ".";
-    girl.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
     return false;
 }
 
@@ -472,7 +472,7 @@ void sBrothel::Update()
     ss << m_TotalCustomers << " customers visited the building.";
     if (m_RejectCustomersRestrict > 0) ss << "\n \n" << m_RejectCustomersRestrict << " were turned away because of your sex restrictions.";
     if (m_RejectCustomersDisease > 0) ss << "\n \n" << m_RejectCustomersDisease << " were turned away because they had an STD.";
-    m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
+    AddMessage(ss.str());
 
     // empty rooms cost 2 gold to maintain
     m_Finance.building_upkeep(g_Game->tariff().empty_room_cost(*this));
@@ -494,7 +494,7 @@ void sBrothel::Update()
         ss << " However, due to your configuration, you instead had to pay " <<
            g_Game->tariff().advertising_costs(m_AdvertisingBudget) << " gold.";
     }
-    m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
+    AddMessage(ss.str());
 
     // `J` include antipreg potions in summary
     ss.str("");
@@ -553,7 +553,7 @@ void sBrothel::Update()
         if (error) {
             g_LogFile.log(ELogLevel::ERROR, ss.str());
         }
-        m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
+        AddMessage(ss.str());
     }
 
 #pragma endregion
@@ -728,7 +728,7 @@ void do_food_and_digs(IBuilding& brothel, sGirl& girl)
         ss << girl.FullName() << " has started to view the world from a more \"Pessimistic\" point of view.";
     }
 
-    if (ss.str().length() > 0)    girl.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+    if (ss.str().length() > 0)    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 }
 
 // ----- Stats

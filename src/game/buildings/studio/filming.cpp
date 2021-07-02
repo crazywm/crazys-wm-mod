@@ -151,7 +151,7 @@ const MovieScene& film_scene(cMovieManager& mgr, sGirl& girl, int quality, Scene
     event << " > Camera: " << scene.CameraMage << " [" << int(cam_quality) << "]\n";
     event << " > Purifier: " << scene.CrystalPurifier << " [" << int(pur_quality) << "]\n";
 
-    studio.m_Events.AddMessage(event.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
+    studio.AddMessage(event.str());
 
     return scene;
 }

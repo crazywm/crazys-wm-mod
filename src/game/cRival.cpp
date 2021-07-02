@@ -320,8 +320,8 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                                 {
                                     if (rGang.m_Num == 0) curr->m_NumGangs--;
                                     ss << ("\nBut you maintain control of the territory.");
-                                    miss1->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
-                                    m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_WARNING);
+                                    miss1->AddMessage(ss.str());
+                                    AddMessage(ss.str(), EVENT_WARNING);
                                 }
                                 else                                    // if you lose
                                 {
@@ -329,13 +329,13 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                                     ss << "\nYou lose the territory.";
                                     NumPlayerBussiness--;
                                     curr->m_BusinessesExtort++;
-                                    m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_DANGER);
+                                    AddMessage(ss.str(), EVENT_DANGER);
                                 }
                             }
                             else                                        // if you do not have a gang guarding
                             {
                                 ss << "Your rival " << curr->m_Name << " has taken one of the undefended territories you control.";
-                                m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_DANGER);
+                                AddMessage(ss.str(), EVENT_DANGER);
                                 NumPlayerBussiness--;
                                 curr->m_BusinessesExtort++;
                             }
@@ -372,7 +372,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                                 rival->m_BusinessesExtort--;
                                 curr->m_BusinessesExtort++;
                             }
-                            m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_RIVAL);
+                            AddMessage(ss.str());
                         }
                     }
                 }
@@ -424,8 +424,8 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                             {
                                 if (cG1.m_Num == 0) curr->m_NumGangs--;
                                 ss << " But they fail.";
-                                miss1->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
-                                m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_GANG);
+                                miss1->AddMessage(ss.str());
+                                AddMessage(ss.str(), EVENT_GANG);
                             }
                         }
                         else
@@ -456,7 +456,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                             else ss << ".";
 
                             ss << rivals_plunder_pc_gold(curr.get());
-                            m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_DANGER);
+                            AddMessage(ss.str(), EVENT_DANGER);
                         }
                     }
                     else
@@ -528,7 +528,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                                     ss << "\nThey destroyed one of their Bars.";
                                 }
                             }
-                            m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_RIVAL);
+                            AddMessage(ss.str());
                         }
                     }
                 }
@@ -1245,6 +1245,10 @@ int cRivalManager::GetRandomRivalItemNum(cRival* rival)
         }
     }
     return -1;
+}
+
+void cRivalManager::AddMessage(std::string message, EventType event_type) {
+    m_Events.AddMessage(std::move(message), IMGTYPE_PROFILE, event_type);
 }
 
 bool cRival::is_defeated() const

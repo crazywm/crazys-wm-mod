@@ -160,7 +160,8 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     std::set<Fetishs> m_FetishTypes;            // the types of fetishes this girl has
 
     void AddMessage(std::string message, int nImgType, EventType event);
-    cEvents m_Events;                            // Each girl keeps track of all her events that happened to her in the last turn
+    cEvents& GetEvents() { return m_Events; }
+    const cEvents& GetEvents() const { return m_Events; }
 
     // triggers
     scripting::pEventMapping m_EventMapping;
@@ -269,6 +270,8 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
 
 private:
     FormattedCellData GetDetail_Job(const std::string& detailName) const;
+
+    cEvents m_Events;                            // Each girl keeps track of all her events that happened to her in the last turn
 
 public:
     // END MOD

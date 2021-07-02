@@ -192,7 +192,6 @@ bool CEvent::IsCombat() const {
     return m_Report != nullptr;
 }
 
-
 void cEvents::AddMessage(std::string message, int nImgType, EventType event_type)
 {
     events.emplace_back(event_type, nImgType, std::move(message), nullptr);
@@ -203,7 +202,6 @@ void cEvents::AddMessage(std::string summary, EventType event, std::shared_ptr<C
     events.emplace_back(event, IMGTYPE_COMBAT, std::move(summary), std::move(rep));
     m_bSorted = false;
 }
-
 
 const CEvent& cEvents::GetMessage(int id) const
 {
@@ -220,11 +218,6 @@ bool CEvent::CmpEventPredicate(const CEvent& eFirst, const CEvent& eSecond)
     return make_sort_tuple(eFirst) < make_sort_tuple(eSecond);
 }
 
-CEvent::CEvent(EventType event, unsigned char type, std::string message, std::shared_ptr<CombatReport> rep) :
-    m_Event(event), m_MessageType(type), m_Message(std::move(message)), m_Report(std::move(rep))
-{
-}
-
 void cEvents::DoSort()
 {
     if (!m_bSorted)
@@ -234,6 +227,7 @@ void cEvents::DoSort()
     }
 }
 
-    
-    
-
+CEvent::CEvent(EventType event, unsigned char type, std::string message, std::shared_ptr<CombatReport> rep) :
+        m_Event(event), m_MessageType(type), m_Message(std::move(message)), m_Report(std::move(rep))
+{
+}

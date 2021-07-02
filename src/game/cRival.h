@@ -112,7 +112,8 @@ public:
     cRival* get_influential_rival();
     std::string rivals_plunder_pc_gold(cRival* rival);
 
-    const cEvents& events() const { return m_Events; }
+    const cEvents& GetEvents() const { return m_Events; }
+    void AddMessage(std::string message, EventType event_type = EventType::EVENT_RIVAL);
 private:
     std::vector<std::unique_ptr<cRival>> m_Rivals;
     bool m_PlayerSafe;

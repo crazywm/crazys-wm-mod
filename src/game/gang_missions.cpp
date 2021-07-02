@@ -127,7 +127,7 @@ bool cMissionGrandTheft::execute_mission(sGang& gang, std::stringstream& ss)
         if (GangBrawl(gang, *defenders) != EFightResult::VICTORY)
         {
             ss << "put up quite a fight and send your men running.";
-            gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
+            gang.AddMessage(ss.str(), EVENT_DANGER);
             return false;
         }
         float dif = (float)gstart / (float)gang.m_Num;
@@ -153,7 +153,7 @@ bool cMissionGrandTheft::execute_mission(sGang& gang, std::stringstream& ss)
     g_Game->player().suspicion(gold / 1000);
 
     g_Game->gold().grand_theft(gold);
-    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    gang.AddMessage(ss.str());
 
     if (g_Game->get_objective() && g_Game->get_objective()->m_Objective == OBJECTIVE_STEALXAMOUNTOFGOLD)
     {
@@ -180,7 +180,7 @@ bool cMissionKidnap::execute_mission(sGang& gang, std::stringstream& ss)
         }
     }
     ss << "They failed to find any girls to kidnap.";
-    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    gang.AddMessage(ss.str());
     return false;
 }
 
@@ -252,7 +252,7 @@ bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, std::shared_ptr<
         g_Game->dungeon().AddGirl(std::move(girl), dungeonreason);
         gang.BoostStat(STAT_INTELLIGENCE);
     }
-    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, gangeventtype);
+    gang.AddMessage(ss.str(), gangeventtype);
     return captured;
 }
 
@@ -273,7 +273,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
     */
     if (!g_Dice.percent(std::min(90, gang.intelligence())))
     {
-        gang.m_Events.AddMessage("They failed to find any enemy assets to hit.", IMGTYPE_PROFILE, EVENT_GANG);
+        gang.AddMessage("They failed to find any enemy assets to hit.");
         return false;
     }
     /*
@@ -289,7 +289,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
     cRival* rival = g_Game->rivals().GetRandomRivalToSabotage();
     if (!rival)
     {
-        gang.m_Events.AddMessage("Scouted the city in vain, seeking would-be challengers to your dominance.", IMGTYPE_PROFILE, EVENT_GANG);
+        gang.AddMessage("Scouted the city in vain, seeking would-be challengers to your dominance.");
         return false;
     }
 
@@ -310,7 +310,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
                     if (gang.m_Num == 1) ss << "lone survivor fights his";
                     else ss << gang.m_Num << " survivors fight their";
                     ss << " way back to friendly territory.";
-                    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
+                    gang.AddMessage(ss.str(), EVENT_DANGER);
                 }
                 else
                 {
@@ -468,7 +468,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
     }
 
     gang.BoostStat(STAT_INTELLIGENCE, 2);
-    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    gang.AddMessage(ss.str());
 
     // See if the rival is eliminated:  If 4 or more are zero or less, the rival is eliminated
     int VictoryPoints = 0;
@@ -484,7 +484,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
         std::stringstream ssVic;
         ssVic << "You have dealt " << rival->m_Name << " a fatal blow.  Their criminal organization crumbles to nothing before you.";
         g_Game->rivals().RemoveRival(rival);
-        gang.m_Events.AddMessage(ssVic.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+        gang.AddMessage(ssVic.str(), EVENT_GOODNEWS);
     }
     return true;
 }
@@ -502,7 +502,7 @@ bool cMissionRecapture::execute_mission(sGang& gang, std::stringstream& event_te
     if (g_Game->GetNumRunaways() == 0)    // `J` this should have been replaced by a check in the gang mission list
     {
         ss << "There are none of your girls who have run away, so they have none to look for.";
-        gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+        gang.AddMessage(ss.str());
         return false;
     }
 
@@ -535,10 +535,10 @@ bool cMissionRecapture::execute_mission(sGang& gang, std::stringstream& event_te
             break;
     }
 
-    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, gangeventtype);
+    gang.AddMessage(ss.str(), gangeventtype);
     if (captured)
     {
-        runaway->m_Events.AddMessage(RGmsg.str(), girlimagetype, EVENT_GANG);
+        runaway->AddMessage(RGmsg.str(), girlimagetype, EVENT_GANG);
         runaway->m_RunAway = 0;
         g_Game->RemoveGirlFromRunaways(runaway.get());
         g_Game->dungeon().AddGirl(runaway, DUNGEON_GIRLRUNAWAY);
@@ -629,7 +629,7 @@ bool cMissionExtortion::execute_mission(sGang& gang, std::stringstream& ss)
                     case EFightResult::DRAW:
                     case EFightResult::DEFEAT:
                         ss << "Your gang has been defeated and fail to take control of any new territory.";
-                        gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                        gang.AddMessage(ss.str());
                         return false;
                 }
             }
@@ -661,7 +661,7 @@ bool cMissionExtortion::execute_mission(sGang& gang, std::stringstream& ss)
         }
     }
 
-    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    gang.AddMessage(ss.str());
 
     if (g_Game->get_objective() && g_Game->get_objective()->m_Objective == OBJECTIVE_EXTORTXNEWBUSINESS)
     {
@@ -717,7 +717,7 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
                 break;
             case EFightResult::DEFEAT:
                 ss << "Your men lose the fight.";
-                gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                gang.AddMessage(ss.str());
                 return false;
         }
     }
@@ -752,8 +752,8 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
             auto result = combat.run(10);
             auto report = std::make_shared<CombatReport>();
             report->rounds = combat.round_summaries();
-            gang.m_Events.AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
-            girl->m_Events.AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
+            gang.GetEvents().AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
+            girl->GetEvents().AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
 
 
             // if the girl has lost
@@ -789,13 +789,13 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
             else if (result == ECombatResult::DRAW) {
                 ss << "After a few bloody exchanges, neither your goons nor the vigilante seem to be eager to see "
                       "this battle to conclusion.";
-                gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                gang.AddMessage(ss.str());
                 return false;
             }
             else
             {
                 ss << "She defeats your men and disappears back into the shadows.";
-                gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                gang.AddMessage(ss.str());
                 return false;
             }
         }
@@ -835,7 +835,7 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
     ss << "Your gang robs " << numberoftargets << " " << who << " and get " << gold << " gold from them.";
     if (numlost > 0) { ss << "\n \n" << gang.name() << " lost "; if (numlost == 1) ss << "one man."; else ss << numlost << " men."; }
 
-    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    gang.AddMessage(ss.str());
 
     g_Game->gold().petty_theft(gold);
 
@@ -899,7 +899,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
                 }
                 auto report = std::make_shared<CombatReport>();
                 report->rounds = combat.round_summaries();
-                gang.m_Events.AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
+                gang.GetEvents().AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
 
                 if (g_Dice.percent(20))        { totalitems++; bringbacknum += 2; }
                 else if (g_Dice.percent(50))    gold += 1 + g_Dice % 200;
@@ -992,7 +992,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
                     std::stringstream NGmsg;
                     ugirl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
                     NGmsg << ugirl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
-                    ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                    ugirl->AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
                     g_Game->dungeon().AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
                 }
                 else
@@ -1004,7 +1004,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
                         std::stringstream NGmsg;
                         ugirl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
                         NGmsg << ugirl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
-                        ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                        ugirl->AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
                         g_Game->dungeon().AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
                     }
                 }
@@ -1044,7 +1044,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
     }
 
 
-    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    gang.AddMessage(ss.str());
     return true;
 }
 
@@ -1143,7 +1143,7 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
                         else/*                        */    gss << item->m_Name;
                         gss << " and claimed it for herself.";
                     }
-                    girl->m_Events.AddMessage(gss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                    girl->AddMessage(gss.str(), IMGTYPE_PROFILE, EVENT_GANG);
                     beasts--;
                     ss << "\n" << gss.str() << "\n";
                 }
@@ -1172,7 +1172,7 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
     if (mag > 0)    { gang.AdjustGangSkill(SKILL_MAGIC, mag);            ss << "\nMagic +" << mag; }
     if (gold > 0)    { g_Game->gold().misc_credit(gold);    ss << "\nThey recieved " << gold << " gold in tips from grateful people."; }
 
-    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    gang.AddMessage(ss.str());
     return true;
 }
 
@@ -1222,7 +1222,7 @@ bool cMissionTraining::execute_mission(sGang& gang, std::stringstream& ss)
     if (gang.m_Stats[STAT_STRENGTH] > old_str)            ss << "\n+" << (gang.m_Stats[STAT_STRENGTH] - old_str) << " Strength";
     if (gang.m_Skills[SKILL_SERVICE] > old_serv)        ss << "\n+" << (gang.m_Skills[SKILL_SERVICE] - old_serv) << " Service";
 
-    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    gang.AddMessage(ss.str());
     gang.m_Combat = false;
     return false;
 }
@@ -1318,12 +1318,12 @@ bool cMissionRecruiting::execute_mission(sGang& gang, std::stringstream& ss)
                     passto->m_Num += passnumgotthere;
                 }
                 else pss << " but none showed up.";
-                passto->m_Events.AddMessage(pss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                passto->AddMessage(pss.str());
             }
             else ss << "had to turn away the rest.";
         }
     }
-    gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+    gang.AddMessage(ss.str());
     gang.m_Combat = true;    // though not actually combat, this prevents the automatic +1 member at the end of the week
     return false;
 }

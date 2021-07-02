@@ -99,6 +99,9 @@ public:
     void BoostSkill(SKILLS skill, int count = 1);
     void BoostCombatSkills(int amount);
     void BoostRandomSkill(const std::vector<int*>& possible_skills, int count = 1, int boost_count = 1);  // chooses from the passed skills/stats and raises one or more of them
+
+    cEvents& GetEvents() { return m_Events; }
+    void AddMessage(std::string message, EventType event_type = EventType::EVENT_GANG);
 public:
     int m_Num = 0;    // number in the gang
     int m_Skills[NUM_SKILLS];    // skills of the gang
@@ -108,7 +111,6 @@ public:
     int m_LastMissID = -1;    // the last mission if auto changed to recruit mission
     bool m_AutoRecruit;    // true if auto recruiting
     bool m_Combat = false;    // is true when gang has seen combat in the last week
-    cEvents m_Events;
 
     int m_MedicalCost = 0;      // If the members of the gang have been hurt, this is what you need to pay the doctors to heal them
 private:
@@ -117,6 +119,8 @@ private:
     int m_Potions = 0;    // number of potions the gang has
     int m_Nets = 0;        // number of nets the gang has
     int m_WpnLevel = 0; // weapon level
+
+    cEvents m_Events;
 };
 
 /*

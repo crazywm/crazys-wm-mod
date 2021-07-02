@@ -215,7 +215,7 @@ int cMovieManager::step(IBuilding& studio) {
         if(hype > 0.1) {
             movie_report << " It was well received, and its hype-rating increased by " << int(hype*100) << " points. ";
         }
-        studio.m_Events.AddMessage(movie_report.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
+        studio.AddMessage(movie_report.str());
     }
 
     // remove old movies and notify the player
@@ -225,7 +225,7 @@ int cMovieManager::step(IBuilding& studio) {
             std::stringstream movie_end_report;
             movie_end_report << "Your movie " << m.Name << " finished its run with a total revenue of " << m.TotalEarnings
                              << " and has now been taken out of the programming. It generated a total hype of " << int(100 * m.Hype) << ".";
-            studio.m_Events.AddMessage(movie_end_report.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+            studio.AddMessage(movie_end_report.str(), EVENT_GOODNEWS);
             return true;
         }
         return false;
@@ -251,7 +251,7 @@ int cMovieManager::step(IBuilding& studio) {
             std::stringstream tg_wn;
             tg_wn << "It appears that people in the target group " << aud.Name << " have been to the movies so often lately"
                      " that their desire for cinema is mostly sated.";
-            studio.m_Events.AddMessage(tg_wn.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+            studio.AddMessage(tg_wn.str(), EVENT_WARNING);
         }
 
         // a small fraction of people become saturated even if you aren't showing any movies
@@ -265,9 +265,9 @@ int cMovieManager::step(IBuilding& studio) {
         aud.Saturation *= saturation_decay_factor;
     }
 
-    studio.m_Events.AddMessage("In total, your Studio earned " + std::to_string((int)total_income) +
+    studio.AddMessage("In total, your Studio earned " + std::to_string((int)total_income) +
                                 " gold this week from ticket sales of " + std::to_string(m_Movies.size()) + " movies.",
-                               IMGTYPE_PROFILE, EVENT_SUMMARY);
+                               EVENT_SUMMARY);
 
     return static_cast<int>(total_income);
 }

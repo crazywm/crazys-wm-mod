@@ -845,7 +845,7 @@ enum EventType {
     EVENT_DUNGEON = 6,            // For torturer reports
     EVENT_MATRON = 7,            // For Matron reports
     EVENT_GANG = 8,
-    EVENT_BROTHEL = 9,
+    EVENT_BUILDING = 9,
     EVENT_NOWORK = 10,
     EVENT_BACKTOWORK = 11,
     EVENT_LEVELUP = 12,    // `J` added

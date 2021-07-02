@@ -268,7 +268,7 @@ void cCustomers::GenerateCustomers(IBuilding& brothel, bool Day0Night1)
         ss << "You lost " << ScareCustomers << " " << daynighttime << " customers due to the excessive security in your brothel.";
     else
         ss << "You lost " << ScareCustomers << " " << daynighttime << " customers due to the oppressive security in your brothel.";
-    brothel.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
+    brothel.AddMessage(ss.str());
 
 
     if (num < 0)    num = 0;  // negative number of customers doesn't make sense
