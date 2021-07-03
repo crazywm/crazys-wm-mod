@@ -34,6 +34,7 @@
 #include "character/cGirlPool.h"
 #include "cGirls.h"
 #include "utils/algorithms.hpp"
+#include "CLog.h"
 
 namespace settings{
     extern const char* PREG_COOL_DOWN;
@@ -1841,7 +1842,16 @@ void IBuilding::IterateGirls(bool is_night, std::initializer_list<JOBS> jobs, co
         if (!is_in(job, jobs)) {
             return;
         }
-        handler(girl);
+#ifndef FUZZ_TESTING
+        try {
+#endif
+            handler(girl);
+#ifndef FUZZ_TESTING
+        } catch (std::exception& exception) {
+            g_LogFile.error("girls", "Error when processing girl ", girl.FullName(), ": ", exception.what());
+            g_Game->error("Error when processing girl " + girl.FullName() + ": " + exception.what());
+        }
+#endif
     });
 }
 

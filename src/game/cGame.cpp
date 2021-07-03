@@ -402,7 +402,12 @@ void cGame::NextWeek()
 
     g_LogFile.info("turn", "Processing buildings");
     for(auto& building : buildings().buildings()) {
-        building->Update();
+        try {
+            building->Update();
+        } catch (std::exception& exception) {
+            g_LogFile.error("girls", "Error when processing building ", building->name(), ": ", exception.what());
+            g_Game->error("Error when processing building " + building->name() + ": " + exception.what());
+        }
     }
 
     // clear the events of dungeon girls
