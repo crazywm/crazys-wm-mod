@@ -708,7 +708,9 @@ sWorkJobResult Waitress::DoWork(sGirl& girl, bool is_night) {
                 if (roll_c <= 10)    { dick_type_text = "huge"; }
                 else if (roll_c >= 90)    { dick_type_text = "small"; }
 
-                ss << " and said that's only on the menu if your willing to pay up. He jumped at the chance to get to try her ass out and bent her over the table and whiping out his " << dick_type_text << " dick.";
+                ss << " and said that's only on the menu if your willing to pay up. "
+                      "He jumped at the chance to get to try her ass out and bent "
+                      "her over the table and whipping out his " << dick_type_text << " dick.";
                 m_Earnings += girl.askprice() + 50;
                 imagetype = IMGTYPE_ANAL;
                 girl.upd_temp_stat(STAT_LIBIDO, -20, true);
