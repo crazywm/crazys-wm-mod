@@ -500,7 +500,6 @@
     <MutexGroup>
         <Trait>Zombie</Trait>
         <Trait>Skeleton</Trait>
-        <Trait>Skeleton</Trait>
         <Trait>Vampire</Trait>
         <Trait>Angel</Trait>
         <Trait>Canine</Trait>
