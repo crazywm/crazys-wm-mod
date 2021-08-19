@@ -656,27 +656,26 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
     const int expneed = exptolv - exp;
 
     // display level and exp
-    ss << "\n" << levelstr[0] << level;
+    ss << levelstr[0] << girl.stat_with_change_str(STAT_LEVEL);
     if (!purchase)
     {
-        ss << "\t | " << levelstr[1] << exp;
-        ss << "\n" << levelstr[2] << exptolv;
-        ss << "\t | " << levelstr[3] << expneed;
+        ss << '\n' << levelstr[1] << girl.stat_with_change_str(STAT_EXP);
+        ss << '\n' << levelstr[2] << exptolv;
+        ss << "\t | " << levelstr[3] << expneed << '\n';
     }
 
-    // display Age
-    ss << "\n" << basestr[0]; if (girl.age() == 100) ss << "Unknown"; else ss << girl.age();
-    // display rebel
-    ss << "\n" << basestr[1] << girl.rebel();
-    // display Constitution
-    ss << "\n" << basestr[3] << girl.constitution();
+    // display Age, Looks, Rebel, Constitution
+    ss << "\n\n" << basestr[0]; if (girl.age() == 100) ss << "Unknown"; else ss << girl.age();
+    ss << '\n'   << basestr[2] << (girl.beauty() + girl.charisma()) / 2;
+    ss << '\n'   << basestr[1] << girl.rebel();
+    ss << '\n'   << basestr[3] << girl.stat_with_change_str(STAT_CONSTITUTION);
 
     // display HHT and money
     if (!purchase)
     {
-        ss << "\n" << basestr[4] << girl.health();
-        ss << "\n" << basestr[5] << girl.happiness();
-        ss << "\n" << basestr[6] << girl.tiredness();
+        ss << '\n' << basestr[4] << girl.stat_with_change_str(STAT_HEALTH);
+        ss << '\n' << basestr[5] << girl.stat_with_change_str(STAT_HAPPINESS);
+        ss << '\n' << basestr[6] << girl.stat_with_change_str(STAT_TIREDNESS);
     }
     int cost = int(g_Game->tariff().slave_price(girl, purchase));
     ss << '\n' << basestr[7] << cost << " Gold\t";
@@ -731,7 +730,7 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
         {
             ss << "\n \nSEX SKILLS";
         }
-        ss << "\n" << skillstr[i] << girl.get_skill(skillnum[i]);
+        ss << '\n' << skillstr[i] << girl.skill_with_change_str((SKILLS) skillnum[i]);
     }
     return ss.str();
 }
@@ -751,10 +750,8 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
 
     const int show = statnumsize - 3;
 
-    for (int i = 0; i < show; i++)
-    {
-        ss << "\n" << statstr[i] << girl.get_stat(statnum[i]);
-    }
+    for (int i = 0; i < show; i++) ss << '\n' << statstr[i] << girl.stat_with_change_str((STATS) statnum[i]);
+
     if (!purchase)
     {
         ss << '\n' << statstr[15];

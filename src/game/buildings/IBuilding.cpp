@@ -121,6 +121,7 @@ void IBuilding::BeginWeek()
         }
         else
         {
+            cgirl.save_statistics();
             cgirl.m_Building = this;
             cgirl.m_Tort = false;
 

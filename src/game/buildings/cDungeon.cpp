@@ -443,6 +443,7 @@ void cDungeon::Update()
     for(auto& current : m_Girls)
     {
         sGirl* girl = current.m_Girl.get();
+        girl->save_statistics();
         // TODO when can this happen???
         if(!girl) continue;
 

@@ -442,3 +442,30 @@ int ICharacter::update_attribute(StatSkill id, int amount) {
 bool ICharacter::IsUnique() const {
     return m_IsUnique;
 }
+
+/* Generate Strings to show stat / skill value changes with */
+void ICharacter::save_statistics() {
+    for (int i = 0; i < STATS::NUM_STATS; i++)   m_last_stats[(STATS)i]   = get_stat((STATS)i);
+    for (int i = 0; i < SKILLS::NUM_SKILLS; i++) m_last_skills[(SKILLS)i] = get_skill((SKILLS)i);
+}
+
+std::string ICharacter::stat_with_change_str(STATS stat) const {
+    return generate_change_string(m_last_stats, stat, get_stat(stat));
+}
+
+std::string ICharacter::skill_with_change_str(SKILLS skill) const {
+    return generate_change_string(m_last_skills, skill, get_skill(skill));
+}
+
+template std::string ICharacter::generate_change_string(const std::unordered_map<STATS,  int>& last_values, STATS  stat, int value_now) const;
+template std::string ICharacter::generate_change_string(const std::unordered_map<SKILLS, int>& last_values, SKILLS stat, int value_now) const;
+template <typename T> std::string ICharacter::generate_change_string(const std::unordered_map<T, int>& last_values, T stat, int value_now) const {
+    if (last_values.count(stat) == 0) return std::to_string(value_now);
+    const int change = value_now - last_values.at(stat);
+    std::string display_value(std::to_string(value_now));
+    if (!change) return display_value;
+    display_value += "  (";
+    if (change > 0) display_value += '+';
+    display_value += std::to_string(change) + ')';
+    return display_value;
+}

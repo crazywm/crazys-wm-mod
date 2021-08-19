@@ -27,6 +27,7 @@
 #include <memory>
 #include <vector>
 #include <boost/variant.hpp>
+#include <unordered_map>
 
 namespace tinyxml2 {
     class XMLElement;
@@ -260,6 +261,17 @@ public:
     int animalhandling(int n)                       { return upd_skill(SKILL_ANIMALHANDLING, n, true); }
     int cooking() const                             { return get_skill(SKILL_COOKING); }
     int cooking(int n)                              { return upd_skill(SKILL_COOKING, n, true); }
+
+    // Stat Changes: Stat/Skill values from last week
+    std::unordered_map<STATS,  int> m_last_stats;
+    std::unordered_map<SKILLS, int> m_last_skills;
+    void save_statistics();
+    // Stat Changes: Generate Strings to show stat / skill value changes with
+    std::string stat_with_change_str(STATS stat) const;
+    std::string skill_with_change_str(SKILLS skill) const;
+private:
+    template <typename T>
+    std::string generate_change_string(const std::unordered_map<T, int>& last_values, T stat, int value_now) const;
 
 protected:
     void SaveXML(tinyxml2::XMLElement& elRoot) const;
