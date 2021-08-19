@@ -677,16 +677,16 @@ sWorkJobResult WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
 
         // Match image type to the deed done
         int imageType = IMGTYPE_SEX;
-        /* */if (SexType == SKILL_ANAL)            imageType = IMGTYPE_ANAL;
-        else if (SexType == SKILL_BDSM)            imageType = IMGTYPE_BDSM;
+        /* */if (SexType == SKILL_ANAL)         imageType = IMGTYPE_ANAL;
+        else if (SexType == SKILL_BDSM)         imageType = IMGTYPE_BDSM;
         else if (SexType == SKILL_NORMALSEX)    imageType = IMGTYPE_SEX;
-        else if (SexType == SKILL_BEASTIALITY)    imageType = IMGTYPE_BEAST;
+        else if (SexType == SKILL_BEASTIALITY)  imageType = IMGTYPE_BEAST;
         else if (SexType == SKILL_GROUP)        imageType = IMGTYPE_GROUP;
-        else if (SexType == SKILL_LESBIAN)        imageType = IMGTYPE_LESBIAN;
-        else if (SexType == SKILL_ORALSEX)        imageType = IMGTYPE_ORAL;
-        else if (SexType == SKILL_TITTYSEX)        imageType = IMGTYPE_TITTY;
-        else if (SexType == SKILL_HANDJOB)        imageType = IMGTYPE_HAND;
-        else if (SexType == SKILL_FOOTJOB)        imageType = IMGTYPE_FOOT;
+        else if (SexType == SKILL_LESBIAN)      imageType = IMGTYPE_LESBIAN;
+        else if (SexType == SKILL_ORALSEX)      imageType = IMGTYPE_ORAL;
+        else if (SexType == SKILL_TITTYSEX)     imageType = IMGTYPE_TITTY;
+        else if (SexType == SKILL_HANDJOB)      imageType = IMGTYPE_HAND;
+        else if (SexType == SKILL_FOOTJOB)      imageType = IMGTYPE_FOOT;
         else if (SexType == SKILL_STRIP)        imageType = IMGTYPE_STRIP;
 
 

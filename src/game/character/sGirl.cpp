@@ -409,7 +409,6 @@ int sGirl::get_stat(int stat_id) const
         return 0;
     // Generic calculation
     return ICharacter::get_stat(stat_id);
-
 }
 
 void sGirl::run_away()

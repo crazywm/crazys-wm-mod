@@ -39,7 +39,7 @@ namespace scripting {
         sAsyncScriptHandle RunEventAsync(const sEventTarget& event, std::initializer_list<sLuaParameter> params) const;
 
         /// Runs an event in synchronous mode
-        sScriptValue RunEventSync(const sEventTarget& event, std::initializer_list<sLuaParameter> params = {}) const;
+        sScriptValue RunEventSync(const sEventTarget& event, std::initializer_list<sLuaParameter> params) const;
 
         // registering
         /// Load the script from `file` and save under the name `name`.

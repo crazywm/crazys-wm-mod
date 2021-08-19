@@ -97,6 +97,7 @@ std::string GetEventID(EDefaultEvent e) {
     case EDefaultEvent::MEET_GIRL_STUDIO:
         return "girl:meet:studio";
     }
+    throw std::logic_error("GetEventID - Unknown event: " + std::to_string((int) e));
 }
 
 sEventID::sEventID(EDefaultEvent event) : name(GetEventID(event))

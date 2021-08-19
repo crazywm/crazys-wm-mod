@@ -135,6 +135,7 @@ EFightResult GangBrawl(sGang& a, sGang& b) {
         case ECombatResult::DEFEAT:
             return EFightResult::DEFEAT;
     }
+    throw std::logic_error("GangBrawl - Unknown result: " + std::to_string((int) result));
 }
 
 EFightResult GirlFightsGirl(sGirl& a, sGirl& b) {
@@ -156,4 +157,5 @@ EFightResult GirlFightsGirl(sGirl& a, sGirl& b) {
         case ECombatResult::DEFEAT:
             return EFightResult::DEFEAT;
     }
+    throw std::logic_error("GirlFightsGirl - Unknown result: " + std::to_string((int) result));
 }
