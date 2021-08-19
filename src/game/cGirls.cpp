@@ -458,14 +458,14 @@ void cGirls::EndDayGirls(IBuilding& brothel, sGirl& girl)
     //*/
     if (!girl.has_active_trait("No Nipples"))    // no nipples = no lactation
     {
-        /* */if (girl.has_active_trait("Dry Milk")) E_lactation = 1;
+        if      (girl.has_active_trait("Dry Milk")) E_lactation = 1;
         else if (girl.has_active_trait("Scarce Lactation")) E_lactation = 5;
         else if (girl.has_active_trait("Abundant Lactation")) E_lactation = 25;
         else if (girl.has_active_trait("Cow Tits")) E_lactation = 50;
-        else /*                                     */    E_lactation = 10;
-        /* */if (girl.is_pregnant())                    E_lactation *= 2;
-        else if (girl.m_PregCooldown>0)                E_lactation = int((float)E_lactation * 2.5f);
-        girl.lactation(E_lactation);
+        else E_lactation = 0;
+
+        // *Add* (not set!) E_lactation
+        girl.lactation(girl.is_pregnant() || girl.m_PregCooldown > 0 ? E_lactation * 2 + 1 : E_lactation);
     }
 
     auto DecaySexSkill = [&](SKILLS skill) {
