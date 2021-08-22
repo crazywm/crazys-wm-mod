@@ -28,6 +28,7 @@
 #include "cTariff.h"
 #include "cGold.h"
 #include "cGangs.h"
+#include "cGangManager.hpp"
 #include "IGame.h"
 #include "scripting/GameEvents.h"
 #include "combat/combat.h"

@@ -30,6 +30,7 @@
 #include "character/traits/ITraitsCollection.h"
 #include "character/traits/ITraitSpec.h"
 #include "cGangs.h"
+#include "cGangManager.hpp"
 #include "buildings/cDungeon.h"
 #include "character/cPlayer.h"
 #include "utils/algorithms.hpp"

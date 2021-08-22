@@ -22,6 +22,7 @@
 #include "buildings/cDungeon.h"
 #include "character/cPlayer.h"
 #include "cGangs.h"
+#include "cGangManager.hpp"
 #include "cRival.h"
 #include "IGame.h"
 #include "cInventory.h"

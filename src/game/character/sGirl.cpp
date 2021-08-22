@@ -7,6 +7,7 @@
 #include "buildings/IBuilding.h"
 #include "IGame.h"
 #include "cGangs.h"
+#include "cGangManager.hpp"
 #include "character/cCustomers.h"
 #include "cInventory.h"
 #include "character/cPlayer.h"

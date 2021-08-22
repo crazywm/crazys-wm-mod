@@ -31,6 +31,7 @@
 #include "character/cPlayer.h"
 #include "character/cCustomers.h"
 #include "cGangs.h"
+#include "cGangManager.hpp"
 
 namespace settings {
     extern const char* WORLD_CATACOMB_UNIQUE;

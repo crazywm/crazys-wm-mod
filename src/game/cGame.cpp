@@ -24,6 +24,7 @@
 #include "cGold.h"
 #include "cShop.h"
 #include "cGangs.h"
+#include "cGangManager.hpp"
 #include "cRival.h"
 #include "cInventory.h"
 #include "cObjectiveManager.hpp"

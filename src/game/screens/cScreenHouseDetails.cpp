@@ -20,6 +20,7 @@
 #include "buildings/cBuildingManager.h"
 #include "interface/cWindowManager.h"
 #include "cGangs.h"
+#include "cGangManager.hpp"
 #include "cObjectiveManager.hpp"
 #include "IGame.h"
 #include <sstream>

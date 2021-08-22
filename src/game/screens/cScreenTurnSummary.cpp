@@ -24,6 +24,7 @@
 #include "buildings/cBuildingManager.h"
 #include "buildings/cDungeon.h"
 #include "cGangs.h"
+#include "cGangManager.hpp"
 
 #include "InterfaceProcesses.h"
 

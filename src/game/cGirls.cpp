@@ -23,6 +23,7 @@
 #include <tinyxml2.h>
 #include "utils/algorithms.hpp"
 #include "cGangs.h"
+#include "cGangManager.hpp"
 #include "buildings/IBuilding.h"
 #include "IGame.h"
 #include "sStorage.h"

@@ -109,6 +109,7 @@ set(MOVIES_SRC
 
 set(SRC cEvents.cpp
         cGangs.cpp
+        cGangManager.cpp
         cGirlGangFight.cpp
         cGirls.cpp
         cGirlTorture.cpp

@@ -23,6 +23,7 @@
 #include "xml/getattr.h"
 #include <utility>
 #include "CLog.h"
+#include "cGangs.h"
 
 // pre-defined setting constants
 /*!
@@ -47,6 +48,7 @@ namespace settings {
     const char* GANG_MAX_RECRUIT_LIST    = "gang.max_recruit_list";
     const char* GANG_MIN_START_MEMBERS   = "gang.min_start_members";
     const char* GANG_MAX_START_MEMBERS   = "gang.max_start_members";
+    const char* GANG_MAX_MEMBERS         = "gang.max_members";
     const char* GANG_REMOVE_CHANCE       = "gang.chance_remove";
     const char* GANG_MIN_WEEKLY_NEW      = "gang.min_weekly_new";
     const char* GANG_MAX_WEEKLY_NEW      = "gang.max_weekly_new";
@@ -111,10 +113,9 @@ namespace settings {
     const char* MOVIES_AUDIENCE_SATED_CHANCE = "movies.audience.sated-chance";
 }
 
-using namespace settings;
-
 cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
 {
+    using namespace settings;
     // game specific settings
     add_setting(INITIAL_GOLD, "Initial Gold", "The amount of gold available to the player at the beginning of the game", 4000);
     add_setting(INITIAL_BOOSTED_GANGS, "Start Gangs Boosted", "The number of boosted gangs available at game start", 2);
@@ -133,7 +134,8 @@ cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
 
     add_setting(GANG_MAX_RECRUIT_LIST, "Max Recruit List", "The maximum amount of gangs available for recruitment.", 6);
     add_setting(GANG_MIN_START_MEMBERS, "Init Member Min", "The minimum number of members in a newly created gang.", 1);
-    add_setting(GANG_MAX_START_MEMBERS, "Init Member Max", "The maximum number of members in a newly created gang.", 10);
+    add_setting(GANG_MAX_START_MEMBERS, "Init Member Max", "The maximum number of members in a newly created gang.", 8);
+    add_setting(GANG_MAX_MEMBERS, "Member Max", "The maximum number of members in a newly created gang.", 10);
     add_setting(GANG_REMOVE_CHANCE, "Remove Unwanted", "The chance that an unrecruited gang will be removed.", sPercent(0.25f));
     add_setting(GANG_MIN_WEEKLY_NEW, "Add New Weekly Min", "The minimum number of new gangs created each week.", 0);
     add_setting(GANG_MAX_WEEKLY_NEW, "Add New Weekly Max", "The maximum number of new gangs created each week.", 2);
@@ -147,7 +149,7 @@ cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
     add_setting(USER_ACCOMODATION_SLAVE, "Base Slave Accom", "The default accommodation level for slave girls.", 1);
     add_setting(USER_KEEP_TIPS_FREE, "Girls Keep Tips", "Whether free girls are allowed to keep their tips.", true);
     add_setting(USER_KEEP_TIPS_SLAVE, "Slave Keep Tips", "Whether slaves are allowed to keep their tips.", false);
-    add_setting(USER_PAY_SLAVE, "Pay Slaves", "Whether slaves you pay your slave girls.", false);
+    add_setting(USER_PAY_SLAVE, "Pay Slaves", "Whether you pay your slave girls.", false);
 
     add_setting(USER_ITEMS_AUTO_USE, "Auto Use Items", "Whether items from the player's inventory should be applied automatically to suitable girls.", true);
     add_setting(USER_ITEMS_AUTO_EQUIP_COMBAT, "Auto Equip Combat", "If this is enabled, girls will equip their combat gear before doing any combat-related jobs.", true);

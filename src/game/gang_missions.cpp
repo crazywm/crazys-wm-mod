@@ -23,6 +23,7 @@
 
 #include "IGame.h"
 #include "cGangs.h"
+#include "cGangManager.hpp"
 #include "character/sGirl.h"
 #include "cRival.h"
 #include "character/cPlayer.h"
@@ -1081,10 +1082,10 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
         }
     }
 
-    if (gang.m_Num < 15 && g_Dice.percent(std::min(25 - gang.m_Num, gang.charisma())))
+    if (gang.m_Num < sGang::max_members() && g_Dice.percent(std::min(25 - gang.m_Num, gang.charisma())))
     {
         int addnum = std::max(1, g_Dice.bell(-2, 4));
-        if (addnum + gang.m_Num > 15)    addnum = 15 - gang.m_Num;
+        if (addnum + gang.m_Num > sGang::max_members()) addnum = sGang::max_members() - gang.m_Num;
         ss << "\n \n";
         /* */if (addnum <= 1)    { addnum = 1;    ss << "A local boy"; }
         else if (addnum == 2)    { ss << "Two locals"; }
@@ -1264,7 +1265,7 @@ bool cMissionRecruiting::execute_mission(sGang& gang, std::stringstream& ss)
         available--;
     }
 
-    while (add > recruit && gang.m_Num < 15)
+    while (add > recruit && gang.m_Num < sGang::max_members())
     {
         recruit++;
         gang.m_Num++;
@@ -1281,10 +1282,10 @@ bool cMissionRecruiting::execute_mission(sGang& gang, std::stringstream& ss)
         else if (add == 1)        ss << " but were only able to convince one of them to join.";
         else                    ss << " and were able to convince " << add << " of them to join.";
 
-        if (gang.m_Num >= 15 && add == recruit) ss << "\nThey got as many as they needed to fill their ranks.";
-        else if (gang.m_Num >= 15 && add > recruit)
+        if (gang.m_Num >= sGang::max_members() && add == recruit) ss << "\nThey got as many as they needed to fill their ranks.";
+        else if (gang.m_Num >= sGang::max_members() && add > recruit)
         {
-            gang.m_Num = 15;
+            gang.m_Num = sGang::max_members();
             ss << "\nThey only had room for ";
             if (recruit == 1) ss << "one"; else ss << recruit;
             ss << " more in their gang so they ";
@@ -1308,11 +1309,11 @@ bool cMissionRecruiting::execute_mission(sGang& gang, std::stringstream& ss)
                 {
                     if (passnumgotthere == passnum) pss << ".\nThey " << (passnum > 1 ? "all " : "") << "arrived ";
                     else pss << ".\nOnly " << passnumgotthere << " arrived ";
-                    if (passto->m_Num + passnumgotthere <= 15)
+                    if (passto->m_Num + passnumgotthere <= sGang::max_members())
                         pss << "and got accepted into the gang.";
                     else
                     {
-                        passnumgotthere = 15 - passto->m_Num;
+                        passnumgotthere = sGang::max_members() - passto->m_Num;
                         pss << "but " << passto->name() << " could only take " << passnumgotthere << " of them.";
                     }
                     passto->m_Num += passnumgotthere;

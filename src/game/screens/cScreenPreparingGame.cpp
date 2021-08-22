@@ -24,6 +24,7 @@
 #include "utils/DirPath.h"
 #include "InterfaceProcesses.h"
 #include "cGangs.h"
+#include "cGangManager.hpp"
 #include "cRival.h"
 #include "buildings/brothel/cBrothel.h"
 #include "IGame.h"

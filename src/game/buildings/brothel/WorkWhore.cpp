@@ -25,6 +25,7 @@
 #include "cInventory.h"
 #include <sstream>
 #include "cGangs.h"
+#include "cGangManager.hpp"
 #include <algorithm>
 #include "IGame.h"
 #include "CLog.h"
