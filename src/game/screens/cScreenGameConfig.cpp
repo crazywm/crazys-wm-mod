@@ -63,7 +63,8 @@ void cScreenGameConfig::init(bool back) {
              {"slave_market", {"Slave Market", "Slave Market"}},
              {"pregnancy", {"Pregnancy", "Pregnancy Settings"}},
              {"tax", {"Taxation", "Tax and Money Laundering"}},
-             {"movies", {"Movies", "Movies and Studio"}}
+             {"movies", {"Movies", "Movies and Studio"}},
+             {"balancing", {"Balancing", "Other Settings that affect game balance"}},
             };
 
     std::string cls;
@@ -77,7 +78,7 @@ void cScreenGameConfig::init(bool back) {
                 AddToListBox(list_id, -1, std::vector<FormattedCellData>({mk_text(heading.first), mk_text(heading.second), mk_text("")}), COLOR_DARKBLUE);
             } catch(std::logic_error&) {
                 g_LogFile.error("interface", "Could not find heading for tag ", setting->tag);
-                AddToListBox(list_id, -1, std::vector<FormattedCellData>({mk_text(cls), mk_text("???"), mk_text("")}), COLOR_DARKBLUE);
+                AddToListBox(list_id, -1, std::vector<FormattedCellData>({mk_text(cls), mk_text("-"), mk_text("")}), COLOR_DARKBLUE);
             }
         }
         switch(setting->value.which()) {

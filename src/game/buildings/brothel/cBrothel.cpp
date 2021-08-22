@@ -37,6 +37,7 @@
 namespace settings {
     extern const char* PREG_COOL_DOWN;
     extern const char* USER_ITEMS_AUTO_USE;
+    extern const char* BALANCING_FATIGUE_REGAIN;
 }
 
 extern cRng                    g_Dice;
@@ -288,9 +289,9 @@ void sBrothel::UpdateGirls(bool is_night)
             // update for girls items that are not used up
             do_daily_items(current);                    // `J` added
 
-            // Natural healing, 2% health and 2% tiredness per day
+            // Natural healing, 2% health and 4% tiredness per day
             current.upd_base_stat(STAT_HEALTH, 2, false);
-            current.upd_base_stat(STAT_TIREDNESS, -2, false);
+            current.upd_base_stat(STAT_TIREDNESS, -g_Game->settings().get_integer(settings::BALANCING_FATIGUE_REGAIN), false);
         }
 
         // Level the girl up if necessary

@@ -40,6 +40,7 @@ namespace settings{
     extern const char* PREG_COOL_DOWN;
     extern const char* WORLD_ENCOUNTER_CHANCE;
     extern const char* WORLD_ENCOUNTER_UNIQUE;
+    extern const char* BALANCING_FATIGUE_REGAIN;
 }
 
 void do_food_and_digs(IBuilding& brothel, sGirl& girl);
@@ -264,9 +265,9 @@ void IBuilding::EndShift(bool Day0Night1)
 
         // Level the girl up if nessessary
         cGirls::LevelUp(current);
-        // Natural healing, 2% health and 2% tiredness per day
+        // Natural healing, 2% health and 4% tiredness per day
         current.upd_base_stat(STAT_HEALTH, 2, false);
-        current.upd_base_stat(STAT_TIREDNESS, -2, false);
+        current.upd_base_stat(STAT_TIREDNESS, -g_Game->settings().get_integer(settings::BALANCING_FATIGUE_REGAIN), false);
 
         // list increase (moved here from jobs)
         int libido = 1;
