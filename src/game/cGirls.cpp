@@ -4008,7 +4008,7 @@ bool do_take_gold(sGirl& girl, string &message)    // returns TRUE if the girl w
         message += "She puts up a fight but your goons manage to subdue her and you take her gold anyway.";
         return girl_win_flag;
     } else if (result == EGirlEscapeAttemptResult::SUBMITS ) {
-        message += "She quietly allows you to take her gold.";
+        message += "She quietly allows you to take her gold (" + std::to_string(girl.m_Money) + ").";
         return GIRL_LOSES;    // no fight -> girl lose
     } else if(result == EGirlEscapeAttemptResult::STOPPED_BY_PLAYER) {
         /*
