@@ -50,7 +50,10 @@ void cConfig::set_value(const char* id, std::string value) {
     data->set_value(id, std::move(value));
 }
 
-void cConfig::set_value(const char* id, bool value) {
+template void cConfig::set_value(const char* id, int value);
+template void cConfig::set_value(const char* id, bool value);
+template <typename T>
+void cConfig::set_value(const char* id, T value) {
     data->set_value(id, value);
 }
 

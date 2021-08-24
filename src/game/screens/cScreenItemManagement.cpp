@@ -170,7 +170,7 @@ struct cInventoryProviderGirl : public IInventoryProvider {
     }
 
     int give_item(const sInventoryItem *item, int amount) override {
-        while(amount > 0) {
+        while (amount > 0) {
             int   goodbad  = item->m_Badness;
             int   type     = item->m_Type;
             int   HateLove = m_Girl->pclove() - m_Girl->pchate();

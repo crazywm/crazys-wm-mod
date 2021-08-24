@@ -135,7 +135,7 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
 
     unsigned char m_Withdrawals;                // if she is addicted to something this counts how many weeks she has been off
 
-    int m_Money;
+    int m_Money;                                // amount of cash this chick has
 
     int m_AccLevel;                    // how good her Accommodation is, 0 is slave like and non-slaves will really hate it
 

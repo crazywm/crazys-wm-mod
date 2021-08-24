@@ -90,7 +90,7 @@ sWorkJobResult WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
 
     auto brothel = girl.m_Building;
 
-    Action_Types actiontype = ACTION_SEX;
+    const Action_Types actiontype = ACTION_SEX;
     // put that shit away, you'll scare off the customers!
     cGirls::UnequipCombat(girl);
 
@@ -114,8 +114,8 @@ sWorkJobResult WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
     bool acceptsGirl = false;        // Customer will sleep girl
 
     int oralcount = 0;        // how much oral she gave for use with AdjustTraitGroupGagReflex
-    JOBS job = girl.get_job(Day0Night1);
-    bool bStreetWork = (job == JOB_WHORESTREETS);
+    const JOBS job = girl.get_job(Day0Night1);
+    const bool bStreetWork = (job == JOB_WHORESTREETS);
 
     // work out how many customers the girl can service
 

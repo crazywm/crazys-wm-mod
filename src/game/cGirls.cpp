@@ -628,7 +628,7 @@ string cGirls::GetGirlMood(const sGirl& girl)
     else if (sanity <= 75)    ss << "completely rational";
     else ss << "rational to the extreme";
 
-    ss << ".";
+    ss << '.';
 
     return ss.str();
 }
@@ -649,13 +649,10 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
 
     string levelstr[] = { "Level : \t", "Exp : \t", "Exp to level : \t", "Needs : \t" };
 
-    int level = girl.level();
-    int exp = girl.exp();
-    int exptolv = min(32000, (level + 1) * 125);
-    int expneed = exptolv - exp;
-
-    // display looks
-    ss << basestr[2] << (girl.beauty() + girl.charisma()) / 2;
+    const int level = girl.level();
+    const int exp = girl.exp();
+    const int exptolv = min(32000, (level + 1) * 125);
+    const int expneed = exptolv - exp;
 
     // display level and exp
     ss << "\n" << levelstr[0] << level;
@@ -681,17 +678,17 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
         ss << "\n" << basestr[6] << girl.tiredness();
     }
     int cost = int(g_Game->tariff().slave_price(girl, purchase));
-    ss << "\n" << basestr[7] << cost << " Gold\t";
+    ss << '\n' << basestr[7] << cost << " Gold\t";
     UpdateAskPrice(girl, false);
     cost = girl.askprice();
     ss << "\nAvg Pay per Customer : " << cost << " gold\n";
 
     // display status
     /* */if (girl.is_slave())    ss << "Is Branded a Slave\n";
-    else ss << "\n";
+    else ss << '\n';
 
     /* */if (is_virgin(girl))            ss << "She is a Virgin\n";
-    else ss << "\n";
+    else ss << '\n';
 
     if (!purchase)
     {
@@ -700,7 +697,7 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
         else if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))    { ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
         else if (girl.has_status(STATUS_INSEMINATED))            { ss << "Is inseminated, due: " << to_go << " weeks\n"; }
         else if (girl.m_PregCooldown != 0)                            { ss << "Cannot get pregnant for: " << girl.m_PregCooldown << " weeks\n"; }
-        else ss << "\n";
+        else ss << '\n';
         // `J` moved the rest of children lines to second detail list
     }
 
@@ -709,13 +706,13 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
     /* */if (addict && !diseased) ss << "Has an addiciton\n";
     else if (!addict && diseased)    ss << "Has a disease\n";
     else if (addict && diseased)    ss << "Has an addiciton and a disease\n";
-    else                                                ss << "\n";
+    else                                                ss << '\n';
 
     if (!purchase)
     {
         if (girl.has_status(STATUS_BADLY_POISONED))   ss << "Is badly poisoned\n";
         else if (girl.has_status(STATUS_POISONED))    ss << "Is poisoned\n";
-        else                                                ss << "\n";
+        else                                                ss << '\n';
     }
 
     if (!purchase)
@@ -744,14 +741,14 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
 
     // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetMoreDetailsString
     ss << "STATS";
-    int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE,
-                      STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION ,STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
-    int statnumsize = 15;
-    string statstr[] = { "Charisma : \t", "Beauty : \t", "Libido : \t", "Mana : \t", "Intelligence : \t", "Confidence : \t",
+    const int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE,
+                            STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION ,STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
+    const int statnumsize = 15;
+    const string statstr[] = { "Charisma : \t", "Beauty : \t", "Libido : \t", "Mana : \t", "Intelligence : \t", "Confidence : \t",
                          "Obedience : \t", "Spirit : \t", "Agility : \t", "Strength : \t", "Fame : \t", "Lactation : \t",
                          "PCFear : \t", "PCLove : \t", "PCHate : \t", "Gold : \t" };
 
-    int show = statnumsize - 3;
+    const int show = statnumsize - 3;
 
     for (int i = 0; i < show; i++)
     {
@@ -759,7 +756,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
     }
     if (!purchase)
     {
-        ss << "\n" << statstr[15];
+        ss << '\n' << statstr[15];
         if (g_Game->gang_manager().GetGangOnMission(MISS_SPYGIRLS))
         {
             ss << girl.m_Money;
@@ -769,7 +766,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
             ss << "Unknown";
         }
     }
-    else ss << "\n";
+    else ss << '\n';
 
     if (!purchase)
     {
@@ -787,7 +784,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
             ss << "\n \nOFF WORK, RESTING DUE TO TIREDNESS.";
             ss << "\nStored Day Job:   " << g_Game->job_manager().get_job_name(girl.m_PrevDayJob);
             ss << "\nStored Night Job: " << g_Game->job_manager().get_job_name(girl.m_PrevNightJob);
-            ss << "\n";
+            ss << '\n';
         }
         int to_go = girl.get_preg_duration() - girl.m_WeeksPreg;
         // first line is current pregnancy
@@ -795,7 +792,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
         else if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))    { ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
         else if (girl.has_status(STATUS_INSEMINATED))            { ss << "Is inseminated, due: " << to_go << " weeks\n"; }
         else if (girl.m_PregCooldown != 0)                            { ss << "Cannot get pregnant for: " << girl.m_PregCooldown << " weeks\n"; }
-        else ss << "\n";
+        else ss << '\n';
         // count the total births
         if (girl.m_ChildrenCount[CHILD00_TOTAL_BIRTHS] > 0)
             ss << "She has given birth to " << girl.m_ChildrenCount[CHILD00_TOTAL_BIRTHS]
@@ -826,7 +823,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
                     ss << "One is from another man.";
                 else ss << girl.m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] << " of them are from other men.";
             }
-            ss << "\n";
+            ss << '\n';
         }
 
         // count the boys born
@@ -855,7 +852,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
                     ss << "One is from another man.";
                 else ss << girl.m_ChildrenCount[CHILD05_CUSTOMER_BOYS] << " of them are from other men.";
             }
-            ss << "\n";
+            ss << '\n';
         }
 
         if (girl.m_ChildrenCount[CHILD01_ALL_BEASTS] > 0)        ss << "She has given birth to " << girl.m_ChildrenCount[CHILD01_ALL_BEASTS] << " Beast" << (girl.m_ChildrenCount[CHILD01_ALL_BEASTS] > 1 ? "s" : "") << ".\n";
@@ -891,7 +888,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
     if (!purchase)
     {
         ss << "\n \nJOB PREFERENCES";
-        ss << "\n";
+        ss << '\n';
         string base = "She";
         string text;
         int enjcount = 0;
@@ -909,11 +906,11 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
             else if (e < 70)    { text = " really enjoys "; }
             else                { text = " loves "; }
             ss << base << text << get_action_descr((Action_Types)i) << ".";
-            ss << "\n";
+            ss << '\n';
             enjcount++;
         }
-        if (enjcount > 0)                        { ss << "\nShe is indifferent to all other tasks.\n \n"; }
-        else                                     { ss << "At the moment, she is indifferent to all tasks.\n \n"; }
+        if (enjcount > 0) ss << "\nShe is indifferent to all other tasks.\n \n";
+        else              ss << "At the moment, she is indifferent to all tasks.\n \n";
 
         int tricount = 0;
         for (int i = 0; i < NUM_TRAININGTYPES; ++i)
@@ -928,7 +925,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
             else if (e < 70)    { text = " has knowledge of "; }
             else                { text = " performs well in"; }
             ss << base << text << sGirl::training_jobs[i] << ".";
-            ss << "\n";
+            ss << '\n';
             tricount++;
         }
         if (tricount > 0)                        { ss << "\nShe hasn't started any other training.\n \n"; }
@@ -965,9 +962,9 @@ namespace {
 
             jr << JobRatingLetter(value) << "  " << job.mark << "  " << g_Game->job_manager().get_job_name(job.job);
             if (g_Game->settings().get_bool(settings::USER_SHOW_NUMBERS)) jr << "   ( " << (int) value << " )";
-            jr << "\n";
+            jr << '\n';
         }
-        jr << "\n";
+        jr << '\n';
     }
 }
 
@@ -1121,30 +1118,30 @@ string cGirls::GetSimpleDetails(const sGirl& girl)
     if(girl.m_Building)
         ss << girl.m_Building->name();
 
-    ss << "\n" << basestr[10] << g_Game->job_manager().get_job_name(girl.m_DayJob);
-    ss << "\n" << basestr[11] << g_Game->job_manager().get_job_name(girl.m_NightJob);
-    ss << "\n" << basestr[2] << (girl.beauty() + girl.charisma()) / 2;
-    ss << "\n" << statstr[0] << girl.charisma();
-    ss << "\n" << statstr[1] << girl.beauty();
-    ss << "\n" << basestr[7] << girl.level();
-    ss << "\n" << basestr[8] << girl.exp();
-    ss << "\n" << basestr[0]; if (girl.age() == 100) ss << "Unknown"; else ss << girl.age();
-    ss << "\n" << basestr[1] << const_cast<sGirl&>(girl).rebel();
-    ss << "\n" << basestr[3] << girl.constitution();
-    ss << "\n" << basestr[4] << girl.health();
-    ss << "\n" << basestr[5] << girl.happiness();
-    ss << "\n" << basestr[6] << girl.tiredness();
-    for (int i = 2; i < statcount; i++)    { ss << "\n" << statstr[i] << girl.get_stat(statnum[i]); }
-    ss << "\n";    if (girl.is_slave())                { ss << "Is Branded a Slave"; }
-    ss << "\n";    if (is_virgin(girl))    { ss << "She is a Virgin"; }
+    ss << '\n' << basestr[10] << g_Game->job_manager().get_job_name(girl.m_DayJob);
+    ss << '\n' << basestr[11] << g_Game->job_manager().get_job_name(girl.m_NightJob);
+    ss << '\n' << basestr[2] << (girl.beauty() + girl.charisma()) / 2;
+    ss << '\n' << statstr[0] << girl.charisma();
+    ss << '\n' << statstr[1] << girl.beauty();
+    ss << '\n' << basestr[7] << girl.level();
+    ss << '\n' << basestr[8] << girl.exp();
+    ss << '\n' << basestr[0]; if (girl.age() == 100) ss << "Unknown"; else ss << girl.age();
+    ss << '\n' << basestr[1] << const_cast<sGirl&>(girl).rebel();
+    ss << '\n' << basestr[3] << girl.constitution();
+    ss << '\n' << basestr[4] << girl.health();
+    ss << '\n' << basestr[5] << girl.happiness();
+    ss << '\n' << basestr[6] << girl.tiredness();
+    for (int i = 2; i < statcount; i++)    { ss << '\n' << statstr[i] << girl.get_stat(statnum[i]); }
+    ss << '\n';    if (girl.is_slave())                { ss << "Is Branded a Slave"; }
+    ss << '\n';    if (is_virgin(girl))    { ss << "She is a Virgin"; }
     int to_go = girl.get_preg_duration() - girl.m_WeeksPreg;
-    ss << "\n";    if (girl.has_status(STATUS_PREGNANT))        { ss << "Is pregnant " << "(" << to_go << ")"; }
+    ss << '\n';    if (girl.has_status(STATUS_PREGNANT))        { ss << "Is pregnant " << "(" << to_go << ")"; }
     else if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))    { ss << "Is pregnant with your child " << "(" << to_go << ")"; }
     else if (girl.has_status(STATUS_INSEMINATED))            { ss << "Is inseminated " << "(" << to_go << ")"; }
-    ss << "\n";    if (is_addict(girl) && !has_disease(girl))    { ss << "Has an addiciton"; }
+    ss << '\n';    if (is_addict(girl) && !has_disease(girl))    { ss << "Has an addiciton"; }
     else if (!is_addict(girl) && has_disease(girl))            { ss << "Has a disease"; }
     else if (is_addict(girl) && has_disease(girl))            { ss << "Has an addiciton and a disease"; }
-    for (int i = 0; i < skillcount; i++)    { ss << "\n" << skillstr[i] << girl.get_skill(skillnum[i]); }
+    for (int i = 0; i < skillcount; i++)    { ss << '\n' << skillstr[i] << girl.get_skill(skillnum[i]); }
     ss << "\n \n";    int trait_count = 0;
     auto all_traits = const_cast<sGirl&>(girl).raw_traits().get_trait_info();
     for (auto& t : all_traits)
@@ -1972,7 +1969,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
         runawaymsg << g_Dice.select_text({"rival gang-members.", "bums.", "horny street kids.", "mistreated slaves.",
                                           "wild animals.", "pumped-up gladiators.", "the town's gentlemen.", "aristocrats."});
-        runawaymsg << "\n";
+        runawaymsg << '\n';
 
         //What do you do...
         /* */if (g_Game->player().disposition() < -33) runawaymsg << "She's where she deserves. Why waste a gang's time going to fetch her? Unless you want to punish personally?";
@@ -2227,7 +2224,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             else if (girl->m_AccLevel < 6) introtext += "nice, spacious room.",                customer->happiness(5);
             else if (girl->m_AccLevel < 8) introtext += "large, elegant room.",                customer->happiness(10);
             else /*                     */ introtext += "huge, extravagant suite.",            customer->happiness(20);
-            introtext += "\n";
+            introtext += '\n';
         }
     }
     else if (currentjob == JOB_WHORESTREETS)
@@ -2256,10 +2253,10 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         }
         else
         {
-            introtext += "\n";
+            introtext += '\n';
         }
     }
-    introtext += "\n";
+    introtext += '\n';
     message += introtext;
 
 
@@ -2304,7 +2301,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
                 refusesbecause = g_Dice.select_text({"This is beneath her.", "Does he think she's some common street whore?",
                                                      "A Lady does NOT do this.", "She will leave this kind of thing for the common-folk.",
                                                      "She was raised for Greatness, not this."});
-                refusesbecause += "\n";
+                refusesbecause += '\n';
             }
 
             //Find top skill - what 'skill' is she most comfortable with? Working from the most extreme down...
@@ -2487,7 +2484,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             }
             if (resisting)
             {
-                sexMessage << "\n";
+                sexMessage << '\n';
 
                 //if she's resisted what they asked for, and has not been forced she "chooses"...
                 if (!forced)
@@ -2588,7 +2585,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
                         }
                         //finally update variable for next bit
                         SexType = newSexType;
-                        sexMessage << "\n";
+                        sexMessage << '\n';
                     }
 
                 }

@@ -105,7 +105,7 @@ void IBuilding::BeginWeek()
     std::vector<const sGirl*> dead_girls;
 
     std::stringstream ss;
-    m_Girls->apply([&](sGirl& cgirl){
+    m_Girls->apply([&](sGirl& cgirl) {
         m_Filthiness++;
 
         if (cgirl.is_dead())            // Remove any dead bodies from last week

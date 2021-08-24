@@ -93,7 +93,7 @@ public:
     *    returns the number of elements in the list
     *    (everything int STL uses size so we use that.)
     */
-    int    size() const    { return files.size(); }
+    size_t    size() const    { return files.size(); }
     /*
     *    scan lets us run another scan on the same folder
     *    but using a different pattern

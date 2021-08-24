@@ -138,7 +138,6 @@ public:
     double increase_interest_rate();
     double decrease_interest_rate();
 
-
     /*
     *    the "misc" methods never get factored
     *    they're for gold that's already in the system

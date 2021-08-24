@@ -42,7 +42,7 @@ public:
         bool                  preferdefault();
     } folders;
 
-    struct Resolution{
+    struct Resolution {
         const std::string& resolution();
         int                width();
         int                height();
@@ -51,8 +51,9 @@ public:
         int                text_scroll();
     } resolution;
 
+    template <typename T>
+    void set_value(const char* id, T value);
     void set_value(const char* id, std::string value);
-    void set_value(const char* id, bool value);
 
     void save();
 

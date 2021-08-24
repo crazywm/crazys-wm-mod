@@ -2,9 +2,13 @@
 
 ## Changes
 * added 1440p interface files
+* show amount of money taken from girl @chris-nada
 
 ## Fixes
 * text in new game screen no longer resets on tab / when returning from more details screen
+* milk increasing without trait @chris-nada
+* don't show deleted saves @chris-nada
+* text fixes @chris-nada
 
 # Version 7.1.1beta2
 ## Changes
