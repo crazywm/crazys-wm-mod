@@ -303,7 +303,7 @@ sWorkJobResult WorkHallEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
         wages -= 5;
         if (roll_b <= 20)
         {
-            ss << "While her jokes aren't actually driving anyone off, nobody seems to find ${name} entertaining either.\n";
+            ss << "While her jokes aren't actually driving anyone off, nobody seems to find her entertaining either.\n";
         }
         else if (roll_b <= 40)
         {

@@ -1463,7 +1463,8 @@ void cJobManager::handle_simple_job(sGirl& girl, bool is_night)
         brothel->m_Fame += girl.fame();
         std::stringstream ss;
         auto money_data = CalculatePay(girl, result);
-        ss << "${name} made " << money_data.Earnings << " and " << money_data.Tips << " in tips. You paid her a salary of " << money_data.Wages << ". ";
+        ss << "${name} made " << money_data.Earnings << " and " << money_data.Tips << " in tips. ";
+        if (money_data.Wages > 0) ss << "You paid her a salary of " << money_data.Wages << ". ";
         ss << "In total, she got " << money_data.GirlGets << " gold and you ";
         if(money_data.PlayerGets > 0) {
            ss << "got " << money_data.PlayerGets << " gold.";
