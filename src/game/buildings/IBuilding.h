@@ -172,8 +172,6 @@ public:
     virtual bool handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_night)
     { return false; }
 
-    void do_daily_items(sGirl& girl);
-
     // this is called for when the player tries to meet a new girl at this location
     bool CanEncounter() const;
     std::shared_ptr<sGirl> TryEncounter();
@@ -226,6 +224,9 @@ protected:
 
     // Calls `handler` for all girls that are not dead and are working in one of the given jobs during the shift.
     void IterateGirls(bool is_night, std::initializer_list<JOBS> jobs, const std::function<void(sGirl&)>& handler);
+
+    /// regain of health and decrease of tiredness every week, and runs item updates.
+    void end_of_week_update(sGirl& girl);
 private:
     std::unordered_set<SKILLS> m_ForbiddenSexType;
 
@@ -234,6 +235,8 @@ private:
 
     // whether an encounter event has already happened this week
     bool m_HasDoneEncounter = false;
+
+    void do_daily_items(sGirl& girl);
 
     // meeting new girls
     virtual std::shared_ptr<sGirl> meet_girl() const;

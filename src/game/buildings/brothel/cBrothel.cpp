@@ -286,12 +286,7 @@ void sBrothel::UpdateGirls(bool is_night)
             //      Enabled or disabled based on config option.
             if (g_Game->settings().get_bool(settings::USER_ITEMS_AUTO_USE)) g_Game->player().apply_items(current);
 
-            // update for girls items that are not used up
-            do_daily_items(current);                    // `J` added
-
-            // Natural healing, 2% health and 4% tiredness per day
-            current.upd_base_stat(STAT_HEALTH, 2, false);
-            current.upd_base_stat(STAT_TIREDNESS, -g_Game->settings().get_integer(settings::BALANCING_FATIGUE_REGAIN), false);
+            end_of_week_update(current);
         }
 
         // Level the girl up if necessary

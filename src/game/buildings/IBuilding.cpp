@@ -20,7 +20,6 @@
 #include "IBuilding.h"
 
 #include <memory>
-#include "brothel/cBrothel.h"
 #include "cTariff.h"
 #include "IGame.h"
 #include "sStorage.h"
@@ -29,7 +28,6 @@
 #include "xml/util.h"
 #include "cJobManager.h"
 #include "Inventory.h"
-#include "character/predicates.h"
 #include "character/cPlayer.h"
 #include "character/cGirlPool.h"
 #include "cGirls.h"
@@ -41,6 +39,7 @@ namespace settings{
     extern const char* WORLD_ENCOUNTER_CHANCE;
     extern const char* WORLD_ENCOUNTER_UNIQUE;
     extern const char* BALANCING_FATIGUE_REGAIN;
+    extern const char* BALANCING_HEALTH_REGAIN;
 }
 
 void do_food_and_digs(IBuilding& brothel, sGirl& girl);
@@ -260,14 +259,10 @@ void IBuilding::EndShift(bool Day0Night1)
         auto sum = EVENT_SUMMARY;
         std::stringstream ss;
 
-        // update for girls items that are not used up
-        do_daily_items(current);                    // `J` added
-
         // Level the girl up if nessessary
         cGirls::LevelUp(current);
-        // Natural healing, 2% health and 4% tiredness per day
-        current.upd_base_stat(STAT_HEALTH, 2, false);
-        current.upd_base_stat(STAT_TIREDNESS, -g_Game->settings().get_integer(settings::BALANCING_FATIGUE_REGAIN), false);
+        if(Day0Night1)
+            end_of_week_update(current);
 
         // list increase (moved here from jobs)
         int libido = 1;
@@ -1858,4 +1853,12 @@ void IBuilding::IterateGirls(bool is_night, std::initializer_list<JOBS> jobs, co
 
 void IBuilding::AddMessage(std::string message, EventType event) {
     m_Events.AddMessage(std::move(message), IMGTYPE_PROFILE, event);
+}
+
+void IBuilding::end_of_week_update(sGirl& girl) {
+    do_daily_items(girl);
+
+    // Natural healing, 2% health and 4% tiredness per day
+    girl.upd_base_stat(STAT_HEALTH, g_Game->settings().get_integer(settings::BALANCING_HEALTH_REGAIN), false);
+    girl.upd_base_stat(STAT_TIREDNESS, -g_Game->settings().get_integer(settings::BALANCING_FATIGUE_REGAIN), false);
 }
