@@ -502,18 +502,17 @@ const int INCOME_BUSINESS           = 10;
 // Item types
 const int NUM_SHOPITEMS             = 40;    // number of items that the shop may hold at one time
 
-// Item Rarity
-enum Item_Rarity{
-    RARITYCOMMON = 0,                        // 
-    RARITYSHOP50,                            // 
-    RARITYSHOP25,                            // 
-    RARITYSHOP05,                            // 
-    RARITYCATACOMB15,                        // 
-    RARITYCATACOMB05,                        // 
-    RARITYCATACOMB01,                        // 
-    RARITYSCRIPTONLY,                        // 
-    RARITYSCRIPTORREWARD,                    // 
-    NUM_ITEM_RARITY                            //
+enum class Item_Rarity {
+    COMMON = 0,                        //
+    SHOP50,                            //   50% chance of appearing in shops,
+    SHOP25,                            //   25% chance
+    SHOP05,                            //   5% chance
+    CATACOMB15,                        //   15% chance of being found in catacombs
+    CATACOMB05,                        //   only 5% chance in catacombs
+    CATACOMB01,                        //   only 1% chance in catacombs
+    SCRIPTONLY,                        //   ONLY given in scripts and
+    SCRIPTORREWARD,                    //   also may be given as a reward for objective
+    NUM_ITEM_RARITY                    //
 };
 
 // Random objectives (well kinda random, they appear to guide the player for the win)

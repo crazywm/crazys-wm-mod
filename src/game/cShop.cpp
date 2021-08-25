@@ -141,10 +141,10 @@ void cShop::RestockShop() {
 
         // check spawn chance
         int chance = g_Dice.d100();
-        if (!(item->m_Rarity == sInventoryItem::Common ||
-             (item->m_Rarity == sInventoryItem::Shop50 && chance <= 50) ||
-             (item->m_Rarity == sInventoryItem::Shop25 && chance <= 25) ||
-             (item->m_Rarity == sInventoryItem::Shop05 && chance <= 5))) {
+        if (!(item->m_Rarity == Item_Rarity::COMMON ||
+            (item->m_Rarity == Item_Rarity::SHOP50 && chance <= 50) ||
+            (item->m_Rarity == Item_Rarity::SHOP25 && chance <= 25) ||
+            (item->m_Rarity == Item_Rarity::SHOP05 && chance <= 5))) {
             continue;
         }
 

@@ -203,17 +203,17 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
         if (index >= (int)m_Items.size()) index = 0;
         temp = m_Items[index].get();
         switch (temp->m_Rarity) {
-        case RARITYSHOP25:                                    return temp;    break;
-        case RARITYSHOP05:        if (g_Dice.percent(25))        return temp;    break;
-        case RARITYCATACOMB15:    if (g_Dice.percent(15))        return temp;    break;
-        case RARITYCATACOMB05:    if (g_Dice.percent(5))        return temp;    break;
-        case RARITYCATACOMB01:    if (g_Dice.percent(1))        return temp;    break;
-        case RARITYSCRIPTONLY:
-        case RARITYSCRIPTORREWARD:
+        case Item_Rarity::SHOP25:                                   return temp;    break;
+        case Item_Rarity::SHOP05:        if (g_Dice.percent(25))    return temp;    break;
+        case Item_Rarity::CATACOMB15:    if (g_Dice.percent(15))    return temp;    break;
+        case Item_Rarity::CATACOMB05:    if (g_Dice.percent(5))     return temp;    break;
+        case Item_Rarity::CATACOMB01:    if (g_Dice.percent(1))     return temp;    break;
+        case Item_Rarity::SCRIPTONLY:
+        case Item_Rarity::SCRIPTORREWARD:
             temp = nullptr;
             break;    // if at the end it is a script item, no item is returned
-        case RARITYCOMMON:
-        case RARITYSHOP50:
+        case Item_Rarity::COMMON:
+        case Item_Rarity::SHOP50:
         default:
             break;    // if at the end it is a common item, that item is returned
         }
@@ -823,6 +823,7 @@ int cInventory::NumItemSlots(const sInventoryItem* item)
     }
 }
 
+ostream& operator<<(ostream& os, Item_Rarity& r);
 ostream& operator<<(ostream& os, sInventoryItem& it) {
     os << "Item: " << it.m_Name << endl;
     os << "Desc: " << it.m_Desc << endl;
@@ -864,17 +865,17 @@ ostream& operator<<(ostream& os, sInventoryItem::Type& typ) {
     }
 }
 
-ostream& operator<<(ostream& os, sInventoryItem::Rarity& r) {
+ostream& operator<<(ostream& os, Item_Rarity& r) {
     switch(r) {
-        case sInventoryItem::Common:            return os << "Common";
-        case sInventoryItem::Shop50:            return os << "Shops, 50%";
-        case sInventoryItem::Shop25:            return os << "Shops, 25%";
-        case sInventoryItem::Shop05:            return os << "Shops, 05%";
-        case sInventoryItem::Catacomb15:        return os << "Catacombs, 15%";
-        case sInventoryItem::Catacomb05:        return os << "Catacombs, 05%";
-        case sInventoryItem::Catacomb01:        return os << "Catacombs, 01%";
-        case sInventoryItem::ScriptOnly:        return os << "Scripted Only";
-        case sInventoryItem::ScriptOrReward:    return os << "Scripts or Reward";
+        case Item_Rarity::COMMON:            return os << "Common";
+        case Item_Rarity::SHOP50:            return os << "Shops, 50%";
+        case Item_Rarity::SHOP25:            return os << "Shops, 25%";
+        case Item_Rarity::SHOP05:            return os << "Shops, 05%";
+        case Item_Rarity::CATACOMB15:        return os << "Catacombs, 15%";
+        case Item_Rarity::CATACOMB05:        return os << "Catacombs, 05%";
+        case Item_Rarity::CATACOMB01:        return os << "Catacombs, 01%";
+        case Item_Rarity::SCRIPTONLY:        return os << "Scripted Only";
+        case Item_Rarity::SCRIPTORREWARD:    return os << "Scripts or Reward";
         default:    cerr << "error: unexpected rarity value: " << int(r) << endl;
             return os << "Error(" << int(r) << ")";
     }
@@ -921,16 +922,16 @@ void sInventoryItem::set_special(const string& s) {
 }
 
 void sInventoryItem::set_rarity(const string& s) {
-    if      (s == "Common")            { m_Rarity = Common; }
-    else if (s == "Shop50")            { m_Rarity = Shop50; }
-    else if (s == "Shop25")            { m_Rarity = Shop25; }
-    else if (s == "Shop05")            { m_Rarity = Shop05; }
-    else if (s == "Catacomb15")        { m_Rarity = Catacomb15; }
-    else if (s == "Catacomb05")        { m_Rarity = Catacomb05; }
-    else if (s == "Catacomb01")        { m_Rarity = Catacomb01; }
-    else if (s == "ScriptOnly")        { m_Rarity = ScriptOnly; }
-    else if (s == "ScriptOrReward") { m_Rarity = ScriptOrReward; }
-    else { cerr << "Error in set_rarity: unexpected value '" << s << "'" << endl; m_Rarity = Shop05; }    // what to do?
+    if      (s == "Common")            { m_Rarity = Item_Rarity::COMMON; }
+    else if (s == "Shop50")            { m_Rarity = Item_Rarity::SHOP50; }
+    else if (s == "Shop25")            { m_Rarity = Item_Rarity::SHOP25; }
+    else if (s == "Shop05")            { m_Rarity = Item_Rarity::SHOP05; }
+    else if (s == "Catacomb15")        { m_Rarity = Item_Rarity::CATACOMB15; }
+    else if (s == "Catacomb05")        { m_Rarity = Item_Rarity::CATACOMB05; }
+    else if (s == "Catacomb01")        { m_Rarity = Item_Rarity::CATACOMB01; }
+    else if (s == "ScriptOnly")        { m_Rarity = Item_Rarity::SCRIPTONLY; }
+    else if (s == "ScriptOrReward") { m_Rarity = Item_Rarity::SCRIPTORREWARD; }
+    else { cerr << "Error in set_rarity: unexpected value '" << s << "'" << endl; m_Rarity = Item_Rarity::SHOP05; }    // what to do?
 }
 
 void CraftingData::from_xml(tinyxml2::XMLElement& element) {

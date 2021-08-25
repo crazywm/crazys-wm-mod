@@ -611,7 +611,7 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
                 || ((filter == sInventoryItem::Food) && (item_type == sInventoryItem::Makeup))  // passes "consumable" filter?
                     ) {  // passed the filter, so add it
                 AddToListBox(data.items_id, i, it.str());
-                SetSelectedItemTextColor(data.items_id, i, RarityColor[item->m_Rarity]);
+                SetSelectedItemTextColor(data.items_id, i, RarityColor[(int)item->m_Rarity]);
 
                 data.items.push_back(item);
                 ++i;

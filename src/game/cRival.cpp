@@ -586,9 +586,9 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                     while (g_Dice.percent(60) && items <= (cG1.m_Num / 3) && curr->m_NumInventory < MAXNUM_RIVAL_INVENTORY)
                     {
                         auto filter
-                           = [](sInventoryItem const& item){
-                                return item.m_Rarity >= RARITYSHOP25
-                                   && item.m_Rarity <= RARITYCATACOMB01;
+                           = [](sInventoryItem const& item) {
+                                return item.m_Rarity >= Item_Rarity::SHOP25
+                                   && item.m_Rarity <= Item_Rarity::CATACOMB01;
                              };
 
                         sInventoryItem* temp
@@ -597,13 +597,13 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                         bool add = false;
                         switch (temp->m_Rarity)
                         {
-                        case RARITYSHOP25:                                add = true;        break;
-                        case RARITYSHOP05:        if (g_Dice.percent(25))    add = true;        break;
-                        case RARITYCATACOMB15:    if (g_Dice.percent(15))    add = true;        break;
-                        case RARITYCATACOMB05:    if (g_Dice.percent(5))    add = true;        break;
-                        case RARITYCATACOMB01:    if (g_Dice.percent(1))    add = true;        break;
-                            // adding these cases to shut the compiler up
-                        case RARITYCOMMON:    case RARITYSHOP50:    case RARITYSCRIPTONLY:    case RARITYSCRIPTORREWARD:
+                        case Item_Rarity::SHOP25:                                      add = true;        break;
+                        case Item_Rarity::SHOP05:        if (g_Dice.percent(25))    add = true;        break;
+                        case Item_Rarity::CATACOMB15:    if (g_Dice.percent(15))    add = true;        break;
+                        case Item_Rarity::CATACOMB05:    if (g_Dice.percent(5))     add = true;        break;
+                        case Item_Rarity::CATACOMB01:    if (g_Dice.percent(1))     add = true;        break;
+                        // adding these cases to shut the compiler up
+                        case Item_Rarity::COMMON:    case Item_Rarity::SHOP50:    case Item_Rarity::SCRIPTONLY:    case Item_Rarity::SCRIPTORREWARD:
                         default:
                             break;
                         }
@@ -758,7 +758,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
             while (i < 6)
             {
                 sInventoryItem* item = g_Game->inventory_manager().GetRandomItem();
-                if (item && item->m_Rarity <= RARITYCATACOMB01 && g_Dice.percent(rper[item->m_Rarity])
+                if (item && item->m_Rarity <= Item_Rarity::CATACOMB01 && g_Dice.percent(rper[(int)item->m_Rarity])
                     && curr->m_Gold + income + upkeep > item->m_Cost)
                 {
                     if (g_Dice.percent(50))

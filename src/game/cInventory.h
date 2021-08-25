@@ -197,29 +197,8 @@ struct sInventoryItem
      */
     int m_Badness;
     int m_GirlBuyChance;  // chance that a girl on break will buy this item if she's looking at it in the shop
-    /*
-     *    0 means common,
-     *    1 means 50% chance of appearing in shops,
-     *    2 means 25% chance,
-     *    3 means 5% chance and
-     *    4 means only 15% chance of being found in catacombs,
-     *    5 means ONLY given in scripts and
-     *    6 means same as 5 but also may be given as a reward for objective
-     7 means only 5% chance in catacombs (catacombs05)
-     8 means only 1% chance in catacombs (catacombs01)
-     */
-    enum Rarity {
-        Common = RARITYCOMMON,            // old 0
-        Shop50 = RARITYSHOP50,            // old 1
-        Shop25 = RARITYSHOP25,            // old 2
-        Shop05 = RARITYSHOP05,            // old 3
-        Catacomb15 = RARITYCATACOMB15,        // old 4
-        Catacomb05 = RARITYCATACOMB05,        // old 7  // MYR: Added 05 and 01 for the really, really valuable things like invulnerability
-        Catacomb01 = RARITYCATACOMB01,        // old 8
-        ScriptOnly = RARITYSCRIPTONLY,        // old 5
-        ScriptOrReward = RARITYSCRIPTORREWARD    // old 6
-    };
-    Rarity m_Rarity;
+
+    Item_Rarity m_Rarity;
 
     void set_rarity(const std::string& s);
     void set_special(const std::string& s);
