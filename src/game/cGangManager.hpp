@@ -30,28 +30,26 @@ class cGangManager {
         int GetMaxNumGangs();
         int GetNumGangs();
         int GetNumHireableGangs();
-        sGang GetTempGang();                                                    // creates a new gang
-        sGang GetTempGang(int mod);                                                // creates a new gang with stat/skill mod
 
-        sGang* GetTempWeakGang();
+        sGang GetTempGang(int mod);                                            // creates a new gang with stat/skill mod
 
         tinyxml2::XMLElement& SaveGangsXML(tinyxml2::XMLElement& pRoot);
         bool LoadGangsXML(const tinyxml2::XMLElement* pGangManager);
 
-        int GetNumBusinessExtorted()        { return m_BusinessesExtort; }
+        int GetNumBusinessExtorted() const    { return m_BusinessesExtort; }
         int NumBusinessExtorted(int n)        { m_BusinessesExtort += n; return m_BusinessesExtort; }
 
-        int GetNets() {return m_NumNets;}                                    //
-        int GetNetRestock() {return m_KeepNetsStocked;}                        //
-        void KeepNetStocked(int stocked){m_KeepNetsStocked = stocked;}        //
+        int GetNets() const {return m_NumNets;}
+        int GetNetRestock() const {return m_KeepNetsStocked;}
+        void KeepNetStocked(int stocked){m_KeepNetsStocked = stocked;}
         int  BuyNets(int amount, bool autobuy);
 
-        int GetHealingPotions() {return m_NumHealingPotions;}                //
-        void KeepHealStocked(int stocked){m_KeepHealStocked = stocked;}        //
-        int  GetHealingRestock() {return m_KeepHealStocked;}                    //
+        int GetHealingPotions() const {return m_NumHealingPotions;}
+        void KeepHealStocked(int stocked){m_KeepHealStocked = stocked;}
+        int  GetHealingRestock() const {return m_KeepHealStocked;}
         int  BuyHealingPotions(int amount, bool autobuy);
 
-        bool losegang(sGang& gang);
+        bool losegang(const sGang& gang);
         void check_gang_recruit(sGang& gang);
         void GangStartOfShift();
         void RestockNetsAndPots();
@@ -61,9 +59,9 @@ class cGangManager {
         std::vector<sGang*> gangs_on_mission(int mission_id);
         std::vector<sGang*> gangs_watching_girls();
 
-        int Gang_Gets_Girls()    { return m_Gang_Gets_Girls; }
-        int Gang_Gets_Items()    { return m_Gang_Gets_Items; }
-        int Gang_Gets_Beast()    { return m_Gang_Gets_Beast; }
+        int Gang_Gets_Girls() const    { return m_Gang_Gets_Girls; }
+        int Gang_Gets_Items() const    { return m_Gang_Gets_Items; }
+        int Gang_Gets_Beast() const    { return m_Gang_Gets_Beast; }
         int Gang_Gets_Girls(int g)    { return m_Gang_Gets_Girls = g; }
         int Gang_Gets_Items(int g)    { return m_Gang_Gets_Items = g; }
         int Gang_Gets_Beast(int g)    { return m_Gang_Gets_Beast = g; }

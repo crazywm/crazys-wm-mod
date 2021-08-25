@@ -46,6 +46,10 @@ int cRng::in_range(int min, int max, int range)
     return min + random(diff);
 }
 
+int cRng::closed_uniform(int min, int max)  {
+    return in_range(min, max + 1);
+}
+
 int cRng::bell(int min, int max)    // `J` added - not sure how well it will work, I'm not too good at math
 {
     if (min == max) return max;

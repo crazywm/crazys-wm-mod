@@ -700,17 +700,19 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
         else/*                           */    ss << "group of thugs from the streets";
         ss << " and a brawl breaks out.\n";
 
-        sGang rival_gang = gang_manager().GetTempGang();
+        sGang rival_gang = gang_manager().GetTempGang(0);
         rival_gang.give_potions(10);
         int cur_members = gang.m_Num;
 
         switch(GangBrawl(gang, rival_gang)) {
             case EFightResult::VICTORY:
-                ss << "Your men win, but you lost " << cur_members - gang.m_Num << " men. ";
+                ss << "Your men win";
+                numlost = cur_members - gang.m_Num;
+                if(numlost > 0) {
+                    ss << ", but you lost " << numlost << " men. ";
+                }
                 ss << "\n \n";
                 if (rival && rival->m_NumGangs > 0 && rival_gang.m_Num <= 0) rival->m_NumGangs--;
-
-                numlost += startnum - gang.m_Num;
                 break;
             case EFightResult::DRAW:
                 ss << "After a few bloody exchanges, both gangs decide to look for easier prey. You lost " <<
@@ -833,7 +835,7 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
 
     if (gang.m_Num <= 0) return false;    // they all died so return and the message will be taken care of in the losegang function
 
-    ss << "Your gang robs " << numberoftargets << " " << who << " and get " << gold << " gold from them.";
+    ss << "Your gang robs " << numberoftargets << " " << who << " and gets " << gold << " gold from them.";
     if (numlost > 0) { ss << "\n \n" << gang.name() << " lost "; if (numlost == 1) ss << "one man."; else ss << numlost << " men."; }
 
     gang.AddMessage(ss.str());

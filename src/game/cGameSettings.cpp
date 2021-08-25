@@ -53,6 +53,10 @@ namespace settings {
     const char* GANG_MAX_WEEKLY_NEW      = "gang.max_weekly_new";
     const char* GANG_WEAPON_UPGRADE_COST = "gang.weapon_upgrade_cost";
     const char* GANG_WAGES_FACTOR        = "gang.wages_factor";
+    const char* GANG_MIN_RIVAL_MEMBERS   = "gang.min_rival_members";
+    const char* GANG_MAX_RIVAL_MEMBERS   = "gang.max_rival_members";
+    const char* GANG_MIN_RIVAL_SKILL     = "gang.min_rival_skill";
+    const char* GANG_MAX_RIVAL_SKILL     = "gang.max_rival_skill";
 
     const char* USER_HOUSE_PERCENT_FREE  = "user.house_percent.free";
     const char* USER_HOUSE_PERCENT_SLAVE = "user.house_percent.slave";
@@ -142,6 +146,11 @@ cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
     add_setting(GANG_MAX_WEEKLY_NEW, "Add New Weekly Max", "The maximum number of new gangs created each week.", 2);
     add_setting(GANG_WEAPON_UPGRADE_COST, "Weapon Upgrade Cost", "The base cost for a weapon upgrade.", 150);
     add_setting(GANG_WAGES_FACTOR, "Wages Factor", "Multiplier for all gang wages (mission costs).", 1.f);
+    add_setting(GANG_MIN_RIVAL_MEMBERS, "Rival Member Min", "The minimum number of members in a rival gang.", 2);
+    add_setting(GANG_MAX_RIVAL_MEMBERS, "Rival Member Max", "The maximum number of members in a rival gang.", 8);
+    // This is the base skill. There might be modifiers that change the effective values of these.
+    add_setting(GANG_MIN_RIVAL_SKILL, "Rival Skill Min", "The minimum skill for rival gangs.", 20);
+    add_setting(GANG_MIN_RIVAL_SKILL, "Rival Skill Max", "The maximum skill for rival gangs.", 60);
 
     // user adjustable settings
     add_setting(USER_HOUSE_PERCENT_FREE, "Free House %", "The percentage of earnings that are taken from free girls by default.", 60);

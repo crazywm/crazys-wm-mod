@@ -674,26 +674,26 @@ bool cJobManager::work_related_violence(sGirl& girl, bool Day0Night1, bool stree
         // They have low stats and smaller numbers. Define it here so that even if
         // the security girl or defending gang is defeated, any casualties they inflicts
         // carry over to the next layer of defense.
-        sGang *enemy_gang = g_Game->gang_manager().GetTempWeakGang();
-        enemy_gang->give_potions(g_Dice.in_range(1, 10));
-        enemy_gang->m_Skills[SKILL_MAGIC] = 0;
+        sGang enemy_gang = g_Game->gang_manager().GetTempGang(-20);
+        enemy_gang.give_potions(g_Dice.in_range(1, 10));
+        enemy_gang.m_Skills[SKILL_MAGIC] = 0;
         // There is also between 1 and 10 of them, not 10 every time
-        enemy_gang->m_Num = std::max(1, g_Dice.bell(-5, 10));
+        enemy_gang.m_Num = std::max(1, g_Dice.bell(-5, 10));
 
         // Three more lines of defense
 
         // first subtract 10 security point per gang member that is attacking
-        Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 10;    // `J` moved and doubled m_SecurityLevel loss
+        Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang.m_Num * 10;    // `J` moved and doubled m_SecurityLevel loss
         // 1. Brothel security
-        if (security_stops_rape(girl, enemy_gang, Day0Night1)) return false;
+        if (security_stops_rape(girl, &enemy_gang, Day0Night1)) return false;
         // 2. Defending gangs
-        if (gang_stops_rape(girl, gangs_guarding, enemy_gang, gang_coverage, Day0Night1)) return false;
+        if (gang_stops_rape(girl, gangs_guarding, &enemy_gang, gang_coverage, Day0Night1)) return false;
         // 3. The attacked girl herself
-        if (girl_fights_rape(girl, enemy_gang, Day0Night1)) return false;
+        if (girl_fights_rape(girl, &enemy_gang, Day0Night1)) return false;
         // If all defensive measures fail...
         // subtract 10 security points per gang member left
-        Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 10;    // `J` moved and doubled m_SecurityLevel loss
-        customer_rape(girl, enemy_gang->m_Num);
+        Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang.m_Num * 10;    // `J` moved and doubled m_SecurityLevel loss
+        customer_rape(girl, enemy_gang.m_Num);
         return true;
     }
     girl.upd_Enjoyment(ACTION_SEX, +1);

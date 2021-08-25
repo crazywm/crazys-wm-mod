@@ -67,6 +67,9 @@ struct cRng
     /// algorithm.
     int in_range(int min, int max, int range=101);
 
+    // uniform on the closed interval [min, max]
+    int closed_uniform(int min, int max);
+
 /*
  *    `J` trying to add a bell curve
 */

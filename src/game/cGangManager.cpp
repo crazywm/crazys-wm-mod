@@ -18,9 +18,13 @@ namespace settings {
     extern const char* GANG_MAX_RECRUIT_LIST;
     extern const char* GANG_MAX_START_MEMBERS;
     extern const char* GANG_MIN_START_MEMBERS;
+    extern const char* GANG_MAX_RIVAL_MEMBERS;
+    extern const char* GANG_MIN_RIVAL_MEMBERS;
     extern const char* GANG_REMOVE_CHANCE;
     extern const char* GANG_MIN_WEEKLY_NEW;
     extern const char* GANG_MAX_WEEKLY_NEW;
+    extern const char* GANG_MIN_RIVAL_SKILL;
+    extern const char* GANG_MAX_RIVAL_SKILL;
 }
 
 cGangManager::cGangManager() {
@@ -194,7 +198,7 @@ void cGangManager::AddNewGang(bool boosted)
 
     int max_members = g_Game->settings().get_integer(settings::GANG_MAX_START_MEMBERS);
     int min_members = g_Game->settings().get_integer(settings::GANG_MIN_START_MEMBERS);
-    newGang->m_Num = g_Dice.in_range(min_members, max_members);
+    newGang->m_Num = g_Dice.closed_uniform(min_members, max_members);
     if (boosted) newGang->m_Num = std::min(sGang::max_members(), newGang->m_Num + 5);
 
     int new_val;
@@ -250,38 +254,28 @@ int cGangManager::GetNumHireableGangs()
     return m_HireableGangs.size();
 }
 
-sGang cGangManager::GetTempGang()
-{
-    sGang newGang;
-    newGang.m_Num = g_Dice % 6 + 10;
-    for (int & m_Skill : newGang.m_Skills)    m_Skill = (g_Dice % 30) + 21;
-    for (int & m_Stat : newGang.m_Stats)    m_Stat = (g_Dice % 30) + 21;
-    newGang.m_Stats[STAT_HEALTH] = 100;
-    newGang.m_Stats[STAT_HAPPINESS] = 100;
-    newGang.set_weapon_level( g_Dice.in_range(1, 3) );
-    return newGang;
-}
-
 // `J` added temp gang mod - base strength + mod
 sGang cGangManager::GetTempGang(int mod)
 {
     sGang newGang;
-    newGang.m_Num = std::min(sGang::max_members(), g_Dice.bell(4, sGang::max_members()));
-    for (int & m_Skill : newGang.m_Skills)
-    {
-        m_Skill = (g_Dice % 40) + 21 + (g_Dice % mod);
-        if (m_Skill < 1)    m_Skill = 1;
-        if (m_Skill > 100)    m_Skill = 100;
+    newGang.m_Num = g_Dice.closed_uniform(g_Game->settings().get_integer(settings::GANG_MIN_RIVAL_MEMBERS),
+                                    g_Game->settings().get_integer(settings::GANG_MAX_RIVAL_MEMBERS));
+    auto random_value = [mod]() {
+        int value = g_Dice.closed_uniform(g_Game->settings().get_integer(settings::GANG_MIN_RIVAL_SKILL),
+                                          g_Game->settings().get_integer(settings::GANG_MAX_RIVAL_SKILL) + mod);
+        if (value < 1)    return 1;
+        if (value > 100)  return 100;
+        return value;
+    };
+    for (int& m_Skill : newGang.m_Skills) {
+        m_Skill = random_value();
     }
-    for (int & m_Stat : newGang.m_Stats)
-    {
-        m_Stat = (g_Dice % 40) + 21 + (g_Dice % mod);
-        if (m_Stat < 1)    m_Stat = 1;
-        if (m_Stat > 100)    m_Stat = 100;
+    for (int & m_Stat : newGang.m_Stats) {
+        m_Stat = random_value();
     }
-    newGang.m_Stats[STAT_HEALTH] = 100;
+    newGang.m_Stats[STAT_HEALTH] = g_Dice.closed_uniform(50, 100);
     newGang.m_Stats[STAT_HAPPINESS] = 100;
-    newGang.set_weapon_level( g_Dice.in_range(1, 3) );
+    newGang.set_weapon_level( g_Dice.closed_uniform(1, 3) );
 
     return newGang;
 }
@@ -292,18 +286,6 @@ sGang* cGangManager::GetGang(int gangID)
         return nullptr;
     else
         return m_PlayersGangs.at(gangID).get();
-}
-
-sGang* cGangManager::GetTempWeakGang()
-{
-    // MYR: Weak gangs attack girls when they work
-    sGang* newGang = new sGang();
-    newGang->m_Num = sGang::max_members();
-    for (int & m_Skill : newGang->m_Skills)    m_Skill = g_Dice % 30 + 51;
-    for (int & m_Stat : newGang->m_Stats)    m_Stat = g_Dice % 30 + 51;
-    newGang->m_Stats[STAT_HEALTH] = 100;
-    newGang->set_weapon_level( g_Dice.in_range(0, 1) );
-    return newGang;
 }
 
 // ----- Combat
@@ -350,24 +332,24 @@ void cGangManager::UpdateGangs()
                 else
                     currentGang->AddMessage(
                             "This gang was sent to look for runaways but there are none so they went looking for any girl to kidnap instead.");
-                case MISS_SABOTAGE:
-                    case MISS_EXTORTION:
-                        case MISS_PETYTHEFT:
-                            case MISS_GRANDTHEFT:
-                                case MISS_KIDNAPP:
-                                    case MISS_CATACOMBS:
-                                        case MISS_TRAINING:
-                                            case MISS_RECRUIT:
-                                                case MISS_SERVICE:
-                                                    m_Missions[currentGang->m_MissionID]->run(*currentGang);
-                                                    break;
-                                                    default: {
-                                                        std::stringstream sse;
-                                                        g_LogFile.log(ELogLevel::ERROR, "no mission set or mission not found : ", currentGang->m_MissionID);
-                                                        sse << "Error: no mission set or mission not found : " << currentGang->m_MissionID;
-                                                        currentGang->AddMessage(sse.str());
-                                                    }
-                                                    break;
+            case MISS_SABOTAGE:
+            case MISS_EXTORTION:
+            case MISS_PETYTHEFT:
+            case MISS_GRANDTHEFT:
+            case MISS_KIDNAPP:
+            case MISS_CATACOMBS:
+            case MISS_TRAINING:
+            case MISS_RECRUIT:
+            case MISS_SERVICE:
+                m_Missions[currentGang->m_MissionID]->run(*currentGang);
+                break;
+            default: {
+                std::stringstream sse;
+                g_LogFile.log(ELogLevel::ERROR, "no mission set or mission not found : ", currentGang->m_MissionID);
+                sse << "Error: no mission set or mission not found : " << currentGang->m_MissionID;
+                currentGang->AddMessage(sse.str());
+                }
+                break;
         }
     }
 
@@ -531,7 +513,7 @@ int cGangManager::chance_to_catch(const sGirl& girl)
 }
 
 // `J` - Added for .06.01.09
-bool cGangManager::losegang(sGang& gang)
+bool cGangManager::losegang(const sGang& gang)
 {
     if (gang.m_Num <= 0)
     {
@@ -540,19 +522,19 @@ bool cGangManager::losegang(sGang& gang)
         ss << gang.name() << " was lost while ";
         switch (mission)
         {
-            case MISS_GUARDING:        ss << "guarding.";                            break;
-            case MISS_SABOTAGE:        ss << "attacking your rivals.";                break;
-            case MISS_SPYGIRLS:        ss << "spying on your girls?";                break;
-            case MISS_CAPTUREGIRL:    ss << "trying to recapture a runaway.";        break;
-            case MISS_EXTORTION:    ss << "trying to extort new businesses.";    break;
-            case MISS_PETYTHEFT:    ss << "performing petty crimes.";            break;
-            case MISS_GRANDTHEFT:    ss << "performing major crimes.";            break;
-            case MISS_KIDNAPP:        ss << "trying to kidnap girls.";            break;
-            case MISS_CATACOMBS:    ss << "exploring the catacombs.";            break;
-            case MISS_TRAINING:        ss << "training?";                            break;
-            case MISS_RECRUIT:        ss << "recruiting?";                        break;
-            case MISS_SERVICE:        ss << "helping the community.";                break;
-            default:                ss << "on a mission.";                        break;
+            case MISS_GUARDING:         ss << "guarding.";                              break;
+            case MISS_SABOTAGE:         ss << "attacking your rivals.";                 break;
+            case MISS_SPYGIRLS:         ss << "spying on your girls?";                  break;
+            case MISS_CAPTUREGIRL:      ss << "trying to recapture a runaway.";         break;
+            case MISS_EXTORTION:        ss << "trying to extort new businesses.";       break;
+            case MISS_PETYTHEFT:        ss << "performing petty crimes.";               break;
+            case MISS_GRANDTHEFT:       ss << "performing major crimes.";               break;
+            case MISS_KIDNAPP:          ss << "trying to kidnap girls.";                break;
+            case MISS_CATACOMBS:        ss << "exploring the catacombs.";               break;
+            case MISS_TRAINING:         ss << "training?";                              break;
+            case MISS_RECRUIT:          ss << "recruiting?";                            break;
+            case MISS_SERVICE:          ss << "helping the community.";                 break;
+            default:                    ss << "on a mission.";                          break;
         }
         g_Game->push_message(ss.str(), COLOR_RED);
         return true;
