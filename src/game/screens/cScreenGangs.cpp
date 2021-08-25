@@ -390,9 +390,9 @@ std::string cScreenGangs::mission_desc(int mid)
     case MISS_GRANDTHEFT:    return "Your men will attempt to rob a bank or other risky place with high rewards.";
     case MISS_KIDNAPP:        return "Your men will kidnap beggar, homeless or lost girls from the street and also lure other girls into working for you.";
     case MISS_CATACOMBS:    return "Your men will explore the catacombs for treasure.";
-    case MISS_RECRUIT:        return "Your men will replace their missing men (up to 10).";
-    case MISS_TRAINING:        return "Your men will improve their skills slightly (1-10 members ok).";
-    case MISS_SERVICE:        return "Your men will help out in the community (1-10 members ok).";
+    case MISS_RECRUIT:        return "Your men will replace their missing men (up to " + std::to_string(sGang::max_members()) + ").";
+    case MISS_TRAINING:        return "Your men will improve their skills slightly (1-" + std::to_string(sGang::max_members()) + " members ok).";
+    case MISS_SERVICE:        return "Your men will help out in the community (1-" + std::to_string(sGang::max_members()) + " members ok).";
     default:
         break;
     }
