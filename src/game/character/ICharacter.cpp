@@ -450,6 +450,8 @@ void ICharacter::save_statistics() {
 }
 
 std::string ICharacter::stat_with_change_str(STATS stat) const {
+    // Don't show negative xp change (because of reset to zero due to Level-Up)
+    if (stat == STAT_EXP && m_last_stats.count(stat) && get_stat(stat) < m_last_stats.at(stat)) return std::to_string(get_stat(stat));
     return generate_change_string(m_last_stats, stat, get_stat(stat));
 }
 

@@ -291,11 +291,12 @@ namespace {
         bool LookupBoolean(const std::string& name) const override {
             if(name=="A") { return A; }
             if(name=="B") { return B; }
+            throw std::invalid_argument("Undefined lookup: " + name);
         }
-        int LookupNumber(const std::string& name) const override { }
+        int LookupNumber(const std::string& name) const override { throw std::logic_error("not implemented"); }
 
         // actions
-        void TriggerEvent(const std::string& name) const override { }
+        void TriggerEvent(const std::string& name) const override { throw std::logic_error("not implemented"); }
         void SetVariable(const std::string& name, int value) const override {}
 
         bool A = false;

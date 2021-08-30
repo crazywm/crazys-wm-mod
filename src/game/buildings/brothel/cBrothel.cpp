@@ -231,7 +231,7 @@ void sBrothel::UpdateGirls(bool is_night)
                     }
                 }
             }
-            else
+            else if (is_night && current.m_NightJob != JOB_RESTING)
                 MatronWarningMsg += "CAUTION! This girl desperately needs rest. Give her some free time\n";
         }
 

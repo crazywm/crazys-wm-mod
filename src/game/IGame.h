@@ -180,6 +180,7 @@ public:
 
     // time keeping
     const Date& date() const;
+    unsigned int get_weeks_played() const;
 
     // prison
     cGirlPool& GetPrison()                { return *m_Prison; }

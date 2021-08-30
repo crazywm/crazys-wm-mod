@@ -118,6 +118,13 @@ const Date& IGame::date() const
     return m_Date;
 }
 
+unsigned IGame::get_weeks_played() const {
+    const auto date = this->date();
+    const unsigned months = (date.year - 1209) * 12 + date.month;
+    const unsigned week = (months * 30 + date.day) / 7;
+    return week;
+}
+
 cGangManager& IGame::gang_manager()
 {
     return *m_Gangs;

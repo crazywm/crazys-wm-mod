@@ -96,7 +96,7 @@ typedef struct sChild
     tinyxml2::XMLElement& SaveChildXML(tinyxml2::XMLElement& elRoot);
     bool LoadChildXML(const tinyxml2::XMLElement* pChild);
 
-}sChild;
+} sChild;
 
 // Represents a single girl
 struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>

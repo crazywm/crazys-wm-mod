@@ -443,9 +443,9 @@ void cDungeon::Update()
     for(auto& current : m_Girls)
     {
         sGirl* girl = current.m_Girl.get();
-        girl->save_statistics();
         // TODO when can this happen???
         if(!girl) continue;
+        girl->save_statistics();
 
         //            girl->m_Tort = false;// WD: Move till after Girls have been tortured so that we dont torture twice week
         girlName = girl->FullName();

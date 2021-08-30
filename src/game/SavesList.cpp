@@ -34,9 +34,7 @@
 void SavesList::NotifySaveGame(const std::string& file_name, IGame& game) {
     auto& target = m_SaveData[file_name];
     target.Money = game.gold().ival();
-    auto date = game.date();
-    int months = (date.year - 1209) * 12 + date.month;
-    target.WeeksPlayed = (months * 30 + date.day) / 7;
+    target.WeeksPlayed = game.get_weeks_played();
 
     auto now_time = std::chrono::system_clock::now().time_since_epoch();
     long sec_since_epoch = std::chrono::duration_cast<std::chrono::seconds>(now_time).count();

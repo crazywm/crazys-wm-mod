@@ -1048,11 +1048,17 @@ int TryImageType(int imagetype, int tries)
 
 bool CheckForImages(const DirPath& location, const std::vector<std::string>& patterns) {
     assert(!patterns.empty());
-    FileList testall(location, patterns.front().c_str());
-    for(int i = 1; i < patterns.size(); ++i) {
-        testall.add(patterns[i].c_str());
+    // Cache found results [location.str(), patterns] => bool found/not found
+    static std::unordered_map<std::string, std::unordered_map<std::string, bool>> found_cache;
+    const std::string& pattern_key = std::accumulate(patterns.cbegin(), patterns.cend(), std::string());
+    if (found_cache.count(location.str()) && found_cache[location.str()].count(pattern_key)) {
+            return found_cache[location.str()][pattern_key]; // already in cache -> return
     }
-    return testall.size() > 0;
+    FileList testall(location);
+    for (const auto& pattern : patterns) testall.add(pattern.c_str());
+    const bool found_images = testall.size() > 0;
+    found_cache[location.str()][pattern_key] = found_images;
+    return found_images;
 }
 
 
@@ -1072,14 +1078,20 @@ std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool galler
     int dir = 0; DirPath usedir = "";
     DirPath imagedirDc = DirPath(DirPath::expand_path(cfg.folders.defaultimageloc()).c_str());        // usedir = -1
     DirPath imagedirDo = DirPath() << "Resources" << "DefaultImages";            // usedir = -2
-    FileList tiCc(image_folder, "*.*");
-    FileList tiDc(imagedirDc, "*.*");
-    FileList tiDo(imagedirDo, "*.*");
 
-    int totalimagesCc = tiCc.size();
-    int totalimagesDc = tiDc.size();
-    int totalimagesDo = tiDo.size();
-    if (totalimagesCc + totalimagesDc + totalimagesDo < 1)    // no images at all so return a blank image
+    // Use "cached" FileLists: Girlname : FileList
+    static std::unordered_map<std::string, FileList> map_tiCc;
+    const std::string& girl_key = image_folder.str();
+    if (!map_tiCc.count(girl_key)) map_tiCc.insert({girl_key, FileList(image_folder, "*.*")});
+    const auto& tiCc = map_tiCc.at(girl_key);
+
+    static const FileList tiDc(imagedirDc, "*.*");
+    static const FileList tiDo(imagedirDo, "*.*");
+
+    const unsigned totalimagesCc = tiCc.size();
+    const unsigned totalimagesDc = tiDc.size();
+    const unsigned totalimagesDo = tiDo.size();
+    if (totalimagesCc + totalimagesDc + totalimagesDo == 0)    // no images at all so return a blank image
     {
         g_LogFile.log(ELogLevel::WARNING, "No Images found for: ", image_folder, " and no Default images found");
         return {};

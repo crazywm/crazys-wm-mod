@@ -150,7 +150,7 @@ cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
     add_setting(GANG_MAX_RIVAL_MEMBERS, "Rival Member Max", "The maximum number of members in a rival gang.", 8);
     // This is the base skill. There might be modifiers that change the effective values of these.
     add_setting(GANG_MIN_RIVAL_SKILL, "Rival Skill Min", "The minimum skill for rival gangs.", 20);
-    add_setting(GANG_MIN_RIVAL_SKILL, "Rival Skill Max", "The maximum skill for rival gangs.", 60);
+    add_setting(GANG_MAX_RIVAL_SKILL, "Rival Skill Max", "The maximum skill for rival gangs.", 60);
 
     // user adjustable settings
     add_setting(USER_HOUSE_PERCENT_FREE, "Free House %", "The percentage of earnings that are taken from free girls by default.", 60);

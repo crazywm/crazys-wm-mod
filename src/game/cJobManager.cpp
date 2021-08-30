@@ -1036,7 +1036,7 @@ bool cJobManager::girl_fights_rape(sGirl& girl, sGang *enemy_gang, int day_night
     if (girl.has_active_trait("Quick Learner")) xp += 2;
     else if (girl.has_active_trait("Slow Learner")) xp -= 2;
 
-    int num = OrgNumMem - enemy_gang->m_Num;
+    const int num = OrgNumMem - enemy_gang->m_Num;
 
     girl.exp(num * xp);
 
@@ -1121,22 +1121,21 @@ void cJobManager::customer_rape(sGirl& girl, int numberofattackers)
         Cust.m_IsWoman = true;
     }
 
-    if (Cust.has_active_trait("AIDS"))            a = true;
-    if (Cust.has_active_trait("Chlamydia"))    c = true;
-    if (Cust.has_active_trait("Syphilis"))        s = true;
-    if (Cust.has_active_trait("Herpes"))        h = true;
+    if (Cust.has_active_trait("AIDS"))      a = true;
+    if (Cust.has_active_trait("Chlamydia")) c = true;
+    if (Cust.has_active_trait("Syphilis"))  s = true;
+    if (Cust.has_active_trait("Herpes"))    h = true;
     std = a || c || s || h;
     if (!std && g_Dice.percent(5))
     {
         std = true;
-        /* */if (g_Dice.percent(20))    a = true;
-        else if (g_Dice.percent(20))    c = true;
-        else if (g_Dice.percent(20))    s = true;
+        if      (g_Dice.percent(20)) a = true;
+        else if (g_Dice.percent(20)) c = true;
+        else if (g_Dice.percent(20)) s = true;
         else /*                   */    h = true;
     }
 
-    if (preg || std)
-    {
+    if (preg || std) {
         ss.str("");
         ss << girl.FullName() << "'s rapist";
         if (numberofattackers > 1) ss << "s left their";
@@ -1155,7 +1154,6 @@ void cJobManager::customer_rape(sGirl& girl, int numberofattackers)
             if (h)    { girl.gain_trait("Herpes");        ss << "Herpes"; }
             ss << ".\n \n";
         }
-
         girl.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
     }
 }
