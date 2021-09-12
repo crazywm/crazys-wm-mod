@@ -72,8 +72,6 @@ public:
 
     void release_from_dungeon();
 
-    void update_accomodation(int accadj);
-
     void on_select_job(int selection, bool fulltime);
 
     void set_house_percentage(int value);

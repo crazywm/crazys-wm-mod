@@ -29,7 +29,42 @@ namespace tinyxml2 {
     class XMLElement;
 }
 
-using settings_value_t = boost::variant<bool, int, float, sPercent, std::string, boost::blank>;
+struct sIntWithBounds {
+    int value;
+    int Min = std::numeric_limits<int>::min();
+    int Max = std::numeric_limits<int>::max();
+
+    void assign(int new_value) noexcept(true);
+    void assign_checked(int new_value) noexcept(false);
+
+};
+
+namespace IntWithBoundsFactoryFunctions {
+    static sIntWithBounds positive(int value) {
+        return sIntWithBounds{value, 1, std::numeric_limits<int>::max()};
+    }
+
+    static sIntWithBounds non_negative(int value) {
+        return sIntWithBounds{value, 0, std::numeric_limits<int>::max()};
+    }
+
+    static sIntWithBounds lower_bounded(int value, int lower) {
+        return sIntWithBounds{value, lower, std::numeric_limits<int>::max()};
+    }
+
+    static sIntWithBounds upper_bounded(int value, int upper) {
+        return sIntWithBounds{value, std::numeric_limits<int>::min(), upper};
+    }
+
+    static sIntWithBounds unbounded(int value) {
+        return sIntWithBounds{value, std::numeric_limits<int>::min(), std::numeric_limits<int>::max()};
+    }
+    static sIntWithBounds bounded(int value, int min, int max) {
+        return sIntWithBounds{value, min, max};
+    }
+}
+
+using settings_value_t = boost::variant<bool, sIntWithBounds, float, sPercent, std::string, boost::blank>;
 
 /*!
     \brief Base class for implementing Key-Value stores.

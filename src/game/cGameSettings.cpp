@@ -121,10 +121,14 @@ namespace settings {
 cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
 {
     using namespace settings;
+    using namespace IntWithBoundsFactoryFunctions;
     // game specific settings
-    add_setting(INITIAL_GOLD, "Initial Gold", "The amount of gold available to the player at the beginning of the game", 4000);
-    add_setting(INITIAL_BOOSTED_GANGS, "Start Gangs Boosted", "The number of boosted gangs available at game start", 2);
-    add_setting(INITIAL_RANDOM_GANGS, "Start Gangs Random", "The number of random gangs available at game start", 2);
+    add_setting(INITIAL_GOLD, "Initial Gold", "The amount of gold available to the player at the beginning of the game",
+                positive(4000));
+    add_setting(INITIAL_BOOSTED_GANGS, "Start Gangs Boosted", "The number of boosted gangs available at game start",
+                non_negative(2));
+    add_setting(INITIAL_RANDOM_GANGS, "Start Gangs Random", "The number of random gangs available at game start",
+                non_negative(2));
 
     add_setting(WORLD_ENCOUNTER_CHANCE, "Encounter Chance", "Chance to meet a girl when walking in town/arena tryouts/casting",
                 sPercent(30));
@@ -137,39 +141,57 @@ cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
     add_setting(WORLD_RAPE_BROTHEL, "Rape Brothel", "Chance that a customer will try to rape a girl when whoring in the brothel",
                 sPercent(1));
 
-    add_setting(GANG_MAX_RECRUIT_LIST, "Max Recruit List", "The maximum amount of gangs available for recruitment.", 6);
-    add_setting(GANG_MIN_START_MEMBERS, "Init Member Min", "The minimum number of members in a newly created gang.", 1);
-    add_setting(GANG_MAX_START_MEMBERS, "Init Member Max", "The maximum number of members in a newly created gang.", 8);
-    add_setting(GANG_MAX_MEMBERS, "Member Max", "The maximum number of members in a newly created gang.", 10);
+    add_setting(GANG_MAX_RECRUIT_LIST, "Max Recruit List", "The maximum amount of gangs available for recruitment.",
+                positive(6));
+    add_setting(GANG_MIN_START_MEMBERS, "Init Member Min", "The minimum number of members in a newly created gang.",
+                positive(1));
+    add_setting(GANG_MAX_START_MEMBERS, "Init Member Max", "The maximum number of members in a newly created gang.",
+                positive(8));
+    add_setting(GANG_MAX_MEMBERS, "Member Max", "The maximum number of members in a newly created gang.",
+                positive(10));
     add_setting(GANG_REMOVE_CHANCE, "Remove Unwanted", "The chance that an unrecruited gang will be removed.", sPercent(0.25f));
-    add_setting(GANG_MIN_WEEKLY_NEW, "Add New Weekly Min", "The minimum number of new gangs created each week.", 0);
-    add_setting(GANG_MAX_WEEKLY_NEW, "Add New Weekly Max", "The maximum number of new gangs created each week.", 2);
-    add_setting(GANG_WEAPON_UPGRADE_COST, "Weapon Upgrade Cost", "The base cost for a weapon upgrade.", 150);
+    add_setting(GANG_MIN_WEEKLY_NEW, "Add New Weekly Min", "The minimum number of new gangs created each week.",
+                non_negative(0));
+    add_setting(GANG_MAX_WEEKLY_NEW, "Add New Weekly Max", "The maximum number of new gangs created each week.",
+                positive(2));
+    add_setting(GANG_WEAPON_UPGRADE_COST, "Weapon Upgrade Cost", "The base cost for a weapon upgrade.",
+                positive(150));
     add_setting(GANG_WAGES_FACTOR, "Wages Factor", "Multiplier for all gang wages (mission costs).", 1.f);
-    add_setting(GANG_MIN_RIVAL_MEMBERS, "Rival Member Min", "The minimum number of members in a rival gang.", 2);
-    add_setting(GANG_MAX_RIVAL_MEMBERS, "Rival Member Max", "The maximum number of members in a rival gang.", 8);
+    add_setting(GANG_MIN_RIVAL_MEMBERS, "Rival Member Min", "The minimum number of members in a rival gang.",
+                positive(2));
+    add_setting(GANG_MAX_RIVAL_MEMBERS, "Rival Member Max", "The maximum number of members in a rival gang.",
+                positive(8));
     // This is the base skill. There might be modifiers that change the effective values of these.
-    add_setting(GANG_MIN_RIVAL_SKILL, "Rival Skill Min", "The minimum skill for rival gangs.", 20);
-    add_setting(GANG_MAX_RIVAL_SKILL, "Rival Skill Max", "The maximum skill for rival gangs.", 60);
+    add_setting(GANG_MIN_RIVAL_SKILL, "Rival Skill Min", "The minimum skill for rival gangs.",
+                bounded(20, 0, 100));
+    add_setting(GANG_MAX_RIVAL_SKILL, "Rival Skill Max", "The maximum skill for rival gangs.",
+                bounded(60, 0, 100));
 
     // user adjustable settings
-    add_setting(USER_HOUSE_PERCENT_FREE, "Free House %", "The percentage of earnings that are taken from free girls by default.", 60);
-    add_setting(USER_HOUSE_PERCENT_SLAVE, "Slave House %", "The percentage of earnings that are taken from slave girls by default.", 100);
-    add_setting(USER_ACCOMODATION_FREE, "Base Free Accom", "The default accommodation level for free girls.", 5);
-    add_setting(USER_ACCOMODATION_SLAVE, "Base Slave Accom", "The default accommodation level for slave girls.", 1);
+    // TODO why aren't these real percentage values?
+    add_setting(USER_HOUSE_PERCENT_FREE, "Free House %", "The percentage of earnings that are taken from free girls by default.",
+                bounded(60, 0, 100));
+    add_setting(USER_HOUSE_PERCENT_SLAVE, "Slave House %", "The percentage of earnings that are taken from slave girls by default.",
+                bounded(100, 0, 100));
+    add_setting(USER_ACCOMODATION_FREE, "Base Free Accom", "The default accommodation level for free girls.",
+                bounded(5, 0, 9));
+    add_setting(USER_ACCOMODATION_SLAVE, "Base Slave Accom", "The default accommodation level for slave girls.",
+                bounded(1, 0, 9));
     add_setting(USER_KEEP_TIPS_FREE, "Girls Keep Tips", "Whether free girls are allowed to keep their tips.", true);
     add_setting(USER_KEEP_TIPS_SLAVE, "Slave Keep Tips", "Whether slaves are allowed to keep their tips.", false);
     add_setting(USER_PAY_SLAVE, "Pay Slaves", "Whether you pay your slave girls.", false);
 
     add_setting(USER_ITEMS_AUTO_USE, "Auto Use Items", "Whether items from the player's inventory should be applied automatically to suitable girls.", true);
     add_setting(USER_ITEMS_AUTO_EQUIP_COMBAT, "Auto Equip Combat", "If this is enabled, girls will equip their combat gear before doing any combat-related jobs.", true);
-    add_setting(USER_HOROSCOPE, "Horoscope", "Which horoscope to use", 1);
+    add_setting(USER_HOROSCOPE, "Horoscope", "Which horoscope to use", bounded(1, 0, 1));
     add_setting(USER_MOVIES_AUTO, "Auto Make Movies", "Whether scenes should automatically be combined to movies", true);
     add_setting(USER_COMBAT_POPUP, "Combat Popup", "Whether combat details are shown in a popup", true);
     add_setting(USER_SHOW_NUMBERS, "Show Numbers", "Whether to show additional numbers in certain game texts.", false);
 
-    add_setting(SLAVE_MARKET_MIN, "Minimum Slaves", "Minimum amount of girls at the slave market", 5);
-    add_setting(SLAVE_MARKET_MAX, "Maximum Slaves", "Maximum amount of girls at the slave market", 12);
+    add_setting(SLAVE_MARKET_MIN, "Minimum Slaves", "Minimum amount of girls at the slave market",
+                positive(5));
+    add_setting(SLAVE_MARKET_MAX, "Maximum Slaves", "Maximum amount of girls at the slave market",
+                positive(12));
     add_setting(SLAVE_MARKET_UNIQUE_CHANCE, "Unique Market", "Chance that a slave market girl will be a unique girl", sPercent(0.35f));
     add_setting(SLAVE_MARKET_TURNOVER_RATE, "Turnover", "Rate with which the girls will be replaced each week", sPercent(0.5f));
 
@@ -188,31 +210,42 @@ cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
     add_setting(PREG_CHANCE_GIRL, "Girl Chance", "Base chance that the girl is fertile.", sPercent(0.25f));
 
     add_setting(PREG_GIRL_CHILD, "Chance Of Girl", "Percentage of children that will be girls.", sPercent(0.5f));
-    add_setting(PREG_DURATION_HUMAN, "Weeks Pregnant", "Pregnancy duration (in weeks) for human babies.", 38);
-    add_setting(PREG_DURATION_MONSTER, "Weeks Monster P", "Pregnancy duration (in weeks) for monster babies.", 20);
-    add_setting(PREG_WEEKS_GROW, "Weeks Till Grown", "How long (weeks) it takes for a child to grow up.", 60);
-    add_setting(PREG_COOL_DOWN, "Cool Down", "How long it take after birth until the next pregnancy is possible.", 4);
+    add_setting(PREG_DURATION_HUMAN, "Weeks Pregnant", "Pregnancy duration (in weeks) for human babies.",
+                positive(38));
+    add_setting(PREG_DURATION_MONSTER, "Weeks Monster P", "Pregnancy duration (in weeks) for monster babies.",
+                positive(20));
+    add_setting(PREG_WEEKS_GROW, "Weeks Till Grown", "How long (weeks) it takes for a child to grow up.",
+                positive(60));
+    add_setting(PREG_COOL_DOWN, "Cool Down", "How long it take after birth until the next pregnancy is possible.",
+                positive(4));
     add_setting(PREG_GOOD_FACTOR, "Good Preg Factor", "??? FIGURE OUT WHAT THIS DOES ???", 2.f);
 
     add_setting(MONEY_SELL_ITEM, "Sell Item Factor", "Percentage of item's worth (buy price) you get when selling", sPercent(.5f));
     add_setting(MONEY_SELL_SLAVE, "Sell Slave Factor", "Percentage of slave's worth you get when selling", sPercent(.9f));
     add_setting(MONEY_BUY_SLAVE, "Buy Slave Factor", "Factor of slave's worth used when buying", sPercent(.9f));
-    add_setting(MONEY_COST_ROOM, "Room Cost", "The cost for buying a new room.", 1000);
-    add_setting(MONEY_COST_CONTRA, "Contraception Cost", "The cost of a contraception potion.", 2);
-    add_setting(MONEY_COST_HP, "HP Potion Cost", "The cost of a healing potion (for gangs).", 10);
-    add_setting(MONEY_COST_NET, "Net Cost", "The cost of a net (for gangs).", 5);
+    add_setting(MONEY_COST_ROOM, "Room Cost", "The cost for buying a new room.",
+                positive(1000));
+    add_setting(MONEY_COST_CONTRA, "Contraception Cost", "The cost of a contraception potion.",
+                non_negative(2));
+    add_setting(MONEY_COST_HP, "HP Potion Cost", "The cost of a healing potion (for gangs).",
+                non_negative(10));
+    add_setting(MONEY_COST_NET, "Net Cost", "The cost of a net (for gangs).",
+                non_negative(5));
 
     add_setting(TORTURE_INJURY_CHANCE, "Torture Injury Chance", "Base chance for inflicting permanent damage on a girl during torture.",
                 sPercent(.03f));
 
-    add_setting(BALANCING_HEALTH_REGAIN, "Weekly Girl Health Regain", "Home many health points girls regain each week.", 2);
-    add_setting(BALANCING_FATIGUE_REGAIN, "Weekly Girl Fatigue Regain", "Home many fatigue points girls regain each week.", 2);
+    add_setting(BALANCING_HEALTH_REGAIN, "Weekly Girl Health Regain", "Home many health points girls regain each week.",
+                non_negative(2));
+    add_setting(BALANCING_FATIGUE_REGAIN, "Weekly Girl Fatigue Regain", "Home many fatigue points girls regain each week.",
+                non_negative(2));
 
     add_setting(MOVIES_SATURATION_DECAY, "Audience Saturation Decay", "Percentage of sated moviegoers that will be reset each week.", sPercent(0.02f));
     add_setting(MOVIES_HYPE_DECAY, "Hype Decay", "Percentage of hype points a movie loses each week", sPercent(0.05f));
     add_setting(MOVIES_AUDIENCE_UPDATE_CHANCE, "Audience Update Chance", "Weekly chance to re-randomize a target group.", sPercent(0.02f));
     add_setting(MOVIES_REPEATED_SCENE_FACTOR, "Repeated Scene Factor", "Decrease in value if multiple scenes of the same type are used in one movie.", sPercent(0.2f));
-    add_setting(MOVIES_RUNNING_WEEKS, "Movie Running Weeks", "How many weeks a movie will be shown.", 25);
+    add_setting(MOVIES_RUNNING_WEEKS, "Movie Running Weeks", "How many weeks a movie will be shown.",
+                positive(25));
     add_setting(MOVIES_AUDIENCE_BASE_FRACTION, "Base Audience", "Base chance for viewers to go see a movie.", sPercent(0.05f));
     add_setting(MOVIES_AUDIENCE_SATED_CHANCE, "Audience Sated Chance", "Chance that a moviegoer will become sated after seeing a movie.",sPercent(0.5f));
 }

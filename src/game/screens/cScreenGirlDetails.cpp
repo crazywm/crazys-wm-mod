@@ -169,7 +169,7 @@ void cScreenGirlDetails::init(bool back)
     }
     if (accomval_id != -1)
     {
-        ss.str(""); ss << "Accommodation: " << cGirls::Accommodation(SliderValue(accom_id));
+        ss.str(""); ss << "Accommodation: " << cGirls::Accommodation(m_SelectedGirl->m_AccLevel);
         EditTextItem(ss.str(), accomval_id);
     }
     DisableWidget(interact_id, (g_TalkCount <= 0));
@@ -313,16 +313,6 @@ void cScreenGirlDetails::on_select_job(int selection, bool fulltime)
         text << g_Game->job_manager().get_job_name((JOBS)selection) << " (" << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)selection, m_EditNightShift) << ")";
     }
     RefreshJobList();
-}
-
-void cScreenGirlDetails::update_accomodation(int accadj)
-{
-    m_SelectedGirl->m_AccLevel += accadj;
-    if (m_SelectedGirl->m_AccLevel > 9) m_SelectedGirl->m_AccLevel = 9;
-    else if (m_SelectedGirl->m_AccLevel < 0) m_SelectedGirl->m_AccLevel = 0;
-    if (accomval_id != -1) EditTextItem("Accommodation: " + cGirls::Accommodation(m_SelectedGirl->m_AccLevel),
-                                        accomval_id);
-    init(true);
 }
 
 void cScreenGirlDetails::release_from_dungeon()

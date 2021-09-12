@@ -72,6 +72,8 @@ void cConfig::save() {
 */
 sConfigData::sConfigData(const char *a_filename) : cSimpleKeyValue("Entry", "Key", "Value")
 {
+    using namespace IntWithBoundsFactoryFunctions;
+
     add_setting("folders.characters", "Character Folder", (DirPath() << "Resources" << "Characters").str());
     add_setting("folders.saves", "Save Folder", std::string("Saves"));
     add_setting("folders.items", "Items Folder", (DirPath() << "Resources" << "Items").str());
@@ -80,10 +82,10 @@ sConfigData::sConfigData(const char *a_filename) : cSimpleKeyValue("Entry", "Key
 
     add_setting("interface.theme", "Interface Theme", "J_1024x768");
     add_setting("interface.fullscreen", "Fullscreen", false);
-    add_setting("interface.width", "Width", 1024);
-    add_setting("interface.height", "Height", 768);
-    add_setting("interface.list_scroll", "List Scroll", 3);
-    add_setting("interface.text_scroll", "Text Scroll", 3);
+    add_setting("interface.width", "Width", positive(1024));
+    add_setting("interface.height", "Height", positive(768));
+    add_setting("interface.list_scroll", "List Scroll", positive(3));
+    add_setting("interface.text_scroll", "Text Scroll", positive(3));
 
     add_setting("font.font", "Font", "comic.ttf");
 

@@ -86,7 +86,7 @@ void cScreenGameConfig::init(bool back) {
                 value = boost::get<bool>(setting->value) ? "Yes" : "No";
                 break;
             case 1:
-                value = std::to_string(boost::get<int>(setting->value));
+                value = std::to_string(boost::get<sIntWithBounds>(setting->value).value);
                 break;
             case 2:
             {

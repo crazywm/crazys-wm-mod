@@ -25,7 +25,7 @@
 #include "CLog.h"
 
 int cKeyValueBase::get_integer(const char *name) const {
-    return boost::get<int>(get_value(name));
+    return boost::get<sIntWithBounds>(get_value(name)).value;
 }
 
 bool cKeyValueBase::get_bool(const char *name) const {
@@ -62,8 +62,8 @@ void cKeyValueBase::set_value(const char *name, bool value) {
 
 void cKeyValueBase::set_value(const char* name, int value) {
     auto& val = get_value(name);
-    if(val.type() == typeid(int)) {
-        val = value;
+    if(val.type() == typeid(sIntWithBounds)) {
+        boost::get<sIntWithBounds>(val).assign_checked(value);
     } else {
         throw std::logic_error("Cannot set non-integer setting to integer value");
     }
@@ -107,8 +107,11 @@ void cKeyValueBase::load_xml(const tinyxml2::XMLElement& root) {
                 case 0:         // bool
                     value = GetBoolAttribute(element, m_ValueName);
                     break;
-                case 1:         // int
-                    value = GetIntAttribute(element, m_ValueName);
+                case 1:         // IntWithBounds
+                {
+                    auto& bounded = boost::get<sIntWithBounds>(value);
+                    bounded.assign_checked(GetIntAttribute(element, m_ValueName, bounded.Min, bounded.Max));
+                }
                     break;
                 case 2:         // float
                 {
@@ -160,6 +163,10 @@ namespace {
 
         void operator()(sPercent value) const {
             t.SetAttribute(AttributeName, (float)value * 100);
+        }
+
+        void operator()(sIntWithBounds value) const {
+            t.SetAttribute(AttributeName, value.value);
         }
 
         void operator()(boost::blank value) const {
@@ -222,4 +229,27 @@ void cSimpleKeyValue::add_setting(const char* tag, const char* name, settings_va
 void cSimpleKeyValue::add_setting(const char* tag, const char* name, const char* default_value, const char* description,
                                   const char* fallback) {
     add_setting(tag, name, std::string(default_value), description, fallback);
+}
+
+void sIntWithBounds::assign(int new_value) noexcept(true) {
+    if(new_value < Min) {
+        value = Min;
+        g_LogFile.warning("key-value", "Assigned value ", new_value, " less than lower bound ", Min);
+    } else if(new_value > Max) {
+        value = Max;
+        g_LogFile.warning("key-value", "Assigned value ", new_value, " larger than lower bound ", Max);
+    } else {
+        value = new_value;
+    }
+}
+
+
+void sIntWithBounds::assign_checked(int new_value) noexcept(false) {
+    if(new_value < Min) {
+        throw std::invalid_argument("Assigned value below lower bound");
+    } else if(new_value > Max) {
+        throw std::invalid_argument("Assigned value above upper bound");
+    } else {
+        value = new_value;
+    }
 }
