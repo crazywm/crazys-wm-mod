@@ -70,13 +70,13 @@ namespace {
 
 
     float sigmoid(float v) {
-        return std::exp(v) / (std::exp(v) + 1.f);
+        return 1.f / (std::exp(-v) + 1.f);
     }
 }
 
 auto cMovieManager::rate_movie_for_audience(const sTargetGroup& audience, const Movie& movie) -> RatingResult {
     float chance_to_consider = 1.f;
-    // check the turn offs
+    // check the turn-offs
     for(const auto& scene : movie.Scenes) {
         chance_to_consider *= 1.f - audience.TurnOffs[(int)scene.Category];
     }
