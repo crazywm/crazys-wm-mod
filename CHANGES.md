@@ -11,6 +11,9 @@
 * milk increasing without trait @chris-nada
 * don't show deleted saves @chris-nada
 * text fixes @chris-nada
+* Add a cap to certain game settings to prevent nonsensical values
+* Improved numerical stability of sigmoid function
+* small bugfixes provided by @Yopyop0
 
 # Version 7.1.1beta2
 ## Changes
