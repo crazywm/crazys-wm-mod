@@ -1129,7 +1129,7 @@ function GetAnalMessage(girl, customer)
         elseif wm.Percent(60) and girl:has_trait("Prehensile Tail", "Playful Tail") then
             message = "Using her tail as a handhold the customer made the fuck a lot more traumatic for ${name} than it normally would have been.";
         elseif wm.Percent(33) and girl:has_trait("Tight Butt") then
-            message = "It took the customer quite a bit of effort to force himself into " .. anme .. "'s tight ass, ignoring her cries when he was finally inside her, moving harshly until he finished.";
+            message = "It took the customer quite a bit of effort to force himself into ${name}'s tight ass, ignoring her cries when he was finally inside her, moving harshly until he finished.";
             -- Gondra: add happiness and health reduction?
         elseif wm.Percent(33) and girl:beauty() < 45 then
             message = "As he fucked her ass, the customer did it from behind, shoving ${name}'s face into the pillow so he could imagine it was someone prettier. Unfortunately she was awful at this.";
