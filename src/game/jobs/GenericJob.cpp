@@ -139,7 +139,7 @@ sGirl* IGenericJob::RequestInteraction(const std::string& name) {
 bool IGenericJob::HasInteraction(const std::string& name) const {
     auto brothel = active_girl().m_Building;
     assert(brothel);
-    return brothel->RequestInteraction(name);
+    return brothel->HasInteraction(name);
 }
 
 class cJobWrapper: public IGenericJob {
