@@ -31,7 +31,7 @@ class cScrollBar : public cUIWidget
 {
 public:
     cScrollBar(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int visibleitems);
-    ~cScrollBar();
+    ~cScrollBar() override;
 
     void UpdateScrollBar();  // update size of draggable bar based on total items vs. visible items
     bool IsOver(int x, int y) const override;

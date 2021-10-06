@@ -134,6 +134,7 @@ void cKeyValueBase::load_xml(const tinyxml2::XMLElement& root) {
             }
 
         } catch( std::exception& error ) {
+            /// TODO fix the error handling, this message also comes for additional entries
             g_LogFile.error("settings", "Could not read attribute from xml element on line ",
                             element.GetLineNum(), ": ", error.what());
             continue;

@@ -39,7 +39,7 @@ public:
     CGraphics();
     ~CGraphics();
 
-    bool InitGraphics(const std::string& caption, int UIWidth, int UIHeight, int WindowWidth, int WindowHeight, bool Fullscreen);
+    bool InitGraphics(const std::string& caption, int WindowWidth, int WindowHeight, bool Fullscreen);
     bool End();        // End Drawing Stuff
     void Begin();      // begins drawing stuff
 
@@ -61,7 +61,6 @@ public:
     int GetHeight() const {return m_ScreenHeight;}
 
     cFont LoadFont(const std::string& font, int size);
-    cFont LoadNormalFont(int size);
 
 private:
     // scaling

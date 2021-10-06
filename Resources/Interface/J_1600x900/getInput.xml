@@ -1,7 +1,0 @@
-<Screen>
-<Window     Name="GetInput"                                                 XPos="376"      YPos="176"      Width="820"     Height="264" Border="1"  />
-<Text       Name="Label"                Text="Name"                         XPos="117"      YPos="59"       Width="176"     Height="38"  FontSize="23"  />
-<EditBox    Name="TextField"                                                XPos="117"      YPos="94"       Width="586"     Height="38"  Border="1"  />
-<Button     Name="Ok"                   Image="Ok"                          XPos="176"      YPos="168"      Width="150"     Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Cancel"               Image="Cancel"                      XPos="494"      YPos="168"      Width="150"     Height="38"  Transparency="true" Scale="true"  />
-</Screen>

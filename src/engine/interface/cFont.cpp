@@ -25,17 +25,15 @@
 #include <numeric>
 #include <cassert>
 #include <algorithm>
-#include "interface/cColor.h"
+#include "interface/sColor.h"
 
 cFont::cFont(CGraphics* gfx) : m_GFX(gfx), m_TextColor(0, 0, 0)
 {
 }
 
-void cFont::SetColor(unsigned char r, unsigned char g, unsigned char b)
+void cFont::SetColor(const sColor& color)
 {
-    m_TextColor.r = r;
-    m_TextColor.g = g;
-    m_TextColor.b = b;
+    m_TextColor = color;
 }
 
 /*

@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Config>
-    <Entry Key="interface.list_scroll" Value="3"/>
     <Entry Key="interface.height" Value="768"/>
-    <Entry Key="font.font" Value="segoeui.ttf"/>
     <Entry Key="interface.width" Value="1366"/>
-    <Entry Key="interface.theme" Value="J_1366x768"/>
+    <Entry Key="interface.fullscreen" Value="true"/>
+    <Entry Key="interface.theme" Value="Light-16-9"/>
     <Entry Key="folders.prefer_defaults" Value="false"/>
-    <Entry Key="interface.fullscreen" Value="false"/>
-    <Entry Key="interface.text_scroll" Value="3"/>
     <Entry Key="folders.default_images" Value="./Resources/DefaultImages"/>
     <Entry Key="folders.items" Value="./Resources/Items"/>
     <Entry Key="folders.saves" Value="./Saves"/>

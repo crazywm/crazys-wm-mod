@@ -14,7 +14,7 @@ set(SRC CLog.cpp
 
 
 set(INTERFACE_SRC
-        interface/cColor.cpp
+        interface/sColor.cpp
         interface/cAnimatedSurface.cpp
 		interface/cFont.cpp
         interface/cInterfaceWindow.cpp
@@ -25,9 +25,8 @@ set(INTERFACE_SRC
         interface/cImageCache.cpp
         interface/cInterfaceWindowXML.cpp
 		interface/cTimer.cpp
-		interface/constants.cpp
-		interface/ffmpeg.cpp
-		)
+        interface/ffmpeg.cpp
+        interface/cTheme.cpp)
 
 set(WIDGETS_SRC
         widgets/cButton.cpp

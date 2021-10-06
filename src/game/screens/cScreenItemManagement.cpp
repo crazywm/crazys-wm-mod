@@ -18,7 +18,7 @@
 */
 #include <sstream>
 #include <xml/util.h>
-#include "interface/cColor.h"
+#include "interface/sColor.h"
 #include "cScreenItemManagement.h"
 #include "buildings/cBuildingManager.h"
 #include "buildings/cDungeon.h"
@@ -213,7 +213,6 @@ struct cInventoryProviderGirl : public IInventoryProvider {
 extern bool g_AllTogle;
 extern cConfig cfg;
 extern bool playershopinventory;
-static cColor ColorConvert;
 
 cScreenItemManagement::cScreenItemManagement() : cGameWindow("itemmanagement_screen.xml")
 {
@@ -278,15 +277,15 @@ void cScreenItemManagement::set_ids()
                 if(el.QueryAttribute("R", &r) == tinyxml2::XML_SUCCESS && el.QueryAttribute("G", &g) == tinyxml2::XML_SUCCESS &&
                    el.QueryAttribute("B", &b) == tinyxml2::XML_SUCCESS) {
                     std::string name = el.Attribute("Name");
-                    /* */if (name == "ItemRarity0") ColorConvert.RGBToSDLColor(&RarityColor[0], r, g, b);
-                    else if (name == "ItemRarity1") ColorConvert.RGBToSDLColor(&RarityColor[1], r, g, b);
-                    else if (name == "ItemRarity2") ColorConvert.RGBToSDLColor(&RarityColor[2], r, g, b);
-                    else if (name == "ItemRarity3") ColorConvert.RGBToSDLColor(&RarityColor[3], r, g, b);
-                    else if (name == "ItemRarity4") ColorConvert.RGBToSDLColor(&RarityColor[4], r, g, b);
-                    else if (name == "ItemRarity5") ColorConvert.RGBToSDLColor(&RarityColor[5], r, g, b);
-                    else if (name == "ItemRarity6") ColorConvert.RGBToSDLColor(&RarityColor[6], r, g, b);
-                    else if (name == "ItemRarity7") ColorConvert.RGBToSDLColor(&RarityColor[7], r, g, b);
-                    else if (name == "ItemRarity8") ColorConvert.RGBToSDLColor(&RarityColor[8], r, g, b);
+                    /* */if (name == "ItemRarity0") sColor::RGBToSDLColor(&RarityColor[0], r, g, b);
+                    else if (name == "ItemRarity1") sColor::RGBToSDLColor(&RarityColor[1], r, g, b);
+                    else if (name == "ItemRarity2") sColor::RGBToSDLColor(&RarityColor[2], r, g, b);
+                    else if (name == "ItemRarity3") sColor::RGBToSDLColor(&RarityColor[3], r, g, b);
+                    else if (name == "ItemRarity4") sColor::RGBToSDLColor(&RarityColor[4], r, g, b);
+                    else if (name == "ItemRarity5") sColor::RGBToSDLColor(&RarityColor[5], r, g, b);
+                    else if (name == "ItemRarity6") sColor::RGBToSDLColor(&RarityColor[6], r, g, b);
+                    else if (name == "ItemRarity7") sColor::RGBToSDLColor(&RarityColor[7], r, g, b);
+                    else if (name == "ItemRarity8") sColor::RGBToSDLColor(&RarityColor[8], r, g, b);
                 } else {
                     g_LogFile.error("interface", "Error reading Color definition from '", dpi.c_str(), "': ",  el.GetLineNum());
                 }

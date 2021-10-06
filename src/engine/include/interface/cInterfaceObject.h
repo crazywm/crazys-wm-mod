@@ -67,6 +67,8 @@ public:
     bool SetFocus(bool focus) { if(HandleSetFocus(focus)) {m_HasFocus = focus; return true;} return false; }
     bool HasFocus() const { return m_HasFocus; }
 
+    const cTheme& GetTheme() const;
+
     cInterfaceWindow* GetParent() const { return m_Parent; }
     CGraphics& GetGraphics();
 

@@ -29,9 +29,7 @@ cImageItem::cImageItem(cInterfaceWindow* parent, int id, int x, int y, int width
 {
     m_loaded = false;
 }
-cImageItem::~cImageItem()
-{
-}
+cImageItem::~cImageItem() = default;
 
 bool cImageItem::CreateImage(std::string filename, bool transparent)
 {

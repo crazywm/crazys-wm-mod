@@ -18,13 +18,14 @@
  */
 #include "widgets/cEditBox.h"
 
-#include <memory>
 #include "interface/CGraphics.h"
-#include "sConfig.h"
 #include "interface/cFont.h"
 #include "interface/cInterfaceWindow.h"
 #include "interface/cWindowManager.h"
-#include "interface/cColor.h"
+#include "interface/sColor.h"
+#include "interface/cTheme.h"
+#include "theme_ids.h"
+using namespace widgets_theme;
 
 void cEditBox::DrawWidget(const CGraphics& gfx)
 {
@@ -41,13 +42,16 @@ void cEditBox::DrawWidget(const CGraphics& gfx)
 
 cEditBox::cEditBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, int FontSize):
         cUIWidget(ID, x, y, width, height, parent), m_BorderSize(BorderSize),
-        m_Font(GetGraphics().LoadNormalFont(FontSize))
+        m_Font(GetGraphics().LoadFont(GetTheme().normal_font(), FontSize))
 {
-    m_Border = GetGraphics().CreateSurface(width, height, g_EditBoxBorderColor);
-    m_Background = GetGraphics().CreateSurface(width - (BorderSize*2), height - (BorderSize*2), g_EditBoxBackgroundColor);
-    m_FocusedBackground = GetGraphics().CreateSurface(width - (BorderSize*2), height - (BorderSize*2), g_EditBoxSelectedColor);
+    m_Border = GetGraphics().CreateSurface(width, height,
+                                           GetTheme().get_color(EditBoxBorderColor, {0, 0, 0}));
+    m_Background = GetGraphics().CreateSurface(width - (BorderSize*2), height - (BorderSize*2),
+                                               GetTheme().get_color(EditBoxBackgroundColor, {90, 172, 161}));
+    m_FocusedBackground = GetGraphics().CreateSurface(width - (BorderSize*2), height - (BorderSize*2),
+                                                      GetTheme().get_color(EditBoxSelectedColor, {114, 211, 198}));
 
-    m_Font.SetColor(g_EditBoxTextColor.r, g_EditBoxTextColor.g, g_EditBoxTextColor.b);
+    m_Font.SetColor(GetTheme().get_color(EditBoxTextColor, {0, 0, 0}));
 
     UpdateText();
 }

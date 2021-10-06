@@ -30,7 +30,6 @@ class cModalWindow;
 class IBuilding;
 struct SDL_Keysym;
 class sGirl;
-class CGraphics;
 
 /*!
  * \brief Manages the game's ui by handling the windows that are show.
@@ -38,7 +37,7 @@ class CGraphics;
 class cWindowManager
 {
 public:
-    cWindowManager(CGraphics*, std::string theme);
+    cWindowManager(CGraphics*, std::unique_ptr<cTheme> theme);
     ~cWindowManager();
 
     void add_window(std::string name, std::shared_ptr<cInterfaceWindow> win);
@@ -72,9 +71,7 @@ public:
     void Draw();
 
     CGraphics& GetGraphics();
-    const std::string& GetTheme() const;
-
-
+    const cTheme& GetTheme() const;
 
     IBuilding* GetActiveBuilding() const;
     void SetActiveBuilding(IBuilding*);
@@ -120,7 +117,7 @@ private:
     CGraphics* m_GFX;
 
     // The theme folder. This is where all xml screens will be loaded from
-    std::string m_Theme;
+    std::unique_ptr<cTheme> m_Theme;
 
     // counter to allow recursive enabling/disabling of text input
     int m_TextInputEnabled = 0;

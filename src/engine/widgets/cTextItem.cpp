@@ -18,13 +18,12 @@
 */
 
 #include "interface/cFont.h"
-#include "sConfig.h"
 #include "cScrollBar.h"
 #include "widgets/cTextItem.h"
 #include <utility>
 #include "interface/cInterfaceWindow.h"
-
-extern cConfig cfg;
+#include "interface/cTheme.h"
+#include "theme_ids.h"
 
 cTextItem::cTextItem(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, std::string text, int size,
                      bool force_scrollbar, int red , int green , int blue, bool as_table):
@@ -35,7 +34,13 @@ cTextItem::cTextItem(cInterfaceWindow* parent, int ID, int x, int y, int width, 
     m_ScrollChange = 0;
     m_FontHeight = size;
 
-    ChangeFontSize(size, red, green, blue);
+    m_Font->LoadFont(GetTheme().normal_font(), m_FontHeight);
+
+    if(red < 0 || green < 0 || blue < 0) {
+        m_Font->SetColor(GetTheme().get_color(widgets_theme::TextItemColor, {0, 0, 0}));
+    } else {
+        m_Font->SetColor(sColor(red, green, blue));
+    }
     SetText(std::move(text), as_table);
 
     m_ForceScrollBar = force_scrollbar;
@@ -59,13 +64,6 @@ bool cTextItem::HandleMouseWheel(bool down)
 }
 
 bool cTextItem::IsOver(int x, int y) const { return (x > m_XPos && y > m_YPos && x < m_XPos + m_Width - 15 && y < m_YPos + m_Height); }
-
-void cTextItem::ChangeFontSize(int FontSize, int red , int green , int blue )
-{
-    m_Font->LoadFont(cfg.fonts.normal(), FontSize);
-    m_Font->SetColor(red, green, blue);
-    SetText(std::move(m_Text), m_IsTable);
-}
 
 void cTextItem::SetText(std::string text, bool as_table)
 {
@@ -113,7 +111,7 @@ void cTextItem::SetText(std::string text, bool as_table)
         auto bar    = GetParent()->AddScrollBar(x, y, 16, height, height);
         m_ScrollBar   = bar;  // give TextItem pointer to scrollbar
         bar->ParentPosition = &m_ScrollChange;  // give scrollbar pointer to value it should update
-        bar->m_ScrollAmount = cfg.resolution.text_scroll() * m_Font->GetFontHeight();
+        bar->m_ScrollAmount = GetTheme().text_scroll() * m_Font->GetFontHeight();
         bar->m_PageAmount   = bar->m_PageAmount - m_Font->GetFontHeight();
     }
 

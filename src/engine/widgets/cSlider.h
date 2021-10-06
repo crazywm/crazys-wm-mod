@@ -43,7 +43,6 @@ private:
     int m_MarkerOffset = 0;  // physical X offset to show the marker at
 
     // run by first slider control created, to load appropriate source images into memory
-    static cSurface LoadAlphaImageFromFile(std::string file);  // utility function used by above for loading specific source image from file
     void ValueToOffset();  // set the Offset of the button based on the current Value
     void OffsetToValue();  // conversely, set the Value based on the current Offset of the button
 
@@ -68,7 +67,7 @@ private:
     bool m_IsBeingDragged = false;
 public:
     cSlider(cInterfaceWindow* parent, int ID, int x, int y, int width, int min = 0, int max = 100, int increment = 5, int value = 0, float height = 1.0);
-    ~cSlider();
+    ~cSlider() override;
 
     bool IsOver(int x, int y) const override;  // determine if mouse is over control, switch button image accordingly
     void DragMove(int x);  // slider button is being dragged and has moved, so update offset and value

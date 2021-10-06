@@ -37,6 +37,8 @@ void cScreenSettings::set_ids()
 
     theme_id           = get_id("ThemeList");
     fullscreen_id      = get_id("Fullscreen");
+    width_id           = get_id("WindowWidth");
+    height_id          = get_id("WindowHeight");
 
     SetButtonCallback(revert_id, [this]() { init(false); });
     SetButtonCallback(ok_id, [this]() {
@@ -44,8 +46,9 @@ void cScreenSettings::set_ids()
         pop_window();
     });
 
-    auto themes = FileList::ListSubdirs("Resources/Interface");
-    for(auto& theme : themes) {
+    auto themes = FileList("Resources/Interface", "*.xml");
+    for(int i = 0; i < themes.size(); ++i) {
+        auto theme = themes[i].leaf().substr(0, themes[i].leaf().length() - 4);
         if(theme == cfg.resolution.resolution()) {
             AddToListBox(theme_id, 1, theme, COLOR_DARKBLUE);
         } else {
@@ -69,10 +72,14 @@ void cScreenSettings::init(bool back)
         SetEditBoxText(saves_id, cfg.folders.saves());
         SetEditBoxText(defaultimages_id, cfg.folders.defaultimageloc());
         SetEditBoxText(items_id, cfg.folders.items());
+        SetEditBoxText(width_id, std::to_string(cfg.resolution.width()));
+        SetEditBoxText(height_id, std::to_string(cfg.resolution.height()));
         SetCheckBox(preferdefault_id, cfg.folders.preferdefault());
         SetCheckBox(fullscreen_id, cfg.resolution.fullscreen());
         SetSelectedItemInList(theme_id, 1, false, true);
     }
+    HideWidget(width_id, cfg.resolution.fullscreen());
+    HideWidget(height_id, cfg.resolution.fullscreen());
 }
 
 void cScreenSettings::update_settings()
@@ -86,6 +93,9 @@ void cScreenSettings::update_settings()
 
     cfg.set_value("interface.theme", GetSelectedTextFromList(theme_id));
     cfg.set_value("interface.fullscreen", IsCheckboxOn(fullscreen_id));
+
+    cfg.set_value("interface.height", std::stoi(GetEditBoxText(height_id)));
+    cfg.set_value("interface.width", std::stoi(GetEditBoxText(width_id)));
 
     cfg.save();
 }

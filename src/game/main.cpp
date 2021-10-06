@@ -26,6 +26,7 @@
 #include "cRng.h"
 #include "cNameList.h"
 #include "interface/cWindowManager.h"
+#include "interface/cTheme.h"
 
 #include <sstream>
 #include <SDL_events.h>
@@ -171,7 +172,6 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
 
     if (!gfx.InitGraphics(VERSION_STRING,
                           cfg.resolution.width(), cfg.resolution.height(),
-                          cfg.resolution.width(), cfg.resolution.height(),
                           cfg.resolution.fullscreen()))
     {
         g_LogFile.log(ELogLevel::ERROR,"Initializing Graphics");
@@ -181,7 +181,10 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
     g_LogFile.log(ELogLevel::NOTIFY,"Graphics Initialized");
 
     g_LogFile.log(ELogLevel::NOTIFY, "Loading Interface");
-    InitInterface(&gfx, cfg.resolution.resolution());
+    auto theme = std::make_unique<cTheme>();
+    theme->load(cfg.resolution.resolution());
+    theme->set_screen_size(gfx.GetWidth(), gfx.GetHeight());
+    InitInterface(&gfx, std::move(theme));
     LoadInterface();        // Load the interface
     gfx.GetImageCache().PrintStats();
 

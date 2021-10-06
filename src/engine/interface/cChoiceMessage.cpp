@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -21,19 +21,16 @@
 #include <memory>
 #include "interface/CGraphics.h"
 #include "utils/DirPath.h"
-#include "interface/cColor.h"
-
-extern sColor g_ChoiceMessageTextColor;
-extern sColor g_ChoiceMessageBorderColor;
-extern sColor g_ChoiceMessageHeaderColor;
-extern sColor g_ChoiceMessageBackgroundColor;
-extern sColor g_ChoiceMessageSelectedColor;
+#include "interface/sColor.h"
+#include "interface/cTheme.h"
+#include "widgets/theme_ids.h"
+using namespace widgets_theme;
 
 cChoice::cChoice(int x, int y, int width, int height, int ID, std::string question, std::vector<std::string> options, int fontsize, cInterfaceWindow* parent) :
         cUIWidget(ID, x, y, width, height, parent), m_Choices(options.size()), m_ChoicesSurface(options.size()), m_FontSize(fontsize),
-        m_Font(GetGraphics().LoadNormalFont(fontsize))
+        m_Font(GetGraphics().LoadFont(GetTheme().normal_font(), fontsize))
 {
-    m_Font.SetColor(g_ChoiceMessageTextColor.r, g_ChoiceMessageTextColor.g, g_ChoiceMessageTextColor.b);
+    m_Font.SetColor(GetTheme().get_color(ChoiceMessageTextColor, {0, 0, 0}));
     Question(std::move(question));
 
     int MaxWidth = 0, MaxHeight = 0;
@@ -68,11 +65,16 @@ cChoice::cChoice(int x, int y, int width, int height, int ID, std::string questi
     m_YPos = ((GetGraphics().GetHeight() / 2) - (m_Height / 2));
 
 
-    m_Border = GetGraphics().CreateSurface(m_Width + (m_ScrollDisabled ? 2 : 20), m_Height + 2, g_ChoiceMessageBorderColor);
-    m_Background = GetGraphics().CreateSurface(m_Width - (m_ScrollDisabled ? 0 : 18), m_Height, g_ChoiceMessageBackgroundColor);
-    m_ElementBackground = GetGraphics().CreateSurface(m_eWidth, m_eHeight,g_ChoiceMessageBackgroundColor);
-    m_ElementSelectedBackground = GetGraphics().CreateSurface(m_eWidth, m_eHeight, g_ChoiceMessageSelectedColor);
-    m_HeaderBackground = GetGraphics().CreateSurface(std::max(120, m_eWidth), 32, g_ChoiceMessageHeaderColor);
+    m_Border = GetGraphics().CreateSurface(m_Width + (m_ScrollDisabled ? 2 : 20), m_Height + 2,
+                                           GetTheme().get_color(ChoiceMessageBorderColor, {0, 0, 0}));
+    m_Background = GetGraphics().CreateSurface(m_Width - (m_ScrollDisabled ? 0 : 18), m_Height,
+                                               GetTheme().get_color(ChoiceMessageBackgroundColor, {88, 163, 113}));
+    m_ElementBackground = GetGraphics().CreateSurface(
+            m_eWidth, m_eHeight,GetTheme().get_color(ChoiceMessageBackgroundColor, {88, 163, 113}));
+    m_ElementSelectedBackground = GetGraphics().CreateSurface(
+            m_eWidth, m_eHeight,GetTheme().get_color(ChoiceMessageSelectedColor, {229, 227, 52}));
+    m_HeaderBackground = GetGraphics().CreateSurface(
+            std::max(120, m_eWidth), 32,GetTheme().get_color(ChoiceMessageHeaderColor, {229, 227, 52}));
 
     m_UpOn = GetGraphics().LoadImage(ButtonPath("UpOn.png"), 16, 16, true);
     m_UpOff = GetGraphics().LoadImage(ButtonPath("UpOff.png"), 16, 16, true);
@@ -105,7 +107,8 @@ void cChoice::DrawWidget(const CGraphics &gfx) {
     {
         int y = m_YPos - m_QuestionSurface.GetHeight();
         // TODO this does not belong into the loop! why is this here?
-        m_HeaderBackground = GetGraphics().CreateSurface(m_Border.GetWidth(), m_QuestionSurface.GetHeight(), g_ChoiceMessageHeaderColor);
+        m_HeaderBackground = GetGraphics().CreateSurface(m_Border.GetWidth(), m_QuestionSurface.GetHeight(),
+                                                         GetTheme().get_color(ChoiceMessageHeaderColor, {229, 227, 52}));
         m_HeaderBackground.DrawSurface(m_XPos, y);
         m_QuestionSurface.DrawSurface(m_XPos, y);
     }

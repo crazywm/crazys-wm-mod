@@ -23,33 +23,45 @@
 #include "utils/DirPath.h"
 #include "widgets/cListBox.h"
 #include "interface/CGraphics.h"
-#include "interface/cColor.h"
+#include "interface/sColor.h"
 #include "sConfig.h"
 #include "cScrollBar.h"
 #include "interface/cWindowManager.h"
 #include "interface/cInterfaceWindow.h"
+#include "interface/cTheme.h"
+#include "theme_ids.h"
+using namespace widgets_theme;
 
-extern sColor g_ListBoxBorderColor;
-extern sColor g_ListBoxBackgroundColor;
-extern sColor g_ListBoxElementBackgroundColor[5];
-extern sColor g_ListBoxSelectedElementColor[5];
-extern sColor g_ListBoxElementBorderColor;
-extern sColor g_ListBoxElementBorderHColor;
-extern sColor g_ListBoxTextColor;
-extern sColor g_ListBoxHeaderBackgroundColor;
-extern sColor g_ListBoxHeaderBorderColor;
-extern sColor g_ListBoxHeaderBorderHColor;
-extern sColor g_ListBoxHeaderTextColor;
+namespace {
+    sColor HeaderBorderHColor = {15, 49, 69};
+    sColor HeaderBorderColor = {120, 155, 176};
+    sColor HeaderTextColor = {255, 255, 255};
+    sColor ElementBorderColor = {79, 79, 111};
+    sColor ElementBorderHColor = {159, 175, 255};
+    sColor BorderColor = {0, 0, 0};
+    sColor BackgroundColor = {217, 214, 139};
+    sColor TextColor = {0, 0, 0};
+
+    constexpr const char* ElementBackgrounds[] = {ListBoxElementBackground1, ListBoxElementBackground2, ListBoxElementBackground3,
+                                                  ListBoxElementBackground4, ListBoxElementBackground5};
+    constexpr sColor ElementBackgroundColors[] = {{114, 139, 217}, {200, 30, 30}, {80, 80, 250},
+                                                  {30, 190, 30}, {190, 190, 00}};
+
+    constexpr const char* ElementSelected[] = {ListBoxSelectedElement1, ListBoxSelectedElement2, ListBoxSelectedElement3,
+                                               ListBoxSelectedElement4, ListBoxSelectedElement5};
+    constexpr sColor ElementSelectedColors[] = {{187,   90, 224}, {255, 167, 180}, {187, 190, 224},
+                                                {0, 250, 0}, {250, 250, 250}};
+}
 
 cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect,
         bool Events, bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight):
     IListBox(ID, x, y, width, height, parent),
     m_ShowHeaders(ShowHeaders), m_HeaderDividers(HeaderDiv), m_HeaderClicksSort(HeaderSort), m_BorderSize(BorderSize),
     m_FontSize( fontsize == 0 ? 10 : fontsize ),
-    m_Font(GetGraphics().LoadNormalFont(m_FontSize)),
+    m_Font(GetGraphics().LoadFont(GetTheme().normal_font(), m_FontSize)),
     m_EnableEvents(Events)
 {
-    m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+    m_Font.SetColor(GetTheme().get_color(ListBoxTextColor, TextColor));
 
     m_LastSelected = m_Items.end();
 
@@ -59,8 +71,9 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
 
     m_RowHeight = (rowheight == 0 ? LISTBOX_ITEMHEIGHT : rowheight);
 
-    m_Border = GetGraphics().CreateSurface(width, height, g_ListBoxBorderColor);
-    m_Background = GetGraphics().CreateSurface(width - (BorderSize * 2) - 16, height - (BorderSize * 2), g_ListBoxBackgroundColor);
+    m_Border = GetGraphics().CreateSurface(width, height, GetTheme().get_color(ListBoxBorderColor, BorderColor));
+    m_Background = GetGraphics().CreateSurface(width - (BorderSize * 2) - 16, height - (BorderSize * 2),
+                                               GetTheme().get_color(ListBoxBackgroundColor, BackgroundColor));
 
     m_NumDrawnElements = height / m_RowHeight;
     if (m_ShowHeaders) // Account for headers if shown
@@ -70,31 +83,36 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
 
     for(int i = 0; i < 5; ++i) {
         m_ElementBackgrounds.push_back(
-                GetGraphics().CreateSurface(m_eWidth - 2 - 16, m_eHeight - 2, g_ListBoxElementBackgroundColor[i]));
+                GetGraphics().CreateSurface(m_eWidth - 2 - 16, m_eHeight - 2,
+                                            GetTheme().get_color(ElementBackgrounds[i], ElementBackgroundColors[i])));
         m_SelectedElementBackgrounds.push_back(
-                GetGraphics().CreateSurface(m_eWidth - 2 - 16, m_eHeight - 2, g_ListBoxSelectedElementColor[i]) );
+                GetGraphics().CreateSurface(m_eWidth - 2 - 16, m_eHeight - 2,
+                                            GetTheme().get_color(ElementSelected[i], ElementSelectedColors[i])));
     }
 
-    m_ElementBorder = GetGraphics().CreateSurface(m_eWidth - 16, m_eHeight, g_ListBoxElementBorderColor);
+    m_ElementBorder = GetGraphics().CreateSurface(m_eWidth - 16, m_eHeight, GetTheme().get_color(ListBoxElementBorderColor, ElementBorderColor));
 
     // "beveled" looking border for bottom & right sides of list element
     dest_rect.x = m_BorderSize;
     dest_rect.y = m_BorderSize;
     dest_rect.h = m_eHeight - m_BorderSize;
     dest_rect.w = m_eWidth - m_BorderSize - 16;
-    m_ElementBorder = m_ElementBorder.FillRect(dest_rect, g_ListBoxElementBorderHColor);
+    m_ElementBorder = m_ElementBorder.FillRect(dest_rect, GetTheme().get_color(ListBoxElementBorderHColor, ElementBorderHColor));
 
     if (ShowHeaders)
     {
         // background for optional column header box
         int scroll_space = HeaderSort ? 0 : 16;
         dest_rect.w = m_eWidth - m_BorderSize - scroll_space;
-        m_HeaderBackground = GetGraphics().CreateSurface(m_eWidth - scroll_space, m_eHeight, g_ListBoxHeaderBorderColor);
-        m_HeaderBackground = m_HeaderBackground.FillRect(dest_rect, g_ListBoxHeaderBorderHColor);
+        m_HeaderBackground = GetGraphics().CreateSurface(
+                m_eWidth - scroll_space, m_eHeight,GetTheme().get_color(ListBoxHeaderBorderColor, HeaderBorderColor));
+        m_HeaderBackground = m_HeaderBackground.FillRect(
+                dest_rect,GetTheme().get_color(ListBoxHeaderBorderHColor, HeaderBorderHColor));
 
         dest_rect.h = m_eHeight - (m_BorderSize * 2);
         dest_rect.w = m_eWidth - (m_BorderSize * 2) - scroll_space;
-        m_HeaderBackground = m_HeaderBackground.FillRect(dest_rect, g_ListBoxHeaderBackgroundColor);
+        m_HeaderBackground = m_HeaderBackground.FillRect(
+                dest_rect,GetTheme().get_color(ListBoxHeaderBackgroundColor, {25, 100, 144}));
 
         DirPath dp = ImagePath("ListboxSort");
         m_SortAscImage = dp.str() + "Asc.png";
@@ -107,11 +125,11 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
         if (HeaderSort)
         {
             SDL_Rect area{m_eWidth - 17, 0, 2, m_eHeight};
-            m_HeaderBackground = m_HeaderBackground.FillRect(area, g_ListBoxHeaderBorderHColor);
+            m_HeaderBackground = m_HeaderBackground.FillRect(area, GetTheme().get_color(ListBoxHeaderBorderHColor, HeaderBorderHColor));
             area.x++;
             area.w = 1;
             area.h--;
-            m_HeaderBackground = m_HeaderBackground.FillRect(area, g_ListBoxHeaderBorderColor);
+            m_HeaderBackground = m_HeaderBackground.FillRect(area, GetTheme().get_color(ListBoxHeaderBorderColor, HeaderBorderColor));
             area.h++;
 
             dest_rect.x = m_eWidth - 15;
@@ -137,9 +155,7 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
     m_ScrollBar = bar;
 }
 
-cListBox::~cListBox()
-{
-}
+cListBox::~cListBox() = default;
 
 void cListBox::Clear()
 {
@@ -418,7 +434,7 @@ void cListBox::DrawWidget(const CGraphics& gfx)
         // blit to the screen
         m_HeaderBackground.DrawSurface(m_XPos + m_BorderSize, m_YPos + m_BorderSize);
 
-        m_Font.SetColor(g_ListBoxHeaderTextColor.r, g_ListBoxHeaderTextColor.g, g_ListBoxHeaderTextColor.b);
+        m_Font.SetColor(GetTheme().get_color(ListBoxHeaderTextColor, HeaderTextColor));
 
         // draw the header text
         for (int i = 0; i < m_Columns.size(); i++)
@@ -435,7 +451,7 @@ void cListBox::DrawWidget(const CGraphics& gfx)
             m_Columns[i].header_gfx.DrawSurface(offset.x + 3 + m_Columns[i].offset, offset.y + 3);
         }
 
-        m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+        m_Font.SetColor(GetTheme().get_color(ListBoxTextColor, TextColor));
     }
 
     // draw the elements
@@ -542,7 +558,7 @@ int cListBox::NumSelectedElements() const
 
 void cListBox::SetElementText(int ID, std::string data)
 {
-    std::string datarray[] = { data };
+    std::string datarray[] = { std::move(data) };
     SetElementText(ID, datarray, 1);
 }
 
@@ -555,9 +571,9 @@ void cListBox::SetElementText(int ID, std::string data[], int columns)
                 item.m_Data[i].val_ = data[i];
                 item.m_Data[i].fmt_ = data[i];
                 if(item.m_TextColor) {
-                    m_Font.SetColor(item.m_TextColor->r, item.m_TextColor->g, item.m_TextColor->b);
+                    m_Font.SetColor({item.m_TextColor->r, item.m_TextColor->g, item.m_TextColor->b});
                 } else {
-                    m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+                    m_Font.SetColor(GetTheme().get_color(ListBoxTextColor, TextColor));
                 }
                 item.m_PreRendered[i] = m_Font.RenderText(item.m_Data[i].fmt_);
             }
@@ -584,9 +600,9 @@ void cListBox::SetElementColumnText(int ID, std::string data, const std::string&
         if (item.m_ID == ID)
         {
             if(item.m_TextColor) {
-                m_Font.SetColor(item.m_TextColor->r, item.m_TextColor->g, item.m_TextColor->b);
+                m_Font.SetColor({item.m_TextColor->r, item.m_TextColor->g, item.m_TextColor->b});
             } else {
-                m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+                m_Font.SetColor(GetTheme().get_color(ListBoxTextColor, TextColor));
             }
             item.m_PreRendered[column_id] = m_Font.RenderText(data);
 
@@ -604,7 +620,7 @@ void cListBox::SetElementTextColor(int ID, SDL_Color text_color)
         if (item.m_ID == ID)
         {
             item.m_TextColor = std::make_unique<SDL_Color>(text_color);
-            m_Font.SetColor(text_color.r, text_color.g, text_color.b);
+            m_Font.SetColor({text_color.r, text_color.g, text_color.b});
             for(unsigned i = 0; i < item.m_Data.size(); ++i) {
                 item.m_PreRendered[i] = m_Font.RenderText(item.m_Data[i].fmt_);
             }
@@ -624,7 +640,7 @@ void cListBox::AddElement(int ID, std::vector<FormattedCellData> data, int color
     newItem.m_PreRendered.reserve(newItem.m_Data.size());
     for(std::size_t i = 0; i < newItem.m_Data.size(); ++i) {
         /// TODO add ability to use reference to existing font with new text
-        m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+        m_Font.SetColor(GetTheme().get_color(ListBoxTextColor, TextColor));
         auto gfx = m_Font.RenderText(newItem.m_Data[i].fmt_);
         newItem.m_PreRendered.push_back(std::move(gfx));
     }
@@ -659,7 +675,7 @@ void cListBox::UpdateRow(int id, const std::function<FormattedCellData(const std
 
     for(int i = 0; i < m_Columns.size(); ++i) {
         found->m_Data[i] = query(m_Columns[i].name);
-        m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+        m_Font.SetColor(GetTheme().get_color(ListBoxTextColor, TextColor));
         auto gfx = m_Font.RenderText(found->m_Data[i].fmt_);
         found->m_PreRendered[i] = std::move(gfx);
     }
@@ -673,7 +689,7 @@ void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::str
 {
     m_Columns.clear();
 
-    m_Font.SetColor(g_ListBoxHeaderTextColor.r, g_ListBoxHeaderTextColor.g, g_ListBoxHeaderTextColor.b);
+    m_Font.SetColor(GetTheme().get_color(ListBoxHeaderTextColor, HeaderTextColor));
 
     m_Font.SetFontBold(true);
     for (int i = 0; i < name.size(); i++)
@@ -693,12 +709,12 @@ void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::str
         if (m_Columns[i].skip) continue;
         m_Divider.x = m_Columns[i].offset - 4;
         m_Divider.w = 2;
-        m_HeaderBackground = m_HeaderBackground.FillRect(m_Divider, g_ListBoxHeaderBorderHColor);
+        m_HeaderBackground = m_HeaderBackground.FillRect(m_Divider, GetTheme().get_color(ListBoxHeaderBorderHColor, HeaderBorderHColor));
         m_Divider.x++;
         m_Divider.w = 1;
         m_Divider.y++;
         m_Divider.h--;
-        m_HeaderBackground = m_HeaderBackground.FillRect(m_Divider, g_ListBoxHeaderBorderColor);
+        m_HeaderBackground = m_HeaderBackground.FillRect(m_Divider, GetTheme().get_color(ListBoxHeaderBorderColor, HeaderBorderColor));
         m_Divider.y--;
         m_Divider.h++;
     }

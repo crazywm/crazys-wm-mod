@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,10 @@
 #include "interface/cSurface.h"
 #include "sConfig.h"
 #include <utility>
-#include "interface/cColor.h"
-
-extern sColor g_CheckBoxBorderColor;
-extern sColor g_CheckBoxBackgroundColor;
+#include "interface/sColor.h"
+#include "interface/cTheme.h"
+#include "theme_ids.h"
+using namespace widgets_theme;
 
 void cCheckBox::DrawWidget(const CGraphics& gfx)
 {
@@ -45,13 +45,15 @@ void cCheckBox::DrawWidget(const CGraphics& gfx)
 
 cCheckBox::cCheckBox(cInterfaceWindow* parent, int id, int x, int y, int width, int height, std::string text, int fontsize, bool leftorright):
     cUIWidget(id, x, y, width, height, parent),
-    m_Font(GetGraphics().LoadNormalFont(fontsize))
+    m_Font(GetGraphics().LoadFont(GetTheme().normal_font(), fontsize))
 {
     m_Image = GetGraphics().LoadImage(ImagePath("CheckBoxCheck.png").str(), m_Width, m_Height, true);
-    m_Border = GetGraphics().CreateSurface(width, height, g_CheckBoxBorderColor);
-    m_Surface = GetGraphics().CreateSurface(width - 2, height - 2, g_CheckBoxBackgroundColor);
+    m_Border = GetGraphics().CreateSurface(width, height,
+                                           GetTheme().get_color(CheckBoxBorderColor, {0, 0, 0}));
+    m_Surface = GetGraphics().CreateSurface(width - 2, height - 2,
+                                            GetTheme().get_color(CheckBoxBackgroundColor, {180, 180, 180}));
 
-    m_Font.SetColor(0, 0, 0);
+    m_Font.SetColor(GetTheme().get_color(CheckBoxTextColor, {0, 0, 0}));
     m_Label = m_Font.RenderText(std::move(text));
     m_LeftOrRight = leftorright;
 

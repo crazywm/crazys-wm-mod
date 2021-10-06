@@ -19,7 +19,7 @@
 
 #include "interface/cImageCache.h"
 #include "interface/cSurface.h"
-#include "interface/cColor.h"
+#include "interface/sColor.h"
 #include "CLog.h"
 #include "ffmpeg.h"
 

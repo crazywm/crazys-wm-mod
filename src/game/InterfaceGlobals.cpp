@@ -18,8 +18,7 @@
  */
 
 #include <chrono>
-#include "interface/cColor.h"
-#include "utils/DirPath.h"
+#include "interface/sColor.h"
 #include "interface/cWindowManager.h"
 #include "screens/cScreenPrison.h"
 #include "screens/cScreenTown.h"
@@ -48,8 +47,8 @@
 #include <tinyxml2.h>
 #include "CLog.h"
 #include "xml/util.h"
-#include "xml/getattr.h"
 #include "sConfig.h"
+#include "interface/cTheme.h"
 
 cScreenGetInput*          g_GetInput          = nullptr;
 
@@ -62,40 +61,12 @@ T* load_window(const char* name)
   return load_window<T>(name, false);
 }
 
-sColor& LookupThemeColor(const std::string& name);
-
 void LoadInterface()
 {
     cConfig cfg;
     std::stringstream ss;
     std::string image; std::string text; std::string file;
     std::ifstream incol;
-
-    // load interface colors
-    try {
-        DirPath dp = DirPath() << "Resources" << "Interface" << window_manager().GetTheme() << "InterfaceColors.xml";
-        auto docInterfaceColors = LoadXMLDocument(dp.c_str());
-        g_LogFile.log(ELogLevel::NOTIFY, "Loading InterfaceColors.xml");
-        const std::string& m_filename = dp.str();
-        for (auto& el : IterateChildElements(*docInterfaceColors->RootElement())) {
-            std::string tag = el.Value();
-            if (tag == "Color") {
-                try {
-                    const char* name = GetStringAttribute(el, "Name");
-                    auto& target = LookupThemeColor(name);
-                    GetColorAttribute(el, target);
-                } catch(std::runtime_error& error) {
-                    g_LogFile.log(ELogLevel::ERROR, "Could not load color definition from ", m_filename,
-                            "(", el.GetLineNum(), "): ", error.what());
-                    continue;
-                }
-                // ItemRarity is loaded in sConfig.cpp
-            }
-        }
-    } catch(std::runtime_error& error) {
-        g_LogFile.log(ELogLevel::ERROR, "Could not load interface colors: ", error.what());
-        g_LogFile.log(ELogLevel::NOTIFY, "Keeping Default InterfaceColors");
-    }
 
     g_LogFile.debug("interface", "Loading screens");
     auto start_time = std::chrono::steady_clock::now();
@@ -146,62 +117,6 @@ void LoadInterface()
 
     auto duration = std::chrono::steady_clock::now() - start_time;
     g_LogFile.debug("interface", "Loaded screens in ", std::chrono::duration_cast<std::chrono::milliseconds>(duration).count(), "ms");
-}
-
-sColor& LookupThemeColor(const std::string& name) {
-    if (name == "ChoiceBoxText") { return g_ChoiceMessageTextColor; }
-    else if (name == "ChoiceBoxBorder") { return g_ChoiceMessageBorderColor; }
-    else if (name == "ChoiceBoxHeader") { return g_ChoiceMessageHeaderColor; }
-    else if (name == "ChoiceBoxBackground") { return g_ChoiceMessageBackgroundColor; }
-    else if (name == "ChoiceBoxSelected") { return g_ChoiceMessageSelectedColor; }
-    else if (name == "EditBoxBorder") { return g_EditBoxBorderColor; }
-    else if (name == "EditBoxBackground") { return g_EditBoxBackgroundColor; }
-    else if (name == "EditBoxSelected") { return g_EditBoxSelectedColor; }
-    else if (name == "EditBoxText") { return g_EditBoxTextColor; }
-    else if (name == "WindowBorder") { return g_WindowBorderColor; }
-    else if (name == "WindowBackground") { return g_WindowBackgroundColor; }
-    else if (name == "ListBoxBorder") { return g_ListBoxBorderColor; }
-    else if (name == "ListBoxBackground") { return g_ListBoxBackgroundColor; }
-    else if (name == "ListBoxElementBackground") { return g_ListBoxElementBackgroundColor[0]; }
-    else if (name == "ListBoxSpecialElement1") { return g_ListBoxElementBackgroundColor[1]; }
-    else if (name == "ListBoxSpecialElement2") { return g_ListBoxElementBackgroundColor[2];; }
-    else if (name == "ListBoxSpecialElement3") { return g_ListBoxElementBackgroundColor[3]; }
-    else if (name == "ListBoxSpecialElement4") { return g_ListBoxElementBackgroundColor[4]; }
-    else if (name == "ListBoxSelectedElement") { return g_ListBoxSelectedElementColor[0]; }
-    else if (name == "ListBoxSelectedSpecialElement1") {
-        return g_ListBoxSelectedElementColor[1];
-    }
-    else if (name == "ListBoxSelectedSpecialElement2") {
-        return g_ListBoxSelectedElementColor[2];
-    }
-    else if (name == "ListBoxSelectedSpecialElement3") {
-        return g_ListBoxSelectedElementColor[3];
-    }
-    else if (name == "ListBoxSelectedSpecialElement4") {
-        return g_ListBoxSelectedElementColor[4];
-    }
-    else if (name == "ListBoxElementBorderTopLeft") { return g_ListBoxElementBorderColor; }
-    else if (name == "ListBoxElementBorderBottomRight") { return g_ListBoxElementBorderHColor; }
-    else if (name == "ListBoxFont") { return g_ListBoxTextColor; }
-    else if (name == "ListBoxColumnHeaderBackground") { return g_ListBoxHeaderBackgroundColor; }
-    else if (name == "ListBoxColumnHeaderBorderTopLeft") { return g_ListBoxHeaderBorderColor; }
-    else if (name == "ListBoxColumnHeaderBorderBottomRight") {
-        return g_ListBoxHeaderBorderHColor;
-    }
-    else if (name == "ListBoxColumnHeaderFont") { return g_ListBoxHeaderTextColor; }
-    else if (name == "MessageBoxBorder") { return g_MessageBoxBorderColor; }
-    else if (name == "MessageBoxBackground0") { return g_MessageBoxBackgroundColor[0]; }
-    else if (name == "MessageBoxBackground1") { return g_MessageBoxBackgroundColor[1]; }
-    else if (name == "MessageBoxBackground2") { return g_MessageBoxBackgroundColor[2]; }
-    else if (name == "MessageBoxBackground3") { return g_MessageBoxBackgroundColor[3]; }
-    else if (name == "MessageBoxBackground4") { return g_MessageBoxBackgroundColor[4]; }
-    else if (name == "MessageBoxText") { return g_MessageBoxTextColor; }
-    else if (name == "CheckboxBorder") { return g_CheckBoxBorderColor; }
-    else if (name == "CheckboxBackground") { return g_CheckBoxBackgroundColor; }
-
-    g_LogFile.log(ELogLevel::DEBUG, "Invalid color specification '", name, "' has been ignored");
-    static sColor null{0, 0, 0};
-    return null;
 }
 
 template<class T, class... Args>

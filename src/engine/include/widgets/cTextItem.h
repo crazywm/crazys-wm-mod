@@ -29,14 +29,12 @@ class cTextItem : public cUIWidget
 
 public:
     cTextItem(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, std::string text, int size,
-              bool force_scrollbar = false, int red = 0, int green = 0, int blue = 0, bool as_table=false);
+              bool force_scrollbar = false, int red = -1, int green = -1, int blue = -1, bool as_table=false);
 
     int HeightTotal() const;
     bool HandleMouseWheel(bool down) override;
 
     bool IsOver(int x, int y) const override;
-
-    void ChangeFontSize(int FontSize, int red = 0, int green = 0, int blue = 0);
 
     void SetText(std::string text, bool as_table);
     void DrawWidget(const CGraphics& gfx) override;

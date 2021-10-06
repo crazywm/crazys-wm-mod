@@ -30,10 +30,6 @@ class cConfig
 public:
     cConfig();
 
-    struct font_data {
-        const std::string&    normal();
-    } fonts;
-
     struct Folders {
         const std::string&    characters();
         const std::string&    saves();
@@ -47,8 +43,6 @@ public:
         int                width();
         int                height();
         bool               fullscreen();
-        int                list_scroll();
-        int                text_scroll();
     } resolution;
 
     template <typename T>

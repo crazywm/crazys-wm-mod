@@ -24,7 +24,7 @@
 
 #include "interface/fwd.hpp"
 #include "interface/cSurface.h"
-#include "cColor.h"
+#include "sColor.h"
 
 // fonts
 struct FontDeleter {
@@ -38,7 +38,7 @@ class cFont
 public:
     explicit cFont(CGraphics* gfx);
 
-    void SetColor(unsigned char r, unsigned char g, unsigned char b);
+    void SetColor(const sColor& color);
     bool LoadFont(const std::string& font, int size);
     void GetSize(const std::string& text, int &width, int &height) const;
 

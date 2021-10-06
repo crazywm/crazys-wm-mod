@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 
 class cFont;
 
-const int NUM_MESSBOXCOLOR = 4;
+const int NUM_MESSBOXCOLOR = 5;
 
 struct sMessage
 {
@@ -41,7 +41,7 @@ class cMessageBox : public cUIWidget
 {
 public:
     cMessageBox(cInterfaceWindow* parent, int x = 32, int y = 416, int width = 736, int height = 160, int BorderSize = 1,
-            int FontSize = 16, bool scale = true);
+            int FontSize = 16);
     ~cMessageBox() override;
 
     void ChangeFontSize(int FontSize = 16);
@@ -56,7 +56,7 @@ public:
     void PushMessage(std::string text, int color);
     void SetCallback(std::function<void()> c) { m_Callback = std::move(c); }
 private:
-    int m_BorderSize, m_FontHeight;
+    int m_BorderSize;
 
     std::array<cSurface, NUM_MESSBOXCOLOR> m_Background;
     cSurface m_Border;

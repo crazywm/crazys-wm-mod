@@ -1,10 +1,13 @@
-# Version 7.1.1beta3
+# Version 7.1.2alpha1
 
 ## Changes
 * added 1440p interface files
 * show amount of money taken from girl @chris-nada
 * made more gang related settings configurable
 * display girl stat changes from last week @chris-nada
+* reworked themes: automatically adapt to resolution
+* in fullscreen mode, render in screen resolution
+* text item and check box text color can now be specified
 
 ## Fixes
 * text in new game screen no longer resets on tab / when returning from more details screen
@@ -14,6 +17,7 @@
 * Add a cap to certain game settings to prevent nonsensical values
 * Improved numerical stability of sigmoid function
 * small bugfixes provided by @Yopyop0
+* Increased font size in input prompt
 
 # Version 7.1.1beta2
 ## Changes

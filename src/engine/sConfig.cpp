@@ -84,15 +84,8 @@ sConfigData::sConfigData(const char *a_filename) : cSimpleKeyValue("Entry", "Key
     add_setting("interface.fullscreen", "Fullscreen", false);
     add_setting("interface.width", "Width", positive(1024));
     add_setting("interface.height", "Height", positive(768));
-    add_setting("interface.list_scroll", "List Scroll", positive(3));
-    add_setting("interface.text_scroll", "Text Scroll", positive(3));
-
-    add_setting("font.font", "Font", "comic.ttf");
 
     load(DirPath() << a_filename);
-
-    // next, load the theme -- this overrides width and height
-    load(DirPath() << "Resources" << "Interface" << get_str("interface.theme") << "config.xml");
 }
 
 void sConfigData::load(const DirPath& source) {
@@ -110,8 +103,6 @@ void sConfigData::load(const DirPath& source) {
     }
 }
 
-const std::string& cConfig::font_data::normal() { return data->get_str("font.font"); }
-
 const std::string& cConfig::Folders::characters() { return data->get_str("folders.characters"); }
 const std::string& cConfig::Folders::saves() { return data->get_str("folders.saves"); }
 const std::string& cConfig::Folders::items() { return data->get_str("folders.items"); }
@@ -122,5 +113,3 @@ const std::string& cConfig::Resolution::resolution() { return data->get_str("int
 int cConfig::Resolution::width() { return data->get_integer("interface.width"); }
 int cConfig::Resolution::height() { return data->get_integer("interface.height"); }
 bool cConfig::Resolution::fullscreen() { return data->get_bool("interface.fullscreen"); }
-int cConfig::Resolution::list_scroll() { return data->get_integer("interface.list_scroll"); }
-int cConfig::Resolution::text_scroll() { return data->get_integer("interface.text_scroll"); }

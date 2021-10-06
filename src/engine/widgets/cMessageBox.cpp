@@ -24,26 +24,32 @@
 #include "interface/cFont.h"
 #include <tinyxml2.h>
 #include "utils/DirPath.h"
-#include "interface/cColor.h"
+#include "interface/sColor.h"
 #include "xml/util.h"
 #include "xml/getattr.h"
-
-extern cConfig cfg;
-
-extern sColor g_MessageBoxBorderColor;
-extern sColor g_MessageBoxBackgroundColor[];
-extern sColor g_MessageBoxTextColor;
+#include "interface/cTheme.h"
+#include "theme_ids.h"
+using namespace widgets_theme;
 
 cMessageBox::~cMessageBox() = default;
 
+namespace {
+    constexpr const char* Backgrounds[NUM_MESSBOXCOLOR] =
+            {MessageBoxBackgroundColor1, MessageBoxBackgroundColor2, MessageBoxBackgroundColor3,
+             MessageBoxBackgroundColor4, MessageBoxBackgroundColor5};
+    constexpr sColor BackgroundColors[NUM_MESSBOXCOLOR] = {
+            {100, 100, 150}, {200, 100, 150}, {100, 200, 150},
+            {100, 100, 200}, {190, 190, 0}};
+}
 
-cMessageBox::cMessageBox(cInterfaceWindow* parent, int x, int y, int width, int height, int BorderSize, int FontSize, bool scale) :
+
+cMessageBox::cMessageBox(cInterfaceWindow* parent, int x, int y, int width, int height, int BorderSize, int FontSize) :
     cUIWidget(0, x, y, width, height, parent)
 {
     m_Text = "";
     m_Position = 0;
 
-    DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "popup_message.xml";
+    DirPath dp = DirPath() << "Resources" << "Interface" << GetTheme().directory() << "popup_message.xml";
     try {
         auto doc = LoadXMLDocument(dp.c_str());
         for (auto& el : IterateChildElements(*doc->RootElement()))
@@ -57,7 +63,6 @@ cMessageBox::cMessageBox(cInterfaceWindow* parent, int x, int y, int width, int 
                 height = GetIntAttribute(el, "Height");
                 FontSize = GetIntAttribute(el, "FontSize");
                 BorderSize = GetIntAttribute(el, "Border");
-                scale = GetBoolAttribute(el, "Scale");
             }
         }
     } catch (std::runtime_error& error) {
@@ -66,27 +71,19 @@ cMessageBox::cMessageBox(cInterfaceWindow* parent, int x, int y, int width, int 
         g_LogFile.log(ELogLevel::ERROR, error.what());
     }
 
-    float xScale = 1.0f, yScale = 1.0f;
-    if (scale)
-    {
-        if (GetGraphics().GetWidth() != cfg.resolution.width())        xScale = (float)GetGraphics().GetWidth() / (float)cfg.resolution.width();
-        if (GetGraphics().GetHeight() != cfg.resolution.height())    yScale = (float)GetGraphics().GetHeight() / (float)cfg.resolution.height();
-    }
-
-    x = (int)((float)x*xScale);
-    y = (int)((float)y*yScale);
-    width = (int)((float)width*xScale);
-    height = (int)((float)height*yScale);
-    FontSize = (int)((float)FontSize*yScale);
+    x = GetTheme().calc_x(x);
+    y = GetTheme().calc_y(y);
+    width = GetTheme().calc_w(width);
+    height = GetTheme().calc_h(height);
 
     m_BorderSize = BorderSize;
     SetPosition(x, y, width, height);
-    m_FontHeight = FontSize;
-    m_Border = GetGraphics().CreateSurface(width, height, g_MessageBoxBorderColor);
+    m_Border = GetGraphics().CreateSurface(width, height, GetTheme().get_color(MessageBoxBorderColor, {255, 255, 255}));
     for(int i = 0; i < NUM_MESSBOXCOLOR; ++i) {
-        m_Background[i] = GetGraphics().CreateSurface(width-(BorderSize*2), height-(BorderSize*2), g_MessageBoxBackgroundColor[i]);
+        m_Background[i] = GetGraphics().CreateSurface(width-(BorderSize*2), height-(BorderSize*2),
+                                                      GetTheme().get_color(Backgrounds[i], BackgroundColors[i]));
     }
-    ChangeFontSize(FontSize);
+    ChangeFontSize(GetTheme().calc_h(FontSize));
 }
 
 void cMessageBox::DrawWidget(const CGraphics& gfx)
@@ -141,8 +138,8 @@ void cMessageBox::UpdateMessageText()
 
 void cMessageBox::ChangeFontSize(int FontSize)
 {
-    m_Font = std::make_unique<cFont>(GetGraphics().LoadFont(cfg.fonts.normal(), FontSize));
-    m_Font->SetColor(g_MessageBoxTextColor.r, g_MessageBoxTextColor.g, g_MessageBoxTextColor.b);
+    m_Font = std::make_unique<cFont>(GetGraphics().LoadFont(GetTheme().normal_font(), FontSize));
+    m_Font->SetColor(GetTheme().get_color(MessageBoxTextColor, {0, 0, 0}));
     UpdateMessageText();
 }
 

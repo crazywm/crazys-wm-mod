@@ -1,0 +1,69 @@
+<Screen>
+<Window     Name="Gang Management Window"                                   XPos="18"       YPos="20"       Width="1883"    Height="1041"    Border="1"  />
+<Text       Name="txtControlledGangs"   Text="Controlled Gangs"             XPos="14"       YPos="3"        Width="703"     Height="45"     FontSize="34"  />
+<Text       Name="TotalCost"            Text="Weekly Cost: 0"               XPos="633"      YPos="11"        Width="281"     Height="45"  FontSize="22"  />
+<Text       Name="Gold"                 Text="Player Gold: 0"               XPos="1124"      YPos="3"        Width="422"     Height="45"     FontSize="34"  />
+
+
+<ListBox    Name="GangList"                                                 XPos="14"       YPos="49"       Width="1546"     Height="565" FontSize="17" RowHeight="30" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
+<Column     Name="GangName"     Header="Gang Name"                  Offset="0"  />
+<Column     Name="Mission"      Header="Mission"                    Offset="351"  />
+<Column     Name="Number"       Header="Men"                        Offset="562"  />
+<Column     Name="Combat"       Header="Combat"                     Offset="667"  />
+<Column     Name="Magic"        Header="Magic"                      Offset="772"  />
+<Column     Name="Intelligence" Header="Intel."                     Offset="877"  />
+<Column     Name="Agility"      Header="Agility"                    Offset="982"  />
+<Column     Name="Constitution" Header="Tough"                      Offset="1087"  />
+<Column     Name="Strength"     Header="Strength"                   Offset="1192"  />
+<Column     Name="Service"      Header="Service"                    Offset="1297"  />
+<Column     Name="Charisma"     Header="Charisma"                   Offset="1402"  />
+</ListBox>
+
+<Image      Name="FireArrow"            File="imgArrowDown.png"             XPos="70"       YPos="598"      Width="84"      Height="62"  />
+<Button     Name="GangFireButton"       Image="Fire"                        XPos="56"       YPos="661"      Width="112"      Height="45"  Transparency="true"/>
+<Image      Name="HireArrow"            File="imgArrowLeft.png"             XPos="273"      YPos="696"      Width="45"      Height="112"  />
+<Button     Name="GangHireButton"       Image="Hire"                        XPos="163"      YPos="731"      Width="112"      Height="45"  Transparency="true"/>
+
+<ListBox    Name="RecruitList"                                              XPos="295"      YPos="633"      Width="1265"     Height="256" FontSize="17" RowHeight="30" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
+<Column     Name="GangName"     Header="Recruitable Gang"           Offset="0"  />
+<Column     Name="Number"       Header="Men"                        Offset="281"  />
+<Column     Name="Combat"       Header="Combat"                     Offset="386"  />
+<Column     Name="Magic"        Header="Magic"                      Offset="491"  />
+<Column     Name="Intelligence" Header="Intel."                     Offset="596"  />
+<Column     Name="Agility"      Header="Agility"                    Offset="701"  />
+<Column     Name="Constitution" Header="Tough"                      Offset="806"  />
+<Column     Name="Strength"     Header="Strength"                   Offset="911"  />
+<Column     Name="Service"      Header="Service"                    Offset="1016"  />
+<Column     Name="Charisma"     Header="Charisma"                   Offset="1121"  />
+</ListBox>
+
+<Text       Name="txtMissions"          Text="Available Missions"           XPos="1588"     YPos="11"        Width="281"     Height="45"  FontSize="25"  />
+<ListBox    Name="MissionList"                                              XPos="1588"     YPos="49"       Width="281"     Height="340" FontSize="17" RowHeight="30" Border="1"          Events="true"  />
+<Text       Name="MissionDescription"   Text=""                             XPos="1588"     YPos="394"      Width="281"     Height="162" FontSize="17"  />
+
+<Text       Name="WeaponDescription"    Text="Weapon Level: 0"              XPos="1124"      YPos="949"      Width="422"     Height="45" FontSize="18"  />
+<Button     Name="WeaponUpButton"       Image="UpAds"                       XPos="1195"     YPos="982"      Width="112"      Height="45" Transparency="true" />
+
+<Text       Name="HealPotDescription"   Text="Heal Potions (10g each): 0"   XPos="1588"      YPos="562"      Width="281"     Height="45" FontSize="18"  />
+<Button     Name="BuyHealPotButton"     Image="Buy"                         XPos="1609"      YPos="591"      Width="101"      Height="45" Transparency="true" />
+<Button     Name="BuyHealPotButton10"   Image="Buy10"                       XPos="1609"      YPos="647"      Width="101"      Height="45" Transparency="true" />
+<Button     Name="BuyHealPotButton20"   Image="Buy20"                       XPos="1733"      YPos="647"      Width="101"      Height="45" Transparency="true" />
+<Checkbox   Name="AutoBuyHealToggle"    Text="Auto Buy"                     XPos="1729"      YPos="600"      Width="22"      Height="22" FontSize="17"  />
+
+<Text       Name="NetDescription"       Text="Nets (5g each): 0"            XPos="1588"      YPos="773"      Width="281"     Height="45" FontSize="18"  />
+<Button     Name="BuyNetsButton"        Image="Buy"                         XPos="1609"      YPos="802"      Width="101"      Height="45" Transparency="true" />
+<Button     Name="BuyNetsButton10"      Image="Buy10"                       XPos="1609"      YPos="858"      Width="101"      Height="45" Transparency="true" />
+<Button     Name="BuyNetsButton20"      Image="Buy20"                       XPos="1733"      YPos="858"      Width="101"      Height="45" Transparency="true" />
+<Checkbox   Name="AutoBuyNetsToggle"    Text="Auto Buy"                     XPos="1729"      YPos="811"      Width="22"      Height="22" FontSize="17"  />
+
+
+<Checkbox   Name="ControlCatacombs"     Text=" "                            XPos="169"       YPos="914"      Width="22"      Height="22" FontSize="17"  />
+<Text       Name="Catacombs" Text="Catacombs Missions: Get What Percents"   XPos="211"       YPos="914"      Width="562"     Height="22" FontSize="18"  />
+<Slider     Name="GirlsPercSlider"                                          XPos="176"       YPos="949"      Width="633"     MinValue="0"        MaxValue="100" Value="0" Increment="10" LiveUpdate="true" Hidden="false" Disabled="false"  />
+<Text       Name="GangGetsGirls"        Text="Girls : 34%"                  XPos="176"       YPos="968"      Width="211"     Height="22" FontSize="18"  />
+<Text       Name="GangGetsItems"        Text="Items : 33%"                  XPos="387"      YPos="968"      Width="211"     Height="22" FontSize="18"  />
+<Text       Name="GangGetsBeast"        Text="Beast : 33%"                  XPos="597"      YPos="968"      Width="211"     Height="22" FontSize="18"  />
+<Slider     Name="ItemsPercSlider"                                          XPos="176"       YPos="1005"      Width="633"     MinValue="0"        MaxValue="100" Value="0" Increment="10" LiveUpdate="true" Hidden="false" Disabled="false"  />
+
+<Button     Name="BackButton"           Image="Back"                        XPos="1588"      YPos="970"      Width="281"     Height="56"     Transparency="true"  PushWindow="<back>" />
+</Screen>

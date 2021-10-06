@@ -21,7 +21,7 @@
 #include <SDL_image.h>
 #include "CLog.h"
 #include "utils/DirPath.h"
-#include "interface/cColor.h"
+#include "interface/sColor.h"
 #include "cTimer.h"
 #include "interface/cFont.h"
 #include "sConfig.h"
@@ -70,10 +70,10 @@ bool CGraphics::End()
     return true;
 }
 
-bool CGraphics::InitGraphics(const std::string& caption, int UIWidth, int UIHeight, int WindowWidth, int WindowHeight, bool Fullscreen)
+bool CGraphics::InitGraphics(const std::string& caption, int WindowWidth, int WindowHeight, bool Fullscreen)
 {
-    m_ScreenWidth = UIWidth;
-    m_ScreenHeight = UIHeight;
+    m_ScreenWidth = WindowWidth;
+    m_ScreenHeight = WindowHeight;
     m_Fullscreen = Fullscreen;
 
     // init SDL
@@ -97,6 +97,13 @@ bool CGraphics::InitGraphics(const std::string& caption, int UIWidth, int UIHeig
     // Setup the screen
     g_LogFile.info("interface", "Determining Fullscreen or Windowed Mode");
     if (m_Fullscreen) {
+        // Get Desktop Mode
+        SDL_DisplayMode desktop_mode;
+        SDL_GetDesktopDisplayMode(0, &desktop_mode);
+        g_LogFile.info("interface", "Desktop Display Mode = ", desktop_mode.w, " x ", desktop_mode.h);
+        m_ScreenWidth  = desktop_mode.w;
+        m_ScreenHeight = desktop_mode.h;
+
         SDL_CreateWindowAndRenderer(0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP, &m_Window, &m_Renderer);
     }
     else {
@@ -174,11 +181,6 @@ cFont CGraphics::LoadFont(const std::string& font, int size)
     cFont f{this};
     f.LoadFont(font, size);
     return f;
-}
-
-cFont CGraphics::LoadNormalFont(int size) {
-    extern cConfig cfg;
-    return LoadFont(cfg.fonts.normal(), size);
 }
 
 cSurface CGraphics::LoadImage(std::string filename, int width, int height, bool transparent) {

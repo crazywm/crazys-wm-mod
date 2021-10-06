@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Config>
-    <Entry Key="font.font" Value="segoeui.ttf"/>
-    <Entry Key="interface.width" Value="1366"/>
-    <Entry Key="interface.height" Value="768"/>
-</Config>

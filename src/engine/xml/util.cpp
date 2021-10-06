@@ -20,7 +20,7 @@
 #include "xml/util.h"
 #include <tinyxml2.h>
 #include "CLog.h"
-#include "interface/cColor.h"
+#include "interface/sColor.h"
 #include "utils/piecewise_linear.h"
 #include "xml/getattr.h"
 

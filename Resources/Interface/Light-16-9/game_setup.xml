@@ -1,0 +1,14 @@
+<Screen>
+    <Window     Name="GameSetup"                                                XPos="141"       YPos="20"       Width="1546"    Height="1041"    Border="1"  />
+    <Text       Name="ScreenHeader"             Text="Settings"                 XPos="3"        YPos="0"        Width="281"     Height="84"     FontSize="56"  />
+    <Button     Name="OkButton"                 Image="Ok"                      XPos="661"      YPos="982"      Width="180"     Height="45"     Transparency="true" />
+    <Button     Name="RevertButton"             Image="Revert"                  XPos="932"      YPos="982"      Width="101"      Height="45"     Transparency="true" />
+    <Button     Name="BackButton"               Image="Back"                    XPos="1124"      YPos="973"      Width="267"     Height="53"     Transparency="true"  PushWindow="<back>" />
+
+    <ListBox    Name="SettingsList"                                                 XPos="28"       YPos="112"       Width="1490"     Height="771"    FontSize="17"       RowHeight="30"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="false"   >
+        <Column     Name="Name"               Header="Name"                  Offset="0" />
+        <Column     Name="Desc"               Header="Description"           Offset="281" />
+        <Column     Name="Value"              Header="Value"                 Offset="1124" />
+    </ListBox>
+
+</Screen>

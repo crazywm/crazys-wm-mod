@@ -33,16 +33,13 @@
 #include "widgets/cImageItem.h"
 #include "widgets/cScrollBar.h"
 #include "interface/CGraphics.h"
-#include "interface/cColor.h"
-#include "sConfig.h"
+#include "interface/sColor.h"
 #include <algorithm>
 #include <cassert>
+#include "interface/cTheme.h"
+#include "widgets/theme_ids.h"
+using namespace widgets_theme;
 
-using namespace std;
-
-extern sColor g_WindowBorderColor;
-extern sColor g_WindowBackgroundColor;
-extern cConfig cfg;
 
 cInterfaceWindow::~cInterfaceWindow() = default;
 
@@ -116,9 +113,9 @@ void cInterfaceWindow::Draw(const CGraphics& gfx)
 void cInterfaceWindow::AddButton(std::string image, int& ID, int x, int y, int width, int height, bool transparency)
 {
     std::string dp = ButtonPath(image);
-    string on = dp + "On.png";
-    string off = dp + "Off.png";
-    string disabled;
+    std::string on = dp + "On.png";
+    std::string off = dp + "Off.png";
+    std::string disabled;
     disabled = dp + "Disabled.png";
     ID = AddButton(off, disabled, on, x, y, width, height, transparency);
 }
@@ -141,7 +138,7 @@ cScrollBar* cInterfaceWindow::AddScrollBar(int x, int y, int width, int height, 
 {
     int ID = m_Widgets.size();
     auto newScrollBar = std::make_unique<cScrollBar>(this, ID, x + m_XPos, y + m_YPos, width, height, visibleitems);
-    newScrollBar->m_ScrollAmount = cfg.resolution.list_scroll();
+    newScrollBar->m_ScrollAmount = window_manager().GetTheme().list_scroll();
     m_Widgets.push_back(std::move(newScrollBar));
     return (cScrollBar*)m_Widgets.back().get();
 }
@@ -170,7 +167,7 @@ void cInterfaceWindow::HideWidget(int id, bool hide)
     m_Widgets.at(id)->SetHidden(hide);
 }
 
-void cInterfaceWindow::AddImage(int & id, string filename, int x, int y, int width, int height, int min_width, int min_height)
+void cInterfaceWindow::AddImage(int & id, std::string filename, int x, int y, int width, int height, int min_width, int min_height)
 {
     width = (int)((float)width);
     height = (int)((float)height);
@@ -194,7 +191,7 @@ cImageItem* cInterfaceWindow::GetImage(int id)
 }
 
 
-void cInterfaceWindow::SetImage(int id, string image)
+void cInterfaceWindow::SetImage(int id, std::string image)
 {
     if(id < 0) return;
     cImageItem * item = GetImage(id);
@@ -245,11 +242,13 @@ void cInterfaceWindow::CreateWindow(int x, int y, int width, int height, int Bor
 {
     m_BorderSize = BorderSize;
     SetPosition(x, y, width, height);
-    m_Border = GetGraphics().CreateSurface(width, height, g_WindowBorderColor);
-    m_Background = GetGraphics().CreateSurface(width - (BorderSize * 2), height - (BorderSize * 2), g_WindowBackgroundColor);
+    m_Border = GetGraphics().CreateSurface(width, height,
+                                           window_manager().GetTheme().get_color(WindowBorderColor, {0, 0, 0}));
+    m_Background = GetGraphics().CreateSurface(width - (BorderSize * 2), height - (BorderSize * 2),
+                                               window_manager().GetTheme().get_color(WindowBackgroundColor, {140, 191, 228}));
 }
 
-string cInterfaceWindow::GetEditBoxText(int ID)
+std::string cInterfaceWindow::GetEditBoxText(int ID)
 {
     return GetEditBox(ID)->GetText();
 }
@@ -348,7 +347,7 @@ cSlider* cInterfaceWindow::GetSlider(int id)
 }
 
 
-void cInterfaceWindow::AddCheckbox(int & ID, int x, int y, int width, int height, string text, int size, bool leftorright)
+void cInterfaceWindow::AddCheckbox(int & ID, int x, int y, int width, int height, std::string text, int size, bool leftorright)
 {
     width = (int)((float)width);
     height = (int)((float)height);
@@ -368,7 +367,7 @@ cCheckBox* cInterfaceWindow::GetCheckBox(int id) {
     return dynamic_cast<cCheckBox*>(m_Widgets[id].get());
 }
 
-void cInterfaceWindow::AddTextItem(int & ID, int x, int y, int width, int height, string text, int size,
+void cInterfaceWindow::AddTextItem(int & ID, int x, int y, int width, int height, std::string text, int size,
     bool force_scrollbar, int red, int green, int blue)
 {
     width = (int)((float)width);
@@ -384,7 +383,7 @@ void cInterfaceWindow::AddTextItem(int & ID, int x, int y, int width, int height
     m_Widgets.push_back(std::move(newTextItem));
 }
 
-void cInterfaceWindow::EditTextItem(string text, int ID, bool as_table)
+void cInterfaceWindow::EditTextItem(std::string text, int ID, bool as_table)
 {
     if (ID == -1) return;
 
@@ -419,12 +418,12 @@ int cInterfaceWindow::GetListBoxSize(int ID)
     return GetListBox(ID)->NumItems();
 }
 
-void cInterfaceWindow::SetSelectedItemText(int listBoxID, int itemID, string data)
+void cInterfaceWindow::SetSelectedItemText(int listBoxID, int itemID, std::string data)
 {
     GetCListBox(listBoxID)->SetElementText(itemID, data);
 }
 
-void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, string text, int color)
+void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, std::string text, int color)
 {
     CellData value = text;
     AddToListBox(listBoxID, dataID,
@@ -437,7 +436,7 @@ void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, CellData value, s
     AddToListBox(listBoxID, dataID, std::vector<FormattedCellData>{{std::move(value), std::move(formatted)}}, color);
 }
 
-void cInterfaceWindow::SetSelectedItemColumnText(int listBoxID, int itemID, string data, const std::string& column)
+void cInterfaceWindow::SetSelectedItemColumnText(int listBoxID, int itemID, std::string data, const std::string& column)
 {
     GetCListBox(listBoxID)->SetElementColumnText(itemID, std::move(data), column);
 }
@@ -461,7 +460,7 @@ void cInterfaceWindow::SortColumns(int listBoxID, const std::vector<std::string>
     GetCListBox(listBoxID)->SetColumnSort(column_name);
 }
 
-void cInterfaceWindow::SortListItems(int listBoxID, string column_name, bool Desc)
+void cInterfaceWindow::SortListItems(int listBoxID, std::string column_name, bool Desc)
 {
     GetCListBox(listBoxID)->SortByColumn(column_name, Desc);
 }
@@ -476,7 +475,7 @@ int cInterfaceWindow::GetSelectedItemFromList(int listBoxID)
     return GetListBox(listBoxID)->GetSelectedID();
 }
 
-string cInterfaceWindow::GetSelectedTextFromList(int listBoxID)
+std::string cInterfaceWindow::GetSelectedTextFromList(int listBoxID)
 {
     return GetCListBox(listBoxID)->GetSelectedText();
 }

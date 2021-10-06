@@ -130,7 +130,7 @@ public:
 
     // Text Items
     void EditTextItem(std::string text, int ID, bool as_table=false);
-    void AddTextItem(int & ID, int x, int y, int width, int height, std::string text, int size = 16, bool force_scrollbar = false, int red = 0, int green = 0, int blue = 0);
+    void AddTextItem(int & ID, int x, int y, int width, int height, std::string text, int size = 16, bool force_scrollbar = false, int red = -1, int green = -1, int blue = -1);
 
     cTextItem* GetTextItem(int id);
 

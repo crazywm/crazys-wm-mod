@@ -20,6 +20,7 @@
 #define __CINTERFACEWINDOWXML_H
 
 #include "interface/cInterfaceWindow.h"
+#include <boost/optional/optional_fwd.hpp>
 
 struct sXmlWidgetBase {
     std::string name;
@@ -109,12 +110,18 @@ public:
     void widget_image_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw);
     void widget_slider_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw);
 
-    int get_id(std::string a, std::string b = "", std::string c = "", std::string d = "");
+    int get_id(std::string a, std::string b = "", std::string c = "");
     int get_id_optional(const std::string& name) const;
     void add_widget(std::string widget_name,int x,int y,std::string seq, const widget_map_t& widgets);
 
 private:
     virtual void set_ids() = 0;
+
+    void read_generic(tinyxml2::XMLElement& el, sXmlWidgetBase& data) const;
+    int read_x_coordinate(tinyxml2::XMLElement& element, const char* attribute) const;
+    int read_y_coordinate(tinyxml2::XMLElement& element, const char* attribute) const;
+    int read_width(tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const;
+    int read_height(tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const;
 };
 
 #endif

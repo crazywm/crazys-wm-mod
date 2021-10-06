@@ -44,4 +44,6 @@ private:
 
     int theme_id = -1;
     int fullscreen_id = -1;
+    int width_id = -1;
+    int height_id = -1;
 };

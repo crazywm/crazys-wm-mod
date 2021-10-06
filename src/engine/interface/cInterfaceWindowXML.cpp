@@ -26,6 +26,8 @@
 
 #include "widgets/cListBox.h"
 #include "interface/cWindowManager.h"
+#include "include/interface/cTheme.h"
+#include <boost/optional.hpp>
 
 cInterfaceWindowXML::cInterfaceWindowXML(const char* base_file) :
         cInterfaceWindow(base_file),
@@ -41,7 +43,7 @@ void cInterfaceWindowXML::load(cWindowManager* wm)
 {
     cInterfaceWindow::load(wm);
     DirPath xml_source = {};
-    xml_source << "Resources" << "Interface" << wm->GetTheme() << m_ScreenName;
+    xml_source << "Resources" << "Interface" << wm->GetTheme().directory() << m_ScreenName;
     auto doc = LoadXMLDocument(xml_source.str());
     widget_map_t widgets;
     /*
@@ -132,8 +134,8 @@ void cInterfaceWindowXML::place_widget(tinyxml2::XMLElement& el, const widget_ma
     *    sequence number to generate new names
     */
     std::string name = GetStringAttribute(el, "Definition");
-    int x = GetIntAttribute(el, "XPos");
-    int y = GetIntAttribute(el, "YPos");
+    int x = read_x_coordinate(el, "XPos");
+    int y = read_y_coordinate(el, "YPos");
     std::string seq = GetStringAttribute(el, "Seq");
     g_LogFile.debug("interface", "Placing Widget '", name, "'");
     add_widget(name, x, y, seq, widgets);
@@ -230,8 +232,9 @@ void cInterfaceWindowXML::add_widget(std::string widget_name, int x, int y, std:
 
 void cInterfaceWindowXML::read_window_definition(tinyxml2::XMLElement& el)
 {
-    CreateWindow(GetIntAttribute(el, "XPos"), GetIntAttribute(el, "YPos"),
-            GetIntAttribute(el, "Width"), GetIntAttribute(el, "Height"), GetIntAttribute(el, "Border"));
+    CreateWindow(read_x_coordinate(el, "XPos"), read_y_coordinate(el, "YPos"),
+            read_width(el, "Width", boost::none), read_height(el, "Height", boost::none),
+            GetIntAttribute(el, "Border"));
 }
 
 void cInterfaceWindowXML::read_editbox_definition(tinyxml2::XMLElement& el)
@@ -244,16 +247,40 @@ void cInterfaceWindowXML::read_editbox_definition(tinyxml2::XMLElement& el)
     register_id(id, wdg.name);
 }
 
+int cInterfaceWindowXML::read_x_coordinate(tinyxml2::XMLElement& element, const char* attribute) const {
+    return window_manager().GetTheme().calc_x(GetIntAttribute(element, attribute));
+}
+
+int cInterfaceWindowXML::read_y_coordinate(tinyxml2::XMLElement& element, const char* attribute) const {
+    return window_manager().GetTheme().calc_y(GetIntAttribute(element, attribute));
+}
+
+int cInterfaceWindowXML::read_width(tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const {
+    if(!fallback) {
+        return window_manager().GetTheme().calc_w(GetIntAttribute(element, attribute));
+    } else {
+        return window_manager().GetTheme().calc_w(element.IntAttribute(attribute, fallback.value()));
+    }
+}
+
+int cInterfaceWindowXML::read_height(tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const {
+    if(!fallback) {
+        return window_manager().GetTheme().calc_h(GetIntAttribute(element, attribute));
+    } else {
+        return window_manager().GetTheme().calc_h(element.IntAttribute(attribute, fallback.value()));
+    }
+}
+
 void cInterfaceWindowXML::read_listbox_definition(tinyxml2::XMLElement& el)
 {
     // TODO widget_listbox seems incomplete, leave like this for now
     std::string name = GetStringAttribute(el, "Name");
-    int x = GetIntAttribute(el, "XPos");
-    int y = GetIntAttribute(el, "YPos");
-    int w = GetIntAttribute(el, "Width");
-    int h = GetIntAttribute(el, "Height");
-    int fontsize = GetFallbackIntAttribute(el, "FontSize", 10);
-    int rowheight = GetFallbackIntAttribute(el, "RowHeight", 20);
+    int x = read_x_coordinate(el, "XPos");
+    int y = read_y_coordinate(el, "YPos");
+    int w = read_width(el, "Width", boost::none);
+    int h = read_height(el, "Height", boost::none);
+    int fontsize = read_height(el, "FontSize", 10);
+    int rowheight = read_height(el, "RowHeight", 20);
 
     int border_size = el.IntAttribute("Border", 1);
     bool events = el.BoolAttribute("Events", true);
@@ -277,7 +304,7 @@ void cInterfaceWindowXML::read_listbox_definition(tinyxml2::XMLElement& el)
         if (tag == "Column")   // hey, we've got a column definition in this listbox
         {
             std::string name = GetStringAttribute(sub_el, "Name");
-            int offset = sub_el.IntAttribute("Offset", 0);
+            int offset = read_width(sub_el, "Offset", 0);
             bool skip = sub_el.BoolAttribute("Skip", false);
             std::string header = GetDefaultedStringAttribute(sub_el, "Header", name.c_str());
 
@@ -298,28 +325,24 @@ void cInterfaceWindowXML::read_listbox_definition(tinyxml2::XMLElement& el)
 }
 
 
-void read_generic(tinyxml2::XMLElement& el, sXmlWidgetBase& data)
+void cInterfaceWindowXML::read_generic(tinyxml2::XMLElement& el, sXmlWidgetBase& data) const
 {
     /*
     *    get the button name - we'll use this to match up
     *    interface IDs
     */
     data.name = GetStringAttribute(el, "Name");
-    data.x = GetIntAttribute(el, "XPos");
-    data.y = GetIntAttribute(el, "YPos");
-    data.w = GetIntAttribute(el, "Width");
-    if(data.h == -1) {
-        data.h = GetIntAttribute(el, "Height");
-    } else {
-        data.h = el.IntAttribute("Height", data.h);
-    }
+    data.x = read_x_coordinate(el, "XPos");
+    data.y = read_y_coordinate(el, "YPos");
+    data.w = read_width(el, "Width", boost::none);
+    data.h = read_height(el, "Height", data.h);
     data.hide = el.BoolAttribute("Hidden", false);
 }
 
 void cInterfaceWindowXML::widget_editbox_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
 {
     read_generic(el, xw);
-    xw.fontsize = el.IntAttribute("FontSize", 16);
+    xw.fontsize = read_height(el, "FontSize", 16);
     xw.bordersize = el.IntAttribute("Border", xw.bordersize);
     xw.multi = el.BoolAttribute("Multi", xw.multi);
     xw.events = el.BoolAttribute("Events", xw.events);
@@ -337,15 +360,15 @@ void cInterfaceWindowXML::widget_checkbox_item(tinyxml2::XMLElement& el, sXmlWid
 {
     read_generic(el, xw);
     xw.text = GetStringAttribute(el, "Text");
-    xw.fontsize = GetIntAttribute(el, "FontSize");
+    xw.fontsize = read_height(el, "FontSize", 11);
     xw.leftorright = GetFallbackBoolAttribute(el, "LeftOrRight", true);
 }
 
 void cInterfaceWindowXML::widget_widget(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
 {
     xw.name = GetStringAttribute(el, "Definition");
-    xw.x = GetIntAttribute(el, "XPos");
-    xw.y = GetIntAttribute(el, "YPos");
+    xw.x = read_x_coordinate(el, "XPos");
+    xw.y = read_y_coordinate(el, "YPos");
     xw.seq = GetStringAttribute(el, "Seq");
 }
 
@@ -407,21 +430,18 @@ void cInterfaceWindowXML::widget_slider_item(tinyxml2::XMLElement& el, sXmlWidge
 {
     xw.stat = false;
     xw.events = true;
-    xw.r = 0; xw.g = 100; xw.b = 0; xw.h = 5;
 
     read_generic(el, xw);
-    el.QueryIntAttribute("Increment", &xw.h);
-    el.QueryIntAttribute("MinValue", &xw.r);
-    el.QueryIntAttribute("MaxValue", &xw.g);
-    el.QueryIntAttribute("Value", &xw.b);
+    xw.h = el.IntAttribute("Increment", 5);
+    xw.r = el.IntAttribute("MinValue", 0);
+    xw.g = el.IntAttribute("MaxValue", 100);
+    xw.b = el.IntAttribute("Value", 0);
     el.QueryBoolAttribute("Disabled", &xw.stat);
     el.QueryBoolAttribute("LiveUpdate", &xw.events);
 
-    // for some reason, optional ints above are unfortunately being set to 0 when not present; correct for that
-    if (xw.r == 0 && xw.g == 0)    xw.g = 100;
+    // enforce constraints
     if (xw.b < xw.r)            xw.b = xw.r;
     if (xw.b > xw.g)            xw.b = xw.g;
-    if (xw.h == 0)                xw.h = 5;
 }
 
 void cInterfaceWindowXML::widget_text_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
@@ -429,11 +449,11 @@ void cInterfaceWindowXML::widget_text_item(tinyxml2::XMLElement& el, sXmlWidgetP
     read_generic(el, xw);
 
     xw.text = GetStringAttribute(el, "Text");
-    xw.fontsize = GetIntAttribute(el, "FontSize");
+    xw.fontsize = read_height(el, "FontSize", 11);
     el.QueryBoolAttribute("ForceScrollbar", &xw.force_scroll);
-    el.QueryIntAttribute("Red", &xw.r);
-    el.QueryIntAttribute("Green", &xw.g);
-    el.QueryIntAttribute("Blue", &xw.b);
+    xw.r = el.IntAttribute("Red", -1);
+    xw.g = el.IntAttribute("Green", -1);
+    xw.b = el.IntAttribute("Blue", -1);
 }
 
 void cInterfaceWindowXML::widget_button_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
@@ -468,8 +488,8 @@ void cInterfaceWindowXML::widget_image_item(tinyxml2::XMLElement& el, sXmlWidget
 
     read_generic(el, xw);
     xw.file = GetStringAttribute(el, "File");
-    xw.min_width = el.IntAttribute("MinWidth", -1);
-    xw.min_height = el.IntAttribute("MinHeight", -1);
+    xw.min_width = read_width(el, "MinWidth", -1);
+    xw.min_height = read_height(el, "MinHeight", -1);
 }
 
 void cInterfaceWindowXML::register_id(int id, std::string name)
@@ -479,22 +499,20 @@ void cInterfaceWindowXML::register_id(int id, std::string name)
     id_to_name[id] = name;
 }
 
-int cInterfaceWindowXML::get_id(std::string a, std::string b, std::string c, std::string d)
+int cInterfaceWindowXML::get_id(std::string a, std::string b, std::string c)
 {
     if (name_to_id.find(a) != name_to_id.end())    return name_to_id[a];
     if (name_to_id.find(b) != name_to_id.end())    return name_to_id[b];
     if (name_to_id.find(c) != name_to_id.end())    return name_to_id[c];
-    if (name_to_id.find(d) != name_to_id.end())    return name_to_id[d];
 
     bool un = false;
     if (a == "*Unused*" || a == "*Optional*")    { un=true; a=""; }
     if (b == "*Unused*" || b == "*Optional*")    { un=true; b=""; }
     if (c == "*Unused*" || c == "*Optional*")    { un=true; c=""; }
-    if (d == "*Unused*" || d == "*Optional*")    { un=true; d=""; }
 
     if (!un) {
         g_LogFile.error("interface", "setting ids for interface ", (un ? " but it is not used or optional " : ""),
-                        "- acceptable names for this item are : '", a, "', '", b, "', '", c, "', '", d, "'. Please check ", m_ScreenName); }
+                        "- acceptable names for this item are : '", a, "', '", b, "', '", c, "'. Please check ", m_ScreenName); }
     return -1;
 }
 

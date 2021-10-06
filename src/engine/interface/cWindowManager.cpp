@@ -27,10 +27,11 @@
 
 #include <cassert>
 #include <utility>
+#include "include/interface/cTheme.h"
 
 extern cScreenGetInput*    g_GetInput;
 
-cWindowManager::cWindowManager(CGraphics* g, std::string theme) :
+cWindowManager::cWindowManager(CGraphics* g, std::unique_ptr<cTheme> theme) :
     m_GFX(g), m_Theme(std::move(theme)) {
 
 }
@@ -338,7 +339,7 @@ bool cWindowManager::RemoveActiveGirlFromCycle() {
     return true;
 }
 
-const std::string& cWindowManager::GetTheme() const { return m_Theme; }
+const cTheme& cWindowManager::GetTheme() const { return *m_Theme; }
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -350,7 +351,7 @@ cWindowManager& window_manager()
     return *WindowManager;
 }
 
-void InitInterface(CGraphics* g, std::string theme) {
+void InitInterface(CGraphics* g, std::unique_ptr<cTheme> theme) {
     assert(!WindowManager);
     WindowManager = std::make_unique<cWindowManager>(g, std::move(theme));
 }
@@ -365,6 +366,10 @@ void ShutdownInterface()
 CGraphics& cUIWidget::GetGraphics()
 {
     return m_Parent->GetGraphics();
+}
+
+const cTheme& cUIWidget::GetTheme() const {
+    return window_manager().GetTheme();
 }
 
 cInterfaceObject::cInterfaceObject() {
