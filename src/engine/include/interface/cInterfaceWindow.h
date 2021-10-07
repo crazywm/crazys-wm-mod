@@ -118,7 +118,7 @@ public:
     void SetSelectedItemColumnText(int listBoxID, int itemID, std::string data, const std::string& column);
     void SortColumns(int listBoxID, const std::vector<std::string>& column_name);
     void SortListItems(int listBoxID, std::string column_name, bool Desc = false);
-    void SetSelectedItemTextColor(int listBoxID, int itemID, const SDL_Color& text_color);
+    void SetSelectedItemTextColor(int listBoxID, int itemID, const sColor& color);
 
     cScrollBar* AddScrollBar(int x, int y, int width, int height, int visibleitems);
 

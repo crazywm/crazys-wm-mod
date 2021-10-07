@@ -441,9 +441,9 @@ void cInterfaceWindow::SetSelectedItemColumnText(int listBoxID, int itemID, std:
     GetCListBox(listBoxID)->SetElementColumnText(itemID, std::move(data), column);
 }
 
-void cInterfaceWindow::SetSelectedItemTextColor(int listBoxID, int itemID, const SDL_Color& text_color)
+void cInterfaceWindow::SetSelectedItemTextColor(int listBoxID, int itemID, const sColor& color)
 {
-    GetCListBox(listBoxID)->SetElementTextColor(itemID, text_color);
+    GetCListBox(listBoxID)->SetElementTextColor(itemID, color);
 }
 
 void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, std::vector<FormattedCellData> data, int color)

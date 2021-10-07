@@ -8,6 +8,7 @@
 * reworked themes: automatically adapt to resolution
 * in fullscreen mode, render in screen resolution
 * text item and check box text color can now be specified
+* added an incomplete version for a dark mode @Shadowflux
 
 ## Fixes
 * text in new game screen no longer resets on tab / when returning from more details screen

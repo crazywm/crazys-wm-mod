@@ -1,0 +1,79 @@
+<InterfaceColors>
+    <Color Name = "CheckBoxBorder"                      R="66"  G="66"  B="66"/>
+    <Color Name = "CheckBoxBackground"                  R="33"  G="33"  B="33"/>
+    <Color Name = "CheckBoxText"                        R="245" G="245" B="245"/>
+
+    <Color Name = "ChoiceMessageText"                   R="245" G="245" B="245"/>
+    <Color Name = "ChoiceMessageBorder"                 R="33"  G="33"  B="33"/>
+    <Color Name = "ChoiceMessageHeader"                 R="66"  G="66"  B="66"/>
+    <Color Name = "ChoiceMessageBackground"             R="33"  G="33"  B="33"/>
+    <Color Name = "ChoiceMessageSelected"               R="97"  G="97"  B="97"/>
+
+    <Color Name = "EditBoxBorder"                       R="66"  G="66"  B="66"/>
+    <Color Name = "EditBoxBackground"                   R="33"  G="33"  B="33"/>
+    <Color Name = "EditBoxSelected"                     R="97"  G="97"  B="97"/>
+    <Color Name = "EditBoxText"                         R="245" G="245" B="245"/>
+
+    <Color Name = "ListBoxHeaderBackground"             R="33"  G="33"  B="33"/>
+    <Color Name = "ListBoxHeaderBorder"                 R="66"  G="66"  B="66"/>
+    <Color Name = "ListBoxHeaderBorderH"                R="17"  G="17"  B="17"/>
+    <Color Name = "ListBoxHeaderText"                   R="245" G="245" B="245"/>
+    <Color Name = "ListBoxBorder"                       R="33"  G="33"  B="33"/>
+    <Color Name = "ListBoxBackground"                   R="17"  G="17"  B="17"/>
+    <Color Name = "ListBoxText"                         R="245" G="245" B="245"/>
+    <Color Name = "ListBoxElementBorder"                R="66"  G="66"  B="66"/>
+    <Color Name = "ListBoxElementBorderH"               R="97"  G="97"  B="97"/>
+    <Color Name = "ListBoxElementBackground1"           R="66"  G="66"  B="66"/>
+    <Color Name = "ListBoxElementBackground2"           R="183" G="28"  B="28"/>
+    <Color Name = "ListBoxElementBackground3"           R="26"  G="35"  B="126"/>
+    <Color Name = "ListBoxElementBackground4"           R="27"  G="94"  B="32"/>
+    <Color Name = "ListBoxElementBackground5"           R="247" G="127" B="23"/>
+    <Color Name = "ListBoxSelectedElement1"             R="117" G="117" B="117"/>
+    <Color Name = "ListBoxSelectedElement2"             R="211" G="47"  B="47"/>
+    <Color Name = "ListBoxSelectedElement3"             R="40"  G="53"  B="147"/>
+    <Color Name = "ListBoxSelectedElement4"             R="46"  G="125" B="50"/>
+    <Color Name = "ListBoxSelectedElement5"             R="249" G="168" B="37"/>
+
+    <Color Name = "MessageBoxBorder"                    R="66"  G="66"  B="66"/>
+    <Color Name = "MessageBoxBackground1"               R="33"  G="33"  B="33"/>
+    <Color Name = "MessageBoxBackground2"               R="183" G="28"  B="28"/>
+    <Color Name = "MessageBoxBackground3"               R="26"  G="35"  B="126"/>
+    <Color Name = "MessageBoxBackground4"               R="27"  G="94"  B="32"/>
+    <Color Name = "MessageBoxBackground5"               R="247" G="127" B="23"/>
+    <Color Name = "MessageBoxText"                      R="245" G="245" B="245"/>
+
+    <Color Name = "TextColor"                           R="245" G="245" B="245"/>
+
+    <Color Name = "WindowBorder"                        R="33"  G="33"  B="33"/>
+    <Color Name = "WindowBackground"                    R="17"  G="17"  B="17"/>
+
+
+    <Color Name = "ItemRarity0"                         R="000" G="000" B="000"/>
+    <Color Name = "ItemRarity1"                         R="000" G="000" B="100"/>
+    <Color Name = "ItemRarity2"                         R="000" G="000" B="150"/>
+    <Color Name = "ItemRarity3"                         R="000" G="000" B="200"/>
+    <Color Name = "ItemRarity4"                         R="250" G="000" B="000"/>
+    <Color Name = "ItemRarity5"                         R="200" G="000" B="000"/>
+    <Color Name = "ItemRarity6"                         R="150" G="000" B="000"/>
+    <Color Name = "ItemRarity7"                         R="000" G="200" B="000"/>
+    <Color Name = "ItemRarity8"                         R="000" G="150" B="000"/>
+</InterfaceColors>
+
+<!--
+    What I would like to see working.
+<Color Name = "CheckBoxText"                            OldTXT="CHECKBOX TEXT" />
+<Color Name = "TextText"                               OldTXT="TEXT TEXT" />
+<Color Name = "ItemRarityText"                       R="245"   G="245"   B="245"   OldTXT="ITEM RARITY TEXT" />
+    Below ones should affect ListBox Elements Background instead of its Text (These colors are not correct currently)
+-->
+<!--
+<Color Name = "ItemRarity0"                         R="117" G="99"  B="117"/>
+<Color Name = "ItemRarity1"                         R="132" G="99"  B="189"/>
+<Color Name = "ItemRarity2"                         R="162" G="119" B="238"/>
+<Color Name = "ItemRarity3"                         R="179" G="136" B="255"/>
+<Color Name = "ItemRarity4"                         R="189" G="162" B="99"/>
+<Color Name = "ItemRarity5"                         R="238" G="192" B="111"/>
+<Color Name = "ItemRarity6"                         R="255" G="209" B="128"/>
+<Color Name = "ItemRarity7"                         R="150" G="238" B="218"/>
+<Color Name = "ItemRarity8"                         R="167" G="255" B="235"/>
+-->

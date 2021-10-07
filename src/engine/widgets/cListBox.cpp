@@ -571,7 +571,7 @@ void cListBox::SetElementText(int ID, std::string data[], int columns)
                 item.m_Data[i].val_ = data[i];
                 item.m_Data[i].fmt_ = data[i];
                 if(item.m_TextColor) {
-                    m_Font.SetColor({item.m_TextColor->r, item.m_TextColor->g, item.m_TextColor->b});
+                    m_Font.SetColor(item.m_TextColor.value());
                 } else {
                     m_Font.SetColor(GetTheme().get_color(ListBoxTextColor, TextColor));
                 }
@@ -600,7 +600,7 @@ void cListBox::SetElementColumnText(int ID, std::string data, const std::string&
         if (item.m_ID == ID)
         {
             if(item.m_TextColor) {
-                m_Font.SetColor({item.m_TextColor->r, item.m_TextColor->g, item.m_TextColor->b});
+                m_Font.SetColor(item.m_TextColor.value());
             } else {
                 m_Font.SetColor(GetTheme().get_color(ListBoxTextColor, TextColor));
             }
@@ -614,13 +614,13 @@ void cListBox::SetElementColumnText(int ID, std::string data, const std::string&
     ReSortList();
 }
 
-void cListBox::SetElementTextColor(int ID, SDL_Color text_color)
+void cListBox::SetElementTextColor(int ID, sColor color)
 {
     for(auto& item : m_Items) {
         if (item.m_ID == ID)
         {
-            item.m_TextColor = std::make_unique<SDL_Color>(text_color);
-            m_Font.SetColor({text_color.r, text_color.g, text_color.b});
+            item.m_TextColor = color;
+            m_Font.SetColor(color);
             for(unsigned i = 0; i < item.m_Data.size(); ++i) {
                 item.m_PreRendered[i] = m_Font.RenderText(item.m_Data[i].fmt_);
             }

@@ -24,6 +24,7 @@
 #include <vector>
 #include <functional>
 #include <SDL_keyboard.h>
+#include <boost/optional.hpp>
 
 #include "widgets/IListBox.h"
 #include "interface/cInterfaceObject.h"
@@ -44,7 +45,7 @@ struct cListItem
     std::vector<FormattedCellData> m_Data;
 
     int m_ID;    // the id for the item
-    std::unique_ptr<SDL_Color> m_TextColor;
+    boost::optional<sColor> m_TextColor;
     int m_InsertionOrder = -1;      // tracks the order in which elements were put into the list box.
     std::vector<cSurface> m_PreRendered;
 };
@@ -149,7 +150,7 @@ public:
     void AddElement(int ID, std::vector<FormattedCellData> data, int color);
     void SetElementText(int ID, std::string data[], int columns);
     void SetElementColumnText(int ID, std::string data, const std::string& column);
-    void SetElementTextColor(int ID, SDL_Color text_color);
+    void SetElementTextColor(int ID, sColor text_color);
 
     SDL_Rect m_Divider;
 

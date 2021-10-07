@@ -34,6 +34,7 @@
 #include "cShop.h"
 #include "sConfig.h"
 #include "CLog.h"
+#include "interface/cTheme.h"
 
 namespace settings {
     extern const char* MONEY_SELL_ITEM;
@@ -221,8 +222,6 @@ cScreenItemManagement::cScreenItemManagement() : cGameWindow("itemmanagement_scr
 
 static int filter = 0;
 
-static SDL_Color RarityColor[9];
-
 void cScreenItemManagement::load_ids(sItemTransferSide& target, Side side)
 {
     std::string side_str = side == Side::Left ? "Left" : "Right";
@@ -260,39 +259,6 @@ void cScreenItemManagement::set_ids()
     autouse_id        = get_id("AutoUseItems");
     load_ids(m_LeftData, Side::Left);
     load_ids(m_RightData, Side::Right);
-
-
-    // check interface for colors
-    DirPath dpi = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.xml";
-    tinyxml2::XMLDocument doci;
-    if (doci.LoadFile(dpi.c_str()) == tinyxml2::XML_SUCCESS)
-    {
-        for (auto& el : IterateChildElements(*doci.RootElement()))
-        {
-            std::string tag = el.Value();
-            /// TODO move this to all the other interface stuff
-            if (tag == "Color")
-            {
-                int r, g, b;
-                if(el.QueryAttribute("R", &r) == tinyxml2::XML_SUCCESS && el.QueryAttribute("G", &g) == tinyxml2::XML_SUCCESS &&
-                   el.QueryAttribute("B", &b) == tinyxml2::XML_SUCCESS) {
-                    std::string name = el.Attribute("Name");
-                    /* */if (name == "ItemRarity0") sColor::RGBToSDLColor(&RarityColor[0], r, g, b);
-                    else if (name == "ItemRarity1") sColor::RGBToSDLColor(&RarityColor[1], r, g, b);
-                    else if (name == "ItemRarity2") sColor::RGBToSDLColor(&RarityColor[2], r, g, b);
-                    else if (name == "ItemRarity3") sColor::RGBToSDLColor(&RarityColor[3], r, g, b);
-                    else if (name == "ItemRarity4") sColor::RGBToSDLColor(&RarityColor[4], r, g, b);
-                    else if (name == "ItemRarity5") sColor::RGBToSDLColor(&RarityColor[5], r, g, b);
-                    else if (name == "ItemRarity6") sColor::RGBToSDLColor(&RarityColor[6], r, g, b);
-                    else if (name == "ItemRarity7") sColor::RGBToSDLColor(&RarityColor[7], r, g, b);
-                    else if (name == "ItemRarity8") sColor::RGBToSDLColor(&RarityColor[8], r, g, b);
-                } else {
-                    g_LogFile.error("interface", "Error reading Color definition from '", dpi.c_str(), "': ",  el.GetLineNum());
-                }
-
-            }
-        }
-    }
 
     m_LeftData.owners_list->SetArrowHotKeys(SDLK_t, SDLK_g);
     m_RightData.owners_list->SetArrowHotKeys(SDLK_y, SDLK_h);
@@ -610,7 +576,10 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
                 || ((filter == sInventoryItem::Food) && (item_type == sInventoryItem::Makeup))  // passes "consumable" filter?
                     ) {  // passed the filter, so add it
                 AddToListBox(data.items_id, i, it.str());
-                SetSelectedItemTextColor(data.items_id, i, RarityColor[(int)item->m_Rarity]);
+                std::string color_lookup = "ItemRarity_";
+                color_lookup[color_lookup.size()-1] = char(item->m_Rarity) + '0';
+                SetSelectedItemTextColor(data.items_id, i,
+                                         window_manager().GetTheme().get_color(color_lookup, {0, 0, 0}));
 
                 data.items.push_back(item);
                 ++i;

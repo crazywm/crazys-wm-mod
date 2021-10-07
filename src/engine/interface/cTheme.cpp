@@ -38,6 +38,7 @@ sThemeData::sThemeData(std::string filename) : cSimpleKeyValue("Entry", "Key", "
     add_setting("text_scroll", "Text Scroll", positive(3));
     add_setting("font", "Font", "comic.ttf");
     add_setting("directory", "Directory", "Light-16x9");
+    add_setting("color-scheme", "Color Scheme", "LightColors.xml");
     add_setting("width", "Width", positive(1920));
     add_setting("height", "Height", positive(1080));
 
@@ -91,9 +92,9 @@ void cTheme::load(std::string source) {
 
     // load interface colors
     try {
-        DirPath dp = DirPath() << "Resources" << "Interface" << directory() << "InterfaceColors.xml";
+        DirPath dp = DirPath() << "Resources" << "Interface" << "ColorSchemes" << data.get_str("color-scheme");
         auto docInterfaceColors = LoadXMLDocument(dp.c_str());
-        g_LogFile.log(ELogLevel::NOTIFY, "Loading InterfaceColors.xml");
+        g_LogFile.log(ELogLevel::NOTIFY, "Loading ", dp.str());
         const std::string& m_filename = dp.str();
         for (auto& el : IterateChildElements(*docInterfaceColors->RootElement())) {
             std::string tag = el.Value();
