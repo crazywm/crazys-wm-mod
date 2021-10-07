@@ -19,7 +19,6 @@
 #include <cassert>
 #include "cMessageBox.h"
 #include "interface/CGraphics.h"
-#include "sConfig.h"
 #include "CLog.h"
 #include "interface/cFont.h"
 #include <tinyxml2.h>

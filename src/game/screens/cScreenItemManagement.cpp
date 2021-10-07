@@ -32,7 +32,6 @@
 #include "IGame.h"
 #include "cInventory.h"
 #include "cShop.h"
-#include "sConfig.h"
 #include "CLog.h"
 #include "interface/cTheme.h"
 
@@ -212,7 +211,6 @@ struct cInventoryProviderGirl : public IInventoryProvider {
 };
 
 extern bool g_AllTogle;
-extern cConfig cfg;
 extern bool playershopinventory;
 
 cScreenItemManagement::cScreenItemManagement() : cGameWindow("itemmanagement_screen.xml")

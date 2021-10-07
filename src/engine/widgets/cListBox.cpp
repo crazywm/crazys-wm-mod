@@ -24,7 +24,6 @@
 #include "widgets/cListBox.h"
 #include "interface/CGraphics.h"
 #include "interface/sColor.h"
-#include "sConfig.h"
 #include "cScrollBar.h"
 #include "interface/cWindowManager.h"
 #include "interface/cInterfaceWindow.h"

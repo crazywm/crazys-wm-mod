@@ -20,7 +20,6 @@
 #include "utils/DirPath.h"
 #include "interface/CGraphics.h"
 #include "interface/cSurface.h"
-#include "sConfig.h"
 #include <utility>
 #include "interface/sColor.h"
 #include "interface/cTheme.h"

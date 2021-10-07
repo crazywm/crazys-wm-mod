@@ -24,7 +24,6 @@
 #include "interface/sColor.h"
 #include "cTimer.h"
 #include "interface/cFont.h"
-#include "sConfig.h"
 
 CGraphics::CGraphics() : m_ImageCache(this)
 {

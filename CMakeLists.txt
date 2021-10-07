@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
-project(WM VERSION 7.1.1.2)
-set(PROJECT_VERSION_TYPE beta)
+project(WM VERSION 7.1.2.1)
+set(PROJECT_VERSION_TYPE alpha)
 
 # this needs to happen before the find_package calls, because they register the dlls
 # for install under windows

@@ -1,7 +1,6 @@
 # Version 7.1.2alpha1
 
 ## Changes
-* added 1440p interface files
 * show amount of money taken from girl @chris-nada
 * made more gang related settings configurable
 * display girl stat changes from last week @chris-nada
