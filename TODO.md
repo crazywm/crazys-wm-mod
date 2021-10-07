@@ -47,7 +47,6 @@
 ## UI
 * [ ] Per building/global anti preg setting
 * [ ] Game-Mode files
-* [ ] separate logical and actual render size and make configurable
 * [ ] Active Building Widget
 * [ ] LoadGame delete button
 * [ ] Inventory screen resets

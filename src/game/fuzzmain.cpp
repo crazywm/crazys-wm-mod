@@ -38,6 +38,7 @@
 #ifdef ERROR
 #undef ERROR
 #endif
+#include "interface/cTheme.h"
 
 
 
@@ -96,10 +97,10 @@ public:
             if (wdg) {
                 int xmin = wdg->GetXPos();
                 int ymin = wdg->GetYPos();
-                int xmax = wdg->GetWidth();
-                int ymax = wdg->GetHeight();
-                mouse_event.button.x = rand() % (xmax - xmin) + xmin;
-                mouse_event.button.y = rand() % (ymax - ymin) + ymin;
+                int width = wdg->GetWidth();
+                int height = wdg->GetHeight();
+                mouse_event.button.x = rand() % width + xmin;
+                mouse_event.button.y = rand() % height + ymin;
                 break;
             }
         }
@@ -214,7 +215,7 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
     *       init the graphics, with the caption on the titlebar
     */
 
-    if (!gfx.InitGraphics("", cfg.resolution.width(), cfg.resolution.height(), cfg.resolution.width(), cfg.resolution.height(), false))
+    if (!gfx.InitGraphics("", cfg.resolution.width(), cfg.resolution.height(), false))
     {
         g_LogFile.log(ELogLevel::ERROR,"Initializing Graphics");
         return false;
@@ -223,7 +224,10 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
     g_LogFile.log(ELogLevel::NOTIFY, "Graphics Initialized");
 
     g_LogFile.log(ELogLevel::NOTIFY, "Loading Interface");
-    InitInterface(&gfx, "J_1366x768");
+    auto theme = std::make_unique<cTheme>();
+    theme->load(cfg.resolution.resolution());
+    theme->set_screen_size(gfx.GetWidth(), gfx.GetHeight());
+    InitInterface(&gfx, std::move(theme));
     LoadInterface();        // Load the interface
     gfx.GetImageCache().PrintStats();
 
