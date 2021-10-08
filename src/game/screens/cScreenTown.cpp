@@ -28,6 +28,7 @@
 #include "IGame.h"
 #include <sstream>
 #include "cGirls.h"
+#include "InterfaceProcesses.h"
 
 extern bool                        g_WalkAround;
 extern bool                        g_AllTogle;
@@ -86,6 +87,7 @@ void cScreenTown::set_ids()
     brothel4_id         = get_id("Brothel4");
     brothel5_id         = get_id("Brothel5");
     brothel6_id         = get_id("Brothel6");
+    next_week_id        = get_id("Next Week");
 
     SetButtonCallback(brothel0_id, [this]() { check_building(0); });
     SetButtonCallback(brothel1_id, [this]() { check_building(1); });
@@ -99,6 +101,12 @@ void cScreenTown::set_ids()
     SetButtonCallback(arena_id,    [this]() { check_building(9); });
     SetButtonCallback(studio_id,   [this]() { check_building(10); });
     SetButtonCallback(clinic_id,   [this]() { check_building(11); });
+    SetButtonCallback(next_week_id, [this]() {
+        if (!is_ctrl_held()) { AutoSaveGame(); }
+        // need to switch the windows first, so that any new events will show up!
+        push_window("Turn Summary");
+        NextWeek();
+    });
     SetButtonCallback(house_id,    [this]() {
         set_active_building(g_Game->buildings().building_with_type(BuildingType::HOUSE));
         push_window("Player House");

@@ -29,10 +29,10 @@
 <Text       Name="ShiftHeader"          Text="Transfer Item(s)"             XPos="843"      YPos="368"      Width="211"     Height="35"     FontSize="22"  />
 <Text       Name="PlayerGold"           Text="Your Gold"                    XPos="773"      YPos="429"      Width="351"     Height="45"     FontSize="22"  />
 <Text       Name="ItemDesc"             Text=""                             XPos="738"      YPos="492"      Width="394"     Height="352"    FontSize="14"  />
-<Image      Name="IndicateLeft"         File="imgArrowLeft.png"             XPos="732"      YPos="875"      Width="62"      Height="84"     />
+<Image      Name="IndicateLeft"         File="imgArrowLeft.png"             XPos="732"      YPos="875"      Width="62"      Height="84"     Dir="Widgets" />
 <Button     Name="EquipLeftButton"      Image="Equip"                       XPos="756"      YPos="872"      Width="112"      Height="45"     Transparency="true" />
 <Button     Name="UnequipLeftButton"    Image="Unequip"                     XPos="756"      YPos="917"      Width="112"      Height="45"     Transparency="true" />
-<Image      Name="IndicateRight"        File="imgArrowRight.png"            XPos="1075"      YPos="875"      Width="62"      Height="84"     />
+<Image      Name="IndicateRight"        File="imgArrowRight.png"            XPos="1075"      YPos="875"      Width="62"      Height="84"     Dir="Widgets" />
 <Button     Name="EquipRightButton"     Image="Equip"                       XPos="1001"      YPos="872"      Width="112"      Height="45"     Transparency="true" />
 <Button     Name="UnequipRightButton"   Image="Unequip"                     XPos="1001"      YPos="917"      Width="112"      Height="45"     Transparency="true" />
 <Checkbox   Name="AutoUseItems"         Text="Autouse Consumables"          XPos="831"      YPos="984"      Width="22"      Height="22"     FontSize="17" />

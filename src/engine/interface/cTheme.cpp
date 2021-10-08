@@ -38,6 +38,7 @@ sThemeData::sThemeData(std::string filename) : cSimpleKeyValue("Entry", "Key", "
     add_setting("text_scroll", "Text Scroll", positive(3));
     add_setting("font", "Font", "comic.ttf");
     add_setting("directory", "Directory", "Light-16x9");
+    add_setting("images", "Image Directory", "Default");
     add_setting("color-scheme", "Color Scheme", "LightColors.xml");
     add_setting("width", "Width", positive(1920));
     add_setting("height", "Height", positive(1080));
@@ -89,6 +90,7 @@ void cTheme::load(std::string source) {
     m_BaseWidth = data.get_integer("width");
     m_BaseHeight = data.get_integer("height");
     m_Font = data.get_str("font");
+    m_ImageDirectory = data.get_str("images");
 
     // load interface colors
     try {
@@ -145,4 +147,20 @@ int cTheme::calc_w(int relative_w) const {
 
 int cTheme::calc_h(int relative_h) const {
     return (relative_h * m_ScreenHeight) / m_BaseHeight;
+}
+
+const std::string& cTheme::image_dir() const {
+    return m_ImageDirectory;
+}
+
+std::string cTheme::get_image(const std::string& dir, const std::string& filename) const {
+    DirPath path;
+    path << "Resources" << "Themes" << image_dir() << dir << filename;
+    if(path.exists()) {
+        return path;
+    } else {
+        DirPath fallback;
+        fallback << "Resources" << "Themes" << "Default" << dir << filename;
+        return fallback;
+    }
 }

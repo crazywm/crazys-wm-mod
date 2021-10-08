@@ -168,12 +168,12 @@ void cScreenTurnSummary::process()
     // Draw the image
     if (m_ActiveCategory == Summary_BUILDINGS)
     {
-        SetImage(image_id, active_building().background_image());
+        SetImage(image_id, "Backdrops", active_building().background_image());
         if (imagename_id >= 0)    EditTextItem("", imagename_id);
     }
     else if (m_ActiveCategory == Summary_GANGS)
     {
-        SetImage(image_id, active_building().background_image());
+        SetImage(image_id, "Backdrops", active_building().background_image());
         if (imagename_id >= 0)    EditTextItem("", imagename_id);
     }
     else {
@@ -191,7 +191,7 @@ void cScreenTurnSummary::process()
         }
         else if (Image_Change)
         {
-            SetImage(image_id, "blank.png");
+            SetImage(image_id, "");
             if (imagename_id >= 0)    EditTextItem("", imagename_id);
         }
     }

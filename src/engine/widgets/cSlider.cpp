@@ -28,9 +28,8 @@ cSlider::cSlider(cInterfaceWindow* parent, int ID, int x, int y, int width, int 
     cUIWidget(ID, x ,y, width, 1, parent), m_MinVal(min), m_MaxVal(max), m_Value(value), m_IncrementAmount(increment),
     BGLeft(new SDL_Rect), BGRight(new SDL_Rect)
 {
-    auto load = [this](const char* file){
-        return GetGraphics().LoadImage(ImagePath("Slider").str() + file,
-                -1, -1, true); };
+    auto load = [this](std::string file){
+        return LoadUIImage("Widgets", "Slider" + std::move(file), -1, -1); };
 
     m_ImgButtonDisabled = load("ButtonDisabled.png");
     m_ImgButtonOff = load("ButtonOff.png");

@@ -32,13 +32,14 @@ class cImageItem : public cUIWidget
 {
 public:
     cImageItem(cInterfaceWindow* parent, int id, int x, int y, int width, int height, int mw, int mh);
-    ~cImageItem();
+    ~cImageItem() override;
 
+    void SetThemeImage(const std::string& dir, const std::string& source);
     void SetImage(cSurface image);
     void SetImage(cAnimatedSurface image);
 
-    bool CreateImage(std::string filename, bool transparent=true);
-    bool CreateAnimation(std::string filename);
+    bool SetImage(std::string filename, bool transparent= true);
+    bool SetAnimation(std::string filename);
 
 
     void DrawWidget(const CGraphics& gfx) override;

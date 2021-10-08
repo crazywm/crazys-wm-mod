@@ -31,22 +31,22 @@ void cButton::DrawWidget(const CGraphics& gfx)
 }
 
 cButton::cButton(cInterfaceWindow* parent, const std::string& OffImage, const std::string& DisabledImage,
-        const std::string& OnImage, int ID, int x, int y, int width, int height, bool transparency):
+        const std::string& OnImage, int ID, int x, int y, int width, int height):
     cUIWidget(ID, x, y, width, height, parent)
 {
     if (!OffImage.empty())
     {
-        m_OffImage = GetGraphics().LoadImage(OffImage, m_Width, m_Height, transparency);
+        m_OffImage = LoadUIImage("Buttons", OffImage, m_Width, m_Height);
     }
 
     if (!DisabledImage.empty())
     {
-        m_DisabledImage = GetGraphics().LoadImage(DisabledImage, m_Width, m_Height, transparency);
+        m_DisabledImage = LoadUIImage("Buttons", DisabledImage, m_Width, m_Height);
     }
 
     if (!OnImage.empty())
     {
-        m_OnImage = GetGraphics().LoadImage(OnImage, m_Width, m_Height, transparency);
+        m_OnImage = LoadUIImage("Buttons", OnImage, m_Width, m_Height);
     }
 
     m_CurrImage = &m_OffImage;

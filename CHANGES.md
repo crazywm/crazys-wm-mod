@@ -1,3 +1,11 @@
+# Version 7.1.2alpha2
+
+## Changes
+* Next Week button on town screen
+
+## Fixes
+* Increased text size for message box
+
 # Version 7.1.2alpha1
 
 ## Changes

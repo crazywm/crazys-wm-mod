@@ -46,6 +46,7 @@ private:
     int brothel6_id;        // Brothel 6 map button
     int setup_id;           // setup map button
     int girlimage_id;       // Girl image
+    int next_week_id;       // Next Week Button
 
     bool m_first_walk;
     std::shared_ptr<sGirl> m_MeetingGirl;

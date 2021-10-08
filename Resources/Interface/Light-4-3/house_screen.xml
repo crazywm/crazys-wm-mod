@@ -1,6 +1,6 @@
 <Screen>
 <Window     Name="Player House Window"                                      XPos="287"      YPos="170"      Width="450"     Height="400"    Border="1"/>
-<Image      Name="HouseIcon"            File="House.png"                    XPos="7"       YPos="10"       Width="37"      Height="50"  />
+<Image      Name="HouseIcon"            File="House.png"                    XPos="7"       YPos="10"       Width="37"      Height="50"  Dir="Icons" />
 <Text       Name="ScreenHeader"         Text="Your House"                   XPos="45"       YPos="10"       Width="105"     Height="32"  FontSize="15"  />
 <Text       Name="InteractText"         Text="Interactions: 0"              XPos="7"       YPos="160"      Width="135"     Height="40" FontSize="10"  />
 <Button     Name="BuyInteract"          Image="Buy"                         XPos="15"       YPos="200"      Width="54"      Height="32"  Transparency="true"/>

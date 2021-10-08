@@ -227,9 +227,7 @@ private:
     std::vector<cSurface> m_SelectedElementBackgrounds;      // individual row backgrounds with different color
 
     cSurface m_HeaderBackground;                // the background and border for the multi-column header box
-    std::string m_SortAscImage;                 // image used on a column header when sorting "ascending" on that column
-    std::string m_SortDescImage;                // image used on a column header when sorting "descending" on that column
-    cSurface m_HeaderSortBack;                    // the above two images are copied resized and stored here for actual use
+    cSurface m_HeaderSortBack;                  // the above two images are copied resized and stored here for actual use
     cSurface m_HeaderUnSort;                    // image used for the extra "un-sort" header which removes any custom sort
     cSurface m_ElementBorder;
 

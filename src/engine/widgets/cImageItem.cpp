@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include "interface/cInterfaceWindow.h"
 #include "interface/cAnimatedSurface.h"
 #include "interface/cSurface.h"
+#include "interface/cTheme.h"
 
 cImageItem::cImageItem(cInterfaceWindow* parent, int id, int x, int y, int width, int height,
                        int mw, int mh) : cUIWidget(id, x, y, width, height, parent), m_MinWidth(mw), m_MinHeight(mh)
@@ -31,7 +32,7 @@ cImageItem::cImageItem(cInterfaceWindow* parent, int id, int x, int y, int width
 }
 cImageItem::~cImageItem() = default;
 
-bool cImageItem::CreateImage(std::string filename, bool transparent)
+bool cImageItem::SetImage(std::string filename, bool transparent)
 {
     if (!filename.empty())
     {
@@ -51,6 +52,14 @@ bool cImageItem::CreateImage(std::string filename, bool transparent)
         m_loaded = false;
 
     return false;
+}
+
+void cImageItem::SetThemeImage(const std::string& dir, const std::string& source) {
+    if(dir.empty()) {
+        SetImage(source);
+    } else {
+        SetImage(GetTheme().get_image(dir, source));
+    }
 }
 
 void cImageItem::DrawWidget(const CGraphics& gfx)
@@ -82,7 +91,7 @@ void cImageItem::SetImage(cAnimatedSurface image)
     m_AnimatedImage = std::move(image);
 }
 
-bool cImageItem::CreateAnimation(std::string filename) {
+bool cImageItem::SetAnimation(std::string filename) {
     if (!filename.empty())
     {
         m_loaded = true;

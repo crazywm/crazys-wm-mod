@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef __DirPath_h
-#define __DirPath_h
+#ifndef DirPath_h
+#define DirPath_h
 
 #include <string>
 #include <vector>
@@ -88,6 +88,7 @@ public:
     operator std::string()    { return path; }
 
     bool is_directory() const;
+    bool exists() const;
 
     // Expands environment variables (not yet) and the tilde syntax for
     // home directories (Unix only).
@@ -105,15 +106,5 @@ public:
 inline std::ostream& operator<<(std::ostream& target, const DirPath& content) {
     return target << content.str();
 }
-
-class ImagePath : public DirPath {
-public:
-    ImagePath(const std::string& filename);
-};
-
-class ButtonPath : public DirPath {
-public:
-    ButtonPath(const std::string& filename);
-};
 
 #endif

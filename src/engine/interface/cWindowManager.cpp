@@ -24,6 +24,7 @@
 #include "widgets/cMessageBox.h"
 #include "cChoiceMessage.h"
 #include "interface/cInterfaceObject.h"
+#include "interface/CGraphics.h"
 #include <tinyxml2.h>
 #include "utils/DirPath.h"
 #include "xml/util.h"
@@ -403,6 +404,10 @@ CGraphics& cUIWidget::GetGraphics()
 
 const cTheme& cUIWidget::GetTheme() const {
     return window_manager().GetTheme();
+}
+
+cSurface cUIWidget::LoadUIImage(const std::string& dir, const std::string& filename, int width, int height) {
+    return GetGraphics().LoadImage(GetTheme().get_image(dir, filename), width, height, true);
 }
 
 cInterfaceObject::cInterfaceObject() {

@@ -143,7 +143,6 @@ void cInterfaceWindowXML::place_widget(tinyxml2::XMLElement& el, const widget_ma
 
 void cInterfaceWindowXML::add_widget(std::string widget_name, int x, int y, std::string seq, const widget_map_t& widgets)
 {
-    int id;
     auto widget_it = widgets.find(widget_name);
     if (widget_it == widgets.end())
     {
@@ -181,9 +180,7 @@ void cInterfaceWindowXML::add_widget(std::string widget_name, int x, int y, std:
         int full_y = y + xw.y;
 
         if (tag == "Button") {
-            auto bp = [](const std::string& source) -> std::string { return source.empty() ? "" : ButtonPath(source); };
-            id = AddButton(bp(xw.off), bp(xw.disabled_img), bp(xw.on), full_x, full_y, xw.w, xw.h,
-                           xw.alpha);
+            int id = AddButton(xw.off, xw.disabled_img, xw.on, full_x, full_y, xw.w, xw.h);
             register_id(id, name);
             if(!xw.push_window.empty()) {
                 SetButtonNavigation(id, xw.push_window, false);
@@ -194,28 +191,31 @@ void cInterfaceWindowXML::add_widget(std::string widget_name, int x, int y, std:
             HideWidget(id, xw.hide);
         }
         else if (tag == "Image") {
-            DirPath dp = ImagePath(xw.file);
-            AddImage(id, dp, full_x, full_y, xw.w, xw.h, xw.min_width > 0 ? xw.min_width : xw.w,
+            int id = AddImage(xw.type, xw.file, full_x, full_y, xw.w, xw.h, xw.min_width > 0 ? xw.min_width : xw.w,
                      xw.min_height > 0 ? xw.min_height : xw.h);
             register_id(id, name);
             HideWidget(id, xw.hide);
         }
         else if (tag == "Slider") {
+            int id;
             AddSlider(id, full_x, full_y, xw.w, xw.r, xw.g, xw.h, xw.b, xw.events);
             register_id(id, name);
             HideWidget(id, xw.hide);
             DisableWidget(id, xw.stat);
         }
         else if (tag == "Text") {
+            int id;
             AddTextItem(id, full_x, full_y, xw.w, xw.h, xw.text, xw.fontsize, xw.force_scroll, xw.r, xw.g, xw.b);
             register_id(id, name);
             HideWidget(id, xw.hide);
         }
         else if (tag == "EditBox") {
+            int id;
             AddEditBox(id, full_x, full_y, xw.w, xw.h, xw.bordersize, xw.fontsize);
             register_id(id, name);
         }
         else if (tag == "Checkbox") {
+            int id;
             AddCheckbox(id, full_x, full_y, xw.w, xw.h, xw.text, xw.fontsize, xw.leftorright);
             register_id(id, name);
         }
@@ -385,12 +385,10 @@ void cInterfaceWindowXML::read_checkbox_definition(tinyxml2::XMLElement& el)
 
 void cInterfaceWindowXML::read_image_definition(tinyxml2::XMLElement& el)
 {
-    int id;
     sXmlWidgetPart wdg;
     widget_image_item(el, wdg);
-    DirPath dp = ImagePath(wdg.file);
 
-    AddImage(id, dp, wdg.x, wdg.y, wdg.w, wdg.h, wdg.min_width > 0 ? wdg.min_width : wdg.w,
+    int id = AddImage(wdg.type, wdg.file, wdg.x, wdg.y, wdg.w, wdg.h, wdg.min_width > 0 ? wdg.min_width : wdg.w,
              wdg.min_height > 0 ? wdg.min_height : wdg.h);
     HideWidget(id, wdg.hide);
     register_id(id, wdg.name);
@@ -401,10 +399,8 @@ void cInterfaceWindowXML::read_button_definition(tinyxml2::XMLElement& el)
     int id;
     sXmlWidgetPart wdg;
     widget_button_item(el, wdg);
-    DirPath dp = ImagePath(wdg.file);
 
-    auto bp = [](const std::string& source) -> std::string { return source.empty() ? "" : ButtonPath(source); };
-    id = AddButton(bp(wdg.off), bp(wdg.disabled_img), bp(wdg.on), wdg.x, wdg.y, wdg.w, wdg.h, wdg.alpha);
+    id = AddButton(wdg.off, wdg.disabled_img, wdg.on, wdg.x, wdg.y, wdg.w, wdg.h);
     if(!wdg.push_window.empty()) {
         SetButtonNavigation(id, wdg.push_window, false);
     }
@@ -471,7 +467,6 @@ void cInterfaceWindowXML::widget_button_item(tinyxml2::XMLElement& el, sXmlWidge
     if(const char* on = el.Attribute("On"))             { xw.on = on; }
     if(const char* off = el.Attribute("Off"))         { xw.off = off; }
     if(const char* dis = el.Attribute("Disabled"))     { xw.disabled_img = dis; }
-    xw.alpha = GetBoolAttribute(el, "Transparency");
 
     if(const char* pw = el.Attribute("PushWindow")) {
         xw.push_window = pw;
@@ -488,6 +483,11 @@ void cInterfaceWindowXML::widget_image_item(tinyxml2::XMLElement& el, sXmlWidget
 
     read_generic(el, xw);
     xw.file = GetStringAttribute(el, "File");
+    if(xw.file.empty()) {
+        xw.type = {};
+    } else {
+        xw.type = GetStringAttribute(el, "Dir");
+    }
     xw.min_width = read_width(el, "MinWidth", -1);
     xw.min_height = read_height(el, "MinHeight", -1);
 }

@@ -2,8 +2,8 @@
 <Config>
     <Entry Key="interface.height" Value="768"/>
     <Entry Key="interface.width" Value="1366"/>
-    <Entry Key="interface.fullscreen" Value="true"/>
-    <Entry Key="interface.theme" Value="Light-16-9"/>
+    <Entry Key="interface.fullscreen" Value="false"/>
+    <Entry Key="interface.theme" Value="Dark-16-9"/>
     <Entry Key="folders.prefer_defaults" Value="false"/>
     <Entry Key="folders.default_images" Value="./Resources/DefaultImages"/>
     <Entry Key="folders.items" Value="./Resources/Items"/>

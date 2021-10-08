@@ -183,7 +183,7 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
     g_LogFile.log(ELogLevel::NOTIFY, "Loading Interface");
     auto theme = std::make_unique<cTheme>();
     theme->load(cfg.resolution.resolution());
-    theme->set_screen_size(gfx.GetWidth(), gfx.GetHeight());
+    gfx.SetTheme(*theme);
     InitInterface(&gfx, std::move(theme));
     LoadInterface();        // Load the interface
     gfx.GetImageCache().PrintStats();

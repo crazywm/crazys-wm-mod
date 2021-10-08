@@ -1,7 +1,7 @@
 
 <Screen>
 <Window     Name="Mayor Office Window"                                      XPos="679"      YPos="239"      Width="562"     Height="562" Border="1"  />
-<Image      Name="MayorIcon"            File="MayorsOffice.png"             XPos="14"       YPos="14"       Width="70"      Height="70"                   />
+<Image      Name="MayorIcon"            File="MayorsOffice.png"             XPos="14"       YPos="14"       Width="70"      Height="70"  Dir="Icons" />
 <Text       Name="ScreenHeader"         Text="Town Hall"                    XPos="98"       YPos="14"       Width="450"     Height="45"                  FontSize="28"                   />
 <Text       Name="MayorDetails"         Text=""                             XPos="14"       YPos="84"       Width="534"     Height="408"                  FontSize="20"                   />
 

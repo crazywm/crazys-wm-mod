@@ -30,7 +30,7 @@ class cButton : public cUIWidget
 {
 public:
     cButton(cInterfaceWindow* parent, const std::string& OffImage, const std::string& DisabledImage, const std::string& OnImage, int ID,
-            int x, int y, int width, int height, bool transparency = false);
+            int x, int y, int width, int height);
     ~cButton() override;
 
     bool HandleClick(int x, int y, bool press) override;

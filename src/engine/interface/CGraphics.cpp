@@ -24,6 +24,7 @@
 #include "interface/sColor.h"
 #include "cTimer.h"
 #include "interface/cFont.h"
+#include "interface/cTheme.h"
 
 CGraphics::CGraphics() : m_ImageCache(this)
 {
@@ -43,7 +44,9 @@ CGraphics::~CGraphics()
 void CGraphics::Begin()
 {
     m_FPS->Start();
-    m_BackgroundImage.DrawSurface(0, 0);
+    if(m_BackgroundImage) {
+        m_BackgroundImage.DrawSurface(0, 0);
+    }
 }
 
 bool CGraphics::End()
@@ -82,15 +85,6 @@ bool CGraphics::InitGraphics(const std::string& caption, int WindowWidth, int Wi
         g_LogFile.error("interface", "Poop. SDL_INIT_EVERYTHING failed.");
         g_LogFile.error("interface", SDL_GetError());
         return false;
-    }
-
-    // set window icon
-    g_LogFile.info("interface", "Setting Window Icon");
-    SDL_Surface* loadIcon = IMG_Load(ImagePath("window_icon.png"));
-    if(!loadIcon)
-    {
-        g_LogFile.error("interface", "Error setting window icon (window_icon.png)");
-        g_LogFile.error("interface", SDL_GetError());
     }
 
     // Setup the screen
@@ -133,11 +127,6 @@ bool CGraphics::InitGraphics(const std::string& caption, int WindowWidth, int Wi
         return false;
     }
 
-    if(loadIcon) {
-        SDL_SetWindowIcon(m_Window, loadIcon);
-        SDL_FreeSurface(loadIcon);
-    }
-
     // set window caption
     g_LogFile.info("interface","Setting Window Caption");
     SDL_SetWindowTitle(m_Window, caption.c_str());
@@ -152,15 +141,6 @@ bool CGraphics::InitGraphics(const std::string& caption, int WindowWidth, int Wi
         g_LogFile.error("interface", TTF_GetError());
         return false;
     }
-
-    // Load the universal background image
-    sLoadImageParams lip;
-    lip.Transparency = false;
-    lip.KeepRatio = false;
-    lip.MinWidth = GetWidth();
-    lip.MinHeight = GetHeight();
-    m_BackgroundImage = LoadImage(ImagePath("background.jpg"), lip);
-    g_LogFile.info("interface","Background Image Set");
 
     return true;
 }
@@ -191,4 +171,28 @@ cSurface CGraphics::LoadImage(std::string filename, int width, int height, bool 
     params.Transparency = transparent;
     params.KeepRatio = true;
     return LoadImage(std::move(filename), params);
+}
+
+void CGraphics::SetTheme(cTheme& theme) {
+    theme.set_screen_size(GetWidth(), GetHeight());
+
+    // set window icon
+    g_LogFile.info("interface", "Setting Window Icon");
+    SDL_Surface* loadIcon = IMG_Load(theme.get_image("Icons", "window_icon.png").c_str());
+    if(loadIcon) {
+        SDL_SetWindowIcon(m_Window, loadIcon);
+        SDL_FreeSurface(loadIcon);
+    } else {
+        g_LogFile.error("interface", "Error setting window icon (window_icon.png)");
+        g_LogFile.error("interface", SDL_GetError());
+    }
+
+    // Load the universal background image
+    sLoadImageParams lip;
+    lip.Transparency = false;
+    lip.KeepRatio = false;
+    lip.MinWidth = GetWidth();
+    lip.MinHeight = GetHeight();
+    m_BackgroundImage = LoadImage(theme.get_image("Backdrops", "background.jpg"), lip);
+    g_LogFile.info("interface", "Background Image Set");
 }

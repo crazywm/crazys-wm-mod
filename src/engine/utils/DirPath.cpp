@@ -58,6 +58,7 @@ bool DirPath::is_directory() const {
     }
 }
 
+
 #else
 #include <shlwapi.h>
 const char    DirPath::sep[] = "\\";
@@ -68,16 +69,9 @@ bool DirPath::is_directory() const {
 
 #endif
 
-ImagePath::ImagePath(const std::string& filename)
-        : DirPath()
-{
-    (*this) << "Resources" << "Images" << filename;
-}
-
-ButtonPath::ButtonPath(const std::string& filename)
-        : DirPath()
-{
-    (*this) << "Resources" << "Buttons" << filename;
+bool DirPath::exists() const {
+    std::ifstream file(path.c_str());
+    return file.good();
 }
 
 namespace {

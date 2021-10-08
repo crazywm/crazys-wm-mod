@@ -1,6 +1,6 @@
 <Screen>
 <Window     Name="Bank Window"                                              XPos="362"      YPos="170"      Width="300"     Height="400" Border="1"  />
-<Image      Name="BankIcon"             File="Bank.png"                     XPos="7"       YPos="10"       Width="37"      Height="50"                   />
+<Image      Name="BankIcon"             File="Bank.png"                     XPos="7"       YPos="10"       Width="37"      Height="50"   Dir="Icons" />
 <Text       Name="ScreenHeader"         Text="Town Bank"                    XPos="52"       YPos="10"       Width="240"     Height="32"                  FontSize="15"                   />
 <Text       Name="BankDetails"          Text=" "                            XPos="7"       YPos="60"       Width="285"     Height="100"                 FontSize="10"                   />
 

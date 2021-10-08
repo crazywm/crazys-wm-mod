@@ -1,6 +1,6 @@
 <Screen>
 <Window     Name="LoadMenu"                                                 XPos="398"      YPos="118"       Width="1124"     Height="844" Border="1"  />
-<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="1124"     Height="844"  />
+<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="1124"     Height="844"  Dir="Backdrops"/>
 <Text       Name="WhoreMaster"          Text="Whore Master"                 XPos="273"      YPos="0"        Width="1124"     Height="121"  FontSize="90"  Red="200"   Green="30"  Blue="30"    />
 <ListBox    Name="FileName"                                                 XPos="292"      YPos="141"      Width="562"     Height="562" FontSize="17" RowHeight="27" Border="1" ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true">
     <Column     Name="Name"         Header="Name"                  Offset="0" />

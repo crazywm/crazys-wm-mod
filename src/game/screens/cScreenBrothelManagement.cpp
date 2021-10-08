@@ -111,7 +111,7 @@ void IBuildingScreen::init(bool back)
        << " -- " << active_building().type_str() << ": " << active_building().name();
     EditTextItem(ss.str(), buildinglabel_id);
     DisableWidget(walk_id, !active_building().CanEncounter());
-    SetImage(background_id, active_building().background_image());
+    SetImage(background_id, "Backdrops", active_building().background_image());
 }
 
 void IBuildingScreen::try_walk()

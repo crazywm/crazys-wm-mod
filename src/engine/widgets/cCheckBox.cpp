@@ -46,7 +46,7 @@ cCheckBox::cCheckBox(cInterfaceWindow* parent, int id, int x, int y, int width, 
     cUIWidget(id, x, y, width, height, parent),
     m_Font(GetGraphics().LoadFont(GetTheme().normal_font(), fontsize))
 {
-    m_Image = GetGraphics().LoadImage(ImagePath("CheckBoxCheck.png").str(), m_Width, m_Height, true);
+    m_Image =  LoadUIImage("Widgets", "CheckBoxCheck.png", width, height);
     m_Border = GetGraphics().CreateSurface(width, height,
                                            GetTheme().get_color(CheckBoxBorderColor, {0, 0, 0}));
     m_Surface = GetGraphics().CreateSurface(width - 2, height - 2,

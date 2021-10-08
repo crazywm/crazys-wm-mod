@@ -1,13 +1,13 @@
 <Screen>
-<Window     Name="Gallery"                                                  XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
+<Window     Name="Gallery"                                  XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
 
-<Text       Name="ImageName"            Text="Image"                        XPos="7"       YPos="2"        Width="592"     Height="24" FontSize="7"  />
-<Image      Name="GirlImage"            File="blank.png"                    XPos="7"       YPos="30"       Width="825"     Height="700"    MinWidth="262"     MinHeight="350" />
-<Button     Name="PrevButton"           Image="Prev"                        XPos="861"     YPos="650"      Width="54"      Height="32"     Transparency="true" />
-<Button     Name="NextButton"           Image="Next"                        XPos="930"     YPos="650"      Width="54"      Height="32"     Transparency="true" />
-<Button     Name="BackButton"           Image="Back"                        XPos="847"     YPos="690"      Width="150"     Height="40"     Transparency="true"  PushWindow="<back>"/>
+<Text       Name="ImageName"            Text="Image"        XPos="7"       YPos="2"        Width="592"     Height="24" FontSize="7"  />
+<Image      Name="GirlImage"            File=""             XPos="7"       YPos="30"       Width="825"     Height="700"    MinWidth="262"     MinHeight="350" />
+<Button     Name="PrevButton"           Image="Prev"        XPos="861"     YPos="650"      Width="54"      Height="32"     Transparency="true" />
+<Button     Name="NextButton"           Image="Next"        XPos="930"     YPos="650"      Width="54"      Height="32"     Transparency="true" />
+<Button     Name="BackButton"           Image="Back"        XPos="847"     YPos="690"      Width="150"     Height="40"     Transparency="true"  PushWindow="<back>"/>
 
-<ListBox    Name="ImageList"                                                XPos="847"     YPos="10"       Width="150"     Height="622" FontSize="7" RowHeight="17" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
+<ListBox    Name="ImageList"                                XPos="847"     YPos="10"       Width="150"     Height="622" FontSize="7" RowHeight="17" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
 <Column     Name="Name"                 Header="Image Types"                Offset="0" />
 <Column     Name="All"                  Header="All"                        Offset="75" />
 </ListBox>

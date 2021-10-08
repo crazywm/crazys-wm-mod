@@ -1,21 +1,21 @@
 <Screen>
-<Window     Name="Farm Window"                                              XPos="18"       YPos="20"       Width="1883"    Height="1041"    Border="1"  />
-<Text       Name="BuildingLabel"        Text="The Farm"                     XPos="14"       YPos="3"        Width="984"     Height="56"     FontSize="28"            />
-<Image      Name="Background"           File="Farm.png"                     XPos="14"       YPos="49"       Width="1434"    Height="928"     />
+<Window     Name="Farm Window"                              XPos="18"       YPos="20"       Width="1883"    Height="1041"    Border="1"  />
+<Text       Name="BuildingLabel"        Text="The Farm"     XPos="14"       YPos="3"        Width="984"     Height="56"     FontSize="28"            />
+<Image      Name="Background"           File="Farm.png"     XPos="14"       YPos="49"       Width="1434"    Height="928"    Dir="Backdrops" />
 
-<Button     Name="Next Week"            Image="NextWeek"                    XPos="1546"     YPos="14"       Width="225"     Height="45"     Transparency="true"/>
-<Text       Name="BuildingDetails"      Text="Details"                      XPos="1448"     YPos="70"       Width="436"     Height="422"    FontSize="14"  />    
-<Button     Name="Girl Management"      Image="Girls"                       XPos="1546"     YPos="562"      Width="225"     Height="45"     Transparency="true" PushWindow="Girl Management"/>
-<Button     Name="Staff Management"     Image="Staff"                       XPos="1546"     YPos="633"      Width="225"     Height="45"     Transparency="true" PushWindow="Gangs"/>
-<Button     Name="Setup"                Image="Building"                    XPos="1546"     YPos="703"      Width="225"     Height="45"     Transparency="true" PushWindow="Building Setup"/>
-<Button     Name="Dungeon"              Image="Dungeon"                     XPos="1546"     YPos="773"      Width="225"     Height="45"     Transparency="true" PushWindow="Dungeon"/>
-<Button     Name="Turn Summary"         Image="TurnSum"                     XPos="1153"      YPos="982"      Width="225"     Height="45"     Transparency="true" PushWindow="Turn Summary"/>
+<Button     Name="Next Week"            Image="NextWeek"    XPos="1546"     YPos="14"       Width="225"     Height="45"     Transparency="true"/>
+<Text       Name="BuildingDetails"      Text="Details"      XPos="1448"     YPos="70"       Width="436"     Height="422"    FontSize="14"  />    
+<Button     Name="Girl Management"      Image="Girls"       XPos="1546"     YPos="562"      Width="225"     Height="45"     Transparency="true" PushWindow="Girl Management"/>
+<Button     Name="Staff Management"     Image="Staff"       XPos="1546"     YPos="633"      Width="225"     Height="45"     Transparency="true" PushWindow="Gangs"/>
+<Button     Name="Setup"                Image="Building"    XPos="1546"     YPos="703"      Width="225"     Height="45"     Transparency="true" PushWindow="Building Setup"/>
+<Button     Name="Dungeon"              Image="Dungeon"     XPos="1546"     YPos="773"      Width="225"     Height="45"     Transparency="true" PushWindow="Dungeon"/>
+<Button     Name="Turn Summary"         Image="TurnSum"     XPos="1153"      YPos="982"      Width="225"     Height="45"     Transparency="true" PushWindow="Turn Summary"/>
 
 
-<Button     Name="PrevButton"           Image="Prev"                        XPos="1543"     YPos="492"      Width="101"      Height="45"     Transparency="true"/>
-<Button     Name="NextButton"           Image="Next"                        XPos="1673"     YPos="492"      Width="101"      Height="45"     Transparency="true"/>
-<Button     Name="Visit Town"           Image="VisitTown"                   XPos="1546"     YPos="914"      Width="225"     Height="45"     Transparency="true" PushWindow="Town"/>
-<Image      Name="GirlImage"            File="blank.png"                    XPos="214"      YPos="21"       Width="281"     Height="281"    Hidden="true"  />
-<Button     Name="Quit"                 Image="Quit"                        XPos="14"       YPos="982"      Width="225"     Height="45"     Transparency="true"/>
-<Button     Name="Save"                 Image="Save"                        XPos="351"      YPos="982"      Width="225"     Height="45"     Transparency="true"/>
+<Button     Name="PrevButton"           Image="Prev"        XPos="1543"     YPos="492"      Width="101"      Height="45"     Transparency="true"/>
+<Button     Name="NextButton"           Image="Next"        XPos="1673"     YPos="492"      Width="101"      Height="45"     Transparency="true"/>
+<Button     Name="Visit Town"           Image="VisitTown"   XPos="1546"     YPos="914"      Width="225"     Height="45"     Transparency="true" PushWindow="Town"/>
+<Image      Name="GirlImage"            File=""             XPos="214"      YPos="21"       Width="281"     Height="281"    Hidden="true"  />
+<Button     Name="Quit"                 Image="Quit"        XPos="14"       YPos="982"      Width="225"     Height="45"     Transparency="true"/>
+<Button     Name="Save"                 Image="Save"        XPos="351"      YPos="982"      Width="225"     Height="45"     Transparency="true"/>
 </Screen>

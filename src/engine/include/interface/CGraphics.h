@@ -40,6 +40,7 @@ public:
     ~CGraphics();
 
     bool InitGraphics(const std::string& caption, int WindowWidth, int WindowHeight, bool Fullscreen);
+    void SetTheme(cTheme& theme);
     bool End();        // End Drawing Stuff
     void Begin();      // begins drawing stuff
 

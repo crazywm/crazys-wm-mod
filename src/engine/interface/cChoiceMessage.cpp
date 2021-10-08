@@ -76,12 +76,12 @@ cChoice::cChoice(int x, int y, int width, int height, int ID, std::string questi
     m_HeaderBackground = GetGraphics().CreateSurface(
             std::max(120, m_eWidth), 32,GetTheme().get_color(ChoiceMessageHeaderColor, {229, 227, 52}));
 
-    m_UpOn = GetGraphics().LoadImage(ButtonPath("UpOn.png"), 16, 16, true);
-    m_UpOff = GetGraphics().LoadImage(ButtonPath("UpOff.png"), 16, 16, true);
+    m_UpOn = LoadUIImage("Buttons", "UpOn.png", 16, 16);
+    m_UpOff = LoadUIImage("Buttons", "UpOff.png", 16, 16);
     m_CurrUp = m_UpOff;
 
-    m_DownOn = GetGraphics().LoadImage(ButtonPath("DownOn.png"), 16, 16, true);
-    m_DownOff = GetGraphics().LoadImage(ButtonPath("DownOff.png"), 16, 16, true);
+    m_DownOn = LoadUIImage("Buttons", "DownOn.png", 16, 16);
+    m_DownOff = LoadUIImage("Buttons", "DownOff.png", 16, 16);
     m_CurrDown = m_DownOff;
 
     for(std::size_t i = 0; i < options.size(); ++i) {

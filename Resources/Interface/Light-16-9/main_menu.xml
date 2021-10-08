@@ -1,6 +1,6 @@
 <Screen>
 <Window     Name="Main Menu"                                                XPos="398"      YPos="118"       Width="1124"     Height="844" Border="1"  />
-<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="1124"     Height="844"  />
+<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="1124"     Height="844"  Dir="Backdrops"/>
 <Text       Name="WhoreMaster"          Text="Whore Master"                 XPos="273"      YPos="0"        Width="1124"     Height="121"  FontSize="90"  Red="200"   Green="30"  Blue="30"    />
 <Text       Name="Version"              Text="Version"                      XPos="450"      YPos="112"       Width="1124"     Height="56"  FontSize="14"  />
 <Button     Name="Continue"             Image="Continue"                    XPos="394"      YPos="141"      Width="360"     Height="90"  Transparency="true"/>

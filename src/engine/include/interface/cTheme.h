@@ -27,6 +27,7 @@
 class cTheme {
 public:
     const std::string& directory() const;
+    const std::string& image_dir() const;
     int base_width() const;
     int base_height() const;
     int list_scroll() const;
@@ -36,6 +37,8 @@ public:
 
     void load(std::string source);
     void set_screen_size(int width, int height);
+
+    std::string get_image(const std::string& dir, const std::string& filename) const;
 
     /// Tries to get the color for a UI element. If lookup is not found, fallback is returned
     sColor get_color(const std::string& lookup, const sColor& fallback) const;
@@ -49,8 +52,10 @@ public:
     int calc_w(int relative_w) const;
     /// Calculate the height in screen space
     int calc_h(int relative_h) const;
+
 private:
     std::string m_Directory;
+    std::string m_ImageDirectory;
 
     int m_BaseWidth;
     int m_BaseHeight;

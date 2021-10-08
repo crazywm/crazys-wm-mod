@@ -1,7 +1,7 @@
 
 <Screen>
 <Window     Name="Prison Screen Window"                                     XPos="679"      YPos="239"      Width="562"     Height="562" Border="1"  />
-<Image      Name="PrisonIcon"           File="Prison.png"                   XPos="14"       YPos="14"       Width="70"      Height="70"                   />
+<Image      Name="PrisonIcon"           File="Prison.png"                   XPos="14"       YPos="14"       Width="70"      Height="70"  Dir="Icons" />
 <Text       Name="ScreenHeader"         Text="Town Prison"                  XPos="98"       YPos="14"       Width="225"     Height="45"                  FontSize="28"                   />
 <ListBox    Name="PrisonList"                                               XPos="14"       YPos="84"       Width="295"     Height="464"  FontSize="17" RowHeight="27"                 Border="1"                  Events="true"                  Multi="false"                   />
 

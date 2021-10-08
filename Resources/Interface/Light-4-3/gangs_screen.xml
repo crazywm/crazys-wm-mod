@@ -19,9 +19,9 @@
 <Column     Name="Charisma"     Header="Charisma"                   Offset="747"  />
 </ListBox>
 
-<Image      Name="FireArrow"            File="imgArrowDown.png"             XPos="37"       YPos="425"      Width="45"      Height="44"  />
+<Image      Name="FireArrow"            File="imgArrowDown.png"             XPos="37"       YPos="425"      Width="45"      Height="44"  Dir="Widgets"/>
 <Button     Name="GangFireButton"       Image="Fire"                        XPos="30"       YPos="470"      Width="60"      Height="32"  Transparency="true"/>
-<Image      Name="HireArrow"            File="imgArrowLeft.png"             XPos="145"      YPos="495"      Width="24"      Height="80"  />
+<Image      Name="HireArrow"            File="imgArrowLeft.png"             XPos="145"      YPos="495"      Width="24"      Height="80"  Dir="Widgets"/>
 <Button     Name="GangHireButton"       Image="Hire"                        XPos="87"      YPos="520"      Width="60"      Height="32"  Transparency="true"/>
 
 <ListBox    Name="RecruitList"                                              XPos="157"      YPos="450"      Width="675"     Height="182" FontSize="9" RowHeight="19" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >

@@ -110,24 +110,23 @@ void cInterfaceWindow::Draw(const CGraphics& gfx)
     for (auto& widget : m_Widgets) widget->Draw(gfx);
 }
 
-void cInterfaceWindow::AddButton(std::string image, int& ID, int x, int y, int width, int height, bool transparency)
+void cInterfaceWindow::AddButton(const std::string& image, int& ID, int x, int y, int width, int height)
 {
-    std::string dp = ButtonPath(image);
-    std::string on = dp + "On.png";
-    std::string off = dp + "Off.png";
-    std::string disabled;
-    disabled = dp + "Disabled.png";
-    ID = AddButton(off, disabled, on, x, y, width, height, transparency);
+    std::string on = image + "On.png";
+    std::string off = image + "Off.png";
+    std::string disabled = image + "Disabled.png";
+    ID = AddButton(off, disabled, on, x, y, width, height);
 }
 
 int
-cInterfaceWindow::AddButton(std::string OffImage, std::string DisabledImage, const std::string& OnImage, int x, int y,
-                            int width, int height, bool transparency)
+cInterfaceWindow::AddButton(const std::string& OffImage, const std::string& DisabledImage, const std::string& OnImage, int x, int y,
+                            int width, int height)
 {
     int ID = m_Widgets.size();
+
     // create button
     auto newButton = std::make_unique<cButton>(this, OffImage, DisabledImage, OnImage, ID, x + m_XPos, y + m_YPos,
-            width, height,transparency);
+            width, height);
 
     // Store button
     m_Widgets.push_back(std::move(newButton));
@@ -167,21 +166,17 @@ void cInterfaceWindow::HideWidget(int id, bool hide)
     m_Widgets.at(id)->SetHidden(hide);
 }
 
-void cInterfaceWindow::AddImage(int & id, std::string filename, int x, int y, int width, int height, int min_width, int min_height)
+int cInterfaceWindow::AddImage(const std::string& dir, const std::string& filename, int x, int y, int width, int height, int min_width, int min_height)
 {
-    width = (int)((float)width);
-    height = (int)((float)height);
-    x = (int)((float)x);
-    y = (int)((float)y);
-
     // create image
-    id = m_Widgets.size();
+    int id = m_Widgets.size();
     auto newImage = std::make_unique<cImageItem>(this, id, x + m_XPos, y + m_YPos, width, height,
                                                  min_width, min_height);
-    newImage->CreateImage(filename);
+    newImage->SetThemeImage(dir, filename);
 
     // Store button
     m_Widgets.push_back(std::move(newImage));
+    return id;
 }
 
 cImageItem* cInterfaceWindow::GetImage(int id)
@@ -195,8 +190,15 @@ void cInterfaceWindow::SetImage(int id, std::string image)
 {
     if(id < 0) return;
     cImageItem * item = GetImage(id);
-    item->SetImage(GetGraphics().LoadImage(ImagePath(image), item->GetWidth(), item->GetHeight(), true));
+    item->SetImage(std::move(image));
 }
+
+void cInterfaceWindow::SetImage(int id, const std::string& dir, const std::string& image) {
+    if(id < 0) return;
+    cImageItem * item = GetImage(id);
+    item->SetThemeImage(dir, image);
+}
+
 
 void cInterfaceWindow::AddEditBox(int & ID, int x, int y, int width, int height, int BorderSize, int FontSize)
 {

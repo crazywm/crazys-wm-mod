@@ -1,16 +1,9 @@
 <Screen>
-<Window     Name="Preparing Game"                                           XPos="398"      YPos="118"       Width="1124"     Height="844" Border="1"  />
-<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="1124"     Height="844"  />
-<Text       Name="Text1"                Text=""                             XPos="141"      YPos="28"       Width="1124"     Height="84"  FontSize="42"  />
-<Text       Name="Text2"                Text=""                             XPos="141"      YPos="84"       Width="281"     Height="703" FontSize="21"  />
-<Text       Name="Text3"                Text=""                             XPos="422"      YPos="141"      Width="422"     Height="127"  FontSize="21"  />
-<!--                                                                                        
-<Slider     Name="Counter1"                                                 XPos="422"      YPos="394"      Width="562"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
-<Slider     Name="Counter2"                                                 XPos="422"      YPos="422"      Width="562"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
-<Slider     Name="Counter3"                                                 XPos="422"      YPos="450"      Width="562"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
-<Slider     Name="Counter4"                                                 XPos="422"      YPos="478"      Width="562"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
-<Slider     Name="Counter5"                                                 XPos="422"      YPos="506"      Width="562"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
--->                                                                                         
+<Window     Name="Preparing Game"                   XPos="398"      YPos="118"      Width="1124"     Height="844"  Border="1"  />
+<Image      Name="Background"                       XPos="0"        YPos="0"        Width="1124"     Height="844"  Dir="Backdrops" File="building_mgt_bg.jpg"  />
+<Text       Name="Text1"                Text=""     XPos="141"      YPos="28"       Width="1124"     Height="84"   FontSize="42"  />
+<Text       Name="Text2"                Text=""     XPos="141"      YPos="84"       Width="281"      Height="703"  FontSize="21"  />
+<Text       Name="Text3"                Text=""     XPos="422"      YPos="141"      Width="422"      Height="127"  FontSize="21"  />
 <Button     Name="BackButton"           Image="Back"                        XPos="618"      YPos="745"      Width="225"     Height="45"  Transparency="true" Scale="true"  />
 
 </Screen>

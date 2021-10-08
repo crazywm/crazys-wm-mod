@@ -30,19 +30,22 @@ cScrollBar::cScrollBar(cInterfaceWindow* parent, int ID, int x, int y, int width
     m_RectTop(new SDL_Rect),
     m_RectBottom(new SDL_Rect)
 {
-    auto make_path = [](const char* file){ return ImagePath("Scroll").str() + file; };
 
-    m_ImgBarBG = GetGraphics().LoadImage(make_path("LongBackground.png"), -1, -1, true);
-    m_ImgBarDisabled = GetGraphics().LoadImage(make_path("LongDisabled.png"), -1, -1, true);
-    m_ImgBarOff = GetGraphics().LoadImage(make_path("LongOff.png"), -1, -1, true);
-    m_ImgBarOn = GetGraphics().LoadImage(make_path("LongOn.png"), -1, -1, true);
-    m_ImgNotches = GetGraphics().LoadImage(make_path("Notches.png"), -1, -1, true);
-    m_ImgButtonUpDisabled = GetGraphics().LoadImage(make_path("UpDisabled.png"), -1, -1, true);
-    m_ImgButtonUpOff = GetGraphics().LoadImage(make_path("UpOff.png"), -1, -1, true);
-    m_ImgButtonUpOn = GetGraphics().LoadImage(make_path("UpOn.png"), -1, -1, true);
-    m_ImgButtonDownDisabled = GetGraphics().LoadImage(make_path("DownDisabled.png"), -1, -1, true);
-    m_ImgButtonDownOff = GetGraphics().LoadImage(make_path("DownOff.png"), -1, -1, true);
-    m_ImgButtonDownOn = GetGraphics().LoadImage(make_path("DownOn.png"), -1, -1, true);
+    auto load = [this](std::string file_name) {
+        return LoadUIImage("Widgets", "Scroll" + std::move(file_name), -1, -1);
+    };
+    
+    m_ImgBarBG = load("LongBackground.png");
+    m_ImgBarDisabled = load("LongDisabled.png");
+    m_ImgBarOff = load("LongOff.png");
+    m_ImgBarOn = load("LongOn.png");
+    m_ImgNotches = load("Notches.png");
+    m_ImgButtonUpDisabled = load("UpDisabled.png");
+    m_ImgButtonUpOff = load("UpOff.png");
+    m_ImgButtonUpOn = load("UpOn.png");
+    m_ImgButtonDownDisabled = load("DownDisabled.png");
+    m_ImgButtonDownOff = load("DownOff.png");
+    m_ImgButtonDownOn = load("DownOn.png");
 
     m_NotchOffset = int(((double)m_ImgNotches.GetHeight() / 2));
 

@@ -113,11 +113,7 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
         m_HeaderBackground = m_HeaderBackground.FillRect(
                 dest_rect,GetTheme().get_color(ListBoxHeaderBackgroundColor, {25, 100, 144}));
 
-        DirPath dp = ImagePath("ListboxSort");
-        m_SortAscImage = dp.str() + "Asc.png";
-        m_SortDescImage = dp.str() + "Desc.png";
-        std::string None = dp.str() + "None.png";
-        m_HeaderUnSort = GetGraphics().LoadImage(None, -1, -1, true);
+        m_HeaderUnSort = LoadUIImage("Widgets", "ListboxSortNone.png", -1, -1);
 
         // draw the "un-sort" clickable header
 
@@ -895,7 +891,7 @@ void cListBox::SortByColumn(std::string ColumnName, bool Descending)
             dwidth = m_Columns[col_ref].width - 19;
         if (col_ref == 0)
             dwidth -= 2 + m_BorderSize;
-        m_HeaderSortBack = GetGraphics().LoadImage(Descending ? m_SortDescImage : m_SortAscImage, dwidth, -1, true);
+        m_HeaderSortBack = LoadUIImage("Widgets", Descending ? "ListboxSortDesc.png" : "ListboxSortAsc.png", dwidth, -1);
     }
 
     m_ScrollBar->SetTopValue(m_Position);

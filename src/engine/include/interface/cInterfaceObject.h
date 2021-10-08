@@ -116,6 +116,9 @@ public:
         return HandleKeyPress(keysym);
     }
 
+protected:
+    cSurface LoadUIImage(const std::string& dir, const std::string& filename, int width, int height);
+
 private:
     int m_ID;
     bool m_Hidden = false;

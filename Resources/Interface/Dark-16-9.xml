@@ -7,4 +7,5 @@
     <Entry Key="text_scroll" Value="3" />
     <Entry Key="directory" Value="Light-16-9" />
     <Entry Key="color-scheme" Value="DarkColors.xml" />
+    <Entry Key="images" Value="Dark" />
 </Config>
