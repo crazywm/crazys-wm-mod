@@ -21,11 +21,7 @@
 #include "interface/CGraphics.h"
 #include "CLog.h"
 #include "interface/cFont.h"
-#include <tinyxml2.h>
-#include "utils/DirPath.h"
 #include "interface/sColor.h"
-#include "xml/util.h"
-#include "xml/getattr.h"
 #include "interface/cTheme.h"
 #include "theme_ids.h"
 using namespace widgets_theme;
@@ -48,41 +44,13 @@ cMessageBox::cMessageBox(cInterfaceWindow* parent, int x, int y, int width, int 
     m_Text = "";
     m_Position = 0;
 
-    DirPath dp = DirPath() << "Resources" << "Interface" << GetTheme().directory() << "popup_message.xml";
-    try {
-        auto doc = LoadXMLDocument(dp.c_str());
-        for (auto& el : IterateChildElements(*doc->RootElement()))
-        {
-            std::string tag = el.Value();
-            if (tag == "Window")
-            {
-                x = GetIntAttribute(el, "XPos");
-                y = GetIntAttribute(el, "YPos");
-                width = GetIntAttribute(el, "Width");
-                height = GetIntAttribute(el, "Height");
-                FontSize = GetIntAttribute(el, "FontSize");
-                BorderSize = GetIntAttribute(el, "Border");
-            }
-        }
-    } catch (std::runtime_error& error) {
-
-        g_LogFile.log(ELogLevel::ERROR, "Can't load screen definition from '", dp.c_str(), "'");
-        g_LogFile.log(ELogLevel::ERROR, error.what());
-    }
-
-    x = GetTheme().calc_x(x);
-    y = GetTheme().calc_y(y);
-    width = GetTheme().calc_w(width);
-    height = GetTheme().calc_h(height);
-
     m_BorderSize = BorderSize;
-    SetPosition(x, y, width, height);
     m_Border = GetGraphics().CreateSurface(width, height, GetTheme().get_color(MessageBoxBorderColor, {255, 255, 255}));
     for(int i = 0; i < NUM_MESSBOXCOLOR; ++i) {
         m_Background[i] = GetGraphics().CreateSurface(width-(BorderSize*2), height-(BorderSize*2),
                                                       GetTheme().get_color(Backgrounds[i], BackgroundColors[i]));
     }
-    ChangeFontSize(GetTheme().calc_h(FontSize));
+    ChangeFontSize(FontSize);
 }
 
 void cMessageBox::DrawWidget(const CGraphics& gfx)

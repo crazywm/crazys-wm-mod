@@ -24,6 +24,10 @@
 #include "widgets/cMessageBox.h"
 #include "cChoiceMessage.h"
 #include "interface/cInterfaceObject.h"
+#include <tinyxml2.h>
+#include "utils/DirPath.h"
+#include "xml/util.h"
+#include "xml/getattr.h"
 
 #include <cassert>
 #include <utility>
@@ -222,7 +226,36 @@ void cWindowManager::PushMessage(std::string text, int color, std::function<void
     }
 
     auto window = GetModalWindow();
-    auto cb = std::make_unique<cMessageBox>(window.get());
+
+    DirPath dp = DirPath() << "Resources" << "Interface" << GetTheme().directory() << "popup_message.xml";
+    int x = 32;
+    int y = 416;
+    int width = 736;
+    int height = 160;
+    int BorderSize = 1;
+    int FontSize = 16;
+    try {
+        auto doc = LoadXMLDocument(dp.c_str());
+        for (auto& el : IterateChildElements(*doc->RootElement()))
+        {
+            std::string tag = el.Value();
+            if (tag == "Window")
+            {
+                x = GetTheme().calc_x(GetIntAttribute(el, "XPos"));
+                y = GetTheme().calc_y(GetIntAttribute(el, "YPos"));
+                width = GetTheme().calc_w(GetIntAttribute(el, "Width"));
+                height = GetTheme().calc_h(GetIntAttribute(el, "Height"));
+                FontSize = GetTheme().calc_h(GetIntAttribute(el, "FontSize"));
+                BorderSize = GetIntAttribute(el, "Border");
+            }
+        }
+    } catch (std::runtime_error& error) {
+
+        g_LogFile.log(ELogLevel::ERROR, "Can't load screen definition from '", dp.c_str(), "'");
+        g_LogFile.log(ELogLevel::ERROR, error.what());
+    }
+
+    auto cb = std::make_unique<cMessageBox>(window.get(), x, y, width, height, BorderSize, FontSize);
     cb->PushMessage(std::move(text), color);
     cb->SetCallback(std::move(callback));
     window->AddWidget(std::move(cb));
