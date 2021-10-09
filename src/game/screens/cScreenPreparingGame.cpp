@@ -42,9 +42,6 @@ namespace settings {
 extern std::string g_ReturnText;
 extern int g_ReturnInt;
 
-extern bool g_WalkAround;
-extern int g_TalkCount;
-
 int load0new1 = 0;
 
 cScreenPreparingGame::cScreenPreparingGame() : cGameWindow("preparing_game_screen.xml")
@@ -120,9 +117,6 @@ void cScreenPreparingGame::resetScreen()
 }
 
 bool cScreenPreparingGame::NewGame(std::string name) {
-    g_WalkAround = false;
-    g_TalkCount = 10;
-
     auto callback = [this](std::string str) {
         std::lock_guard<std::mutex> lck(m_Mutex);
         if(starts_with(str, "ERROR:")) {
@@ -205,11 +199,6 @@ bool cScreenPreparingGame::LoadGame(const std::string& file_path) {
     if (pRoot == nullptr) {
         return false;
     }
-
-    // TODO make this part of IGame
-    g_WalkAround = false;       pRoot->QueryAttribute("WalkAround", &g_WalkAround);
-    g_TalkCount = 0;            pRoot->QueryIntAttribute("TalkCount", &g_TalkCount);
-    if (g_Game->allow_cheats()) { g_WalkAround = false; g_TalkCount = 10; }
     return true;
 }
 

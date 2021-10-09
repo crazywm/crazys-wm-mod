@@ -209,6 +209,13 @@ public:
 
     cGirlPool& GetSlaveMarket() { return *m_MarketGirls; }
 
+    // other data
+    int GetTalkCount() const { return m_TalkCount; }
+    void AddTalkCount(int value) { m_TalkCount += value; }
+
+    bool CanWalkAround() const;
+    void DoWalkAround();
+
     bool allow_cheats() const;
     void enable_cheating();
 
@@ -257,6 +264,9 @@ protected:
     int m_SupplyShedLevel = 1;            // the level of the supply sheds. the higher the level, the more alcohol and antipreg potions can hold
 
     std::list<std::shared_ptr<sGirl>> m_Runaways;
+
+    int m_TalkCount = 0;
+    bool m_WalkAround = false;
 };
 
 // the global game instance.

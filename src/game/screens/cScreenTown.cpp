@@ -30,7 +30,6 @@
 #include "cGirls.h"
 #include "InterfaceProcesses.h"
 
-extern bool                        g_WalkAround;
 extern bool                        g_AllTogle;
 
 namespace settings {
@@ -105,7 +104,7 @@ void cScreenTown::set_ids()
         if (!is_ctrl_held()) { AutoSaveGame(); }
         // need to switch the windows first, so that any new events will show up!
         push_window("Turn Summary");
-        NextWeek();
+        g_Game->NextWeek();
     });
     SetButtonCallback(house_id,    [this]() {
         set_active_building(g_Game->buildings().building_with_type(BuildingType::HOUSE));
@@ -117,7 +116,7 @@ void cScreenTown::set_ids()
     });
     SetButtonCallback(walk_id, [this]() {
         do_walk();
-        if (!g_Game->allow_cheats()) g_WalkAround = true;
+        g_Game->DoWalkAround();
         init(false);
     });
 }
@@ -139,7 +138,7 @@ void cScreenTown::init(bool back)
     Focused();
 
     // buttons enable/disable
-    DisableWidget(walk_id, g_WalkAround);
+    DisableWidget(walk_id, g_Game->CanWalkAround());
 
     int num_brothels = g_Game->buildings().num_buildings(BuildingType::BROTHEL);
     HideWidget(brothel2_id, num_brothels < 2);
@@ -182,7 +181,7 @@ std::string cScreenTown::walk_no_luck()
 
 void cScreenTown::do_walk()
 {
-    if (g_WalkAround)
+    if (!g_Game->CanWalkAround())
     {
         push_message("You can only do this once per week.", COLOR_RED);
         return;

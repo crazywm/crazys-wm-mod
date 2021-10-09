@@ -53,6 +53,7 @@ namespace settings {
     extern const char* SLAVE_MARKET_MAX;
     extern const char* SLAVE_MARKET_UNIQUE_CHANCE;
     extern const char* SLAVE_MARKET_TURNOVER_RATE;
+    extern const char* PLAYER_TALK_DEFAULT;
 }
 
 struct cGame::sScriptEventStack {
@@ -116,6 +117,9 @@ void cGame::NewGame(const std::function<void(std::string)>& callback) {
     callback("Update Slave Market");
     g_LogFile.info("prepare", "Update Slave Market");
     UpdateMarketSlaves();
+
+    m_TalkCount = settings().get_integer(settings::PLAYER_TALK_DEFAULT);
+    m_WalkAround = false;
 }
 
 void cGame::LoadGame(const tinyxml2::XMLElement& source, const std::function<void(std::string)>& callback) {
@@ -292,9 +296,10 @@ void cGame::LoadItemFiles(DirPath location) {
 
 void cGame::ReadGameAttributesXML(const tinyxml2::XMLElement& el) {
     // load cheating
-    int cheat = 0;
-    el.QueryIntAttribute("Cheat", &cheat);
-    m_IsCheating = cheat;
+    m_IsCheating = el.IntAttribute("Cheat", 0);
+
+    m_TalkCount = el.IntAttribute("TalkCount", 0);
+    m_WalkAround = el.IntAttribute("WalkAround", false);
 
     // load supply shed level, other goodies
     el.QueryIntAttribute("SupplyShedLevel", &m_SupplyShedLevel);
@@ -331,6 +336,9 @@ void cGame::SaveGame(tinyxml2::XMLElement& root) {
 
     // safe cheat
     el.SetAttribute("Cheat", m_IsCheating);
+
+    el.SetAttribute("TalkCount", m_TalkCount);
+    el.SetAttribute("WalkAround", m_WalkAround);
 
     // save bribe rate and bank
     el.SetAttribute("BribeRate", m_BribeRate);
@@ -398,6 +406,9 @@ void cGame::SaveGame(tinyxml2::XMLElement& root) {
 
 void cGame::NextWeek()
 {
+    m_TalkCount = settings().get_integer(settings::PLAYER_TALK_DEFAULT);
+    m_WalkAround = false;
+
     g_LogFile.info("turn", "Start processing next week");
     gang_manager().GangStartOfShift();
 
@@ -466,7 +477,7 @@ void cGame::NextWeek()
     // keep gravitating player suspicion to 0
     if (player().suspicion() > 0)         player().suspicion(-1);
     else if (player().suspicion() < 0)    player().suspicion(1);
-    if (player().suspicion() > 20) CheckRaid();    // is the player under suspision by the authorities
+    if (player().suspicion() > 20)        CheckRaid();    // is the player under suspision by the authorities
 
     // get money from currently extorted businesses
     std::stringstream ss;

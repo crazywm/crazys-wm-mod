@@ -284,10 +284,8 @@ scripting::cScriptManager &IGame::script_manager() {
     return *m_ScriptManager;
 }
 
-extern    int    g_TalkCount;
-
 void IGame::TalkToGirl(sGirl &target) {
-    if (g_TalkCount <= 0) return;    // if we have no talks left, we can go home
+    if (m_TalkCount <= 0) return;    // if we have no talks left, we can go home
 
     /*
     *    is she dead? that would make life simpler.
@@ -306,7 +304,7 @@ void IGame::TalkToGirl(sGirl &target) {
     } else {
         target.TriggerEvent(EDefaultEvent::GIRL_INTERACT_DUNGEON);
     }
-    if (!allow_cheats()) g_TalkCount--;
+    if (!allow_cheats()) m_TalkCount--;
 
 }
 
@@ -319,6 +317,13 @@ std::unique_ptr<ITraitsCollection> IGame::create_traits_collection() {
     return m_Traits->create_collection();
 }
 
+bool IGame::CanWalkAround() const {
+    return !m_WalkAround || allow_cheats();
+}
+
+void IGame::DoWalkAround() {
+    m_WalkAround = true;
+}
 
 
 cErrorContext::~cErrorContext() {

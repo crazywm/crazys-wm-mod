@@ -70,7 +70,7 @@ void IBuildingScreen::set_ids()
         if (!is_ctrl_held()) { AutoSaveGame(); }
         // need to switch the windows first, so that any new events will show up!
         push_window("Turn Summary");
-        NextWeek();
+        g_Game->NextWeek();
     });
     SetButtonCallback(save_id, [this]() {
         SaveGame();

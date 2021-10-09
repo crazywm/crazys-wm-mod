@@ -82,7 +82,7 @@ void cScreenTurnSummary::set_ids()
     */
     SetButtonCallback(nextweek_id, [this]() {
         if (!is_ctrl_held()) { AutoSaveGame(); }
-        NextWeek();
+        g_Game->NextWeek();
         init(true);
     });
     SetButtonHotKey(nextweek_id, SDLK_RETURN);

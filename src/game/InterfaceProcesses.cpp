@@ -31,12 +31,6 @@
 #include "sConfig.h"
 #include "SavesList.h"
 
-#ifdef LINUX
-#else
-#include <windows.h>
-#endif
-#undef GetMessage
-
 extern cRng g_Dice;
 extern cConfig cfg;
 extern cNameList g_GirlNameList;
@@ -44,19 +38,11 @@ extern cNameList g_BoysNameList;
 extern cNameList g_SurnameList;
 
 #pragma endregion
-#pragma region //    Local Variables            //
 
 // globals used for the interface
 std::string g_ReturnText;
 int g_ReturnInt = -1;
 bool g_AllTogle = false;    // used on screens when wishing to apply something to all items
-
-// for keeping track of weather have walked around town today
-bool g_WalkAround = false;
-
-int g_TalkCount = 10;
-
-#pragma endregion
 
 void LoadNames()
 {// `J` load names lists
@@ -67,24 +53,6 @@ void LoadNames()
     // `J` Added g_BoysNameList for .06.03.00
     DirPath location_B = DirPath() << "Resources" << "Data" << "RandomBoysNames.txt";
     g_BoysNameList.load(location_B);
-}
-
-void NextWeek()
-{
-    g_LogFile.debug("turn", " *** NextWeek || Start ***");
-
-    g_WalkAround = false;
-    g_TalkCount = 10;
-    /*
-    // `J` I want to make the player start with 0 in all stats and skills
-    // and have to gain them over time. When this gets implemented
-    // g_TalkCount will be based on the player's charisma.
-    g_TalkCount = 10 + (g_Game->player().m_Stats[STAT_CHARISMA] / 10);
-    // */ //
-
-    g_Game->NextWeek();
-
-    g_LogFile.log(ELogLevel::DEBUG, " *** NextWeek || End ***");
 }
 
 void AutoSaveGame()
@@ -123,10 +91,6 @@ void SaveGameXML(std::string filename)
     //if a user mods the exe, he can tell us that here
     //by changing it to anything besides official
     pRoot->SetAttribute("ExeVersion", "official");
-
-    // output interface variables
-    pRoot->SetAttribute("WalkAround", g_WalkAround);
-    pRoot->SetAttribute("TalkCount", g_TalkCount);
 
     g_Game->SaveGame(*pRoot);
     doc.SaveFile(filename.c_str());

@@ -27,7 +27,6 @@
 #include "CLog.h"
 #include "character/traits/ITraitSpec.h"
 
-extern    int    g_TalkCount;
 extern bool g_AllTogle;
 
 static std::stringstream ss;
@@ -172,13 +171,13 @@ void cScreenGirlDetails::init(bool back)
         ss.str(""); ss << "Accommodation: " << cGirls::Accommodation(m_SelectedGirl->m_AccLevel);
         EditTextItem(ss.str(), accomval_id);
     }
-    DisableWidget(interact_id, (g_TalkCount <= 0));
+    DisableWidget(interact_id, (g_Game->GetTalkCount() <= 0));
     if (interactc_id >= 0)
     {
         ss.str(""); ss << "Interactions Left: ";
         if (g_Game->allow_cheats()) ss << "Infinite Cheat";
-        else if (g_TalkCount <= 0) ss << "0 (buy in House screen)";
-        else ss << g_TalkCount;
+        else if (g_Game->GetTalkCount() <= 0) ss << "0 (buy in House screen)";
+        else ss << g_Game->GetTalkCount();
         EditTextItem(ss.str(), interactc_id);
     }
     DisableWidget(takegold_id, (m_SelectedGirl->m_Money <= 0));

@@ -21,9 +21,6 @@
 
 #include <string>
 
-class sGirl;
-
-void NextWeek();
 void AutoSaveGame();
 void SaveGame();
 void SaveGameXML(std::string filename);

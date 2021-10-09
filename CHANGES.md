@@ -2,6 +2,8 @@
 
 ## Changes
 * Next Week button on town screen
+* Number of free interactions can be set in game options
+* Themes can specify image directories
 
 ## Fixes
 * Increased text size for message box

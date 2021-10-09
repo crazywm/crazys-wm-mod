@@ -81,6 +81,8 @@ namespace settings {
     const char* TAXES_MINIMUM = "tax.minimum";
     const char* TAXES_LAUNDRY = "tax.laundry";
 
+    const char* PLAYER_TALK_DEFAULT = "player.talk_count";
+
     const char* PREG_CONTRA_FAIL   = "pregnancy.chance.contraception_fail";
     const char* PREG_MULTI_CHANCE  = "pregnancy.chance.multiplets";
     const char* PREG_MISS_MONSTER  = "pregnancy.chance.miscarriage.beast";
@@ -166,6 +168,9 @@ cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
                 bounded(20, 0, 100));
     add_setting(GANG_MAX_RIVAL_SKILL, "Rival Skill Max", "The maximum skill for rival gangs.",
                 bounded(60, 0, 100));
+
+    add_setting(PLAYER_TALK_DEFAULT, "Talk Count", "The number of free interactions per week.",
+                positive(10));
 
     // user adjustable settings
     // TODO why aren't these real percentage values?

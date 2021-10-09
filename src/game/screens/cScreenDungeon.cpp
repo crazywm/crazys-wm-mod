@@ -30,7 +30,6 @@
 #include "IGame.h"
 
 extern cRng                    g_Dice;
-extern int                    g_TalkCount;
 
 static int                    ImageNum = -1;
 static std::stringstream ss;
@@ -196,8 +195,8 @@ void cScreenDungeon::init(bool back)
     {
         ss.str(""); ss << "Interactions Left: ";
         if (g_Game->allow_cheats()) ss << "Infinate Cheat";
-        else if (g_TalkCount <= 0) ss << "0 (buy in House screen)";
-        else ss << g_TalkCount;
+        else if (g_Game->GetTalkCount() <= 0) ss << "0 (buy in House screen)";
+        else ss << g_Game->GetTalkCount();
         EditTextItem(ss.str(), interactc_id);
     }
     DisableWidget(release_id);
@@ -253,7 +252,7 @@ void cScreenDungeon::selection_change()
     // otherwise, we need to enable some buttons...
     DisableWidget(sellslave_id);
     DisableWidget(torture_id, !torture_possible());
-    DisableWidget(interact_id, g_TalkCount == 0 || IsMultiSelected(girllist_id));
+    DisableWidget(interact_id, g_Game->GetTalkCount() == 0 || IsMultiSelected(girllist_id));
     EnableWidget(release_id);
     DisableWidget(brandslave_id);
     // and then decide if this is a customer selected, or a girl customer is easiest, so we do that first
@@ -641,7 +640,7 @@ void cScreenDungeon::release()
 
 void cScreenDungeon::talk()
 {
-    if (g_TalkCount <= 0) return;    // if we have no talks left, we can go home
+    if (g_Game->GetTalkCount() <= 0) return;    // if we have no talks left, we can go home
     // customers are always last in the list, so we can determine if this is a customer by simple aritmetic
     if ((selection - g_Game->dungeon().GetNumGirls()) >= 0) return;        // it is a customer
 

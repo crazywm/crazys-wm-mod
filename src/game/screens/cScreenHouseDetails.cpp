@@ -25,8 +25,6 @@
 #include "IGame.h"
 #include <sstream>
 
-extern    int    g_TalkCount;
-
 static std::string fmt_objective(std::stringstream &ss, std::string desc, int limit, int sofar = -1)
 {
     ss << desc;
@@ -59,7 +57,7 @@ void cScreenHouseDetails::set_ids()
 
 void cScreenHouseDetails::buy_interactions(int num)
 {
-    if (g_Game->gold().misc_debit(1000 * num)) g_TalkCount += num;
+    if (g_Game->gold().misc_debit(1000 * num)) g_Game->AddTalkCount(num);
     init(false);
 }
 
@@ -145,7 +143,7 @@ void cScreenHouseDetails::init(bool back)
     {
         ss.str(""); ss << "Interactions Left: ";
         if (g_Game->allow_cheats()) ss << "\nInfinate Cheat";
-        else ss << g_TalkCount << "\nBuy more for 1000 each.";
+        else ss << g_Game->GetTalkCount() << "\nBuy more for 1000 each.";
         EditTextItem(ss.str(), interact_id);
     }
     if (interactb_id >= 0) DisableWidget(interactb_id, g_Game->allow_cheats() || g_Game->gold().ival() < 1000);
