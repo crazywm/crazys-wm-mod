@@ -9,7 +9,7 @@ function Training(girl)
         "Go Back"
     )
     if action == 5 then
-        return girl:trigger("girl:interact.brothel")
+        return girl:trigger("girl:interact:brothel")
     elseif girl:tiredness() > 75 then
         Dialog("She is too tired for training")
         return

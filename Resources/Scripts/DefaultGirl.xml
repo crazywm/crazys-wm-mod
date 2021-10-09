@@ -3,8 +3,8 @@
     <Event Name="girl:meet:town" Script="MeetTownDefault.lua" Function="MeetTown" />
     <Event Name="girl:meet:studio" Script="MeetCastingTry.lua" Function="MeetCasting" />
     <Event Name="girl:meet:clinic" Script="MeetClinicTry.lua" Function="MeetClinic" />
-    <Event Name="girl:gambling-lost.own" Script="GirlLostGamble.lua" Function="LostOwnGamble" />
-    <Event Name="girl:gambling-lost.rival" Script="GirlLostGamble.lua" Function="LostRivalGamble" />
+    <Event Name="girl:gambling-lost:own" Script="GirlLostGamble.lua" Function="LostOwnGamble" />
+    <Event Name="girl:gambling-lost:rival" Script="GirlLostGamble.lua" Function="LostRivalGamble" />
 
     <Event Name="girl:sex:anal" Script="SexText.lua" Function="GetAnalMessage" />
     <Event Name="girl:sex:group" Script="SexText.lua" Function="GetGroupMessage" />
@@ -19,13 +19,13 @@
     <Event Name="girl:sex:foot" Script="SexText.lua" Function="GetFootMessage" />
 
     <!-- Interaction -->
-    <Event Name="girl:interact.dungeon" Script="DefaultInteract.lua" Function="InteractDungeon" />
-    <Event Name="girl:interact.brothel" Script="DefaultInteract.lua" Function="InteractBrothel" />
-    <Event Name="girl:interact.office" Script="Office.lua" Function="InteractOffice" />
-    <Event Name="girl:interact.private" Script="PrivateChambers.lua" Function="PrivateChambers" />
-    <Event Name="girl:interact.bedroom" Script="Bedroom.lua" Function="VisitBedroom" />
-    <Event Name="girl:chat.dungeon" Script="Chat.lua" Function="ChatDungeon" />
-    <Event Name="girl:chat.brothel" Script="Chat.lua" Function="ChatBrothel" />
+    <Event Name="girl:interact:dungeon" Script="DefaultInteract.lua" Function="InteractDungeon" />
+    <Event Name="girl:interact:brothel" Script="DefaultInteract.lua" Function="InteractBrothel" />
+    <Event Name="girl:interact:office" Script="Office.lua" Function="InteractOffice" />
+    <Event Name="girl:interact:private" Script="PrivateChambers.lua" Function="PrivateChambers" />
+    <Event Name="girl:interact:bedroom" Script="Bedroom.lua" Function="VisitBedroom" />
+    <Event Name="girl:chat:dungeon" Script="Chat.lua" Function="ChatDungeon" />
+    <Event Name="girl:chat:brothel" Script="Chat.lua" Function="ChatBrothel" />
     <Event Name="girl:refuse" Script="DefaultInteract.lua" Function="Refuse" />
     <Event Name="girl:mission" Script="Mission.lua" Function="GoOnMission" />
     <Event Name="girl:quest" Script="Mission.lua" Function="Quest" />

@@ -39,7 +39,7 @@ function ChatDungeon(girl)
             Dialog("She lastly tells you that despite all her other feelings, she feels some hatred towards you.")
         end
     else
-        return girl:trigger("girl:interact.dungeon")
+        return girl:trigger("girl:interact:dungeon")
     end
 end
 
@@ -115,6 +115,6 @@ function ChatBrothel(girl)
             Dialog("She tells you she doesn't hate you and that you have been a good, kind employer")
         end
     elseif choice == 3 then
-        return girl:trigger("girl:interact.brothel")
+        return girl:trigger("girl:interact:brothel")
     end
 end

@@ -36,7 +36,7 @@ namespace scripting
     class cEventMapping final : public IEventMapping
     {
     public:
-        explicit cEventMapping(std::string name, const cScriptManager * mgr, pEventMapping fallback);
+        explicit cEventMapping(std::string name, const cScriptManager* mgr, pEventMapping fallback);
         ~cEventMapping() final;
 
         const std::string& GetName() const final;

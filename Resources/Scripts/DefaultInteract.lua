@@ -16,7 +16,7 @@ function DungeonInteractChoice(girl)
         girl:torture()
         wm.UpdateImage(wm.IMG.TORTURE)
     elseif choice == 1 then
-        return girl:trigger("girl:chat.dungeon")
+        return girl:trigger("girl:chat:dungeon")
     elseif choice == 2 then
         ScoldGirl(girl)
     elseif choice == 3 then
@@ -214,15 +214,15 @@ function BrothelInteractChoice(girl)
         girl:pclove(1)
         girl:pchate(-1)
     elseif choice == 1 then
-        return girl:trigger("girl:chat.brothel")
+        return girl:trigger("girl:chat:brothel")
     elseif choice == 2 then
-         return girl:trigger("girl:interact.bedroom")
+         return girl:trigger("girl:interact:bedroom")
     elseif choice == 3  then -- Office
-        return girl:trigger("girl:interact.office")
+        return girl:trigger("girl:interact:office")
     elseif choice == 4 then
         Dialog("\"Hello My Dear, I wanted to ask you to come by my private quarters this evening.  Perhaps, we can get to know each other better.\" ")
         if girl:obey_check(wm.ACTIONS.SEX) then
-            return girl:trigger("girl:interact.private")
+            return girl:trigger("girl:interact:private")
         else
             Dialog("She declines your invitation.")
             return girl:trigger("girl:refuse")

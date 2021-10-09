@@ -54,7 +54,7 @@ function VisitBedroom(girl)
         return Strip(girl)
     elseif choice == 9 then
         Dialog("Go Back")
-        return girl:trigger("girl:interact.brothel")
+        return girl:trigger("girl:interact:brothel")
     end
 end
 
