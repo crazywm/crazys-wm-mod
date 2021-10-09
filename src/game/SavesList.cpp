@@ -148,7 +148,7 @@ bool SavesList::LoadGame(const std::string& source_file, const std::function<voi
 
 std::vector<SavesList::sSaveEntry> SavesList::get_saves() const {
     extern cConfig cfg;
-    DirPath::expand_path(cfg.folders.saves());
+    DirPath::expand_path(cfg.saves());
     std::vector<sSaveEntry> target;
     for(auto& entry : m_SaveData) {
         std::ifstream in("Saves/" + entry.first);

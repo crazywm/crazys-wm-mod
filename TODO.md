@@ -54,7 +54,6 @@
 
 ## Bugs
 * [ ] some parts of the old scripts are still missing
-* [ ] Scrollbar release mouse while outside problem
 * [ ] Pregnancies of runaway/prison girls currently don't work
 * [ ] GetRandomRivalToSabotage function is wrong
 * [ ] async scripts and messages may get scrambled
@@ -62,7 +61,7 @@
 * [ ] bugs in shop/inventory screen
   - [ ] "your inventory is full", but seems to buy anyway
   - [ ] "your inventory is full" for sell button
-  - [ ] Equip / unequip showed simultaneously
+  - [ ] Equip / unequip shown simultaneously
 * [ ] gracefully handle missing/corrupt config file
 * [ ] Setting jobs for multiple girls when girl list is not in default sort order
 * [ ] animated webps don't load

@@ -73,9 +73,9 @@ void LoadInterface()
 
     // `J` Bookmark - Loading the screens
     load_window<cScreenPreparingGame>("Preparing Game", true);
-    load_window<cScreenMainMenu>("Main Menu", true, cfg.folders.saves());
+    load_window<cScreenMainMenu>("Main Menu", true, cfg.saves());
     load_window<cScreenNewGame>("New Game", true);
-    load_window<cScreenLoadGame>("Load Game", true, cfg.folders.saves());
+    load_window<cScreenLoadGame>("Load Game", true, cfg.saves());
     load_window<cScreenSettings>("Settings", true);
 
     load_window<cScreenBrothelManagement>("Brothel Management");

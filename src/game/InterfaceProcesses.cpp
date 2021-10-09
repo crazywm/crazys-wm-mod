@@ -89,7 +89,7 @@ void NextWeek()
 
 void AutoSaveGame()
 {
-    SaveGameXML(DirPath(DirPath::expand_path(cfg.folders.saves()).c_str()) << "autosave.gam");
+    SaveGameXML(DirPath(DirPath::expand_path(cfg.saves()).c_str()) << "autosave.gam");
 }
 
 void SaveGame()
@@ -97,7 +97,7 @@ void SaveGame()
     std::string filename = g_Game->buildings().get_building(0).name();
     std::string filenamedotgam = filename + ".gam";
 
-    auto save_dir = DirPath::expand_path(cfg.folders.saves());
+    auto save_dir = DirPath::expand_path(cfg.saves());
     SavesList list;
     list.BuildSaveGameList(save_dir);
 

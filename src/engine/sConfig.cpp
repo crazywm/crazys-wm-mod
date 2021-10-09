@@ -103,13 +103,13 @@ void sConfigData::load(const DirPath& source) {
     }
 }
 
-const std::string& cConfig::Folders::characters() { return data->get_str("folders.characters"); }
-const std::string& cConfig::Folders::saves() { return data->get_str("folders.saves"); }
-const std::string& cConfig::Folders::items() { return data->get_str("folders.items"); }
-const std::string& cConfig::Folders::defaultimageloc() { return data->get_str("folders.default_images");  }
-bool cConfig::Folders::preferdefault() { return data->get_bool("folders.prefer_defaults"); }
+const std::string& cConfig::characters() { return data->get_str("folders.characters"); }
+const std::string& cConfig::saves() { return data->get_str("folders.saves"); }
+const std::string& cConfig::items() { return data->get_str("folders.items"); }
+const std::string& cConfig::defaultimageloc() { return data->get_str("folders.default_images");  }
+bool cConfig::preferdefault() { return data->get_bool("folders.prefer_defaults"); }
 
-const std::string& cConfig::Resolution::resolution() { return data->get_str("interface.theme"); }
-int cConfig::Resolution::width() { return data->get_integer("interface.width"); }
-int cConfig::Resolution::height() { return data->get_integer("interface.height"); }
-bool cConfig::Resolution::fullscreen() { return data->get_bool("interface.fullscreen"); }
+const std::string& cConfig::theme() { return data->get_str("interface.theme"); }
+int cConfig::width() { return data->get_integer("interface.width"); }
+int cConfig::height() { return data->get_integer("interface.height"); }
+bool cConfig::fullscreen() { return data->get_bool("interface.fullscreen"); }

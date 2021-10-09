@@ -102,12 +102,12 @@ void cGame::NewGame(const std::function<void(std::string)>& callback) {
 
     callback("Loading Items");
     g_LogFile.info("prepare", "Loading Items");
-    for(const auto& path : DirPath::split_search_path(cfg.folders.items()))
+    for(const auto& path : DirPath::split_search_path(cfg.items()))
         LoadItemFiles(DirPath::expand_path(path).c_str());
 
     callback("Loading Girls");
     g_LogFile.info("prepare", "Loading Girl Files");
-    for(const auto& path : DirPath::split_search_path(cfg.folders.characters()))
+    for(const auto& path : DirPath::split_search_path(cfg.characters()))
         LoadGirlFiles(DirPath::expand_path(path).c_str(), callback);
 
     g_LogFile.info("prepare", "Update Shop");
@@ -136,7 +136,7 @@ void cGame::LoadGame(const tinyxml2::XMLElement& source, const std::function<voi
     callback("Loading Items");
     auto start_time_items = std::chrono::steady_clock::now();
     g_LogFile.info("prepare", "Loading Items");
-    for(const auto& path : DirPath::split_search_path(cfg.folders.items()))
+    for(const auto& path : DirPath::split_search_path(cfg.items()))
         LoadItemFiles(DirPath::expand_path(path).c_str());
     int duration = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::steady_clock::now() - start_time_items ).count();
     g_LogFile.info("prepare", "Loaded items in ", duration, "ms");
@@ -154,7 +154,7 @@ void cGame::LoadGame(const tinyxml2::XMLElement& source, const std::function<voi
 
     callback("Loading Girl Files");
     g_LogFile.info("prepare", "Loading Girl Files");
-    for(const auto& path : DirPath::split_search_path(cfg.folders.characters()))
+    for(const auto& path : DirPath::split_search_path(cfg.characters()))
         LoadGirlFiles(DirPath::expand_path(path).c_str(), callback);
 
     duration = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::steady_clock::now() - start_time_girls ).count();

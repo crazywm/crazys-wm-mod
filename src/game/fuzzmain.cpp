@@ -85,8 +85,8 @@ public:
 
         mouse_event.type = rand() % 2 ? SDL_MOUSEBUTTONUP : SDL_MOUSEBUTTONDOWN;
         mouse_event.button.button = SDL_BUTTON_LEFT;
-        mouse_event.button.x = rand() % cfg.resolution.width();
-        mouse_event.button.y = rand() % cfg.resolution.height();
+        mouse_event.button.x = rand() % cfg.width();
+        mouse_event.button.y = rand() % cfg.height();
         for(int i = 0; i < 5; ++i) {
             cInterfaceWindow* pWindow = window_manager().GetWindow();
             size_t num_widgets = pWindow->NumWidgets();
@@ -215,7 +215,7 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
     *       init the graphics, with the caption on the titlebar
     */
 
-    if (!gfx.InitGraphics("", cfg.resolution.width(), cfg.resolution.height(), false))
+    if (!gfx.InitGraphics("", cfg.width(), cfg.height(), false))
     {
         g_LogFile.log(ELogLevel::ERROR,"Initializing Graphics");
         return false;
@@ -225,7 +225,7 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
 
     g_LogFile.log(ELogLevel::NOTIFY, "Loading Interface");
     auto theme = std::make_unique<cTheme>();
-    theme->load(cfg.resolution.resolution());
+    theme->load(cfg.theme());
     theme->set_screen_size(gfx.GetWidth(), gfx.GetHeight());
     InitInterface(&gfx, std::move(theme));
     LoadInterface();        // Load the interface

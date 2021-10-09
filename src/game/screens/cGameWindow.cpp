@@ -1076,7 +1076,7 @@ std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool galler
     g_LogFile.log(ELogLevel::DEBUG, "Debug Alt Images || Getting image for: ", girl.FullName(), " (", image_folder, ")");
 
     int dir = 0; DirPath usedir = "";
-    DirPath imagedirDc = DirPath(DirPath::expand_path(cfg.folders.defaultimageloc()).c_str());        // usedir = -1
+    DirPath imagedirDc = DirPath(DirPath::expand_path(cfg.defaultimageloc()).c_str());        // usedir = -1
     DirPath imagedirDo = DirPath() << "Resources" << "DefaultImages";            // usedir = -2
 
     // Use "cached" FileLists: Girlname : FileList
@@ -1111,7 +1111,7 @@ std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool galler
     if (gallery) tries = 0;
     else    // try some corrections
     {
-        if (cfg.folders.preferdefault() || totalimagesCc < 1)    tries = 10;
+        if (cfg.preferdefault() || totalimagesCc < 1)    tries = 10;
         if (imagetype < 0 || imagetype > NUM_IMGTYPES)        imagetype = IMGTYPE_PROFILE;
 
         if (imagetype == IMGTYPE_PROFILE && g_Dice.percent(10))

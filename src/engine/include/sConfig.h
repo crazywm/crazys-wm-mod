@@ -30,20 +30,16 @@ class cConfig
 public:
     cConfig();
 
-    struct Folders {
-        const std::string&    characters();
-        const std::string&    saves();
-        const std::string&    items();
-        const std::string&    defaultimageloc();
-        bool                  preferdefault();
-    } folders;
+    const std::string&  characters();
+    const std::string&  saves();
+    const std::string&  items();
+    const std::string&  defaultimageloc();
+    bool                preferdefault();
 
-    struct Resolution {
-        const std::string& resolution();
-        int                width();
-        int                height();
-        bool               fullscreen();
-    } resolution;
+    const std::string&  theme();
+    int                 width();
+    int                 height();
+    bool                fullscreen();
 
     template <typename T>
     void set_value(const char* id, T value);

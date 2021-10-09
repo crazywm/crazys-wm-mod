@@ -171,8 +171,8 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
     */
 
     if (!gfx.InitGraphics(VERSION_STRING,
-                          cfg.resolution.width(), cfg.resolution.height(),
-                          cfg.resolution.fullscreen()))
+                          cfg.width(), cfg.height(),
+                          cfg.fullscreen()))
     {
         g_LogFile.log(ELogLevel::ERROR,"Initializing Graphics");
         return false;
@@ -182,7 +182,7 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
 
     g_LogFile.log(ELogLevel::NOTIFY, "Loading Interface");
     auto theme = std::make_unique<cTheme>();
-    theme->load(cfg.resolution.resolution());
+    theme->load(cfg.theme());
     gfx.SetTheme(*theme);
     InitInterface(&gfx, std::move(theme));
     LoadInterface();        // Load the interface

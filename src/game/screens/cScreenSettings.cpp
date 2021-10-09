@@ -49,7 +49,7 @@ void cScreenSettings::set_ids()
     auto themes = FileList("Resources/Interface", "*.xml");
     for(int i = 0; i < themes.size(); ++i) {
         auto theme = themes[i].leaf().substr(0, themes[i].leaf().length() - 4);
-        if(theme == cfg.resolution.resolution()) {
+        if(theme == cfg.theme()) {
             AddToListBox(theme_id, 1, theme, COLOR_DARKBLUE);
         } else {
             AddToListBox(theme_id, 0, theme);
@@ -68,18 +68,18 @@ void cScreenSettings::init(bool back)
     if (!back)
     {
         std::stringstream ss;
-        SetEditBoxText(characters_id, cfg.folders.characters());
-        SetEditBoxText(saves_id, cfg.folders.saves());
-        SetEditBoxText(defaultimages_id, cfg.folders.defaultimageloc());
-        SetEditBoxText(items_id, cfg.folders.items());
-        SetEditBoxText(width_id, std::to_string(cfg.resolution.width()));
-        SetEditBoxText(height_id, std::to_string(cfg.resolution.height()));
-        SetCheckBox(preferdefault_id, cfg.folders.preferdefault());
-        SetCheckBox(fullscreen_id, cfg.resolution.fullscreen());
+        SetEditBoxText(characters_id, cfg.characters());
+        SetEditBoxText(saves_id, cfg.saves());
+        SetEditBoxText(defaultimages_id, cfg.defaultimageloc());
+        SetEditBoxText(items_id, cfg.items());
+        SetEditBoxText(width_id, std::to_string(cfg.width()));
+        SetEditBoxText(height_id, std::to_string(cfg.height()));
+        SetCheckBox(preferdefault_id, cfg.preferdefault());
+        SetCheckBox(fullscreen_id, cfg.fullscreen());
         SetSelectedItemInList(theme_id, 1, false, true);
     }
-    HideWidget(width_id, cfg.resolution.fullscreen());
-    HideWidget(height_id, cfg.resolution.fullscreen());
+    HideWidget(width_id, cfg.fullscreen());
+    HideWidget(height_id, cfg.fullscreen());
 }
 
 void cScreenSettings::update_settings()
