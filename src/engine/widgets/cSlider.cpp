@@ -26,7 +26,7 @@
 
 cSlider::cSlider(cInterfaceWindow* parent, int ID, int x, int y, int width, int min, int max, int increment, int value, float height):
     cUIWidget(ID, x ,y, width, 1, parent), m_MinVal(min), m_MaxVal(max), m_Value(value), m_IncrementAmount(increment),
-    BGLeft(new SDL_Rect), BGRight(new SDL_Rect)
+    BG(new SDL_Rect)
 {
     auto load = [this](std::string file){
         return LoadUIImage("Widgets", "Slider" + std::move(file), -1, -1); };
@@ -49,11 +49,9 @@ cSlider::cSlider(cInterfaceWindow* parent, int ID, int x, int y, int width, int 
     ValueToOffset();
 
     // set up SDL_Rects indicating left and right halves of displayed background from source background images
-    BGLeft->x = BGLeft->y = BGRight->y = 0;
-    BGLeft->h = BGRight->h = m_ImgRailDefault.GetHeight();
-    BGLeft->w = (m_Width / 2);
-    BGRight->w = m_Width - BGLeft->w;
-    BGRight->x = m_ImgRailDefault.GetWidth() - BGRight->w;
+    BG->x = BG->y = 0;
+    BG->h = m_ImgRailDefault.GetHeight();
+    BG->w = m_Width;
 }
 
 cSlider::~cSlider() = default;
@@ -169,8 +167,7 @@ void cSlider::EndDrag()
 void cSlider::DrawWidget(const CGraphics& gfx)
 {
     // draw background rail
-    m_ImgRail.DrawSurface(m_XPos, m_YPos, BGLeft.get());
-    m_ImgRail.DrawSurface(m_XPos + BGLeft->w, m_YPos, BGRight.get());
+    m_ImgRail.DrawSurface(m_XPos, m_YPos, BG.get());
     // draw marker if it's enabled
     if (m_ShowMarker)
     {

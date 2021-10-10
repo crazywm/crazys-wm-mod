@@ -20,10 +20,7 @@
 #include "CLog.h"
 #include "interface/CGraphics.h"
 #include "interface/sColor.h"
-#include <SDL_image.h>
-#include <algorithm>
-#include "utils/DirPath.h"
-
+#include <SDL2/SDL.h>
 
 cSurface::cSurface(std::shared_ptr<cCachedSurface> surface, CGraphics* gfx) :
         m_Surface(std::move(surface)),
@@ -34,11 +31,20 @@ cSurface::cSurface(std::shared_ptr<cCachedSurface> surface, CGraphics* gfx) :
 
 void cSurface::DrawSurface(int x, int y, SDL_Rect * clip) const
 {
-    if(!m_Surface) return;
-    SDL_Rect offset;
-    offset.x = x;
-    offset.y = y;
-    SDL_BlitSurface(m_Surface->surface(), clip, m_GFX->GetScreen(), &offset);
+    if(!m_Surface) {
+        g_LogFile.error("gfx", "Trying to draw non-existent surface");
+        return;
+    }
+    SDL_Rect dst;
+    dst.x = x;
+    dst.y = y;
+    dst.w = GetWidth();
+    dst.h = GetHeight();
+    if(clip) {
+        dst.h = clip->h;
+        dst.w = clip->w;
+    }
+    m_GFX->RenderTexture(m_Surface->texture(m_GFX->GetRenderer()), clip, &dst);
 }
 
 int cSurface::GetWidth() const
@@ -71,17 +77,16 @@ const std::string& cSurface::GetFileName() const
     return m_Surface->name();
 }
 
-cImageCache* cSurface::GetCache()
-{
-    return &m_GFX->GetImageCache();
+void cSurface::DrawScaled(int x, int y, int width, int height, SDL_Rect* clip) const {
+    if(!m_Surface) {
+        g_LogFile.error("gfx", "Trying to draw non-existent surface");
+        return;
+    }
+    SDL_Rect dst;
+    dst.x = x;
+    dst.y = y;
+    dst.w = width;
+    dst.h = height;
+    m_GFX->RenderTexture(m_Surface->texture(m_GFX->GetRenderer()), clip, &dst);
 }
 
-void cSurface::DrawScaled(int x, int y, int width, int height, SDL_Rect* clip) const {
-    if(!m_Surface) return;
-    SDL_Rect offset;
-    offset.x = x;
-    offset.y = y;
-    offset.w = width;
-    offset.h = height;
-    SDL_BlitScaled(m_Surface->surface(), clip, m_GFX->GetScreen(), &offset);
-}

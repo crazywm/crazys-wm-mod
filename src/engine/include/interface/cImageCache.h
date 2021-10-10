@@ -38,14 +38,17 @@ struct sImageCacheKey {
 };
 
 // surfaces
-struct SurfaceDeleter {
-    void operator()(SDL_Surface* surface);
+struct SDLDeleter {
+    void operator()(SDL_Surface* surface) const;
+    void operator()(SDL_Texture* texture) const;
 };
 
-using surface_ptr_t = std::unique_ptr<SDL_Surface, SurfaceDeleter>;
+using texture_ptr_t = std::unique_ptr<SDL_Texture, SDLDeleter>;
+using surface_ptr_t = std::unique_ptr<SDL_Surface, SDLDeleter>;
 
 class cCachedSurface {
     surface_ptr_t m_Surface;
+    texture_ptr_t m_Texture;
 public:
     cCachedSurface(surface_ptr_t surface, std::string name);
     ~cCachedSurface() = default;
@@ -57,6 +60,7 @@ public:
     std::size_t bytes() const;
 
     SDL_Surface* surface() const;
+    SDL_Texture* texture(SDL_Renderer*) const;
 
 private:
     std::string m_Name;

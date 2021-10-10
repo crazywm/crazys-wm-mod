@@ -80,8 +80,7 @@ private:
     cSurface m_ImgBar;          // points to the appropriate bar surface above (on, off, or disabled)
     cSurface m_ImgButtonUp;     // same for "Up" button surface
     cSurface m_ImgButtonDown;   // same for "Down" button surface
-    std::unique_ptr<SDL_Rect> m_RectBGTop;  // rectangle for top half of background to be blitted
-    std::unique_ptr<SDL_Rect> m_RectBGBottom;  // rectangle for bottom half of background to be blitted
+    std::unique_ptr<SDL_Rect> m_RectBG;  // rectangle for background
     std::unique_ptr<SDL_Rect> m_RectTop;  // rectangle for top half of bar to be blitted
     std::unique_ptr<SDL_Rect> m_RectBottom;  // rectangle for bottom half of bar to be blitted
 };

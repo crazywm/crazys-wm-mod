@@ -29,7 +29,6 @@ class SDL_Surface;
 class SDL_Texture;
 class SDL_Window;
 class SDL_Renderer;
-class cSurface;
 class sColor;
 class cTimer;
 
@@ -54,14 +53,14 @@ public:
     cSurface LoadImage(std::string filename, sLoadImageParams params);
     cSurface LoadImage(std::string filename, int width, int height, bool transparent);
 
-    // Accessors
-    SDL_Surface* GetScreen() const { return m_ScreenBuffer; }
-
     // absolute screen size
     int GetWidth() const {return m_ScreenWidth;}
     int GetHeight() const {return m_ScreenHeight;}
 
     cFont LoadFont(const std::string& font, int size);
+
+    SDL_Renderer* GetRenderer();
+    void RenderTexture(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dst);
 
 private:
     // scaling
@@ -70,8 +69,6 @@ private:
     // Screen
     SDL_Window* m_Window = nullptr;
     SDL_Renderer* m_Renderer = nullptr;
-    SDL_Surface* m_ScreenBuffer = nullptr;
-    SDL_Texture* m_Screen = nullptr;
 
 
     // Images

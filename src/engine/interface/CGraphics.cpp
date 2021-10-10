@@ -33,8 +33,6 @@ CGraphics::CGraphics() : m_ImageCache(this)
 
 CGraphics::~CGraphics()
 {
-    SDL_DestroyTexture(m_Screen);
-    SDL_FreeSurface(m_ScreenBuffer);
     SDL_DestroyRenderer(m_Renderer);
     SDL_DestroyWindow(m_Window);
     TTF_Quit();
@@ -44,6 +42,9 @@ CGraphics::~CGraphics()
 void CGraphics::Begin()
 {
     m_FPS->Start();
+    if(SDL_RenderClear(m_Renderer)) {
+        g_LogFile.error("interface", "Could not clear render: ", SDL_GetError());
+    }
     if(m_BackgroundImage) {
         m_BackgroundImage.DrawSurface(0, 0);
     }
@@ -51,15 +52,6 @@ void CGraphics::Begin()
 
 bool CGraphics::End()
 {
-    if(SDL_UpdateTexture(m_Screen, nullptr, m_ScreenBuffer->pixels, m_ScreenBuffer->pitch)) {
-        g_LogFile.error("interface", "Could not update screen buffer: ", SDL_GetError());
-    }
-    if(SDL_RenderClear(m_Renderer)) {
-        g_LogFile.error("interface", "Could not clear render: ", SDL_GetError());
-    }
-    if(SDL_RenderCopy(m_Renderer, m_Screen, nullptr, nullptr)) {
-        g_LogFile.error("interface", "Could not copy screen buffer: ", SDL_GetError());
-    }
     SDL_RenderPresent(m_Renderer);
 
     // Maintain framerate
@@ -108,21 +100,6 @@ bool CGraphics::InitGraphics(const std::string& caption, int WindowWidth, int Wi
     if(!(m_Window && m_Renderer))    // check for error
     {
         g_LogFile.error("interface", "Could not SDL_CreateWindowAndRenderer");
-        g_LogFile.error("interface", SDL_GetError());
-        return false;
-    }
-
-    // prepare the screen
-    m_ScreenBuffer = SDL_CreateRGBSurface(0, m_ScreenWidth, m_ScreenHeight, 32,
-            0x00FF0000,0x0000FF00,0x000000FF,0xFF000000);
-
-    m_Screen = SDL_CreateTexture(m_Renderer, SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,
-            m_ScreenWidth, m_ScreenHeight);
-    if(!(m_ScreenBuffer && m_Screen))    // check for error
-    {
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SDL Error",
-                                 "Could not prepare screen buffer", m_Window);
-        g_LogFile.error("interface", "Could not prepare screen buffer");
         g_LogFile.error("interface", SDL_GetError());
         return false;
     }
@@ -196,3 +173,12 @@ void CGraphics::SetTheme(cTheme& theme) {
     m_BackgroundImage = LoadImage(theme.get_image("Backdrops", "background.jpg"), lip);
     g_LogFile.info("interface", "Background Image Set");
 }
+
+void CGraphics::RenderTexture(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dst) {
+    SDL_RenderCopy(m_Renderer, texture, src, dst);
+}
+
+SDL_Renderer* CGraphics::GetRenderer() {
+    return m_Renderer;
+}
+

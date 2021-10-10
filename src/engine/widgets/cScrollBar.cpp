@@ -25,8 +25,7 @@ Uint8 cScrollBar::m_NotchOffset=0;
     
 cScrollBar::cScrollBar(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int visibleitems) :
     cUIWidget(ID, x, y, width, height, parent),
-    m_RectBGTop(new SDL_Rect),
-    m_RectBGBottom(new SDL_Rect),
+    m_RectBG(new SDL_Rect),
     m_RectTop(new SDL_Rect),
     m_RectBottom(new SDL_Rect)
 {
@@ -55,11 +54,10 @@ cScrollBar::cScrollBar(cInterfaceWindow* parent, int ID, int x, int y, int width
     m_PageAmount = visibleitems - 1;
 
     // set up SDL_Rects indicating top and bottom halves of displayed background from source background images
-    m_RectBGTop->x = m_RectBGTop->y = m_RectBGBottom->x = 0;
-    m_RectBGTop->w = m_RectBGBottom->w = m_ImgBarBG.GetWidth();
-    m_RectBGTop->h = (m_SectionHeight / 2);
-    m_RectBGBottom->h = m_SectionHeight - m_RectBGTop->h;
-    m_RectBGBottom->y = m_ImgBarBG.GetHeight() - m_RectBGBottom->h;
+    m_RectBG->x = m_RectBG->y = 0;
+    m_RectBG->w = m_ImgBarBG.GetWidth();
+    m_RectBG->h = m_SectionHeight;
+//    m_RectBGBottom->y = m_ImgBarBG.GetHeight() - m_RectBGBottom->h;
 
     // set up initial base data for SDL_Rects indicating top and bottom halves of displayed bar from source bar images
     m_RectTop->x = m_RectTop->y = m_RectBottom->x = 0;
@@ -179,8 +177,7 @@ void cScrollBar::DrawWidget(const CGraphics& gfx)
     m_ImgButtonDown.DrawSurface(m_XPos,  m_YPos + m_Height - m_ImgButtonDown.GetHeight());
 
     // draw background
-    m_ImgBarBG.DrawSurface(m_XPos, m_YPos + m_ImgButtonUp.GetHeight(), m_RectBGTop.get());
-    m_ImgBarBG.DrawSurface(m_XPos, m_YPos + m_ImgButtonUp.GetHeight() + m_RectBGTop->h, m_RectBGBottom.get());
+    m_ImgBarBG.DrawSurface(m_XPos, m_YPos + m_ImgButtonUp.GetHeight(), m_RectBG.get());
 
     // draw bar
     m_ImgBar.DrawSurface(m_XPos, m_YPos + m_ImgButtonUp.GetHeight() + m_BarTop, m_RectTop.get());

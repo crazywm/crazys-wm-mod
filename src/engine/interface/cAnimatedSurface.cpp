@@ -34,7 +34,7 @@ void cAnimatedSurface::DrawSurface(int x, int y, SDL_Rect * clip) const
     if(m_Frames.empty())
         return;
 
-    m_Frames[m_CurrentFrame].surface.DrawSurface(x, y , clip);
+    m_Frames[m_CurrentFrame].surface.DrawSurface(x, y, clip);
 }
 
 void cAnimatedSurface::UpdateFrame()

@@ -46,8 +46,7 @@ private:
     void ValueToOffset();  // set the Offset of the button based on the current Value
     void OffsetToValue();  // conversely, set the Value based on the current Offset of the button
 
-    std::unique_ptr<SDL_Rect> BGLeft;  // rectangle sized for left half of displayed background rail
-    std::unique_ptr<SDL_Rect> BGRight;  // rectangle sized and moved for right half of displayed background rail
+    std::unique_ptr<SDL_Rect> BG;  // rectangle sized for background rail
     cSurface m_ImgButton;           // points to the appropriate button surface (off, on, or disabled)
     cSurface m_ImgRail;             // points to the appropriate background rail surface (normal or disabled)
 

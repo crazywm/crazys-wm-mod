@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ cButton::~cButton() = default;
 
 void cButton::DrawWidget(const CGraphics& gfx)
 {
-    if (m_CurrImage)
+    if (m_CurrImage && *m_CurrImage)
     {
         m_CurrImage->DrawSurface(m_XPos, m_YPos);
     }
@@ -34,19 +34,16 @@ cButton::cButton(cInterfaceWindow* parent, const std::string& OffImage, const st
         const std::string& OnImage, int ID, int x, int y, int width, int height):
     cUIWidget(ID, x, y, width, height, parent)
 {
-    if (!OffImage.empty())
-    {
-        m_OffImage = LoadUIImage("Buttons", OffImage, m_Width, m_Height);
-    }
+    m_OffImage = LoadUIImage("Buttons", OffImage, m_Width, m_Height);
 
-    if (!DisabledImage.empty())
-    {
+    if (!DisabledImage.empty()) {
         m_DisabledImage = LoadUIImage("Buttons", DisabledImage, m_Width, m_Height);
     }
 
-    if (!OnImage.empty())
-    {
+    if (!OnImage.empty()) {
         m_OnImage = LoadUIImage("Buttons", OnImage, m_Width, m_Height);
+    } else {
+        m_OnImage = m_OffImage;
     }
 
     m_CurrImage = &m_OffImage;

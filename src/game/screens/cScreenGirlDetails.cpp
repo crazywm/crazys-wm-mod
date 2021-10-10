@@ -184,8 +184,8 @@ void cScreenGirlDetails::init(bool back)
     SetCheckBox(antipreg_id, (m_SelectedGirl->m_UseAntiPreg));
 
     IBuilding* pBuilding = m_SelectedGirl->m_Building;
-    DisableWidget(reldungeon_id, m_SelectedGirl->m_DayJob != JOB_INDUNGEON);
-    DisableWidget(senddungeon_id, m_SelectedGirl->m_DayJob == JOB_INDUNGEON);
+    HideWidget(reldungeon_id, m_SelectedGirl->m_DayJob != JOB_INDUNGEON);
+    HideWidget(senddungeon_id, m_SelectedGirl->m_DayJob == JOB_INDUNGEON);
 
     ClearListBox(joblist_id);
     bool HideDNButtons = false;

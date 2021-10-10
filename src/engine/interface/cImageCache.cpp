@@ -20,6 +20,7 @@
 #include "interface/cImageCache.h"
 #include "interface/cSurface.h"
 #include "interface/sColor.h"
+#include "interface/CGraphics.h"
 #include "CLog.h"
 #include "ffmpeg.h"
 
@@ -462,7 +463,7 @@ cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, sLoadImageParams par
 
         name << movie << "@" << frame_num;
         auto surface = AddToCache(sImageCacheKey{std::move(name.str()), frame.Width, frame.Height, false},
-                                  ResizeImage(std::move(surface_ptr), frame.Width, frame.Height, true), movie);
+                                  std::move(surface_ptr), movie);
         // TODO is this off by one? first frame seems to be at time "0"
         surfaces.push_back({std::move(surface), int(frame.Time - last_frame)});
         last_frame = frame.Time;
@@ -475,7 +476,7 @@ cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, sLoadImageParams par
         return {};
     }
 
-    int dur = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count();
+    long dur = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count();
     g_LogFile.info("ffmpeg", "Loaded ", movie, " with ", surfaces.size(), " frames in ", dur, "ms");
     return cAnimatedSurface{std::move(movie), std::move(surfaces)};
 }
@@ -502,14 +503,17 @@ cSurface cImageCache::CreateTextSurface(TTF_Font* font, std::string text, sColor
         return cSurface();
 }
 
-cImageCache::cImageCache(CGraphics* gfx) : m_GFX(gfx)
-{
+cImageCache::cImageCache(CGraphics* gfx) : m_GFX(gfx) {
 }
 
-void SurfaceDeleter::operator()(SDL_Surface * surface)
-{
+void SDLDeleter::operator()(SDL_Surface * surface) const {
     SDL_FreeSurface(surface);
 }
+
+void SDLDeleter::operator()(SDL_Texture* texture) const {
+    SDL_DestroyTexture(texture);
+}
+
 
 std::size_t cCachedSurface::width() const
 {
@@ -522,8 +526,8 @@ std::size_t cCachedSurface::height() const
 }
 
 cCachedSurface::cCachedSurface(surface_ptr_t surface, std::string name) :
-    m_Name(move(name)),
-    m_Surface(move(surface))
+    m_Name(std::move(name)),
+    m_Surface(std::move(surface))
 {
 
 }
@@ -536,4 +540,11 @@ size_t cCachedSurface::bytes() const
 SDL_Surface* cCachedSurface::surface() const
 {
     return m_Surface.get();
+}
+
+SDL_Texture* cCachedSurface::texture(SDL_Renderer* renderer) const {
+    if(!m_Texture) {
+        const_cast<texture_ptr_t&>(m_Texture).reset(SDL_CreateTextureFromSurface(renderer, m_Surface.get()));
+    }
+    return m_Texture.get();
 }
