@@ -1,7 +1,10 @@
 # Version 7.1.2alpha2
+This is a very experimental release that has switched the
+rendering from being based on SDL_Surface to SDL_Texture.
 
 ## Changes
-* Next Week button on town screen
+* **New rendering implementation**
+* Next Week button on town and gang screens
 * Number of free interactions can be set in game options
 * Themes can specify image directories
 

@@ -57,13 +57,19 @@ void cScreenGangs::set_ids()
     recruitlist_id     = get_id("RecruitList");
 
     // `J` added for .06.01.10
-    controlcatacombs_id = get_id("ControlCatacombs");
-    catacombslabel_id   = get_id("Catacombs");
     ganggetsgirls_id    = get_id("GangGetsGirls");
     ganggetsitems_id    = get_id("GangGetsItems");
     ganggetsbeast_id    = get_id("GangGetsBeast");
     girlspercslider_id  = get_id("GirlsPercSlider");
     itemspercslider_id  = get_id("ItemsPercSlider");
+    next_week_id        = get_id("Next Week");
+
+    SetButtonCallback(next_week_id, [this]() {
+        if (!is_ctrl_held()) { AutoSaveGame(); }
+        // need to switch the windows first, so that any new events will show up!
+        push_window("Turn Summary");
+        g_Game->NextWeek();
+    });
 
     //Set the default sort order for columns, so listboxes know the order in which data will be sent
     std::vector<std::string> RecruitColumns{ "GangName", "Number", "Combat", "Magic", "Intelligence", "Agility", "Constitution", "Charisma", "Strength", "Service" };

@@ -1,6 +1,7 @@
 <Screen>
 <Window     Name="Gang Management Window"                                   XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
 <Text       Name="txtControlledGangs"   Text="Controlled Gangs"             XPos="7"       YPos="2"        Width="375"     Height="32"     FontSize="18"  />
+<Button     Name="Next Week"            Image="NextWeek"                    XPos="847"     YPos="10"       Width="120"     Height="32"     Transparency="true"/>
 <Text       Name="TotalCost"            Text="Weekly Cost: 0"               XPos="337"      YPos="8"        Width="150"     Height="32"  FontSize="12"  />
 <Text       Name="Gold"                 Text="Player Gold: 0"               XPos="600"      YPos="2"        Width="225"     Height="32"     FontSize="18"  />
 
@@ -37,8 +38,8 @@
 <Column     Name="Charisma"     Header="Charisma"                   Offset="598"  />
 </ListBox>
 
-<Text       Name="txtMissions"          Text="Available Missions"           XPos="847"     YPos="8"        Width="150"     Height="32"  FontSize="13"  />
-<ListBox    Name="MissionList"                                              XPos="847"     YPos="35"       Width="150"     Height="242" FontSize="9" RowHeight="19" Border="1"          Events="true"  />
+<Text       Name="txtMissions"          Text="Available Missions"           XPos="847"     YPos="45"        Width="150"     Height="20"  FontSize="13"  />
+<ListBox    Name="MissionList"                                              XPos="847"     YPos="70"       Width="150"     Height="242" FontSize="9" RowHeight="19" Border="1"          Events="true"  />
 <Text       Name="MissionDescription"   Text=""                             XPos="847"     YPos="280"      Width="150"     Height="115" FontSize="9"  />
 
 <Text       Name="WeaponDescription"    Text="Weapon Level: 0"              XPos="600"      YPos="675"      Width="225"     Height="32" FontSize="10"  />

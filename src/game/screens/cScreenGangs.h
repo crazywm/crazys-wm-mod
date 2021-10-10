@@ -23,7 +23,6 @@
 class cScreenGangs : public cInterfaceWindowXML
 {
 private:
-    int gangcost_id;        // Gang Hiring Cost text
     int ganghire_id;        // Hire Gang button
     int gangfire_id;        // Fire Gang button
     int totalcost_id;        // Weekly Cost text
@@ -45,9 +44,8 @@ private:
     int healbuy20_id;        // Buy 20 Healing Potions button
     int healautobuy_id;        // Auto-buy Healing Potions checkbox
     int recruitlist_id;        // Recruitable Gangs list
+    int next_week_id;       // Next Week Button
 
-    int controlcatacombs_id;// checkbox
-    int catacombslabel_id;    // just a label
     int ganggetsgirls_id;    // gang gets girls label
     int ganggetsitems_id;    // gang gets items label
     int ganggetsbeast_id;    // gang gets beast label

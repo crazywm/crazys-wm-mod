@@ -1,8 +1,9 @@
 <Screen>
 <Window     Name="Gang Management Window"                                   XPos="18"       YPos="20"       Width="1883"    Height="1041"    Border="1"  />
 <Text       Name="txtControlledGangs"   Text="Controlled Gangs"             XPos="14"       YPos="3"        Width="703"     Height="45"     FontSize="34"  />
+<Button     Name="Next Week"            Image="NextWeek"                    XPos="1588"     YPos="14"       Width="225"     Height="45"     Transparency="true"/>
 <Text       Name="TotalCost"            Text="Weekly Cost: 0"               XPos="633"      YPos="11"        Width="281"     Height="45"  FontSize="22"  />
-<Text       Name="Gold"                 Text="Player Gold: 0"               XPos="1124"      YPos="3"        Width="422"     Height="45"     FontSize="34"  />
+<Text       Name="Gold"                 Text="Player Gold: 0"               XPos="1124"     YPos="3"        Width="422"     Height="45"     FontSize="34"  />
 
 
 <ListBox    Name="GangList"                                                 XPos="14"       YPos="49"       Width="1546"     Height="565" FontSize="17" RowHeight="30" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
@@ -37,8 +38,8 @@
 <Column     Name="Charisma"     Header="Charisma"                   Offset="1121"  />
 </ListBox>
 
-<Text       Name="txtMissions"          Text="Available Missions"           XPos="1588"     YPos="11"        Width="281"     Height="45"  FontSize="25"  />
-<ListBox    Name="MissionList"                                              XPos="1588"     YPos="49"       Width="281"     Height="340" FontSize="17" RowHeight="30" Border="1"          Events="true"  />
+<Text       Name="txtMissions"          Text="Available Missions"           XPos="1588"     YPos="60"        Width="281"     Height="45"  FontSize="25"  />
+<ListBox    Name="MissionList"                                              XPos="1588"     YPos="110"       Width="281"     Height="340" FontSize="17" RowHeight="30" Border="1"          Events="true"  />
 <Text       Name="MissionDescription"   Text=""                             XPos="1588"     YPos="394"      Width="281"     Height="162" FontSize="17"  />
 
 <Text       Name="WeaponDescription"    Text="Weapon Level: 0"              XPos="1124"      YPos="949"      Width="422"     Height="45" FontSize="18"  />

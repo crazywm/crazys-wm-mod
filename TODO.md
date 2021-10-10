@@ -1,6 +1,5 @@
 # TODO
 ## Engine and Refactorings
-* [ ] Make use of SDL2 Textures instead of Surfaces
 * [ ] file system abstraction (physfs? / boost::filesystem?)
 * [ ] libarchive for archive handling
 * [ ] Integrate boost::stacktrace for better debugging
