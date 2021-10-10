@@ -20,7 +20,7 @@
 #include "CLog.h"
 #include "interface/CGraphics.h"
 #include "interface/sColor.h"
-#include <SDL2/SDL.h>
+#include <SDL_video.h>
 
 cSurface::cSurface(std::shared_ptr<cCachedSurface> surface, CGraphics* gfx) :
         m_Surface(std::move(surface)),
