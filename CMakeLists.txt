@@ -27,7 +27,7 @@ add_subdirectory(src/engine EXCLUDE_FROM_ALL)
 add_subdirectory(src/game)
 
 install(DIRECTORY
-        Resources/Buttons
+        Resources/Themes
         Resources/Data
         Resources/Interface
         Resources/Items
