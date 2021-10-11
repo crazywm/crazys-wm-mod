@@ -772,7 +772,7 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
 
     m_Earnings = 20;
     int enjoy = 0, fame = 0;
-    int imagetype = IMGTYPE_PROFILE;
+    int imagetype = IMGTYPE_PIANO;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
 #pragma region //    Job Performance            //

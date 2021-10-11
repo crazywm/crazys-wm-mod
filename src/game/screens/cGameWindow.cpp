@@ -128,6 +128,7 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "virginsex*.", "virgingroup*.", "virginbdsm*.", "virginbeast*.",                                            // `J` new .06.03.01 for DarkArk
                             "escort*.", "sport*.", "study*.", "teacher*.",                                                                // `J` new .06.03.02 for grishnak
                             "massage*.", "studiocrew*.", "cameramage*.", "director*.", "crystalpurifier*.", "stagehand*.",
+                            "piano*.",
                             "preg*.",    // pregnant varients
                             "preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
                             "pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
@@ -144,6 +145,7 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "pregvirginsex*.", "pregvirgingroup*.", "pregvirginbdsm*.", "pregvirginbeast*.",                            // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "pregescort*.", "pregsport*.", "pregstudy*.", "pregteacher*.",                                             // `J` new .06.03.02 for grishnak
                             "pregmassage*.", "pregstudiocrew*.", "pregcameramage*.", "pregdirector*.", "pregcrystalpurifier*.", "pregstagehand*.",
+                            "pregpiano*."
 
                     };
 std::string galtxt[] =
@@ -158,7 +160,7 @@ std::string galtxt[] =
                             "Impregnate Sex", "Impregnate Group", "Impregnate Bondage", "Impregnate Beast",                             // `J` new .06.03.01 for DarkArk
                             "Virgin Sex", "Virgin Group", "Virgin Bondage", "Virgin Beast",                                                // `J` new .06.03.01 for DarkArk
                             "Escort", "Sport", "Study", "Teacher", "Massage",                                                                        // `J` new .06.03.02 for grishnak
-                            "Studio Crew", "Camera Mage", "Director", "Crystal Purifier", "Stage Hand",
+                            "Studio Crew", "Camera Mage", "Director", "Crystal Purifier", "Stage Hand", "Piano",
 
                             "Pregnant",    // pregnant varients
                             "Pregnant Anal", "Pregnant BDSM", "Pregnant Sex", "Pregnant Beast", "Pregnant Group",
@@ -177,7 +179,7 @@ std::string galtxt[] =
                             "P Virgin Sex", "P Virgin Group", "P Virgin Bondage", "P Virgin Beast",                                        // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "Pregnant Escort", "Pregnant Sport", "Pregnant Study", "Pregnant Teacher",                                    // `J` new .06.03.02 for grishnak
                             "Pregnant Massage", "Pregnant Studio Crew", "Pregnant Camera Mage", "Pregnant Director",
-                            "Pregnant Crystal Purifier", "Pregnant Stage Hand",
+                            "Pregnant Crystal Purifier", "Pregnant Stage Hand", "Pregnant Piano"
 
                     };
 
@@ -723,6 +725,7 @@ int TryImageType(int imagetype, int tries)
 
     case    IMGTYPE_SING:
     case    IMGTYPE_CARD:
+    case    IMGTYPE_PIANO:
     case    IMGTYPE_BUNNY:
     case    IMGTYPE_ESCORT:
     case    IMGTYPE_TEACHER:
@@ -732,6 +735,7 @@ int TryImageType(int imagetype, int tries)
     }break;
     case    IMGTYPE_PREGSING:
     case    IMGTYPE_PREGCARD:
+    case    IMGTYPE_PREG_PIANO:
     case    IMGTYPE_PREGBUNNY:
     case    IMGTYPE_PREGESCORT:
     case    IMGTYPE_PREGTEACHER:

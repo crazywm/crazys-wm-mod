@@ -142,6 +142,7 @@ cJobCameraMage::cJobCameraMage() : cCrewJob(JOB_CAMERAMAGE, "CameraMage.xml") {
 }
 
 cJobCrystalPurifier::cJobCrystalPurifier() : cCrewJob(JOB_CRYSTALPURIFIER, "CrystalPurifier.xml") {
+    m_EventImage = IMGTYPE_PURIFIER;
     m_Info.Provides.emplace_back(CrystalPurifierInteractionId);
 }
 
