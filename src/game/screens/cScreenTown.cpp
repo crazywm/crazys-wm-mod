@@ -138,7 +138,7 @@ void cScreenTown::init(bool back)
     Focused();
 
     // buttons enable/disable
-    DisableWidget(walk_id, g_Game->CanWalkAround());
+    DisableWidget(walk_id, !g_Game->CanWalkAround());
 
     int num_brothels = g_Game->buildings().num_buildings(BuildingType::BROTHEL);
     HideWidget(brothel2_id, num_brothels < 2);
