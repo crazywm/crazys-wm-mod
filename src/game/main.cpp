@@ -56,7 +56,7 @@ bool playershopinventory = false;
 // logfile
 CLog g_LogFile;
 
-cConfig cfg;
+cConfig cfg = cConfig::load();
 
 cRng g_Dice;
 
@@ -75,7 +75,7 @@ int main(int ac, char* av[])    // `J` Bookmark - #1 - Entering the game
     // Boost.Program_options or GNU getopt.
     {
        if(ac == 3 && strcmp("--config", av[1]) == 0)
-          cfg.reload(DirPath::expand_path(av[2]));
+          cfg = cConfig::load(DirPath::expand_path(av[2]));
     }
 
     bool running = true;
@@ -185,7 +185,7 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
     theme->load(cfg.theme());
     gfx.SetTheme(*theme);
     InitInterface(&gfx, std::move(theme));
-    LoadInterface();        // Load the interface
+    LoadInterface(cfg);        // Load the interface
     gfx.GetImageCache().PrintStats();
 
     g_LogFile.log(ELogLevel::NOTIFY, "Interface Loaded");

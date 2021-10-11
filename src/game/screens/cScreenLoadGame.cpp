@@ -64,7 +64,7 @@ void cScreenLoadGame::init(bool back)
     auto lb = GetListBox(id_saveslist);
     lb->Clear();
     int i = 0;
-    for (auto& save : list.get_saves())                        // loop through the files, adding them to the box
+    for (auto& save : list.get_saves(m_SavesPath))                        // loop through the files, adding them to the box
     {
         lb->AddRow(i, [&](const std::string& query) -> FormattedCellData {
             if(query == "Name") {

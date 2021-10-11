@@ -10,7 +10,7 @@ class cScreenGetInput;
 
 // define the global variables that are currently expected by the engine code
 CLog g_LogFile;
-cConfig cfg;
+cConfig cfg = cConfig::load();
 cRng g_Dice;
 std::unique_ptr<IGame> g_Game;
 cNameList g_GirlNameList;

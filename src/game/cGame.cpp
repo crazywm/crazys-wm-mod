@@ -45,6 +45,8 @@
 
 #include <chrono>
 
+extern cConfig cfg;
+
 namespace settings {
     extern const char* TAXES_RATE;
     extern const char* TAXES_MINIMUM;
@@ -82,7 +84,6 @@ std::unique_ptr<IGame> IGame::CreateGame() {
 //                                              Saving and Loading
 // ---------------------------------------------------------------------------------------------------------------------
 void cGame::NewGame(const std::function<void(std::string)>& callback) {
-    cConfig cfg;
     g_LogFile.info("prepare", "Loading Game Data");
     // setup gold
     gold().reset();
@@ -123,7 +124,6 @@ void cGame::NewGame(const std::function<void(std::string)>& callback) {
 }
 
 void cGame::LoadGame(const tinyxml2::XMLElement& source, const std::function<void(std::string)>& callback) {
-    cConfig cfg;
     g_LogFile.info("prepare", "Loading Game Data");
 
     // jobs

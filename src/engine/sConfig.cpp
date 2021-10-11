@@ -27,23 +27,19 @@
 
 struct sConfigData : public cSimpleKeyValue
 {
-    sConfigData(const char *filename = "config.xml");
+    explicit sConfigData(const char *filename);
     void load(const DirPath& source);
 };
 
-std::unique_ptr<sConfigData> cConfig::data;
-
-cConfig::cConfig()
-{
-    if (!data)
-    {
-        data = std::make_unique<sConfigData>();
-    }
+cConfig::cConfig(const std::string& file_name) : data(std::make_unique<sConfigData>(file_name.c_str())) {
 }
+cConfig::~cConfig() = default;
+cConfig::cConfig(cConfig&& other)  noexcept = default;
+cConfig& cConfig::operator=(cConfig&& other) noexcept = default;
 
-void cConfig::reload(std::string const& filename)
+cConfig cConfig::load(const std::string& filename)
 {
-   data = std::make_unique<sConfigData>(filename.c_str());
+    return {filename};
 }
 
 void cConfig::set_value(const char* id, std::string value) {
@@ -103,13 +99,13 @@ void sConfigData::load(const DirPath& source) {
     }
 }
 
-const std::string& cConfig::characters() { return data->get_str("folders.characters"); }
-const std::string& cConfig::saves() { return data->get_str("folders.saves"); }
-const std::string& cConfig::items() { return data->get_str("folders.items"); }
-const std::string& cConfig::defaultimageloc() { return data->get_str("folders.default_images");  }
-bool cConfig::preferdefault() { return data->get_bool("folders.prefer_defaults"); }
+const std::string& cConfig::characters() const { return data->get_str("folders.characters"); }
+const std::string& cConfig::saves() const { return data->get_str("folders.saves"); }
+const std::string& cConfig::items() const { return data->get_str("folders.items"); }
+const std::string& cConfig::defaultimageloc() const { return data->get_str("folders.default_images");  }
+bool cConfig::preferdefault() const { return data->get_bool("folders.prefer_defaults"); }
 
-const std::string& cConfig::theme() { return data->get_str("interface.theme"); }
-int cConfig::width() { return data->get_integer("interface.width"); }
-int cConfig::height() { return data->get_integer("interface.height"); }
-bool cConfig::fullscreen() { return data->get_bool("interface.fullscreen"); }
+const std::string& cConfig::theme() const { return data->get_str("interface.theme"); }
+int cConfig::width() const { return data->get_integer("interface.width"); }
+int cConfig::height() const { return data->get_integer("interface.height"); }
+bool cConfig::fullscreen() const { return data->get_bool("interface.fullscreen"); }

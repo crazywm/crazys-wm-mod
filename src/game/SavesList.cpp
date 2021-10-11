@@ -28,7 +28,6 @@
 #include "utils/DirPath.h"
 #include "utils/FileList.h"
 #include <boost/numeric/conversion/cast.hpp>
-#include "sConfig.h"
 #include "Revision.h"
 
 void SavesList::NotifySaveGame(const std::string& file_name, IGame& game) {
@@ -146,12 +145,12 @@ bool SavesList::LoadGame(const std::string& source_file, const std::function<voi
     return true;
 }
 
-std::vector<SavesList::sSaveEntry> SavesList::get_saves() const {
-    extern cConfig cfg;
-    DirPath::expand_path(cfg.saves());
+std::vector<SavesList::sSaveEntry> SavesList::get_saves(const DirPath& saves_dir) const {
     std::vector<sSaveEntry> target;
     for(auto& entry : m_SaveData) {
-        std::ifstream in("Saves/" + entry.first);
+        DirPath file = saves_dir;
+        file << entry.first;
+        std::ifstream in(file.str());
         if (!in.good()) continue; // don't show deleted saves
         target.emplace_back(sSaveEntry{entry.first, entry.second});
     }

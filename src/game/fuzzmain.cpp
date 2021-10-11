@@ -54,7 +54,7 @@ std::string monthnames[13]
 bool g_AltKeys = true;          // Toggles the alternate hotkeys --PP
 bool playershopinventory = false;
 
-cConfig cfg;
+cConfig cfg = cConfig::load();
 
 class FuzzyMouse {
 public:
@@ -228,7 +228,7 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
     theme->load(cfg.theme());
     theme->set_screen_size(gfx.GetWidth(), gfx.GetHeight());
     InitInterface(&gfx, std::move(theme));
-    LoadInterface();        // Load the interface
+    LoadInterface(cfg);        // Load the interface
     gfx.GetImageCache().PrintStats();
 
     g_LogFile.log(ELogLevel::NOTIFY, "Interface Loaded");

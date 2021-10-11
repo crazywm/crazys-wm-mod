@@ -16,7 +16,6 @@
   - [ ] cScreenDungeon
 * [ ] Replace image name based tags by an xml file
 * [ ] Improve image paths handling / image selection
-* [ ] Reduce usage of sConfig
 * [ ] Improve performance of animations (upscale only when blitting?)
 * [ ] Pre-generate list of all images for each girl on game start
 * [ ] De-interlacing

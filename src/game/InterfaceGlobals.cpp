@@ -61,9 +61,8 @@ T* load_window(const char* name)
   return load_window<T>(name, false);
 }
 
-void LoadInterface()
+void LoadInterface(const cConfig& cfg)
 {
-    cConfig cfg;
     std::stringstream ss;
     std::string image; std::string text; std::string file;
     std::ifstream incol;

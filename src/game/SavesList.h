@@ -25,6 +25,7 @@
 #include <functional>
 #include <vector>
 class IGame;
+class DirPath;
 
 struct sSaveData {
     int WeeksPlayed;
@@ -47,7 +48,7 @@ public:
         std::string File;
         sSaveData Data;
     };
-    std::vector<sSaveEntry> get_saves() const;
+    std::vector<sSaveEntry> get_saves(const DirPath& saves_dir) const;
 private:
     std::unordered_map<std::string, sSaveData> m_SaveData;
 };

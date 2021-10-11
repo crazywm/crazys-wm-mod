@@ -26,27 +26,30 @@ struct sConfigData;
 
 class cConfig
 {
-    static std::unique_ptr<sConfigData> data;
+    std::unique_ptr<sConfigData> data;
+    cConfig(const std::string&);
+
 public:
-    cConfig();
+    ~cConfig();
+    cConfig(cConfig&& other) noexcept;
+    cConfig& operator=(cConfig&& other) noexcept;
 
-    const std::string&  characters();
-    const std::string&  saves();
-    const std::string&  items();
-    const std::string&  defaultimageloc();
-    bool                preferdefault();
+    const std::string&  characters() const;
+    const std::string&  saves() const;
+    const std::string&  items() const;
+    const std::string&  defaultimageloc() const;
+    bool                preferdefault() const;
 
-    const std::string&  theme();
-    int                 width();
-    int                 height();
-    bool                fullscreen();
+    const std::string&  theme() const;
+    int                 width() const;
+    int                 height() const;
+    bool                fullscreen() const;
 
     template <typename T>
     void set_value(const char* id, T value);
     void set_value(const char* id, std::string value);
 
     void save();
-
-    void reload(std::string const& filename = "config.xml");
+    static cConfig load(std::string const& filename = "config.xml");
 };
 

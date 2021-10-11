@@ -21,11 +21,13 @@
 
 #include <string>
 
+class cConfig;
+
 void AutoSaveGame();
 void SaveGame();
 void SaveGameXML(std::string filename);
 void LoadNames();
 
-void LoadInterface();
+void LoadInterface(const cConfig& cfg);
 
 #endif

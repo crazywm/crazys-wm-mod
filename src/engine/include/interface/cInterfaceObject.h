@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,10 +32,10 @@ public:
     virtual ~cInterfaceObject();
     void SetPosition(int x, int y, int width, int height) {m_XPos = x; m_YPos = y; m_Width = width; m_Height = height;}
     virtual void Draw(const CGraphics& gfx) {};
-    int GetXPos() {return m_XPos;}
-    int GetYPos() {return m_YPos;}
-    int GetWidth() {return m_Width;}
-    int GetHeight() {return m_Height;}
+    int GetXPos() const { return m_XPos; }
+    int GetYPos() const { return m_YPos; }
+    int GetWidth() const { return m_Width; }
+    int GetHeight() const { return m_Height; }
 
 protected:
     int m_XPos, m_YPos;
