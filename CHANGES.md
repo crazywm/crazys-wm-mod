@@ -1,3 +1,13 @@
+# Version 7.1.2alpha3
+
+## Changes
+* Added `piano` image tag
+
+## Fixes
+* Clear customer list each week
+* Fixed walk button
+
+
 # Version 7.1.2alpha2
 This is a very experimental release that has switched the
 rendering from being based on SDL_Surface to SDL_Texture.

@@ -207,6 +207,8 @@ sCustomer cCustomers::GetCustomer(IBuilding& brothel)
 
 void cCustomers::GenerateCustomers(IBuilding& brothel, bool Day0Night1)
 {
+    m_Customers.clear();
+
     // TODO Free any existing customers?
     if (brothel.num_girls() == 0) return;    // no girls, no customers
 
