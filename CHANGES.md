@@ -6,6 +6,7 @@
 ## Fixes
 * Clear customer list each week
 * Fixed walk button
+* Don't try to render empty text in edit box
 
 
 # Version 7.1.2alpha2

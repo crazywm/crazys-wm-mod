@@ -36,8 +36,9 @@ void cEditBox::DrawWidget(const CGraphics& gfx)
     else
         m_Background.DrawSurface(m_XPos + m_BorderSize, m_YPos + m_BorderSize);
 
-    // draw the text
-    m_TextGFX.DrawSurface(m_XPos + m_BorderSize + 1, m_YPos + m_BorderSize + 1);
+    // draw the text, if any
+    if(m_TextGFX)
+        m_TextGFX.DrawSurface(m_XPos + m_BorderSize + 1, m_YPos + m_BorderSize + 1);
 }
 
 cEditBox::cEditBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, int FontSize):
