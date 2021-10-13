@@ -255,7 +255,7 @@ IGenericJob::eCheckWorkResult PracticeJob::CheckWork(sGirl& girl, bool is_night)
             girl.AddMessage(ss.str(), IMGTYPE_TORTURE, EVENT_NOWORK);
         } else {
             add_text("refuse");
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+            girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
         }
 
         return eCheckWorkResult::REFUSES;

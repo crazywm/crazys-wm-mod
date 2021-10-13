@@ -95,7 +95,7 @@ IGenericJob::eCheckWorkResult Cleaning::CheckWork(sGirl& girl, bool is_night) {
     if (girl.disobey_check(ACTION_WORKCLEANING, job()))
     {
         add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
     }
 

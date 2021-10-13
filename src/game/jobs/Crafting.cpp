@@ -178,7 +178,7 @@ IGenericJob::eCheckWorkResult GenericCraftingJob::CheckWork(sGirl& girl, bool is
     if (girl.disobey_check(m_CraftingData.Action, job()))            // they refuse to work
     {
         ss << "${name} refused to work during the " << (is_night ? "night" : "day") << " shift.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
     }
     return eCheckWorkResult::ACCEPTS;

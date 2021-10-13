@@ -175,7 +175,7 @@ IGenericJob::eCheckWorkResult cJobStageHand::CheckWork(sGirl& girl, bool is_nigh
     if (roll_a <= 50 && (girl.disobey_check(ACTION_MOVIECREW, JOB_STAGEHAND) || girl.disobey_check(ACTION_WORKCLEANING, JOB_STAGEHAND)))
     {
         ss << "${name} refused to work as a stagehand today.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
     }
     return eCheckWorkResult::ACCEPTS;

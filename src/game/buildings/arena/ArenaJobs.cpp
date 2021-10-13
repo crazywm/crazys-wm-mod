@@ -175,7 +175,7 @@ IGenericJob::eCheckWorkResult FightBeasts::CheckWork(sGirl& girl, bool is_night)
     if (girl.disobey_check(ACTION_COMBAT, JOB_FIGHTBEASTS))
     {
         ss << "${name} refused to fight beasts today.\n";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
     }
     return eCheckWorkResult::ACCEPTS;

@@ -387,8 +387,8 @@ IGenericJob::eCheckWorkResult NurseJob::CheckWork(sGirl& girl, bool is_night) {
             ss << "\nShe was found sleeping " << rng().select_text({"in a supply closet.", "in an empty patient bed."});
             girl.tiredness(-uniform(0, 40));
         }
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-        return IGenericJob::eCheckWorkResult::REFUSES;;
+        girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
+        return IGenericJob::eCheckWorkResult::REFUSES;
     }
     return IGenericJob::eCheckWorkResult::ACCEPTS;
 }

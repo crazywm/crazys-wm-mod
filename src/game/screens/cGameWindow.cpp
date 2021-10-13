@@ -128,7 +128,7 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "virginsex*.", "virgingroup*.", "virginbdsm*.", "virginbeast*.",                                            // `J` new .06.03.01 for DarkArk
                             "escort*.", "sport*.", "study*.", "teacher*.",                                                                // `J` new .06.03.02 for grishnak
                             "massage*.", "studiocrew*.", "cameramage*.", "director*.", "crystalpurifier*.", "stagehand*.",
-                            "piano*.",
+                            "piano*.", "music*", "refuse*",
                             "preg*.",    // pregnant varients
                             "preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
                             "pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
@@ -145,8 +145,7 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "pregvirginsex*.", "pregvirgingroup*.", "pregvirginbdsm*.", "pregvirginbeast*.",                            // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "pregescort*.", "pregsport*.", "pregstudy*.", "pregteacher*.",                                             // `J` new .06.03.02 for grishnak
                             "pregmassage*.", "pregstudiocrew*.", "pregcameramage*.", "pregdirector*.", "pregcrystalpurifier*.", "pregstagehand*.",
-                            "pregpiano*."
-
+                            "pregpiano*.", "pregmusic*", "pregrefuse*",
                     };
 std::string galtxt[] =
                     {
@@ -161,6 +160,7 @@ std::string galtxt[] =
                             "Virgin Sex", "Virgin Group", "Virgin Bondage", "Virgin Beast",                                                // `J` new .06.03.01 for DarkArk
                             "Escort", "Sport", "Study", "Teacher", "Massage",                                                                        // `J` new .06.03.02 for grishnak
                             "Studio Crew", "Camera Mage", "Director", "Crystal Purifier", "Stage Hand", "Piano",
+                            "Music", "Refuse",
 
                             "Pregnant",    // pregnant varients
                             "Pregnant Anal", "Pregnant BDSM", "Pregnant Sex", "Pregnant Beast", "Pregnant Group",
@@ -179,11 +179,13 @@ std::string galtxt[] =
                             "P Virgin Sex", "P Virgin Group", "P Virgin Bondage", "P Virgin Beast",                                        // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "Pregnant Escort", "Pregnant Sport", "Pregnant Study", "Pregnant Teacher",                                    // `J` new .06.03.02 for grishnak
                             "Pregnant Massage", "Pregnant Studio Crew", "Pregnant Camera Mage", "Pregnant Director",
-                            "Pregnant Crystal Purifier", "Pregnant Stage Hand", "Pregnant Piano"
-
+                            "Pregnant Crystal Purifier", "Pregnant Stage Hand", "Pregnant Piano",
+                            "Pregnant Music", "Pregnant Refuse"
                     };
 
 static_assert(sizeof(galtxt) == sizeof(pic_types), "Mismatch between pic types and names");
+static_assert(sizeof(galtxt) / sizeof(std::string) == NUM_IMGTYPES, "Wrong number of pic types");
+
 
 
 /* `J` image tree for each image type
@@ -195,7 +197,6 @@ int TryImageType(int imagetype, int tries)
 {
     if (imagetype == IMGTYPE_PROFILE)
     {
-        if (tries > 15) tries = 15;
         return IMGTYPE_PROFILE;
     }
     int trytype = imagetype;
@@ -209,7 +210,7 @@ int TryImageType(int imagetype, int tries)
     if (tries == 1)    return IMGTYPE_PROFILE;
 
     int t = g_Dice.d100();
-    // for 11 through 30 and 2 trhough 8, some choices need to be made for each type
+    // for 11 to 30 and 2 to 8, some choices need to be made for each type
     switch (trytype)
     {
         // `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cImageItem.cpp > TryImageType
@@ -721,11 +722,25 @@ int TryImageType(int imagetype, int tries)
         if (tries > 11 || tries == 2) return IMGTYPE_PREGNANT;
     }break;
 
+    case IMGTYPE_REFUSE:
+    case IMGTYPE_PREG_REFUSE:
+        return IMGTYPE_PROFILE;
 
+    case IMGTYPE_SING:
+    case IMGTYPE_PIANO:
+    case IMGTYPE_MUSIC:
+    {
+        // in the end, fall back to formal
+        if (tries > 6 && tries < 10)    return trytype;
+        else {
+            return IMGTYPE_FORMAL;
+        }
+        if (t < 33)    return IMGTYPE_SING;
+        if (t < 67)    return IMGTYPE_PIANO;
+        return IMGTYPE_MUSIC;
+    }break;
 
-    case    IMGTYPE_SING:
     case    IMGTYPE_CARD:
-    case    IMGTYPE_PIANO:
     case    IMGTYPE_BUNNY:
     case    IMGTYPE_ESCORT:
     case    IMGTYPE_TEACHER:
@@ -736,6 +751,7 @@ int TryImageType(int imagetype, int tries)
     case    IMGTYPE_PREGSING:
     case    IMGTYPE_PREGCARD:
     case    IMGTYPE_PREG_PIANO:
+    case    IMGTYPE_PREG_MUSIC:
     case    IMGTYPE_PREGBUNNY:
     case    IMGTYPE_PREGESCORT:
     case    IMGTYPE_PREGTEACHER:

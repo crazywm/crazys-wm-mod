@@ -726,7 +726,9 @@ enum Image_Types {
     IMGTYPE_DIRECTOR,
     IMGTYPE_PURIFIER,
     IMGTYPE_STAGEHAND,
-    IMGTYPE_PIANO,
+    IMGTYPE_PIANO,                      // Playing the piano
+    IMGTYPE_MUSIC,                      // Playing another instrument
+    IMGTYPE_REFUSE,                     // refuse to do a job
 
     /*
 IMGTYPE_WATER            - "water*."            - "Watersports"        - watersports
@@ -824,6 +826,8 @@ IMGTYPE_PETLICK            - "petlick*."        - "PetLick"            - lick, o
     IMGTYPE_PREG_PURIFIER,
     IMGTYPE_PREG_STAGEHAND,
     IMGTYPE_PREG_PIANO,
+    IMGTYPE_PREG_MUSIC,
+    IMGTYPE_PREG_REFUSE,
 
     NUM_IMGTYPES    // `J` All image types can have a pregnant variation (except pregnant-pregnant)
 };

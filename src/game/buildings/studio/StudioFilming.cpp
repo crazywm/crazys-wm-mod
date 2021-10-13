@@ -172,7 +172,7 @@ bool cFilmSceneJob::CheckRefuseWork(sGirl& girl) {
             return RefusedTieUp(girl);
         } else {
             add_text("refuse");
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+            girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
             produce_debug_message(girl);
         }
         return true;
