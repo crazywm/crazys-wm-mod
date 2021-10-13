@@ -34,6 +34,10 @@ install(DIRECTORY
         Resources/Scripts
         Resources/Images
         DESTINATION Resources)
+
+# make sure there is a Saves directory
+install(DIRECTORY DESTINATION Saves)
+
 install(FILES Resources/Characters/randoms.rgirlsx DESTINATION Resources/Characters)
 if(NOT ${PROJECT_VERSION_TYPE} STREQUAL "alpha")
     install(DIRECTORY Resources/DefaultImages DESTINATION Resources)
