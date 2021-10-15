@@ -56,7 +56,7 @@ static static_brothel_data brothel_data[] = {
         { 10000, 10, 20, 200, "Farm.png", BuildingType::FARM },
         { 15000, 15, 20, 200, "Arena.png", BuildingType::ARENA },
         { 20000, 20, 20, 200, "Movies.jpg", BuildingType::STUDIO },
-        { 25000, 25, 20, 200, "Clinic.png", BuildingType::CLINIC }
+        { 25000, 25, 20, 200, "Clinic.jpg", BuildingType::CLINIC }
 };
 
 cScreenTown::cScreenTown() : cGameWindow("town_screen.xml")

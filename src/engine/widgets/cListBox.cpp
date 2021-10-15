@@ -477,7 +477,9 @@ void cListBox::DrawWidget(const CGraphics& gfx)
         for (auto& column : m_Columns)
         {
             if (column.skip) continue;
-            item->m_PreRendered.at(column.sort).DrawSurface(offset.x + 2 + column.offset, offset.y + 1);
+            auto& pre_rendered = item->m_PreRendered.at(column.sort);
+            if(pre_rendered)
+                pre_rendered.DrawSurface(offset.x + 2 + column.offset, offset.y + 1);
         }
     }
 }

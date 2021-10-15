@@ -1,7 +1,7 @@
 <Screen>
 <Window     Name="Clinic Window"                            XPos="18"       YPos="20"       Width="1883"    Height="1041"    Border="1"  />
 <Text       Name="BuildingLabel"        Text="The Clinic"   XPos="14"       YPos="3"        Width="984"     Height="56"     FontSize="28"            />
-<Image      Name="Background"           File="Clinic.png"   XPos="14"       YPos="49"       Width="1434"    Height="928"    Dir="Backdrops"/>
+<Image      Name="Background"           File="Clinic.jpg"   XPos="14"       YPos="49"       Width="1434"    Height="928"    Dir="Backdrops"/>
 
 <Button     Name="Next Week"            Image="NextWeek"    XPos="1546"     YPos="14"       Width="225"     Height="45"     Transparency="true"/>
 <Text       Name="BuildingDetails"      Text="Details"      XPos="1448"     YPos="70"       Width="436"     Height="422"    FontSize="14"  />
