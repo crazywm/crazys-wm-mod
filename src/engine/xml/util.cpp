@@ -33,6 +33,11 @@ pXMLDocument LoadXMLDocument(const char* file_name) {
         throw std::runtime_error(doc->ErrorStr());
     }
 
+    if(!doc->RootElement()) {
+        g_LogFile.log(ELogLevel::ERROR, "XML Document  '", file_name, "' is missing a root element");
+        throw std::runtime_error("XML Document is missing root element");
+    }
+
     g_LogFile.log(ELogLevel::DEBUG, "Loaded XML File ", file_name);
 
     return doc;

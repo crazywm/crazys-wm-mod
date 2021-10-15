@@ -45,12 +45,20 @@ void cInterfaceWindowXML::load(cWindowManager* wm)
     DirPath xml_source = {};
     xml_source << "Resources" << "Interface" << wm->GetTheme().directory() << m_ScreenName;
     auto doc = LoadXMLDocument(xml_source.str());
+    if(doc->RootElement()->Attribute("Extends")) {
+        DirPath base_source;
+        base_source << "Resources" << "Interface" << wm->GetTheme().directory() << doc->RootElement()->Attribute("Extends");
+        read_definition(*LoadXMLDocument(base_source.str())->RootElement());
+    }
+    read_definition(*doc->RootElement());
+
+    g_LogFile.debug("interface", "calling set_ids for window ", m_ScreenName);
+    set_ids();
+}
+
+void cInterfaceWindowXML::read_definition(const tinyxml2::XMLElement& root) {
     widget_map_t widgets;
-    /*
-    *    loop over the elements attached to the root
-    */
-    for (auto& el : IterateChildElements(*doc->RootElement()))
-    {
+    for (auto& el : IterateChildElements(root)) {
         std::string tag = el.Value();
         try {
             if (tag == "Define") { define_widget(el, widgets);    continue; }
@@ -69,12 +77,9 @@ void cInterfaceWindowXML::load(cWindowManager* wm)
 
         g_LogFile.log(ELogLevel::WARNING, "Unexpected tag in '", m_ScreenName, "': '", tag, '\'');
     }
-
-    g_LogFile.debug("interface", "calling set_ids for window ", m_ScreenName);
-    set_ids();
 }
 
-void cInterfaceWindowXML::read_text_item(tinyxml2::XMLElement& el)
+void cInterfaceWindowXML::read_text_item(const tinyxml2::XMLElement& el)
 {
     int id;
     sXmlWidgetPart wdg;
@@ -90,7 +95,7 @@ void cInterfaceWindowXML::read_text_item(tinyxml2::XMLElement& el)
     register_id(id, wdg.name);
 }
 
-void cInterfaceWindowXML::define_widget(tinyxml2::XMLElement& base_el, widget_map_t& widgets)
+void cInterfaceWindowXML::define_widget(const tinyxml2::XMLElement& base_el, widget_map_t& widgets)
 {
     std::string widget_name = GetStringAttribute(base_el, "Widget");
     g_LogFile.debug("interface", "define widget: '", widget_name, "'");
@@ -127,7 +132,7 @@ void cInterfaceWindowXML::define_widget(tinyxml2::XMLElement& base_el, widget_ma
     widgets[widget_name] = std::move(widget);
 }
 
-void cInterfaceWindowXML::place_widget(tinyxml2::XMLElement& el, const widget_map_t& widgets)
+void cInterfaceWindowXML::place_widget(const tinyxml2::XMLElement& el, const widget_map_t& widgets)
 {
     /*
     *    we need the base co-ords for the widget and the
@@ -230,14 +235,14 @@ void cInterfaceWindowXML::add_widget(std::string widget_name, int x, int y, std:
 }
 
 
-void cInterfaceWindowXML::read_window_definition(tinyxml2::XMLElement& el)
+void cInterfaceWindowXML::read_window_definition(const tinyxml2::XMLElement& el)
 {
     CreateWindow(read_x_coordinate(el, "XPos"), read_y_coordinate(el, "YPos"),
             read_width(el, "Width", boost::none), read_height(el, "Height", boost::none),
             GetIntAttribute(el, "Border"));
 }
 
-void cInterfaceWindowXML::read_editbox_definition(tinyxml2::XMLElement& el)
+void cInterfaceWindowXML::read_editbox_definition(const tinyxml2::XMLElement& el)
 {
     int id;
     sXmlWidgetPart wdg;
@@ -247,15 +252,15 @@ void cInterfaceWindowXML::read_editbox_definition(tinyxml2::XMLElement& el)
     register_id(id, wdg.name);
 }
 
-int cInterfaceWindowXML::read_x_coordinate(tinyxml2::XMLElement& element, const char* attribute) const {
+int cInterfaceWindowXML::read_x_coordinate(const tinyxml2::XMLElement& element, const char* attribute) const {
     return window_manager().GetTheme().calc_x(GetIntAttribute(element, attribute));
 }
 
-int cInterfaceWindowXML::read_y_coordinate(tinyxml2::XMLElement& element, const char* attribute) const {
+int cInterfaceWindowXML::read_y_coordinate(const tinyxml2::XMLElement& element, const char* attribute) const {
     return window_manager().GetTheme().calc_y(GetIntAttribute(element, attribute));
 }
 
-int cInterfaceWindowXML::read_width(tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const {
+int cInterfaceWindowXML::read_width(const tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const {
     if(!fallback) {
         return window_manager().GetTheme().calc_w(GetIntAttribute(element, attribute));
     } else {
@@ -263,7 +268,7 @@ int cInterfaceWindowXML::read_width(tinyxml2::XMLElement& element, const char* a
     }
 }
 
-int cInterfaceWindowXML::read_height(tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const {
+int cInterfaceWindowXML::read_height(const tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const {
     if(!fallback) {
         return window_manager().GetTheme().calc_h(GetIntAttribute(element, attribute));
     } else {
@@ -271,7 +276,7 @@ int cInterfaceWindowXML::read_height(tinyxml2::XMLElement& element, const char* 
     }
 }
 
-void cInterfaceWindowXML::read_listbox_definition(tinyxml2::XMLElement& el)
+void cInterfaceWindowXML::read_listbox_definition(const tinyxml2::XMLElement& el)
 {
     // TODO widget_listbox seems incomplete, leave like this for now
     std::string name = GetStringAttribute(el, "Name");
@@ -325,7 +330,7 @@ void cInterfaceWindowXML::read_listbox_definition(tinyxml2::XMLElement& el)
 }
 
 
-void cInterfaceWindowXML::read_generic(tinyxml2::XMLElement& el, sXmlWidgetBase& data) const
+void cInterfaceWindowXML::read_generic(const tinyxml2::XMLElement& el, sXmlWidgetBase& data) const
 {
     /*
     *    get the button name - we'll use this to match up
@@ -339,7 +344,7 @@ void cInterfaceWindowXML::read_generic(tinyxml2::XMLElement& el, sXmlWidgetBase&
     data.hide = el.BoolAttribute("Hidden", false);
 }
 
-void cInterfaceWindowXML::widget_editbox_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
+void cInterfaceWindowXML::widget_editbox_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
 {
     read_generic(el, xw);
     xw.fontsize = read_height(el, "FontSize", 16);
@@ -348,7 +353,7 @@ void cInterfaceWindowXML::widget_editbox_item(tinyxml2::XMLElement& el, sXmlWidg
     xw.events = el.BoolAttribute("Events", xw.events);
 }
 
-void cInterfaceWindowXML::widget_listbox_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
+void cInterfaceWindowXML::widget_listbox_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
 {
     read_generic(el, xw);
     xw.bordersize = el.IntAttribute("Border", xw.bordersize);
@@ -356,7 +361,7 @@ void cInterfaceWindowXML::widget_listbox_item(tinyxml2::XMLElement& el, sXmlWidg
     xw.events = el.BoolAttribute("Events", xw.events);
 }
 
-void cInterfaceWindowXML::widget_checkbox_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
+void cInterfaceWindowXML::widget_checkbox_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
 {
     read_generic(el, xw);
     xw.text = GetStringAttribute(el, "Text");
@@ -364,7 +369,7 @@ void cInterfaceWindowXML::widget_checkbox_item(tinyxml2::XMLElement& el, sXmlWid
     xw.leftorright = GetFallbackBoolAttribute(el, "LeftOrRight", true);
 }
 
-void cInterfaceWindowXML::widget_widget(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
+void cInterfaceWindowXML::widget_widget(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
 {
     xw.name = GetStringAttribute(el, "Definition");
     xw.x = read_x_coordinate(el, "XPos");
@@ -372,7 +377,7 @@ void cInterfaceWindowXML::widget_widget(tinyxml2::XMLElement& el, sXmlWidgetPart
     xw.seq = GetStringAttribute(el, "Seq");
 }
 
-void cInterfaceWindowXML::read_checkbox_definition(tinyxml2::XMLElement& el)
+void cInterfaceWindowXML::read_checkbox_definition(const tinyxml2::XMLElement& el)
 {
     int id;
 
@@ -383,7 +388,7 @@ void cInterfaceWindowXML::read_checkbox_definition(tinyxml2::XMLElement& el)
     register_id(id, wdg.name);
 }
 
-void cInterfaceWindowXML::read_image_definition(tinyxml2::XMLElement& el)
+void cInterfaceWindowXML::read_image_definition(const tinyxml2::XMLElement& el)
 {
     sXmlWidgetPart wdg;
     widget_image_item(el, wdg);
@@ -394,7 +399,7 @@ void cInterfaceWindowXML::read_image_definition(tinyxml2::XMLElement& el)
     register_id(id, wdg.name);
 }
 
-void cInterfaceWindowXML::read_button_definition(tinyxml2::XMLElement& el)
+void cInterfaceWindowXML::read_button_definition(const tinyxml2::XMLElement& el)
 {
     int id;
     sXmlWidgetPart wdg;
@@ -410,7 +415,7 @@ void cInterfaceWindowXML::read_button_definition(tinyxml2::XMLElement& el)
     register_id(id, wdg.name);
 }
 
-void cInterfaceWindowXML::read_slider_definition(tinyxml2::XMLElement& el)
+void cInterfaceWindowXML::read_slider_definition(const tinyxml2::XMLElement& el)
 {
     int id;
     sXmlWidgetPart wdg;
@@ -422,7 +427,7 @@ void cInterfaceWindowXML::read_slider_definition(tinyxml2::XMLElement& el)
     register_id(id, wdg.name);
 }
 
-void cInterfaceWindowXML::widget_slider_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
+void cInterfaceWindowXML::widget_slider_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
 {
     xw.stat = false;
     xw.events = true;
@@ -440,7 +445,7 @@ void cInterfaceWindowXML::widget_slider_item(tinyxml2::XMLElement& el, sXmlWidge
     if (xw.b > xw.g)            xw.b = xw.g;
 }
 
-void cInterfaceWindowXML::widget_text_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
+void cInterfaceWindowXML::widget_text_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
 {
     read_generic(el, xw);
 
@@ -452,7 +457,7 @@ void cInterfaceWindowXML::widget_text_item(tinyxml2::XMLElement& el, sXmlWidgetP
     xw.b = el.IntAttribute("Blue", -1);
 }
 
-void cInterfaceWindowXML::widget_button_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
+void cInterfaceWindowXML::widget_button_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
 {
     read_generic(el, xw);
 
@@ -476,7 +481,7 @@ void cInterfaceWindowXML::widget_button_item(tinyxml2::XMLElement& el, sXmlWidge
     }
 }
 
-void cInterfaceWindowXML::widget_image_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
+void cInterfaceWindowXML::widget_image_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
 {
     xw.stat = false;
     xw.r = xw.g = xw.b = 0;
