@@ -151,6 +151,15 @@ void IBuildingScreenManagement::set_ids() {
     jobtypedesc_id = get_id("JobTypeDescription");
     curbrothel_id  = get_id("CurrentBrothel");
 
+    auto next_week_id = get_id("Next Week");
+
+    SetButtonCallback(next_week_id, [this]() {
+        if (!is_ctrl_held()) { AutoSaveGame(); }
+        // need to switch the windows first, so that any new events will show up!
+        push_window("Turn Summary");
+        g_Game->NextWeek();
+    });
+
     // setting up button callbacks
     SetButtonCallback(viewdetails_id, [this](){
         ViewSelectedGirl();

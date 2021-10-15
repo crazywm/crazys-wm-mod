@@ -1,10 +1,11 @@
 <Screen>
     <Window     Name="Girl Management Window"                           XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
+    <Button     Name="Next Week"            Image="NextWeek"            XPos="825"     YPos="10"       Width="120"     Height="32"     Transparency="true"/>
     <Text       Name="CurrentBrothel"       Text=""                     XPos="7"       YPos="2"        Width="375"     Height="32"     FontSize="18"  />
     <Text       Name="Gold"                 Text="Player Gold: 0"       XPos="600"      YPos="2"        Width="225"     Height="32"     FontSize="18"  />
-    <Image      Name="GirlImage"            File=""                     XPos="772"     YPos="10"       Width="225"     Height="300"     />
-    <Button     Name="ViewDetailsButton"    Image="ViewDetails"         XPos="825"     YPos="320"      Width="120"     Height="32"     Transparency="true"/>
-    <Text       Name="GirlDescription"      Text=""                     XPos="772"     YPos="360"      Width="232"     Height="240"    FontSize="7"  />
+    <Image      Name="GirlImage"            File=""                     XPos="772"     YPos="50"       Width="225"     Height="300"     />
+    <Button     Name="ViewDetailsButton"    Image="ViewDetails"         XPos="825"     YPos="360"      Width="120"     Height="32"     Transparency="true"/>
+    <Text       Name="GirlDescription"      Text=""                     XPos="772"     YPos="395"      Width="232"     Height="240"    FontSize="7"  />
     <Button     Name="TransferButton"       Image="TransferGirls"       XPos="862"     YPos="600"      Width="120"     Height="32"     Transparency="true" ReplaceWindow="Transfer Screen"/>
     <Button     Name="FreeSlaveButton"      Image="FreeSlave"           XPos="675"      YPos="600"      Width="120"     Height="32"     Transparency="true"/>
     <Button     Name="SellSlaveButton"      Image="SellSlave"           XPos="675"      YPos="650"      Width="120"     Height="32"     Transparency="true"/>
