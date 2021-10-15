@@ -1,12 +1,15 @@
 # Version 7.1.2alpha3
 
 ## Changes
-* Added `piano` image tag
+* Added `piano` image tag, `music` tag as fallback for `sing` and `piano`
+* Added `refuse` tag for when a job is refused
+* Added Next Week button to girl management screens
 
 ## Fixes
 * Clear customer list each week
 * Fixed walk button
-* Don't try to render empty text in edit box
+* Don't try to render empty text in edit box and list widgets
+* Don't ask for building name after the player already entered it
 * Read first/middle/surname from girl xml
 
 

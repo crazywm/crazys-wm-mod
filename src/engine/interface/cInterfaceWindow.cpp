@@ -591,9 +591,9 @@ void cInterfaceWindow::input_confirm(std::function<void()> callback)
     window_manager().InputConfirm(std::move(callback));
 }
 
-void cInterfaceWindow::input_string(std::function<void(const std::string&)> callback, std::string def_value)
+void cInterfaceWindow::input_string(std::function<void(const std::string&)> callback, std::string def_value, std::string prompt)
 {
-    window_manager().InputString(std::move(callback), std::move(def_value));
+    window_manager().InputString(std::move(callback), std::move(def_value), std::move(prompt));
 }
 
 void cInterfaceWindow::input_choice(std::string question, std::vector<std::string> options, std::function<void(int)> callback)

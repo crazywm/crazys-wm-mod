@@ -213,11 +213,15 @@ void cWindowManager::InputConfirm(std::function<void()> callback)
     push("GetInput");
 }
 
-void cWindowManager::InputString(std::function<void(const std::string&)> callback, std::string def_value)
+void cWindowManager::InputString(std::function<void(const std::string&)> callback, std::string def_value,
+                                 std::string prompt)
 {
     g_GetInput->ModeGetString(std::move(callback));
     g_GetInput->SetText(def_value.c_str());
     push("GetInput");
+    if(!prompt.empty()) {
+        g_GetInput->SetPrompt(std::move(prompt));
+    }
 }
 
 void cWindowManager::PushMessage(std::string text, int color, std::function<void()> callback)

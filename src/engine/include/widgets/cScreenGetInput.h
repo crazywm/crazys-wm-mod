@@ -45,6 +45,7 @@ public:
     void ModeConfirm(std::function<void()> callback);
 
     void SetText(const char* text);
+    void SetPrompt(std::string prompt);
 
     std::function<void()> m_ConfirmCallback;
     std::function<void(int)> m_IntegerCallback;

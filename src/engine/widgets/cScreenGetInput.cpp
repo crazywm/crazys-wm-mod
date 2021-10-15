@@ -109,3 +109,7 @@ void cScreenGetInput::ModeConfirm(std::function<void()> callback)
 void cScreenGetInput::SetText(const char* text) {
     SetEditBoxText(id_textfield, text);
 }
+
+void cScreenGetInput::SetPrompt(std::string prompt) {
+    EditTextItem(std::move(prompt), id_label);
+}

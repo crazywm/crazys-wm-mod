@@ -194,7 +194,7 @@ protected:
     // input handling
     void input_integer(std::function<void(int)> callback, int def_value=0);
     void input_confirm(std::function<void()> callback);
-    void input_string(std::function<void(const std::string&)> callback, std::string def_value={});
+    void input_string(std::function<void(const std::string&)> callback, std::string def_value={}, std::string prompt={});
     void input_choice(std::string question, std::vector<std::string> options, std::function<void(int)> callback);
 private:
     cWindowManager* m_WindowManager = nullptr;
