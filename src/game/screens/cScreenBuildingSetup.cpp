@@ -39,15 +39,8 @@ void cScreenBuildingSetup::set_ids()
     potions10_id     = get_id("10PotionsButton");
     potions20_id     = get_id("20PotionsButton");
     autopotions_id   = get_id("AutoBuyPotionToggle");
-    barstaff_id      = get_id("BarStaffCost", "*Unused*");//
-    barhire_id       = get_id("BarHireButton", "*Unused*");//
-    barfire_id       = get_id("BarFireButton", "*Unused*");//
-    casinostaff_id   = get_id("CasinoStaffCost", "*Unused*");//
-    casinohire_id    = get_id("CasinoHireButton", "*Unused*");//
-    casinofire_id    = get_id("CasinoFireButton", "*Unused*");//
     roomcost_id      = get_id("RoomAddCost");
     buyrooms_id      = get_id("BuildRoomsButton");
-    restrict_id      = get_id("SexRestrictions", "*Unused*");//
 
     advertsli_id     = get_id("AdvertisingSlider");
     advertamt_id     = get_id("AdvertisingValue");
@@ -56,12 +49,12 @@ void cScreenBuildingSetup::set_ids()
     SetButtonCallback(potions10_id, [this](){ buy_potions(10); });
     SetButtonCallback(potions20_id, [this](){ buy_potions(20); });
 
-    m_SexTypeAllowedMap = { {get_id("ProhibitAnalToggleRes"), SKILL_ANAL}, {get_id("ProhibitBDSMToggleRes"), SKILL_BDSM},
-                            {get_id("ProhibitBeastToggleRes"), SKILL_BEASTIALITY}, {get_id("ProhibitFootJobToggleRes"), SKILL_FOOTJOB},
-                            {get_id("ProhibitGroupToggleRes"), SKILL_GROUP}, {get_id("ProhibitHandJobToggleRes"), SKILL_HANDJOB},
-                            {get_id("ProhibitLesbianToggleRes"), SKILL_LESBIAN}, {get_id("ProhibitNormalToggleRes"), SKILL_NORMALSEX},
-                            {get_id("ProhibitOralToggleRes"), SKILL_ORALSEX}, {get_id("ProhibitStripToggleRes"), SKILL_STRIP},
-                            {get_id("ProhibitTittyToggleRes"), SKILL_TITTYSEX}};
+    m_SexTypeAllowedMap = { {get_id("ProhibitAnalToggle"), SKILL_ANAL}, {get_id("ProhibitBDSMToggle"), SKILL_BDSM},
+                            {get_id("ProhibitBeastToggle"), SKILL_BEASTIALITY}, {get_id("ProhibitFootJobToggle"), SKILL_FOOTJOB},
+                            {get_id("ProhibitGroupToggle"), SKILL_GROUP}, {get_id("ProhibitHandJobToggle"), SKILL_HANDJOB},
+                            {get_id("ProhibitLesbianToggle"), SKILL_LESBIAN}, {get_id("ProhibitNormalToggle"), SKILL_NORMALSEX},
+                            {get_id("ProhibitOralToggle"), SKILL_ORALSEX}, {get_id("ProhibitStripToggle"), SKILL_STRIP},
+                            {get_id("ProhibitTittyToggle"), SKILL_TITTYSEX}};
 
     for(const auto& data : m_SexTypeAllowedMap) {
         SetCheckBoxCallback(data.id, [this, skill=data.skill](bool on){ set_sex_type_allowed(skill, on); });
@@ -122,20 +115,6 @@ void cScreenBuildingSetup::init(bool back)
     ss.str("");    ss << "Add Rooms: " << g_Game->tariff().add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << std::endl;
     EditTextItem(ss.str(), roomcost_id);
     DisableWidget(buyrooms_id, rooms >= maxrooms);
-
-    /*    ss.str("");
-    ss << "Bar Staff: " << g_Game->tariff().bar_staff_wages() << " gold / week";
-    EditTextItem(ss.str(), barstaff_id);
-
-    ss.str("");
-    ss << "Casino Staff: " << g_Game->tariff().casino_staff_wages() << " gold / week";
-    EditTextItem(ss.str(), casinostaff_id);
-    */
-
-    HideWidget(barhire_id, true);
-    HideWidget(casinohire_id, true);
-    HideWidget(barfire_id, true);
-    HideWidget(casinofire_id, true);
 }
 
 void cScreenBuildingSetup::buy_potions(int buypotions)

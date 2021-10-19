@@ -57,12 +57,9 @@ void cInterfaceWindowXML::load(cWindowManager* wm)
 }
 
 void cInterfaceWindowXML::read_definition(const tinyxml2::XMLElement& root) {
-    widget_map_t widgets;
     for (auto& el : IterateChildElements(root)) {
         std::string tag = el.Value();
         try {
-            if (tag == "Define") { define_widget(el, widgets);    continue; }
-            if (tag == "Widget") { place_widget(el, widgets);        continue; }
             if (tag == "Window") { read_window_definition(el);            continue; }
             if (tag == "EditBox") { read_editbox_definition(el);        continue; }
             if (tag == "Text") { read_text_item(el);                    continue; }
@@ -77,179 +74,6 @@ void cInterfaceWindowXML::read_definition(const tinyxml2::XMLElement& root) {
 
         g_LogFile.log(ELogLevel::WARNING, "Unexpected tag in '", m_ScreenName, "': '", tag, '\'');
     }
-}
-
-void cInterfaceWindowXML::read_text_item(const tinyxml2::XMLElement& el)
-{
-    int id;
-    sXmlWidgetPart wdg;
-    widget_text_item(el, wdg);
-
-    /*
-    *    create the text item
-    */
-    AddTextItem(id, wdg.x, wdg.y, wdg.w, wdg.h, wdg.text, wdg.fontsize, wdg.force_scroll, wdg.r, wdg.g, wdg.b);
-    /*
-    *    make a note of the ID
-    */
-    register_id(id, wdg.name);
-}
-
-void cInterfaceWindowXML::define_widget(const tinyxml2::XMLElement& base_el, widget_map_t& widgets)
-{
-    std::string widget_name = GetStringAttribute(base_el, "Widget");
-    g_LogFile.debug("interface", "define widget: '", widget_name, "'");
-
-    /*
-    *    create a new widget for that name
-    */
-    auto widget = std::make_unique<cXmlWidget>();
-    /*
-    *    this is like reading the file again, in minature
-    */
-    for (auto& el : IterateChildElements(base_el))
-    {
-        std::string tag = el.Value();
-
-        sXmlWidgetPart current_widget;
-        if (tag == "Text") { widget_text_item(el, current_widget); }
-        if (tag == "Button") { widget_button_item(el, current_widget); }
-        if (tag == "Image") { widget_image_item(el, current_widget); }
-        if (tag == "EditBox") { widget_editbox_item(el, current_widget); }
-        if (tag == "ListBox") { widget_listbox_item(el, current_widget); }
-        if (tag == "Checkbox") { widget_checkbox_item(el, current_widget); }
-        if (tag == "Widget") { widget_widget(el, current_widget); }
-        if (tag == "Slider") { widget_slider_item(el, current_widget); }
-        if(!current_widget.name.empty()) {
-            current_widget.type = tag;
-            widget->add(current_widget);
-            continue;
-        }
-
-        g_LogFile.log(ELogLevel::WARNING, "Unhandled widget tag: '", tag, "'");
-    }
-
-    widgets[widget_name] = std::move(widget);
-}
-
-void cInterfaceWindowXML::place_widget(const tinyxml2::XMLElement& el, const widget_map_t& widgets)
-{
-    /*
-    *    we need the base co-ords for the widget and the
-    *    sequence number to generate new names
-    */
-    std::string name = GetStringAttribute(el, "Definition");
-    int x = read_x_coordinate(el, "XPos");
-    int y = read_y_coordinate(el, "YPos");
-    std::string seq = GetStringAttribute(el, "Seq");
-    g_LogFile.debug("interface", "Placing Widget '", name, "'");
-    add_widget(name, x, y, seq, widgets);
-}
-
-void cInterfaceWindowXML::add_widget(std::string widget_name, int x, int y, std::string seq, const widget_map_t& widgets)
-{
-    auto widget_it = widgets.find(widget_name);
-    if (widget_it == widgets.end())
-    {
-        g_LogFile.error("interface", "Can't find definition for widget '", widget_name, "'");
-         return;
-    }
-
-    auto widget = widget_it->second.get();
-
-    /*
-    *    now loop over the widget components
-    */
-    for (int i = 0; i < widget->size(); i++) {
-        sXmlWidgetPart &xw = (*widget)[i];
-        std::string tag = xw.type;
-        std::string name = xw.name + seq;
-        /*
-        *        the OO way to do this is to subclass
-        *        sXmlWidgetPart and have each class have its own
-        *        add() routine.
-        *
-        *        but then I need to store a vector of pointers
-        *        because the vector class creates a new, empty instance
-        *        and copies in the data, meaning that subclass information
-        *        gets discarded for instance vectors.
-        *
-        *        and storing pointers means needing to delete them
-        *        but without getting them deleted on each copy ...
-        *
-        *        all told it's less fuss to use a big IF, really
-        */
-        g_LogFile.debug("interface", "add_widget: x = ", x, ", xw.x = ", xw.x, ", y = ", y, ", xw.y = ", xw.y);
-
-        int full_x = x + xw.x;
-        int full_y = y + xw.y;
-
-        if (tag == "Button") {
-            int id = AddButton(xw.off, xw.disabled_img, xw.on, full_x, full_y, xw.w, xw.h);
-            register_id(id, name);
-            if(!xw.push_window.empty()) {
-                SetButtonNavigation(id, xw.push_window, false);
-            }
-            if(!xw.replace_window.empty()) {
-                SetButtonNavigation(id, xw.replace_window, true);
-            }
-            HideWidget(id, xw.hide);
-        }
-        else if (tag == "Image") {
-            int id = AddImage(xw.type, xw.file, full_x, full_y, xw.w, xw.h, xw.min_width > 0 ? xw.min_width : xw.w,
-                     xw.min_height > 0 ? xw.min_height : xw.h);
-            register_id(id, name);
-            HideWidget(id, xw.hide);
-        }
-        else if (tag == "Slider") {
-            int id;
-            AddSlider(id, full_x, full_y, xw.w, xw.r, xw.g, xw.h, xw.b, xw.events);
-            register_id(id, name);
-            HideWidget(id, xw.hide);
-            DisableWidget(id, xw.stat);
-        }
-        else if (tag == "Text") {
-            int id;
-            AddTextItem(id, full_x, full_y, xw.w, xw.h, xw.text, xw.fontsize, xw.force_scroll, xw.r, xw.g, xw.b);
-            register_id(id, name);
-            HideWidget(id, xw.hide);
-        }
-        else if (tag == "EditBox") {
-            int id;
-            AddEditBox(id, full_x, full_y, xw.w, xw.h, xw.bordersize, xw.fontsize);
-            register_id(id, name);
-        }
-        else if (tag == "Checkbox") {
-            int id;
-            AddCheckbox(id, full_x, full_y, xw.w, xw.h, xw.text, xw.fontsize, xw.leftorright);
-            register_id(id, name);
-        }
-        else if (tag == "Widget") {
-            g_LogFile.debug("interface", "Placing nested widget at ", full_x, ", ", full_y);
-            add_widget(xw.name, full_x, full_y, xw.seq + seq, widgets);
-        }
-        else {
-            g_LogFile.log(ELogLevel::WARNING, "Unexpected tag in widget '", tag, "'.");
-        }
-    }
-}
-
-
-void cInterfaceWindowXML::read_window_definition(const tinyxml2::XMLElement& el)
-{
-    CreateWindow(read_x_coordinate(el, "XPos"), read_y_coordinate(el, "YPos"),
-            read_width(el, "Width", boost::none), read_height(el, "Height", boost::none),
-            GetIntAttribute(el, "Border"));
-}
-
-void cInterfaceWindowXML::read_editbox_definition(const tinyxml2::XMLElement& el)
-{
-    int id;
-    sXmlWidgetPart wdg;
-    widget_editbox_item(el, wdg);
-
-    AddEditBox(id, wdg.x, wdg.y, wdg.w, wdg.h, wdg.bordersize, wdg.fontsize);
-    register_id(id, wdg.name);
 }
 
 int cInterfaceWindowXML::read_x_coordinate(const tinyxml2::XMLElement& element, const char* attribute) const {
@@ -344,157 +168,142 @@ void cInterfaceWindowXML::read_generic(const tinyxml2::XMLElement& el, sXmlWidge
     data.hide = el.BoolAttribute("Hidden", false);
 }
 
-void cInterfaceWindowXML::widget_editbox_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
+void cInterfaceWindowXML::read_text_item(const tinyxml2::XMLElement& el)
 {
-    read_generic(el, xw);
-    xw.fontsize = read_height(el, "FontSize", 16);
-    xw.bordersize = el.IntAttribute("Border", xw.bordersize);
-    xw.multi = el.BoolAttribute("Multi", xw.multi);
-    xw.events = el.BoolAttribute("Events", xw.events);
+    int id;
+    /*
+    *    create the text item
+    */
+    AddTextItem(id,
+                read_x_coordinate(el, "XPos"),
+                read_y_coordinate(el, "YPos"),
+                read_width(el, "Width", boost::none),
+                read_height(el, "Height", boost::none),
+                GetStringAttribute(el, "Text"),
+                read_height(el, "FontSize", 11),
+                el.BoolAttribute("ForceScrollbar", false),
+                el.IntAttribute("Red", -1),
+                el.IntAttribute("Green", -1),
+                el.IntAttribute("Blue", -1));
+    /*
+    *    make a note of the ID
+    */
+    register_id(id, GetStringAttribute(el, "Name"));
 }
 
-void cInterfaceWindowXML::widget_listbox_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
+
+void cInterfaceWindowXML::read_window_definition(const tinyxml2::XMLElement& el)
 {
-    read_generic(el, xw);
-    xw.bordersize = el.IntAttribute("Border", xw.bordersize);
-    xw.multi = el.BoolAttribute("Multi", xw.multi);
-    xw.events = el.BoolAttribute("Events", xw.events);
+    CreateWindow(read_x_coordinate(el, "XPos"),
+                 read_y_coordinate(el, "YPos"),
+                 read_width(el, "Width", boost::none),
+                 read_height(el, "Height", boost::none),
+                 GetIntAttribute(el, "Border"));
 }
 
-void cInterfaceWindowXML::widget_checkbox_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
+void cInterfaceWindowXML::read_editbox_definition(const tinyxml2::XMLElement& el)
 {
-    read_generic(el, xw);
-    xw.text = GetStringAttribute(el, "Text");
-    xw.fontsize = read_height(el, "FontSize", 11);
-    xw.leftorright = GetFallbackBoolAttribute(el, "LeftOrRight", true);
-}
-
-void cInterfaceWindowXML::widget_widget(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
-{
-    xw.name = GetStringAttribute(el, "Definition");
-    xw.x = read_x_coordinate(el, "XPos");
-    xw.y = read_y_coordinate(el, "YPos");
-    xw.seq = GetStringAttribute(el, "Seq");
+    int id;
+    AddEditBox(id,
+               read_x_coordinate(el, "XPos"),
+               read_y_coordinate(el, "YPos"),
+               read_width(el, "Width", boost::none),
+               read_height(el, "Height", boost::none),
+               el.IntAttribute("Border", 0),
+               read_height(el, "FontSize", 16));
+    register_id(id, GetStringAttribute(el, "Name"));
 }
 
 void cInterfaceWindowXML::read_checkbox_definition(const tinyxml2::XMLElement& el)
 {
     int id;
-
-    sXmlWidgetPart wdg;
-    widget_checkbox_item(el, wdg);
-
-    AddCheckbox(id, wdg.x, wdg.y, wdg.w, wdg.h, wdg.text, wdg.fontsize, wdg.leftorright);
-    register_id(id, wdg.name);
+    AddCheckbox(id,
+                read_x_coordinate(el, "XPos"),
+                read_y_coordinate(el, "YPos"),
+                read_width(el, "Width", boost::none),
+                read_height(el, "Height", boost::none),
+                GetStringAttribute(el, "Text"),
+                read_height(el, "FontSize", 11),
+                el.BoolAttribute("LeftOrRight", true));
+    register_id(id, GetStringAttribute(el, "Name"));
 }
 
 void cInterfaceWindowXML::read_image_definition(const tinyxml2::XMLElement& el)
 {
-    sXmlWidgetPart wdg;
-    widget_image_item(el, wdg);
-
-    int id = AddImage(wdg.type, wdg.file, wdg.x, wdg.y, wdg.w, wdg.h, wdg.min_width > 0 ? wdg.min_width : wdg.w,
-             wdg.min_height > 0 ? wdg.min_height : wdg.h);
-    HideWidget(id, wdg.hide);
-    register_id(id, wdg.name);
+    std::string file = GetStringAttribute(el, "File");
+    std::string type;
+    if(file.empty()) {
+        type = {};
+    } else {
+        type = GetStringAttribute(el, "Dir");
+    }
+    int width = read_width(el, "Width", boost::none);
+    int height = read_height(el, "Height", boost::none);
+    int min_width = width;
+    int min_height = height;
+    if(el.Attribute("MinWidth")) {
+        min_width = read_width(el, "MinWidth", boost::none);
+    }
+    if(el.Attribute("MinHeight")) {
+        min_height = read_height(el, "MinHeight", boost::none);
+    }
+    int id = AddImage(type, file,
+                      read_x_coordinate(el, "XPos"),
+                      read_y_coordinate(el, "YPos"),
+                      width, height,
+                      min_width, min_height);
+    HideWidget(id, el.BoolAttribute("Hidden", false));
+    register_id(id, GetStringAttribute(el, "Name"));
 }
 
 void cInterfaceWindowXML::read_button_definition(const tinyxml2::XMLElement& el)
 {
     int id;
-    sXmlWidgetPart wdg;
-    widget_button_item(el, wdg);
+    const char* base_img = el.Attribute("Image");
+    std::string on, off, disabled;
+    if (base_img) {
+        std::string img_base = base_img;
+        on       = img_base + "On.png";
+        off      = img_base + "Off.png";
+        disabled = img_base + "Disabled.png";
+    }
 
-    id = AddButton(wdg.off, wdg.disabled_img, wdg.on, wdg.x, wdg.y, wdg.w, wdg.h);
-    if(!wdg.push_window.empty()) {
-        SetButtonNavigation(id, wdg.push_window, false);
+    if(const char* on_ = el.Attribute("On"))           { on = on_; }
+    if(const char* off_ = el.Attribute("Off"))         { off = off_; }
+    if(const char* dis_ = el.Attribute("Disabled"))    { disabled = dis_; }
+
+
+
+    id = AddButton(off, disabled, on,
+                   read_x_coordinate(el, "XPos"),
+                   read_y_coordinate(el, "YPos"),
+                   read_width(el, "Width", boost::none),
+                   read_height(el, "Height", boost::none)
+                   );
+    if(const char* pw = el.Attribute("PushWindow")) {
+        SetButtonNavigation(id, pw, false);
     }
-    if(!wdg.replace_window.empty()) {
-        SetButtonNavigation(id, wdg.replace_window, true);
+    if(const char* pw = el.Attribute("ReplaceWindow")) {
+        SetButtonNavigation(id, pw, true);
     }
-    register_id(id, wdg.name);
+    register_id(id, GetStringAttribute(el, "Name"));
 }
 
 void cInterfaceWindowXML::read_slider_definition(const tinyxml2::XMLElement& el)
 {
     int id;
-    sXmlWidgetPart wdg;
-    widget_slider_item(el, wdg);
-
-    AddSlider(id, wdg.x, wdg.y, wdg.w, wdg.r, wdg.g, wdg.h, wdg.b, wdg.events);
-    DisableWidget(id, wdg.stat);
-    HideWidget(id, wdg.hide);
-    register_id(id, wdg.name);
-}
-
-void cInterfaceWindowXML::widget_slider_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
-{
-    xw.stat = false;
-    xw.events = true;
-
-    read_generic(el, xw);
-    xw.h = el.IntAttribute("Increment", 5);
-    xw.r = el.IntAttribute("MinValue", 0);
-    xw.g = el.IntAttribute("MaxValue", 100);
-    xw.b = el.IntAttribute("Value", 0);
-    el.QueryBoolAttribute("Disabled", &xw.stat);
-    el.QueryBoolAttribute("LiveUpdate", &xw.events);
-
-    // enforce constraints
-    if (xw.b < xw.r)            xw.b = xw.r;
-    if (xw.b > xw.g)            xw.b = xw.g;
-}
-
-void cInterfaceWindowXML::widget_text_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
-{
-    read_generic(el, xw);
-
-    xw.text = GetStringAttribute(el, "Text");
-    xw.fontsize = read_height(el, "FontSize", 11);
-    el.QueryBoolAttribute("ForceScrollbar", &xw.force_scroll);
-    xw.r = el.IntAttribute("Red", -1);
-    xw.g = el.IntAttribute("Green", -1);
-    xw.b = el.IntAttribute("Blue", -1);
-}
-
-void cInterfaceWindowXML::widget_button_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
-{
-    read_generic(el, xw);
-
-    const char* base_img = el.Attribute("Image");
-    if (base_img) {
-        std::string img_base = base_img;
-        xw.on           = img_base + "On.png";
-        xw.off          = img_base + "Off.png";
-        xw.disabled_img = img_base + "Disabled.png";
-    }
-
-    if(const char* on = el.Attribute("On"))             { xw.on = on; }
-    if(const char* off = el.Attribute("Off"))         { xw.off = off; }
-    if(const char* dis = el.Attribute("Disabled"))     { xw.disabled_img = dis; }
-
-    if(const char* pw = el.Attribute("PushWindow")) {
-        xw.push_window = pw;
-    }
-    if(const char* pw = el.Attribute("ReplaceWindow")) {
-        xw.replace_window = pw;
-    }
-}
-
-void cInterfaceWindowXML::widget_image_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw)
-{
-    xw.stat = false;
-    xw.r = xw.g = xw.b = 0;
-
-    read_generic(el, xw);
-    xw.file = GetStringAttribute(el, "File");
-    if(xw.file.empty()) {
-        xw.type = {};
-    } else {
-        xw.type = GetStringAttribute(el, "Dir");
-    }
-    xw.min_width = read_width(el, "MinWidth", -1);
-    xw.min_height = read_height(el, "MinHeight", -1);
+    AddSlider(id,
+              read_x_coordinate(el, "XPos"),
+              read_y_coordinate(el, "YPos"),
+              read_width(el, "Width", boost::none),
+              el.IntAttribute("MinValue", 0),
+              el.IntAttribute("MaxValue", 100),
+              el.IntAttribute("Increment", 5),
+              el.IntAttribute("Value", 0),
+              el.BoolAttribute("LiveUpdate", true));
+    DisableWidget(id, el.BoolAttribute("Disabled", false));
+    HideWidget(id, el.BoolAttribute("Hidden", false));
+    register_id(id, GetStringAttribute(el, "Name"));
 }
 
 void cInterfaceWindowXML::register_id(int id, std::string name)

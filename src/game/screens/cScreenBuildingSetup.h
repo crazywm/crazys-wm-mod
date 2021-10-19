@@ -31,15 +31,8 @@ private:
     int potions10_id;        // Buy 10 Potions button
     int potions20_id;        // Buy 20 Potions button
     int autopotions_id;        // Auto Buy Potions checkbox
-    int barstaff_id;        // Bar Staff Cost text
-    int barhire_id;            // Hire Bar Staff button
-    int barfire_id;            // Fire Bar Staff button
-    int casinostaff_id;        // Casino Staff Cost text
-    int casinohire_id;        // Hire Casino Staff button
-    int casinofire_id;        // Fire Casino Staff button
     int roomcost_id;        // Room Cost text
     int buyrooms_id;        // Add 5 Rooms button
-    int restrict_id;        // Sex Restrictions text
 
     int advertsli_id;        // Advertising Budget slider
     int advertamt_id;        // Advertising Budget value output text

@@ -89,7 +89,6 @@ public:
     /*
      *    XML reading stuff
      */
-    using widget_map_t = std::map<std::string, std::unique_ptr<cXmlWidget>>;
     void read_text_item(const tinyxml2::XMLElement& el);
     void read_window_definition(const tinyxml2::XMLElement& el);
     void read_editbox_definition(const tinyxml2::XMLElement& el);
@@ -99,20 +98,8 @@ public:
     void read_checkbox_definition(const tinyxml2::XMLElement& el);
     void read_slider_definition(const tinyxml2::XMLElement& el);
 
-    void define_widget(const tinyxml2::XMLElement& base_el, widget_map_t& widgets);
-    void place_widget(const tinyxml2::XMLElement& el, const widget_map_t& widgets);
-    void widget_text_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw);
-    void widget_button_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw);
-    void widget_editbox_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw);
-    void widget_listbox_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw);
-    void widget_checkbox_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw);
-    void widget_widget(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw);
-    void widget_image_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw);
-    void widget_slider_item(const tinyxml2::XMLElement& el, sXmlWidgetPart& xw);
-
     int get_id(std::string a, std::string b = "", std::string c = "");
     int get_id_optional(const std::string& name) const;
-    void add_widget(std::string widget_name,int x,int y,std::string seq, const widget_map_t& widgets);
 
 private:
     virtual void set_ids() = 0;

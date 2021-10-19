@@ -1,44 +1,32 @@
 
 <Screen>
-<Window     Name="Building Setup Window"                                    XPos="538"  YPos="239"  Width="843"     Height="562"    Border="1"/>
-<Text       Name="CurrentBrothel"           Text=""                         XPos="14"   YPos="14"   Width="703"     Height="45"     FontSize="22"/>
-<Text       Name="Gold"                     Text="Player Gold: 0"           XPos="562"  YPos="14"   Width="281"     Height="45"     FontSize="22" />
+<Window     Name="Building Setup Window"                                    XPos="538"  YPos="239"   Width="843"     Height="562"    Border="1"/>
+<Text       Name="CurrentBrothel"           Text=""                         XPos="14"   YPos="14"    Width="703"     Height="45"     FontSize="22"/>
+<Text       Name="Gold"                     Text="Player Gold: 0"           XPos="562"  YPos="14"    Width="281"     Height="45"     FontSize="22" />
 
-<Text       Name="PotionCost"   Text="Anti-Preg Potions: 2 gold each"       XPos="22"   YPos="70"   Width="337"     Height="37"     FontSize="18"/>
-<Button     Name="10PotionsButton"          Image="Buy10"                   XPos="45"   YPos="107"   Width="101"      Height="45"     Transparency="true" Scale="true"/>
-<Button     Name="20PotionsButton"          Image="Buy20"                   XPos="157"  YPos="107"   Width="101"      Height="45"     Transparency="true" Scale="true"/>
-<Checkbox   Name="AutoBuyPotionToggle"      Text="Auto Buy"                 XPos="141"   YPos="165"  Width="22"      Height="22"     FontSize="17"/>
-<Text       Name="AvailablePotions"         Text="You have: 0"              XPos="70"   YPos="188"  Width="337"     Height="56"     FontSize="18"/>
+<Text       Name="PotionCost"   Text="Anti-Preg Potions: 2 gold each"       XPos="22"   YPos="70"    Width="337"     Height="37"     FontSize="18"/>
+<Button     Name="10PotionsButton"          Image="Buy10"                   XPos="45"   YPos="107"   Width="101"     Height="45"     Transparency="true" Scale="true"/>
+<Button     Name="20PotionsButton"          Image="Buy20"                   XPos="157"  YPos="107"   Width="101"     Height="45"     Transparency="true" Scale="true"/>
+<Checkbox   Name="AutoBuyPotionToggle"      Text="Auto Buy"                 XPos="141"  YPos="165"   Width="22"      Height="22"     FontSize="17"/>
+<Text       Name="AvailablePotions"         Text="You have: 0"              XPos="70"   YPos="188"   Width="337"     Height="56"     FontSize="18"/>
 
-<Slider     Name="AdvertisingSlider"                                        XPos="351"  YPos="90"   Width="478"                     MinValue="0" MaxValue="2000"     Value="0" Increment="100" LiveUpdate="true" Hidden="false" Disabled="false"/>
+<Slider     Name="AdvertisingSlider"                                        XPos="351"  YPos="90"    Width="478"                     MinValue="0" MaxValue="2000"     Value="0" Increment="100" LiveUpdate="true" Hidden="false" Disabled="false"/>
 <Text       Name="AdvertisingValue"         Text="0 gold / week"            XPos="422"  YPos="105"   Width="422"     Height="45"     FontSize="18"/>
 
-<Button     Name="BuildRoomsButton"         Image="BuildMoreRooms"          XPos="513"  YPos="211"  Width="225"     Height="45"     Transparency="true" Scale="true"/>
-<Text       Name="RoomAddCost"              Text="Add Rooms: 5000 gold"     XPos="492"  YPos="260"  Width="267"     Height="141"     FontSize="18"/>
+<Button     Name="BuildRoomsButton"         Image="BuildMoreRooms"          XPos="513"  YPos="211"   Width="225"     Height="45"     Transparency="true" Scale="true"/>
+<Text       Name="RoomAddCost"              Text="Add Rooms: 5000 gold"     XPos="492"  YPos="260"   Width="267"     Height="141"    FontSize="18"/>
 
-<Define     Widget="Restrictions">              
-<Text       Name="SexRestrictions"          Text="Sex Restrictions:"        XPos="0"    YPos="0"    Width="267"     Height="45"     FontSize="27"/>
-<Checkbox   Name="ProhibitNormalToggle"     Text="Prohibit Normal Sex"      XPos="28"   YPos="49"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
-<Checkbox   Name="ProhibitBeastToggle"      Text="Prohibit Bestiality"      XPos="267"  YPos="49"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
-<Checkbox   Name="ProhibitOralToggle"       Text="Prohibit Oral Sex"        XPos="520"  YPos="49"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
-<Checkbox   Name="ProhibitLesbianToggle"    Text="Prohibit Lesbian"         XPos="28"   YPos="84"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
-<Checkbox   Name="ProhibitBDSMToggle"       Text="Prohibit BDSM"            XPos="267"  YPos="84"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
-<Checkbox   Name="ProhibitTittyToggle"      Text="Prohibit Titty Sex"       XPos="520"  YPos="84"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
-<Checkbox   Name="ProhibitGroupToggle"      Text="Prohibit Group Sex"       XPos="28"   YPos="120"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
-<Checkbox   Name="ProhibitAnalToggle"       Text="Prohibit Anal"            XPos="267"  YPos="120"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
-<Checkbox   Name="ProhibitHandJobToggle"    Text="Prohibit Handjob"         XPos="520"  YPos="120"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
-<Checkbox   Name="ProhibitStripToggle"      Text="Prohibit Strip"           XPos="28"   YPos="155"  Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
-<Checkbox   Name="ProhibitFootJobToggle"    Text="Prohibit Footjob"         XPos="520"  YPos="155"  Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
-</Define>   
-<Widget     Definition="Restrictions"       Seq="Res"                       XPos="70"   YPos="352"/>
-<Button     Name="BackButton"           Image="Back"                        XPos="860"  YPos="754"      Width="267"     Height="53"     Transparency="true"  PushWindow="<back>" />
-
-<!--
-<Image   Name="Shader"    File="FacilityBG.png"    XPos="0"    YPos="0"    Width="731"    Height="121"/>
-<Text    Name="BarStaffCost"    Text="Bar Staff: 0 gold / week"    XPos="384"    YPos="53"    Width="275"    Height="45"    FontSize="18"/>
-<Button  Name="BarHireButton"    Image="Hire"    XPos="377"    YPos="90"    Width="112"    Height="45"    Transparency="true"    Scale="true"/>
-<Button  Name="BarFireButton"    Image="Fire"    XPos="500"    YPos="90"    Width="112"    Height="45"    Transparency="true"    Scale="true"/>
-<Text    Name="CasinoStaffCost"    Text="Casino Staff: 0 gold / week"    XPos="711"    YPos="53"    Width="275"    Height="45"    FontSize="18"/>
-<Button  Name="CasinoHireButton"    Image="Hire"    XPos="718"    YPos="90"    Width="112"    Height="45"    Transparency="true"    Scale="true"/>
-<Button  Name="CasinoFireButton"    Image="Fire"    XPos="842"    YPos="90"    Width="112"    Height="45"    Transparency="true"    Scale="true"/>-->
+<Text       Name="SexRestrictions"          Text="Sex Restrictions:"        XPos="70"   YPos="352"   Width="267"     Height="45"     FontSize="27"/>
+<Checkbox   Name="ProhibitNormalToggle"     Text="Prohibit Normal Sex"      XPos="98"   YPos="400"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitBeastToggle"      Text="Prohibit Bestiality"      XPos="337"  YPos="400"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitOralToggle"       Text="Prohibit Oral Sex"        XPos="590"  YPos="400"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitLesbianToggle"    Text="Prohibit Lesbian"         XPos="98"   YPos="435"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitBDSMToggle"       Text="Prohibit BDSM"            XPos="337"  YPos="435"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitTittyToggle"      Text="Prohibit Titty Sex"       XPos="590"  YPos="435"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitGroupToggle"      Text="Prohibit Group Sex"       XPos="98"   YPos="470"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitAnalToggle"       Text="Prohibit Anal"            XPos="337"  YPos="470"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitHandJobToggle"    Text="Prohibit Handjob"         XPos="590"  YPos="470"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitStripToggle"      Text="Prohibit Strip"           XPos="98"   YPos="505"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
+<Checkbox   Name="ProhibitFootJobToggle"    Text="Prohibit Footjob"         XPos="590"  YPos="505"   Width="22"      Height="22"     FontSize="17" LeftOrRight="false"/>
+<Button     Name="BackButton"               Image="Back"                    XPos="860"  YPos="754"   Width="267"     Height="53"     Transparency="true"  PushWindow="<back>" />
 </Screen>

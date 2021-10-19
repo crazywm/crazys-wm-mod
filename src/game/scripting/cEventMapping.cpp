@@ -85,9 +85,9 @@ std::string GetEventID(EDefaultEvent e) {
     case EDefaultEvent::GIRL_SEX_TITTY:
         return "girl:sex:titty";
     case EDefaultEvent::GIRL_INTERACT_BROTHEL:
-        return "girl:interact.brothel";
+        return "girl:interact:brothel";
     case EDefaultEvent::GIRL_INTERACT_DUNGEON:
-        return "girl:interact.dungeon";
+        return "girl:interact:dungeon";
     case EDefaultEvent::MEET_GIRL_ARENA:
         return "girl:meet:arena";
     case EDefaultEvent::MEET_GIRL_TOWN:

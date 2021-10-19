@@ -4,6 +4,7 @@
 * Added `piano` image tag, `music` tag as fallback for `sing` and `piano`
 * Added `refuse` tag for when a job is refused
 * Added Next Week button to girl management screens
+* Updated UI code such that it is possible to reuse common screen structure across xml files
 
 ## Fixes
 * Clear customer list each week
