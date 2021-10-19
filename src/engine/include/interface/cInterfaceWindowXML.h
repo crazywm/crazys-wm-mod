@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,65 +22,30 @@
 #include "interface/cInterfaceWindow.h"
 #include <boost/optional/optional_fwd.hpp>
 
-struct sXmlWidgetBase {
-    std::string name;
-    int x = -1;
-    int y = -1;
-    int w = -1;
-    int h = -1;
-    bool hide = false;
-};
-
-struct sXmlWidgetPart : public sXmlWidgetBase {
-public:
-    int         r = 0, g = 0, b = 0;
-    int         fontsize=0, bordersize=0;
-    bool        stat, alpha, events, multi, leftorright;
-    std::string on, off, disabled_img, type, text, file, seq;
-    bool        force_scroll = false;
-
-    // for now, these are for buttons
-    /// TODO this code really needs to be cleaned up!
-    std::string push_window;
-    std::string replace_window;
-
-    // for image widget
-    int min_width = -1;
-    int min_height = -1;
-};
-
-class cXmlWidget {
-    std::vector<sXmlWidgetPart> list;
-public:
-    cXmlWidget() = default;
-    int size() {    return int(list.size()); }
-    sXmlWidgetPart& operator[](int i) {
-        return list[i];
-    }
-    void add(sXmlWidgetPart &part)
-    {
-        list.push_back(part);
-    }
-};
-
-
 class cInterfaceWindowXML : public cInterfaceWindow
 {
 protected:
     std::string m_ScreenName;
     std::map<std::string,int>        name_to_id;
-    std::map<int,std::string>        id_to_name;
 
 public:
-    enum AttributeNecessity {
-        Mandatory    = 0,
-        Optional     = 1
-    };
-
     explicit cInterfaceWindowXML(const char* base_file);
     ~cInterfaceWindowXML() override;
 
     void load(cWindowManager* root) final;
+
+    int get_id(std::string a, std::string b = "", std::string c = "");
+    int get_id_optional(const std::string& name) const;
+
+private:
+    virtual void set_ids() = 0;
+
+    int read_x_coordinate(const tinyxml2::XMLElement& element, const char* attribute) const;
+    int read_y_coordinate(const tinyxml2::XMLElement& element, const char* attribute) const;
+    int read_width(const tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const;
+    int read_height(const tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const;
+
+    void read_definition(const tinyxml2::XMLElement& root);
 
     /*
      *    populates the maps so we can get the IDs from strings
@@ -97,20 +62,6 @@ public:
     void read_listbox_definition(const tinyxml2::XMLElement& el);
     void read_checkbox_definition(const tinyxml2::XMLElement& el);
     void read_slider_definition(const tinyxml2::XMLElement& el);
-
-    int get_id(std::string a, std::string b = "", std::string c = "");
-    int get_id_optional(const std::string& name) const;
-
-private:
-    virtual void set_ids() = 0;
-
-    void read_generic(const tinyxml2::XMLElement& el, sXmlWidgetBase& data) const;
-    int read_x_coordinate(const tinyxml2::XMLElement& element, const char* attribute) const;
-    int read_y_coordinate(const tinyxml2::XMLElement& element, const char* attribute) const;
-    int read_width(const tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const;
-    int read_height(const tinyxml2::XMLElement& element, const char* attribute, boost::optional<int> fallback) const;
-
-    void read_definition(const tinyxml2::XMLElement& root);
 };
 
 #endif

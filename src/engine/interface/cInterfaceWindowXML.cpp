@@ -153,21 +153,6 @@ void cInterfaceWindowXML::read_listbox_definition(const tinyxml2::XMLElement& el
                          column_offset, column_skip);
 }
 
-
-void cInterfaceWindowXML::read_generic(const tinyxml2::XMLElement& el, sXmlWidgetBase& data) const
-{
-    /*
-    *    get the button name - we'll use this to match up
-    *    interface IDs
-    */
-    data.name = GetStringAttribute(el, "Name");
-    data.x = read_x_coordinate(el, "XPos");
-    data.y = read_y_coordinate(el, "YPos");
-    data.w = read_width(el, "Width", boost::none);
-    data.h = read_height(el, "Height", data.h);
-    data.hide = el.BoolAttribute("Hidden", false);
-}
-
 void cInterfaceWindowXML::read_text_item(const tinyxml2::XMLElement& el)
 {
     int id;
@@ -310,7 +295,6 @@ void cInterfaceWindowXML::register_id(int id, std::string name)
 {
     g_LogFile.debug("interface", "registering ID ", id, " to name '", name, "'");
     name_to_id[name] = id;
-    id_to_name[id] = name;
 }
 
 int cInterfaceWindowXML::get_id(std::string a, std::string b, std::string c)
