@@ -5,6 +5,7 @@
 * Added `refuse` tag for when a job is refused
 * Added Next Week button to girl management screens
 * Updated UI code such that it is possible to reuse common screen structure across xml files
+* `suckballs` images may now be shown in bedroom interaction
 
 ## Fixes
 * Clear customer list each week

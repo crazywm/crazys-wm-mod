@@ -106,7 +106,7 @@ function LesbianSex(girl)
             girl:happiness(2)
             girl:lesbian(1)
         else
-            Dialog("The girls hesitantly move closer,  A few awkward pecks on the cheek later you find the need to direct them.")
+            Dialog("The girls hesitantly move closer. A few awkward pecks on the cheek later you find the need to direct them.")
             Dialog("You tell them to get undressed after which they begin to cautiously touch one another.  \"No, no, no!\" you exclaim, \"Lick her damn cunt!\"  They both immediately try to comply and bump heads.")
             Dialog("You shake your head as the girls make faces after each time tongue meets pussy.")
             Dialog("After all the time you spent directing you had no chance to enjoy the show; awkward as it was.  You sigh and pray to goddess of Yuri that they at least learned something from the experience.")
@@ -348,16 +348,21 @@ end
 function Blowjob(girl)
     Dialog("\"Now let's see how well you've learned to suck a cock.\"")
     if girl:obey_check(wm.ACTIONS.SEX) then
-        wm.UpdateImage(wm.IMG.ORAL)
+
         girl:experience(3)
         girl:tiredness(2)
         if girl:skill_check(wm.SKILLS.ORALSEX, 75) then
-            Dialog("She smiles and reaches up to grasp your cock.  She begins by gently licking and kissing the tip.  Her tongue then traces down the length of your shaft and  draws circles around our balls.")
-            Dialog("She gently sucks each ball into her mouth in turn.  She turns her head and slides her lips back forth on your shaft.  She kisses the tip again and slowly slides you into  her mouth.")
-            Dialog("You're not sure how long this pleasure lasted but soon you feel the volcano about to erupt.  She  senses it too and pulls your cock from her mouth and gently strokes it with her hands until you explode all over her face.")
+            wm.UpdateImage(wm.IMG.SUCKBALLS)
+            Dialog("She smiles and reaches up to grasp your cock. She begins by gently licking and kissing the tip. Her tongue then traces down the length of your shaft and  draws circles around your balls.")
+            Dialog("She gently sucks each ball into her mouth in turn. She turns her head and slides her lips back forth on your shaft. She kisses the tip again and slowly slides you into her mouth.")
+            if wm.Percent(50) then
+                wm.UpdateImage(wm.IMG.ORAL)
+            end
+            Dialog("You're not sure how long this pleasure lasted but soon you feel the volcano about to erupt. She senses it too and pulls your cock from her mouth and gently strokes it with her hands until you explode all over her face.")
             girl:oralsex(1)
             girl:happiness(2)
         else
+            wm.UpdateImage(wm.IMG.ORAL)
             Dialog("She giggles a bit and quickly closes her mouth over your member.  You become a little alarmed as you start to feel her teeth grazing the sensitive skin of your cock.")
             Dialog("You become slightly distracted as her teeth begin to grind harder and harder on your soft flesh.")
             Dialog("Fearing for your dick you tell her to just lick it and use her hands.  No longer distracted you concentrate on her pretty face and how you will soon cover it in your semen.  You feel the pressure building and building. ")
@@ -367,7 +372,7 @@ function Blowjob(girl)
             girl:oralsex(2)
         end
     else
-        Dialog("She closes her mouth tight and turns her head way from your penis.")
+        Dialog("She closes her mouth tight and turns her head away from your penis.")
         return girl:trigger("girl:refuse")
     end
 end
