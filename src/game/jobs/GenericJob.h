@@ -72,6 +72,8 @@ public:
 
     /// called by the job manager when the job gets registered.
     void OnRegisterJobManager(const cJobManager& manager);
+    virtual void load_from_xml(const char* xml_file){};
+    const char* xml = NULL;
 protected:
     std::stringstream ss;
 

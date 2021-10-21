@@ -52,11 +52,10 @@ class cBasicJob : public IGenericJob {
 public:
     cBasicJob(JOBS job, const char* xml_file = nullptr);
     double GetPerformance(const sGirl& girl, bool estimate) const override;
-
+    void load_from_xml(const char* xml_file) override;
 protected:
     void apply_gains(sGirl& girl, int performance);
 
-    void load_from_xml(const char* xml_file);
     const std::string& get_text(const std::string& prompt) const;
     bool has_text(const std::string& prompt) const;
     std::stringstream& add_text(const std::string& prompt);

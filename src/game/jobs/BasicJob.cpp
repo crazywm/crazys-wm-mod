@@ -32,8 +32,8 @@ double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {
 }
 
 cBasicJob::cBasicJob(JOBS job, const char* xml_file) : IGenericJob(job), m_Interface(this) {
-    if(xml_file) {
-        load_from_xml(xml_file);
+    if (xml_file){
+        xml = xml_file;
     }
 
     RegisterVariable("Performance", m_Performance);
