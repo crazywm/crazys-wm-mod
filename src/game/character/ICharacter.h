@@ -46,7 +46,7 @@ class ITraitsCollection;
 */
 class ICharacter {
 public:
-    ICharacter(std::unique_ptr<ITraitsCollection> tc, bool unique=false);
+    explicit ICharacter(std::unique_ptr<ITraitsCollection> tc, bool unique=false);
     virtual ~ICharacter();
 
     ICharacter(ICharacter&&) noexcept;
@@ -71,6 +71,9 @@ public:
     int SetBirthDay(int n);
 
     bool IsUnique() const;
+    /// Returns an ID that uniquely identifies the character. The returned number is always positive,
+    /// so an ID of 0 can be used to signify an empty value.
+    std::uint64_t GetID() const { return m_CharacterID; }
 
     // -----------------------------------------------------------------------------------------------------------------
     //                                        Inventory
@@ -281,6 +284,8 @@ protected:
     std::array<sAttributeValue, NUM_SKILLS> m_Skills;
 
     bool m_IsUnique = false;
+    /// This is an id that is unique for each character that is generated in the game.
+    std::uint64_t m_CharacterID = 0;
 
     // Birth Data
     int m_BirthYear  = 1190;    // the game starts in year 1209 so default start age is 18

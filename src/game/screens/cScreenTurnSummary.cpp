@@ -300,10 +300,12 @@ void cScreenTurnSummary::change_item(int selection)
             Fill_Events_Buildings(selection);
         }
         break;
-    case Summary_DUNGEON:
-        if (g_Game->dungeon().GetGirlByName(GetSelectedTextFromList(item_id))) {
-            set_active_girl(g_Game->dungeon().GetGirlByName(GetSelectedTextFromList(item_id))->m_Girl);
+    case Summary_DUNGEON: {
+        auto girl = g_Game->dungeon().GetGirlByID(GetSelectedItemFromList(item_id));
+        if (girl) {
+            set_active_girl(girl->m_Girl);
         }
+    }
         break;
     case Summary_GIRLS: {
         auto girl = find_girl_by_name(active_building(), GetSelectedTextFromList(item_id));
@@ -335,6 +337,7 @@ void cScreenTurnSummary::goto_selected()
         return;
     }
     std::string selectedName = GetSelectedTextFromList(item_id);
+    std::uint64_t selectedID = GetSelectedItemFromList(item_id);
     switch (m_ActiveCategory)
     {
     case Summary_RIVALS:
@@ -353,9 +356,9 @@ void cScreenTurnSummary::goto_selected()
         break;
     }
     case Summary_DUNGEON: {
-        sDungeonGirl * dg   = g_Game->dungeon().GetGirlByName(selectedName);
+        sDungeonGirl * dg   = g_Game->dungeon().GetGirlByID(selectedID);
         if (dg) {
-            auto girl = g_Game->dungeon().GetGirlByName(selectedName)->m_Girl;
+            auto girl = dg->m_Girl;
             if(girl) {
                 set_active_girl(std::move(girl));
                 push_window("Girl Details");
@@ -598,13 +601,11 @@ void cScreenTurnSummary::Fill_Items_GIRLS(IBuilding * building)
         return rating_fn(*a).ordering > rating_fn(*b).ordering;
     });
 
-    int ID = 0;
     for(auto& girl : all_girls) {
-        AddToListBox(item_id, ID, girl->FullName(), rating_fn(*girl).color);
+        AddToListBox(item_id, girl->GetID(), girl->FullName(), rating_fn(*girl).color);
         if (selected_girl().get() == girl) {
-            SetSelectedItemInList(item_id, ID);
+            SetSelectedItemInList(item_id, girl->GetID());
         }
-        ID++;
     }
 }
 
@@ -623,13 +624,11 @@ void cScreenTurnSummary::Fill_Items_DUNGEON()
         return rating_fn(*a).ordering > rating_fn(*b).ordering;
     });
 
-    int ID = 0;
     for(auto& girl : all_girls) {
-        AddToListBox(item_id, ID, girl->FullName(), rating_fn(*girl).color);
+        AddToListBox(item_id, girl->GetID(), girl->FullName(), rating_fn(*girl).color);
         if (selected_girl().get() == girl) {
-            SetSelectedItemInList(item_id, ID);
+            SetSelectedItemInList(item_id, girl->GetID());
         }
-        ID++;
     }
 }
 

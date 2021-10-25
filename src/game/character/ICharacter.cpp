@@ -33,6 +33,13 @@
 
 extern cRng g_Dice;
 
+namespace {
+    std::uint64_t get_global_id() {
+        static std::uint64_t id = 0;
+        return ++id;
+    }
+}
+
 ICharacter::ICharacter(std::unique_ptr<ITraitsCollection> tc, bool unique) :
     m_Inventory(std::make_unique<Inventory>()),
     m_Traits( std::move(tc) ),
@@ -41,6 +48,7 @@ ICharacter::ICharacter(std::unique_ptr<ITraitsCollection> tc, bool unique) :
     // default-initialize stats and skills
     m_Stats.fill(sAttributeValue{});
     m_Skills.fill(sAttributeValue{});
+    m_CharacterID = get_global_id();
 }
 
 ICharacter::~ICharacter() = default;
@@ -124,6 +132,7 @@ int ICharacter::upd_skill(int skill_id, int amount, bool usetraits)
 void ICharacter::SaveXML(tinyxml2::XMLElement& elRoot) const
 {
     elRoot.SetAttribute("Unique", m_IsUnique);
+    elRoot.SetAttribute("ID", m_CharacterID);
 
     // stats
     auto& stats_el = PushNewElement(elRoot, "Stats");
@@ -163,6 +172,7 @@ void ICharacter::SaveXML(tinyxml2::XMLElement& elRoot) const
 void ICharacter::LoadXML(const tinyxml2::XMLElement& elRoot)
 {
     elRoot.QueryAttribute("Unique", &m_IsUnique);
+    elRoot.QueryAttribute("ID", &m_CharacterID);
 
     // load name
     auto name_el = elRoot.FirstChildElement("Name");

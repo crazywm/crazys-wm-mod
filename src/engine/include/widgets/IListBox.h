@@ -83,12 +83,12 @@ public:
     /// Sets the selected element based on its index in the list box.
     /// If trigger is true, then a `selection_change` event is triggered.
     /// If deselect is true, then all other elements will be deselected.
-    virtual void SetSelectedIndex(int index, bool trigger=true, bool deselect = true) = 0;
+    virtual void SetSelectedIndex(int index, bool trigger, bool deselect) = 0;
 
     /// Sets the selected element based on its index in the list box.
     /// If trigger is true, then a `selection_change` event is triggered.
     /// If deselect is true, then all other elements will be deselected.
-    virtual void SetSelectedID(int id, bool trigger=true, bool deselect = true) = 0;
+    virtual void SetSelectedID(int id, bool trigger, bool deselect) = 0;
 
     /// Returns the number of selected elements.
     virtual int NumSelectedElements() const = 0;

@@ -369,26 +369,14 @@ sDungeonGirl* cDungeon::GetGirl(int i)
     return nullptr;
 }
 
-sDungeonGirl* cDungeon::GetGirlByName(std::string name)
+sDungeonGirl* cDungeon::GetGirlByID(std::uint64_t id)
 {
-    if (name.empty()) return nullptr;
-    for(auto& current : m_Girls)
-    {
-        if (name == current.m_Girl->FullName())
-            return &current;
+    auto result = std::find_if(begin(m_Girls), end(m_Girls),
+                               [&](auto&& g){ return id == g.m_Girl->GetID(); });
+    if(result != end(m_Girls)) {
+        return &(*result);
     }
     return nullptr;
-}
-
-int cDungeon::GetDungeonPos(sGirl* girl)
-{
-    int tmp = 0;
-    for(auto& current : m_Girls)
-    {
-        if (current.m_Girl.get() == girl) return tmp;
-        tmp++;
-    }
-    return tmp;
 }
 
 sDungeonCust* cDungeon::GetCust(int i)

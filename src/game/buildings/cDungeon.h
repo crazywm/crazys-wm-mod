@@ -100,9 +100,8 @@ public:
     void AddGirl(std::shared_ptr<sGirl> girl, int reason);
     void AddCust(int reason, int numDaughters, bool hasWife);
     sDungeonGirl* GetGirl(int i);
-    sDungeonGirl* GetGirlByName(std::string name);
+    sDungeonGirl* GetGirlByID(std::uint64_t id);
     sDungeonCust* GetCust(int i);
-    int GetDungeonPos(sGirl* girl);
     std::shared_ptr<sGirl> RemoveGirl(sGirl* girl);
     std::shared_ptr<sGirl> RemoveGirl(sDungeonGirl* girl);    // releases or kills a girl
     void RemoveCust(sDungeonCust* cust);    // releases or kills a customer
