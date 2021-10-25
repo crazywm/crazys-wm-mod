@@ -101,7 +101,7 @@ typedef struct sChild
 // Represents a single girl
 struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
 {
-    sGirl(bool unique);
+    explicit sGirl(bool unique);
     ~sGirl() override;
 
     const DirPath& GetImageFolder() const;
@@ -165,7 +165,7 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
 
     // triggers
     scripting::pEventMapping m_EventMapping;
-    scripting::sAsyncScriptHandle TriggerEvent(scripting::sEventID id);
+    scripting::sAsyncScriptHandle TriggerEvent(const scripting::sEventID& id);
     template<class ...T>
     scripting::sAsyncScriptHandle TriggerEvent(scripting::sEventID id, T&&... args) {
         return m_EventMapping->RunAsync(id, *this, std::forward<T>(args)...);

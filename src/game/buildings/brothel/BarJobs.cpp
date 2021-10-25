@@ -957,5 +957,6 @@ void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarWaitressJob>());
     mgr.register_job(std::make_unique<cBarPianoJob>());
     mgr.register_job(std::make_unique<cBarSingerJob>());
+    mgr.register_job(std::make_unique<cEscortJob>());
 }
 

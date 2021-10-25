@@ -1,0 +1,113 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Scrt">
+    <Description>
+        She will be an escort.
+    </Description>
+
+    <Performance>
+        <Factor Skill="Anal" Weight="1"/>
+        <Factor Skill="BDSM" Weight="1"/>
+        <Factor Skill="Beastiality" Weight="1"/>
+        <Factor Skill="Footjob" Weight="1"/>
+        <Factor Skill="Group" Weight="1"/>
+        <Factor Skill="Handjob" Weight="1"/>
+        <Factor Skill="Lesbian" Weight="1"/>
+        <Factor Skill="NormalSex" Weight="1"/>
+        <Factor Skill="OralSex" Weight="1"/>
+        <Factor Skill="Strip" Weight="1"/>
+        <Factor Skill="TittySex" Weight="1"/>
+
+        <Factor Stat="Charisma" Weight="6"/>
+        <Factor Stat="Beauty" Weight="6"/>
+
+        <Mod>work.escort</Mod>
+    </Performance>
+
+    <Messages>
+        <Message Name="aggressive">
+            <Text>
+                ${name} has some particularly aggressive tendencies that make her a poor choice for patrons seeking polite conversation.
+                Even if she carries a conversation well, the undercurrent of restrained hostility will detract from her performance.
+            </Text>
+        </Message>
+        <Message Name="bimbo">
+            <Text>
+                ${name} is a complete ditz.
+                Her repertoire of conversation is limited to her favorite dresses and her many powerful feelings on makeup brands.
+                This will stymie her abilities as an escort, no matter how well she does otherwise.
+            </Text>
+        </Message>
+        <Message Name="shy">
+            <Text>
+                ${name} is very shy with new people. For a job that requires meeting with new people constantly,
+                this is a bad trait to possess.
+                Her nervousness will translate into some awkward conversational moments, no matter how great her charisma is.
+            </Text>
+        </Message>
+        <Message Name="retarded">
+            <Text>
+                ${name} is retarded, and this is a natural obstacle to most conversations.
+                For those men that do not want a prolonged conversation on her favorite colors or a description of her last "poopy,"
+                which is the vast majority of men, she may have some trouble as an escort.
+            </Text>
+        </Message>
+        <Message Name="psychic">
+            <Text>
+                ${name} has some psychic abilities, meaning she has a natural advantage in conversation.
+                She knows what the client likes and can avoid the subjects that he dislikes.
+                This may come in very handy.
+            </Text>
+        </Message>
+        <Message Name="charming">
+            <Text>
+                ${name} is very personable and charming.
+                Conversations with her will be easy, and this gives her an advantage as an escort.
+            </Text>
+        </Message>
+        <Message Name="regular">
+            <Text>
+                ${name} has been requested by a regular client,
+                a man who has called on her before and now is willing to pay extra for a special assignation.
+                His new boss has asked the client out for a double date with the client's girlfriend and his own wife so he can get to know his new employee better.
+                The problem is that the client does not have a girlfriend.
+                ${name} is to arrive at a local restaurant, equipped with a suitable dress and pair of shoes,
+                ready to chat amiably.
+                The client sends a list of written details about their "shared relationship" for her to memorize.
+            </Text>
+        </Message>
+        <Message Name="regular.well-prepared">
+            <Text>
+                ${name} immediately delves into the customer biography on the client and does some independent research on him.
+                She memorizes the list in total detail, and even scopes out the places where they are supposed to have met and had their previous dates.
+                She arrives at the door of the restaurant at the exact appointed time.
+            </Text>
+        </Message>
+        <Message Name="regular.prepared">
+            <Text>
+                ${name} arrives at the door of the bustling downtown restaurant just in time. She actually arrived half an hour ago,
+                and has spent her time scoping out the restaurant and its patrons and contemplating conversation topics.
+                She read the biography that your escort clients are obligated to provide,
+                and knows enough details about her repeat client and their fictional relationship that she is ready to make it appear believable.
+            </Text>
+        </Message>
+        <Message Name="regular.on-time">
+            <Text>
+                ${name} arrives just on time, with a relatively good understanding of the details of their shared "relationship"
+                so she can appear as if she really is his girlfriend.
+            </Text>
+        </Message>
+        <Message Name="regular.late">
+            <Text>
+                ${name} arrives ten minutes late, dressed suitably and mulling over conversation topics.
+                She knows her lateness will probably upset him,
+                but she has at least reviewed some of the list of details of their "relationship" so that she does not need to completely improvise.
+            </Text>
+        </Message>
+        <Message Name="regular.unprepared">
+            <Text>
+                ${name} arrives at the restaurant half an hour late, barely groomed and with minimal efforts to make herself presentable.
+                She has not memorized anything on the list and will just have to improvise the details of their "relationship".
+            </Text>
+        </Message>
+    </Messages>
+</Job>

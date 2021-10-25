@@ -74,7 +74,7 @@ bool IGenericJob::chance(float percent) const {
 int IGenericJob::uniform(int min_, int max_) const {
     int min = std::min(min_, max_);
     int max = std::max(min_, max_);
-    return m_Rng->in_range(min, max + 1);
+    return m_Rng->closed_uniform(min, max);
 }
 
 IGenericJob::IGenericJob(JOBS j) : m_Info{j, get_job_name(j)} {}
@@ -185,9 +185,6 @@ DECL_JOB(Torturer);
 DECL_JOB(ExploreCatacombs);
 DECL_JOB(BeastCare);
 
-// - Bar
-DECL_JOB(Escort);
-
 // - Gambling Hall
 DECL_JOB(HallDealer);
 DECL_JOB(HallEntertainer);
@@ -225,8 +222,6 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_TORTURER, Torturer, "Trtr", "She will torture the prisoners in addition to your tortures, she will also look after them to ensure they don't die. (max 1 for all brothels)").full_time().free_only();
     REGISTER_JOB(JOB_EXPLORECATACOMBS, ExploreCatacombs, "ExC", "She will explore the catacombs looking for treasure and capturing monsters and monster girls. Needless to say, this is a dangerous job.");
     REGISTER_JOB(JOB_BEASTCARER, BeastCare, "BstC", "She will look after the needs of the beasts in your Brothel.");
-
-    REGISTER_JOB(JOB_ESCORT, Escort, "Scrt", "She will be an escort.");
 
     REGISTER_JOB(JOB_DEALER, HallDealer, "Dlr", "She will manage a game in the gambling hall.");
     REGISTER_JOB(JOB_ENTERTAINMENT, HallEntertainer, "Entn", "She will provide entertainment to the customers.");

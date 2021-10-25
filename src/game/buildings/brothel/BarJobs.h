@@ -44,4 +44,12 @@ protected:
     void perf_text();
 };
 
+class cEscortJob : public cBasicJob {
+public:
+    cEscortJob();
+    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
+protected:
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+};
+
 #endif //WM_BARJOBS_H

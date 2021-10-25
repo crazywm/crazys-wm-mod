@@ -7,6 +7,7 @@
 * Clear customer list each week
 * Fixed walk button
 * Don't try to render empty text in edit box
+* Read first/middle/surname from girl xml
 
 
 # Version 7.1.2alpha2
