@@ -29,6 +29,7 @@
 #include <istream>
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string/split.hpp>
 class cRng;
 
 inline std::string tolower(std::string str) {
@@ -75,6 +76,7 @@ std::string readline(std::istream& is);
 
 
 using boost::algorithm::starts_with;
+using boost::algorithm::split;
 
 /*!
  * Given a `text_template` that contains replacement specifiers of the form `${...}` and alternatives `$[...],

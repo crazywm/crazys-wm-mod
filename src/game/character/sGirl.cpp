@@ -1279,8 +1279,25 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
     const char *pt;
     // get the simple fields
     girl->m_Name = GetStringAttribute(root, "Name");
-    /// TODO fix name handling here!
-    girl->m_FullName = girl->m_Name;
+    std::string first_name = GetDefaultedStringAttribute(root, "FirstName", "");
+    std::string surname = GetDefaultedStringAttribute(root, "Surname", "");
+    std::string middle_name = GetDefaultedStringAttribute(root, "MiddleName", "");
+    if(!first_name.empty() && !surname.empty()) {
+        girl->SetName(first_name, middle_name, surname);
+    } else {
+        // for girl files that don't specify the name parts, try to guess
+        std::vector<std::string> parts;
+        split(parts, girl->m_Name, [](char c){ return std::isspace(c); });
+        // if there are two or three space separated parts, assume these are the parts of the name
+        if (parts.size() == 2) {
+            girl->SetName(parts[0], "", parts[1]);
+        } else if(parts.size() == 3) {
+            girl->SetName(parts[0], parts[1], parts[2]);
+        } else {
+            girl->m_FullName = girl->m_Name;
+        }
+        g_LogFile.warning("girl", "Girl file for '", girl->m_Name, "' does not specify first and last name");
+    }
 
     auto set_statebit
       = [&](int bitnum, char const* attr) {

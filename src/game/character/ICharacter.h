@@ -46,7 +46,7 @@ class ITraitsCollection;
 */
 class ICharacter {
 public:
-    ICharacter(std::unique_ptr<ITraitsCollection> tc, bool unqiue=false);
+    ICharacter(std::unique_ptr<ITraitsCollection> tc, bool unique=false);
     virtual ~ICharacter();
 
     ICharacter(ICharacter&&) noexcept;
