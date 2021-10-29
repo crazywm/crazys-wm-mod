@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #include "IGame.h"
 #include "character/sGirl.h"
 #include "cInventory.h"
-#include <iomanip>
+#include "xml/getattr.h"
 #include "xml/util.h"
 
 sRandomGirl::sRandomGirl()
@@ -86,14 +86,9 @@ sRandomGirl::~sRandomGirl() = default;
 void sRandomGirl::load_from_xml(tinyxml2::XMLElement *el)
 {
     // name and description are easy
-    if (auto pt = el->Attribute("Name"))
-    {
-      m_Name = pt;
-      g_LogFile.log(ELogLevel::NOTIFY, "Loading Rgirl : ", pt);
-    }
-
-    if (auto pt = el->Attribute("Desc"))            m_Desc = pt;
-
+    m_Name = GetStringAttribute(*el, "Name");
+    g_LogFile.log(ELogLevel::NOTIFY, "Loading Rgirl : ", m_Name);
+    m_Desc = GetDefaultedStringAttribute(*el, "Desc", "-");
     // DQ - new random type ...
     if (auto pt = el->Attribute("Human"))           m_Human = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
     if (auto pt = el->Attribute("Catacomb"))        m_Catacomb = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
@@ -102,54 +97,29 @@ void sRandomGirl::load_from_xml(tinyxml2::XMLElement *el)
     if (auto pt = el->Attribute("Is Daughter"))     m_IsDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
 
     // loop through children
-    tinyxml2::XMLElement *child;
-    for (child = el->FirstChildElement(); child; child = child->NextSiblingElement())
+    for (auto& child : IterateChildElements(*el))
     {
-        std::string tag = child->Value();
-        /*
-        *        now: what we do depends on the tag string
-        *        which we can get from the ValueStr() method
-        *
-        *        Let's process each tag type in its own method.
-        *        Keep things cleaner that way.
-        */
-        if (tag == "Gold")
-        {
-            process_cash_xml(child);
-            continue;
-        }
-        // OK: is it a stat?
-        if (tag == "Stat")
-        {
-            // TODO remove this at some point
-            if(child->Attribute("Name", "House")) {
-                g_LogFile.warning("girl", "Girl ", m_Name, " specified House stat, which is obsolete.");
-                continue;
+        std::string tag = child.Value();
+        try {
+            if (tag == "Gold") {
+                process_cash_xml(child);
+            } else if (tag == "Stat") {
+                process_stat_xml(child);
+            } else if (tag == "Skill") {
+                process_skill_xml(child);
+            } else if (tag == "Trait") {
+                process_trait_xml(child);
+            } else if (tag == "Item") {
+                process_item_xml(child);
+            } else {
+                // None of the above? Better ask for help then.
+                g_LogFile.warning("girl", "Unexpected tag: ", tag,
+                                  "    don't know what do to, ignoring");
             }
-            process_stat_xml(child);
-            continue;
+        } catch (const std::exception& ex) {
+            g_LogFile.error("girl", "Error when processing element ", tag, " on line ", child.GetLineNum(), ": ",
+                            ex.what());
         }
-        // How about a skill?
-        if (tag == "Skill")
-        {
-            process_skill_xml(child);
-            continue;
-        }
-        // surely a trait then?
-        if (tag == "Trait")
-        {
-            process_trait_xml(child);
-            continue;
-        }
-        // surely a item then?
-        if (tag == "Item")
-        {
-            process_item_xml(child);
-            continue;
-        }
-        // None of the above? Better ask for help then.
-        g_LogFile.log(ELogLevel::WARNING, "Unexpected tag: ", child->Value(),
-                "    don't know what do to, ignoring");
     }
 }
 
@@ -243,98 +213,69 @@ void cRandomGirls::LoadRandomGirlXML(const std::string& filename, const std::str
         {
             m_NumRandomYourDaughterGirls++;
             if (girl.m_Human)        m_NumHumanRandomYourDaughterGirls++;
-            if (!girl.m_Human)        m_NumNonHumanRandomYourDaughterGirls++;
+            if (!girl.m_Human)       m_NumNonHumanRandomYourDaughterGirls++;
         }
         else
         {
             if (girl.m_Human)        m_NumHumanRandomGirls++;
-            if (!girl.m_Human)        m_NumNonHumanRandomGirls++;
+            if (!girl.m_Human)       m_NumNonHumanRandomGirls++;
         }
     }
 }
 
 
-void sRandomGirl::process_trait_xml(tinyxml2::XMLElement *el)
+void sRandomGirl::process_trait_xml(const tinyxml2::XMLElement& el)
 {
-    const char *pt;
-    if (!(pt = el->Attribute("Name"))) // `J` if there is no name why continue?
+    m_TraitNames.emplace_back(GetStringAttribute(el, "Name"));
+    m_TraitChance.emplace_back(el.IntAttribute("Percent", 100));
+}
+
+void sRandomGirl::process_item_xml(const tinyxml2::XMLElement& el)
+{
+    std::string item_name = GetStringAttribute(el, "Name");
+    sInventoryItem *item = g_Game->inventory_manager().GetItem(item_name);
+    if (!item)
+    {
+        g_LogFile.log(ELogLevel::ERROR, "Can't find Item: '", item_name, "' - skipping it.");
+        return;        // do as much as we can without crashing
+    }
+
+    sPercent chance(el.IntAttribute("Percent", 100));
+    m_Inventory.push_back(sItemRecord{item, chance});
+}
+
+void sRandomGirl::process_stat_xml(const tinyxml2::XMLElement& el)
+{
+    int index;
+    std::string stat_name = GetStringAttribute(el, "Name");
+
+    // TODO remove this check at some point
+    if(stat_name == "House") {
+        g_LogFile.warning("girl", "Girl ", m_Name, " specified House stat, which is obsolete.");
         return;
-
-    m_TraitNames.emplace_back(pt);
-    // get the percentage chance
-    m_TraitChance.emplace_back(el->IntAttribute("Percent", 100));
-}
-
-void sRandomGirl::process_item_xml(tinyxml2::XMLElement *el)
-{
-    if (const char* pt = el->Attribute("Name"))
-    {
-        sInventoryItem *item = g_Game->inventory_manager().GetItem(pt);
-        if (!item)
-        {
-            g_LogFile.log(ELogLevel::ERROR, "Can't find Item: '", pt, "' - skipping it.");
-            return;        // do as much as we can without crashing
-        }
-
-        sPercent chance(el->IntAttribute("Percent", 100));
-        m_Inventory.push_back(sItemRecord{item, chance});
-    } else {
-        g_LogFile.log(ELogLevel::ERROR, "Item entry does not have a `Name` attribute, line ", el->GetLineNum());
     }
-}
-
-void sRandomGirl::process_stat_xml(tinyxml2::XMLElement *el)
-{
-    int ival, index; const char *pt;
-    if ((pt = el->Attribute("Name")))
-    {
-        try {
-            index = get_stat_id(pt);
-        } catch (const std::out_of_range& e) {
-            g_LogFile.error("girls", "Invalid stat name '", pt, "' encountered");
-            return;        // do as much as we can without crashing
-        }
-    }
-    else
-    {
-        g_LogFile.log(ELogLevel::ERROR, "can't find 'Name' attribute - can't process stat");
+    try {
+        index = get_stat_id(stat_name);
+    } catch (const std::out_of_range& e) {
+        g_LogFile.error("girls", "Invalid stat name '", stat_name, "' encountered");
         return;        // do as much as we can without crashing
     }
-    if (el->QueryAttribute("Min", &ival)) m_MinStats[index] = ival;
-    if (el->QueryAttribute("Max", &ival)) m_MaxStats[index] = ival;
+
+    el.QueryAttribute("Min", &m_MinStats[index]);
+    el.QueryAttribute("Max", &m_MaxStats[index]);
 }
 
-void sRandomGirl::process_skill_xml(tinyxml2::XMLElement *el)
+void sRandomGirl::process_skill_xml(const tinyxml2::XMLElement& el)
 {
-    int ival, index;
-    const char *pt;
-    /*
-    *    Strictly, I should use something that lets me
-    *    test for absence. This won't catch typos in the
-    *    XML file
-    */
-    if ((pt = el->Attribute("Name"))) index = get_skill_id(pt);
-    else
-    {
-        g_LogFile.log(ELogLevel::ERROR, "can't find 'Name' attribute - can't process skill");
-        return;        // do as much as we can without crashing
-    }
-    if (el->QueryAttribute("Min", &ival)) m_MinSkills[index] = ival;
-    if (el->QueryAttribute("Max", &ival)) m_MaxSkills[index] = ival;
+    int index = get_skill_id(GetStringAttribute(el, "Name"));
+    el.QueryAttribute("Min", &m_MinSkills[index]);
+    el.QueryAttribute("Max", &m_MaxSkills[index]);
 }
 
-void sRandomGirl::process_cash_xml(tinyxml2::XMLElement *el)
+void sRandomGirl::process_cash_xml(const tinyxml2::XMLElement& el)
 {
-    int ival;
-    if (el->QueryAttribute("Min", &ival))
-    {
-        m_MinMoney = ival;
-    }
-
-    if (el->QueryAttribute("Max", &ival))
-    {
-        m_MaxMoney = ival;
-    }
+    el.QueryAttribute("Min", &m_MinMoney);
+    el.QueryAttribute("Max", &m_MaxMoney);
 }
 
 sRandomGirl* cRandomGirls::find_random_girl_by_name(const std::string& name)

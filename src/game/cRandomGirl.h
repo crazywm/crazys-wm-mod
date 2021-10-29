@@ -79,11 +79,11 @@ struct sRandomGirl
     *    Not so much difficult as tedious.
     */
     void load_from_xml(tinyxml2::XMLElement*);    // uses sRandomGirl::load_from_xml
-    void process_trait_xml(tinyxml2::XMLElement*);
-    void process_item_xml(tinyxml2::XMLElement*);
-    void process_stat_xml(tinyxml2::XMLElement*);
-    void process_skill_xml(tinyxml2::XMLElement*);
-    void process_cash_xml(tinyxml2::XMLElement*);
+    void process_trait_xml(const tinyxml2::XMLElement&);
+    void process_item_xml(const tinyxml2::XMLElement&);
+    void process_stat_xml(const tinyxml2::XMLElement&);
+    void process_skill_xml(const tinyxml2::XMLElement&);
+    void process_cash_xml(const tinyxml2::XMLElement&);
 };
 
 
