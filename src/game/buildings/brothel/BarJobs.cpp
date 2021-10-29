@@ -87,7 +87,7 @@ void cBarJob::perf_text() {
     }
     else if (m_Performance >= 145)
     {
-        add_text("work.great") << "\n";
+        add_text("work.good") << "\n";
     }
     else if (m_Performance >= 100)
     {

@@ -876,7 +876,7 @@ void cGame::UpdateMarketSlaves()
                 GetSlaveMarket().AddGirl(girl);
                 continue;
             }
-            g_LogFile.warning("Tried to create a unique girl for the market, but could not find one.");
+            g_LogFile.warning("girl", "Tried to create a unique girl for the market, but could not find one.");
         }
 
         // we didn't make a unique girl so we need a random one

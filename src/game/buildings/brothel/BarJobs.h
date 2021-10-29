@@ -50,6 +50,25 @@ public:
     sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
 protected:
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+
+private:
+    int m_Escort;
+    int m_Prepare;
+
+
+
+    enum class SexType {
+        NONE, ANY, SEX, ANAL, ORAL, HAND, TITTY
+    };
+
+    struct sClientData {
+        bool TittyLover = false;
+        bool AssLover = false;
+        SexType SexOffer = SexType::NONE;
+    };
+
+    SexType choose_sex(const std::string& prefix, const sGirl& girl, const sClientData& client);
+    Image_Types handle_sex(const std::string& prefix, int& fame, sGirl& girl, SexType type);
 };
 
 #endif //WM_BARJOBS_H
