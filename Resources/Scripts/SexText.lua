@@ -1233,7 +1233,7 @@ end
 ---@param customer wm.Customer
 function GetNormalMessage(girl, customer)
     local message = ""
-    local skill = girl:anal()
+    local skill = girl:normalsex()
 
     if girl:has_trait("Zombie") then
         return "${name} moaned lightly as her customer pounded her dead pussy."

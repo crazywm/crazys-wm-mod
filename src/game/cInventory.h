@@ -205,6 +205,7 @@ struct sInventoryItem
     void set_type(const std::string& s);
 
     CraftingData m_Crafting;
+    friend std::ostream& operator<<(std::ostream& os,const sInventoryItem::Type& typ);
 };
 
 class cInventory

@@ -839,7 +839,7 @@ ostream& operator<<(ostream& os, sInventoryItem& it) {
     return os;
 }
 
-ostream& operator<<(ostream& os, sInventoryItem::Type& typ) {
+ostream& operator<<(ostream& os,const sInventoryItem::Type& typ) {
     switch(typ) {
         case sInventoryItem::Ring:            return os << "Ring";
         case sInventoryItem::Dress:            return os << "Dress";
