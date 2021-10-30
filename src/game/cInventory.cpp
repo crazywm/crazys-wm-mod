@@ -248,7 +248,7 @@ void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
     {
         int age = girl.age();
         // reset all numbers to default
-        for (int i = 0; i < NUM_SKILLS; i++)    girl.set_skill(i, 0);
+        for (auto skill : SkillsRange)          girl.set_skill_direct(skill, 0);
         for (int i = 0; i < NUM_STATS; i++)     girl.set_stat(i, 0);
         girl.set_stat(STAT_HEALTH, 100);
         girl.set_stat(STAT_HAPPINESS, 100);

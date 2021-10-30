@@ -81,15 +81,15 @@ set(CHARACTER_SRC
         character/cPlayer.cpp
         character/ICharacter.cpp
         character/sAttribute.cpp
+        character/cSkillCap.cpp
         character/sGirl.cpp
         character/traits/cTraitsCollection.cpp
         character/traits/cTraitsManager.cpp
         character/traits/cTraitSpec.cpp
         character/predicates.cpp
         character/pregnancy.cpp
-        character/cDynamicStat.cpp
-        character/cDynamicStat.h
-        character/cGirlPool.cpp)
+        character/cGirlPool.cpp
+        )
 
 set(SCRIPTING_SRC
         scripting/cEventMapping.cpp

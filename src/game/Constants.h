@@ -21,6 +21,7 @@
 
 #include <array>
 #include <string>
+#include "utils/enum.h"
 
 class sAttribute;
 
@@ -83,6 +84,8 @@ enum STATS {
     NUM_STATS                    // 1 more than the last stat
 };//End STATS enum
 
+constexpr const EnumRange<STATS, STAT_CHARISMA, NUM_STATS> StatsRange = {};
+
 // lookup
 const std::array<sAttribute, NUM_STATS>& get_all_stats();
 const char* get_stat_name(STATS stat);
@@ -92,7 +95,7 @@ STATS get_stat_id(const std::string& name);
 
 // Skills
 //SKILLS enum
-enum SKILLS{
+enum SKILLS {
     SKILL_ANAL            = 0    ,    //
     SKILL_MAGIC                ,    //
     SKILL_BDSM                ,    //
@@ -118,6 +121,8 @@ enum SKILLS{
     NUM_SKILLS                ,    // 1 more than the last skill
 //const unsigned int SKILL_MAST        = ;
 };//End SKILLS enum
+
+constexpr const EnumRange<SKILLS, SKILL_ANAL, NUM_SKILLS> SkillsRange = {};
 
 // lookup
 const std::array<sAttribute, NUM_SKILLS>& get_all_skills();

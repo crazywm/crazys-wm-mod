@@ -112,8 +112,14 @@ int ICharacter::get_skill(int skill_id) const
     return value;
 }
 
-void ICharacter::set_skill(int skill_id, int amount)
+void ICharacter::set_skill(SKILLS skill_id, int amount)
 {
+    amount = std::min(amount, g_Game->get_skill_cap(skill_id, *this));
+    set_skill_direct(skill_id, amount);
+}
+
+
+void ICharacter::set_skill_direct(SKILLS skill_id, int amount) {
     int min = get_all_skills()[skill_id].min;
     int max = get_all_skills()[skill_id].max;
 
@@ -124,7 +130,15 @@ void ICharacter::set_skill(int skill_id, int amount)
 
 int ICharacter::upd_skill(int skill_id, int amount, bool usetraits)
 {
-    set_skill(skill_id, get_base_skill(skill_id) + amount);
+    int target = get_base_skill(skill_id) + amount;
+    int cap = g_Game->get_skill_cap(static_cast<SKILLS>(skill_id), *this);
+    if(target > cap) {
+        // unused points go to experience
+        upd_base_stat(STAT_EXP, target - cap);
+        set_skill_direct(static_cast<SKILLS>(skill_id), cap);
+    } else {
+        set_skill_direct(static_cast<SKILLS>(skill_id), target);
+    }
     return get_skill(skill_id);
 }
 
@@ -208,9 +222,9 @@ void ICharacter::LoadXML(const tinyxml2::XMLElement& elRoot)
             g_LogFile.error("game", "'Skill' tag does not contain 'Name' attribute. Character: ", m_FullName);
             continue;
         }
-        auto stat_id = get_skill_id(name);
-        m_Skills[stat_id].m_TempMods = el.IntAttribute("Temp", 0);
-        set_skill(stat_id, GetIntAttribute(el, "Value"));
+        auto skill_id = get_skill_id(name);
+        m_Skills[skill_id].m_TempMods = el.IntAttribute("Temp", 0);
+        set_skill_direct(skill_id, GetIntAttribute(el, "Value"));
     }
 
     auto trt = elRoot.FirstChildElement("Traits");
@@ -481,3 +495,4 @@ template <typename T> std::string ICharacter::generate_change_string(const std::
     display_value += std::to_string(change) + ')';
     return display_value;
 }
+

@@ -44,6 +44,7 @@
 #include "interface/cWindowManager.h"
 
 #include <chrono>
+#include "character/cSkillCap.h"
 
 extern cConfig cfg;
 
@@ -94,13 +95,20 @@ void cGame::NewGame(const std::function<void(std::string)>& callback) {
 
     g_LogFile.info("prepare", "Resetting Player");
     for(int i = 0; i < NUM_STATS; ++i) player().set_stat(i, 60);
-    for(int i = 0; i < NUM_SKILLS; ++i) player().set_skill(i, 10);
+    for(auto skill : SkillsRange) player().set_skill_direct(skill, 10);
     player().SetToZero();
 
     // traits
     callback("Loading Traits");
     g_LogFile.info("prepare", "Loading Traits");
     LoadTraitFiles(DirPath() << "Resources" << "Data" << "Traits");
+
+    // load skills
+    callback("Loading Skills");
+    g_LogFile.info("prepare", "Loading Skills");
+    DirPath caps;
+    caps << "Resources" << "Data" << "Skills.xml";
+    m_SkillCaps->load_from_xml(*LoadXMLDocument(caps.c_str())->RootElement());
 
     callback("Loading Items");
     g_LogFile.info("prepare", "Loading Items");
@@ -134,6 +142,13 @@ void cGame::LoadGame(const tinyxml2::XMLElement& source, const std::function<voi
     callback("Loading Traits");
     g_LogFile.info("prepare", "Loading Traits");
     LoadTraitFiles(DirPath() << "Resources" << "Data" << "Traits");
+
+    // load skills
+    callback("Loading Skills");
+    g_LogFile.info("prepare", "Loading Skills");
+    DirPath caps;
+    caps << "Resources" << "Data" << "Skills.xml";
+    m_SkillCaps->load_from_xml(*LoadXMLDocument(caps.c_str())->RootElement());
 
     ReadGameAttributesXML(source);
 

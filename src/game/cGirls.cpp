@@ -163,9 +163,11 @@ cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, 
     newGirl->m_Money = (g_Dice % (girl_template.m_MaxMoney - girl_template.m_MinMoney)) + girl_template.m_MinMoney;    // money
 
     // skills
-    for (int i = 0; i < NUM_SKILLS; i++)
-    {
-        newGirl->set_skill(i, g_Dice.in_range(girl_template.m_MinSkills[i], girl_template.m_MaxSkills[i]));
+    for (auto skill : SkillsRange) {
+        newGirl->set_skill_direct(skill, g_Dice.in_range(girl_template.m_MinSkills[skill], girl_template.m_MaxSkills[skill]));
+    }
+    for (auto skill : SkillsRange) {
+        newGirl->upd_skill(skill, 0);
     }
 
     // stats
@@ -469,34 +471,20 @@ void cGirls::EndDayGirls(IBuilding& brothel, sGirl& girl)
         girl.lactation(girl.is_pregnant() || girl.m_PregCooldown > 0 ? E_lactation * 2 + 1 : E_lactation);
     }
 
-    auto DecaySexSkill = [&](SKILLS skill) {
-        int a = g_Dice.d100();
-        if (a < 5 || (a < 10 && !brothel.is_sex_type_allowed(skill)))    girl.upd_skill(skill, -1);
-    };
+    for(auto skill : SkillsRange) {
+        int val = girl.get_base_skill(skill);
+        // in the lowest range, skills don't decay
+        if(val < 10) continue;
 
-    DecaySexSkill(SKILL_BEASTIALITY);
-    DecaySexSkill(SKILL_BDSM);
-    DecaySexSkill(SKILL_GROUP);
-    DecaySexSkill(SKILL_NORMALSEX);
-    DecaySexSkill(SKILL_ANAL);
-    DecaySexSkill(SKILL_LESBIAN);
-    DecaySexSkill(SKILL_FOOTJOB);
-    DecaySexSkill(SKILL_HANDJOB);
-    DecaySexSkill(SKILL_ORALSEX);
-    DecaySexSkill(SKILL_TITTYSEX);
-    DecaySexSkill(SKILL_STRIP);
-
-    if (g_Dice.percent(5))    girl.upd_skill(SKILL_MAGIC, -1);
-    if (g_Dice.percent(5))    girl.upd_skill(SKILL_SERVICE, -1);
-    if (g_Dice.percent(5))    girl.upd_skill(SKILL_COMBAT, -1);
-    if (g_Dice.percent(5))    girl.upd_skill(SKILL_MEDICINE, -1);
-    if (g_Dice.percent(5))    girl.upd_skill(SKILL_PERFORMANCE, -1);
-    if (g_Dice.percent(5))    girl.upd_skill(SKILL_CRAFTING, -1);
-    if (g_Dice.percent(5))    girl.upd_skill(SKILL_HERBALISM, -1);
-    if (g_Dice.percent(5))    girl.upd_skill(SKILL_FARMING, -1);
-    if (g_Dice.percent(5))    girl.upd_skill(SKILL_BREWING, -1);
-    if (g_Dice.percent(5))    girl.upd_skill(SKILL_ANIMALHANDLING, -1);
-    if (g_Dice.percent(5))    girl.upd_skill(SKILL_COOKING, -1);
+        // otherwise, a skill might decay with a low base probability (1%)
+        // or with a larger probability if it is close to the cap (5%)
+        // a high level skill very close to the cap has a large decay chance (10%)
+        int cap = g_Game->get_skill_cap(skill, girl);
+        int chance = g_Dice.d100();
+        if(chance < 1 || (chance < 5 && val + 10 > cap) || (chance < 10 && val + 5 > cap && val >= 60)) {
+            girl.upd_skill(skill, -1);
+        }
+    }
 }
 
 // ----- Add remove
@@ -641,12 +629,15 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
     // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
     string basestr[] = { "Age : \t", "Rebelliousness : \t", "Looks : \t", "Constitution : \t", "Health : \t", "Happiness : \t", "Tiredness : \t", "Worth : \t" };
 
-    int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM,
-                       SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_COOKING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
+    SKILLS skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM,
+                          SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_COOKING,
+                          SKILL_STRIP, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_FOOTJOB,
+                          SKILL_ANAL, SKILL_NORMALSEX, SKILL_LESBIAN, SKILL_BDSM, SKILL_BEASTIALITY, SKILL_GROUP
+                          };
     string skillstr[] = { "Magic Ability : \t", "Combat Ability : \t", "Service Skills : \t", "Medicine Skill : \t", "Performance Skill : \t",
                           "Crafting Skill : \t", "Herbalism Skill : \t", "Farming Skill : \t", "Brewing Skill : \t", "Animal Handling : \t", "Cooking : \t",
-                          "Anal Sex : \t", "BDSM Sex : \t", "Normal Sex : \t", "Bestiality Sex : \t", "Group Sex : \t", "Lesbian Sex : \t", "Oral Sex : \t",
-                          "Titty Sex : \t", "Hand Job : \t", "Stripping : \t", "Foot Job : \t" };
+                          "Stripping : \t", "Oral Sex : \t", "Titty Sex : \t", "Hand Job : \t", "Foot Job : \t",
+                          "Anal Sex : \t", "Normal Sex : \t", "Lesbian Sex : \t", "BDSM Sex : \t", "Bestiality Sex : \t", "Group Sex : \t"};
 
     string levelstr[] = { "Level : \t", "Exp : \t", "Exp to level : \t", "Needs : \t" };
 
@@ -722,15 +713,19 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
     }
 
     // display Skills
-    ss << "\n \nSKILLS";
+    ss << "\n\nSKILLS";
 
-    for (int i = 0; i < 22; i++)
+    for (int i = 0; i < NUM_SKILLS; i++)
     {
         if (i == 11)
         {
-            ss << "\n \nSEX SKILLS";
+            ss << "\n\nSEX SKILLS";
         }
-        ss << '\n' << skillstr[i] << girl.skill_with_change_str((SKILLS) skillnum[i]);
+        int cap = g_Game->get_skill_cap(skillnum[i], girl);
+        ss << '\n' << skillstr[i] << girl.skill_with_change_str(skillnum[i]);
+        if(cap < get_all_skills()[i].max) {
+           ss << " \t [" << g_Game->get_skill_cap(skillnum[i], girl) << "]";
+        }
     }
     return ss.str();
 }
@@ -3968,12 +3963,12 @@ sCustomer cGirls::GetBeast()
     beast.m_IsWoman = false;
     // get their stats generated
     for(int i = 0; i < NUM_STATS; ++i)  beast.set_stat(i, g_Dice % 100);
-    for(int i = 0; i < NUM_SKILLS; ++i)  beast.set_skill(i, g_Dice % 10);
+    for(auto skill : SkillsRange)  beast.set_skill_direct(skill, g_Dice % 10);
 
-    beast.set_skill(SKILL_BEASTIALITY, 40 + g_Dice % 61);
-    beast.set_skill(SKILL_COMBAT, 40 + g_Dice % 61);
-    beast.set_skill(SKILL_FARMING, g_Dice % 20);
-    beast.set_skill(SKILL_ANIMALHANDLING, 40 + g_Dice % 61);
+    beast.set_skill_direct(SKILL_BEASTIALITY, 40 + g_Dice % 61);
+    beast.set_skill_direct(SKILL_COMBAT, 40 + g_Dice % 61);
+    beast.set_skill_direct(SKILL_FARMING, g_Dice % 20);
+    beast.set_skill_direct(SKILL_ANIMALHANDLING, 40 + g_Dice % 61);
     beast.set_stat(STAT_INTELLIGENCE, g_Dice % 30);
     beast.set_stat(STAT_LEVEL, 0);
     beast.set_stat(STAT_AGE, g_Dice % 20);

@@ -56,6 +56,8 @@ class cTariff;
 class cShop;
 class cGirlPool;
 class cMovieManager;
+class ICharacter;
+class cSkillCapManager;
 
 namespace tinyxml2
 {
@@ -135,6 +137,9 @@ public:
     // traits
     ITraitsManager& traits();
     std::unique_ptr<ITraitsCollection> create_traits_collection();
+
+    // skills
+    int get_skill_cap(SKILLS target, const ICharacter& character) const;
 
     // tariffs
     cTariff& tariff();
@@ -253,6 +258,8 @@ private:
     std::unique_ptr<cGirlPool> m_Prison;
 
 protected:
+    std::unique_ptr<cSkillCapManager> m_SkillCaps;
+
     Date m_Date = {1209, 1, 1};
 
     bool m_IsCheating = false;

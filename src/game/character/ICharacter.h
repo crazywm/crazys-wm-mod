@@ -214,7 +214,10 @@ public:
     int get_base_skill(int skill_id) const { return m_Skills[skill_id].m_Value; }
     int get_temp_skill(int stat_id) const { return m_Skills[stat_id].m_TempMods; }
     int get_mod_skill(int stat_id) const { return m_Skills[stat_id].m_PermanentMods; }
-    virtual void set_skill(int skill_id, int amount);
+    void set_skill(SKILLS skill_id, int amount);
+
+    /// Sets the skill, bypassing any cap checks. Use only in loading code.
+    void set_skill_direct(SKILLS skill_id, int amount);
 
     virtual int upd_skill(int skill_id, int amount, bool usetraits = true);
     virtual void upd_temp_skill(int stat, int amount);

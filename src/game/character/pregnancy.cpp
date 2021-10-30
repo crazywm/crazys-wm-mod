@@ -622,11 +622,16 @@ void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
     sprog->SetBirthDay(d0);
 
     // inherit skills
-    for (int i = 0; i < NUM_SKILLS; i++) {
+    for (auto skill : SkillsRange) {
         int s = 0;
-        if (mom.get_base_skill(i) < child.m_Skills[i]) s = child.m_Skills[i];
-        else s = mom.get_base_skill(i);
-        sprog->set_skill(i, g_Dice % std::min(s, 20));
+        if (mom.get_base_skill(skill) < child.m_Skills[skill]) s = child.m_Skills[skill];
+        else s = mom.get_base_skill(skill);
+        sprog->set_skill_direct(static_cast<SKILLS>(skill), g_Dice % std::min(s, 20));
+    }
+
+    // calling update makes sure that the new skills respect the caps
+    for (int i = 0; i < NUM_SKILLS; i++) {
+        sprog->upd_skill(i, 0);
     }
 
 

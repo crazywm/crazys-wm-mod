@@ -23,6 +23,7 @@
 #include "character/cGirlPool.h"
 #include "buildings/studio/manager.h"
 #include <sstream>
+#include "character/cSkillCap.h"
 
 cRivalManager& IGame::rivals()
 {
@@ -53,7 +54,8 @@ IGame::IGame() :
     m_GameSettings(new cGameSettings()),
     m_MarketGirls( new cGirlPool() ),
     m_Prison( new cGirlPool() ),
-    m_MovieManager(new cMovieManager)
+    m_MovieManager(new cMovieManager),
+    m_SkillCaps( std::make_unique<cSkillCapManager>() )
 {
     m_Player = std::make_unique<cPlayer>( create_traits_collection() );
 }
@@ -261,6 +263,10 @@ std::shared_ptr<sGirl> IGame::CreateRandomGirl(int age, bool slave, bool undead,
 cTariff& IGame::tariff()
 {
     return *m_Tariff;
+}
+
+int IGame::get_skill_cap(SKILLS target, const ICharacter& character) const {
+    return m_SkillCaps->get_cap(target, character);
 }
 
 bool IGame::allow_cheats() const

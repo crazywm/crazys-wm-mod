@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+This file specifies the dynamic caps for the skills in the game. A skill cannot be trained to values above its given
+skill cap (though items and traits can make the effective value larger). A skill can have multiple caps, in which case
+the lowest cap applies. A cap is defined as follows
+<Cap Offset="NUMBER">
+    <Factor Attribute="SKILL_OR_STAT" Factor="NUMBER" />
+    ...
+</Cap>
+Each <Factor> element defines a contribution of a skill or stat to the skill cap. For example,
+<Factor Attribute="Level" Factor="1000" /> means that level increases the cap for the skill with an
+effectiveness of 1000%, i.e. each new level point raises the skill cap by 10. Additionally, the specified
+offset gives the base value that is applied when all factors contribute zero, e.g. with a level of 2 and an offset of
+5 this would result in a cap of 25.
+-->
+<Skills>
+    <Skill Name="Strip">
+        <Cap Offset="50">
+            <Factor Attribute="Confidence" Factor="100" />
+        </Cap>
+        <Cap Offset="50">
+            <Factor Attribute="Agility" Factor="100" />
+        </Cap>
+        <Cap Offset="80">
+            <Factor Attribute="Agility" Factor="25" />
+        </Cap>
+        <Cap Offset="25">
+            <Factor Attribute="Level" Factor="1000" />
+        </Cap>
+    </Skill>
+
+    <!-- The 'easy' sex skills. These are capped only by the girl's level -->
+    <Skill Name="OralSex">
+        <Cap Offset="25">
+            <Factor Attribute="Level" Factor="1000" />
+        </Cap>
+    </Skill>
+    <Skill Name="TittySex">
+        <Cap Offset="25">
+            <Factor Attribute="Level" Factor="1000" />
+        </Cap>
+    </Skill>
+    <Skill Name="Handjob">
+        <Cap Offset="25">
+            <Factor Attribute="Level" Factor="1000" />
+        </Cap>
+    </Skill>
+    <Skill Name="Footjob">
+        <Cap Offset="25">
+            <Factor Attribute="Level" Factor="1000" />
+        </Cap>
+    </Skill>
+
+    <!--
+    The 'regular' sex skills. These require some physical attributes.
+    To get them to high values, agility and performance are needed.
+     -->
+    <Skill Name="Anal">
+        <Cap Offset="40">
+            <Factor Attribute="Strength" Factor="100" />
+            <Factor Attribute="Constitution" Factor="100" />
+        </Cap>
+
+        <Cap Offset="70">
+            <Factor Attribute="Agility" Factor="50" />
+        </Cap>
+        <Cap Offset="70">
+            <Factor Attribute="Performance" Factor="50" />
+        </Cap>
+        <Cap Offset="70">
+            <Factor Attribute="Constitution" Factor="50" />
+        </Cap>
+
+        <Cap Offset="20">
+            <Factor Attribute="Level" Factor="500" />
+        </Cap>
+    </Skill>
+
+    <Skill Name="NormalSex">
+        <Cap Offset="40">
+            <Factor Attribute="Strength" Factor="100" />
+            <Factor Attribute="Constitution" Factor="100" />
+        </Cap>
+
+        <Cap Offset="70">
+            <Factor Attribute="Agility" Factor="50" />
+        </Cap>
+        <Cap Offset="70">
+            <Factor Attribute="Constitution" Factor="50" />
+        </Cap>
+
+        <Cap Offset="70">
+            <Factor Attribute="Performance" Factor="50" />
+        </Cap>
+
+        <Cap Offset="20">
+            <Factor Attribute="Level" Factor="500" />
+        </Cap>
+    </Skill>
+
+    <Skill Name="Lesbian">
+        <Cap Offset="40">
+            <Factor Attribute="Strength" Factor="100" />
+            <Factor Attribute="Constitution" Factor="100" />
+        </Cap>
+        <Cap Offset="70">
+            <Factor Attribute="Agility" Factor="50" />
+        </Cap>
+        <Cap Offset="70">
+            <Factor Attribute="Constitution" Factor="50" />
+        </Cap>
+        <Cap Offset="70">
+            <Factor Attribute="Performance" Factor="50" />
+        </Cap>
+
+        <Cap Offset="20">
+            <Factor Attribute="Level" Factor="500" />
+        </Cap>
+    </Skill>
+
+    <!--
+    The 'advanced' sex skills. These require physical attributes and regular sex skills
+     -->
+    <Skill Name="BDSM">
+        <!-- Bondage is physically very demanding -->
+        <Cap Offset="20">
+            <Factor Attribute="Strength" Factor="100" />
+            <Factor Attribute="Constitution" Factor="100" />
+        </Cap>
+
+        <!-- for high skill -->
+        <Cap Offset="70">
+            <Factor Attribute="Constitution" Factor="50" />
+        </Cap>
+
+        <Cap Offset="70">
+            <Factor Attribute="Agility" Factor="50" />
+        </Cap>
+
+        <!-- for medium skill -->
+        <Cap Offset="40">
+            <Factor Attribute="Agility" Factor="100" />
+        </Cap>
+
+        <Cap Offset="40">
+            <Factor Attribute="Constitution" Factor="100" />
+        </Cap>
+
+        <Cap Offset="40">
+            <Factor Attribute="NormalSex" Factor="75" />
+            <Factor Attribute="Anal" Factor="75" />
+        </Cap>
+
+        <!-- For low skill -->
+        <Cap Offset="0">
+            <Factor Attribute="NormalSex" Factor="200" />
+            <Factor Attribute="Anal" Factor="200" />
+        </Cap>
+        <Cap Offset="0">
+            <Factor Attribute="OralSex" Factor="200" />
+            <Factor Attribute="TittySex" Factor="200" />
+            <Factor Attribute="Handjob" Factor="200" />
+            <Factor Attribute="Footjob" Factor="200" />
+        </Cap>
+
+        <Cap Offset="10">
+            <Factor Attribute="Level" Factor="500" />
+        </Cap>
+    </Skill>
+
+    <Skill Name="Beastiality">
+        <!--
+        Bondage is physically demanding. For high level, requires basic AnimalHandling knowledge
+        -->
+        <Cap Offset="40">
+            <Factor Attribute="Strength" Factor="100" />
+            <Factor Attribute="Constitution" Factor="100" />
+        </Cap>
+        <Cap Offset="40">
+            <Factor Attribute="NormalSex" Factor="100" />
+            <Factor Attribute="Anal" Factor="100" />
+        </Cap>
+        <Cap Offset="75">
+            <Factor Attribute="AnimalHandling" Factor="50" />
+        </Cap>
+
+        <Cap Offset="10">
+            <Factor Attribute="Level" Factor="500" />
+        </Cap>
+    </Skill>
+
+    <Skill Name="Group">
+        <Cap Offset="40">
+            <Factor Attribute="Strength" Factor="100" />
+            <Factor Attribute="Constitution" Factor="100" />
+        </Cap>
+
+        <!-- high level: require all skills -->
+        <Cap Offset="25">
+            <Factor Attribute="OralSex" Factor="20" />
+            <Factor Attribute="TittySex" Factor="20" />
+            <Factor Attribute="Handjob" Factor="20" />
+            <Factor Attribute="Footjob" Factor="20" />
+            <Factor Attribute="NormalSex" Factor="33" />
+            <Factor Attribute="Anal" Factor="33" />
+            <Factor Attribute="Lesbian" Factor="33" />
+        </Cap>
+
+        <!-- mid level: require each skill -->
+        <Cap Offset="25">
+            <Factor Attribute="OralSex" Factor="150" />
+        </Cap>
+        <Cap Offset="25">
+            <Factor Attribute="TittySex" Factor="150" />
+        </Cap>
+        <Cap Offset="25">
+            <Factor Attribute="Handjob" Factor="150" />
+        </Cap>
+        <Cap Offset="25">
+            <Factor Attribute="Footjob" Factor="150" />
+        </Cap>
+        <Cap Offset="25">
+            <Factor Attribute="NormalSex" Factor="150" />
+        </Cap>
+        <Cap Offset="25">
+            <Factor Attribute="Anal" Factor="150" />
+        </Cap>
+        <Cap Offset="35">
+            <Factor Attribute="Lesbian" Factor="150" />
+        </Cap>
+
+        <!-- low level: require multiple skills -->
+        <Cap Offset="0">
+            <Factor Attribute="NormalSex" Factor="200" />
+            <Factor Attribute="Anal" Factor="200" />
+        </Cap>
+
+        <Cap Offset="0">
+            <Factor Attribute="OralSex" Factor="100" />
+            <Factor Attribute="TittySex" Factor="100" />
+            <Factor Attribute="Handjob" Factor="100" />
+            <Factor Attribute="Footjob" Factor="100" />
+        </Cap>
+
+        <Cap Offset="10">
+            <Factor Attribute="Level" Factor="500" />
+        </Cap>
+    </Skill>
+
+    <!-- Non-Sexual skills -->
+    <Skill Name="Brewing">
+        <Cap Offset="25">
+            <Factor Attribute="Level" Factor="500" />
+        </Cap>
+    </Skill>
+    <Skill Name="AnimalHandling">
+        <Cap Offset="25">
+            <Factor Attribute="Level" Factor="500" />
+        </Cap>
+    </Skill>
+    <Skill Name="Cooking">
+        <Cap Offset="20">
+            <Factor Attribute="Level" Factor="1000" />
+        </Cap>
+    </Skill>
+
+    <Skill Name="Crafting">
+        <Cap Offset="50">
+            <Factor Attribute="Strength" Factor="100" />
+            <Factor Attribute="Constitution" Factor="50" />
+            <Factor Attribute="Intelligence" Factor="50" />
+            <Factor Attribute="Agility" Factor="100" />
+        </Cap>
+
+        <Cap Offset="20">
+            <Factor Attribute="Level" Factor="1000" />
+        </Cap>
+    </Skill>
+
+    <Skill Name="Farming">
+        <Cap Offset="50">
+            <Factor Attribute="Strength" Factor="100" />
+            <Factor Attribute="Constitution" Factor="100" />
+        </Cap>
+
+        <Cap Offset="20">
+            <Factor Attribute="Level" Factor="1000" />
+        </Cap>
+    </Skill>
+
+    <Skill Name="Herbalism">
+        <Cap Offset="20">
+            <Factor Attribute="Level" Factor="1000" />
+        </Cap>
+    </Skill>
+
+
+    <Skill Name="Magic">
+        <Cap Offset="60">
+            <Factor Attribute="Intelligence" Factor="50" />
+        </Cap>
+        <Cap Offset="40">
+            <Factor Attribute="Intelligence" Factor="100" />
+        </Cap>
+
+        <Cap Offset="40">
+            <Factor Attribute="Confidence" Factor="100" />
+            <Factor Attribute="Spirit" Factor="100" />
+        </Cap>
+
+        <Cap Offset="10">
+            <Factor Attribute="Level" Factor="500" />
+        </Cap>
+    </Skill>
+
+    <Skill Name="Medicine">
+        <Cap Offset="30">
+            <Factor Attribute="Intelligence" Factor="100" />
+        </Cap>
+
+        <Cap Offset="10">
+            <Factor Attribute="Level" Factor="500" />
+        </Cap>
+    </Skill>
+
+    <Skill Name="Combat">
+        <Cap Offset="50">
+            <Factor Attribute="Strength" Factor="50" />
+            <Factor Attribute="Constitution" Factor="50" />
+            <Factor Attribute="Agility" Factor="50" />
+        </Cap>
+
+        <Cap Offset="10">
+            <Factor Attribute="Level" Factor="500" />
+        </Cap>
+    </Skill>
+
+    <Skill Name="Service">
+        <Cap Offset="20">
+            <Factor Attribute="Level" Factor="1000" />
+        </Cap>
+    </Skill>
+
+    <Skill Name="Performance">
+        <Cap Offset="50">
+            <Factor Attribute="Confidence" Factor="100" />
+        </Cap>
+        <Cap Offset="20">
+            <Factor Attribute="Level" Factor="1000" />
+        </Cap>
+    </Skill>
+</Skills>

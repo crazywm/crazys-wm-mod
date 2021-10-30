@@ -1,7 +1,16 @@
 # Version 7.1.2alpha4
-Mostly smaller fixes and changes. 
+This version introduces dynamic skill caps. This means that the maximum
+value a girl's skills can get is now limited by her level and other 
+stats/skills, (hopefully) making skill development a bit more interesting.
+Also, it prevents situations like a girl which has 100 skill in group sex
+but 0 skill in regular sex, by making regular sex a requirement for group sex.
+Skill decay now focuses on skills that are close to their cap, and is less likely 
+for lower skills.
 
 ## Changes
+* Added dynamic skill caps
+* New format for rgirl xml that allows specification of spawn reasons
+* RGirls can now specify their own triggers
 
 ## Fixes
 * text placement on gang screen
