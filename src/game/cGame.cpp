@@ -406,6 +406,7 @@ void cGame::SaveGame(tinyxml2::XMLElement& root) {
 
 void cGame::NextWeek()
 {
+    auto start_time_turn = std::chrono::steady_clock::now();
     m_TalkCount = settings().get_integer(settings::PLAYER_TALK_DEFAULT);
     m_WalkAround = false;
 
@@ -588,7 +589,8 @@ void cGame::NextWeek()
 
     // cheat gold
     if (m_IsCheating)    gold().cheat();
-    g_LogFile.info("turn", "End Turn");
+    long duration = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::steady_clock::now() - start_time_turn ).count();
+    g_LogFile.info("turn", "End Turn. Processing took ", duration, "ms");
 }
 
 void cGame::CheckRaid()

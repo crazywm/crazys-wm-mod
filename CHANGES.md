@@ -1,4 +1,5 @@
 # Version 7.1.2alpha3
+Mostly smaller fixes and changes. 
 
 ## Changes
 * Added `piano` image tag, `music` tag as fallback for `sing` and `piano`
@@ -6,6 +7,7 @@
 * Added Next Week button to girl management screens
 * Updated UI code such that it is possible to reuse common screen structure across xml files
 * `suckballs` images may now be shown in bedroom interaction
+* Escort is now an XML job. 
 
 ## Fixes
 * Clear customer list each week
@@ -13,7 +15,9 @@
 * Don't try to render empty text in edit box and list widgets
 * Don't ask for building name after the player already entered it
 * Read first/middle/surname from girl xml
-
+* Use correct skill for sex message @Smargoos
+* Correctly show inventory type @Smargoos
+* Fix random girls not using defaults when stat is missing in xml @Smargoos
 
 # Version 7.1.2alpha2
 This is a very experimental release that has switched the
