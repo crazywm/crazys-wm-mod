@@ -40,7 +40,7 @@
 
 <Text       Name="txtMissions"          Text="Available Missions"           XPos="1588"     YPos="60"        Width="281"     Height="45"  FontSize="25"  />
 <ListBox    Name="MissionList"                                              XPos="1588"     YPos="110"       Width="281"     Height="340" FontSize="17" RowHeight="30" Border="1"          Events="true"  />
-<Text       Name="MissionDescription"   Text=""                             XPos="1588"     YPos="394"      Width="281"     Height="162" FontSize="17"  />
+<Text       Name="MissionDescription"   Text=""                             XPos="1588"     YPos="460"      Width="281"     Height="162" FontSize="17"  />
 
 <Text       Name="WeaponDescription"    Text="Weapon Level: 0"              XPos="1124"      YPos="949"      Width="422"     Height="45" FontSize="18"  />
 <Button     Name="WeaponUpButton"       Image="UpAds"                       XPos="1195"     YPos="982"      Width="112"      Height="45" Transparency="true" />

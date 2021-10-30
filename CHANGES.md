@@ -1,3 +1,13 @@
+# Version 7.1.2alpha4
+Mostly smaller fixes and changes. 
+
+## Changes
+
+## Fixes
+* text placement on gang screen
+* job xml loading for bar jobs @Smargoos
+
+
 # Version 7.1.2alpha3
 Mostly smaller fixes and changes. 
 
