@@ -50,9 +50,9 @@ private:
 
 class cBasicJob : public IGenericJob {
 public:
-    cBasicJob(JOBS job, const char* xml_file = nullptr);
+    cBasicJob(JOBS job, std::string xml_file = {});
     double GetPerformance(const sGirl& girl, bool estimate) const override;
-    void load_from_xml(const char* xml_file) override;
+
 protected:
     void apply_gains(sGirl& girl, int performance);
 
@@ -82,7 +82,7 @@ private:
     std::unique_ptr<ITextRepository> m_TextRepo;
     cBasicJobTextInterface m_Interface;
 
-    void load_from_xml_internal(const char* xml_file);
+    void load_from_xml_internal(const tinyxml2::XMLElement& source, const std::string& file_name) override;
     virtual void load_from_xml_callback(const tinyxml2::XMLElement& job_element) {};
 
     friend class cBasicJobTextInterface;

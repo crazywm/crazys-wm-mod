@@ -36,14 +36,8 @@ namespace settings {
     extern const char* SLAVE_MARKET_UNIQUE_CHANCE;
 }
 
-cFarmJob::cFarmJob(JOBS job, sFarmJobData data) :
-    cBasicJob(job), m_Data(data) {
-
-}
-
-cFarmJob::cFarmJob(JOBS job, const char* xml, sFarmJobData data) :
-    cBasicJob(job, xml), m_Data(data) {
-
+cFarmJob::cFarmJob(JOBS job, std::string xml, sFarmJobData data) :
+    cBasicJob(job, std::move(xml)), m_Data(data) {
 }
 
 
@@ -1915,8 +1909,7 @@ public:
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-cFarmJobResearch::cFarmJobResearch() : cFarmJob(JOB_RESEARCH, {ACTION_WORKTRAINING, 20}) {
-    load_from_xml("FarmResearch.xml");
+cFarmJobResearch::cFarmJobResearch() : cFarmJob(JOB_RESEARCH, "FarmResearch.xml", {ACTION_WORKTRAINING, 20}) {
 }
 
 bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {

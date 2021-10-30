@@ -1595,11 +1595,6 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
 void cJobManager::register_job(std::unique_ptr<IGenericJob> job) {
     assert(job != nullptr);
     job->OnRegisterJobManager(*this);
-    
-    if (job->xml != NULL){
-        job->load_from_xml(job->xml);
-    }
-
     m_OOPJobs[job->job()] = std::move(job);
 }
 

@@ -27,6 +27,10 @@
 #include "Constants.h"
 #include <boost/variant.hpp>
 
+namespace tinyxml2 {
+    class XMLElement;
+}
+
 
 using StatSkill = boost::variant<STATS, SKILLS>;
 
@@ -54,7 +58,7 @@ struct sJobValidResult {
 
 class IGenericJob {
 public:
-    explicit IGenericJob(JOBS j);
+    explicit IGenericJob(JOBS j, std::string xml_file = {});
     virtual ~IGenericJob() noexcept = default;
 
     // queries
@@ -72,8 +76,6 @@ public:
 
     /// called by the job manager when the job gets registered.
     void OnRegisterJobManager(const cJobManager& manager);
-    virtual void load_from_xml(const char* xml_file){};
-    const char* xml = NULL;
 protected:
     std::stringstream ss;
 
@@ -127,6 +129,14 @@ private:
     bool m_CurrentShift;
 
     const cJobManager* m_JobManager = nullptr;
+
+    /// If the job has specified an xml file, this function will load the job data from there. If no file is
+    /// specified, nothing happens.
+    /// Note: Since this may call virtual functions, we cannot do this in the constructor.
+    /// Therefore, this is called when the job is registered to the JobManager
+    void load_job();
+    virtual void load_from_xml_internal(const tinyxml2::XMLElement& source, const std::string& file_name) { };
+    std::string m_XMLFile;
 
 protected:
     sJobInfo m_Info;

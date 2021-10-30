@@ -29,13 +29,12 @@ struct sFarmJobData {
 
 class cFarmJob : public cBasicJob {
 public:
-    cFarmJob(JOBS job, sFarmJobData data);
     sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     virtual bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) = 0;
 
 protected:
-    cFarmJob(JOBS job, const char* xml, sFarmJobData data);
+    cFarmJob(JOBS job, std::string xml, sFarmJobData data);
     void HandleGains(sGirl& girl, int enjoy);
     sFarmJobData m_Data;
 };

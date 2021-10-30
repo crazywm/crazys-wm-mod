@@ -415,8 +415,7 @@ void cFilmSceneJob::PrintForcedSceneEval() {
 }
 
 cFilmSceneJob::cFilmSceneJob(JOBS job, const char* xml, Image_Types event_image, SceneType scene, SexAction sex) :
-    cBasicJob(job), m_EventImage(event_image), m_SceneType(scene), m_SexAction(sex) {
-    load_from_xml(xml);
+    cBasicJob(job, xml), m_EventImage(event_image), m_SceneType(scene), m_SexAction(sex) {
 
     m_Info.Consumes.emplace_back(DirectorInteractionId);
     m_Info.Consumes.emplace_back(CamMageInteractionId);

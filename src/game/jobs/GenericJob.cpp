@@ -24,6 +24,8 @@
 #include "cRng.h"
 #include "character/sGirl.h"
 #include "buildings/IBuilding.h"
+#include "xml/util.h"
+#include "xml/getattr.h"
 
 class sBrothel;
 
@@ -77,7 +79,11 @@ int IGenericJob::uniform(int min_, int max_) const {
     return m_Rng->closed_uniform(min, max);
 }
 
-IGenericJob::IGenericJob(JOBS j) : m_Info{j, get_job_name(j)} {}
+IGenericJob::IGenericJob(JOBS j, std::string xml_file) :
+    m_Info{j, get_job_name(j)}, m_XMLFile(std::move(xml_file))
+{
+
+}
 
 sJobValidResult IGenericJob::is_job_valid(const sGirl& girl) const {
     if(m_Info.FreeOnly && girl.is_slave()) {
@@ -90,6 +96,7 @@ sJobValidResult IGenericJob::is_job_valid(const sGirl& girl) const {
 void IGenericJob::OnRegisterJobManager(const cJobManager& manager) {
     assert(m_JobManager == nullptr);
     m_JobManager = &manager;
+    load_job();
 }
 
 sGirl& IGenericJob::active_girl() {
@@ -140,6 +147,34 @@ bool IGenericJob::HasInteraction(const std::string& name) const {
     auto brothel = active_girl().m_Building;
     assert(brothel);
     return brothel->HasInteraction(name);
+}
+
+void IGenericJob::load_job() {
+    if(m_XMLFile.empty()) return;
+    try {
+        DirPath path = DirPath() << "Resources" << "Data" << "Jobs" << m_XMLFile;
+        auto doc = LoadXMLDocument(path.c_str());
+        auto job_data = doc->FirstChildElement("Job");
+        if(!job_data) {
+            throw std::runtime_error("Job xml does not contain <Job> element!");
+        }
+
+        // Info
+        m_Info.ShortName = GetStringAttribute(*job_data, "ShortName");
+        if(const auto* desc_el = job_data->FirstChildElement("Description")) {
+            if(const char* description = desc_el->GetText()) {
+                m_Info.Description = description;
+            } else {
+                g_LogFile.error("jobs", "<Description> element does not contain text. File: ", m_XMLFile);
+            }
+        } else {
+            g_LogFile.error("jobs", "<Job> element does not contain <Description>. File: ", m_XMLFile);
+        }
+        load_from_xml_internal(*job_data, path.str());
+    } catch (std::exception& error) {
+        g_LogFile.error("job", "Error loading job xml '", m_XMLFile, "': ", error.what());
+        throw;
+    }
 }
 
 class cJobWrapper: public IGenericJob {

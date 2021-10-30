@@ -18,7 +18,6 @@
  */
 
 #include "BasicJob.h"
-#include "xml/getattr.h"
 #include "xml/util.h"
 #include "character/traits/ITraitsManager.h"
 #include "character/sGirl.h"
@@ -31,11 +30,7 @@ double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {
     return m_PerformanceData.eval(girl, estimate);
 }
 
-cBasicJob::cBasicJob(JOBS job, const char* xml_file) : IGenericJob(job), m_Interface(this) {
-    if (xml_file){
-        xml = xml_file;
-    }
-
+cBasicJob::cBasicJob(JOBS job, std::string xml_file) : IGenericJob(job, std::move(xml_file)), m_Interface(this) {
     RegisterVariable("Performance", m_Performance);
     RegisterVariable("Tips", m_Tips);
     RegisterVariable("Wages", m_Wages);
@@ -46,51 +41,23 @@ void cBasicJob::apply_gains(sGirl& girl, int performance) {
     m_Gains.apply(girl, performance);
 }
 
-void cBasicJob::load_from_xml(const char* xml_file) {
-    try {
-        load_from_xml_internal(xml_file);
-    } catch (std::exception& error) {
-        g_LogFile.error("job", "Error loading job xml '", xml_file, "': ", error.what());
-        throw;
-    }
-}
-
-void cBasicJob::load_from_xml_internal(const char* xml_file) {
-    DirPath path = DirPath() << "Resources" << "Data" << "Jobs" << xml_file;
-    auto doc = LoadXMLDocument(path.c_str());
-    auto job_data = doc->FirstChildElement("Job");
-    if(!job_data) {
-        throw std::runtime_error("Job xml does not contain <Job> element!");
-    }
-
-    // Info
-    m_Info.ShortName = GetStringAttribute(*job_data, "ShortName");
-    if(const auto* desc_el = job_data->FirstChildElement("Description")) {
-        if(const char* description = desc_el->GetText()) {
-            m_Info.Description = description;
-        } else {
-            g_LogFile.error("jobs", "<Description> element does not contain text. File: ", xml_file);
-        }
-    } else {
-        g_LogFile.error("jobs", "<Job> element does not contain <Description>. File: ", xml_file);
-    }
-
-    std::string prefix = "job." + std::string(xml_file);
+void cBasicJob::load_from_xml_internal(const tinyxml2::XMLElement& job_data, const std::string& file_name) {
+    std::string prefix = "job." + file_name;
 
     // Performance Criteria
-    const auto* performance_el = job_data->FirstChildElement("Performance");
+    const auto* performance_el = job_data.FirstChildElement("Performance");
     if(performance_el) {
         m_PerformanceData.load(*performance_el, prefix);
     }
 
     // Gains
-    const auto* gains_el = job_data->FirstChildElement("Gains");
+    const auto* gains_el = job_data.FirstChildElement("Gains");
     if(gains_el) {
         m_Gains.load(*gains_el);
     }
 
     // Modifiers
-    const auto* modifiers_el = job_data->FirstChildElement("Modifiers");
+    const auto* modifiers_el = job_data.FirstChildElement("Modifiers");
     if(modifiers_el) {
         // TODO automatically prefix with the jobs name, and allow for loading "local" modifiers
         // which start with .
@@ -98,16 +65,16 @@ void cBasicJob::load_from_xml_internal(const char* xml_file) {
     }
 
     // Texts
-    const auto* text_el = job_data->FirstChildElement("Messages");
+    const auto* text_el = job_data.FirstChildElement("Messages");
     if(text_el) {
         m_TextRepo = ITextRepository::create();
         m_TextRepo->load(*text_el);
         if(!m_TextRepo->verify()) {
-            g_LogFile.error("jobs", "Detected some problems when loading ", xml_file);
-            g_Game->error("Detected some problems when loading " + std::string(xml_file));
+            g_LogFile.error("jobs", "Detected some problems when loading ", file_name);
+            g_Game->error("Detected some problems when loading " + file_name);
         }
     }
-    const auto* config_el = job_data->FirstChildElement("Config");
+    const auto* config_el = job_data.FirstChildElement("Config");
     if(config_el) {
         load_from_xml_callback(*config_el);
     }
