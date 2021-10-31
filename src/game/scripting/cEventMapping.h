@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,10 @@
 
 #include <unordered_map>
 #include "fwd.hpp"
+
+namespace tinyxml2 {
+
+}
 
 namespace scripting
 {
@@ -47,6 +51,8 @@ namespace scripting
 
         sAsyncScriptHandle RunAsync(const sEventID& event, std::initializer_list<sLuaParameter> params) const final;
         sScriptValue RunSynchronous(const sEventID& event, std::initializer_list<sLuaParameter> params) const final;
+
+        void SaveToXML(tinyxml2::XMLElement& target) const final;
     private:
         sScriptValue       RunSyncWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const;
         sAsyncScriptHandle RunAsyncWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const;

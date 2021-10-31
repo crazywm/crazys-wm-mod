@@ -116,9 +116,9 @@ sGirl& sLuaGirl::check_type(lua_State* L, int index) {
 template<class T>
 int sCharacter<T>::getset_stat(lua_State* L) {
     auto& girl = T::check_type(L, 1);
-    int stat = luaL_checkinteger(L, 2);
+    long stat = luaL_checkinteger(L, 2);
     if(lua_gettop(L) == 3) {
-        int value = luaL_checkinteger(L, 3);
+        long value = luaL_checkinteger(L, 3);
         girl.upd_base_stat(stat, value);
         return 0;
     } else {
@@ -131,9 +131,9 @@ int sCharacter<T>::getset_stat(lua_State* L) {
 template<class T>
 int sCharacter<T>::getset_skill(lua_State* L) {
     auto& girl = T::check_type(L, 1);
-    int stat = luaL_checkinteger(L, 2);
+    long stat = luaL_checkinteger(L, 2);
     if(lua_gettop(L) == 3) {
-        int value = luaL_checkinteger(L, 3);
+        long value = luaL_checkinteger(L, 3);
         girl.upd_skill(stat, value);
         return 0;
     } else {
@@ -148,7 +148,7 @@ int sCharacter<T>::up_getset_skill(lua_State *L) {
     auto& girl = T::check_type(L, 1);
     int stat = lua_tointeger(L, lua_upvalueindex(1));
     if(lua_gettop(L) == 2) {
-        int value = luaL_checkinteger(L, 2);
+        long value = luaL_checkinteger(L, 2);
         girl.upd_skill(stat, value);
         return 0;
     } else {
@@ -163,7 +163,7 @@ int sCharacter<T>::up_getset_stat(lua_State *L) {
     auto& girl = T::check_type(L, 1);
     int stat = lua_tointeger(L, lua_upvalueindex(1));
     if(lua_gettop(L) == 2) {
-        int value = luaL_checkinteger(L, 2);
+        long value = luaL_checkinteger(L, 2);
         girl.upd_base_stat(stat, value);
         return 0;
     } else {
@@ -176,7 +176,7 @@ int sCharacter<T>::up_getset_stat(lua_State *L) {
 int sLuaGirl::add_trait(lua_State *L) {
     auto& girl = check_type(L, 1);
     const char* trait = luaL_checkstring(L, 2);
-    int temp_time = 0;
+    long temp_time = 0;
     if(lua_gettop(L) == 3) {
         temp_time = luaL_checkinteger(L, 3);
     }
@@ -246,7 +246,7 @@ int sLuaGirl::getset_enjoyment(lua_State* L) {
     auto& girl = check_type(L, 1);
     auto cat = static_cast<Action_Types>(luaL_checkinteger(L, 2));
     if(lua_gettop(L) == 3) {
-        int value = luaL_checkinteger(L, 3);
+        long value = luaL_checkinteger(L, 3);
         girl.upd_Enjoyment(cat, value);
         return 0;
     } else {
@@ -307,7 +307,7 @@ int sLuaGirl::acquire_girl(lua_State* L) {
 }
 
 int sLuaGirl::create_random_girl(lua_State *L) {
-    int age = luaL_checkinteger(L, 1);
+    long age = luaL_checkinteger(L, 1);
     bool slave = lua_toboolean(L, 2);
     bool non_human = lua_toboolean(L, 3);
     bool kidnapped = lua_toboolean(L, 4);
@@ -322,7 +322,7 @@ int sLuaGirl::create_random_girl(lua_State *L) {
 
 int sLuaGirl::to_dungeon(lua_State *L) {
     auto& girl = check_type(L, 1);
-    int reason = luaL_checkinteger(L, 2);
+    long reason = luaL_checkinteger(L, 2);
 
     std::shared_ptr<sGirl> girl_owner = nullptr;
     if(girl.m_Building) {
@@ -388,7 +388,7 @@ int sLuaGirl::is_pregnant(lua_State *L) {
 
 int sLuaGirl::start_pregnancy(lua_State *L) {
     auto& girl = check_type(L, 1);
-    int by_whom = luaL_checkinteger(L, 2);
+    long by_whom = luaL_checkinteger(L, 2);
 
     if (by_whom == 0)                    // STATUS_PREGNANT_BY_PLAYER
     {
@@ -406,7 +406,7 @@ int sLuaGirl::start_pregnancy(lua_State *L) {
 int sLuaGirl::set_status(lua_State *L) {
     auto& girl = check_type(L, 1);
     unsigned status = luaL_checkinteger(L, 2);
-    int setto = luaL_checkinteger(L, 3);
+    long setto = luaL_checkinteger(L, 3);
     if (status == STATUS_PREGNANT || status == STATUS_PREGNANT_BY_PLAYER || status == STATUS_INSEMINATED)    // if creating pregnancy, remove old pregnancies
     {
         luaL_error(L, "use `start_pregnancy` and `clear_pregnancy` for pregnancy related status");
@@ -444,8 +444,8 @@ int sLuaGirl::obey_check(lua_State * L)
 int sLuaGirl::skill_check(lua_State* L) {
     // probability increases linearly until target is reached, where it becomes 100%
     auto& girl = check_type(L, 1);
-    int skill = luaL_checkinteger(L, 2);
-    int target = luaL_checkinteger(L, 3);
+    long skill = luaL_checkinteger(L, 2);
+    long target = luaL_checkinteger(L, 3);
 
     int skill_val = girl.get_skill(skill);
     if(skill_val > target) {
@@ -483,8 +483,8 @@ int sLuaGirl::clean_building(lua_State* L) {
 int sLuaGirl::trigger_event(lua_State* L) {
     auto& girl = check_type(L, 1);
     const char* event = luaL_checkstring(L, 2);
-    auto async_script_handle = girl.m_EventMapping->RunAsync(event, girl);
-    async_script_handle->SetDoneCallback([L](const sScriptValue& val){
+    auto async_script_handle = girl.TriggerEvent(event);
+    async_script_handle->SetDoneCallback([L](const sScriptValue& val) {
         sLuaThread* thread = sLuaThread::get_active_thread(L);
         thread->resume(0);
     });
@@ -495,7 +495,7 @@ int sLuaGirl::trigger_event(lua_State* L) {
 int sLuaGirl::give_money(lua_State * L)
 {
     auto& girl = check_type(L, 1);
-    int gold = luaL_checkinteger(L, 2);
+    long gold = luaL_checkinteger(L, 2);
     if(gold < 0)
         luaL_error(L, "Use `take_money` function if you want to take money from a girl.");
 

@@ -52,7 +52,7 @@ namespace scripting {
         const pEventMapping& GetGlobalEventMapping();
         const sEventTarget& GetGlobalEvent(const sEventID& event) const;
 
-        void LoadEventMapping(IEventMapping& ev, tinyxml2::XMLElement* source);
+        void LoadEventMapping(IEventMapping& ev, const tinyxml2::XMLElement& source);
         void LoadEventMapping(IEventMapping& ev, const std::string& source_file);
     private:
         std::unordered_map<std::string, std::unique_ptr<cLuaScript>> m_Scripts;

@@ -80,7 +80,7 @@ pEventMapping cScriptManager::CreateEventMapping(std::string name, const std::st
     if(!fallback.empty()) {
         fallback_mapping = m_EventMappings.at(fallback);
     }
-    return std::make_unique<cEventMapping>(std::move(name), this, fallback_mapping);
+    return std::make_shared<cEventMapping>(std::move(name), this, fallback_mapping);
 }
 
 void cScriptManager::LoadScript(std::string name, const std::string& file)
@@ -106,15 +106,15 @@ const sEventTarget& cScriptManager::GetGlobalEvent(const sEventID& event) const
     return m_GlobalEventMapping->GetEvent(event);
 }
 
-void cScriptManager::LoadEventMapping(IEventMapping& ev, tinyxml2::XMLElement * source)
+void cScriptManager::LoadEventMapping(IEventMapping& ev, const tinyxml2::XMLElement& source)
 {
     // First, load all scripts
-    for(auto& el : IterateChildElements(*source, "Script")) {
+    for(auto& el : IterateChildElements(source, "Script")) {
         // Load the script
         /// TODO named scripts
     }
 
-    for(auto& el : IterateChildElements(*source, "Event")) {
+    for(auto& el : IterateChildElements(source, "Event")) {
         try {
             const char* name   = GetStringAttribute(el, "Name");
             std::string script = GetStringAttribute(el, "Script");
@@ -140,8 +140,9 @@ void cScriptManager::LoadEventMapping(IEventMapping& ev, const std::string& sour
 {
     auto doc = LoadXMLDocument(source_file);
     auto root = doc->FirstChildElement();
-    LoadEventMapping(ev, root);
+    LoadEventMapping(ev, *root);
 }
+
 
 cScriptManager::cScriptManager() {
     m_GlobalEventMapping = CreateEventMapping("global", "");

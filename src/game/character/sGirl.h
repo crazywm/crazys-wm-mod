@@ -164,7 +164,6 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     const cEvents& GetEvents() const { return m_Events; }
 
     // triggers
-    scripting::pEventMapping m_EventMapping;
     scripting::sAsyncScriptHandle TriggerEvent(const scripting::sEventID& id);
     template<class ...T>
     scripting::sAsyncScriptHandle TriggerEvent(scripting::sEventID id, T&&... args) {
@@ -299,6 +298,8 @@ public:
 
 private:
     int m_States = 0;                                // Holds the states the girl has
+
+    scripting::pEventMapping m_EventMapping;
 
     DirPath m_ImageFolder;
 };

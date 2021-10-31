@@ -26,6 +26,7 @@
 #include "CLog.h"
 #include "sLuaParameter.hpp"
 #include "utils/string.hpp"
+#include "xml/util.h"
 
 
 using namespace scripting;
@@ -198,6 +199,15 @@ void cEventMapping::SetEventHandler(sEventID id, std::string script, std::string
         m_Events[id] = sEventTarget{script, function};
         // and the generic trigger
         m_Triggers[id.name.substr(0, split_point)].push_back( sEventTarget{std::move(script), std::move(function)} );
+    }
+}
+
+void cEventMapping::SaveToXML(tinyxml2::XMLElement& target) const {
+    for(const auto& event: m_Events) {
+        auto& el = PushNewElement(target, "Event");
+        el.SetAttribute("Name", event.first.name.c_str());
+        el.SetAttribute("Script", event.second.script.c_str());
+        el.SetAttribute("Function", event.second.function.c_str());
     }
 }
 

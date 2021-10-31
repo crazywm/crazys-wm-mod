@@ -25,7 +25,7 @@
 #include <fstream>
 
 /*
- * little class to create pathnames in a cross platform way
+ * little class to create pathnames in a cross-platform way
  */
 class DirPath
 {

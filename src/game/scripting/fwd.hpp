@@ -114,6 +114,9 @@ namespace scripting {
         auto RunSynchronous(const sEventID& event, T&&... params) -> typename _id<T...>::type {
             return RunSynchronous(event, {sLuaParameter(std::forward<T>(params))...});
         };
+
+        // IO
+        virtual void SaveToXML(tinyxml2::XMLElement& target) const = 0;
     };
 
     using pEventMapping = std::shared_ptr<IEventMapping>;

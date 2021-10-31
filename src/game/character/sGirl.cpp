@@ -536,9 +536,11 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
         }
     }
 
-
-    // TODO load their triggers
     if (age() < 18) set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+
+    if(auto* triggers_el = pGirl->FirstChildElement("Triggers")) {
+        g_Game->script_manager().LoadEventMapping(*m_EventMapping, *triggers_el);
+    }
 
     cGirls::CalculateGirlType(*this);
 
@@ -617,7 +619,9 @@ tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
 
     SaveActionsXML(elGirl, m_Enjoyment);                            // save their enjoyment values
     SaveTrainingXML(elGirl, m_Training, m_TrainingMods, m_TrainingTemps);                        // save their training values
-    /// TODO save triggers
+
+    auto& triggers = PushNewElement(elGirl, "Triggers");
+    m_EventMapping->SaveToXML(triggers);
 
     return elGirl;
 }
@@ -1314,22 +1318,22 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
     set_statebit(STATUS_ARENA,      "Arena");
     set_statebit(STATUS_ISDAUGHTER, "IsDaughter");
 
-    for (int i = 0; i < NUM_STATS; i++) // loop through stats
+    for (auto stat : StatsRange) // loop through stats
     {
-        const char *stat_name = get_stat_name((STATS)i);
-        auto error = root.QueryAttribute(stat_name, &girl->m_Stats[i].m_Value);
+        const char *stat_name = get_stat_name(stat);
+        auto error = root.QueryAttribute(stat_name, &girl->m_Stats[stat].m_Value);
 
         if (error != tinyxml2::XML_SUCCESS)
         {
             g_LogFile.log(ELogLevel::ERROR, "Can't find stat '", stat_name, "' for girl '", girl->m_Name,
-                    "' - Setting it to default(", girl->m_Stats[i].m_Value, ").");
+                    "' - Setting it to default(", girl->m_Stats[stat].m_Value, ").");
             continue;
         }
     }
 
-    for (int i = 0; i < NUM_SKILLS; i++)    //    loop through skills
+    for (auto skill: SkillsRange)    //    loop through skills
     {
-        root.QueryAttribute(get_skill_name((SKILLS)i), &girl->m_Skills[i].m_Value);
+        root.QueryAttribute(get_skill_name(skill), &girl->m_Skills[skill].m_Value);
     }
 
     if (auto pt = root.Attribute("Status"))
@@ -1381,6 +1385,11 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
     }
 
     girl->raw_traits().update();
+
+    // load triggers
+    if(auto* triggers_el = root.FirstChildElement("Triggers")) {
+        g_Game->script_manager().LoadEventMapping(*girl->m_EventMapping, *triggers_el);
+    }
 
     return std::move(girl);
 }
