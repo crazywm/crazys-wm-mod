@@ -71,7 +71,7 @@ sScriptValue cScriptManager::RunEventSync(const sEventTarget& event, std::initia
     return script.RunSynchronous(event.function, params);
 }
 
-pEventMapping cScriptManager::CreateEventMapping(std::string name, const std::string& fallback) const
+pEventMapping cScriptManager::CreateEventMapping(std::string name, const std::string& fallback)
 {
     if(name.empty())
         throw std::logic_error("The EventMapping must have a (non-empty) name");
@@ -117,18 +117,8 @@ void cScriptManager::LoadEventMapping(IEventMapping& ev, const tinyxml2::XMLElem
     for(auto& el : IterateChildElements(source, "Event")) {
         try {
             const char* name   = GetStringAttribute(el, "Name");
-            std::string script = GetStringAttribute(el, "Script");
+            const char* script = GetStringAttribute(el, "Script");
             const char* fn     = GetStringAttribute(el, "Function");
-            // Verify integrity of "Script"
-            if (m_Scripts.count(script) == 0) {
-                // If the file name ends in .lua, this is fine
-                if (script.length() > 4 && script.substr(script.size() - 4) == ".lua") {
-                    // Load the script by its name
-                    LoadScript(script, script);
-                } else {
-                    g_LogFile.error("lua", "Invalid script file name (", script, ") for event ", name);
-                }
-            }
             ev.SetEventHandler(name, script, fn);
         } catch (std::runtime_error& error) {
             g_LogFile.log(ELogLevel::ERROR, "Could not load event handler from line ", el.GetLineNum(), ":", error.what());
@@ -146,6 +136,27 @@ void cScriptManager::LoadEventMapping(IEventMapping& ev, const std::string& sour
 
 cScriptManager::cScriptManager() {
     m_GlobalEventMapping = CreateEventMapping("global", "");
+}
+
+bool cScriptManager::VerifyScript(const std::string& script, const std::string& function) {
+    // Verify integrity of "Script" and ensure it is loaded
+    if (m_Scripts.count(script) == 0) {
+        // If the file name ends in .lua, this is fine
+        if (script.length() > 4 && script.substr(script.size() - 4) == ".lua") {
+            // Load the script by its name
+            LoadScript(script, script);
+        } else {
+            g_LogFile.error("lua", "Invalid script file name (", script, ")");
+            return false;
+        }
+    }
+
+    // check that `Function` exists
+    if(!m_Scripts.at(script)->CheckFunction(function)) {
+        g_LogFile.error("lua", "Could not find function ", function, "in script ", script);
+        return false;
+    }
+    return true;
 }
 
 cScriptManager::~cScriptManager() = default;

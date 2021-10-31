@@ -174,6 +174,7 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     scripting::sScriptValue CallScriptFunction(scripting::sEventID id, T&&... args) {
         return m_EventMapping->RunSynchronous(id, *this, std::forward<T>(args)...);
     }
+    scripting::pEventMapping m_EventMapping;
 
     unsigned char m_DaysUnhappy;                // used to track how many days they are really unhappy for
 
@@ -298,8 +299,6 @@ public:
 
 private:
     int m_States = 0;                                // Holds the states the girl has
-
-    scripting::pEventMapping m_EventMapping;
 
     DirPath m_ImageFolder;
 };

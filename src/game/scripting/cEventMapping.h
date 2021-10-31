@@ -40,7 +40,7 @@ namespace scripting
     class cEventMapping final : public IEventMapping
     {
     public:
-        explicit cEventMapping(std::string name, const cScriptManager* mgr, pEventMapping fallback);
+        cEventMapping(std::string name, cScriptManager* mgr, pEventMapping fallback);
         ~cEventMapping() final;
 
         const std::string& GetName() const final;
@@ -57,7 +57,7 @@ namespace scripting
         sScriptValue       RunSyncWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const;
         sAsyncScriptHandle RunAsyncWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const;
         std::string m_Name;
-        const cScriptManager* m_Manager = nullptr;
+        cScriptManager* m_Manager = nullptr;
         pEventMapping  m_Fallback = nullptr;
 
         std::unordered_map<sEventID, sEventTarget, EventIDHash> m_Events;

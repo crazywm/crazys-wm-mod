@@ -21,13 +21,7 @@
 #ifndef __CRANDOMGIRL_H
 #define __CRANDOMGIRL_H
 
-namespace tinyxml2
-{
-    class XMLElement;
-}
-class sInventoryItem;
-class TraitSpec;
-
+#include <memory>
 #include <string>
 #include <vector>
 #include <array>
@@ -35,6 +29,13 @@ class TraitSpec;
 #include "utils/sPercent.h"
 #include "utils/DirPath.h"
 #include "Constants.h"
+
+namespace tinyxml2
+{
+    class XMLElement;
+}
+class sInventoryItem;
+struct sGirl;
 
 // structure to hold randomly generated girl information
 struct sRandomGirl
@@ -84,6 +85,14 @@ struct sRandomGirl
     void process_stat_xml(const tinyxml2::XMLElement&);
     void process_skill_xml(const tinyxml2::XMLElement&);
     void process_cash_xml(const tinyxml2::XMLElement&);
+    void process_trigger_xml(const tinyxml2::XMLElement&);
+
+    struct sTriggerData {
+        std::string Event;
+        std::string Script;
+        std::string Function;
+    };
+    std::vector<sTriggerData> m_Triggers;
 };
 
 
@@ -92,7 +101,9 @@ public:
     void LoadRandomGirlXML(const std::string& filename, const std::string& base_path,
                            const std::function<void(const std::string&)>& error_handler);
     sRandomGirl* find_random_girl_by_name(const std::string& name);
-    sRandomGirl CreateRandomGirl(bool Human0Monster1, bool arena, bool daughter, const std::string& findbyname);
+    sRandomGirl GetRandomGirlSpec(bool Human0Monster1, bool arena, bool daughter, const std::string& findbyname);
+    std::shared_ptr<sGirl> CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool kidnapped, bool arena,
+                                   bool daughter, bool is_daughter, const std::string& find_by_name);
 private:
     std::vector<sRandomGirl> m_RandomGirls;
 

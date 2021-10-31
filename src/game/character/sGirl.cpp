@@ -107,7 +107,6 @@ sGirl::sGirl(bool unique) : ICharacter( g_Game->create_traits_collection(), uniq
 
     // Other things that I'm not sure how their defaults would be set
     //    cEvents m_Events;
-    //    cTriggerList m_Triggers;
     //    cChildList m_Children;
     //    vector<string> m_Canonical_Daughters;
 }
@@ -555,7 +554,7 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
     return true;
 }
 
-// This save
+// This saves
 
 tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
 {
@@ -624,6 +623,127 @@ tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
     m_EventMapping->SaveToXML(triggers);
 
     return elGirl;
+}
+
+// This one creates the girl based on a girlsx file.
+std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
+{
+    auto girl = std::make_shared<sGirl>(true);            // walk the XML DOM to get the girl data
+    const char *pt;
+    // get the simple fields
+    girl->m_Name = GetStringAttribute(root, "Name");
+    std::string first_name = GetDefaultedStringAttribute(root, "FirstName", "");
+    std::string surname = GetDefaultedStringAttribute(root, "Surname", "");
+    std::string middle_name = GetDefaultedStringAttribute(root, "MiddleName", "");
+    if(!first_name.empty() && !surname.empty()) {
+        girl->SetName(first_name, middle_name, surname);
+    } else {
+        // for girl files that don't specify the name parts, try to guess
+        std::vector<std::string> parts;
+        split(parts, girl->m_Name, [](char c){ return std::isspace(c); });
+        // if there are two or three space separated parts, assume these are the parts of the name
+        if (parts.size() == 2) {
+            girl->SetName(parts[0], "", parts[1]);
+        } else if(parts.size() == 3) {
+            girl->SetName(parts[0], parts[1], parts[2]);
+        } else {
+            girl->m_FullName = girl->m_Name;
+        }
+        g_LogFile.warning("girl", "Girl file for '", girl->m_Name, "' does not specify first and last name");
+    }
+
+    auto set_statebit = [&](int bitnum, char const* attr) {
+        if(auto pt = root.Attribute(attr))
+        {
+            if(strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
+                girl->m_States |= (1u << bitnum);
+        }
+    };
+
+    if (root.QueryStringAttribute("Desc", &pt) == tinyxml2::XML_SUCCESS)
+        girl->m_Desc = pt;
+    girl->m_Money = root.IntAttribute("Gold", 0);
+
+    girl->m_States = 0;
+    set_statebit(STATUS_CATACOMBS,  "Catacombs");
+    set_statebit(STATUS_SLAVE,      "Slave");
+    set_statebit(STATUS_ARENA,      "Arena");
+    set_statebit(STATUS_ISDAUGHTER, "IsDaughter");
+
+    for (auto stat : StatsRange) // loop through stats
+        {
+        const char *stat_name = get_stat_name(stat);
+        auto error = root.QueryAttribute(stat_name, &girl->m_Stats[stat].m_Value);
+
+        if (error != tinyxml2::XML_SUCCESS)
+        {
+            g_LogFile.log(ELogLevel::ERROR, "Can't find stat '", stat_name, "' for girl '", girl->m_Name,
+                          "' - Setting it to default(", girl->m_Stats[stat].m_Value, ").");
+            continue;
+        }
+        }
+
+    for (auto skill: SkillsRange)    //    loop through skills
+        {
+        root.QueryAttribute(get_skill_name(skill), &girl->m_Skills[skill].m_Value);
+        }
+
+    if (auto pt = root.Attribute("Status"))
+    {
+        /* */if (strcmp(pt, "Catacombs") == 0)        girl->m_States |= (1u << STATUS_CATACOMBS);
+        else if (strcmp(pt, "Slave") == 0)            girl->m_States |= (1u << STATUS_SLAVE);
+        else if (strcmp(pt, "Arena") == 0)            girl->m_States |= (1u << STATUS_ARENA);
+        else if (strcmp(pt, "Is Daughter") == 0)      girl->m_States |= (1u << STATUS_ISDAUGHTER);
+        //        else    m_States = 0;
+    }
+
+    for (auto& child : IterateChildElements(root))
+    {
+        std::string tag = child.Value();
+        if (tag == "Canonical_Daughters")
+        {
+            std::string s = child.Attribute("Name");
+            girl->m_Canonical_Daughters.push_back(s);
+        }
+        if (tag == "Trait")    //get the trait name
+            {
+            pt = child.Attribute("Name");
+            /// TODO (traits) allow inherent / permanent / inactive
+            girl->raw_traits().add_inherent_trait(pt);
+            }
+        if (tag == "Item")    //get the item name
+            {
+            pt = child.Attribute("Name");
+            sInventoryItem* item = g_Game->inventory_manager().GetItem(pt);
+            if (item)
+            {
+                girl->add_item(item);
+                if (item->m_Type != sInventoryItem::Food && item->m_Type != sInventoryItem::Makeup)
+                {
+                    girl->equip(item, false);
+                }
+            }
+            else
+            {
+                g_LogFile.log(ELogLevel::ERROR, "Can't find Item: '", pt, "' - skipping it.");
+            }
+
+            }
+    }
+
+    if (root.QueryAttribute("Accomm", &girl->m_AccLevel) != tinyxml2::XML_SUCCESS) {
+        girl->m_AccLevel = girl->is_slave() ? g_Game->settings().get_integer(settings::USER_ACCOMODATION_SLAVE) :
+                g_Game->settings().get_integer(settings::USER_ACCOMODATION_FREE);
+    }
+
+    girl->raw_traits().update();
+
+    // load triggers
+    if(auto* triggers_el = root.FirstChildElement("Triggers")) {
+        g_Game->script_manager().LoadEventMapping(*girl->m_EventMapping, *triggers_el);
+    }
+
+    return std::move(girl);
 }
 
 bool sChild::LoadChildXML(const tinyxml2::XMLElement* pChild)
@@ -1273,126 +1393,6 @@ scripting::sAsyncScriptHandle sGirl::TriggerEvent(const scripting::sEventID& id)
     return m_EventMapping->RunAsync(id, *this);
 }
 
-std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
-{
-    auto girl = std::make_shared<sGirl>(true);            // walk the XML DOM to get the girl data
-    const char *pt;
-    // get the simple fields
-    girl->m_Name = GetStringAttribute(root, "Name");
-    std::string first_name = GetDefaultedStringAttribute(root, "FirstName", "");
-    std::string surname = GetDefaultedStringAttribute(root, "Surname", "");
-    std::string middle_name = GetDefaultedStringAttribute(root, "MiddleName", "");
-    if(!first_name.empty() && !surname.empty()) {
-        girl->SetName(first_name, middle_name, surname);
-    } else {
-        // for girl files that don't specify the name parts, try to guess
-        std::vector<std::string> parts;
-        split(parts, girl->m_Name, [](char c){ return std::isspace(c); });
-        // if there are two or three space separated parts, assume these are the parts of the name
-        if (parts.size() == 2) {
-            girl->SetName(parts[0], "", parts[1]);
-        } else if(parts.size() == 3) {
-            girl->SetName(parts[0], parts[1], parts[2]);
-        } else {
-            girl->m_FullName = girl->m_Name;
-        }
-        g_LogFile.warning("girl", "Girl file for '", girl->m_Name, "' does not specify first and last name");
-    }
-
-    auto set_statebit
-      = [&](int bitnum, char const* attr) {
-         if(auto pt = root.Attribute(attr))
-         {
-           if(strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
-             girl->m_States |= (1u << bitnum);
-         }
-       };
-
-    if (root.QueryStringAttribute("Desc", &pt) == tinyxml2::XML_SUCCESS)
-      girl->m_Desc = pt;
-    girl->m_Money = root.IntAttribute("Gold", 0);
-
-    girl->m_States = 0;
-    set_statebit(STATUS_CATACOMBS,  "Catacombs");
-    set_statebit(STATUS_SLAVE,      "Slave");
-    set_statebit(STATUS_ARENA,      "Arena");
-    set_statebit(STATUS_ISDAUGHTER, "IsDaughter");
-
-    for (auto stat : StatsRange) // loop through stats
-    {
-        const char *stat_name = get_stat_name(stat);
-        auto error = root.QueryAttribute(stat_name, &girl->m_Stats[stat].m_Value);
-
-        if (error != tinyxml2::XML_SUCCESS)
-        {
-            g_LogFile.log(ELogLevel::ERROR, "Can't find stat '", stat_name, "' for girl '", girl->m_Name,
-                    "' - Setting it to default(", girl->m_Stats[stat].m_Value, ").");
-            continue;
-        }
-    }
-
-    for (auto skill: SkillsRange)    //    loop through skills
-    {
-        root.QueryAttribute(get_skill_name(skill), &girl->m_Skills[skill].m_Value);
-    }
-
-    if (auto pt = root.Attribute("Status"))
-    {
-        /* */if (strcmp(pt, "Catacombs") == 0)        girl->m_States |= (1u << STATUS_CATACOMBS);
-        else if (strcmp(pt, "Slave") == 0)            girl->m_States |= (1u << STATUS_SLAVE);
-        else if (strcmp(pt, "Arena") == 0)            girl->m_States |= (1u << STATUS_ARENA);
-        else if (strcmp(pt, "Is Daughter") == 0)      girl->m_States |= (1u << STATUS_ISDAUGHTER);
-        //        else    m_States = 0;
-    }
-
-    for (auto& child : IterateChildElements(root))
-    {
-        std::string tag = child.Value();
-        if (tag == "Canonical_Daughters")
-        {
-            std::string s = child.Attribute("Name");
-            girl->m_Canonical_Daughters.push_back(s);
-        }
-        if (tag == "Trait")    //get the trait name
-        {
-            pt = child.Attribute("Name");
-            /// TODO (traits) allow inherent / permanent / inactive
-            girl->raw_traits().add_inherent_trait(pt);
-        }
-        if (tag == "Item")    //get the item name
-        {
-            pt = child.Attribute("Name");
-            sInventoryItem* item = g_Game->inventory_manager().GetItem(pt);
-            if (item)
-            {
-                girl->add_item(item);
-                if (item->m_Type != sInventoryItem::Food && item->m_Type != sInventoryItem::Makeup)
-                {
-                    girl->equip(item, false);
-                }
-            }
-            else
-            {
-                g_LogFile.log(ELogLevel::ERROR, "Can't find Item: '", pt, "' - skipping it.");
-            }
-
-        }
-    }
-
-    if (root.QueryAttribute("Accomm", &girl->m_AccLevel) != tinyxml2::XML_SUCCESS) {
-        girl->m_AccLevel = girl->is_slave() ? g_Game->settings().get_integer(settings::USER_ACCOMODATION_SLAVE) :
-                g_Game->settings().get_integer(settings::USER_ACCOMODATION_FREE);
-    }
-
-    girl->raw_traits().update();
-
-    // load triggers
-    if(auto* triggers_el = root.FirstChildElement("Triggers")) {
-        g_Game->script_manager().LoadEventMapping(*girl->m_EventMapping, *triggers_el);
-    }
-
-    return std::move(girl);
-}
 
 JOBS sGirl::get_job(bool night_shift) const {
     return JOBS(night_shift ? m_NightJob : m_DayJob);

@@ -50,9 +50,16 @@ std::string cLuaState::get_error() {
     return std::move(errstr);
 }
 
-bool cLuaState::get_function(const std::string &name) {
+bool cLuaState::get_function(const std::string& name) {
     lua_getglobal(m_State, name.c_str());
     return lua_isfunction(m_State, -1);
+}
+
+bool cLuaState::has_function(const std::string& name) const {
+    lua_getglobal(m_State, name.c_str());
+    bool result = lua_isfunction(m_State, -1);
+    lua_pop(m_State, 1);
+    return result;
 }
 
 void cLuaState::settable(int index, const char *key, int value) {
@@ -60,6 +67,8 @@ void cLuaState::settable(int index, const char *key, int value) {
     lua_pushinteger(m_State, value);
     lua_settable(m_State, index - 2);
 }
+
+
 
 sScriptValue scripting::get_value(lua_State* interpreter, int index) {
     if(lua_isnumber(interpreter, index)) {

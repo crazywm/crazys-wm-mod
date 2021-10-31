@@ -135,7 +135,7 @@ const sEventTarget& cEventMapping::GetEvent(const sEventID& event) const
     throw std::runtime_error("Could not find event '" + event.name + "' in EventMapping '" + m_Name + "', and no fallback was specified.");
 }
 
-cEventMapping::cEventMapping(std::string name, const cScriptManager * smgr, pEventMapping fallback) :
+cEventMapping::cEventMapping(std::string name, cScriptManager* smgr, pEventMapping fallback) :
     m_Name(std::move(name)), m_Manager(smgr), m_Fallback(std::move(fallback)) {
 
 }
@@ -185,6 +185,11 @@ cEventMapping::RunSyncWithParams(const sEventID& event, std::initializer_list<sL
 
 void cEventMapping::SetEventHandler(sEventID id, std::string script, std::string function)
 {
+    // ensure that script is valid
+    if(!m_Manager->VerifyScript(script, function)) {
+        throw std::logic_error("Cannot set event handler for" + id.name + ", because the script " + function + "@" + script + "is not valid.");
+    }
+
     // check that the id is a valid specific id
     if(!id.is_specific())
         throw std::logic_error("Cannot set event handler for generic ID " + id.name);

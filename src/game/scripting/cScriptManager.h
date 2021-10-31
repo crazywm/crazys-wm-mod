@@ -45,7 +45,11 @@ namespace scripting {
         /// Load the script from `file` and save under the name `name`.
         void LoadScript(std::string name, const std::string& file);
 
-        pEventMapping CreateEventMapping(std::string name, const std::string& fallback) const;
+        /// Ensures that `script` is loaded and checks that `function` exists. Generates error messages if
+        /// that is not the case, and also returns whether the script was valid.
+        bool VerifyScript(const std::string& script, const std::string& function);
+
+        pEventMapping CreateEventMapping(std::string name, const std::string& fallback);
         void RegisterEventMapping(pEventMapping mapping);
 
         // global event mapping

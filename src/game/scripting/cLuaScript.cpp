@@ -422,3 +422,7 @@ void cLuaScript::PushParameter(sLuaParameter param)
 {
     param.push(m_State);
 }
+
+bool cLuaScript::CheckFunction(const std::string& function) const {
+    return m_State.has_function(function);
+}
