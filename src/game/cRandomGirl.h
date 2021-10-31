@@ -43,56 +43,42 @@ struct sRandomGirl
     sRandomGirl();
     ~sRandomGirl();
 
-    std::string m_Name;
-    std::string m_Desc;
+    std::string Name;
+    std::string Desc;
 
-    bool m_Human;                           // 1 means they are human otherwise they are not
-    bool m_Catacomb;                        // 1 means they are a monster found in catacombs, 0 means wanderer
-    bool m_Arena;                           // 1 means they are fighter found in arena
-    bool m_YourDaughter;                    // `J` 1 means they are your daughter
-    bool m_IsDaughter;                      // 1 means they are a set daughter
+    bool Human;                           // 1 means they are human otherwise they are not
+    bool Catacomb;                        // 1 means they are a monster found in catacombs, 0 means wanderer
+    bool Arena;                           // 1 means they are fighter found in arena
+    bool YourDaughter;                    // `J` 1 means they are your daughter
+    bool IsDaughter;                      // 1 means they are a set daughter
 
-    std::array<int, NUM_STATS> m_MinStats;   // min and max stats they may start with
-    std::array<int, NUM_STATS> m_MaxStats;
+    std::array<int, NUM_STATS> MinStats;   // min and max stats they may start with
+    std::array<int, NUM_STATS> MaxStats;
 
-    std::array<int, NUM_SKILLS> m_MinSkills; // min and max skills they may start with
-    std::array<int, NUM_SKILLS> m_MaxSkills;
+    std::array<int, NUM_SKILLS> MinSkills; // min and max skills they may start with
+    std::array<int, NUM_SKILLS> MaxSkills;
 
-    std::vector<std::string> m_TraitNames;
-    std::vector<int> m_TraitChance;
+    std::vector<std::string> TraitNames;
+    std::vector<int> TraitChance;
 
     // `J` added starting items for random girls
     struct sItemRecord {
         const sInventoryItem* Item;
         sPercent Chance;
     };
-    std::vector<sItemRecord> m_Inventory;
+    std::vector<sItemRecord> Inventory;
 
 
-    int m_MinMoney;    // min and max money they can start with
-    int m_MaxMoney;
-    DirPath m_ImageDirectory;
-
-    /*
-    *    one func to load the girl node,
-    *    and then one each for each embedded node
-    *
-    *    Not so much difficult as tedious.
-    */
-    void load_from_xml(tinyxml2::XMLElement*);    // uses sRandomGirl::load_from_xml
-    void process_trait_xml(const tinyxml2::XMLElement&);
-    void process_item_xml(const tinyxml2::XMLElement&);
-    void process_stat_xml(const tinyxml2::XMLElement&);
-    void process_skill_xml(const tinyxml2::XMLElement&);
-    void process_cash_xml(const tinyxml2::XMLElement&);
-    void process_trigger_xml(const tinyxml2::XMLElement&);
+    int MinMoney;    // min and max money they can start with
+    int MaxMoney;
+    DirPath ImageDirectory;
 
     struct sTriggerData {
         std::string Event;
         std::string Script;
         std::string Function;
     };
-    std::vector<sTriggerData> m_Triggers;
+    std::vector<sTriggerData> Triggers;
 };
 
 
@@ -103,8 +89,11 @@ public:
     sRandomGirl* find_random_girl_by_name(const std::string& name);
     sRandomGirl GetRandomGirlSpec(bool Human0Monster1, bool arena, bool daughter, const std::string& findbyname);
     std::shared_ptr<sGirl> CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool kidnapped, bool arena,
-                                   bool daughter, bool is_daughter, const std::string& find_by_name);
+                                            bool your_daughter, bool is_daughter, const std::string& find_by_name);
 private:
+    void load_random_girl_imp(const std::string& filename, const std::string& base_path,
+                           const std::function<void(const std::string&)>& error_handler);
+
     std::vector<sRandomGirl> m_RandomGirls;
 
     int m_NumHumanRandomGirls = 0;

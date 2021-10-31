@@ -192,38 +192,6 @@ bool IGame::has_building(BuildingType type) const
     return m_Buildings->has_building(type);
 }
 
-bool IGame::NameExists(const std::string& name) const
-{
-    auto girl = m_Girls->GetGirl(0);
-    for(int i = 0; girl;)
-    {
-        if (girl->FullName() == name)    return true;
-        girl = m_Girls->GetGirl(++i);
-    }
-
-    if (m_Buildings->NameExists(name))        return true;
-    for(int i = 0; i < m_MarketGirls->num(); ++i)
-        if (m_MarketGirls->get_girl(i)->FullName() == name)    return true;
-
-    return false;
-}
-
-bool IGame::SurnameExists(const std::string& name) const
-{
-    auto girl = m_Girls->GetGirl(0);
-    for(int i = 0; girl;)
-    {
-        if (girl->Surname() == name)    return true;
-        girl = m_Girls->GetGirl(++i);
-    }
-
-    if (m_Buildings->SurnameExists(name))    return true;
-    for(int i = 0; i < m_MarketGirls->num(); ++i)
-        if (m_MarketGirls->get_girl(i)->Surname() == name)    return true;
-
-    return false;
-}
-
 cCustomers& IGame::customers()
 {
     return *m_Customers;

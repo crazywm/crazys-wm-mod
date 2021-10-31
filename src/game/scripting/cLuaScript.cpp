@@ -294,15 +294,7 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
     bool arena = lua_toboolean(L, 6);
 
     // Set the surname for the family
-    std::string surname;
-    for (int i = 0; i < 5; i++)
-    {
-        surname = g_SurnameList.random();
-        if (i > 3) surname = surname + "-" + g_SurnameList.random();
-        if (g_Game->SurnameExists(surname)) continue;
-        break;
-    }
-
+    std::string surname = g_SurnameList.random();
     // `J` zzzzzz - this can probably be done easier
     std::shared_ptr<sGirl> Daughter1 = nullptr;
     std::shared_ptr<sGirl> Daughter2 = nullptr;

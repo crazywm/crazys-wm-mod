@@ -41,11 +41,11 @@ extern cNameList g_SurnameList;
 
 sRandomGirl::sRandomGirl()
 {
-    m_Name = "";
-    m_Desc = "-";
+    Name = "";
+    Desc = "-";
 
-    m_Human = true;
-    m_Catacomb = m_Arena = m_YourDaughter = m_IsDaughter = false;
+    Human = true;
+    Catacomb = Arena = YourDaughter = IsDaughter = false;
 
     //assigning defaults
     for (int i = 0; i < NUM_STATS; i++)
@@ -55,7 +55,7 @@ sRandomGirl::sRandomGirl()
         {
         case STAT_HAPPINESS:
         case STAT_HEALTH:
-            m_MinStats[i] = m_MaxStats[i] = 100;
+            MinStats[i] = MaxStats[i] = 100;
             break;
         case STAT_TIREDNESS:
         case STAT_FAME:
@@ -65,78 +65,36 @@ sRandomGirl::sRandomGirl()
         case STAT_PCLOVE:
         case STAT_PCHATE:
         case STAT_ASKPRICE:
-            m_MinStats[i] = m_MaxStats[i] = 0;
+            MinStats[i] = MaxStats[i] = 0;
             break;
         case STAT_AGE:
-            m_MinStats[i] = 17; m_MaxStats[i] = 25;
+            MinStats[i] = 17; MaxStats[i] = 25;
             break;
         case STAT_MORALITY:
         case STAT_REFINEMENT:
         case STAT_DIGNITY:
         case STAT_SANITY:
-            m_MinStats[i] = -10; m_MaxStats[i] = 10;
+            MinStats[i] = -10; MaxStats[i] = 10;
             break;
         case STAT_LACTATION:
-            m_MinStats[i] = -20; m_MaxStats[i] = 20;
+            MinStats[i] = -20; MaxStats[i] = 20;
             break;
         default:
-            m_MinStats[i] = 30;    m_MaxStats[i] = 60;
+            MinStats[i] = 30; MaxStats[i] = 60;
             break;
         }
     }
     for (int i = 0; i < NUM_SKILLS; i++)// Changed from 10 to NUM_SKILLS so that it will always set the proper number of defaults --PP
     {
-        m_MinSkills[i] = 0;                // Changed from 30 to 0, made no sense for all skills to be a default of 30.
-        m_MaxSkills[i] = 30;
+        MinSkills[i] = 0;                // Changed from 30 to 0, made no sense for all skills to be a default of 30.
+        MaxSkills[i] = 30;
     }
     // now for a few overrides
-    m_MinMoney = 0;
-    m_MaxMoney = 10;
+    MinMoney = 0;
+    MaxMoney = 10;
 }
 
 sRandomGirl::~sRandomGirl() = default;
-
-void sRandomGirl::load_from_xml(tinyxml2::XMLElement *el)
-{
-    // name and description are easy
-    m_Name = GetStringAttribute(*el, "Name");
-    g_LogFile.log(ELogLevel::NOTIFY, "Loading Rgirl : ", m_Name);
-    m_Desc = GetDefaultedStringAttribute(*el, "Desc", "-");
-    // DQ - new random type ...
-    if (auto pt = el->Attribute("Human"))           m_Human = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-    if (auto pt = el->Attribute("Catacomb"))        m_Catacomb = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-    if (auto pt = el->Attribute("Arena"))           m_Arena = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-    if (auto pt = el->Attribute("Your Daughter"))   m_YourDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-    if (auto pt = el->Attribute("Is Daughter"))     m_IsDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-
-    // loop through children
-    for (auto& child : IterateChildElements(*el))
-    {
-        std::string tag = child.Value();
-        try {
-            if (tag == "Gold") {
-                process_cash_xml(child);
-            } else if (tag == "Stat") {
-                process_stat_xml(child);
-            } else if (tag == "Skill") {
-                process_skill_xml(child);
-            } else if (tag == "Trait") {
-                process_trait_xml(child);
-            } else if (tag == "Item") {
-                process_item_xml(child);
-            }else if (tag == "Trigger") {
-                process_trigger_xml(child);
-            } else {
-                // None of the above? Better ask for help then.
-                g_LogFile.warning("girl", "Unexpected tag: ", tag,
-                                  "    don't know what do to, ignoring");
-            }
-        } catch (const std::exception& ex) {
-            g_LogFile.error("girl", "Error when processing element ", tag, " on line ", child.GetLineNum(), ": ",
-                            ex.what());
-        }
-    }
-}
 
 sRandomGirl
 cRandomGirls::GetRandomGirlSpec(bool Human0Monster1, bool arena, bool daughter, const std::string& findbyname)
@@ -144,11 +102,11 @@ cRandomGirls::GetRandomGirlSpec(bool Human0Monster1, bool arena, bool daughter, 
     // If we do not have any girls to choose from, return a hardcoded "Error Girl"
     if (m_RandomGirls.empty()) {
         sRandomGirl hard_coded;
-        hard_coded.m_Desc = "Hard Coded Random Girl\n(The game did not find a valid .rgirlsx file)";
-        hard_coded.m_Name = "Default";
-        hard_coded.m_Human = (Human0Monster1 == 0);
-        hard_coded.m_Arena = arena;
-        hard_coded.m_YourDaughter = daughter;
+        hard_coded.Desc = "Hard Coded Random Girl\n(The game did not find a valid .rgirlsx file)";
+        hard_coded.Name = "Default";
+        hard_coded.Human = (Human0Monster1 == 0);
+        hard_coded.Arena = arena;
+        hard_coded.YourDaughter = daughter;
 
         return hard_coded;
     }
@@ -172,10 +130,10 @@ cRandomGirls::GetRandomGirlSpec(bool Human0Monster1, bool arena, bool daughter, 
         int offset = g_Dice % m_RandomGirls.size();    // pick a random stating point
         for(unsigned i = 0; i < m_RandomGirls.size(); ++i) {
             auto& candidate = m_RandomGirls.at((i + offset) % m_RandomGirls.size());
-            if (!candidate.m_YourDaughter)
+            if (!candidate.YourDaughter)
                 continue;
 
-            if ((bool)candidate.m_Human == !monstergirl) {
+            if ((bool)candidate.Human == !monstergirl) {
                 return candidate;
             }
         }
@@ -184,7 +142,7 @@ cRandomGirls::GetRandomGirlSpec(bool Human0Monster1, bool arena, bool daughter, 
     int offset = g_Dice % m_RandomGirls.size();    // pick a random stating point
     for(unsigned i = 0; i < m_RandomGirls.size(); ++i) {
         auto& candidate = m_RandomGirls.at((i + offset) % m_RandomGirls.size());
-        if (Human0Monster1 == (candidate.m_Human == 0))    {            // test for humanity
+        if (Human0Monster1 == (candidate.Human == 0))    {            // test for humanity
             return candidate;
         }
     }
@@ -192,38 +150,38 @@ cRandomGirls::GetRandomGirlSpec(bool Human0Monster1, bool arena, bool daughter, 
     // if we couldn't find a girl that fits the specs, so we just take a random one and set the flags as we want
     // them. We make a copy here since we modify data.
     auto candidate = m_RandomGirls.at( g_Dice % m_RandomGirls.size() );
-    candidate.m_Human = (Human0Monster1 == 0);
-    candidate.m_Arena = arena;
-    candidate.m_YourDaughter = daughter;
+    candidate.Human = (Human0Monster1 == 0);
+    candidate.Arena = arena;
+    candidate.YourDaughter = daughter;
     return candidate;
 }
 
 
 std::shared_ptr<sGirl>
 cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool kidnapped, bool arena,
-                               bool daughter, bool is_daughter, const std::string& find_by_name)
+                               bool your_daughter, bool is_daughter, const std::string& find_by_name)
                          {
 
     g_LogFile.debug("girls", "cGirls::CreateRandomGirl");
-    auto girl_template = GetRandomGirlSpec(Human0Monster1, arena, daughter, find_by_name);
+    auto girl_template = GetRandomGirlSpec(Human0Monster1, arena, your_daughter, find_by_name);
 
     auto newGirl = std::make_shared<sGirl>(false);
     newGirl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_FREE);
-    newGirl->SetImageFolder(girl_template.m_ImageDirectory);
+    newGirl->SetImageFolder(girl_template.ImageDirectory);
 
-    newGirl->m_Desc = girl_template.m_Desc;
-    newGirl->m_Name = girl_template.m_Name;
+    newGirl->m_Desc = girl_template.Desc;
+    newGirl->m_Name = girl_template.Name;
 
 
     // set all jobs to null
     newGirl->m_DayJob = newGirl->m_NightJob = JOB_UNSET;
     newGirl->m_WorkingDay = newGirl->m_PrevWorkingDay = 0;
 
-    newGirl->m_Money = (g_Dice % (girl_template.m_MaxMoney - girl_template.m_MinMoney)) + girl_template.m_MinMoney;    // money
+    newGirl->m_Money = (g_Dice % (girl_template.MaxMoney - girl_template.MinMoney)) + girl_template.MinMoney;    // money
 
     // skills
     for (auto skill : SkillsRange) {
-        newGirl->set_skill_direct(skill, g_Dice.closed_uniform(girl_template.m_MinSkills[skill], girl_template.m_MaxSkills[skill]));
+        newGirl->set_skill_direct(skill, g_Dice.closed_uniform(girl_template.MinSkills[skill], girl_template.MaxSkills[skill]));
     }
     for (auto skill : SkillsRange) {
         newGirl->upd_skill(skill, 0);
@@ -231,18 +189,18 @@ cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Mons
 
     // stats
     for (auto stat : StatsRange) {
-        newGirl->set_stat(stat, g_Dice.closed_uniform(girl_template.m_MinStats[stat], girl_template.m_MaxStats[stat]));
+        newGirl->set_stat(stat, g_Dice.closed_uniform(girl_template.MinStats[stat], girl_template.MaxStats[stat]));
     }
 
     // add the traits
-    for (int i = 0; i < girl_template.m_TraitNames.size(); i++)
+    for (int i = 0; i < girl_template.TraitNames.size(); i++)
     {
-        std::string name = girl_template.m_TraitNames[i];
+        std::string name = girl_template.TraitNames[i];
         // TODO (traits) inherent/permanent traits
-        newGirl->gain_trait(name.c_str(), girl_template.m_TraitChance[i]);
+        newGirl->gain_trait(name.c_str(), girl_template.TraitChance[i]);
     }
 
-    for (auto& item_candidate : girl_template.m_Inventory)
+    for (auto& item_candidate : girl_template.Inventory)
     {
         if (!g_Dice.percent(item_candidate.Chance)) {
             continue;
@@ -254,8 +212,8 @@ cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Mons
         }
     }
 
-    if (girl_template.m_Human == 0)           newGirl->raw_traits().add_inherent_trait("Not Human");
-    if (girl_template.m_YourDaughter == 1)    newGirl->raw_traits().add_inherent_trait("Your Daughter");
+    if (girl_template.Human == 0)           newGirl->raw_traits().add_inherent_trait("Not Human");
+    if (girl_template.YourDaughter == 1)    newGirl->raw_traits().add_inherent_trait("Your Daughter");
 
     newGirl->set_stat(STAT_FAME, 0);
     if (age != 0)    newGirl->set_stat(STAT_AGE, age);
@@ -305,14 +263,14 @@ cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Mons
         newGirl->m_Money = 0;
         newGirl->upd_base_stat(STAT_OBEDIENCE, 20);
     }
-    if (daughter || is_your_daughter(*newGirl))    // `J` if she is your daughter...
+    if (your_daughter || is_your_daughter(*newGirl))    // `J` if she is your daughter...
         {
         newGirl->m_AccLevel = 9;            // pamper her
         newGirl->m_Money = 1000;
         newGirl->house(0);    // your daughter gets to keep all she gets
         newGirl->raw_traits().add_inherent_trait("Your Daughter");
         newGirl->set_stat(STAT_OBEDIENCE, std::max(newGirl->obedience(), 80));    // She starts out obedient
-        daughter = true;
+        your_daughter = true;
         }
     if (is_daughter || newGirl->has_status(STATUS_ISDAUGHTER))
     {
@@ -323,50 +281,18 @@ cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Mons
 
     newGirl->raw_traits().update();
 
-    /*
-    *    Now that everything is in there, time to give her a random name
-    *
-    *    we'll try five times for a unique name
-    *    if that fails, we'll give her the last one found
-    *    this should be ok - assuming that names don't have to be unique
-    */
-    std::string name, name1, name2;
-    for (int i = 0; i < 5; i++)
-    {
-        /* `J` Added g_BoysNameList for .06.03.00
-            for now just using true to force girls names but when male slaves are added
-            some way to choose random boys names will be added
-        */
-        name = name1 = (true ? g_GirlNameList.random() : g_BoysNameList.random());
-        if (i > 3)
-        {
-            name2 = (true ? g_GirlNameList.random() : g_BoysNameList.random());
-            name = name1 + " " + name2; // `J` added second name to further reduce chance of multiple names
-        }
-        if (g_Game->NameExists(name)) continue;
-        break;
-    }
-
+    //
+    std::string first_name = g_GirlNameList.random();
     std::string surname;
-    if (daughter)    // `J` if she is your daughter...
-        {
+    if (your_daughter) {
         surname = g_Game->player().Surname();    // give her your last name
-        }
-    else if (g_Dice.percent(90))        // 10% chance of no last name
-        {
-        for (int i = 0; i < 5; i++)
-        {
-            surname = g_SurnameList.random();
-            if (i>3) surname = surname + "-" + g_SurnameList.random(); // `J` added second name to further reduce chance of multiple names
-            if (g_Game->SurnameExists(surname)) continue;
-            break;
-        }
-        }
-    else surname = "";
-    newGirl->SetName(std::move(name1), std::move(name2), surname);
+    } else if (g_Dice.percent(90)) {
+        surname = g_SurnameList.random();
+    }
+    newGirl->SetName(std::move(first_name), "", std::move(surname));
 
     // load triggers
-    for(auto& trigger : girl_template.m_Triggers) {
+    for(auto& trigger : girl_template.Triggers) {
         newGirl->m_EventMapping->SetEventHandler(trigger.Event, trigger.Script, trigger.Function);
     }
 
@@ -380,110 +306,222 @@ cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Mons
 void cRandomGirls::LoadRandomGirlXML(const std::string& filename, const std::string& base_path,
                                      const std::function<void(const std::string&)>& error_handler)
 {
+    try {
+        load_random_girl_imp(filename, base_path, error_handler);
+    } catch (const std::exception& error) {
+        g_LogFile.error("girls", "Could not load random girl file '", filename, "': ", error.what());
+        if(error_handler)
+            error_handler("ERROR: Could not load random girl file " + filename + ": " + error.what());
+    }
+}
+
+namespace {
+    void process_trait_xml(sRandomGirl& target, const tinyxml2::XMLElement& el)
+    {
+        target.TraitNames.emplace_back(GetStringAttribute(el, "Name"));
+        target.TraitChance.emplace_back(el.IntAttribute("Percent", 100));
+    }
+
+    void process_item_xml(sRandomGirl& target, const tinyxml2::XMLElement& el)
+    {
+        std::string item_name = GetStringAttribute(el, "Name");
+        sInventoryItem *item = g_Game->inventory_manager().GetItem(item_name);
+        if (!item)
+        {
+            g_LogFile.log(ELogLevel::ERROR, "Can't find Item: '", item_name, "' - skipping it.");
+            return;        // do as much as we can without crashing
+        }
+
+        sPercent chance(el.IntAttribute("Percent", 100));
+        target.Inventory.push_back(sRandomGirl::sItemRecord{item, chance});
+    }
+
+    void process_stat_xml(sRandomGirl& target, const tinyxml2::XMLElement& el, bool is_v0)
+    {
+        int index;
+        std::string stat_name = GetStringAttribute(el, "Name");
+
+        // TODO remove this check at some point
+        if(is_v0) {
+            if(stat_name == "House") {
+                g_LogFile.warning("girl", "Girl ", target.Name, " specified House stat, which is obsolete.");
+                return;
+            }
+        }
+        try {
+            index = get_stat_id(stat_name);
+        } catch (const std::out_of_range& e) {
+            g_LogFile.error("girls", "Invalid stat name '", stat_name, "' encountered");
+            return;        // do as much as we can without crashing
+        }
+
+        el.QueryAttribute("Min", &target.MinStats[index]);
+        el.QueryAttribute("Max", &target.MaxStats[index]);
+    }
+
+    void process_skill_xml(sRandomGirl& target, const tinyxml2::XMLElement& el)
+    {
+        int index = get_skill_id(GetStringAttribute(el, "Name"));
+        el.QueryAttribute("Min", &target.MinSkills[index]);
+        el.QueryAttribute("Max", &target.MaxSkills[index]);
+    }
+
+    void process_cash_xml(sRandomGirl& target, const tinyxml2::XMLElement& el)
+    {
+        el.QueryAttribute("Min", &target.MinMoney);
+        el.QueryAttribute("Max", &target.MaxMoney);
+    }
+
+    void process_trigger_xml(sRandomGirl& target, const tinyxml2::XMLElement& el) {
+        std::string event = GetStringAttribute(el, "Name");
+        std::string script = GetStringAttribute(el, "Script");
+        std::string function = GetStringAttribute(el, "Function");
+        target.Triggers.push_back(sRandomGirl::sTriggerData{event, script, function});
+    }
+
+    void load_from_xml_v0(sRandomGirl& target, const tinyxml2::XMLElement& el)
+    {
+        // name and description are easy
+        target.Name = GetStringAttribute(el, "Name");
+        g_LogFile.log(ELogLevel::NOTIFY, "Loading Legacy Rgirl : ", target.Name);
+        target.Desc = GetDefaultedStringAttribute(el, "Desc", "-");
+        // DQ - new random type ...
+        if (auto pt = el.Attribute("Human")) target.Human = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+        if (auto pt = el.Attribute("Catacomb")) target.Catacomb = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+        if (auto pt = el.Attribute("Arena")) target.Arena = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+        if (auto pt = el.Attribute("Your Daughter")) target.YourDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+        if (auto pt = el.Attribute("Is Daughter")) target.IsDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+
+        // loop through children
+        for (auto& child : IterateChildElements(el))
+        {
+            std::string tag = child.Value();
+            try {
+                if (tag == "Gold") {
+                    process_cash_xml(target, child);
+                } else if (tag == "Stat") {
+                    process_stat_xml(target, child, true);
+                } else if (tag == "Skill") {
+                    process_skill_xml(target, child);
+                } else if (tag == "Trait") {
+                    process_trait_xml(target, child);
+                } else if (tag == "Item") {
+                    process_item_xml(target, child);
+                } else {
+                    // None of the above? Better ask for help then.
+                    g_LogFile.warning("girl", "Unexpected tag: ", tag,
+                                      "    don't know what do to, ignoring");
+                }
+            } catch (const std::exception& ex) {
+                g_LogFile.error("girl", "Error when processing element ", tag, " on line ", child.GetLineNum(), ": ",
+                                ex.what());
+            }
+        }
+    }
+
+    void load_from_xml_v1(sRandomGirl& target, const tinyxml2::XMLElement& el)
+    {
+        // name and description are easy
+        target.Name = GetStringAttribute(el, "Name");
+        g_LogFile.log(ELogLevel::NOTIFY, "Loading random girl : ", target.Name);
+        target.Desc = GetDefaultedStringAttribute(el, "Desc", "-");
+        // DQ - new random type ...
+        if (auto pt = el.Attribute("Human")) target.Human = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+        if (auto pt = el.Attribute("Catacomb")) target.Catacomb = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+        if (auto pt = el.Attribute("Arena")) target.Arena = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+        if (auto pt = el.Attribute("Your Daughter")) target.YourDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+        if (auto pt = el.Attribute("Is Daughter")) target.IsDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+
+        // loop through children
+        for (auto& child : IterateChildElements(el))
+        {
+            std::string tag = child.Value();
+            try {
+                if (tag == "Gold") {
+                    process_cash_xml(target, child);
+                } else if (tag == "Stat") {
+                    process_stat_xml(target, child, false);
+                } else if (tag == "Skill") {
+                    process_skill_xml(target, child);
+                } else if (tag == "Trait") {
+                    process_trait_xml(target, child);
+                } else if (tag == "Item") {
+                    process_item_xml(target, child);
+                } else if (tag == "Trigger") {
+                    process_trigger_xml(target, child);
+                } else {
+                    // None of the above? Better ask for help then.
+                    g_LogFile.warning("girl", "Unexpected tag: ", tag,
+                                      "    don't know what do to, ignoring");
+                }
+            } catch (const std::exception& ex) {
+                g_LogFile.error("girl", "Error when processing element ", tag, " on line ", child.GetLineNum(), ": ",
+                                ex.what());
+            }
+        }
+    }
+}
+
+sRandomGirl* cRandomGirls::find_random_girl_by_name(const std::string& name)
+{
+    for(auto& rg : m_RandomGirls) {
+        if(rg.Name == name) {
+            return &rg;
+        }
+    }
+    return nullptr;
+}
+
+void cRandomGirls::load_random_girl_imp(const std::string& filename, const std::string& base_path,
+                                        const std::function<void(const std::string&)>& error_handler) {
     auto doc = LoadXMLDocument(filename);
     g_LogFile.log(ELogLevel::NOTIFY, "Loading File ::: ", filename);
 
     auto root_element = doc->RootElement();
-    if(!root_element) {
-        g_LogFile.error("girls", "No XML root found in rgirl file ", filename);
-        throw std::runtime_error("ERROR: No XML root element");
-    }
+
+    int version = 0;
+    root_element->QueryIntAttribute("Version", &version);
+
+    auto load = [&]() -> std::function<void(sRandomGirl&, const tinyxml2::XMLElement&)> {
+        switch(version) {
+            case 0:
+                return [](auto&& girl, auto&& el){
+                    load_from_xml_v0(girl, el);
+                };
+            case 1:
+                return [](auto&& girl, auto&& el) {
+                    load_from_xml_v1(girl, el);
+                };
+            default:
+                throw std::runtime_error("Invalid version specified in random girl file '" + filename + "': " + std::to_string(version));
+        }
+    }();
 
     for (auto& el : IterateChildElements(*root_element))
     {
         m_RandomGirls.emplace_back();
         auto& girl = m_RandomGirls.back();
         try {
-            girl.load_from_xml(&el);
-            girl.m_ImageDirectory = DirPath(base_path.c_str()) << girl.m_Name;
+            load(girl, el);
+            girl.ImageDirectory = DirPath(base_path.c_str()) << girl.Name;
+            if (girl.YourDaughter)
+            {
+                m_NumRandomYourDaughterGirls++;
+                if (girl.Human)        m_NumHumanRandomYourDaughterGirls++;
+                if (!girl.Human)       m_NumNonHumanRandomYourDaughterGirls++;
+            }
+            else
+            {
+                if (girl.Human)        m_NumHumanRandomGirls++;
+                if (!girl.Human)       m_NumNonHumanRandomGirls++;
+            }
+
         } catch (const std::exception& error) {
             g_LogFile.error("girls", "Could not load rgirl from file '", filename, "': ", error.what());
             if(error_handler)
                 error_handler("ERROR: Could not load rgirl from file " + filename + ": " + error.what());
-        }
-
-        if (girl.m_YourDaughter)
-        {
-            m_NumRandomYourDaughterGirls++;
-            if (girl.m_Human)        m_NumHumanRandomYourDaughterGirls++;
-            if (!girl.m_Human)       m_NumNonHumanRandomYourDaughterGirls++;
-        }
-        else
-        {
-            if (girl.m_Human)        m_NumHumanRandomGirls++;
-            if (!girl.m_Human)       m_NumNonHumanRandomGirls++;
+            // remove the invalid girl again
+            m_RandomGirls.pop_back();
         }
     }
-}
-
-
-void sRandomGirl::process_trait_xml(const tinyxml2::XMLElement& el)
-{
-    m_TraitNames.emplace_back(GetStringAttribute(el, "Name"));
-    m_TraitChance.emplace_back(el.IntAttribute("Percent", 100));
-}
-
-void sRandomGirl::process_item_xml(const tinyxml2::XMLElement& el)
-{
-    std::string item_name = GetStringAttribute(el, "Name");
-    sInventoryItem *item = g_Game->inventory_manager().GetItem(item_name);
-    if (!item)
-    {
-        g_LogFile.log(ELogLevel::ERROR, "Can't find Item: '", item_name, "' - skipping it.");
-        return;        // do as much as we can without crashing
-    }
-
-    sPercent chance(el.IntAttribute("Percent", 100));
-    m_Inventory.push_back(sItemRecord{item, chance});
-}
-
-void sRandomGirl::process_stat_xml(const tinyxml2::XMLElement& el)
-{
-    int index;
-    std::string stat_name = GetStringAttribute(el, "Name");
-
-    // TODO remove this check at some point
-    if(stat_name == "House") {
-        g_LogFile.warning("girl", "Girl ", m_Name, " specified House stat, which is obsolete.");
-        return;
-    }
-    try {
-        index = get_stat_id(stat_name);
-    } catch (const std::out_of_range& e) {
-        g_LogFile.error("girls", "Invalid stat name '", stat_name, "' encountered");
-        return;        // do as much as we can without crashing
-    }
-
-    el.QueryAttribute("Min", &m_MinStats[index]);
-    el.QueryAttribute("Max", &m_MaxStats[index]);
-}
-
-void sRandomGirl::process_skill_xml(const tinyxml2::XMLElement& el)
-{
-    int index = get_skill_id(GetStringAttribute(el, "Name"));
-    el.QueryAttribute("Min", &m_MinSkills[index]);
-    el.QueryAttribute("Max", &m_MaxSkills[index]);
-}
-
-void sRandomGirl::process_cash_xml(const tinyxml2::XMLElement& el)
-{
-    el.QueryAttribute("Min", &m_MinMoney);
-    el.QueryAttribute("Max", &m_MaxMoney);
-}
-
-void sRandomGirl::process_trigger_xml(const tinyxml2::XMLElement& el) {
-    std::string event = GetStringAttribute(el, "Name");
-    std::string script = GetStringAttribute(el, "Script");
-    std::string function = GetStringAttribute(el, "Function");
-    m_Triggers.push_back(sTriggerData{event, script, function});
-}
-
-sRandomGirl* cRandomGirls::find_random_girl_by_name(const std::string& name)
-{
-    for(auto& rg : m_RandomGirls) {
-        if(rg.m_Name == name) {
-            return &rg;
-        }
-    }
-    return nullptr;
 }

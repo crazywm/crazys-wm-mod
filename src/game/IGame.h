@@ -224,10 +224,6 @@ public:
     bool allow_cheats() const;
     void enable_cheating();
 
-    // utilities
-    bool NameExists(const std::string& name) const;
-    bool SurnameExists(const std::string& surname) const;
-
     // Global actions
     void TalkToGirl(sGirl& target);
 private:
