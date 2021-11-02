@@ -1,4 +1,4 @@
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function BouncerShakedown(girl, dangerLev)
     Dialog("Guard: \"Sir, please enjoy your drinks. You picked a really hot girl, and I know you want to touch things you are not allowed to.\"")
@@ -122,7 +122,7 @@ function BouncerShakedown(girl, dangerLev)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 function DecentCitizen(girl)
     Dialog("You notice an attractive woman walking the same way as you. She looks over her shoulder and smiles to herself.")
     GirlDescription(girl)
@@ -148,7 +148,7 @@ function DecentCitizen(girl)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 function DefendBrothel(girl)
     Dialog("You can tell there is danger in the air. You see no one in the streets.")
     Dialog("You enjoy a few moments of quiet in the pews. All too soon, though, it is time to return.")
@@ -211,7 +211,7 @@ function DefendBrothel(girl)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 function DinnerAndADrink(girl)
     local msg = RandomChoice("Girl: \"What a coincidence! ", 
                              "Girl: \"That\'s funny! ", 
@@ -333,7 +333,7 @@ function DinnerAndADrink(girl)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function GirlAudition(girl)
     local debug = 0
@@ -510,7 +510,7 @@ function GirlAudition(girl)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 function GirlDescription(girl)
     local desc = ""
     local debug = 2
@@ -760,7 +760,7 @@ function GirlDescription(girl)
     if debug == 1 then Dialog("returning") end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function GroupChurch(girl, dangerLev)
     if dangerLev == 1 then
@@ -774,7 +774,7 @@ function GroupChurch(girl, dangerLev)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function GroupStreets(girl, dangerLev)
     if (dangerLev == 3) and wm.Percent(75) then
@@ -1044,7 +1044,7 @@ function GroupStreets(girl, dangerLev)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function GroupShopping(girl, dangerLev)
     Dialog("GroupShopping danger=" .. dangerLev)
@@ -1085,7 +1085,7 @@ function GroupShopping(girl, dangerLev)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function GroupStripClub(girl, dangerLev)
     if dangerLev == 1 then
@@ -1093,7 +1093,7 @@ function GroupStripClub(girl, dangerLev)
         Dialog("Your thugs take positions around you, until you wave them off and tell them to get a drink.")
         StripperOrWaitress(girl, dangerLev) 
     elseif dangerLev == 2 then
-        if wm.percent(99) then
+        if wm.Percent(99) then
             Dialog("You have no problem getting to the strip club, and ask your men to stay at the bar, where they can watch unobtrusively.")
             StripperOrWaitress(girl, dangerLev)
             Dialog("You enjoy the walk home, talking to your guards about the women at the club.")
@@ -1117,7 +1117,7 @@ function GroupStripClub(girl, dangerLev)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 function LadyOfNegotiableAffection(girl)
     if girl:has_trait("Cum Addict") then
         Dialog("A girl is standing on the street corner. She eyes you hungrily. \"Hey, good-looking...  Wanna party?\"")
@@ -1207,7 +1207,7 @@ function LadyOfNegotiableAffection(girl)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 function RapeGirl(girl)
     Dialog("She is obviously asking for it. You resolve to give it to her.")
     Dialog("You time it perfectly. You draw even with her just as you pass the mouth of a dark alleyway.")
@@ -1334,7 +1334,7 @@ function RapeGirl(girl)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 function ShakeDown(girl)
     Dialog("A pretty girl approaches you. \"C\'mon, mister, let\'s have some fun!\"")
     girl:add_trait("Bruises")
@@ -1411,13 +1411,13 @@ function ShakeDown(girl)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function SoloChurch(girl, dangerLev)
     Dialog("SoloChurch coming soon! danger=" .. dangerLev)
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function SoloEncounter(girl)
     if wm.Percent(50) then
@@ -1427,13 +1427,13 @@ function SoloEncounter(girl)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function SoloShopping(girl, dangerLev)
     Dialog("SoloShopping coming soon! danger=" .. dangerLev)
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function SoloStreets(girl, dangerLev)
     if dangerLev == 1 then
@@ -1453,7 +1453,7 @@ function SoloStreets(girl, dangerLev)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function StraightAsk(girl)
     Dialog("You: \"My dear, my brothel is looking for beautiful young women like yourself. You could make a mint at my establishment. Are you interested in a job?\"")
@@ -1499,7 +1499,7 @@ function StraightAsk(girl)
     Dialog("You shrug and continue on your way. You know it takes a lot of noes to get to one yes.")
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function SoloStripClub(girl, dangerLev)
     Dialog("SoloStripClub coming soon! danger=" .. dangerLev)
@@ -1568,7 +1568,7 @@ function StreetAmbush(girl, dangerLev)
     end
 end
 
----@param girl wm.girl
+---@param girl wm.Girl
 ---@param dangerLev int
 function StripperOrWaitress(girl, dangerLev)
     Dialog("You take a table to yourself. You watch the girl onstage removing her clothes, and also notice that your waitress is stunning.")

@@ -81,7 +81,6 @@ public:
     void    init(bool back) override;
     void    process() override {};
     void    selection_change();
-    void    set_slave_stats(sGirl *girl);
     void    release_all_customers();
     void    release_all_girls();
     void    sell_slaves();

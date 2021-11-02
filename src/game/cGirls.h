@@ -83,6 +83,9 @@ public:
     static void LevelUp(sGirl& girl);    // advances a girls level
     static void LevelUpStats(sGirl& girl); // Functionalized stat increase for LevelUp
 
+    /// Changes to the girl's stats when you enslave her
+    static void SetSlaveStats(sGirl& girl);
+
     static void EndDayGirls(IBuilding& brothel, sGirl& girl);
 
     // updates what she enjoys

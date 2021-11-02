@@ -349,20 +349,6 @@ int cScreenDungeon::enslave_customer(int girls_removed, int custs_removed)
     g_Game->dungeon().RemoveCust(cust);        // remove the customer from the dungeon room for an overload here
     return 0;
 }
-
-void cScreenDungeon::set_slave_stats(sGirl *girl)
-{
-    girl->set_slave();
-    girl->obedience(-10);
-    girl->pcfear(10);
-    girl->pclove(-20);
-    girl->pchate(15);
-    girl->happiness(-50);
-    girl->spirit(-5);
-    girl->dignity(-5);
-    girl->set_default_house_percent();
-}
-
 int cScreenDungeon::enslave()
 {
     int numCustsRemoved = 0;
@@ -385,14 +371,14 @@ int cScreenDungeon::enslave()
         auto result = AttemptEscape(*girl);
         switch(result) {
         case EGirlEscapeAttemptResult::SUBMITS:
-            set_slave_stats(girl);
+            cGirls::SetSlaveStats(*girl);
             ss.str("");
             ss << girl->FullName() << " submits the the enchanted slave tattoo being placed upon her.";
             push_message(ss.str(), 0);
             break;
         case EGirlEscapeAttemptResult::STOPPED_BY_GOONS:
             g_Game->player().evil(5);    // evil up the player for doing a naughty thing and adjust the girl's stats
-            set_slave_stats(girl);
+            cGirls::SetSlaveStats(*girl);
             ss.str("");
             ss << girl->FullName() << " puts up a fight "
                << "but your goons control her as the enchanted slave tattoo is placed upon her.";
@@ -401,7 +387,7 @@ int cScreenDungeon::enslave()
         case EGirlEscapeAttemptResult::STOPPED_BY_PLAYER:
             // adjust the girl's stats to reflect her new status and then evil up the player because he forced her into slavery
             g_Game->player().evil(5);
-            set_slave_stats(girl);
+            cGirls::SetSlaveStats(*girl);
             ss.str("");
             ss << girl->FullName()
                << " breaks free from your goons' control. You restrain her personally while the slave tattoo placed upon her.";
