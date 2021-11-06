@@ -50,6 +50,7 @@ sMovieStudio::sMovieStudio() : IBuilding(BuildingType::STUDIO, "Studio")
     m_FirstJob = JOB_EXECUTIVE;
     m_LastJob = JOB_FILMRANDOM;
     m_MatronJob = JOB_EXECUTIVE;
+    m_MeetGirlData.Spawn = SpawnReason::STUDIO;
     m_MeetGirlData.Event = EDefaultEvent::MEET_GIRL_STUDIO;
     declare_resource(FluffPointsId);
     declare_resource(StageHandPtsId);

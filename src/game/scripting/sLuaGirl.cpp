@@ -307,13 +307,9 @@ int sLuaGirl::acquire_girl(lua_State* L) {
 }
 
 int sLuaGirl::create_random_girl(lua_State *L) {
-    long age = luaL_checkinteger(L, 1);
-    bool slave = lua_toboolean(L, 2);
-    bool non_human = lua_toboolean(L, 3);
-    bool kidnapped = lua_toboolean(L, 4);
-    bool arena = lua_toboolean(L, 5);
-    bool daughter = lua_toboolean(L, 6);
-    auto newgirl = g_Game->CreateRandomGirl(age, slave, false, non_human, kidnapped, arena, daughter);
+    long reason = luaL_checkinteger(L, 1);
+    long age = luaL_optinteger(L, 2, -1);
+    auto newgirl = g_Game->CreateRandomGirl(static_cast<SpawnReason>(reason), age);
     sGirl* gptr = newgirl.get();
     g_Game->girl_pool().AddGirl(std::move(newgirl));
     create(L, gptr);

@@ -194,12 +194,12 @@ void cScreenTown::do_walk()
     }
 
     if(g_Dice.percent( g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_UNIQUE) )) {
-        m_MeetingGirl = g_Game->GetRandomGirl(false, false, false, false, false, true);
+        m_MeetingGirl = g_Game->GetRandomUniqueGirl(false, false, false, false, false);
     }
 
     // if we don't want or can't find a unique girl, get a random one
     if(!m_MeetingGirl) {
-        m_MeetingGirl = g_Game->GetRandomGirl();
+        m_MeetingGirl = g_Game->CreateRandomGirl(SpawnReason::MEETING);
     }
 
     if (m_MeetingGirl == nullptr)

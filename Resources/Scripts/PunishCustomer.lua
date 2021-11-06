@@ -98,13 +98,13 @@ function FollowHome(event)
             Dialog("Your men leave and return with several crying girls and drag them to the dungeon.")
             wm.SetPlayerSuspicion(10)
             wm.SetPlayerDisposition(-10)
-            wm.AddFamilyToDungeon(event, false, true, false, false, false)
+            wm.AddFamilyToDungeon(event, false)
         end
     elseif choice == 2 then
         Dialog("Your men leave and return with some crying women and drag them to the dungeon.")
         wm.SetPlayerSuspicion(15)
         wm.SetPlayerDisposition(-15)
-        wm.AddFamilyToDungeon(event, true, true, false, false, false)
+        wm.AddFamilyToDungeon(event, true)
     elseif choice == 3 then
         Ransack()
     else
@@ -123,7 +123,7 @@ function KidnapGirl(min_age, max_age)
     wm.SetPlayerSuspicion(5)
     wm.SetPlayerDisposition(-5)
     local age = wm.Range(min_age, max_age)
-    local girl = wm.CreateRandomGirl(age, false, false, true, false, false)
+    local girl = wm.CreateRandomGirl(wm.SPAWN.KIDNAPPED, age)
     -- TODO DUNGEON_GIRLKIDNAPPED
     wm.ToDungeon(girl, 3)
 end

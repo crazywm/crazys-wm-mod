@@ -353,7 +353,7 @@ void cObjectiveManager::PassObjective()
             ss << " get " << girls << " slave girl" << (girls > 1 ? "s" : "") << ":\n";
             while (girls > 0)
             {
-                auto girl = g_Game->CreateRandomGirl(0, true, false, g_Dice % 3 == 1);
+                auto girl = g_Game->CreateRandomGirl(SpawnReason::REWARD);
                 std::stringstream ssg;
                 ss << girl->FullName() << "\n";
                 ssg << girl->FullName() << " was given to you as a reward for completing your objective.";

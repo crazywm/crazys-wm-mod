@@ -133,6 +133,7 @@ cLuaScript::cLuaScript()
     register_table("STATUS", m_State, get_status_names());
     register_table("ACTIONS", m_State, get_action_names());
     register_table("IMG", m_State, get_imgtype_names());
+    register_table("SPAWN", m_State, get_spawn_names());
     lua_setglobal(m_State.get_state(), "wm");
     sLuaGirl::init(m_State.get_state());
     sLuaCustomer::init(m_State.get_state());
@@ -286,12 +287,6 @@ int cLuaScript::AddCustomerToDungeon(lua_State* state) {
 int cLuaScript::AddFamilyToDungeon(lua_State *L) {
     int num_daughters = luaL_checkinteger(L, 1);
     bool mother = lua_toboolean(L, 2);
-    bool kidnapped = lua_toboolean(L, 3);
-    bool slave = lua_toboolean(L, 4);
-
-    int reason = kidnapped ? DUNGEON_GIRLKIDNAPPED : DUNGEON_GIRLCAPTURED;
-    bool allowNonHuman = lua_toboolean(L, 5);
-    bool arena = lua_toboolean(L, 6);
 
     // Set the surname for the family
     std::string surname = g_SurnameList.random();
@@ -308,13 +303,13 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
     int oldest = 18;    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
     if (num_daughters > 0)
     {
-        Daughter1 = g_Game->CreateRandomGirl((g_Dice % 13) + 13, slave, false, allowNonHuman, kidnapped, arena);
+        g_Game->CreateRandomGirl(SpawnReason::KIDNAPPED, (g_Dice % 13) + 13);
         if (Daughter1->age() > oldest) oldest = Daughter1->age();
         Daughter1->SetSurname(surname);
     }
     if (num_daughters > 1)
     {
-        Daughter2 = g_Game->CreateRandomGirl((g_Dice % 13) + 13, slave, false, allowNonHuman, kidnapped, arena);
+        Daughter2 = g_Game->CreateRandomGirl(SpawnReason::KIDNAPPED, (g_Dice % 13) + 13);
         if (Daughter2->age() == Daughter1->age())    // if only 2 daughters and their ages are the same, change that
         {                                            // if there is a third daughter, her age can be anything (to allow twins)
             if (Daughter1->age() > 20) Daughter2->age(-(g_Dice % 3 + 1));
@@ -325,14 +320,14 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
     }
     if (num_daughters > 2)
     {
-        Daughter3 = g_Game->CreateRandomGirl((g_Dice % 13) + 13, slave, false, allowNonHuman, kidnapped, arena);
+        Daughter3 = g_Game->CreateRandomGirl(SpawnReason::KIDNAPPED, (g_Dice % 13) + 13);
         if (Daughter3->age() > oldest) oldest = Daughter3->age();
         Daughter3->SetSurname(surname);
     }
 
     if (mother)    // there is a mother
     {
-        Mother = g_Game->CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, slave, false, allowNonHuman, kidnapped, arena);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+        Mother = g_Game->CreateRandomGirl(SpawnReason::KIDNAPPED, (g_Dice % (50 - (oldest + 18))) + oldest + 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
         Mother->SetSurname(surname);
         if (!g_Dice.percent(Mother->age())) Mother->gain_trait("MILF");    // the younger the mother the more likely she will be a MILF
         Mother->lose_trait("Virgin");
@@ -348,7 +343,7 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
         Mother->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] += num_daughters;
 
     }
-    std::string kstring = (kidnapped ? "kidnapped from her family" : "captured");
+    std::string kstring = "kidnapped from her family";
 
     if (num_daughters > 0)
     {
@@ -398,10 +393,10 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
         Mother->AddMessage(NGmsgM.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
     }
 
-    if (Daughter1)    g_Game->dungeon().AddGirl(Daughter1, reason);
-    if (Daughter2)    g_Game->dungeon().AddGirl(Daughter2, reason);
-    if (Daughter3)    g_Game->dungeon().AddGirl(Daughter3, reason);
-    if (Mother)        g_Game->dungeon().AddGirl(Mother, reason);
+    if (Daughter1)    g_Game->dungeon().AddGirl(Daughter1, DUNGEON_GIRLKIDNAPPED);
+    if (Daughter2)    g_Game->dungeon().AddGirl(Daughter2, DUNGEON_GIRLKIDNAPPED);
+    if (Daughter3)    g_Game->dungeon().AddGirl(Daughter3, DUNGEON_GIRLKIDNAPPED);
+    if (Mother)       g_Game->dungeon().AddGirl(Mother, DUNGEON_GIRLKIDNAPPED);
 
     return 0;
 }

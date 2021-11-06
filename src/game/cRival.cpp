@@ -550,7 +550,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
             {
                 if (g_Dice.percent(cG1.intelligence()))            // chance to find a girl
                 {
-                    auto girl = g_Game->CreateRandomGirl(0);
+                    auto girl = g_Game->CreateRandomGirl(SpawnReason::KIDNAPPED);
                     girl->set_stat(STAT_HEALTH, 100);        // make sure she is at full health
                     if (girl)
                     {

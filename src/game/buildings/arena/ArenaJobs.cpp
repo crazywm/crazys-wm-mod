@@ -122,7 +122,7 @@ sWorkJobResult CityGuard::DoWork(sGirl& girl, bool is_night) {
     }
     else
     {
-        auto tempgirl = g_Game->CreateRandomGirl(18, false, false, false, false, true);
+        auto tempgirl = g_Game->CreateRandomGirl(SpawnReason::ARENA);
         if (tempgirl)        // `J` reworked incase there are no Non-Human Random Girls
         {
             auto outcome = GirlFightsGirl(girl, *tempgirl);
@@ -352,7 +352,7 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
     double jobperformance = girl.job_performance(JOB_FIGHTARENAGIRLS, false);
 
     cGirls::EquipCombat(girl);        // ready armor and weapons!
-    auto tempgirl = g_Game->CreateRandomGirl(18, false, false, false, false, true);
+    auto tempgirl = g_Game->CreateRandomGirl(SpawnReason::ARENA);
     if (tempgirl) {
         auto fight_outcome = GirlFightsGirl(girl, *tempgirl);
         if (fight_outcome == EFightResult::VICTORY)    // she won
@@ -362,7 +362,7 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
             std::shared_ptr<sGirl> ugirl = nullptr;
             if (chance(10))        // chance of getting unique girl
             {
-                ugirl = g_Game->GetRandomGirl(false, false, true);
+                ugirl = g_Game->GetRandomUniqueGirl(false, false, true);
             }
             if (ugirl)
             {

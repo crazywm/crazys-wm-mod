@@ -36,7 +36,7 @@ sArena::sArena() : IBuilding(BuildingType::ARENA, "Arena")
     m_FirstJob = JOB_FIGHTBEASTS;
     m_LastJob = JOB_CLEANARENA;
     m_MatronJob = JOB_DOCTORE;
-    m_MeetGirlData.Arena = true;
+    m_MeetGirlData.Spawn = SpawnReason::ARENA;
     m_MeetGirlData.Event = EDefaultEvent::MEET_GIRL_ARENA;
 }
 

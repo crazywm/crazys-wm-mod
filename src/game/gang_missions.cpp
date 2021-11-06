@@ -174,7 +174,7 @@ bool cMissionKidnap::execute_mission(sGang& gang, std::stringstream& ss)
 
     if (g_Dice.percent(std::min(75, gang.intelligence())))    // chance to find a girl to kidnap
     {
-        auto girl = g_Game->GetRandomGirl();
+        auto girl = g_Game->CreateRandomGirl(SpawnReason::KIDNAPPED);
         if (girl != nullptr)
         {
             return kidnap(gang, ss, std::move(girl));
@@ -724,6 +724,8 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
                 return false;
         }
     }
+    // TODO re-enable vigilante
+/*
     else if (g_Dice.percent(0))        // `J` added for .06.02.41
     {
         auto girl = g_Game->GetRandomGirl();
@@ -769,8 +771,8 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
 
                 ss << "She fights ";
                 if (numlost > startnum / 2)    ss << "well but your men still manage to capture her";
-                else if (numlost == 0)/* */    ss << "your men but loses quickly";
-                else/*                   */    ss << "your men but they take her down with only " << (numlost == 1 ? "one casualty" : "a few casualties");
+                else if (numlost == 0)         ss << "your men but loses quickly";
+                else                           ss << "your men but they take her down with only " << (numlost == 1 ? "one casualty" : "a few casualties");
                 ss << ".\nThey unmask " << girlName << ", take all her gold (" << gold << ") from her and drag her to the dungeon.\n \n";
                 girl->set_stat(STAT_OBEDIENCE, 0);
                 girl->add_temporary_trait("Kidnapped", 5 + g_Dice % 11);
@@ -802,7 +804,7 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
                 return false;
             }
         }
-    }
+    }*/
 
     int difficulty = std::max(0, g_Dice.bell(1, 6) - 2);    // 0-4
     std::string who = "people";
@@ -862,9 +864,11 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
     ss << "Gang   " << gang.name() << "   is exploring the catacombs.\n \n";
 
     // use new code
-    int totalgirls = 0; int totalitems = 0; int totalbeast = 0;
+    int totalitems = 0; int totalbeast = 0;
     int bringbacknum = 0;
     int gold = 0;
+
+    std::vector<std::shared_ptr<sGirl>> captured_girls;
 
     // do the intro text
     ss << cGirls::catacombs_look_for(gang_manager().Gang_Gets_Girls(), gang_manager().Gang_Gets_Items(), gang_manager().Gang_Gets_Beast());
@@ -877,14 +881,21 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
 
         if (choice < gang_manager().Gang_Gets_Girls())                    // get girl = 10 point
         {
-            bool gotgirl = false;
-            // TODO make this the girl we actually want to get!
-            auto tempgirl = g_Game->CreateRandomGirl(18, false, false, true);        // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
-            if(AttemptCapture(gang, *tempgirl) == EAttemptCaptureResult::CAPTURED) gotgirl = true;
-            if (gotgirl)
+            std::shared_ptr<sGirl> ugirl = nullptr;
+            bool unique = g_Dice.percent(g_Game->settings().get_percent(settings::WORLD_CATACOMB_UNIQUE));    // chance of getting unique girl
+            if (unique) {
+                ugirl = g_Game->GetRandomUniqueGirl(false, true);
+                if (ugirl == nullptr) unique = false;
+            }
+
+            if(!unique) {
+                ugirl = g_Game->CreateRandomGirl(SpawnReason::CATACOMBS);
+            }
+
+            if(ugirl && AttemptCapture(gang, *ugirl) == EAttemptCaptureResult::CAPTURED)
             {
                 bringbacknum += 10;
-                totalgirls++;
+                captured_girls.push_back(ugirl);
             }
             else bringbacknum += 5;
         }
@@ -893,7 +904,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
             bool gotitem = false;
             if (g_Dice.percent(33))    // item is guarded
             {
-                auto tempgirl = g_Game->CreateRandomGirl(18, false, false, true);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+                auto tempgirl = g_Game->CreateRandomGirl(SpawnReason::CATACOMBS);
                 Combat combat(ECombatObjective::KILL, ECombatObjective::KILL);
                 combat.add_combatants(ECombatSide::ATTACKER, gang);
                 combat.add_combatant(ECombatSide::DEFENDER, *tempgirl);
@@ -976,42 +987,32 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
         }
 
         // get catacomb girls (is "monster" if trait not human)
-        if (totalgirls > 0)
+        if (!captured_girls.empty())
         {
-            ss << "Your men captured " << totalgirls << " girl" << (totalgirls > 1 ? "s" : "") << ":\n";
-            for (int i = 0; i < totalgirls; i++)
+            ss << "Your men captured " << captured_girls.size() << " girl" << (captured_girls.size() > 1 ? "s" : "") << ":\n";
+            for (auto& girl: captured_girls)
             {
-                std::shared_ptr<sGirl> ugirl = nullptr;
-                bool unique = g_Dice.percent(g_Game->settings().get_percent(settings::WORLD_CATACOMB_UNIQUE));    // chance of getting unique girl
-                if (unique)
+                if (girl.unique())
                 {
-                    ugirl = g_Game->GetRandomGirl(false, true);
-                    if (ugirl == nullptr) unique = false;
-                }
-                if (unique)
-                {
-                    ss << "   " << ugirl->FullName() << "   (u)\n";
-                    ugirl->remove_status(STATUS_CATACOMBS);
+                    ss << "   " << girl->FullName() << "   (u)\n";
+                    girl->remove_status(STATUS_CATACOMBS);
                     std::stringstream NGmsg;
-                    ugirl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
-                    NGmsg << ugirl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
-                    ugirl->AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
-                    g_Game->dungeon().AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
+                    girl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
+                    NGmsg << girl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
+                    girl->AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                    g_Game->dungeon().AddGirl(girl, DUNGEON_GIRLCAPTURED);
                 }
                 else
                 {
-                    ugirl = g_Game->CreateRandomGirl(0, false, false, true);
-                    if (ugirl != nullptr)  // make sure a girl was returned
-                    {
-                        ss << "   " << ugirl->FullName() << "\n";
-                        std::stringstream NGmsg;
-                        ugirl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
-                        NGmsg << ugirl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
-                        ugirl->AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
-                        g_Game->dungeon().AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
-                    }
+                    ss << "   " << girl->FullName() << "\n";
+                    std::stringstream NGmsg;
+                    girl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
+                    NGmsg << girl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
+                    girl->AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                    g_Game->dungeon().AddGirl(girl, DUNGEON_GIRLCAPTURED);
+
                 }
-                if (ugirl && g_Game->get_objective() && g_Game->get_objective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
+                if (g_Game->get_objective() && g_Game->get_objective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
                 {
                     g_Game->get_objective()->m_SoFar++;
                 }
@@ -1041,7 +1042,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
         // bring back any beasts
         if (totalbeast > 0)
         {
-            ss << "Your men " << (totalgirls + totalitems > 0 ? "also " : "") << "bring back " << totalbeast << " beasts.";
+            ss << "Your men " << (captured_girls.size() + totalitems > 0 ? "also " : "") << "bring back " << totalbeast << " beasts.";
             g_Game->storage().add_to_beasts(totalbeast);
         }
     }

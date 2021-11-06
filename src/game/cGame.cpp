@@ -502,7 +502,7 @@ void cGame::NextWeek()
     {
         if (g_Dice.percent(6.7))
         {
-            auto girl = girl_pool().CreateRandomGirl(17);
+            auto girl = CreateRandomGirl(SpawnReason::KIDNAPPED, 18);
             ss << "A man cannot pay so he sells you his daughter " << girl->FullName() << " to clear his debt to you.\n";
             girl->AddMessage("${name}'s father could not pay his debt to you so he gave her to you as payment.", IMGTYPE_PROFILE, EVENT_DUNGEON);
             dungeon().AddGirl(std::move(girl), DUNGEON_NEWGIRL);
@@ -888,7 +888,7 @@ void cGame::UpdateMarketSlaves()
 
         if (g_Dice.percent(settings().get_percent(settings::SLAVE_MARKET_UNIQUE_CHANCE)))
         {
-            auto girl = girl_pool().GetRandomGirl(true, false, false, false, false, true);
+            auto girl = GetRandomUniqueGirl(true, false, false, false, false);
             if(girl) {
                 GetSlaveMarket().AddGirl(girl);
                 continue;
@@ -899,7 +899,7 @@ void cGame::UpdateMarketSlaves()
         // we didn't make a unique girl so we need a random one
         // try to generate a new random girl. Don't allow name duplicates
         for(int n = 0; n < 20; ++n) {
-            auto girl = girl_pool().CreateRandomGirl(0, true);
+            auto girl = CreateRandomGirl(SpawnReason::SLAVE_MARKET);
             // still valid?
             if(girl) {
                 GetSlaveMarket().AddGirl(girl);

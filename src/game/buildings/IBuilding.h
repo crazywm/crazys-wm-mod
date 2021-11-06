@@ -214,7 +214,7 @@ protected:
     sGirl* get_active_matron() { return m_ActiveMatron; }
 
     struct sMeetGirlData {
-        bool Arena = false;
+        SpawnReason Spawn = SpawnReason::COUNT;
         EDefaultEvent Event;
     } m_MeetGirlData;
 

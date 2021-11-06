@@ -863,6 +863,28 @@ enum EventType {
     EVENT_DEBUG = 99,
 };
 
+enum class SpawnReason {
+    MEETING,            // spawn in town to be found by walking around
+    CLINIC,             // spawn in clinic to be found by walking around
+    STUDIO,             // spawn in studio for auditions
+    ARENA,              // spawn in arena for tryouts
+    CATACOMBS,          // spawn in catacombs to be found during exploration
+    RECRUITED,          // spawn because of a recruitment action
+    SLAVE_MARKET,       // spawn in the slave market
+    PLAYER_DAUGHTER,    // spawn when a player daughter gets generated
+    KIDNAPPED,          // spawn when a gang kidnaps a girl, or you otherwise acquire ownership through (threat of) force
+    REWARD,             // spawn as a reward for achieving an objective
+    CUSTOMER,           // spawn as a female customer
+    BIRTH,              // she is born as the daughter of one of your girls (player is not the father)
+    COUNT
+};
+
+constexpr const int NUM_SPAWN = static_cast<int>(SpawnReason::COUNT);
+
+const std::array<const char*, NUM_SPAWN>& get_spawn_names();
+const char* get_spawn_name(SpawnReason stat);
+SpawnReason get_spawn_id(const std::string& name);
+
 // The following constants are used with counting child types for girls.
 const int CHILD00_TOTAL_BIRTHS        = 0;
 const int CHILD01_ALL_BEASTS        = 1;

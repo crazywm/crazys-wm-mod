@@ -1681,10 +1681,10 @@ std::shared_ptr<sGirl> IBuilding::meet_girl() const
 {
     std::shared_ptr<sGirl> girl;
     if(g_Dice.percent( g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_UNIQUE) )) {
-        girl = g_Game->GetRandomGirl(false, false, m_MeetGirlData.Arena, false, false, true);
+        girl = g_Game->GetRandomUniqueGirl(false, false, m_MeetGirlData.Spawn == SpawnReason::ARENA, false, false);
     }
     if(!girl)
-        girl = g_Game->GetRandomGirl(false, false, m_MeetGirlData.Arena, false, false, false);
+        girl = g_Game->CreateRandomGirl(m_MeetGirlData.Spawn);
     if(girl) {
         girl->TriggerEvent(m_MeetGirlData.Event);
     }

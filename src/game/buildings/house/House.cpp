@@ -821,7 +821,7 @@ sWorkJobResult Recruiter::DoWork(sGirl& girl, bool is_night) {
     int findroll = (d100());
     if (findroll < findchance + 10)    // `J` While out recruiting she does find someone...
     {
-        std::shared_ptr<sGirl> newgirl = g_Game->GetRandomGirl(false, (dispmod == -3 && chance(75)));
+        std::shared_ptr<sGirl> newgirl = g_Game->CreateRandomGirl(SpawnReason::RECRUITED);
         if (newgirl)
         {
             bool add = false;

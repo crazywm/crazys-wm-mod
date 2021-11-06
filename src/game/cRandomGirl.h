@@ -41,16 +41,11 @@ struct sGirl;
 struct sRandomGirl
 {
     sRandomGirl();
-    ~sRandomGirl();
 
     std::string Name;
     std::string Desc;
 
-    bool Human;                           // 1 means they are human otherwise they are not
-    bool Catacomb;                        // 1 means they are a monster found in catacombs, 0 means wanderer
-    bool Arena;                           // 1 means they are fighter found in arena
-    bool YourDaughter;                    // `J` 1 means they are your daughter
-    bool IsDaughter;                      // 1 means they are a set daughter
+    std::array<int, NUM_SPAWN> SpawnWeights;
 
     std::array<int, NUM_STATS> MinStats;   // min and max stats they may start with
     std::array<int, NUM_STATS> MaxStats;
@@ -84,24 +79,21 @@ struct sRandomGirl
 
 class cRandomGirls {
 public:
-    void LoadRandomGirlXML(const std::string& filename, const std::string& base_path,
-                           const std::function<void(const std::string&)>& error_handler);
-    sRandomGirl* find_random_girl_by_name(const std::string& name);
-    sRandomGirl GetRandomGirlSpec(bool Human0Monster1, bool arena, bool daughter, const std::string& findbyname);
-    std::shared_ptr<sGirl> CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool kidnapped, bool arena,
-                                            bool your_daughter, bool is_daughter, const std::string& find_by_name);
+    void load_from_file(const std::string& filename, const std::string& base_path,
+                        const std::function<void(const std::string&)>& error_handler);
+
+    std::shared_ptr<sGirl> spawn(SpawnReason reason, int age);
+    std::shared_ptr<sGirl> spawn(SpawnReason reason, int age, const std::string& name);
 private:
     void load_random_girl_imp(const std::string& filename, const std::string& base_path,
                            const std::function<void(const std::string&)>& error_handler);
 
+    std::shared_ptr<sGirl> create_from_template(const sRandomGirl& template_, SpawnReason reason, int age) const;
+
+    const sRandomGirl* get_spec(const std::string& name);
+    const sRandomGirl* get_spec(SpawnReason reason, int age = -1);
+
     std::vector<sRandomGirl> m_RandomGirls;
-
-    int m_NumHumanRandomGirls = 0;
-    int m_NumNonHumanRandomGirls = 0;
-
-    int m_NumRandomYourDaughterGirls = 0;
-    int m_NumHumanRandomYourDaughterGirls = 0;
-    int m_NumNonHumanRandomYourDaughterGirls = 0;
 };
 
 

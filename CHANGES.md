@@ -10,7 +10,7 @@ for lower skills.
 ## Changes
 * Added dynamic skill caps
 * New format for rgirl xml that allows specification of spawn reasons
-* RGirls can now specify their own triggers
+* Reworked spawn code
 
 ## Fixes
 * text placement on gang screen

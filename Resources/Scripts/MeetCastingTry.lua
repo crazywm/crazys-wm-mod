@@ -76,7 +76,8 @@ function MeetCasting(girl)
                     Dialog("Your men know you well enough - they drag her to the dungeon before you even have to say anything.")
                     Dialog("Wiping spittle off your cheek, you yell after them: \"Throw a slave bracelet on that bitch. I'll attend to her shortly.\"")
                     local age = wm.Range(18, 22)
-                    local othergirl = wm.CreateRandomGirl(age, true, false, true, false, false)
+                    local othergirl = wm.CreateRandomGirl(wm.SPAWN.KIDNAPPED, age)
+                    -- TODO Set slave status
                     -- TODO DUNGEON_GIRLKIDNAPPED
                     wm.ToDungeon(othergirl, 3)
                 end

@@ -141,14 +141,6 @@ void cGirls::UpdateAskPrice(sGirl& girl, bool vari)
 
 }
 
-std::shared_ptr<sGirl>
-cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool childnaped, bool arena,
-                         bool daughter, bool isdaughter, string findbyname)
-{
-    return m_RandomGirls.CreateRandomGirl(age, slave, undead, Human0Monster1, childnaped, arena, daughter, isdaughter, findbyname);
-}
-
-
 // `J` moved exp check into levelup to reduce coding
 void cGirls::LevelUp(sGirl& girl)
 {
@@ -986,7 +978,7 @@ std::shared_ptr<sGirl> cGirls::GetUniqueYourDaughterGirl(int Human0Monster1)
     return m_Girls->TakeGirl(ptr);
 }
 
-std::shared_ptr<sGirl> cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter, bool require_unique)
+std::shared_ptr<sGirl> cGirls::GetUniqueGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
 {
     int num_girls = m_Girls->num();
     int num_monster = m_Girls->count([](const sGirl& girl) { return girl.is_monster(); });
@@ -994,16 +986,8 @@ std::shared_ptr<sGirl> cGirls::GetRandomGirl(bool slave, bool catacomb, bool are
     int num_daughter = m_Girls->count([](const sGirl& girl) { return girl.is_isdaughter(); });
     int num_slave = m_Girls->count([](const sGirl& girl) { return girl.is_slave(); });
 
-    if ((num_girls == num_slave + num_monster + num_arena + GetNumYourDaughterGirls() + num_daughter) || num_girls == 0)
-    {
-        for(int r = 0; r < 3; ++r)
-        {
-            AddGirl(CreateRandomGirl(0));
-        }
-    }
-
     auto choice = m_Girls->get_random_girl([&](const sGirl& girl) {
-        if(require_unique && !girl.IsUnique()) {
+        if(!girl.IsUnique()) {
             return false;
         }
         return  girl.is_slave() == slave
@@ -1170,7 +1154,7 @@ int cGirls::GetSkillWorth(const sGirl& girl)
 void cGirls::LoadRandomGirl(const string& filename, const std::string& base_path,
                             const std::function<void(const std::string&)>& error_handler)
 {
-    m_RandomGirls.LoadRandomGirlXML(filename, base_path, error_handler);
+    m_RandomGirls.load_from_file(filename, base_path, error_handler);
 }
 
 // this function throws if the XML file itself cannot be opened or parsed, but
@@ -3898,32 +3882,28 @@ void cGirls::TakeGold(sGirl& girl) {
     g_Game->push_message(message, 0);
 }
 
-std::shared_ptr<sGirl> cGirls::GetDaughterByName(const string& name, bool slave, bool non_human, bool player_dad) {
+std::shared_ptr<sGirl> cGirls::GetDaughterByName(const string& name, bool player_dad) {
     auto current = find_girl_by_name(name);
     // did we get a girl?
     if (current)    return TakeGirl(current);        // yes, we did!
 
     //    OK, we need to search for a random girl
-    sRandomGirl* rgirl = m_RandomGirls.find_random_girl_by_name(name);
-    if (rgirl)
-        return g_Game->girl_pool().CreateRandomGirl(17, slave, false, non_human, false, false, player_dad, true, name);
-
-    return nullptr;
+    return m_RandomGirls.spawn(player_dad ? SpawnReason::PLAYER_DAUGHTER : SpawnReason::BIRTH, 18, name);
 }
 
 std::shared_ptr<sGirl> cGirls::CreateDaughter(sGirl& mom, bool player_dad) {
     std::shared_ptr<sGirl> sprog = nullptr;
     bool slave = mom.is_slave();
-    bool non_human = mom.is_human();
+    bool non_human = !mom.is_human();
 
     /*
-    *    Check canonical daughters
-    */
+     *    Check canonical daughters
+     */
     while (!mom.m_Canonical_Daughters.empty()) {
         int index = g_Dice.random(mom.m_Canonical_Daughters.size());
         string name = mom.m_Canonical_Daughters[index];
 
-        sprog = g_Game->girl_pool().GetDaughterByName(name, slave, non_human, player_dad);
+        sprog = GetDaughterByName(name, player_dad);
         mom.m_Canonical_Daughters.erase(mom.m_Canonical_Daughters.begin() + index);
 
         if(sprog)
@@ -3933,15 +3913,18 @@ std::shared_ptr<sGirl> cGirls::CreateDaughter(sGirl& mom, bool player_dad) {
     // If the player is the father, check that shortlist
     if(player_dad && GetNumYourDaughterGirls() > 0)                // this should check all your daughter girls that apply
     {
-        sprog = g_Game->girl_pool().GetUniqueYourDaughterGirl(non_human);                        // first try to get the same human/nonhuman as mother
+        sprog = GetUniqueYourDaughterGirl(non_human);                        // first try to get the same human/nonhuman as mother
         if (!sprog && non_human)
-            sprog = g_Game->girl_pool().GetUniqueYourDaughterGirl(false);    // next, if mom is nonhuman, try to get a human daughter
+            sprog = GetUniqueYourDaughterGirl(false);    // next, if mom is nonhuman, try to get a human daughter
     }
 
     /*
     *    Did not find a girl, so back to the random girls
     */
-    return CreateRandomGirl(17, slave, false, non_human, false, false, player_dad);
+    if(player_dad) {
+        return CreateRandomGirl(SpawnReason::PLAYER_DAUGHTER, 18);
+    }
+    return CreateRandomGirl(SpawnReason::BIRTH, 18);
 }
 
 void cGirls::FireGirls(const std::vector<sGirl*>& targets) {
@@ -4083,4 +4066,8 @@ void cGirls::SetSlaveStats(sGirl& girl) {
     girl.spirit(-5);
     girl.dignity(-5);
     girl.set_default_house_percent();
+}
+
+std::shared_ptr<sGirl> cGirls::CreateRandomGirl(SpawnReason reason, int age) {
+    return m_RandomGirls.spawn(reason, age);
 }

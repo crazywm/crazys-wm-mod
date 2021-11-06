@@ -40,6 +40,7 @@ sClinic::sClinic() : IBuilding(BuildingType::CLINIC, "Clinic")
     m_FirstJob = JOB_GETHEALING;
     m_LastJob = JOB_JANITOR;
     m_MatronJob = JOB_CHAIRMAN;
+    m_MeetGirlData.Spawn = SpawnReason::CLINIC;
     m_MeetGirlData.Event = EDefaultEvent::MEET_GIRL_CLINIC;
 
     declare_resource(CarePointsBasicId);

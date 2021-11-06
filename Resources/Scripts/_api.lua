@@ -71,11 +71,11 @@ function wm.GivePlayerRandomSpecialItem() end
 function wm.AddBeasts(change) end
 function wm.GetBeasts() end
 function wm.AddCustomerToDungeon(reason, daughters, wife) end
-function wm.AddFamilyToDungeon(num_daughters, mother, kidnapped, slave) end
+function wm.AddFamilyToDungeon(num_daughters, mother) end
 function wm.Percent(percent) end
 function wm.Range(min, max) end
 function wm.GameOver() end
 
 function wm.AcquireGirl(girl) end
-function wm.CreateRandomGirl(age, slave, non_human, kidnapped, arena, daughter) end
+function wm.CreateRandomGirl(reason, age) end
 function wm.ToDungeon(girl, reason) end

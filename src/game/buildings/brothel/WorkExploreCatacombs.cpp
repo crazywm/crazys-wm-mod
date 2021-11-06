@@ -87,22 +87,15 @@ sWorkJobResult WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
             fight_outcome = EFightResult::VICTORY;    // no fight so auto-win
         else        // otherwise do the fight
         {
-            auto tempgirl = g_Game->CreateRandomGirl(18, false, false, true);
+            auto tempgirl = g_Game->CreateRandomGirl(SpawnReason::CATACOMBS);
             if (tempgirl)        // `J` reworked incase there are no Non-Human Random Girls
             {
                 fight_outcome = GirlFightsGirl(girl, *tempgirl);
             }
             else // `J` this should have been corrected with the addition of the default random girl but leaving it in just in case.
             {
-                g_LogFile.log(ELogLevel::ERROR, "You have no Non-Human Random Girls for your girls to fight");
-                if (rng % girl.get_skill(SKILL_COMBAT) < 5) fight_outcome = EFightResult::DEFEAT;
-                else
-                {
-                    std::stringstream sse;
-                    sse << "(Error: You need a Non-Human Random Girl to allow WorkExploreCatacombs randomness)";
-                    girl.AddMessage(sse.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-                    fight_outcome = EFightResult::VICTORY;
-                }
+                g_LogFile.log(ELogLevel::ERROR, "You have no Catacomb Girls for your girls to fight");
+                fight_outcome = EFightResult::DEFEAT;
             }
         }
 
@@ -170,12 +163,12 @@ sWorkJobResult WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
         std::shared_ptr<sGirl> ugirl = nullptr;
         if (rng.percent( g_Game->settings().get_percent(settings::WORLD_CATACOMB_UNIQUE) ))    // chance of getting unique girl
         {
-            ugirl = g_Game->GetRandomGirl(false, true);                // Unique monster girl type
+            ugirl = g_Game->GetRandomUniqueGirl(false, true);                // Unique monster girl type
         }
         if (ugirl == nullptr)        // if not unique or a unique girl can not be found
         {
             // the girl will be added to the dungeon, which will start managing object lifetimes
-            ugirl = g_Game->CreateRandomGirl(0, false, true, true);    // create a random girl
+            ugirl = g_Game->CreateRandomGirl(SpawnReason::CATACOMBS);    // create a random girl
             if (ugirl)
             {
                 type_monster_girls++;

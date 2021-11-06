@@ -289,12 +289,12 @@ bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         if (ForSale_Food >= 15000 && chance( 100.f * g_Game->settings().get_percent( settings::SLAVE_MARKET_UNIQUE_CHANCE ) ))
         {
             cost = 15000;
-            ugirl = g_Game->GetRandomGirl();                // Unique girl type
+            ugirl = g_Game->GetRandomUniqueGirl(true);                // Unique girl type
         }
         if (ugirl == nullptr)        // if not unique or a unique girl can not be found
         {
             cost = 10000;
-            ugirl = g_Game->CreateRandomGirl(0);    // create a random girl
+            ugirl = g_Game->CreateRandomGirl(SpawnReason::SLAVE_MARKET);    // create a random girl
         }
         if (ugirl)
         {
@@ -1089,7 +1089,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
     int gainmax = (int)(performance / 30) + 1;
     int gain = uniform(1, gainmax);
     // TODO make this a real MONSTER, not a girl the player never sees anyway
-    auto tempgirl = g_Game->CreateRandomGirl(18, false, false, true);
+    auto tempgirl = g_Game->CreateRandomGirl(SpawnReason::CATACOMBS);
     if (tempgirl)        // `J` reworked in case there are no Non-Human Random Girls
     {
         auto fight_outcome = GirlFightsGirl(girl, *tempgirl);

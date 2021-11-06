@@ -852,7 +852,8 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
                     std::stringstream CGmsg;
 
                     // `J` create the customer
-                    auto custgirl = g_Game->CreateRandomGirl(g_Dice % 40 + 18, true, false, (g_Dice % 3 == 1));    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+                    auto custgirl = g_Game->CreateRandomGirl(SpawnReason::CUSTOMER, g_Dice % 40 + 18);
+                    cGirls::SetSlaveStats(*custgirl);
 
                     // `J` and adjust her stats
                     sInventoryItem* item_p = g_Game->inventory_manager().GetItem(item);
@@ -1525,8 +1526,9 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
         itemtext << "Your gang " << (guardgang ? guardgang->name() : "");
         std::stringstream CGmsg;
         // `J` create the customer
-        auto custgirl = g_Game->CreateRandomGirl(18 + (std::max(0, g_Dice % 40 - 10)), true, false,
-                (g_Dice % 3 == 1));    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+        auto custgirl = g_Game->CreateRandomGirl(SpawnReason::CUSTOMER,
+                                                 18 + (std::max(0, g_Dice % 40 - 10)));
+        cGirls::SetSlaveStats(*custgirl);
         int emprisontraittime = 1;
         custgirl->pclove(-(g_Dice % 50 + 50));
         custgirl->pcfear(g_Dice % 50 + 50);

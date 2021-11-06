@@ -160,12 +160,9 @@ public:
 
     // girls
     cGirls& girl_pool();
-    std::shared_ptr<sGirl> GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false,
-                                         bool daughter = false, bool isdaughter = false, bool require_unique = false);
-    std::shared_ptr<sGirl>
-    CreateRandomGirl(int age, bool slave = false, bool undead = false, bool Human0Monster1 = false,
-                     bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false,
-                     std::string findbyname = "");
+    std::shared_ptr<sGirl> GetRandomUniqueGirl(bool slave = false, bool catacomb = false, bool arena = false,
+                                         bool daughter = false, bool isdaughter = false);
+    std::shared_ptr<sGirl> CreateRandomGirl(SpawnReason reason, int age=-1);
 
     // inventory
     cInventory& inventory_manager();

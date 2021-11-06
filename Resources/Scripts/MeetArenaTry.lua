@@ -66,7 +66,7 @@ function PersonalSupervision(girl)
                     Dialog("Spitting with anger, you detail five of your guards to drag her off to the dungeons.")
                     -- TODO this creates a new girl, why?
                     local age = wm.Range(18, 30)
-                    local girl = wm.CreateRandomGirl(age, false, false, true, false, false)
+                    local girl = wm.CreateRandomGirl(wm.SPAWN.KIDNAPPED, age)
                     -- TODO DUNGEON_GIRLKIDNAPPED
                     wm.ToDungeon(girl, 3)
                     Dialog("You hear murmurings from the crowd. You realize you have just kidnapped a woman in front of hundreds of witnesses. Your faux pas infuriates you even more.")

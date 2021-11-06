@@ -212,20 +212,9 @@ cInventory& IGame::inventory_manager()
     return *m_InvManager;
 }
 
-std::shared_ptr<sGirl> IGame::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter, bool require_unique)
-{
-    return m_Girls->GetRandomGirl(slave, catacomb, arena, daughter, isdaughter, require_unique);
-}
-
 cGirls& IGame::girl_pool()
 {
     return *m_Girls;
-}
-
-std::shared_ptr<sGirl> IGame::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool childnaped,
-                                               bool arena, bool daughter, bool isdaughter, std::string findbyname)
-{
-    return m_Girls->CreateRandomGirl(age, slave, undead, Human0Monster1, childnaped, arena, daughter, isdaughter, findbyname);
 }
 
 cTariff& IGame::tariff()
@@ -297,6 +286,15 @@ bool IGame::CanWalkAround() const {
 
 void IGame::DoWalkAround() {
     m_WalkAround = true;
+}
+
+std::shared_ptr<sGirl> IGame::CreateRandomGirl(SpawnReason reason, int age) {
+    return girl_pool().CreateRandomGirl(reason, age);
+}
+
+std::shared_ptr<sGirl>
+IGame::GetRandomUniqueGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter) {
+    return girl_pool().GetUniqueGirl(slave, catacomb, arena, daughter, isdaughter);
 }
 
 

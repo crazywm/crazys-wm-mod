@@ -29,6 +29,7 @@
 #include "character/predicates.h"
 #include "character/cPlayer.h"
 #include "cNameList.h"
+#include "utils/streaming_random_selection.hpp"
 
 namespace settings {
     extern const char* USER_ACCOMODATION_FREE;
@@ -44,18 +45,16 @@ sRandomGirl::sRandomGirl()
     Name = "";
     Desc = "-";
 
-    Human = true;
-    Catacomb = Arena = YourDaughter = IsDaughter = false;
+    SpawnWeights.fill(0);
 
     //assigning defaults
-    for (int i = 0; i < NUM_STATS; i++)
+    for (auto stat: StatsRange)
     {
-        // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.h > sRandomGirl
-        switch (i)
+        switch (stat)
         {
         case STAT_HAPPINESS:
         case STAT_HEALTH:
-            MinStats[i] = MaxStats[i] = 100;
+            MinStats[stat] = MaxStats[stat] = 100;
             break;
         case STAT_TIREDNESS:
         case STAT_FAME:
@@ -65,123 +64,70 @@ sRandomGirl::sRandomGirl()
         case STAT_PCLOVE:
         case STAT_PCHATE:
         case STAT_ASKPRICE:
-            MinStats[i] = MaxStats[i] = 0;
+            MinStats[stat] = MaxStats[stat] = 0;
             break;
         case STAT_AGE:
-            MinStats[i] = 17; MaxStats[i] = 25;
+            MinStats[stat] = 17; MaxStats[stat] = 25;
             break;
         case STAT_MORALITY:
         case STAT_REFINEMENT:
         case STAT_DIGNITY:
         case STAT_SANITY:
-            MinStats[i] = -10; MaxStats[i] = 10;
+            MinStats[stat] = -10; MaxStats[stat] = 10;
             break;
         case STAT_LACTATION:
-            MinStats[i] = -20; MaxStats[i] = 20;
+            MinStats[stat] = -20; MaxStats[stat] = 20;
             break;
         default:
-            MinStats[i] = 30; MaxStats[i] = 60;
+            MinStats[stat] = 30; MaxStats[stat] = 60;
             break;
         }
     }
-    for (int i = 0; i < NUM_SKILLS; i++)// Changed from 10 to NUM_SKILLS so that it will always set the proper number of defaults --PP
-    {
-        MinSkills[i] = 0;                // Changed from 30 to 0, made no sense for all skills to be a default of 30.
-        MaxSkills[i] = 30;
-    }
+    MinSkills.fill(0);
+    MaxSkills.fill(30);
+
     // now for a few overrides
     MinMoney = 0;
     MaxMoney = 10;
 }
 
-sRandomGirl::~sRandomGirl() = default;
-
-sRandomGirl
-cRandomGirls::GetRandomGirlSpec(bool Human0Monster1, bool arena, bool daughter, const std::string& findbyname)
+const sRandomGirl* cRandomGirls::get_spec(SpawnReason reason, int age)
 {
     // If we do not have any girls to choose from, return a hardcoded "Error Girl"
     if (m_RandomGirls.empty()) {
-        sRandomGirl hard_coded;
-        hard_coded.Desc = "Hard Coded Random Girl\n(The game did not find a valid .rgirlsx file)";
-        hard_coded.Name = "Default";
-        hard_coded.Human = (Human0Monster1 == 0);
-        hard_coded.Arena = arena;
-        hard_coded.YourDaughter = daughter;
-
-        return hard_coded;
+        return nullptr;
     }
 
-    // 1. The most direct check is to try to find a girl by name.
-    if (!findbyname.empty())
-    {
-        auto candidate = find_random_girl_by_name(findbyname);
-        if(candidate)
-            return *candidate;
-    }
-
-    // 2. Next we see if you are looking for your own daughter
-    if (daughter &&    m_NumRandomYourDaughterGirls > 0)
-    {
-        bool monstergirl = Human0Monster1;
-        if (m_NumNonHumanRandomYourDaughterGirls < 1)
-            monstergirl = false;
-        // if there are no monster girls we will accept a human
-
-        int offset = g_Dice % m_RandomGirls.size();    // pick a random stating point
-        for(unsigned i = 0; i < m_RandomGirls.size(); ++i) {
-            auto& candidate = m_RandomGirls.at((i + offset) % m_RandomGirls.size());
-            if (!candidate.YourDaughter)
-                continue;
-
-            if ((bool)candidate.Human == !monstergirl) {
-                return candidate;
-            }
+    RandomSelector<const sRandomGirl> selector;
+    int index = static_cast<int>(reason);
+    for(const auto& girl : m_RandomGirls) {
+        if(girl.SpawnWeights[index] > 0 &&
+                // does she fit into the right age bracket?
+                (age < 0 || (girl.MinStats[STAT_AGE] <= age && age <= girl.MaxStats[STAT_AGE])) ) {
+            selector.process(&girl, float(girl.SpawnWeights[index]));
         }
     }
 
-    int offset = g_Dice % m_RandomGirls.size();    // pick a random stating point
-    for(unsigned i = 0; i < m_RandomGirls.size(); ++i) {
-        auto& candidate = m_RandomGirls.at((i + offset) % m_RandomGirls.size());
-        if (Human0Monster1 == (candidate.Human == 0))    {            // test for humanity
-            return candidate;
-        }
-    }
-
-    // if we couldn't find a girl that fits the specs, so we just take a random one and set the flags as we want
-    // them. We make a copy here since we modify data.
-    auto candidate = m_RandomGirls.at( g_Dice % m_RandomGirls.size() );
-    candidate.Human = (Human0Monster1 == 0);
-    candidate.Arena = arena;
-    candidate.YourDaughter = daughter;
-    return candidate;
+    return selector.selection();
 }
 
-
-std::shared_ptr<sGirl>
-cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool kidnapped, bool arena,
-                               bool your_daughter, bool is_daughter, const std::string& find_by_name)
-                         {
-
-    g_LogFile.debug("girls", "cGirls::CreateRandomGirl");
-    auto girl_template = GetRandomGirlSpec(Human0Monster1, arena, your_daughter, find_by_name);
-
+std::shared_ptr<sGirl> cRandomGirls::create_from_template(const sRandomGirl& template_, SpawnReason reason, int age) const {
     auto newGirl = std::make_shared<sGirl>(false);
     newGirl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_FREE);
-    newGirl->SetImageFolder(girl_template.ImageDirectory);
+    newGirl->SetImageFolder(template_.ImageDirectory);
 
-    newGirl->m_Desc = girl_template.Desc;
-    newGirl->m_Name = girl_template.Name;
-
+    newGirl->m_Desc = template_.Desc;
+    newGirl->m_Name = template_.Name;
 
     // set all jobs to null
     newGirl->m_DayJob = newGirl->m_NightJob = JOB_UNSET;
     newGirl->m_WorkingDay = newGirl->m_PrevWorkingDay = 0;
 
-    newGirl->m_Money = (g_Dice % (girl_template.MaxMoney - girl_template.MinMoney)) + girl_template.MinMoney;    // money
+    newGirl->m_Money = g_Dice.closed_uniform(template_.MinMoney, template_.MaxMoney);
 
     // skills
     for (auto skill : SkillsRange) {
-        newGirl->set_skill_direct(skill, g_Dice.closed_uniform(girl_template.MinSkills[skill], girl_template.MaxSkills[skill]));
+        newGirl->set_skill_direct(skill, g_Dice.closed_uniform(template_.MinSkills[skill], template_.MaxSkills[skill]));
     }
     for (auto skill : SkillsRange) {
         newGirl->upd_skill(skill, 0);
@@ -189,18 +135,18 @@ cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Mons
 
     // stats
     for (auto stat : StatsRange) {
-        newGirl->set_stat(stat, g_Dice.closed_uniform(girl_template.MinStats[stat], girl_template.MaxStats[stat]));
+        newGirl->set_stat(stat, g_Dice.closed_uniform(template_.MinStats[stat], template_.MaxStats[stat]));
     }
 
     // add the traits
-    for (int i = 0; i < girl_template.TraitNames.size(); i++)
+    for (int i = 0; i < template_.TraitNames.size(); i++)
     {
-        std::string name = girl_template.TraitNames[i];
+        std::string name = template_.TraitNames[i];
         // TODO (traits) inherent/permanent traits
-        newGirl->gain_trait(name.c_str(), girl_template.TraitChance[i]);
+        newGirl->gain_trait(name.c_str(), template_.TraitChance[i]);
     }
 
-    for (auto& item_candidate : girl_template.Inventory)
+    for (auto& item_candidate : template_.Inventory)
     {
         if (!g_Dice.percent(item_candidate.Chance)) {
             continue;
@@ -212,31 +158,11 @@ cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Mons
         }
     }
 
-    if (girl_template.Human == 0)           newGirl->raw_traits().add_inherent_trait("Not Human");
-    if (girl_template.YourDaughter == 1)    newGirl->raw_traits().add_inherent_trait("Your Daughter");
+    // if a fixed age was requested, ensure that we get it
+    if (age >= 18)    newGirl->set_stat(STAT_AGE, age);
 
-    newGirl->set_stat(STAT_FAME, 0);
-    if (age != 0)    newGirl->set_stat(STAT_AGE, age);
-    newGirl->set_stat(STAT_HEALTH, 100);
-    newGirl->set_stat(STAT_HAPPINESS, 100);
-    newGirl->set_stat(STAT_TIREDNESS, 0);
-
-    if (kidnapped)    // this girl has been taken against her will so make her rebelious
-        {
-        newGirl->add_temporary_trait("Kidnapped", std::max(5, g_Dice.bell(0, 25)));        // 5-25 turn temp trait
-        int spirit = g_Dice.bell(50, 125);
-        int conf = g_Dice.bell(50, 125);
-        int obey = g_Dice.bell(-50, 50);
-        int hate = g_Dice.bell(0, 100);
-
-        newGirl->set_stat(STAT_SPIRIT, spirit);
-        newGirl->set_stat(STAT_CONFIDENCE, conf);
-        newGirl->set_stat(STAT_OBEDIENCE,  obey);
-        newGirl->set_stat(STAT_PCHATE, hate);
-        }
-
-    if (newGirl->age() < 18) newGirl->set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
-    if (g_Dice.percent(5))        newGirl->gain_trait("Former Addict");
+    if (newGirl->age() < 18)    newGirl->set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+    if (g_Dice.percent(5))   newGirl->gain_trait("Former Addict");
     else
     {
         newGirl->gain_trait("Smoker", 5);
@@ -248,43 +174,54 @@ cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Mons
 
     newGirl->set_default_house_percent();
 
-    // If the girl is a slave or arena.. then make her more obedient.
-    if (slave || newGirl->is_slave())
-    {
-        newGirl->set_status(STATUS_SLAVE);
-        newGirl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_SLAVE);
-        newGirl->m_Money = 0;
-        newGirl->upd_base_stat(STAT_OBEDIENCE, 20);
-    }
-    if (arena || newGirl->has_status(STATUS_ARENA))
-    {
-        newGirl->set_status(STATUS_ARENA);
-        newGirl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_SLAVE);
-        newGirl->m_Money = 0;
-        newGirl->upd_base_stat(STAT_OBEDIENCE, 20);
-    }
-    if (your_daughter || is_your_daughter(*newGirl))    // `J` if she is your daughter...
+    switch (reason) {
+        case SpawnReason::ARENA:
+            newGirl->set_status(STATUS_ARENA);
+        break;
+        case SpawnReason::PLAYER_DAUGHTER:
+            newGirl->raw_traits().add_inherent_trait("Your Daughter");
+        break;
+        case SpawnReason::SLAVE_MARKET:
+            newGirl->set_status(STATUS_SLAVE);
+            break;
+        // this girl has been taken against her will so make her rebellious
+        case SpawnReason::KIDNAPPED:
         {
-        newGirl->m_AccLevel = 9;            // pamper her
-        newGirl->m_Money = 1000;
-        newGirl->house(0);    // your daughter gets to keep all she gets
-        newGirl->raw_traits().add_inherent_trait("Your Daughter");
-        newGirl->set_stat(STAT_OBEDIENCE, std::max(newGirl->obedience(), 80));    // She starts out obedient
-        your_daughter = true;
+            newGirl->add_temporary_trait("Kidnapped", std::max(5, g_Dice.bell(0, 25)));        // 5-25 turn temp trait
+            int spirit = g_Dice.bell(50, 125);
+            int conf = g_Dice.bell(50, 125);
+            int obey = g_Dice.bell(-50, 50);
+            int hate = g_Dice.bell(0, 100);
+
+            newGirl->set_stat(STAT_SPIRIT, spirit);
+            newGirl->set_stat(STAT_CONFIDENCE, conf);
+            newGirl->set_stat(STAT_OBEDIENCE,  obey);
+            newGirl->set_stat(STAT_PCHATE, hate);
         }
-    if (is_daughter || newGirl->has_status(STATUS_ISDAUGHTER))
-    {
-        newGirl->set_status(STATUS_ISDAUGHTER);
-        newGirl->m_Money = 0;
-        newGirl->upd_base_stat(STAT_OBEDIENCE, 20);
+            break;
+        case SpawnReason::MEETING:
+        case SpawnReason::STUDIO:
+        case SpawnReason::CLINIC:
+        case SpawnReason::CATACOMBS:
+        case SpawnReason::REWARD:
+        case SpawnReason::RECRUITED:
+        case SpawnReason::BIRTH:
+        case SpawnReason::CUSTOMER:
+        case SpawnReason::COUNT:
+        break;
     }
 
+    if(newGirl->is_slave()) {
+        newGirl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_SLAVE);
+    } else {
+        newGirl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_FREE);
+    }
     newGirl->raw_traits().update();
 
     //
     std::string first_name = g_GirlNameList.random();
     std::string surname;
-    if (your_daughter) {
+    if (is_your_daughter(*newGirl)) {
         surname = g_Game->player().Surname();    // give her your last name
     } else if (g_Dice.percent(90)) {
         surname = g_SurnameList.random();
@@ -292,7 +229,7 @@ cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Mons
     newGirl->SetName(std::move(first_name), "", std::move(surname));
 
     // load triggers
-    for(auto& trigger : girl_template.Triggers) {
+    for(auto& trigger : template_.Triggers) {
         newGirl->m_EventMapping->SetEventHandler(trigger.Event, trigger.Script, trigger.Function);
     }
 
@@ -303,8 +240,30 @@ cRandomGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Mons
     return newGirl;
 }
 
-void cRandomGirls::LoadRandomGirlXML(const std::string& filename, const std::string& base_path,
-                                     const std::function<void(const std::string&)>& error_handler)
+std::shared_ptr<sGirl> cRandomGirls::spawn(SpawnReason reason, int age) {
+    // don't allow age < 18
+    if(age < 18)
+        age = -1;
+
+    g_LogFile.debug("girls", "cGirls::CreateRandomGirl");
+
+    // first, try to find a girl that matches human and age
+    auto attempt = get_spec(reason, age);
+    if(!attempt) attempt = get_spec(reason);
+
+    auto new_girl = std::make_shared<sGirl>(false);
+    if(!attempt) {
+        new_girl->m_Desc = "Hard Coded Random Girl\n(The game did not find a valid .rgirlsx file)";
+        new_girl->m_Name = "Default";
+        g_LogFile.error("girl", "Could not find a valid random girl template!");
+        return new_girl;
+    }
+
+    return create_from_template(*attempt, reason, age);
+}
+
+void cRandomGirls::load_from_file(const std::string& filename, const std::string& base_path,
+                                  const std::function<void(const std::string&)>& error_handler)
 {
     try {
         load_random_girl_imp(filename, base_path, error_handler);
@@ -379,18 +338,47 @@ namespace {
         target.Triggers.push_back(sRandomGirl::sTriggerData{event, script, function});
     }
 
+    void process_spawn_xml(sRandomGirl& target, const tinyxml2::XMLElement& el) {
+        SpawnReason reason = get_spawn_id(GetStringAttribute(el, "Reason"));
+        int weight = GetIntAttribute(el, "Weight");
+    }
+
     void load_from_xml_v0(sRandomGirl& target, const tinyxml2::XMLElement& el)
     {
         // name and description are easy
         target.Name = GetStringAttribute(el, "Name");
         g_LogFile.log(ELogLevel::NOTIFY, "Loading Legacy Rgirl : ", target.Name);
         target.Desc = GetDefaultedStringAttribute(el, "Desc", "-");
+
+        auto get_yesno_attr = [&](const char* attribute){
+            if (auto pt = el.Attribute(attribute)) {
+                return (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0);
+            } else {
+                return false;
+            }
+        };
+
+        auto set_from_attr = [&](const char* attribute, int& target, int true_val=100, int false_val=0) {
+            target = get_yesno_attr(attribute) ? true_val : false_val;
+        };
         // DQ - new random type ...
-        if (auto pt = el.Attribute("Human")) target.Human = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-        if (auto pt = el.Attribute("Catacomb")) target.Catacomb = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-        if (auto pt = el.Attribute("Arena")) target.Arena = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-        if (auto pt = el.Attribute("Your Daughter")) target.YourDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-        if (auto pt = el.Attribute("Is Daughter")) target.IsDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
+        set_from_attr("Catacomb", target.SpawnWeights[static_cast<int>(SpawnReason::CATACOMBS)]);
+        set_from_attr("Arena", target.SpawnWeights[static_cast<int>(SpawnReason::ARENA)]);
+        // is this even valid xml?
+        set_from_attr("Your Daughter", target.SpawnWeights[static_cast<int>(SpawnReason::PLAYER_DAUGHTER)]);
+
+        if(!get_yesno_attr("Human")) {
+            target.TraitNames.emplace_back("Not Human");
+            target.TraitChance.push_back(100);
+        }
+
+        // if no spawn weights are set, make a default of 1 for each except the ones that can be set with this old code
+        if(std::all_of(begin(target.SpawnWeights), end(target.SpawnWeights), [](int w){ return w == 0; })) {
+            target.SpawnWeights.fill(1);
+            target.SpawnWeights[static_cast<int>(SpawnReason::CATACOMBS)] = 0;
+            target.SpawnWeights[static_cast<int>(SpawnReason::ARENA)] = 0;
+            target.SpawnWeights[static_cast<int>(SpawnReason::PLAYER_DAUGHTER)] = 0;
+        }
 
         // loop through children
         for (auto& child : IterateChildElements(el))
@@ -425,12 +413,6 @@ namespace {
         target.Name = GetStringAttribute(el, "Name");
         g_LogFile.log(ELogLevel::NOTIFY, "Loading random girl : ", target.Name);
         target.Desc = GetDefaultedStringAttribute(el, "Desc", "-");
-        // DQ - new random type ...
-        if (auto pt = el.Attribute("Human")) target.Human = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-        if (auto pt = el.Attribute("Catacomb")) target.Catacomb = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-        if (auto pt = el.Attribute("Arena")) target.Arena = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-        if (auto pt = el.Attribute("Your Daughter")) target.YourDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
-        if (auto pt = el.Attribute("Is Daughter")) target.IsDaughter = strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0;
 
         // loop through children
         for (auto& child : IterateChildElements(el))
@@ -449,6 +431,8 @@ namespace {
                     process_item_xml(target, child);
                 } else if (tag == "Trigger") {
                     process_trigger_xml(target, child);
+                } else if (tag == "spawn") {
+                    process_spawn_xml(target, child);
                 } else {
                     // None of the above? Better ask for help then.
                     g_LogFile.warning("girl", "Unexpected tag: ", tag,
@@ -462,7 +446,7 @@ namespace {
     }
 }
 
-sRandomGirl* cRandomGirls::find_random_girl_by_name(const std::string& name)
+const sRandomGirl* cRandomGirls::get_spec(const std::string& name)
 {
     for(auto& rg : m_RandomGirls) {
         if(rg.Name == name) {
@@ -504,18 +488,6 @@ void cRandomGirls::load_random_girl_imp(const std::string& filename, const std::
         try {
             load(girl, el);
             girl.ImageDirectory = DirPath(base_path.c_str()) << girl.Name;
-            if (girl.YourDaughter)
-            {
-                m_NumRandomYourDaughterGirls++;
-                if (girl.Human)        m_NumHumanRandomYourDaughterGirls++;
-                if (!girl.Human)       m_NumNonHumanRandomYourDaughterGirls++;
-            }
-            else
-            {
-                if (girl.Human)        m_NumHumanRandomGirls++;
-                if (!girl.Human)       m_NumNonHumanRandomGirls++;
-            }
-
         } catch (const std::exception& error) {
             g_LogFile.error("girls", "Could not load rgirl from file '", filename, "': ", error.what());
             if(error_handler)
@@ -524,4 +496,12 @@ void cRandomGirls::load_random_girl_imp(const std::string& filename, const std::
             m_RandomGirls.pop_back();
         }
     }
+}
+
+std::shared_ptr<sGirl> cRandomGirls::spawn(SpawnReason reason, int age, const std::string& name) {
+    auto lookup = get_spec(name);
+    if(lookup) {
+        return create_from_template(*lookup, reason, age);
+    }
+    return {};
 }
