@@ -8,7 +8,17 @@ if(UNIX)
 else()
     # on windows, don't put the dlls/exes into their own directory
     set(CMAKE_INSTALL_BINDIR .)
-    install(DIRECTORY deps/mingw/ DESTINATION ${CMAKE_INSTALL_BINDIR})
+    # and find the required mingw dlls in its bin dir; add them to installation
+    if( MINGW )
+        message( STATUS "    Searching for MinGW DLLs." )
+        get_filename_component( Mingw_Path ${CMAKE_CXX_COMPILER} PATH )
+        set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS
+                ${Mingw_Path}/libgcc_s_seh-1.dll
+                ${Mingw_Path}/libstdc++-6.dll
+                ${Mingw_Path}/libwinpthread-1.dll)
+        message( STATUS "    Found ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}" )
+    endif( MINGW )
+    include( InstallRequiredSystemLibraries )
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -44,5 +54,11 @@ if(NOT ${PROJECT_VERSION_TYPE} STREQUAL "alpha")
 endif()
 install(FILES README.md CHANGES.md "Special Thanks.txt" gpl.txt config.xml segoeui.ttf DESTINATION .)
 install(TARGETS WhoreMaster lua tinyxml2)
+
+#  install the system packages
+if( CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS )
+    install( PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin COMPONENT System )
+endif( CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS )
+
 set(CPACK_GENERATOR "ZIP")
 include(CPack)
