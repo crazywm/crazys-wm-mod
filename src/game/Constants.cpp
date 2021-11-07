@@ -352,25 +352,3 @@ auto get_spawn_lookup() -> const auto& {
 SpawnReason get_spawn_id(const std::string& name) {
     return lookup_with_error(get_spawn_lookup(), name, "Trying to get invalid spawn location");
 }
-
-const std::array<const char*, NUM_SPAWN>& get_spawn_names() {
-    static std::array<const char*, NUM_SPAWN> names {
-        "Meeting", "Clinic", "Studio", "Arena",
-        "Catacombs", "Recruited", "Slave Market", "PlayerDaughter",
-        "Kidnapped", "Reward", "Customer", "Birth"
-    };
-    return names;
-}
-
-const char* get_spawn_name(SpawnReason location) {
-    return get_spawn_names()[static_cast<int>(location)];
-}
-
-auto get_spawn_lookup() -> const auto& {
-    static auto lookup = create_lookup_table<SpawnReason>(get_spawn_names());
-    return lookup;
-}
-
-SpawnReason get_spawn_id(const std::string& name) {
-    return lookup_with_error(get_spawn_lookup(), name, "Trying to get invalid spawn location");
-}
