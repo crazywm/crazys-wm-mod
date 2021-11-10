@@ -85,7 +85,7 @@ int ICharacter::upd_base_stat(int stat, int amount, bool usetraits)
 
 void ICharacter::upd_mod_stat(int stat, int amount)
 {
-    m_Stats[stat].m_TempMods += amount;
+    m_Stats[stat].m_PermanentMods += amount;
 }
 
 void ICharacter::upd_temp_stat(int stat_id, int amount, bool usetraits)
