@@ -282,8 +282,7 @@ public:
     int get_num_item_equiped(int Type) const;
     void set_default_house_percent();
 
-    bool equip(const sInventoryItem* item, bool force);
-
+    bool equip(const sInventoryItem* item, bool force) override;
     bool unequip(const sInventoryItem* item) override;
     bool can_equip(const sInventoryItem* item) const override;
 

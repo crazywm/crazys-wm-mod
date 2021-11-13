@@ -17,6 +17,7 @@ for lower skills.
 * job xml loading for bar jobs @Smargoos
 * traits are correctly removed when an item is unequipped. @Smargoos
 * equipped items set permanent skill/stat modifiers instead of temporary ones @Smargoos
+* loading of equipped items now applies their effects @Smargoos
 
 
 # Version 7.1.2alpha3

@@ -90,6 +90,7 @@ public:
     // equipping
     virtual bool can_equip(const sInventoryItem* item) const { return false; };
     virtual bool unequip(const sInventoryItem* item);
+    virtual bool equip(const sInventoryItem* item, bool force) { return false; };
 
     // -----------------------------------------------------------------------------------------------------------------
     //                                        Traits

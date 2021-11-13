@@ -165,7 +165,7 @@ void Inventory::load_from_xml(const tinyxml2::XMLElement& root, ICharacter* char
             if(num_eq > 0) {
                 assert(character);
                 for (int num = 0; num < num_eq; ++num) {
-                    add_to_equipment(item, *character);
+                    character->equip(item, true);
                 }
             }
         }
