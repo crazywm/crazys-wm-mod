@@ -364,14 +364,17 @@ void cTraitsCollection::decay_temporary_trait(sTraitID id, int decay) {
     // negative remaining time corresponds to permanent traits!
     auto new_end = std::remove_if(begin(m_DynamicTraits), end(m_DynamicTraits),
                                   [](const DynamicTrait& e) { return e.remaining_time == 0; });
-    m_DirtyFlag |= new_end != end(m_DynamicTraits);
-    m_DynamicTraits.erase(new_end, end(m_DynamicTraits));
+    if(erase_if(m_DynamicTraits, [](const DynamicTrait& e) { return e.remaining_time == 0; })) {
+        m_DirtyFlag = true;
+    }
     // if at least one trait was removed, recalculate trait effects.
     update();
 }
 
 void cTraitsCollection::_remove_dynamic_trait(std::uint64_t h) {
-    erase_if(m_DynamicTraits, [&](const DynamicTrait& e) { return e.id == h; });
+    if(erase_if(m_DynamicTraits, [&](const DynamicTrait& e) { return e.id == h; })) {
+        m_DirtyFlag = true;
+    }
 }
 
 cTraitsCollection::cTraitsCollection(const ITraitsManager* mgr) : m_TraitsManager(mgr) {
