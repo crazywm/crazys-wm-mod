@@ -1366,12 +1366,13 @@ void sGirl::set_stat(int stat, int amount)
 bool sGirl::unequip(const sInventoryItem* item) {
     if (!item) return false;    // if already unequiped do nothing
     if(!inventory().remove_from_equipment(item)) return false;        // nothing was unequipped
+    raw_traits().update();
     // unapply the effects
-    for (int i = 0; i < item->m_Effects.size(); i++)
+    for (const auto& effect : item->m_Effects)
     {
-        int eff_id = item->m_Effects[i].m_EffectID;
-        int affects = item->m_Effects[i].m_Affects;
-        int amount = item->m_Effects[i].m_Amount;
+        int eff_id = effect.m_EffectID;
+        int affects = effect.m_Affects;
+        int amount = effect.m_Amount;
 
         if (affects == sEffect::Skill)    upd_mod_skill(eff_id, -amount);
         else if (affects == sEffect::Stat)    upd_mod_stat(eff_id, -amount);

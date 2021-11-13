@@ -15,6 +15,8 @@ for lower skills.
 ## Fixes
 * text placement on gang screen
 * job xml loading for bar jobs @Smargoos
+* traits are correctly removed when an item is unequipped. @Smargoos
+* equipped items set permanent skill/stat modifiers instead of temporary ones @Smargoos
 
 
 # Version 7.1.2alpha3

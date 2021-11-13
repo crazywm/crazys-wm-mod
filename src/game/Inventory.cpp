@@ -245,6 +245,7 @@ bool Inventory::remove_from_equipment(const sInventoryItem* item)
 
     assert(found2->second.equipped > 0);
     m_EquippedItems.erase(found);
+    // TODO this may leave the underlying traits collection in a dirty state
     --found2->second.equipped;
 
     return true;
