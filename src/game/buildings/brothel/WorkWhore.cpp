@@ -201,6 +201,8 @@ sWorkJobResult WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
         pay = AskPrice;
         group = false;
         acceptsGirl = false;
+        custout = false;
+        femalecustcaught = false;
         // WD:    Create Customer
         sCustomer Cust = g_Game->GetCustomer(*brothel);
 
