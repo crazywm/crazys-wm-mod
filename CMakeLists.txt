@@ -8,6 +8,7 @@ if(UNIX)
 else()
     # on windows, don't put the dlls/exes into their own directory
     set(CMAKE_INSTALL_BINDIR .)
+    set(CMAKE_INSTALL SYSTEM RUNTIME DESTINATION .)
     # and find the required mingw dlls in its bin dir; add them to installation
     if( MINGW )
         message( STATUS "    Searching for MinGW DLLs." )
