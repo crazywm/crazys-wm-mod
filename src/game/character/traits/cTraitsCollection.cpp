@@ -192,17 +192,21 @@ void cTraitsCollection::update() {
     m_BlockedTraits.clear();
 
     // start with the dynamic traits, as they are responsible for blocking
+    // blocked traits
+    for(auto& trait : m_DynamicTraits) {
+        if(trait.block)
+        {
+            m_BlockedTraits.insert(trait.spec->name());
+        }
+    }
+
     // dynamics traits
     for(auto& trait : m_DynamicTraits) {
         // skip all traits that are blocked
         if(m_BlockedTraits.count(trait.spec->name()))
             continue;
 
-        if(trait.block)
-        {
-            m_BlockedTraits.insert(trait.spec->name());
-        }
-        else
+        if(!trait.block)
         {
             m_ActiveTraits.insert(trait.spec);
             auto& ex = trait.spec->exclusions();
