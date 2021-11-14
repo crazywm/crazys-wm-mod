@@ -303,7 +303,7 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
     int oldest = 18;    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
     if (num_daughters > 0)
     {
-        g_Game->CreateRandomGirl(SpawnReason::KIDNAPPED, (g_Dice % 13) + 13);
+        Daughter1 = g_Game->CreateRandomGirl(SpawnReason::KIDNAPPED, (g_Dice % 13) + 13);
         if (Daughter1->age() > oldest) oldest = Daughter1->age();
         Daughter1->SetSurname(surname);
     }
