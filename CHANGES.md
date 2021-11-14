@@ -18,6 +18,8 @@ for lower skills.
 * traits are correctly removed when an item is unequipped. @Smargoos
 * equipped items set permanent skill/stat modifiers instead of temporary ones @Smargoos
 * loading of equipped items now applies their effects @Smargoos
+* fixed blocked traits showing up in trait list @Smargoos
+* several small fixes @Smargoos
 
 
 # Version 7.1.2alpha3
