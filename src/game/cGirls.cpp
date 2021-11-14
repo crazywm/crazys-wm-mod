@@ -958,6 +958,7 @@ string cGirls::GetSimpleDetails(const sGirl& girl)
     auto all_traits = const_cast<sGirl&>(girl).raw_traits().get_trait_info();
     for (auto& t : all_traits)
     {
+        if(!t.active) continue;
         trait_count++;
         if (trait_count > 1) ss << ",   ";
         ss << t.trait->display_name();
