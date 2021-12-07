@@ -1,3 +1,9 @@
+# Version 7.1.2alpha5
+
+## Fixes
+* fixed centre manager job (thanks @g539812)
+
+
 # Version 7.1.2alpha4
 This version introduces dynamic skill caps. This means that the maximum
 value a girl's skills can get is now limited by her level and other 

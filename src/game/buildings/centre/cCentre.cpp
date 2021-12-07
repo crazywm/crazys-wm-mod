@@ -35,7 +35,7 @@ sCentre::sCentre() : IBuilding(BuildingType::CENTRE, "Centre")
 {
     m_FirstJob = JOB_CENTREMANAGER;
     m_LastJob = JOB_ANGER;
-    m_MatronJob = JOB_DIRECTOR;
+    m_MatronJob = JOB_CENTREMANAGER;
     declare_interaction(CounselingInteractionId);
 }
 
