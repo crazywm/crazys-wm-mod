@@ -431,7 +431,7 @@ namespace {
                     process_item_xml(target, child);
                 } else if (tag == "Trigger") {
                     process_trigger_xml(target, child);
-                } else if (tag == "spawn") {
+                } else if (tag == "Spawn") {
                     process_spawn_xml(target, child);
                 } else {
                     // None of the above? Better ask for help then.
