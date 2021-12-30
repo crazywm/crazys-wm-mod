@@ -136,7 +136,7 @@ void create_pregnancy(sGirl& girl, int num_children, int type, const ICharacter&
     // `J` average the mother's and father's stats and skills
     for (int i = 0; i < NUM_STATS; i++)        child->m_Stats[i] = (father.get_base_stat(i) + girl.get_base_stat(i)) / 2;
     /// TODO this doesn't make sense, learned skills should not be inherited
-    for (int i = 0; i < NUM_SKILLS; i++)    child->m_Skills[i] = (father.get_base_skill(i) + girl.get_base_stat(i)) / 2;
+    for (int i = 0; i < NUM_SKILLS; i++)    child->m_Skills[i] = (father.get_base_skill(i) + girl.get_base_skill(i)) / 2;
     child->m_Stats[STAT_HEALTH] = 100;
     child->m_Stats[STAT_HAPPINESS] = 100;
 

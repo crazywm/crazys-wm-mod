@@ -3,6 +3,7 @@
 ## Fixes
 * fixed centre manager job (thanks @g539812)
 * removed npclove stat that wasn't really implemented anyway
+* fixed using stat instead of skill when determining skill of children
 
 
 # Version 7.1.2alpha4
