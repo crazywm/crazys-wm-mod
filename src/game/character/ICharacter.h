@@ -133,17 +133,17 @@ public:
     int get_attribute(StatSkill id) const;
     int update_attribute(StatSkill id, int amount);
 
-    virtual int get_stat(int stat_id) const;
+    virtual int get_stat(STATS stat_id) const;
     /// gets the stat without any modifiers
-    int get_base_stat(int stat_id) const { return m_Stats[stat_id].m_Value; }
-    int get_temp_stat(int stat_id) const { return m_Stats[stat_id].m_TempMods; }
-    int get_mod_stat(int stat_id) const { return m_Stats[stat_id].m_PermanentMods; }
+    int get_base_stat(STATS stat_id) const { return m_Stats[(int)stat_id].m_Value; }
+    int get_temp_stat(STATS stat_id) const { return m_Stats[(int)stat_id].m_TempMods; }
+    int get_mod_stat(STATS stat_id) const { return m_Stats[(int)stat_id].m_PermanentMods; }
 
     /// Sets the stat's base value, which is the characters inherent value for that stat.
-    virtual void set_stat(int stat, int amount);
-    virtual int upd_base_stat(int stat, int amount, bool usetraits = true);
-    void upd_mod_stat(int stat, int amount);
-    virtual void upd_temp_stat(int stat, int amount, bool usetraits=false);
+    virtual void set_stat(STATS stat, int amount);
+    virtual int upd_base_stat(STATS stat, int amount, bool usetraits = true);
+    void upd_mod_stat(STATS stat, int amount);
+    virtual void upd_temp_stat(STATS stat, int amount, bool usetraits=false);
 
     // higher level behaviour
     void DecayTemp();

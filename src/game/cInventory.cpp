@@ -249,7 +249,7 @@ void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
         int age = girl.age();
         // reset all numbers to default
         for (auto skill : SkillsRange)          girl.set_skill_direct(skill, 0);
-        for (int i = 0; i < NUM_STATS; i++)     girl.set_stat(i, 0);
+        for (auto stat: StatsRange)             girl.set_stat(stat, 0);
         girl.set_stat(STAT_HEALTH, 100);
         girl.set_stat(STAT_HAPPINESS, 100);
         girl.set_stat(STAT_AGE, (age == 100 ? 100 : 18)); // keep ageless girls ageless    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
@@ -617,7 +617,7 @@ void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
                     break;
 
                 case sEffect::Stat:            // affects skill
-                    girl.upd_temp_stat(eff_id, amount);
+                    girl.upd_temp_stat((STATS)eff_id, amount);
                     break;
 
                 case sEffect::Enjoy:            // affects enjoyment
@@ -642,9 +642,9 @@ void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
             {
                 // `J` food and makeup are single use items, so if permanent, make them affect the base skill
                 if (is_consumed)
-                                  girl.upd_base_stat(eff_id, amount);
+                                  girl.upd_base_stat((STATS)eff_id, amount);
                 // `J` all other items can be removed so use skill mod
-                else girl.upd_mod_stat(eff_id, amount);
+                else girl.upd_mod_stat((STATS)eff_id, amount);
             }
             else if (affects == sEffect::Enjoy)
             {

@@ -203,11 +203,11 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     */
     friend std::ostream& operator<<(std::ostream& os, sGirl &g);
 
-    int get_stat(int stat_id) const override;
-    void set_stat(int stat, int amount) override;
+    int get_stat(STATS stat_id) const override;
+    void set_stat(STATS stat, int amount) override;
 
-    void upd_temp_stat(int stat_id, int amount, bool usetraits=false) override;
-    int upd_base_stat(int stat_id, int amount, bool usetraits = true) override;
+    void upd_temp_stat(STATS stat_id, int amount, bool usetraits=false) override;
+    int upd_base_stat(STATS stat_id, int amount, bool usetraits = true) override;
 
     int upd_temp_Enjoyment(Action_Types stat_id, int amount);
     int upd_Enjoyment(Action_Types stat_id, int amount);

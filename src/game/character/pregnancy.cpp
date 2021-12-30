@@ -134,9 +134,9 @@ void create_pregnancy(sGirl& girl, int num_children, int type, const ICharacter&
     auto child = std::make_unique<sChild>(unsigned(type) == STATUS_PREGNANT_BY_PLAYER, sChild::None, num_children);
 
     // `J` average the mother's and father's stats and skills
-    for (int i = 0; i < NUM_STATS; i++)        child->m_Stats[i] = (father.get_base_stat(i) + girl.get_base_stat(i)) / 2;
+    for (auto stat : StatsRange)        child->m_Stats[stat] = (father.get_base_stat(stat) + girl.get_base_stat(stat)) / 2;
     /// TODO this doesn't make sense, learned skills should not be inherited
-    for (int i = 0; i < NUM_SKILLS; i++)    child->m_Skills[i] = (father.get_base_skill(i) + girl.get_base_skill(i)) / 2;
+    for (auto skill: SkillsRange)    child->m_Skills[skill] = (father.get_base_skill(skill) + girl.get_base_skill(skill)) / 2;
     child->m_Stats[STAT_HEALTH] = 100;
     child->m_Stats[STAT_HAPPINESS] = 100;
 
@@ -588,17 +588,17 @@ void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
     sprog->raw_traits().update();
 
     // inherit stats
-    for (int i = 0; i < NUM_STATS; i++) {
+    for (auto stat : StatsRange) {
         int min = 0, max = 100;
-        if (mom.get_base_stat(i) < child.m_Stats[i]) {
-            min = mom.get_base_stat(i);
-            max = child.m_Stats[i];
+        if (mom.get_base_stat(stat) < child.m_Stats[stat]) {
+            min = mom.get_base_stat(stat);
+            max = child.m_Stats[stat];
         }
         else {
-            max = mom.get_base_stat(i);
-            min = child.m_Stats[i];
+            max = mom.get_base_stat(stat);
+            min = child.m_Stats[stat];
         }
-        sprog->set_stat(i, (g_Dice % (max - min)) + min);
+        sprog->set_stat(stat, (g_Dice % (max - min)) + min);
     }
 
     // set age to 18, fix health
@@ -630,8 +630,8 @@ void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
     }
 
     // calling update makes sure that the new skills respect the caps
-    for (int i = 0; i < NUM_SKILLS; i++) {
-        sprog->upd_skill(i, 0);
+    for (auto skill : SkillsRange) {
+        sprog->upd_skill(skill, 0);
     }
 
 

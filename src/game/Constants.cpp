@@ -27,30 +27,30 @@
 const std::array<sAttribute, NUM_STATS>& get_all_stats () {
     static std::array<sAttribute, NUM_STATS> stats {
             sAttribute{"Charisma",     "Cha", ""},
-            sAttribute{"Happiness",    "Hap", "", 0, 100, .default_value=100, .permanent=false},
+            sAttribute{"Happiness",    "Hap", "", 0, 100, 100,},
             sAttribute{"Libido",       "Lib", ""},
             sAttribute{"Constitution", "Con", ""},
             sAttribute{"Intelligence", "Int", ""},
             sAttribute{"Confidence",   "Cfd", ""},
-            sAttribute{"Mana",         "Ma",  "", 0, 100, 0, .permanent=false},
+            sAttribute{"Mana",         "Ma",  "", 0, 100, 0},
             sAttribute{"Agility",      "Agl", ""},
             sAttribute{"Fame",         "Fm",  ""},
-            sAttribute{"Level",        "Lvl", "", .min= 0, .max = 255, .default_value=0, .permanent=false},
-            sAttribute{"AskPrice",     "Ask", "", .min=0, .max=10000, .default_value=0, .permanent=false},
-            sAttribute{"Experience",   "Exp", "", .min= 0, .max=32000, .default_value=0, .permanent=false},
-            sAttribute{"Age",          "Age", "", .min=18},
+            sAttribute{"Level",        "Lvl", "", 0, 255, 0,},
+            sAttribute{"AskPrice",     "Ask", "", 0, 10000, 0 },
+            sAttribute{"Experience",   "Exp", "", 0, 32000, 0},
+            sAttribute{"Age",          "Age", "",18},
             sAttribute{"Obedience",    "Obd", ""},
             sAttribute{"Spirit",       "Spi", ""},
             sAttribute{"Beauty",       "Bty", ""},
             sAttribute{"Tiredness",    "Trd", ""},
-            sAttribute{"Health",       "HP",  "", 0, 100, .default_value=100, .permanent=false},
-            sAttribute{"PCFear",       "PCF", "", .min=-100},
-            sAttribute{"PCLove",       "PCL", "", .min=-100},
-            sAttribute{"PCHate",       "PCH", "", .min=-100},
-            sAttribute{"Morality",     "Mor", "", .min=-100},
-            sAttribute{"Refinement",   "Ref", "", .min=-100},
-            sAttribute{"Dignity",      "Dig", "", .min=-100},
-            sAttribute{"Lactation",    "Lac", "", .min=-100},
+            sAttribute{"Health",       "HP",  "", 0, 100, 100},
+            sAttribute{"PCFear",       "PCF", "", 100},
+            sAttribute{"PCLove",       "PCL", "", 100},
+            sAttribute{"PCHate",       "PCH", "", 100},
+            sAttribute{"Morality",     "Mor", "", 100},
+            sAttribute{"Refinement",   "Ref", "", 100},
+            sAttribute{"Dignity",      "Dig", "", 100},
+            sAttribute{"Lactation",    "Lac", "", 100},
             sAttribute{"Strength",     "Str", ""},
             sAttribute{"Sanity",       "San", ""}
     };
@@ -58,16 +58,16 @@ const std::array<sAttribute, NUM_STATS>& get_all_stats () {
 }
 
 const char* get_stat_name(STATS stat) {
-    return get_all_stats()[stat].name;
+    return get_all_stats()[stat].Name.c_str();
 }
 
 const id_lookup_t<STATS>& get_stat_lookup() {
     static id_lookup_t<STATS> lookup = [](){
         id_lookup_t<STATS> lookup;
         // TODO make this case insensitive
-        for(std::size_t i = 0; i < NUM_STATS; ++i) {
-            lookup[get_stat_name((STATS)i)] = (STATS)i;
-            lookup[get_all_stats()[i].short_name] = (STATS)i;
+        for(auto stat: StatsRange) {
+            lookup[get_stat_name(stat)] = stat;
+            lookup[get_all_stats()[stat].ShortName] = stat;
         }
         return std::move(lookup);
     }();
@@ -107,7 +107,7 @@ const std::array<sAttribute, NUM_SKILLS>& get_all_skills() {
 }
 
 const char* get_skill_name(SKILLS stat) {
-    return get_all_skills()[stat].name;
+    return get_all_skills()[stat].Name.c_str();
 }
 
 const id_lookup_t<SKILLS>& get_skill_lookup() {

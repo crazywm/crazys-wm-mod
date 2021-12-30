@@ -20,7 +20,11 @@
 #ifndef CRAZYS_WM_MOD_SATTRIBUTE_H
 #define CRAZYS_WM_MOD_SATTRIBUTE_H
 
-#include "Constants.h"
+#include <string>
+
+namespace tinyxml2 {
+    class XMLElement;
+}
 
 /*!
  * \brief Represents the global data of an attribute.
@@ -33,14 +37,23 @@
  */
 struct sAttribute {
     // textural representation
-    const char* name;
-    const char* short_name;
-    const char* description;
+    std::string Name;
+    std::string ShortName;
+    std::string Description;
 
     // value info
-    int min = 0;            //!< Absolute minimum value this attribute can have.
-    int max = 100;          //!< Absolute maximum value this attribute can have.
-    int default_value = 0;
+    int Min = 0;            //!< Absolute minimum value this attribute can have.
+    int Max = 100;          //!< Absolute maximum value this attribute can have.
+    int DefaultValue = 0;
+
+    // TODO skills auto-increment?
+    enum EType {
+        SKILL,              //!< Skills are automatically incremented when actions are performed that require skills
+        RESOURCE,           //!< Attributes that can be "used" and "filled", like hitpoints, mana, energy, lust
+        STAT,               //!< Abilities and properties that may be required by a job, but don't necessarily increase automatically.
+        PREFERENCE,
+        ATTRIBUTE           //!< Generic other attributes
+    };
 
     // metadata
     bool permanent = true;  //!< TODO figure out a good name for this. Set to false for attributes like HitPoints, happiness, tiredness, mana

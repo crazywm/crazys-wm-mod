@@ -116,16 +116,16 @@ cLuaScript::cLuaScript()
     luaL_newlib(m_State.get_state(), funx);
     lua_pushstring(L, "STATS");
     lua_newtable(L);
-    for(int i = 0; i < NUM_STATS; ++i) {
-        m_State.settable(-1, toupper(get_stat_name((STATS)i)), i);
+    for(auto stat: StatsRange) {
+        m_State.settable(-1, toupper(get_stat_name(stat)), stat);
     }
     lua_settable(L, -3);
 
 
     lua_pushstring(L, "SKILLS");
     lua_newtable(L);
-    for(int i = 0; i < NUM_SKILLS; ++i) {
-        m_State.settable(-1, toupper(get_skill_name((SKILLS)i)), i);
+    for(auto skill: SkillsRange) {
+        m_State.settable(-1, toupper(get_skill_name(skill)), skill);
     }
     lua_settable(L, -3);
 

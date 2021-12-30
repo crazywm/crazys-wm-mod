@@ -56,9 +56,9 @@ ICharacter::~ICharacter() = default;
 ICharacter::ICharacter(ICharacter&&) noexcept = default;
 
 
-int ICharacter::get_stat(int stat_id) const {
-    int min = get_all_stats()[stat_id].min;
-    int max = get_all_stats()[stat_id].max;
+int ICharacter::get_stat(STATS stat_id) const {
+    int min = get_all_stats()[(int)stat_id].Min;
+    int max = get_all_stats()[(int)stat_id].Max;
     // Generic calculation
     int value = m_Stats[stat_id].m_Value + m_Stats[stat_id].m_PermanentMods + m_Stats[stat_id].m_TempMods;
     value += m_Traits->stat_effects()[stat_id];
@@ -68,41 +68,36 @@ int ICharacter::get_stat(int stat_id) const {
     return value;
 }
 
-void ICharacter::set_stat(int stat_id, int amount)
+void ICharacter::set_stat(STATS stat_id, int amount)
 {
-    int min = get_all_stats()[stat_id].min;
-    int max = get_all_stats()[stat_id].max;
+    int min = get_all_stats()[(int)stat_id].Min;
+    int max = get_all_stats()[(int)stat_id].Max;
 
     if (amount > max) amount = max;
     else if (amount < min) amount = min;
     m_Stats[stat_id].m_Value = amount;
 }
 
-int ICharacter::upd_base_stat(int stat, int amount, bool usetraits)
+int ICharacter::upd_base_stat(STATS stat, int amount, bool usetraits)
 {
     set_stat(stat, get_base_stat(stat) + amount);
     return get_stat(stat);
 }
 
-void ICharacter::upd_mod_stat(int stat, int amount)
+void ICharacter::upd_mod_stat(STATS stat, int amount)
 {
     m_Stats[stat].m_PermanentMods += amount;
 }
 
-void ICharacter::upd_temp_stat(int stat_id, int amount, bool usetraits)
+void ICharacter::upd_temp_stat(STATS stat_id, int amount, bool usetraits)
 {
-    if(!get_all_stats()[stat_id].permanent) {
-        // TODO ERROR?
-        upd_base_stat(stat_id, amount);
-        return;
-    }
     m_Stats[stat_id].m_TempMods += amount;
 }
 
 int ICharacter::get_skill(int skill_id) const
 {
-    int min = get_all_skills()[skill_id].min;
-    int max = get_all_skills()[skill_id].max;
+    int min = get_all_skills()[skill_id].Min;
+    int max = get_all_skills()[skill_id].Max;
     // Generic calculation
     auto& data = m_Skills[skill_id];
     int value = data.m_Value + data.m_PermanentMods + data.m_TempMods;
@@ -121,8 +116,8 @@ void ICharacter::set_skill(SKILLS skill_id, int amount)
 
 
 void ICharacter::set_skill_direct(SKILLS skill_id, int amount) {
-    int min = get_all_skills()[skill_id].min;
-    int max = get_all_skills()[skill_id].max;
+    int min = get_all_skills()[skill_id].Min;
+    int max = get_all_skills()[skill_id].Max;
 
     if (amount > max) amount = max;
     else if (amount < min) amount = min;
@@ -151,21 +146,21 @@ void ICharacter::SaveXML(tinyxml2::XMLElement& elRoot) const
 
     // stats
     auto& stats_el = PushNewElement(elRoot, "Stats");
-    for (int i = 0; i < NUM_STATS; i++)
+    for (auto stat: StatsRange)
     {
         auto& el = PushNewElement(stats_el, "Stat");
-        el.SetAttribute("Name", get_stat_name(STATS(i)));
-        el.SetAttribute("Value", m_Stats[i].m_Value);
-        if (m_Stats[i].m_TempMods)    el.SetAttribute("Temp", m_Stats[i].m_TempMods);
+        el.SetAttribute("Name", get_stat_name(stat));
+        el.SetAttribute("Value", m_Stats[stat].m_Value);
+        if (m_Stats[stat].m_TempMods)    el.SetAttribute("Temp", m_Stats[stat].m_TempMods);
     }
 
     // skills
-    for (int i = 0; i < NUM_SKILLS; i++)
+    for (auto skill: SkillsRange)
     {
         auto& el = PushNewElement(stats_el, "Skill");
-        el.SetAttribute("Name", get_skill_name(SKILLS(i)));
-        el.SetAttribute("Value", m_Skills[i].m_Value);
-        if (m_Skills[i].m_TempMods)    el.SetAttribute("Temp", m_Skills[i].m_TempMods);
+        el.SetAttribute("Name", get_skill_name(skill));
+        el.SetAttribute("Value", m_Skills[skill].m_Value);
+        if (m_Skills[skill].m_TempMods)    el.SetAttribute("Temp", m_Skills[skill].m_TempMods);
     }
 
     // other data

@@ -94,7 +94,7 @@ void cGame::NewGame(const std::function<void(std::string)>& callback) {
     job_manager().Setup();
 
     g_LogFile.info("prepare", "Resetting Player");
-    for(int i = 0; i < NUM_STATS; ++i) player().set_stat(i, 60);
+    for(auto stat: StatsRange) player().set_stat(stat, 60);
     for(auto skill : SkillsRange) player().set_skill_direct(skill, 10);
     player().SetToZero();
 

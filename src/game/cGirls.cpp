@@ -202,7 +202,7 @@ void cGirls::LevelUpStats(sGirl& girl)
     else if (girl.has_active_trait("Slow Learner")) DiceSize = 2;
 
     // level up stats (only first 8 advance in levelups)
-    for (int i = 0; i < 8; i++) girl.upd_base_stat(i, g_Dice % DiceSize);
+    for (int i = 0; i < 8; i++) girl.upd_base_stat((STATS)i, g_Dice % DiceSize);
 
     // level up skills
     for (int i = 0; i < NUM_SKILLS; i++)    girl.upd_skill(i, g_Dice%DiceSize);
@@ -542,7 +542,7 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
         }
         int cap = g_Game->get_skill_cap(skillnum[i], girl);
         ss << '\n' << skillstr[i] << girl.skill_with_change_str(skillnum[i]);
-        if(cap < get_all_skills()[i].max) {
+        if(cap < get_all_skills()[i].Max) {
            ss << " \t [" << g_Game->get_skill_cap(skillnum[i], girl) << "]";
         }
     }
@@ -922,7 +922,7 @@ string cGirls::GetSimpleDetails(const sGirl& girl)
     int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_COOKING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
     string skillstr[] = { "Magic : \t", "Combat : \t", "Service : \t", "Medicine : \t", "Performance : \t", "Crafting : \t", "Herbalism : \t", "Farming : \t", "Brewing : \t", "Animal Handling : \t", "Cooking : \t", "Anal : \t", "BDSM : \t", "Normal : \t", "Bestiality : \t", "Group : \t", "Lesbian : \t", "Oral : \t", "Titty : \t", "Hand Job : \t", "Stripping : \t", "Foot Job : \t" };
     int skillcount = 22;
-    int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION };
+    STATS statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION };
     string statstr[] = { "Charisma : \t", "Beauty : \t", "Libido : \t", "Mana : \t", "Intelligence : \t", "Confidence : \t", "Obedience : \t", "Spirit : \t", "Agility : \t", "Strength : \t", "Fame : \t", "Lactation : \t" };
     int statcount = 12;
 
@@ -1513,7 +1513,7 @@ void cGirls::UseItems(sGirl& girl)
                 }
                 else if (curEffect->m_Affects == sEffect::Skill)
                 {
-                    if ((curEffect->m_Amount > 0) && (girl.get_stat(curEffect->m_EffectID) < 100))
+                    if ((curEffect->m_Amount > 0) && (girl.get_stat((STATS)curEffect->m_EffectID) < 100))
                     {  // skill would actually increase (wouldn't want to lose any skills)
                         checktouseit--;
                     }
@@ -3492,19 +3492,19 @@ ostream& operator<<(ostream& os, sGirl &g)
     os << g.m_Desc << endl;
     os << endl;
 
-    for (int i = 0; i < NUM_STATS; i++)
+    for (auto stat: StatsRange)
     {
         os.width(20);
         os.flags(ios::left);
-        os << get_stat_name((STATS)i) << "\t: " << g.get_base_stat(i) << endl;
+        os << get_stat_name(stat) << "\t: " << g.get_base_stat(stat) << endl;
     }
     os << endl;
 
-    for (int i = 0; i < NUM_SKILLS; i++)
+    for (auto skill: SkillsRange)
     {
         os.width(20);
         os.flags(ios::left);
-        os << get_skill_name((SKILLS)i) << "\t: " << g.get_base_skill(i) << endl;
+        os << get_skill_name(skill) << "\t: " << g.get_base_skill(skill) << endl;
     }
     os << endl;
 
@@ -3774,7 +3774,7 @@ sCustomer cGirls::GetBeast()
     beast.m_Amount = 1;
     beast.m_IsWoman = false;
     // get their stats generated
-    for(int i = 0; i < NUM_STATS; ++i)  beast.set_stat(i, g_Dice % 100);
+    for(auto stat: StatsRange)  beast.set_stat(stat, g_Dice % 100);
     for(auto skill : SkillsRange)  beast.set_skill_direct(skill, g_Dice % 10);
 
     beast.set_skill_direct(SKILL_BEASTIALITY, 40 + g_Dice % 61);

@@ -69,16 +69,16 @@ void sLuaGirl::init(lua_State* L) {
     luaL_setfuncs(L, methods, 0);
 
     // register shorthands for skill functions
-    for(int i = 0; i < NUM_STATS; ++i) {
-        lua_pushstring(L, tolower(get_stat_name((STATS)i)).c_str());
-        lua_pushinteger(L, i);
+    for(auto stat: StatsRange) {
+        lua_pushstring(L, tolower(get_stat_name(stat)).c_str());
+        lua_pushinteger(L, stat);
         lua_pushcclosure(L, up_getset_stat, 1);
         lua_settable(L, -3);
     }
 
-    for(int i = 0; i < NUM_SKILLS; ++i) {
-        lua_pushstring(L, tolower(get_skill_name((SKILLS)i)).c_str());
-        lua_pushinteger(L, i);
+    for(auto skill: SkillsRange) {
+        lua_pushstring(L, tolower(get_skill_name(skill)).c_str());
+        lua_pushinteger(L, skill);
         lua_pushcclosure(L, up_getset_skill, 1);
         lua_settable(L, -3);
     }
@@ -119,10 +119,10 @@ int sCharacter<T>::getset_stat(lua_State* L) {
     long stat = luaL_checkinteger(L, 2);
     if(lua_gettop(L) == 3) {
         long value = luaL_checkinteger(L, 3);
-        girl.upd_base_stat(stat, value);
+        girl.upd_base_stat((STATS)stat, value);
         return 0;
     } else {
-        int value = girl.get_stat(stat);
+        int value = girl.get_stat((STATS)stat);
         lua_pushinteger(L, value);
         return 1;
     }
@@ -164,10 +164,10 @@ int sCharacter<T>::up_getset_stat(lua_State *L) {
     int stat = lua_tointeger(L, lua_upvalueindex(1));
     if(lua_gettop(L) == 2) {
         long value = luaL_checkinteger(L, 2);
-        girl.upd_base_stat(stat, value);
+        girl.upd_base_stat((STATS)stat, value);
         return 0;
     } else {
-        int value = girl.get_stat(stat);
+        int value = girl.get_stat((STATS)stat);
         lua_pushinteger(L, value);
         return 1;
     }
@@ -532,16 +532,16 @@ void sLuaCustomer::init(lua_State* L) {
     luaL_setfuncs(L, methods, 0);
 
     // register shorthands for skill functions
-    for(int i = 0; i < NUM_STATS; ++i) {
-        lua_pushstring(L, tolower(get_stat_name((STATS)i)).c_str());
-        lua_pushinteger(L, i);
+    for(auto stat: StatsRange) {
+        lua_pushstring(L, tolower(get_stat_name(stat)).c_str());
+        lua_pushinteger(L, stat);
         lua_pushcclosure(L, up_getset_stat, 1);
         lua_settable(L, -3);
     }
 
-    for(int i = 0; i < NUM_SKILLS; ++i) {
-        lua_pushstring(L, tolower(get_skill_name((SKILLS)i)).c_str());
-        lua_pushinteger(L, i);
+    for(auto skill: SkillsRange) {
+        lua_pushstring(L, tolower(get_skill_name(skill)).c_str());
+        lua_pushinteger(L, skill);
         lua_pushcclosure(L, up_getset_skill, 1);
         lua_settable(L, -3);
     }

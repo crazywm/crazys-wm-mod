@@ -202,7 +202,7 @@ bool sGirl::equip(const sInventoryItem* item, bool force) {
     return false;
 }
 
-int sGirl::upd_base_stat(int stat_id, int amount, bool usetraits) {
+int sGirl::upd_base_stat(STATS stat_id, int amount, bool usetraits) {
     int stat = stat_id;
     switch (stat) {
 
@@ -395,7 +395,7 @@ bool sGirl::fights_back()
     return g_Dice.percent(chance);
 }
 
-int sGirl::get_stat(int stat_id) const
+int sGirl::get_stat(STATS stat_id) const
 {
     if (stat_id < 0) return 0;
     if (stat_id == STAT_HEALTH && has_active_trait("Incorporeal"))    return 100;
@@ -1048,7 +1048,7 @@ FormattedCellData sGirl::GetDetail(const std::string& detailName) const
         int code = get_stat_id(stat);
         if (code != -1)
         {
-            return mk_num(get_stat(code));
+            return mk_num(get_stat((STATS)code));
         }
         else
         {
@@ -1296,7 +1296,7 @@ bool sGirl::FixFreeTimeJobs()
     return fixedD || fixedN;
 }
 
-void sGirl::upd_temp_stat(int stat_id, int amount, bool usetraits)
+void sGirl::upd_temp_stat(STATS stat_id, int amount, bool usetraits)
 {
     if (usetraits)
     {
@@ -1338,7 +1338,7 @@ int sGirl::get_num_item_equiped(int Type) const
     return inventory().num_equipped_of_type(Type);
 }
 
-void sGirl::set_stat(int stat, int amount)
+void sGirl::set_stat(STATS stat, int amount)
 {
     switch (stat) {
     case STAT_AGE:        // age can be a special case so we start with that
@@ -1375,7 +1375,7 @@ bool sGirl::unequip(const sInventoryItem* item) {
         int amount = effect.m_Amount;
 
         if (affects == sEffect::Skill)    upd_mod_skill(eff_id, -amount);
-        else if (affects == sEffect::Stat)    upd_mod_stat(eff_id, -amount);
+        else if (affects == sEffect::Stat)    upd_mod_stat((STATS)eff_id, -amount);
         else if (affects == sEffect::Enjoy)    cGirls::UpdateEnjoymentMod(*this, eff_id, -amount);
         else if (affects == sEffect::GirlStatus)    // adds/removes status
         {

@@ -84,12 +84,12 @@ unsigned long
 tinyxml2::XMLElement& SaveStatsXML(tinyxml2::XMLElement& elRoot, int * stats, int * statMods, int * tempStats)
 {
     auto& stats_el = PushNewElement(elRoot, "Stats");
-    for (int i = 0; i < NUM_STATS; i++)
+    for (auto stat: StatsRange)
     {
-        auto& stat = PushNewElement(stats_el, get_stat_name((STATS)i));
-        stat.SetAttribute("Value", stats[i]);
-        if (statMods && statMods[i])    stat.SetAttribute("Mod", statMods[i]);
-        if (tempStats && tempStats[i])    stat.SetAttribute("Temp", tempStats[i]);
+        auto& stat_el = PushNewElement(stats_el, get_stat_name(stat));
+        stat_el.SetAttribute("Value", stats[stat]);
+        if (statMods && statMods[stat])    stat_el.SetAttribute("Mod", statMods[stat]);
+        if (tempStats && tempStats[stat])    stat_el.SetAttribute("Temp", tempStats[stat]);
     }
     return stats_el;
 }
@@ -98,15 +98,15 @@ bool LoadStatsXML(const tinyxml2::XMLElement* pStats, int * stats, int * statMod
 {
     if (pStats == nullptr) return false;
 
-    for (int i = 0; i < NUM_STATS; i++)
+    for (auto stat: StatsRange)
     {
-        auto* pStat = pStats->FirstChildElement(get_stat_name((STATS)i));
+        auto* pStat = pStats->FirstChildElement(get_stat_name(stat));
         if (pStat)
         {
             int tempInt = pStat->IntAttribute("Value", 0);
 
             int min = 0, max = 100;
-            switch (i)
+            switch (stat)
             {
             case STAT_AGE:
                 if (tempInt > 99)        tempInt = 100;
@@ -123,15 +123,15 @@ bool LoadStatsXML(const tinyxml2::XMLElement* pStats, int * stats, int * statMod
             if (tempInt < -1000)    tempInt = -1;    // test for null stats and set them to 0
             if (tempInt > max) tempInt = max;
             else if (tempInt < min) tempInt = min;
-            stats[i] = tempInt;
+            stats[stat] = tempInt;
 
             if (statMods)
             {
-                statMods[i] = pStat->IntAttribute("Mod", 0);
+                statMods[stat] = pStat->IntAttribute("Mod", 0);
             }
             if (tempStats)
             {
-                tempStats[i] = pStat->IntAttribute("Temp", 0);;
+                tempStats[stat] = pStat->IntAttribute("Temp", 0);;
             }
         }
     }
@@ -141,12 +141,12 @@ bool LoadStatsXML(const tinyxml2::XMLElement* pStats, int * stats, int * statMod
 tinyxml2::XMLElement& SaveSkillsXML(tinyxml2::XMLElement& elRoot, int * skills, int * skillMods, int * tempSkills)
 {
     auto& skills_el = PushNewElement(elRoot, "Skills");
-    for (int i = 0; i < NUM_SKILLS; i++)
+    for (auto skill: SkillsRange)
     {
-        auto& skill_el = PushNewElement(skills_el, get_skill_name((SKILLS)i));
-        skill_el.SetAttribute("Value", skills[i]);
-        if (skillMods && skillMods[i])        skill_el.SetAttribute("Mod", skillMods[i]);
-        if (tempSkills && tempSkills[i])    skill_el.SetAttribute("Temp", tempSkills[i]);
+        auto& skill_el = PushNewElement(skills_el, get_skill_name(skill));
+        skill_el.SetAttribute("Value", skills[skill]);
+        if (skillMods && skillMods[skill])        skill_el.SetAttribute("Mod", skillMods[skill]);
+        if (tempSkills && tempSkills[skill])    skill_el.SetAttribute("Temp", tempSkills[skill]);
     }
     return skills_el;
 }
@@ -155,30 +155,30 @@ bool LoadSkillsXML(const tinyxml2::XMLElement* pSkills, int * skills, int * skil
 {
     if (pSkills == nullptr) return false;
 
-    for (int i = 0; i < NUM_SKILLS; i++)
+    for (auto skill: SkillsRange)
     {
-        auto* pSkill = pSkills->FirstChildElement(XMLifyString(get_skill_name((SKILLS)i)).c_str());
+        auto* pSkill = pSkills->FirstChildElement(XMLifyString(get_skill_name(skill)).c_str());
         if (pSkill)
         {
             int tempInt = pSkill->IntAttribute("Value", 0);
             if (tempInt < 0) tempInt = 0;
             if (tempInt > 100) tempInt = 100;                    // normalize base skill
-            skills[i] = tempInt;
+            skills[skill] = tempInt;
 
             if (skillMods)
             {
-                skillMods[i] = pSkill->IntAttribute("Mod", 0);
+                skillMods[skill] = pSkill->IntAttribute("Mod", 0);
             }
             if (tempSkills)
             {
-                tempSkills[i] = pSkill->IntAttribute("Temp", 0);
+                tempSkills[skill] = pSkill->IntAttribute("Temp", 0);
             }
         }
         else        // if not found set it all to 0
         { 
-            if (skills)            skills[i] = 0;
-            if (skillMods)        skillMods[i] = 0;
-            if (tempSkills)        tempSkills[i] = 0; 
+            if (skills)            skills[skill] = 0;
+            if (skillMods)        skillMods[skill] = 0;
+            if (tempSkills)        tempSkills[skill] = 0;
         }
     }
     return true;
