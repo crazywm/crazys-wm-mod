@@ -23,10 +23,6 @@
             What="Stat"
             Name="PCHate"
             Amount="-1" />
-        <Effect
-            What="Stat"
-            Name="NPCLove"
-            Amount="-1" />
         <Crafting CraftPoints="100" ManaCost="30">
             <Job Name="Make Items"/>
         </Crafting>

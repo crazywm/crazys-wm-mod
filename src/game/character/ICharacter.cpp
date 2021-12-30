@@ -30,6 +30,7 @@
 #include "xml/getattr.h"
 #include "traits/ITraitsCollection.h"
 #include "Inventory.h"
+#include "utils/string.hpp"
 
 extern cRng g_Dice;
 
@@ -209,6 +210,10 @@ void ICharacter::LoadXML(const tinyxml2::XMLElement& elRoot)
         const char* name = el.Attribute("Name");
         if(!name) {
             g_LogFile.error("game", "'Stat' tag does not contain 'Name' attribute. Character: ", m_FullName);
+            continue;
+        }
+        if(iequals(name, "npclove")) {
+            g_LogFile.warning("game", "Encountered obsolete NPCLove stat. Character: ", m_FullName);
             continue;
         }
         auto stat_id = get_stat_id(name);

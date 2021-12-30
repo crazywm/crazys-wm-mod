@@ -1,7 +1,8 @@
-# Version 7.1.2alpha5
+# Version 7.1.2beta1
 
 ## Fixes
 * fixed centre manager job (thanks @g539812)
+* removed npclove stat that wasn't really implemented anyway
 
 
 # Version 7.1.2alpha4

@@ -1170,7 +1170,6 @@ void IBuilding::do_daily_items(sGirl& girl)
             girl.pchate(-(g_Dice % 3));
             girl.happiness(3 + g_Dice % 3);
             girl.tiredness(1 + g_Dice % 3);
-            girl.npclove(-(1 + g_Dice % 3));
             if (g_Dice.percent(50))
             {
                 ss << girlName << " comes to you and tells you she had a sexy dream about you.";

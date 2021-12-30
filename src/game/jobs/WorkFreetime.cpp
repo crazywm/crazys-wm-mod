@@ -1874,41 +1874,15 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 if (girl.has_active_trait("Optimist"))
                 {
-                    if (girl.npclove() > 15)
-                    {
-                        //ss << "Embarrassed at the thought of it she told her it was to soon.\n";
-                    }
-                    else
-                    {
-                        ss << "Excited to go on a date with someone she couldn't wait to get the date started.\n"; enjoy += 1;
-                    }
+                    ss << "Excited to go on a date with someone she couldn't wait to get the date started.\n"; enjoy += 1;
                 }
                 else if (girl.has_active_trait("Pessimist"))
                 {
-                    if (girl.npclove() > 15)
-                    {
-                        //ss << "Embarrassed at the thought of it she told her it was to soon.\n";
-                    }
-                    else
-                    {
-                        ss << "Already thinking the date would go bad she dragged her feet and didn't really want to go.\n"; enjoy -= 1;
-                    }
+                    ss << "Already thinking the date would go bad she dragged her feet and didn't really want to go.\n"; enjoy -= 1;
                 }
                 else
                 {
                 }
-            }
-            if (girl.npclove() >= 80)
-            {
-            }
-            else if (girl.npclove() >= 60)
-            {
-            }
-            else if (girl.npclove() >= 40)
-            {
-            }
-            else if (girl.npclove() >= 20)
-            {
             }
             else
             {
@@ -1943,14 +1917,8 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 ss << "but before getting her home he whips out his cock and asks for a blow job.\n";
                                 if (girl.has_active_trait("Shy"))
                                 {
-                                    if (girl.npclove() > 15)
-                                    {
-                                        ss << "Embarrassed at the thought of it she told him it was to soon.\n";
-                                    }
-                                    else
-                                    {
-                                        ss << "She couldn't belive he would do that and ran off her face red from the thought.\n"; enjoy -= 2;
-                                    }
+
+                                    ss << "She couldn't believe he would do that and ran off her face red from the thought.\n"; enjoy -= 2;
                                 }
                                 else if (girl.has_active_trait("Nymphomaniac"))
                                 {
@@ -1960,7 +1928,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 }
                                 else if (girl.is_fighter())
                                 {
-                                    if (girl.npclove() > 15)
+                                    if (g_Dice.percent(50))
                                     {
                                         ss << "She told him he was lucky she kinda liked him if not he would be in a world of pain right now.\n";
                                     }
@@ -1994,14 +1962,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 ss << "before getting her home she pulls her into an alley and whips out a didlo asking if she wants to have some fun.\n";
                                 if (girl.has_active_trait("Shy"))
                                 {
-                                    if (girl.npclove() > 15)
-                                    {
-                                        ss << "Embarrassed at the thought of it she told her it was to soon.\n";
-                                    }
-                                    else
-                                    {
-                                        ss << "She couldn't belive she would do that and ran off her face red from the thought.\n"; enjoy -= 2;
-                                    }
+                                    ss << "She couldn't believe she would do that and ran off her face red from the thought.\n"; enjoy -= 2;
                                 }
                                 else if (girl.has_active_trait("Nymphomaniac"))
                                 {
@@ -2011,7 +1972,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 }
                                 else if (girl.is_fighter())
                                 {
-                                    if (girl.npclove() > 15)
+                                    if (g_Dice.percent(50))
                                     {
                                         ss << "She told her she was lucky she kinda liked her if not she would be in a world of pain right now.\n";
                                     }
@@ -2068,14 +2029,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 }
                                 else if (girl.has_active_trait("Shy"))
                                 {
-                                    if (girl.npclove() > 15)
-                                    {
-                                        ss << "Embarrassed at the thought of it she told him it was to soon.\n";
-                                    }
-                                    else
-                                    {
-                                        ss << "She couldn't belive he would do that and ran off her face red from the thought.\n"; enjoy -= 2;
-                                    }
+                                    ss << "She couldn't belive he would do that and ran off her face red from the thought.\n"; enjoy -= 2;
                                 }
                                 else
                                 {
@@ -2108,14 +2062,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 }
                                 else if (girl.has_active_trait("Shy"))
                                 {
-                                    if (girl.npclove() > 15)
-                                    {
-                                        ss << "Embarrassed at the thought of it she told her it was to soon.\n";
-                                    }
-                                    else
-                                    {
-                                        ss << "She couldn't belive she would do that and ran off her face red from the thought.\n"; enjoy -= 2;
-                                    }
+                                    ss << "She couldn't belive she would do that and ran off her face red from the thought.\n"; enjoy -= 2;
                                 }
                                 else
                                 {
@@ -2198,7 +2145,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     ss << ".";
                 }
-                girl.npclove(enjoy);
             }
             if (breakup) //For if they break up removes traits and puts npclove back to 0
             {
@@ -2206,7 +2152,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 girl.clear_dating();
                 girl.lose_trait("Has Boy Friend", true);
                 girl.lose_trait("Has Girl Friend", true);
-                girl.npclove(-100);
             }
         }
 #endif
@@ -2371,9 +2316,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.exp(U_EXP);
     girl.upd_temp_stat(STAT_BEAUTY, U_Beauty);
     girl.morality(U_Morality);
-    girl.npclove(U_NPCLove);
-
-
 
     // update money
     girl.m_Money += U_Money;

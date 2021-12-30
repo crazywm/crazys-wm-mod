@@ -305,6 +305,9 @@ namespace {
             if(stat_name == "House") {
                 g_LogFile.warning("girl", "Girl ", target.Name, " specified House stat, which is obsolete.");
                 return;
+            }else if(stat_name == "NPCLove") {
+                g_LogFile.warning("girl", "Girl ", target.Name, " specified NPCLove stat, which is obsolete.");
+                return;
             }
         }
         try {

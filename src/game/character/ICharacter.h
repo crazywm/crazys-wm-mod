@@ -150,62 +150,60 @@ public:
 
     // convenience methods
     // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.h
-    int charisma() const                            { return get_stat(STAT_CHARISMA); }
-    int charisma(int n)                             { return upd_base_stat(STAT_CHARISMA, n, true); }
-    int happiness() const                           { return get_stat(STAT_HAPPINESS); }
-    int happiness(int n)                            { return upd_base_stat(STAT_HAPPINESS, n, true); }
-    int libido() const                              { return get_stat(STAT_LIBIDO); }
-    int libido(int n)                               { return upd_base_stat(STAT_LIBIDO, n, true); }
-    int constitution() const                        { return get_stat(STAT_CONSTITUTION); }
-    int constitution(int n)                         { return upd_base_stat(STAT_CONSTITUTION, n, true); }
-    int intelligence() const                        { return get_stat(STAT_INTELLIGENCE); }
-    int intelligence(int n)                         { return upd_base_stat(STAT_INTELLIGENCE, n, true); }
-    int confidence() const                          { return get_stat(STAT_CONFIDENCE); }
-    int confidence(int n)                           { return upd_base_stat(STAT_CONFIDENCE, n, true); }
-    int mana() const                                { return get_stat(STAT_MANA); }
-    int mana(int n)                                 { return upd_base_stat(STAT_MANA, n, true); }
-    int agility() const                             { return get_stat(STAT_AGILITY); }
-    int agility(int n)                              { return upd_base_stat(STAT_AGILITY, n, true); }
-    int strength() const                            { return get_stat(STAT_STRENGTH); }
-    int strength(int n)                             { return upd_base_stat(STAT_STRENGTH, n, true); }
-    int fame() const                                { return get_stat(STAT_FAME); }
-    int fame(int n)                                 { return upd_base_stat(STAT_FAME, n, true); }
-    int level() const                               { return get_stat(STAT_LEVEL); }
-    int level(int n)                                { return upd_base_stat(STAT_LEVEL, n, true); }
-    int askprice() const                            { return get_stat(STAT_ASKPRICE); }
-    int askprice(int n)                             { return upd_base_stat(STAT_ASKPRICE, n, true); }
-    int exp() const                                 { return get_stat(STAT_EXP); }
-    int exp(int n)                                  { return upd_base_stat(STAT_EXP, n, true); }
-    int age() const                                 { return get_stat(STAT_AGE); }
-    int age(int n)                                  { return upd_base_stat(STAT_AGE, n, true); }
-    int obedience() const                           { return get_stat(STAT_OBEDIENCE); }
-    int obedience(int n)                            { return upd_base_stat(STAT_OBEDIENCE, n, true); }
-    int spirit() const                              { return get_stat(STAT_SPIRIT); }
-    int spirit(int n)                               { return upd_base_stat(STAT_SPIRIT, n, true); }
-    int beauty() const                              { return get_stat(STAT_BEAUTY); }
-    int beauty(int n)                               { return upd_base_stat(STAT_BEAUTY, n, true); }
-    int tiredness() const                           { return get_stat(STAT_TIREDNESS); }
-    int tiredness(int n)                            { return upd_base_stat(STAT_TIREDNESS, n, true); }
-    int health() const                              { return get_stat(STAT_HEALTH); }
-    int health(int n)                               { return upd_base_stat(STAT_HEALTH, n, true); }
-    int pcfear() const                              { return get_stat(STAT_PCFEAR); }
-    int pcfear(int n)                               { return upd_base_stat(STAT_PCFEAR, n, true); }
-    int pclove() const                              { return get_stat(STAT_PCLOVE); }
-    int pclove(int n)                               { return upd_base_stat(STAT_PCLOVE, n, true); }
-    int pchate() const                              { return get_stat(STAT_PCHATE); }
-    int pchate(int n)                               { return upd_base_stat(STAT_PCHATE, n, true); }
-    int morality() const                            { return get_stat(STAT_MORALITY); }
-    int morality(int n)                             { return upd_base_stat(STAT_MORALITY, n, true); }
-    int refinement() const                          { return get_stat(STAT_REFINEMENT); }
-    int refinement(int n)                           { return upd_base_stat(STAT_REFINEMENT, n, true); }
-    int dignity() const                             { return get_stat(STAT_DIGNITY); }
-    int dignity(int n)                              { return upd_base_stat(STAT_DIGNITY, n, true); }
-    int lactation() const                           { return get_stat(STAT_LACTATION); }
-    int lactation(int n)                            { return upd_base_stat(STAT_LACTATION, n, true); }
-    int npclove() const                             { return get_stat(STAT_NPCLOVE); }
-    int npclove(int n)                              { return upd_base_stat(STAT_NPCLOVE, n, true); }
-    int sanity() const                              { return get_stat(STAT_SANITY); }
-    int sanity(int n)                               { return upd_base_stat(STAT_SANITY, n, true); }
+    int charisma() const                            { return get_stat(STATS::STAT_CHARISMA); }
+    int charisma(int n)                             { return upd_base_stat(STATS::STAT_CHARISMA, n, true); }
+    int happiness() const                           { return get_stat(STATS::STAT_HAPPINESS); }
+    int happiness(int n)                            { return upd_base_stat(STATS::STAT_HAPPINESS, n, true); }
+    int libido() const                              { return get_stat(STATS::STAT_LIBIDO); }
+    int libido(int n)                               { return upd_base_stat(STATS::STAT_LIBIDO, n, true); }
+    int constitution() const                        { return get_stat(STATS::STAT_CONSTITUTION); }
+    int constitution(int n)                         { return upd_base_stat(STATS::STAT_CONSTITUTION, n, true); }
+    int intelligence() const                        { return get_stat(STATS::STAT_INTELLIGENCE); }
+    int intelligence(int n)                         { return upd_base_stat(STATS::STAT_INTELLIGENCE, n, true); }
+    int confidence() const                          { return get_stat(STATS::STAT_CONFIDENCE); }
+    int confidence(int n)                           { return upd_base_stat(STATS::STAT_CONFIDENCE, n, true); }
+    int mana() const                                { return get_stat(STATS::STAT_MANA); }
+    int mana(int n)                                 { return upd_base_stat(STATS::STAT_MANA, n, true); }
+    int agility() const                             { return get_stat(STATS::STAT_AGILITY); }
+    int agility(int n)                              { return upd_base_stat(STATS::STAT_AGILITY, n, true); }
+    int strength() const                            { return get_stat(STATS::STAT_STRENGTH); }
+    int strength(int n)                             { return upd_base_stat(STATS::STAT_STRENGTH, n, true); }
+    int fame() const                                { return get_stat(STATS::STAT_FAME); }
+    int fame(int n)                                 { return upd_base_stat(STATS::STAT_FAME, n, true); }
+    int level() const                               { return get_stat(STATS::STAT_LEVEL); }
+    int level(int n)                                { return upd_base_stat(STATS::STAT_LEVEL, n, true); }
+    int askprice() const                            { return get_stat(STATS::STAT_ASKPRICE); }
+    int askprice(int n)                             { return upd_base_stat(STATS::STAT_ASKPRICE, n, true); }
+    int exp() const                                 { return get_stat(STATS::STAT_EXP); }
+    int exp(int n)                                  { return upd_base_stat(STATS::STAT_EXP, n, true); }
+    int age() const                                 { return get_stat(STATS::STAT_AGE); }
+    int age(int n)                                  { return upd_base_stat(STATS::STAT_AGE, n, true); }
+    int obedience() const                           { return get_stat(STATS::STAT_OBEDIENCE); }
+    int obedience(int n)                            { return upd_base_stat(STATS::STAT_OBEDIENCE, n, true); }
+    int spirit() const                              { return get_stat(STATS::STAT_SPIRIT); }
+    int spirit(int n)                               { return upd_base_stat(STATS::STAT_SPIRIT, n, true); }
+    int beauty() const                              { return get_stat(STATS::STAT_BEAUTY); }
+    int beauty(int n)                               { return upd_base_stat(STATS::STAT_BEAUTY, n, true); }
+    int tiredness() const                           { return get_stat(STATS::STAT_TIREDNESS); }
+    int tiredness(int n)                            { return upd_base_stat(STATS::STAT_TIREDNESS, n, true); }
+    int health() const                              { return get_stat(STATS::STAT_HEALTH); }
+    int health(int n)                               { return upd_base_stat(STATS::STAT_HEALTH, n, true); }
+    int pcfear() const                              { return get_stat(STATS::STAT_PCFEAR); }
+    int pcfear(int n)                               { return upd_base_stat(STATS::STAT_PCFEAR, n, true); }
+    int pclove() const                              { return get_stat(STATS::STAT_PCLOVE); }
+    int pclove(int n)                               { return upd_base_stat(STATS::STAT_PCLOVE, n, true); }
+    int pchate() const                              { return get_stat(STATS::STAT_PCHATE); }
+    int pchate(int n)                               { return upd_base_stat(STATS::STAT_PCHATE, n, true); }
+    int morality() const                            { return get_stat(STATS::STAT_MORALITY); }
+    int morality(int n)                             { return upd_base_stat(STATS::STAT_MORALITY, n, true); }
+    int refinement() const                          { return get_stat(STATS::STAT_REFINEMENT); }
+    int refinement(int n)                           { return upd_base_stat(STATS::STAT_REFINEMENT, n, true); }
+    int dignity() const                             { return get_stat(STATS::STAT_DIGNITY); }
+    int dignity(int n)                              { return upd_base_stat(STATS::STAT_DIGNITY, n, true); }
+    int lactation() const                           { return get_stat(STATS::STAT_LACTATION); }
+    int lactation(int n)                            { return upd_base_stat(STATS::STAT_LACTATION, n, true); }
+    int sanity() const                              { return get_stat(STATS::STAT_SANITY); }
+    int sanity(int n)                               { return upd_base_stat(STATS::STAT_SANITY, n, true); }
 
     // -----------------------------------------------------------------------------------------------------------------
     //                                            SKILLS

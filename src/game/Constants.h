@@ -79,7 +79,6 @@ enum STATS {
     STAT_DIGNITY            ,    //
     STAT_LACTATION            ,    //
     STAT_STRENGTH            ,    //
-    STAT_NPCLOVE            ,    // will be used for when a girl has a bf/gf to do different events
     STAT_SANITY                ,    //SIN: Life is hard here...
     NUM_STATS                    // 1 more than the last stat
 };//End STATS enum

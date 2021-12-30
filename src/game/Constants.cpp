@@ -52,7 +52,6 @@ const std::array<sAttribute, NUM_STATS>& get_all_stats () {
             sAttribute{"Dignity",      "Dig", "", .min=-100},
             sAttribute{"Lactation",    "Lac", "", .min=-100},
             sAttribute{"Strength",     "Str", ""},
-            sAttribute{"NPCLove",      "NPL", ""},
             sAttribute{"Sanity",       "San", ""}
     };
     return stats;

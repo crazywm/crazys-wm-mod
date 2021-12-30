@@ -307,7 +307,6 @@ bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
             ugirl->strength(uniform(1, 20));            ugirl->obedience(uniform(10, 50));
             ugirl->spirit(uniform(-50, 50));            ugirl->morality(uniform(10, 50));
             ugirl->refinement(uniform(-10, 30));        ugirl->dignity(uniform(-20, 20));
-            ugirl->npclove(rng().bell(-100, 100));        // she may have had a boyfriend before she got sold to you
             ugirl->service(uniform(10, 40));            ugirl->performance(uniform(0, 5));
             ugirl->crafting(uniform(0, 10));                ugirl->herbalism(uniform(0, 5));
             ugirl->farming(uniform(0, 10));                ugirl->brewing(uniform(0, 5));
