@@ -57,7 +57,6 @@ set(BUILDINGS_SRC
         buildings/clinic/cClinic.cpp
         buildings/clinic/Surgery.cpp
         buildings/clinic/ClinicJobs.cpp
-        buildings/brothel/WorkHallDealer.cpp
         buildings/brothel/WorkHallEntertainer.cpp
         buildings/brothel/WorkHallXXXEntertainer.cpp
         buildings/brothel/WorkPeepShow.cpp

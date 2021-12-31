@@ -42,7 +42,7 @@ inline auto lookup_with_error(const T& map, const std::string& name, const char*
     try {
         return map.at(name);
     } catch (const std::out_of_range& oor ) {
-        g_LogFile.error(error_msg, ": '", name, "'");
+        g_LogFile.error("lookup", error_msg, ": '", name, "'");
         throw;
     }
 }

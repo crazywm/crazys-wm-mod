@@ -1,0 +1,264 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Dlr">
+    <Description>
+        She will manage a game in the gambling hall.
+    </Description>
+
+    <Performance>
+        <!-- intel and agility for smarts and speed to cheat; cust service, performance to bluff/cheat, and a bit of magic for 'luck'-->
+        <Factor Stat="Agility" Weight="3"/>
+        <Factor Stat="Intelligence" Weight="3"/>
+        <Factor Skill="Performance" Weight="2"/>
+        <Factor Skill="Magic" Weight="2"/>
+        <Factor Skill="Service" Weight="2"/>
+
+        <Mod>work.halldealer</Mod>
+    </Performance>
+
+    <Gains XP="10" Skill="2">
+        <Stat Name="Intelligence" Weight="1" Max="50" />
+        <Stat Name="Charisma" Weight="1" Max="50"/>
+        <Stat Name="Confidence" Weight="1" Min="20" />
+    </Gains>
+
+    <Config>
+        <WageFunction>
+            <Point Performance="245" Wages="155" />
+            <Point Performance="185" Wages="95" />
+            <Point Performance="145" Wages="55" />
+            <Point Performance="100" Wages="15" />
+            <Point Performance="70" Wages="-5" />
+            <Point Performance="0" Wages="-15" />
+        </WageFunction>
+    </Config>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to work as a card dealer in the gambling hall to${shift}</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} worked as a dealer in the gambling hall.</Text>
+        </Message>
+        <Message Name="work.perfect">
+            She's the perfect dealer. The customers love her and keep coming back to play against her,
+            even after they lose the shirts off their backs.
+            <Text Condition="Massive Melons|Abnormally Large Boobs|Titanic Tits|Big Boobs|Busty Boobs|Giant Juggs" Chance="33">
+                Between her exceptional card skills and her massive tits, ${name} raked the money in this shift.
+            </Text>
+            <Text Condition="Lolita" Chance="50">
+                Behind her small frame and innocent face lurks a true card-shark.
+            </Text>
+            <Text Condition="Sexy Air" Chance="50">
+                Her sexy body draws gamblers to her table like flies to a pitcher plant.
+            </Text>
+            <Text>
+                ${name} is as near to perfect as any being could get.  She made a pile of money today.
+            </Text>
+            <Text>
+                ${name} managed to win every game she played in today.
+            </Text>
+            <Text>
+                A master of card-counting, the other players had no chance when ${name} joined them this shift.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            She's unbelievable at this and is always finding new ways to beat the customer.
+
+            <Text Condition="Sexy Air" Chance="50">
+                ${name}'s sex appeal is paying off in a different way, as the profits from her table tumble in.
+            </Text>
+            <Text Condition="Quick Learner" Chance="50">
+                After a good deal of practical education, ${name} is a formidable card dealer.
+            </Text>
+            <Text Condition="Cool Scars|Horrific Scars" Chance="50">
+                Distracted by her visible scars, customers couldn't keep up with her skills.
+            </Text>
+            <Text Condition="Lolita" Chance="50">
+                Lured into a false sense of security, the gamblers were shocked to lose to such a child-like woman!
+            </Text>
+            <Text Condition="Massive Melons|Abnormally Large Boobs|Titanic Tits|Big Boobs|Busty Boobs|Giant Juggs" Chance="33">
+                Distracted by ${name}'s breasts, players didn't even seem to notice their money vanishing.
+            </Text>
+            <Text>
+                You flash a congratulatory smile at ${name} on her way out the door at the end of her shift.
+            </Text>
+            <Text>
+                A fat merchant nearly had a heart attack after losing this month's profits to ${name}.
+            </Text>
+            <Text>
+                ${name}'s a skilled card dealer, and turned a substantial profit today.
+            </Text>
+            <Text>
+                She won all of her games bar one or two today!
+            </Text>
+            <Text>
+                ${name} could find a place in any gambling institution with her skills with cards.
+            </Text>
+        </Message>
+        <Message Name="work.good">
+            She's good at this job and knows a few tricks to win.
+            <Text>${name}'s a fairly good card dealer, and turned a profit today.</Text>
+            <Text Condition="Lolita" Chance="50">
+                Nobody expected such a sweet little girl to win anything!
+            </Text>
+            <Text Condition="Massive Melons|Abnormally Large Boobs|Titanic Tits|Big Boobs|Busty Boobs|Giant Juggs" Chance="33">
+                While she's a good card dealer, ${name}'s big tits helped weigh the odds in her favor.
+            </Text>
+            <Text Condition="Quick Learner" Chance="50">
+                Using tricks learned before from her past, ${name} had a productive shift.
+            </Text>
+            <Text Condition="Sexy Air" Chance="50">
+                The gamblers always seem surprised that such a lovely piece of ass can beat them at their chosen game.
+            </Text>
+            <Text>
+                Her professional smile and pleasing form reinforced her acceptable skill level.
+            </Text>
+            <Text>
+                Lady Luck seems to be smiling on ${name} today - she won more games then she lost.
+            </Text>
+            <Text>
+                Most of the patrons that sat down at ${name}'s table today rose just a bit lighter.
+            </Text>
+            <Text>
+                ${name} shows real promise as a dealer.
+            </Text>
+        </Message>
+        <Message Name="work.ok">
+            She made a few mistakes but overall she is okay at this.
+            <Text Condition="Nervous|Meek" Chance="50">
+                Despite her uncertain nature, ${name} is holding her own at the card-table.
+            </Text>
+            <Text Condition="Quick Learner" Chance="50">
+                She could be a good dealer, but ${name} has a lot to learn still.
+            </Text>
+            <Text Condition="Sexy Air" Chance="50">
+                ${name} isn't a terrible card dealer, but she's much more eye-candy then gambling queen.
+            </Text>
+            <Text Condition="Massive Melons|Abnormally Large Boobs|Titanic Tits|Big Boobs|Busty Boobs|Giant Juggs" Chance="33">
+                She turned a slight profit, with the help of her not inconsiderable breasts' distraction factor.
+            </Text>
+            <Text>
+                ${name} broke even today, thank the Lady.
+            </Text>
+            <Text>
+                She's no cardsharp, but ${name} can hold her own against the patrons.
+            </Text>
+            <Text>
+                Pasteboard isn't her friend as the cards seemed to taunt her.
+            </Text>
+            <Text>
+                Almost all the patrons managed to preserve most of their initial stake.
+            </Text>
+            <Text>
+                She's clocked in and clocked out, but nothing spectacular has happened in between.
+            </Text>
+        </Message>
+        <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
+            <Text Condition="Quick Learner" Chance="50">
+                She's got a clue, but still has a long way to go to reach competency.
+            </Text>
+            <Text Condition="Nervous|Meek" Chance="50">
+                ${name}'s weak personality made it easy for clients to bully her out of money.
+            </Text>
+            <Text Condition="Sexy Air" Chance="50">
+                ${name} could make a corpse stand up and beg for a blow-job, but she can't play cards worth a damn.
+            </Text>
+            <Text Condition="Massive Melons|Abnormally Large Boobs|Titanic Tits|Big Boobs|Busty Boobs|Giant Juggs" Chance="33">
+                While players were distracted by ${name}'s breasts for a few turns, she still lost more than she won.
+            </Text>
+            <Text Condition="stat:Intelligence>70" Chance="50">
+                ${name} is smart enough to understand the game. But seems not to have the luck to win.
+            </Text>
+            <Text Condition="stat:Intelligence<30" Chance="50">
+                As you watch ${name} fold like a house of cards on a royal flush, you idly wonder if she could be replaced with a shaved ape.
+            </Text>
+            <Text>
+                ${name} struggles valiantly against the forces of chance, and wins! A. Single. Game.
+            </Text>
+            <Text>
+                Despite her feeble protests, gamblers walked all over ${name}.
+            </Text>
+            <Text>
+                The cards are not in her favor today - the highest hand you saw her with was two pair.
+            </Text>
+            <Text>
+                As ${name}'s shift ends, you struggle mightily against the urge to sigh in relief.
+            </Text>
+        </Message>
+        <Message Name="work.worst">
+            She was nervous and constantly making mistakes. She really isn't very good at this job.
+            <Text Condition="Sexy Air" Chance="50">
+                It's almost a pity how attractive ${name} is.
+                If she wasn't so desirable, fewer vultures would alight on her table.
+            </Text>
+            <Text Condition="Nervous|Meek" Chance="50">
+                ${name}'s weak personality made it easy for clients to bully her out of money.
+            </Text>
+            <Text Condition="Massive Melons|Abnormally Large Boobs|Titanic Tits|Big Boobs|Busty Boobs|Giant Juggs" Chance="33">
+                ${name}'s large breasts pleased the clients as they won over and over again.
+            </Text>
+            <Text Condition="Quick Learner" Chance="50">
+                After a terrible shift, you can only hope that she learned something from it.
+            </Text>
+            <Text>
+                ${name} dropped the deck on the floor, spraying cards everywhere.
+            </Text>
+            <Text>
+                ${name} managed, against all probability, to lose every single game.
+            </Text>
+            <Text>
+                ${name} shrugged with a degree of embarrassment as a chortling patron walked away with a fat moneybag.
+            </Text>
+            <Text>
+                ${name} is really, really, bad at this job.
+            </Text>
+            <Text>
+                You can almost see the profits slipping away as ${name} loses yet another hand of poker.
+            </Text>
+        </Message>
+        <Message Name="after-work">
+            <Group Chance="15" Condition="Massive Melons|Abnormally Large Boobs|Titanic Tits|Big Boobs|Busty Boobs|Giant Juggs">
+                <Text Condition="Performance>125" Updates="Earnings+=35">
+                    A patron was staring obviously at her large breasts. So she used the chance to cheat him out of all his gold.
+                </Text>
+                <Text Condition="Performance<175">
+                    A patron was staring obviously at her large breasts. But she had no idea how to take advantage of it.
+                </Text>
+            </Group>
+            <Group Chance="15" Condition="Lolita">
+                <Text Condition="Performance<150">
+                    Furious at being outplayed by such a young girl,
+                    a couple of gamblers stormed out, and didn't give ${name} any tips.
+                </Text>
+                <Text Condition="Performance>100" Updates="Tips+=15">
+                    One of the gamblers was amused at being outplayed by such a young girl,
+                    and gave her an extra-large tip!
+                </Text>
+            </Group>
+            <Group Chance="15" Condition="Elegant|Princess|Queen">
+                <Text Condition="Performance>125" Updates="Tips+=20">
+                    Impressed by her elegant demeanor and graceful compartment, several gamblers gave ${name} larger tips then usual.
+                </Text>
+                <Text Condition="Performance<175">
+                    Surly at her apparently stuck-up attitude, several gamblers refused to tip ${name}.
+                </Text>
+            </Group>
+            <Group Condition="Assassin" Chance="5">
+                <Text Condition="Performance>125" Updates="Tips+=20">
+                    She thought a patron was cheating but decided it was a lucky streak that she would end with her card skills.
+                </Text>
+                <Text Condition="Performance<175" Updates="Earnings-=50">
+                    She decided a patron was cheating,
+                    so she killed him causing a panic of people running out with your money.
+                </Text>
+            </Group>
+            <Text Chance="20" Condition="Psychic" Updates="Earnings+=30">
+                She used her Psychic skills to know exactly what cards were coming up and won a big hand.
+            </Text>
+            <Text Chance="20" Condition="stat:Beauty>85" Updates="Tips+=25">
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+        </Message>
+    </Messages>
+</Job>

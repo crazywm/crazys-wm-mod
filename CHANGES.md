@@ -5,6 +5,9 @@
 * removed npclove stat that wasn't really implemented anyway
 * fixed using stat instead of skill when determining skill of children
 
+## Code changes
+* Game dealer is now xml-based job
+
 
 # Version 7.1.2alpha4
 This version introduces dynamic skill caps. This means that the maximum

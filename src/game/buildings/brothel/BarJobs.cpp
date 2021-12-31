@@ -25,6 +25,8 @@
 #include "buildings/IBuilding.h"
 #include "buildings/cBuildingManager.h"
 #include "character/sGirl.h"
+#include "character/predicates.h"
+#include "cInventory.h"
 
 sWorkJobResult cBarJob::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
@@ -194,7 +196,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     int roll_jp = d100(), roll_e = d100(), roll_c = d100();
     add_text("work") << "\n \n";
 
-    m_Earnings = PerformanceToEarnings(m_Performance);
+    m_Earnings = PerformanceToEarnings(float(m_Performance));
     int enjoy = 0, fame = 0;                // girl
     int Bhappy = 0, Bfame = 0, Bfilth = 0;    // brothel
     int imagetype = IMGTYPE_WAIT;
@@ -951,6 +953,202 @@ bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
     return false;
 }
 
+// TODO rename this, I would expect 'Dealer' to refer to a different job
+cDealerJob::cDealerJob() : cBarJob(JOB_DEALER, "Dealer.xml", sBarJobData{ACTION_WORKHALL}) {
+}
+
+bool cDealerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    add_text("work") << "\n \n";
+    int roll_a = d100();
+
+    m_Earnings = 25;
+    int work = 0, fame = 0;
+    int imagetype = IMGTYPE_CARD;
+
+#pragma endregion
+#pragma region //    Job Performance            //
+
+    const sGirl* enteronduty = random_girl_on_job(*girl.m_Building, JOB_ENTERTAINMENT, is_night);
+    std::string entername = (enteronduty ? "Entertainer " + enteronduty->FullName() + "" : "the Entertainer");
+    const sGirl* xxxenteronduty = random_girl_on_job(*girl.m_Building, JOB_XXXENTERTAINMENT, is_night);
+    std::string xxxentername = (xxxenteronduty ? "Entertainer " + xxxenteronduty->FullName() + "" : "the Sexual Entertainer");
+
+
+    //a little pre-game randomness
+    if (chance(10))
+    {
+        if (girl.has_active_trait("Strange Eyes"))
+        {
+            ss << " ${name}'s strange eyes were somehow hypnotic, giving her some advantage.";
+            m_Performance += 15;
+        }
+        if (girl.has_active_trait("Nymphomaniac") && girl.libido() > 75)
+        {
+            ss << " ${name} had very high libido, making it hard for her to concentrate.";
+            m_Performance -= 10;
+        }
+        if (girl.footjob() > 50)
+        {
+            ss << " ${name} skillfully used her feet under the table to break customers' concentration.";
+            m_Performance += 5;
+        }
+    }
+    if (is_addict(girl, true) && chance(20))
+    {
+        ss << "\nNoticing her addiction, a customer offered her drugs. She accepted, and had an awful day at the card table.\n";
+        if (girl.has_active_trait("Shroud Addict"))
+        {
+            girl.add_item(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
+        }
+        if (girl.has_active_trait("Fairy Dust Addict"))
+        {
+            girl.add_item(g_Game->inventory_manager().GetItem("Fairy Dust"));
+        }
+        if (girl.has_active_trait("Viras Blood Addict"))
+        {
+            girl.add_item(g_Game->inventory_manager().GetItem("Vira Blood"));
+        }
+        m_Performance -= 50;
+    }
+
+    perf_text();
+    m_Earnings += PerformanceToEarnings((float)m_Performance);
+
+    //I'm not aware of tipping card dealers being a common practice, so no base tips
+
+
+    // try and add randomness here
+    add_text("after-work") << "\n";
+
+    if (brothel.num_girls_on_job(JOB_ENTERTAINMENT, false) >= 1 && chance(25))
+    {
+        if (m_Performance < 125)
+        {
+            ss << "${name} wasn't good enough at her job to use " << entername << "'s distraction to make more money.\n";
+        }
+        else
+        {
+            ss << "${name} used " << entername << "'s distraction to make you some extra money.\n"; m_Earnings += 25;
+        }
+    }
+
+    //SIN: a bit more randomness
+    if (chance(20) && m_Earnings < 20 && girl.charisma() > 60)
+    {
+        ss << "${name} did so badly, a customer felt sorry for her and left her a few coins from his winnings.\n";
+        m_Earnings += uniform(3, 20);
+    }
+    if (chance(5) && girl.normalsex() > 50 && girl.fame() > 30)
+    {
+        ss << "A customer taunted ${name}, saying the best use for a dumb whore like her is bent over the gambling table.";
+        bool spirited = (girl.spirit() + girl.spirit() > 80);
+        if (spirited)
+        {
+            ss << "\n\"But this way\"${name} smiled, \"I can take your money, without having to try and find your penis.\"";
+        }
+        else
+        {
+            ss << "She didn't acknowledge it in any way, but inwardly determined to beat him.";
+        }
+        if (m_Performance >= 145)
+        {
+            ss << "\nShe cleaned him out, deliberately humiliating him and taunting him into gambling more than he could afford. ";
+            ss << "He ended up losing every penny and all his clothes to this 'dumb whore'. He was finally kicked out, naked into the streets.\n \n";
+            ss << "${name} enjoyed this. A lot.";
+            girl.upd_Enjoyment(ACTION_WORKHALL, 3);
+            girl.happiness(5);
+            m_Earnings += 100;
+        }
+        else if (m_Performance >= 99)
+        {
+            ss << "\nShe managed to hold her own, and in the end was just happy not to lose to a guy like this.";
+        }
+        else
+        {
+            ss << "\nSadly her card skills let her down and he beat her in almost every hand. He finally stood up pointing at the table:";
+            ss << "\n\"If you wanna make your money back, whore, you know what to do.\"";
+            if (spirited)
+            {
+                ss << "\"Bend over it then,\" she scowled. \"I'll show you where you can shove those gold coins.\"\nHe left laughing.";
+            }
+            else
+            {
+                ss << "\"I'm not doing that today, sir,\" she mumbled. \"But there are other girls.\"\nHe left for the brothel.";
+            }
+            ss << "\n \nShe really hated losing at this stupid card game.";
+            girl.upd_Enjoyment(ACTION_WORKHALL, -3);
+            girl.happiness(-5);
+            m_Earnings -= 50;
+        }
+    }
+
+    if (brothel.num_girls_on_job(JOB_XXXENTERTAINMENT, false) >= 1)
+    {
+        if (m_Performance < 125)
+        {
+            if (!girl.has_active_trait("Straight"))
+            {
+                if (girl.libido() > 90)
+                {
+                    ss << "${name} found herself looking at " << xxxentername << "'s performance often, losing more times than usual.\n";
+                    m_Earnings = int(m_Earnings * 0.9);
+                }
+                else
+                {
+                    ss << "${name} wasn't good enough at her job to use " << xxxentername << "'s distraction to make more money.\n";
+                }
+            }
+            else
+            {
+                ss << "${name} wasn't good enough at her job to use " << xxxentername << "'s distraction to make more money.\n";
+            }
+        }
+        else
+        {
+            ss << "${name} took advantage of " << xxxentername << "'s show to win more hands and make some extra money.\n";
+            m_Earnings = int(m_Earnings * 1.2);
+        }
+    }
+
+    if (m_Earnings < 0) m_Earnings = 0;
+
+#pragma endregion
+#pragma region    //    Enjoyment and Tiredness        //
+
+    //enjoyed the work or not
+    if (roll_a <= 5)
+    {
+        ss << "\nSome of the patrons abused her during the shift."; work -= 1;
+    }
+    else if (roll_a <= 25)
+    {
+        ss << "\nShe had a pleasant time working."; work += 3;
+    }
+    else
+    {
+        ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
+    }
+
+#pragma endregion
+#pragma region    //    Finish the shift            //
+
+    girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+
+    // work out the pay between the house and the girl
+    m_Earnings += uniform(10, (girl.beauty() + girl.charisma()) / 4 + 10);
+
+    // Improve girl
+    if (!girl.has_active_trait("Straight"))    { girl.upd_temp_stat(STAT_LIBIDO, std::min(3, brothel.num_girls_on_job(JOB_XXXENTERTAINMENT, false))); }
+    HandleGains(girl, work, fame);
+
+    return false;
+}
+
+IGenericJob::eCheckWorkResult cDealerJob::CheckWork(sGirl& girl, bool is_night) {
+    return SimpleRefusalCheck(girl, ACTION_WORKHALL);
+}
+
+
 void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarCookJob>());
     mgr.register_job(std::make_unique<cBarMaidJob>());
@@ -958,5 +1156,6 @@ void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarPianoJob>());
     mgr.register_job(std::make_unique<cBarSingerJob>());
     mgr.register_job(std::make_unique<cEscortJob>());
+    mgr.register_job(std::make_unique<cDealerJob>());
 }
 
