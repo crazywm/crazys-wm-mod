@@ -21,6 +21,7 @@
 
 #include <array>
 #include <string>
+#include <boost/variant.hpp>
 #include "utils/enum.h"
 
 class sAttribute;
@@ -127,6 +128,9 @@ constexpr const EnumRange<SKILLS, SKILL_ANAL, NUM_SKILLS> SkillsRange = {};
 const std::array<sAttribute, NUM_SKILLS>& get_all_skills();
 const char* get_skill_name(SKILLS stat);
 SKILLS get_skill_id(const std::string& name);
+
+using StatSkill = boost::variant<STATS, SKILLS>;
+StatSkill get_stat_skill_id(const std::string& name);
 
 // STATUS
 //STATUS enum

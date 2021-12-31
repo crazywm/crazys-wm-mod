@@ -22,15 +22,12 @@
 
 #include <vector>
 #include "Constants.h"
-#include <boost/variant/variant.hpp>
 
 class ICharacter;
 
 namespace tinyxml2 {
     class XMLElement;
 }
-
-using StatSkill = boost::variant<STATS, SKILLS>;
 
 class cSkillCap {
 public:

@@ -38,25 +38,14 @@ int cSkillCap::operator()(const ICharacter& character) const {
     return cap;
 }
 
-namespace {
-    StatSkill translate(const std::string& source) {
-        try {
-            return get_stat_id(source);
-        } catch (std::out_of_range& oor) {
-            return get_skill_id(source);
-        }
-    }
-}
-
 void cSkillCap::load_from_xml(const tinyxml2::XMLElement& element) {
     for(auto& cap : IterateChildElements(element, "Cap")) {
         m_Caps.emplace_back();
         m_Caps.back().Offset = 0;
         cap.QueryIntAttribute("Offset", &m_Caps.back().Offset);
         for(auto& contrib : IterateChildElements(cap, "Factor")) {
-            StatSkill attribute = translate(GetStringAttribute(contrib, "Attribute"));
+            StatSkill attribute = get_stat_skill_id(GetStringAttribute(contrib, "Attribute"));
             int value = GetIntAttribute(contrib, "Factor", 0, std::numeric_limits<int>::max());
-            std::cout << "LOAD FACTOR\n\n";
             m_Caps.back().Factors.push_back(sFactor{attribute, value});
         }
     }

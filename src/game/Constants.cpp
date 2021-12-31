@@ -78,6 +78,14 @@ STATS get_stat_id(const std::string& name) {
     return lookup_with_error(get_stat_lookup(), name, "Trying to get invalid STAT");
 }
 
+StatSkill get_stat_skill_id(const std::string& name) {
+    if(get_stat_lookup().count(name) > 0) {
+        return get_stat_lookup().at(name);
+    } else {
+        return get_skill_id(name);
+    }
+}
+
 const std::array<sAttribute, NUM_SKILLS>& get_all_skills() {
     static std::array<sAttribute, NUM_SKILLS> skills {
             sAttribute{"Anal",         "Anl", ""},
