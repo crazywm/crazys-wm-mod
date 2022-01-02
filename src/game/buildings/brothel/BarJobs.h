@@ -71,12 +71,4 @@ private:
     Image_Types handle_sex(const std::string& prefix, int& fame, sGirl& girl, SexType type);
 };
 
-class cDealerJob : public cBarJob {
-public:
-    cDealerJob();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-protected:
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
-};
-
 #endif //WM_BARJOBS_H

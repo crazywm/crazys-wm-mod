@@ -108,8 +108,6 @@ void cBarJob::perf_text() {
 struct cBarCookJob : public cBarJob {
     cBarCookJob();
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-
-
 };
 
 cBarCookJob::cBarCookJob() : cBarJob(JOB_BARCOOK, "BarCook.xml", {ACTION_WORKBAR}) {
@@ -953,6 +951,15 @@ bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
     return false;
 }
 
+
+class cDealerJob : public cBarJob {
+public:
+    cDealerJob();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+protected:
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+};
+
 // TODO rename this, I would expect 'Dealer' to refer to a different job
 cDealerJob::cDealerJob() : cBarJob(JOB_DEALER, "Dealer.xml", sBarJobData{ACTION_WORKHALL}) {
 }
@@ -1149,6 +1156,136 @@ IGenericJob::eCheckWorkResult cDealerJob::CheckWork(sGirl& girl, bool is_night) 
 }
 
 
+class cEntertainerJob : public cBarJob {
+public:
+    cEntertainerJob();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+protected:
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+};
+
+cEntertainerJob::cEntertainerJob() : cBarJob(JOB_ENTERTAINMENT, "Entertainer.xml", sBarJobData{ACTION_WORKHALL}) {
+}
+
+
+bool cEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    add_text("work") << "\n \n";
+
+#pragma region //    Job setup                //
+
+    const sGirl* dealeronduty = random_girl_on_job(*girl.m_Building, JOB_DEALER, is_night);
+    std::string dealername = (dealeronduty ? "Dealer " + dealeronduty->FullName() + "" : "the Dealer");
+
+    m_Earnings = 25;
+    int work = 0, fame = 0;
+    int imagetype = IMGTYPE_BUNNY;
+    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
+
+#pragma endregion
+#pragma region //    Job Performance            //
+
+    //SIN: A little pre-randomness
+    if (chance(50))
+    {
+        if (girl.tiredness() > 75)
+        {
+            ss << "She was very tired, negatively affecting her performance.\n";
+            m_Performance -= 10;
+        }
+        else if (girl.happiness() > 90)
+        {
+            ss << "Her cheeriness improved her performance.\n";
+            m_Performance += 5;
+        }
+        if (chance(10))
+        {
+            if (girl.strip() > 60)
+            {
+                ss << "A born stripper, ${name} wears her clothes just short of showing flesh, just the way the customers like it.\n";
+                m_Performance += 15;
+            }
+            if (girl.pchate() > girl.pcfear())
+            {
+                ss << " ${name} opened with some rather rude jokes about you. While this annoys you a little, ";
+                if (girl.has_active_trait("Your Daughter"))
+                {
+                    ss << "she is your daughter, and ";
+                }
+                ss << "it seems to get the audience on her side.\n";
+                m_Performance += 15;
+            }
+        }
+    }
+
+    perf_text();
+    m_Earnings += PerformanceToEarnings((float)m_Performance);
+
+
+    //base tips, aprox 5-30% of base wages
+    m_Tips += (int)(((5 + m_Performance / 8) * m_Earnings) / 100);
+
+    // try and add randomness here
+    add_text("after-work") << "\n";
+
+    if (brothel.num_girls_on_job(JOB_DEALER, false) >= 1 && chance(25))
+    {
+        if (m_Performance < 125)
+        {
+            ss << "${name} tried to distract the patrons but due to her lack of skills she distracted " << dealername << " causing you to lose some money.\n";
+            m_Earnings -= 10;
+        }
+        else
+        {
+            ss << "${name} was able to perfectly distract some patrons while the " << dealername << " cheated to make some more money.\n";
+            m_Earnings += 25;
+        }
+    }
+
+
+#pragma endregion
+#pragma region    //    Enjoyment and Tiredness        //
+
+    //enjoyed the work or not
+    int roll_a = d100();
+    if (roll_a <= 5)
+    {
+        ss << "\nSeveral patrons heckled her and made her shift generally unpleasant.";
+        work -= 1;
+    }
+    else if (roll_a <= 25)
+    {
+        ss << "\nShe had a great time working.";
+        work += 3;
+    }
+    else
+    {
+        ss << "\nOtherwise, the shift passed uneventfully.";
+        work += 1;
+    }
+
+#pragma endregion
+#pragma region    //    Money                    //
+
+
+#pragma endregion
+#pragma region    //    Finish the shift            //
+
+
+    HandleGains(girl, work, fame);
+    girl.AddMessage(ss.str(), imagetype, msgtype);
+
+
+    m_Earnings += uniform(10, 10 + (girl.beauty() + girl.charisma()) / 4);
+
+#pragma endregion
+    return false;
+}
+
+IGenericJob::eCheckWorkResult cEntertainerJob::CheckWork(sGirl& girl, bool is_night) {
+    return SimpleRefusalCheck(girl, ACTION_WORKHALL);
+}
+
+
 void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarCookJob>());
     mgr.register_job(std::make_unique<cBarMaidJob>());
@@ -1157,5 +1294,5 @@ void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarSingerJob>());
     mgr.register_job(std::make_unique<cEscortJob>());
     mgr.register_job(std::make_unique<cDealerJob>());
+    mgr.register_job(std::make_unique<cEntertainerJob>());
 }
-

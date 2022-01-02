@@ -1,0 +1,294 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Entn">
+    <Description>
+        She will provide entertainment to the customers.
+    </Description>
+
+    <Performance>
+        <!-- intel and agility for smarts and speed to cheat; cust service, performance to bluff/cheat, and a bit of magic for 'luck'-->
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Skill="Performance" Weight="3"/>
+        <!-- TODO malus for pregnant -->
+        <Mod>work.hallentertainer</Mod>
+    </Performance>
+
+    <Gains XP="10" Skill="2">
+        <Stat Name="Confidence" Weight="1" Max="50" />
+        <Skill Name="Performance" Weight="1" Max="50"/>
+    </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to entertain patrons in the gambling hall to${shift}</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} worked as an entertainer in the gambling hall.</Text>
+        </Message>
+        <Message Name="work.perfect">
+            She must be the perfect entertainer customers go on and on about her and always come to see her when she works.
+
+            <Text Condition="Aggressive" Chance="33">
+                The heat of her passion and strength of her fierce nature make ${name}'s
+                songs absolutely riveting to listen to.
+            </Text>
+            <Text Condition="Elegant" Chance="50">
+                ${name}'s very appearance in the door of the gambling hall leads to
+                applause and the sudden appearance of a clear way to the stage steps.
+            </Text>
+            <Text Condition="Your Daughter" Chance="50">
+                You feel inexpressibly proud that ${name}, your daughter, is such a skilled entertainer.
+            </Text>
+            <Text Condition="Charming|Charismatic" Chance="50">
+                There is no way to resist the raw charisma ${name} practically exudes,
+                drawing everybody around her towards her stage.
+            </Text>
+            <Text>
+                Every one of ${name}'s jokes elicits a wave of laughter from the crowd of patrons,
+                many of whom have no interest in gambling.
+            </Text>
+            <Text>
+                Her voice is that of an angel, and her humor is as sharp and cutting as a blade.
+            </Text>
+            <Text>
+                Each shift, ${name} ends her show by blowing a kiss to her fans,
+                producing waves of applause and cheers.
+            </Text>
+            <Text>
+                She could probably excel in any club or entertainment center - fortunately,
+                ${name}'s in yours, drawing customers.
+            </Text>
+            <Text>
+                ${name} is downright ideal for this job.  Her presentation and material are flawless.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            She's unbelievable at this and is always getting praised by the customers for her work.
+
+            <Text Condition="Aggressive" Chance="50">
+                The savagery of ${name}'s temper has honed her wit to a razor's edge,
+                letting her jab away at the audience and still rake in the tips.
+            </Text>
+            <Text Condition="Elegant" Chance="50">
+                She cooly paces the edge of the stage as she sings,
+                each step deliberate and perfectly poised,
+                as if ${name} was some noble pacing her seat of power.
+            </Text>
+            <Text Condition="Charming|Charismatic" Chance="50">
+                While her technical skills could use improvement, ${name}'s delivery is beyond reproach.
+            </Text>
+            <Text Condition="Your Daughter" Chance="50">
+                ${name} isn't perfect, but she's your own flesh and blood, which is more then close enough.
+            </Text>
+            <Text>
+                ${name} begun to acquire her own following -
+                a small crowd of people came in just to listen to her and buy drinks.
+            </Text>
+            <Text>
+                Her jokes are almost always funny as ${name}'s repertoire develops and expands.
+            </Text>
+            <Text>
+                ${name}'s arrival on the stage at the beginning of her shift is greeted by scattered applause
+                by the last few gamblers from the previous shift, and the new clients.
+            </Text>
+            <Text>
+                ${name}'s soothing voice seems to glide over the noise and bustling of the gamblers and dealers.
+            </Text>
+            <Text>
+                Each shift the tips ${name} collects seem to grow in size!
+            </Text>
+        </Message>
+        <Message Name="work.good">
+            She's good at this job and gets praised by the customers often.
+
+            <Text Condition="Aggressive" Chance="50">
+                Her jokes are a bit more violent than they perhaps should be,
+                but the clients seem to like ${name}.
+            </Text>
+            <Text Condition="Elegant" Chance="50">
+                The elegance ${name} brings to all things enhances her already pleasant singing.
+            </Text>
+            <Text Condition="Charming|Charismatic" Chance="50">
+                While ${name}'s repertoire of jokes and other amusements could stand expansion,
+                she's got the presentation down pat.
+            </Text>
+            <Text Condition="Your Daughter" Chance="50">
+                Though you'll never admit it, you're happy that ${name} has carved out a niche that doesn't
+                involve renting her cunt to public servants.
+            </Text>
+            <Text>
+                A couple of gamblers parted with some of their hard-earned
+                winnings after swearing that her singing had brought them luck.
+            </Text>
+            <Text>
+                ${name} earned a decent tip today for her sincere,
+                if not always effective, attempts to entertain the clients.
+            </Text>
+            <Text>
+                Her singing was pleasing, if bland.  Her voice was nice, if slightly untrained.
+            </Text>
+            <Text>
+                Most of the jokes ${name} told were amusing.
+            </Text>
+            <Text>
+                ${name} managed to provide amusement for anybody who happened to listen to her.
+            </Text>
+        </Message>
+
+        <Message Name="work.ok">
+            She made a few mistakes but overall she is okay at this.
+
+            <Text Condition="Aggressive" Chance="50">
+                While ${name}'s jokes tend to fall flat,
+                nobody seems to have the bravery to tell her that.
+            </Text>
+            <Text Condition="Elegant" Chance="50">
+                Her air of sophistication lets ${name} get away with telling boring jokes.
+            </Text>
+            <Text Condition="Charming|Charismatic" Chance="50">
+                The tips she received were far more than ${name}'s skills had any reason to bring in.
+            </Text>
+            <Text Condition="Your Daughter" Chance="50">
+                ${name} isn't impressive in any way, but she is your daughter,
+                so you dutifully clap as she descends from the stage.
+            </Text>
+            <Text>
+                The slow song ${name} sang at the end of shift really had her full emotion and heart.
+                A pity that she felt so bored and tired.
+            </Text>
+            <Text>
+                While most of the jokes ${name} tells are old and worn out, a few were rather amusing.
+            </Text>
+            <Text>
+                ${name} monologued the guests for an hour or so.
+                While nobody seemed particularly interested, nobody looked pissed either.
+            </Text>
+            <Text>
+                While she won't win any contests, ${name} isn't a terrible singer.
+            </Text>
+            <Text>
+                ${name} managed to elicit a few chuckles, and got a few tips.
+            </Text>
+        </Message>
+
+        <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
+
+            <Text Condition="Aggressive" Chance="50">
+                ${name} cursed the audience roundly for their dislike of her music.
+            </Text>
+            <Text Condition="Charming|Charismatic" Chance="50">
+                Even though her jokes were stale and boring,
+                the audience couldn't seem to make themselves let ${name} down, and laughed regardless.
+            </Text>
+            <Text Condition="Your Daughter" Chance="50">
+                You wonder if your daughter, child of your loins, might do better on her back then on the stage.
+            </Text>
+            <Text>
+                For all the reaction she's getting, you could probably replace ${name} with a simple mannequin.
+            </Text>
+            <Text>
+                ${name} doesn't appear to be enjoying herself, an emotion she has in common with the clientele.
+            </Text>
+            <Text>
+                ${name} tells bland jokes and sings forgettable songs.
+            </Text>
+            <Text>
+                Her singing is barely acceptable,
+                but fortunately the bustling of the gambling hall drowns ${name} out for the most part.
+            </Text>
+            <Text>
+                While her jokes aren't actually driving anyone off, nobody seems to find her entertaining either.
+            </Text>
+        </Message>
+
+        <Message Name="work.worst">
+            She was nervous and constantly making mistakes. She really isn't very good at this job.
+
+            <Text Condition="Aggressive" Chance="50">
+                When the crowd booed her,
+                ${name} responded by throwing a shoe at one of the loudest and most insulting members.
+            </Text>
+            <Text Condition="Fearless" Chance="50">
+                Despite the crowd's displeasure, ${name} keeps herself cool and collected,
+                apparently unaffected by their ire.
+            </Text>
+            <Text Condition="Clumsy" Chance="50">
+                ${name} trips and falls flat on her face when climbing up the stage stairs.
+                The crowd cheers loudly.
+            </Text>
+            <Text Condition="Massive Melons|Abnormally Large Boobs|Titanic Tits|Big Boobs|Busty Boobs|Giant Juggs" Chance="33">
+                You have a feeling if she wasn't so well-endowed no one would show up for her show.
+            </Text>
+            <Text Condition="Charming|Charismatic" Chance="50">
+                The poor quality of her routine was offset by her natural charisma.
+            </Text>
+            <Text Condition="Your Daughter" Chance="50">
+                As ${name} butchers another song,
+                you feel bitterly ashamed by your relationship to your worthless child.
+            </Text>
+            <Text>
+                You stuck your head into the hall halfway through shift,
+                and swore off the gin for the third time this week after hearing ${name}'s horrible singing.
+            </Text>
+            <Text>
+                She managed to aggravate several customers with her poor taste in jokes.
+            </Text>
+            <Text>
+                ${name}'s as funny as a peasant uprising and about as appreciated by her audience.
+            </Text>
+            <Text>
+                For some reason, ${name} attempted a dramatic monologue and feigned suicide on stage.
+                Needless to say, she didn't receive any tips.
+            </Text>
+            <Text>
+                Her audience seems paralyzed, as if they couldn't believe that a human body could produce those sounds,
+                much less call them "singing".
+            </Text>
+        </Message>
+
+        <Message Name="after-work">
+            <Group Chance="5" Condition="Charming|Charismatic">
+                <Text Condition="Performance>125" Updates="Tips+=100">
+                    People love to see her perform, and ${name} collects a massive tip!.
+                </Text>
+                <Text Condition="Performance<175" Updates="Tips-=10">
+                    Despite her poor performance, people still applaud loudly for her.
+                </Text>
+            </Group>
+            <Group Chance="5" Condition="Elegant|Princess|Queen">
+                <Text Condition="Performance>125" Updates="Tips+=25">
+                    ${name} owns the stage, imperious eyes flashing out across the audience.
+                    Tips are very good tonight.
+                </Text>
+                <Text Condition="Performance<175" Updates="Tips-=15">
+                    Her royal bitchiness combined with the poor entertainment pisses the audience off.
+                </Text>
+            </Group>
+            <Group Condition="Pessimist" Chance="5">
+                <Text Condition="Performance<175" Updates="Tips-=10">
+                    Her pessimistic mood depressed the customers making them tip less.
+                </Text>
+                <Text Condition="Performance>125" Updates="Tips+=10">
+                    ${name} was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.
+                </Text>
+            </Group>
+            <Group Condition="Optimist" Chance="5">
+                <Text Condition="Performance>125" Updates="Tips+=10">
+                    Her optimistic mood made patrons cheer up increasing the amount they tip.
+                </Text>
+                <Text Condition="Performance<175" Updates="Tips-=10">
+                    ${name} was in a cheerful mood but the patrons thought she needed to work more on her services.
+                </Text>
+            </Group>
+            <Text Chance="20" Condition="Clumsy" Updates="Earnings-=15">
+                Her clumsy nature caused her to spill a drink on a customer,
+                resulting in $[him|her|them] storming off without paying.
+            </Text>
+            <Text Chance="20" Condition="stat:Beauty>85" Updates="Tips+=25">
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+        </Message>
+    </Messages>
+</Job>
