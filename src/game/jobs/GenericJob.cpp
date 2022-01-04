@@ -220,10 +220,6 @@ DECL_JOB(Torturer);
 DECL_JOB(ExploreCatacombs);
 DECL_JOB(BeastCare);
 
-// - Gambling Hall
-DECL_JOB(HallEntertainer);
-DECL_JOB(HallXXXEntertainer);
-
 // - Brothel
 DECL_JOB(BrothelMasseuse);
 DECL_JOB(BrothelStripper);
@@ -255,9 +251,7 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_CUSTOMERSERVICE, CustService, "CS", "She will look after customer needs.");
     REGISTER_JOB(JOB_TORTURER, Torturer, "Trtr", "She will torture the prisoners in addition to your tortures, she will also look after them to ensure they don't die. (max 1 for all brothels)").full_time().free_only();
     REGISTER_JOB(JOB_EXPLORECATACOMBS, ExploreCatacombs, "ExC", "She will explore the catacombs looking for treasure and capturing monsters and monster girls. Needless to say, this is a dangerous job.");
-    REGISTER_JOB(JOB_BEASTCARER, BeastCare, "BstC", "She will look after the needs of the beasts in your Brothel.");
-
-    REGISTER_JOB(JOB_XXXENTERTAINMENT, HallXXXEntertainer, "XXXE", "She will provide sexual entertainment to the customers.");
+    REGISTER_JOB(JOB_BEASTCARER, BeastCare, "BstC", "She will look after the needs of the beasts in your Brothel.");;
 
     REGISTER_JOB(JOB_MASSEUSE, BrothelMasseuse, "Msus", "She will give massages to the customers.");
     REGISTER_JOB(JOB_BROTHELSTRIPPER, BrothelStripper, "BStp", "She will strip for the customers.");

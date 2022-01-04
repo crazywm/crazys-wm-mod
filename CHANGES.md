@@ -6,7 +6,7 @@
 * fixed using stat instead of skill when determining skill of children
 
 ## Code changes
-* Gambling Hall Jobs Dealer and Entertainer now xml-based
+* Gambling Hall Jobs Dealer, Entertainer, XXEntertainer are now xml-based
 
 
 # Version 7.1.2alpha4

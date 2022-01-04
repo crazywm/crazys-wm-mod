@@ -21,7 +21,7 @@
 * [ ] De-interlacing
 * [ ] Convert job functions to classes
   - [ ] General
-  - [ ] Gambling
+  - [x] Gambling
   - [ ] Brothel
   - [ ] PersonalBedWarmer
 * [ ] adjustable unique chance for overworld encounters

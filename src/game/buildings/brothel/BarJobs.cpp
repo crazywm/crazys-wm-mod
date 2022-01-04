@@ -27,6 +27,8 @@
 #include "character/sGirl.h"
 #include "character/predicates.h"
 #include "cInventory.h"
+#include "character/cCustomers.h"
+#include "character/cPlayer.h"
 
 sWorkJobResult cBarJob::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
@@ -1285,6 +1287,264 @@ IGenericJob::eCheckWorkResult cEntertainerJob::CheckWork(sGirl& girl, bool is_ni
     return SimpleRefusalCheck(girl, ACTION_WORKHALL);
 }
 
+class cXXXEntertainerJob : public cBarJob {
+public:
+    cXXXEntertainerJob();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+protected:
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+};
+
+
+cXXXEntertainerJob::cXXXEntertainerJob() : cBarJob(JOB_XXXENTERTAINMENT, "XXXEntertainer.xml", sBarJobData{ACTION_WORKSTRIP}) {
+}
+
+bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    add_text("work") << "\n \n";
+
+#pragma region //    Job setup                //
+
+    m_Earnings = 25;
+    int work = 0, fame = 0;
+    int imagetype = IMGTYPE_BUNNY;
+    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
+
+#pragma endregion
+#pragma region //    Job Performance            //
+
+    // SIN: A little pre-show randomness - temporary stats that may affect show
+    if (chance(20))
+    {
+        if (girl.tiredness() > 75)
+        {
+            ss << "${name} was very tired. This affected her performance. ";
+            m_Performance -= 10;
+        }
+        else if (girl.libido() > 30)
+        {
+            ss << "${name}'s horniness improved her performance. ";
+            m_Performance += 10;
+        }
+
+        if (girl.has_active_trait("Demon") || girl.has_active_trait("Shape Shifter") || girl.has_active_trait("Construct") ||
+            girl.has_active_trait("Cat Girl") || girl.has_active_trait("Succubus") || girl.has_active_trait("Reptilian"))
+        {
+            ss << "Customers are surprised to see such an unusual girl giving sexual entertainment. ";
+            ss << "Some are disgusted, some are turned on, but many can't help watching.\n";
+            ss << "The dealers at the tables make a small fortune from distracted guests. ";
+            m_Earnings += 30;
+            fame += 1;
+        }
+        else if (girl.age() > 30 && chance(std::min(90, std::max((girl.age() - 30) * 3, 1))) && girl.beauty() < 30)
+        {    //"Too old!" - chance of heckle: age<30y= 0%, then 4%/year (32y - 6%, 40y - 30%...) max 90%... (but only a 20% chance this bit even runs)
+            // note: demons are exempt as they age differently
+            ss << "Some customers heckle ${name} over her age.";
+            ss << "\n\"Gross!\" \"Grandma is that you!?\"\n";
+            ss << "This makes it harder for her to work this shift. ";
+            m_Performance -= 20;
+        }
+        else if (girl.has_active_trait("Exotic"))
+        {
+            ss << "The customers were pleasantly surprised to see such an exotic girl giving sexual entertainment.";
+            m_Earnings += 15;
+            fame += 1;
+        }
+        if ((girl.has_active_trait("Syphilis") || girl.has_active_trait("Herpes"))
+            && chance(100 - girl.health()))
+        {
+            ss << "She's unwell. A man in the audience recognises ${name}'s symptoms and heckles her about her ";
+            if (girl.has_active_trait("Syphilis") && girl.has_active_trait("Herpes"))
+            {
+                ss << "diseases";
+            }
+            else if (girl.has_active_trait("Herpes"))
+            {
+                ss << "Herpes";
+            }
+            else if (girl.has_active_trait("Syphilis"))
+            {
+                ss << "Syphilis";
+            }
+            else
+            {
+                ss << "diseases";
+            }
+            ss << ". This digusts some in the audience and results in further heckling which disrupts ";
+            ss << "her performance and makes her very uncomfortable. ";
+            m_Performance -= 60;
+            girl.happiness(-10);
+            fame -= 3;
+        }
+        ss << "\n";
+    }
+
+    perf_text();
+    m_Earnings += PerformanceToEarnings((float)m_Performance);
+
+
+    //base tips, aprox 5-30% of base wages
+    m_Tips += (int)(((5 + m_Performance / 6) * m_Earnings) / 100);
+
+    // try and add randomness here
+    add_text("after-work") << "\n";
+
+    //try and add randomness here
+
+    if (girl.has_active_trait("Your Daughter") && chance(20))
+    {
+        ss << "Word got around that ${name} is your daughter, so more customers than normal came to watch her perform.\n";
+        m_Earnings += (m_Earnings / 5);
+        if (g_Game->player().disposition() > 0)
+        {
+            ss << "This is about the nicest job you can give her. She's safe here and the customers can only look - ";
+        }
+        else
+        {
+            ss << "At the end of the day, she's another whore to manage, it's a job that needs doing and ";
+        }
+        if (m_Performance >= 120)
+        {
+            ss << " she shows obvious talent at this.\n";
+            fame += 5;
+        }
+        else
+        {
+            ss << " it's just a damn shame she sucks at it.\n";
+        }
+    }
+
+    if (girl.libido() > 90)
+    {
+        if (girl.has_active_trait("Futanari"))
+        {
+            //Addiction bypasses confidence check
+            if (girl.has_active_trait("Cum Addict"))
+            {
+                //Autofellatio, belly gets in the way if pregnant, requires extra flexibility
+                if (girl.has_active_trait("Flexible") && !girl.is_pregnant() && chance(50))
+                {
+                    ss << "During her shift ${name} couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
+                    girl.oralsex(1);
+                    girl.happiness(1);
+                    fame += 1;
+                    m_Tips += 30;
+                }
+                else
+                {
+                    //default Cum Addict
+                    ss << "${name} won't miss a chance to taste some yummy cum. She came up on the stage with a goblet, cummed in it and then drank the content to entertain the customers.";
+                    girl.happiness(1);
+                    m_Tips += 10;
+                }
+                cJobManager::GetMiscCustomer(brothel);
+                brothel.m_Happiness += 100;
+                girl.upd_temp_stat(STAT_LIBIDO, -30, true);
+                // work out the pay between the house and the girl
+                m_Earnings += girl.askprice() + 60;
+                fame += 1;
+                imagetype = IMGTYPE_MAST;
+            }
+                //Let's see if she has what it takes to do it: Confidence > 65 or Exhibitionist trait, maybe shy girls should be excluded
+            else if (!girl.has_active_trait("Cum Addict") && girl.has_active_trait("Exhibitionist") || !girl.has_active_trait(
+                    "Cum Addict") && girl.confidence() > 65)
+            {
+                //Some variety
+                //Autopaizuri, requires very big breasts
+                if (chance(25) && girl.has_active_trait("Abnormally Large Boobs") || chance(25) && (girl.has_active_trait(
+                        "Titanic Tits")))
+                {
+                    ss << "${name} was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
+                    girl.tittysex(1);
+                    fame += 1;
+                    m_Tips += 30;
+                }
+                    //cums over self
+                else if (girl.dignity() < -40 && chance(25))
+                {
+                    ss << "The customers were really impressed when ${name} finished her show by cumming all over herself";
+                    m_Tips += 10;
+                }
+                    //Regular futa masturbation
+                else
+                {
+                    ss << "${name}'s cock was hard all the time and she ended up cumming on stage. The customers enjoyed it but the cleaning crew won't be happy.";
+                    brothel.m_Filthiness += 1;
+                }
+                cJobManager::GetMiscCustomer(brothel);
+                brothel.m_Happiness += 100;
+                girl.upd_temp_stat(STAT_LIBIDO, -30, true);
+                // work out the pay between the house and the girl
+                m_Earnings += girl.askprice() + 60;
+                fame += 1;
+                imagetype = IMGTYPE_MAST;
+            }
+            else
+            {
+                ss << "There was a noticeable bulge in ${name}'s panties but she didn't have enough confidence to masturbate in public.";
+            }
+        }
+            //regular masturbation code by Crazy tweaked to exclude futas and keep the original Libido > 90 requirement
+        else if (!girl.has_active_trait("Futanari") && girl.libido() > 90)
+        {
+            ss << "She was horny and ended up masturbating for the customers making them very happy.";
+            cJobManager::GetMiscCustomer(brothel);
+            brothel.m_Happiness += 100;
+            girl.upd_temp_stat(STAT_LIBIDO, -20, true);
+            // work out the pay between the house and the girl
+            m_Earnings += girl.askprice() + 60;
+            fame += 1;
+            imagetype = IMGTYPE_MAST;
+        }
+    }
+
+
+#pragma endregion
+#pragma region    //    Enjoyment and Tiredness        //
+
+    //enjoyed the work or not
+    int roll_a = d100();
+    if (roll_a <= 5)
+    {
+        ss << "\nSeveral patrons heckled her and made her shift generally unpleasant.";
+        work -= 1;
+    }
+    else if (roll_a <= 25)
+    {
+        ss << "\nShe had a great time working.";
+        work += 3;
+    }
+    else
+    {
+        ss << "\nOtherwise, the shift passed uneventfully.";
+        work += 1;
+    }
+
+#pragma endregion
+#pragma region    //    Money                    //
+
+
+#pragma endregion
+#pragma region    //    Finish the shift            //
+
+
+    HandleGains(girl, work, fame);
+    if (m_Performance >= 140 && chance(25))
+    {
+        cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", is_night);
+    }
+
+    girl.AddMessage(ss.str(), imagetype, msgtype);
+
+
+    m_Earnings += uniform(10, 10 + (girl.beauty() + girl.charisma()) / 4);
+
+#pragma endregion
+    return false;
+}
+
+IGenericJob::eCheckWorkResult cXXXEntertainerJob::CheckWork(sGirl& girl, bool is_night) {
+    return SimpleRefusalCheck(girl, ACTION_WORKSTRIP);
+}
 
 void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarCookJob>());
@@ -1295,4 +1555,5 @@ void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cEscortJob>());
     mgr.register_job(std::make_unique<cDealerJob>());
     mgr.register_job(std::make_unique<cEntertainerJob>());
+    mgr.register_job(std::make_unique<cXXXEntertainerJob>());
 }

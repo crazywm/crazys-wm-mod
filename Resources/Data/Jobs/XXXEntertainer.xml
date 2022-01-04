@@ -1,0 +1,282 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="XXXE">
+    <Description>
+        She will provide sexual entertainment to the customers.
+    </Description>
+
+    <Performance>
+        <!-- intel and agility for smarts and speed to cheat; cust service, performance to bluff/cheat, and a bit of magic for 'luck'-->
+        <Factor Stat="Beauty" Weight="2"/>
+        <Factor Skill="Performance" Weight="2"/>
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Confidence" Weight="1"/>
+        <Factor Skill="Strip" Weight="1"/>
+        <Factor Stat="Libido" Weight="1"/>
+        <!-- TODO malus for pregnant -->
+        <Mod>work.hallxxx</Mod>
+    </Performance>
+
+    <Gains XP="10" Skill="2">
+        <Stat Name="Confidence" Weight="1" Max="50" />
+        <Skill Name="Performance" Weight="1" Max="50"/>
+        <Skill Name="Strip" Weight="1" Max="50"/>
+        <GainTrait Trait="Nymphomaniac" Threshold="75" Action="WORKSTRIP">
+            Having to perform sexual entertainment for patrons every day has made ${name} quite the nympho.
+        </GainTrait>
+        <GainTrait Trait="Exhibitionist" Threshold="50" Action="WORKSTRIP">
+            Performing sexual entertainment for strangers every day has made ${name} quite keen to show off her sexuality.
+        </GainTrait>
+    </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to provide sexual entertainment in the gambling hall to${shift}</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} worked as a sexual entertainer in the gambling hall.</Text>
+        </Message>
+        <Message Name="work.perfect">
+            She must be the perfect entertainer customers go on and on about her and always come to see her when she works.
+
+            <Text Condition="Nymphomaniac" Chance="33">
+                ${name} could do this all day with a genuine smile on her face,
+                pussy dripping onto the stained boards beneath her legs.
+            </Text>
+            <Text Condition="Sexy Air" Chance="33">
+                ${name} could be dressed in a sack and still make a fortune masturbating on stage.
+            </Text>
+            <Text Condition="Your Daughter" Chance="33">
+                You probably shouldn't be watching your own daughter doing this,
+                but ${name}'s so damn good it's impossible not to.
+            </Text>
+            <Text>
+                ${name}'s shows are always sold out, and her fame is spreading across the city.
+            </Text>
+            <Text>
+                ${name} stripped in a unique way tonight, dancing with a razor in each hand.
+                With those razors, she peeled her clothes away from her lovely body,
+                without nicking herself a single time.
+            </Text>
+            <Text>
+                It's amazing how many tricks ${name} knows,
+                to tease her audience but never quite push them over the point where they'd lose interest.
+            </Text>
+            <Text>
+                A simple smile towards the audience from ${name} makes every gambler howl and cheer.
+            </Text>
+            <Text>
+                ${name} has a large devoted group of fans, who come in every night to watch her.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            She's unbelievable at this and is always getting praised by the customers for her work.
+
+
+            <Text Condition="Nymphomaniac" Chance="33">
+                ${name} loves her job.
+                You can tell by the zeal she employs as she penetrates her mouth and pussy with dildoes on stage,
+                moaning throughout.
+            </Text>
+            <Text Condition="Exhibitionist" Chance="33">
+                ${name} feels so comfortable naked in front of strangers.
+                She loves having all these strangers staring at her naked body
+                and rewards the audience with a XXX show they will never forget.
+            </Text>
+            <Text Condition="Sexy Air" Chance="33">
+                The skill of ${name}'s dancing coupled with her sexual air just pack the customers in.
+            </Text>
+            <Text>
+                From start to finish, every move ${name} makes practically sweats sexuality.
+            </Text>
+            <Text>
+                ${name} moved off the stage halfway through the act and walked amongst the audience, to their joy.
+            </Text>
+            <Text>
+                As clothing slowly fell from her body and her hand descended towards her core,
+                ${name} smiled seductively at the audience.
+            </Text>
+            <Text>
+                All male members of ${name}'s audience had trouble standing after she fellated a dildo on stage.
+            </Text>
+            <Text>
+                Amusingly, one of the female members of ${name}'s audience threw her panties on the stage,
+                where ${name} used them as an impromptu prop.
+            </Text>
+        </Message>
+
+        <Message Name="work.good">
+            She's good at this job and gets praised by the customers often.
+
+            <Text Condition="Long Legs" Chance="33">
+                ${name}'s erotic dances are accentuated by her perfect legs.
+            </Text>
+            <Text Condition="Sexy Air" Chance="50">
+                ${name} is by no measure bad at her job, but she gets way more customers than could be expected.
+            </Text>
+            <Text>
+                A man made an offer to buy ${name} today, which you turned down. She's popular with the patrons.
+            </Text>
+            <Text>
+                You watched with amusement as members of her audience made a
+                disproportionate number of trips to the bathroom after her performance.
+            </Text>
+            <Text>
+                After letting ${name} choose the music that she danced to, her erotic dances have improved markedly.
+            </Text>
+            <Text>
+                ${name} has a small, but devoted fanbase, who are willing to pay gate fees just to watch her dance.
+            </Text>
+            <Text>
+                A lucky gambler almost fainted when ${name} gave him her freshly removed skirt as a present.
+            </Text>
+        </Message>
+
+        <Message Name="work.ok">
+            She made a few mistakes but overall she is okay at this.
+
+            <Text Condition="Sexy Air" Chance="33">
+                ${name}'s dances are mechanical, but her aurora of sexuality make clients break out in sweats.
+            </Text>
+            <Text Condition="Long Legs" Chance="33">
+                Although ${name} is no great shake at this job, her legs lend her a significant popularity boost.
+            </Text>
+            <Group Chance="50">
+                ${name} got a round of applause when she bowed, and an even bigger one when her
+                <Text Condition="Abnormally Large Boobs|Titanic Tits|Massive Melons">
+                    enormous breasts "accidentally" burst out from her top.
+                </Text>
+                <Text Condition="Big Boobs|Busty Boobs|Giant Juggs">
+                    large breasts "accidentally" flopped out of her top.
+                </Text>
+                <Text Condition="Small Boobs|Petite Breasts">
+                    shirt "accidentally" exposed her small and perky breasts.
+                </Text>
+                <Text Condition="Flat Chest">
+                    shirt "accidentally" exposed the nipples on her perfectly flat chest.
+                </Text>
+                <Text Priority="-1">
+                    breasts "accidentally" fell out of her top.
+                </Text>
+            </Group>
+            <Text>
+                ${name} has some talent at this job, but she needs to develop it.
+            </Text>
+            <Text>
+                The cleaners always hate having to clean up after ${name}'s audience.
+            </Text>
+            <Text>
+                ${name} is not the best erotic dancer you've ever seen, but the gamblers enjoy the eyecandy.
+            </Text>
+            <Text>
+                ${name}'s striptease draws a decent crowd each night.
+            </Text>
+        </Message>
+
+        <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
+
+            <Text Condition="Sexy Air" Chance="33">
+                Even though a block of wood could dance better, ${name} still draws the eye.
+            </Text>
+            <Text Condition="Slut" Chance="33">
+                A total slut,
+                ${name} tried to liven up her show by getting one of the security team to fuck her on stage.
+                He refused.
+            </Text>
+            <Text Condition="Long Legs" Chance="33">
+                The perfectly sculpted flesh of her leg drew attention away from the stupid look on ${name}'s face.
+            </Text>
+            <Text>
+                ${name} isn't qualified as a stripper,
+                which might explain why she couldn't successfully detach her bra on stage.
+            </Text>
+            <Text>
+                ${name}'s hips twitched in a decidedly half-assed way.
+            </Text>
+            <Text>
+                The only person who seemed to find ${name}'s striptease appetizing was a random drunk.
+            </Text>
+            <Text>
+                ${name}'s distaste for the crowd was evident by her curled lip and perpetual scowl.
+            </Text>
+            <Text>
+                ${name} is still incredibly sexy, despite her lack of anything resembling an active customer appeal.
+            </Text>
+        </Message>
+
+        <Message Name="work.worst">
+            She was nervous and constantly making mistakes. She really isn't very good at this job.
+
+            <Text Condition="Long Legs" Chance="33">
+                Customers just can't tear their eyes away from ${name}'s long, tasty legs,
+                even as she tripped over her discarded top.
+            </Text>
+            <Text Condition="Strong Gag Reflex|Gag Reflex" Chance="33">
+                ${name} was sucking off a dildo, when she made herself gag and threw up on stage.
+            </Text>
+            <Text Condition="skill:Magic<20" Chance="50">
+                ${name} tried using magic light to enhance her show, but ended up setting her pubic hair on fire.
+            </Text>
+            <Text Condition="Sexy Air" Chance="33">
+                Even though a block of wood could dance better, ${name} still draws the eye.
+            </Text>
+            <Text Condition="Alcoholic">
+                ${name} was drunk when she stumbled out at the beginning of shift.
+                She threw up and fell asleep on the floor almost as soon as she reached the stage.
+            </Text>
+            <Text>
+                Somehow, ${name} managed to be so unsexy that the audience barely seemed to notice her presence.
+            </Text>
+            <Text>
+                Seeing the large crowd waiting outside, ${name}'s nerve broke, and she ran back out of the gambling hall.
+            </Text>
+            <Text>
+                ${name}'s hair got tangled up in her shirt when she tried to take it off,
+                making her reel about the stage like a drunk.
+            </Text>
+            <Text>
+                ${name} slipped on a fresh smear of ejaculate halfway through her dance, and fell on her ass.
+            </Text>
+        </Message>
+
+        <Message Name="after-work">
+            <Group Condition="Pessimist" Chance="5">
+                <Text Condition="Performance<175" Updates="Tips-=10">
+                    Her pessimism made her unadventurous. The customers were unimpressed and the tips were lower.
+                </Text>
+                <Text Condition="Performance>125" Updates="Tips+=10">
+                    ${name} performed well despite her mood.
+                    The customers enjoy the darker, sultry nature of her sex shows.
+                </Text>
+            </Group>
+            <Group Condition="Optimist" Chance="5">
+                <Text Condition="Performance<175" Updates="Tips-=10">
+                    ${name} smiled far too much to look seductive.
+                </Text>
+                <Text Condition="Performance>125" Updates="Tips+=10">
+                    ${name} showed endless energy, agility and enthusiasm as she rucked around the stage.
+                </Text>
+            </Group>
+            <Group Condition="Clumsy" Chance="15">
+                Her clumsy nature caused her to lose one of her "toys" up a hole.
+                <Text Updates="Tips+=10" Chance="50">
+                    She put on a damn sexy show of getting it back out.
+                </Text>
+                <Text Updates="Tips-=10">
+                    She panicked and ran off stage to go find a doctor.
+                </Text>
+            </Group>
+            <Text Chance="20" Condition="stat:Beauty>85" Updates="Tips+=25">
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+            <Text Chance="10" Condition="Cat Girl" Updates="Tips+=15">
+                ${name} is able to clean herself like a cat. Customers are amazed as this pussy-cat
+                spreads her legs wide and licks her own cunt right there on stage.
+            </Text>
+            <Text Chance="10" Condition="Masochist" Updates="Tips+=15">
+                <!-- TODO Health -->
+                ${name} invites a few customers to punish her on stage. They happily agree to spank and whip her.
+            </Text>
+        </Message>
+    </Messages>
+</Job>
