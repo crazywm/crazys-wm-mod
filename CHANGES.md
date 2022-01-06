@@ -7,8 +7,8 @@
 * Fixed wages for bar jobs
 
 ## Code changes
-* Gambling Hall Jobs Dealer, Entertainer, XXEntertainer are now xml-based
-* Masseuse job now xml-based
+* Dealer, Entertainer, XXEntertainer, Masseuse, Stripper, Peep-Show jobs now xml-based
+* Some generic cleanup
 
 # Version 7.1.2alpha4
 This version introduces dynamic skill caps. This means that the maximum

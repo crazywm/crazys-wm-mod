@@ -335,7 +335,7 @@
     <Modifier Name="work.cleaning">
         <Trait Name="Maid" Value="20"/>
         <Trait Name="Powerful Magic" Value="10"/>
-        <Trait Name="Waitress" Value="5"/>
+        <Trait Name="ClubWaitress" Value="5"/>
         <Trait Name="Strong" Value="5"/>
         <Trait Name="Strong Magic" Value="5"/>
         <Trait Name="Handyman" Value="5"/>
@@ -381,7 +381,7 @@
         <Trait Name="Powerful Magic" Value="10" />
         <Trait Name="Strong Magic" Value="5" />
         <Trait Name="Handyman" Value="5" />
-        <Trait Name="Waitress" Value="5" />
+        <Trait Name="ClubWaitress" Value="5" />
         <Trait Name="Agile" Value="5" />
         <Trait Name="Fleet of Foot" Value="2" />
         <Trait Name="Strong" Value="5" />
@@ -425,7 +425,7 @@
         <Trait Name="Powerful Magic" Value="10" />
         <Trait Name="Strong Magic" Value="5" />
         <Trait Name="Handyman" Value="10" />
-        <Trait Name="Waitress" Value="5" />
+        <Trait Name="ClubWaitress" Value="5" />
         <Trait Name="Agile" Value="10" />
         <Trait Name="Fleet of Foot" Value="5" />
         <Trait Name="Strong" Value="10" />
@@ -877,7 +877,7 @@
         <Trait Name="Quick Learner" Value="5"/>
         <Trait Name="Psychic" Value="10"/> <!-- knows what people want to hear -->
         <Trait Name="Fleet of Foot" Value="5"/>  <!-- faster at taking orders and droping them off -->
-        <Trait Name="Waitress" Value="25"/>
+        <Trait Name="ClubWaitress" Value="25"/>
         <Trait Name="Natural Pheromones" Value="15"/>
         <Trait Name="Agile" Value="5"/>
         <Trait Name="Flexible" Value="5"/>

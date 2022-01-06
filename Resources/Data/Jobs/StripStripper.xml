@@ -33,6 +33,17 @@
         <Stat Name="Confidence" Weight="1" Max="33"/>
     </Gains>
 
+    <Config>
+        <WageFunction>
+            <Point Performance="245" Wages="155" />
+            <Point Performance="185" Wages="95" />
+            <Point Performance="145" Wages="55" />
+            <Point Performance="100" Wages="15" />
+            <Point Performance="70" Wages="-5" />
+            <Point Performance="0" Wages="-15" />
+        </WageFunction>
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} worked as a stripper in the club.</Text>
@@ -51,6 +62,72 @@
                 ${name} didn't waste any time and in a matter of seconds was vigorously fucking the client.
                 After the deed, the client made sure ${name} had a pretty hefty wad of money stuck behind her skirt.
             </Text>
+        </Message>
+
+        <!-- TODO text sharing -->
+        <Message Name="work.perfect">
+            She must be the perfect stripper - customers go on and on about her and always come to see her when she works.
+
+            <Text>${name} throws her bra into the crowd causing a fight to erupt over who got to take it home. They just love her.</Text>
+            <Text>${name} use of the pole amazes the patrons. They truly have no idea how she does the things she does.</Text>
+            <Text>People push and shove to get to the front of the stage for ${name}'s dance set.</Text>
+            <Text>Somehow, ${name} managed to be so sexy that you thought you might need to close just to clean up the mess the crowd made.</Text>
+            <Text Updates="Tips+=15">
+                ${name}'s smile is enough to bring in the tips. You sometimes wonder if she even needs to take her clothes off.
+            </Text>
+        </Message>
+
+        <Message Name="work.great">
+            She's unbelievable at this and is always getting praised by the customers for her work.
+
+            <Text>${name} use of the pole makes every head in the place turn to watch.</Text>
+            <Text>${name} throws her bra into the crowd causing an uproar of hooting and screaming. She knows how to drive them crazy.</Text>
+            <Text>${name} draws just as many females as males to the club when it's her shift. It seems everyone has noticed her skill.</Text>
+            <Text>All male members of ${name}'s audience had trouble standing after she finished her set.</Text>
+            <Text>From start to finish, every move ${name} makes practically sweats sexuality.</Text>
+        </Message>
+
+        <Message Name="work.good">
+            She's good at this job and gets praised by the customers often.
+            <Text>${name} can spin on the pole in a way that excites the crowd.</Text>
+            <Text>${name}'s sly smile and slow striptease drives the crowd crazy.</Text>
+            <Text>Since you let ${name} choose the music she dances to, her erotic dances have improved markedly.</Text>
+            <Text>You watched with amusement as members of her audience made a disproportionate number of trips to the bathroom after her performance.</Text>
+            <Text Updates="Tips+=10">
+                Seeing the large crowd waiting outside, ${name} smirked and slowly walked on stage knowing she was going get good tips today.
+            </Text>
+        </Message>
+
+        <Message Name="work.ok">
+            She made a few mistakes but overall she is okay at this.
+
+            <Text>While she won't win any contests, ${name} isn't a terrible stripper.</Text>
+            <Text>${name} is not the best erotic dancer you've ever seen, but the drunks enjoy the eyecandy.</Text>
+            <Text>${name}'s striptease draws a decent crowd each night.</Text>
+            <Text>${name} is able to use the pole without making any mistakes even if she isn't that great on it.</Text>
+            <Text>Somehow, ${name} managed to get a decent amount of tips as she slowly took her clothes of during her set on stage.</Text>
+        </Message>
+
+        <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
+            <Text>
+                ${name} spun around on the pole too much and got dizzy, causing her to fall off-stage buck-naked into the crowd.
+                A lot of hands grabbed onto her and helped her back up... at least, that's what they said they were doing.
+            </Text>
+            <Text>${name}'s hair got tangled up in her shirt when she tried to take it off, making her reel about the stage like a drunk.</Text>
+            <Text>For all the reaction she's getting, you could probably replace ${name} with a simple mannequin.</Text>
+            <Text>${name} at least managed to get all her clothes off this time.</Text>
+            <Text>${name} isn't qualified as a stripper, which might explain why she couldn't successfully detach her bra on stage.</Text>
+        </Message>
+
+        <Message Name="work.worst">
+            ${name} was stiff and nervous, constantly making mistakes. She really isn't good at this job.
+
+            <Text>${name} slipped of the pole and fell flat on her ass.</Text>
+            <Text>${name}'s hair got tangled up in her shirt when she tried to take it off, making her reel about the stage like a drunk.</Text>
+            <Text>Seeing the large crowd waiting outside, ${name}'s nerve broke, and she wouldn't take the stage.</Text>
+            <Text>Somehow, ${name} forgot that she was a stripper and finished her set with her clothes still on.</Text>
+            <Text>Somehow, ${name} managed to be so unsexy that the audience barely seemed to notice her presence.</Text>
         </Message>
 
 

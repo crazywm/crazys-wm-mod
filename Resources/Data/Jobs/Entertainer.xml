@@ -19,6 +19,17 @@
         <Skill Name="Performance" Weight="1" Max="50"/>
     </Gains>
 
+    <Config>
+        <WageFunction>
+            <Point Performance="245" Wages="155" />
+            <Point Performance="185" Wages="95" />
+            <Point Performance="145" Wages="55" />
+            <Point Performance="100" Wages="15" />
+            <Point Performance="70" Wages="-5" />
+            <Point Performance="0" Wages="-15" />
+        </WageFunction>
+    </Config>
+
     <Messages>
         <Message Name="refuse">
             <Text>${name} refused to entertain patrons in the gambling hall to${shift}</Text>

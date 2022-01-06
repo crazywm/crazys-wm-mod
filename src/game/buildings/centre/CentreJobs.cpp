@@ -244,45 +244,34 @@ sWorkJobResult FeedPoor::DoWork(sGirl& girl, bool is_night) {
 
 #pragma region //    Job Performance            //
 
-    double jobperformance = girl.job_performance(JOB_FEEDPOOR, false);
-
-
     //Adding cust here for use in scripts...
     sCustomer Cust = cJobManager::GetMiscCustomer(*brothel);
 
 
     int dispo;
-    if (jobperformance >= 245)
+    add_performance_text();
+    if (m_Performance >= 245)
     {
-        add_text("work.perfect");
         dispo = 12;
     }
-    else if (jobperformance >= 185)
+    else if (m_Performance >= 185)
     {
-        add_text("work.great");
         dispo = 10;
     }
-    else if (jobperformance >= 145)
+    else if (m_Performance >= 145)
     {
-        add_text("work.good");
-        ss << " She's good at this job and gets praised by people often.\n \n";
         dispo = 8;
     }
-    else if (jobperformance >= 100)
+    else if (m_Performance >= 100)
     {
-        add_text("work.ok");
-        ss << " She made a few mistakes but overall she is okay at this.\n \n";
         dispo = 6;
     }
-    else if (jobperformance >= 70)
+    else if (m_Performance >= 70)
     {
-        add_text("work.bad");
         dispo = 4;
     }
     else
     {
-        add_text("work.worst");
-        ss << " \n \n";
         dispo = 2;
     }
 
@@ -382,7 +371,7 @@ sWorkJobResult FeedPoor::DoWork(sGirl& girl, bool is_night) {
 
 #pragma endregion
 
-    feed += (int)(jobperformance / 10);        //  1 feed per 10 point of performance
+    feed += (int)(m_Performance / 10);        //  1 feed per 10 point of performance
 
     int cost = 0;
     for (int i = 0; i < feed; i++)

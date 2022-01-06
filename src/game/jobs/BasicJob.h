@@ -50,7 +50,7 @@ private:
 
 class cBasicJob : public IGenericJob {
 public:
-    cBasicJob(JOBS job, std::string xml_file = {});
+    explicit cBasicJob(JOBS job, std::string xml_file = {});
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 
 protected:
@@ -59,6 +59,8 @@ protected:
     const std::string& get_text(const std::string& prompt) const;
     bool has_text(const std::string& prompt) const;
     std::stringstream& add_text(const std::string& prompt);
+
+    void add_performance_text();
 
     // processing variables
     void InitWork() override;

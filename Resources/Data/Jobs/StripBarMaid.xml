@@ -33,6 +33,17 @@
         <Skill Name="Brewing" Weight="1" />
     </Gains>
 
+    <Config>
+        <WageFunction>
+            <Point Performance="245" Wages="155" />
+            <Point Performance="185" Wages="95" />
+            <Point Performance="145" Wages="55" />
+            <Point Performance="100" Wages="15" />
+            <Point Performance="70" Wages="-5" />
+            <Point Performance="0" Wages="-15" />
+        </WageFunction>
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} worked as a bartender in the strip club.</Text>
@@ -51,6 +62,30 @@
                 ${name} didn't waste any time and in a matter of seconds was vigorously fucking the client.
                 After the deed, the client made sure ${name} had a pretty hefty wad of money stuck behind her skirt.
             </Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            <Text>She must be the perfect bar tender customers go on and on about her and always come to see her when she works.</Text>
+        </Message>
+
+        <Message Name="work.great">
+            <Text>She's unbelievable at this and is always getting praised by the customers for her work.</Text>
+        </Message>
+
+        <Message Name="work.good">
+            <Text>She's good at this job and gets praised by the customers often.</Text>
+        </Message>
+
+        <Message Name="work.ok">
+            <Text>She made a few mistakes but overall she is okay at this.</Text>
+        </Message>
+
+        <Message Name="work.bad">
+            <Text>She was nervous and made a few mistakes. She isn't that good at this.</Text>
+        </Message>
+
+        <Message Name="work.worst">
+            <Text>She was nervous and constantly making mistakes. She really isn't very good at this job.</Text>
         </Message>
 
         <Message Name="event.grab-boob">

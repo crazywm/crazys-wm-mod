@@ -336,7 +336,7 @@
         </Properties>
     </Trait>
 
-    <Trait Name="Waitress">
+    <Trait Name="ClubWaitress">
         <description>This girl has worked in the service industry in the past.</description>
         <Modifiers>
             <Modifier Name="skill:Service" Value="30" />

@@ -72,12 +72,12 @@
 
     <Config>
         <WageFunction>
-            <Point Performance="245" Wages="170" />
-            <Point Performance="185" Wages="110" />
-            <Point Performance="145" Wages="70" />
-            <Point Performance="100" Wages="30" />
-            <Point Performance="70" Wages="10" />
-            <Point Performance="0" Wages="0" />
+            <Point Performance="245" Wages="155" />
+            <Point Performance="185" Wages="95" />
+            <Point Performance="145" Wages="55" />
+            <Point Performance="100" Wages="15" />
+            <Point Performance="70" Wages="-5" />
+            <Point Performance="0" Wages="-15" />
         </WageFunction>
     </Config>
 

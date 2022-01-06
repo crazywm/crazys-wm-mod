@@ -61,8 +61,7 @@ namespace {
         } else    // work out the pay between the house and the girl
         {
             // `J` zzzzzz - need to change pay so it better reflects how well she filmed the films
-            int roll_max = m_Performance;
-            roll_max /= 4;
+            int roll_max = m_Performance / 4;
             m_Wages += uniform(10, 10 + roll_max);
         }
 

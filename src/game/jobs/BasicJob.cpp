@@ -170,3 +170,30 @@ IGenericJob::eCheckWorkResult cBasicJob::SimpleRefusalCheck(sGirl& girl, Action_
     }
     return eCheckWorkResult::ACCEPTS;
 }
+void cBasicJob::add_performance_text() {
+    if (m_Performance >= 245)
+    {
+        add_text("work.perfect");
+    }
+    else if (m_Performance >= 185)
+    {
+        add_text("work.great");
+    }
+    else if (m_Performance >= 145)
+    {
+        add_text("work.good");
+    }
+    else if (m_Performance >= 100)
+    {
+        add_text("work.ok");
+    }
+    else if (m_Performance >= 70)
+    {
+        add_text("work.bad");
+    }
+    else
+    {
+        add_text("work.worst");
+    }
+    ss << "\n\n";
+}

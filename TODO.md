@@ -20,9 +20,13 @@
 * [ ] Pre-generate list of all images for each girl on game start
 * [ ] De-interlacing
 * [ ] Convert job functions to classes
-  - [ ] General
-  - [x] Gambling
-  - [ ] Brothel
+  - [ ] Advertising
+  - [ ] BeastCare
+  - [ ] Customer Service
+  - [ ] Explore Catacombs
+  - [ ] Security
+  - [ ] Torturer
+  - [ ] Whore
   - [ ] PersonalBedWarmer
 * [ ] adjustable unique chance for overworld encounters
 

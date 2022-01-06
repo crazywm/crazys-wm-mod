@@ -41,7 +41,7 @@ protected:
     PiecewiseLinearFunction PerformanceToEarnings;
 
     void load_from_xml_callback(const tinyxml2::XMLElement& job_element) override;
-    void perf_text();
+    int shift_enjoyment();
 };
 
 class cEscortJob : public cBasicJob {

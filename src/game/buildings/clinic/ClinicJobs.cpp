@@ -152,46 +152,40 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
 
     int basic_care = 0;
     int quality_care = 0;
+    add_performance_text();
     if (m_Performance >= 245)
     {
         basic_care = 20;
         quality_care = 10;
         m_Wages += 155;
-        add_text("work.perfect");
     }
     else if (m_Performance >= 185)
     {
         basic_care = 16;
         quality_care = 6;
         m_Wages += 95;
-        add_text("work.great");
     }
     else if (m_Performance >= 135)
     {
         basic_care = 12;
         quality_care = 2;
         m_Wages += 55;
-        add_text("work.good");
     }
     else if (m_Performance >= 85)
     {
         basic_care = 8;
         m_Wages += 15;
-        add_text("work.ok");
     }
     else if (m_Performance >= 65)
     {
         basic_care = 6;
         m_Wages -= 5;
-        add_text("work.bad");
     }
     else
     {
         basic_care = 4;
-        add_text("work.worst");
         m_Wages -= 15;
     }
-    ss << "\n \n";
 
     ProvideResource(CarePointsBasicId, basic_care);
     ProvideResource(CarePointsGoodId, quality_care);
