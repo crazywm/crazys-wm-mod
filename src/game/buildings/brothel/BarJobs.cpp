@@ -1546,6 +1546,135 @@ IGenericJob::eCheckWorkResult cXXXEntertainerJob::CheckWork(sGirl& girl, bool is
     return SimpleRefusalCheck(girl, ACTION_WORKSTRIP);
 }
 
+class cMasseuseJob : public cBarJob {
+public:
+    cMasseuseJob();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+protected:
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+};
+
+cMasseuseJob::cMasseuseJob() : cBarJob(JOB_MASSEUSE, "Masseuse.xml", sBarJobData{ACTION_WORKMASSEUSE}) {
+}
+
+IGenericJob::eCheckWorkResult cMasseuseJob::CheckWork(sGirl& girl, bool is_night) {
+    return SimpleRefusalCheck(girl, ACTION_WORKMASSEUSE);
+}
+
+bool cMasseuseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    add_text("work") << "\n \n";
+
+    m_Earnings = girl.askprice() + 40;
+    int imageType = IMGTYPE_MASSAGE;
+    int fame = 0;
+    int work = 0;
+
+    perf_text();
+    m_Earnings += PerformanceToEarnings((float)m_Performance);
+
+    //base tips, aprox 5-30% of base wages
+    m_Tips += (int)(((5 + m_Performance / 8) * m_Earnings) / 100);
+
+    if (girl.libido() > 90)
+        //ANON: TODO: sanity check: not gonna give 'perks' to the cust she just banned for wanting perks!
+    {
+        int n;
+        ss << "Because she was quite horny, she ended up ";
+        sCustomer Cust = g_Game->GetCustomer(brothel);
+        brothel.m_Happiness += 100;
+        if (Cust.m_IsWoman && brothel.is_sex_type_allowed(SKILL_LESBIAN))
+        {
+            n = SKILL_LESBIAN, ss << "intensely licking the female customer's clit until she got off, making the lady very happy.\n";
+        }
+        else
+        {
+            switch (uniform(0, 10))
+            {
+                case 0:        n = SKILL_ORALSEX;   ss << "massaging the customer's cock with her tongue";                    break;
+                case 1:        n = SKILL_TITTYSEX;  ss << "using her tits to get the customer off";                            break;
+                case 2:        n = SKILL_HANDJOB;   ss << "giving him a cock-rub as well";                                    break;
+                case 3:        n = SKILL_ANAL;      ss << "oiling the customer's cock and massaging it with her asshole.";    break;
+                case 4:        n = SKILL_FOOTJOB;   ss << "using her feet to get the customer off";                            break;
+                default:       n = SKILL_NORMALSEX; ss << "covered in massage oil and riding the customer's cock";            break;
+            }
+            ss << ", making him very happy.\n";
+        }
+        /* */if (n == SKILL_LESBIAN)    imageType = IMGTYPE_LESBIAN;
+        else if (n == SKILL_ORALSEX)    imageType = IMGTYPE_ORAL;
+        else if (n == SKILL_TITTYSEX)    imageType = IMGTYPE_TITTY;
+        else if (n == SKILL_HANDJOB)    imageType = IMGTYPE_HAND;
+        else if (n == SKILL_FOOTJOB)    imageType = IMGTYPE_FOOT;
+        else if (n == SKILL_ANAL)        imageType = IMGTYPE_ANAL;
+        else if (n == SKILL_NORMALSEX)    imageType = IMGTYPE_SEX;
+        if (n == SKILL_NORMALSEX)
+        {
+            if (girl.lose_trait("Virgin"))
+            {
+                ss << "\nShe is no longer a virgin.\n";
+            }
+            if (!girl.calc_pregnancy(Cust, 1.0))
+            {
+                g_Game->push_message(girl.FullName() + " has gotten pregnant", 0);
+            }
+        }
+        girl.upd_skill(n, 2);
+        girl.upd_temp_stat(STAT_LIBIDO, -25, true);
+        m_Earnings += 225;
+        m_Tips += 30 + girl.get_skill(n) / 5;
+        girl.upd_Enjoyment(ACTION_SEX, +1);
+        fame += 1;
+        girl.m_NumCusts++;
+        //girl.m_Events.AddMessage(ss.str(), imageType, Day0Night1);
+    } //SIN - bit more spice - roll_c doesn't seem to be used anywhere else so ok here
+    else if (girl.has_active_trait("Doctor") && chance(5))
+    {
+        ss << "Due to ${name}'s training as a Doctor, she was able to discover an undetected medical condition in her client during the massage. ";
+        if (girl.charisma() < 50)
+        {
+            ss << "The customer was devastated to get such news from a massage and numbly accepted the referral for treatment.\n";
+        }
+        else
+        {
+            ss << "The customer was shocked to get such news, but was calmed by ${name}'s kind explanations, and happily accepted the referral for treatment.\n";
+            brothel.m_Happiness += 20;
+        }
+    }
+    else
+    {
+        brothel.m_Happiness += uniform(30, 100);
+        brothel.m_MiscCustomers++;
+        //girl.m_Events.AddMessage(ss.str(), imageType, Day0Night1);
+    }
+
+#pragma region    //    Enjoyment and Tiredness        //
+
+    //enjoyed the work or not
+    int roll_a = d100();
+    if (roll_a <= 5)
+    {
+        ss << "\nSome of the patrons abused her during the shift."; work -= 1;
+    }
+    else if (roll_a <= 25)
+    {
+        ss << "\nShe had a pleasant time working."; work += 3;
+    }
+    else
+    {
+        ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
+    }
+
+#pragma endregion
+
+    HandleGains(girl, work, fame);
+    if (m_Performance >= 140 && chance(25))
+    {
+        cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", is_night);
+    }
+
+    girl.AddMessage(ss.str(), imageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    return false;
+}
+
 void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarCookJob>());
     mgr.register_job(std::make_unique<cBarMaidJob>());
@@ -1556,4 +1685,5 @@ void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cDealerJob>());
     mgr.register_job(std::make_unique<cEntertainerJob>());
     mgr.register_job(std::make_unique<cXXXEntertainerJob>());
+    mgr.register_job(std::make_unique<cMasseuseJob>());
 }

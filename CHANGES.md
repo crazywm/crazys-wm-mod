@@ -7,7 +7,7 @@
 
 ## Code changes
 * Gambling Hall Jobs Dealer, Entertainer, XXEntertainer are now xml-based
-
+* Masseuse job now xml-based
 
 # Version 7.1.2alpha4
 This version introduces dynamic skill caps. This means that the maximum

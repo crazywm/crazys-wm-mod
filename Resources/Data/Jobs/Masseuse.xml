@@ -1,0 +1,197 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Msus">
+    <Description>
+        She will give massages to the customers.
+    </Description>
+
+    <Performance>
+        <!-- intel and agility for smarts and speed to cheat; cust service, performance to bluff/cheat, and a bit of magic for 'luck'-->
+        <Factor Stat="Beauty" Weight="2"/>
+        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Stat="Strength" Weight="2"/>
+        <Factor Skill="Service" Weight="3"/>
+        <Factor Skill="Medicine" Weight="3"/>
+        <Mod>work.masseuse</Mod>
+    </Performance>
+
+    <Gains XP="15" Skill="3">
+        <Skill Name="Medicine" Weight="1" Max="50"/>
+        <Skill Name="Service" Weight="1" Max="50"/>
+    </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to massage customers in your brothel to${shift}</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} worked massaging customers.</Text>
+        </Message>
+        <Message Name="work.perfect">
+            She must be the perfect masseuse she never goes too hard but never too soft.
+            She knows just what to do and the customers can't get enough of her.
+
+            <Text Updates="Tips+=20">
+                Being asked to perfume more sensual massage, ${name} massage the customer with her breasts for some extra coin.
+            </Text>
+            <Text>
+                Every man left ${name}'s room with a wide smile.
+            </Text>
+            <Text>
+                A client wanted ${name} to focus on a tight region.
+                Doing as he asked, she left him with a boner.
+            </Text>
+            <Text>
+                She is well known and has a steady base of faithful customers.
+            </Text>
+            <Text Updates="Tips+=20">
+                ${name} hands are the best thing that could touch a man.
+                Customers left big tips after getting a massage from her.
+            </Text>
+        </Message>
+        <Message Name="work.great">
+            She's unbelievable at this and is always finding new ways to please the customer.
+
+            <Text Updates="Earnings+=15">
+                Today she used some new oils. The customers liked them and paid some extra for the service.
+            </Text>
+            <Text>
+                She certainly knows how and where to press on a man's body.
+                Today, customer moans were heard in the corridor.
+            </Text>
+            <Text>
+                Trying a new technique, ${name} performed a massage with her feet.
+                The customer really liked it and suggested she should put this on the regular menu.
+            </Text>
+            <Text>
+                Her customer wanted something more than the usual service.
+                She declined and banned him from her customers list.
+            </Text>
+            <Text>
+                Knowing most of masseur's techniques, she is one of the best.
+            </Text>
+        </Message>
+
+        <Message Name="work.good">
+            She's good at this job and knows a few tricks to drive the customers wild.
+
+            <Text>
+                {name} helped a customer with a really painful back pain.
+                The man bowed several times, thanking her for the treatment.
+            </Text>
+            <Text>
+                She's making fewer mistakes with every day and earning good money.
+            </Text>
+            <Text>
+                When massaging a customer, she had a pleasant conversation with him, leaving a very good impression.
+            </Text>
+            <Text>
+                She certainly knows how to do her job and is getting better at it every day.
+            </Text>
+            <Text>
+                A female customer requested a face massage. ${name} managed to meet her expectations.
+            </Text>
+        </Message>
+
+        <Message Name="work.ok">
+            She made a few mistakes but overall she is okay at this.
+
+            <Text>
+                Maybe she isn't the best, but at least she won't kill anyone.
+            </Text>
+            <Text>
+                She got the job done. No complaints were noted.
+            </Text>
+            <Text>
+                She was good. A few of ${name}'s customers praised her.
+            </Text>
+            <Text>
+                She made few mistakes, but managed not to hurt anyone today.
+            </Text>
+            <Text>
+                Only a few customers came today. She didn't earn much.
+            </Text>
+        </Message>
+
+        <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
+
+            <Text>
+                ${name} almost killed a customer today!
+            </Text>
+            <Text>
+                Her performance was bad. The customer left a complaint and didn't pay for the service.
+            </Text>
+            <Text>
+                Thing that she did today could be called a backrub, not a massage.
+            </Text>
+            <Text>
+                She argued with a client and kicked him out on the street wearing only a towel around his waist.
+            </Text>
+            <Text>
+                Not knowing what to do, she tried her best and failed.
+            </Text>
+        </Message>
+
+        <Message Name="work.worst">
+            She was nervous and constantly making mistakes. She really isn't very good at this job.
+
+            <Text>
+                ${name} massaged a client. He could barely walk out after her service.
+            </Text>
+            <Text>
+                Getting kicked by a horse or getting a massage from ${name}.
+                Equally deadly but the first you could get for free.
+            </Text>
+            <Text>
+                A loud scream was heard in your building shortly after ${name} started her shift.
+            </Text>
+            <Text>
+                Not having any experience in this kind of work she fails miserably.
+            </Text>
+            <Text>
+                She tries to massage a client in the best way she knows.
+                After ten minutes he leaves without paying and frustrated.
+            </Text>
+        </Message>
+
+        <Message Name="after-work">
+            <Group Condition="Pessimist" Chance="5">
+                <Text Condition="Performance<175" Updates="Tips-=10">
+                    Her pessimism made her unadventurous. The customers were unimpressed and the tips were lower.
+                </Text>
+                <Text Condition="Performance>125" Updates="Tips+=10">
+                    ${name} performed well despite her mood.
+                    The customers enjoy the darker, sultry nature of her sex shows.
+                </Text>
+            </Group>
+            <Group Condition="Optimist" Chance="5">
+                <Text Condition="Performance<175" Updates="Tips-=10">
+                    ${name} smiled far too much to look seductive.
+                </Text>
+                <Text Condition="Performance>125" Updates="Tips+=10">
+                    ${name} showed endless energy, agility and enthusiasm as she rucked around the stage.
+                </Text>
+            </Group>
+            <Group Condition="Clumsy" Chance="15">
+                Her clumsy nature caused her to lose one of her "toys" up a hole.
+                <Text Updates="Tips+=10" Chance="50">
+                    She put on a damn sexy show of getting it back out.
+                </Text>
+                <Text Updates="Tips-=10">
+                    She panicked and ran off stage to go find a doctor.
+                </Text>
+            </Group>
+            <Text Chance="20" Condition="stat:Beauty>85" Updates="Tips+=25">
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+            <Text Chance="10" Condition="Cat Girl" Updates="Tips+=15">
+                ${name} is able to clean herself like a cat. Customers are amazed as this pussy-cat
+                spreads her legs wide and licks her own cunt right there on stage.
+            </Text>
+            <Text Chance="10" Condition="Masochist" Updates="Tips+=15">
+                <!-- TODO Health -->
+                ${name} invites a few customers to punish her on stage. They happily agree to spank and whip her.
+            </Text>
+        </Message>
+    </Messages>
+</Job>

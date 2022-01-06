@@ -221,7 +221,6 @@ DECL_JOB(ExploreCatacombs);
 DECL_JOB(BeastCare);
 
 // - Brothel
-DECL_JOB(BrothelMasseuse);
 DECL_JOB(BrothelStripper);
 DECL_JOB(PeepShow);
 DECL_JOB(Whore);
@@ -253,7 +252,6 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_EXPLORECATACOMBS, ExploreCatacombs, "ExC", "She will explore the catacombs looking for treasure and capturing monsters and monster girls. Needless to say, this is a dangerous job.");
     REGISTER_JOB(JOB_BEASTCARER, BeastCare, "BstC", "She will look after the needs of the beasts in your Brothel.");;
 
-    REGISTER_JOB(JOB_MASSEUSE, BrothelMasseuse, "Msus", "She will give massages to the customers.");
     REGISTER_JOB(JOB_BROTHELSTRIPPER, BrothelStripper, "BStp", "She will strip for the customers.");
     REGISTER_JOB(JOB_PEEP, PeepShow, "Peep",  "She will let people watch her change and maybe more...");
 

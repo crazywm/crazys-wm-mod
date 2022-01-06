@@ -47,7 +47,6 @@ set(BUILDINGS_SRC
         buildings/brothel/WorkAdvertising.cpp
         buildings/house/Training.cpp
         buildings/brothel/WorkBeastCare.cpp
-        buildings/brothel/WorkBrothelMassusse.cpp
         buildings/brothel/WorkBrothelStripper.cpp
         buildings/brothel/WorkWhore.cpp
         buildings/studio/StudioCrew.cpp
