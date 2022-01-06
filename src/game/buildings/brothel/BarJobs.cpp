@@ -33,7 +33,7 @@
 sWorkJobResult cBarJob::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
     cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
-    return {JobProcessing(girl, *brothel, is_night), m_Tips, m_Earnings, m_Earnings};
+    return {JobProcessing(girl, *brothel, is_night), m_Tips, m_Earnings, m_Wages};
 }
 
 cBarJob::cBarJob(JOBS job, const char* xml, sBarJobData data) : cBasicJob(job, xml), m_Data(data) {
@@ -1691,6 +1691,8 @@ IGenericJob::eCheckWorkResult cPeepShowJob::CheckWork(sGirl& girl, bool is_night
 }
 
 bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    add_text("work") << "\n\n";
+
     int roll_c = d100();
     m_Earnings = girl.askprice() + uniform(0, 50);
     m_Tips = std::max(uniform(-10, 40), 0);
@@ -1702,6 +1704,8 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
 #pragma region //    Job Performance            //
 
     double mod = 0.0;
+
+    perf_text();
 
     if (m_Performance >= 245)
     {

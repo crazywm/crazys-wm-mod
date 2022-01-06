@@ -4,6 +4,7 @@
 * fixed centre manager job (thanks @g539812)
 * removed npclove stat that wasn't really implemented anyway
 * fixed using stat instead of skill when determining skill of children
+* Fixed wages for bar jobs
 
 ## Code changes
 * Gambling Hall Jobs Dealer, Entertainer, XXEntertainer are now xml-based
