@@ -1,0 +1,111 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="BStp">
+    <Description>
+        She will strip for the customers.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Beauty" Weight="2"/>
+        <Factor Stat="Charisma" Weight="2"/>
+        <Factor Skill="Performance" Weight="1"/>
+        <Factor Skill="Strip" Weight="2"/>
+
+        <Mod>work.stripper</Mod>
+
+        <!--
+        The original code had a fame bonus and a pregnancy malus
+        -->
+    </Performance>
+
+    <Config>
+        <WageFunction>
+            <Point Performance="245" Wages="200" />
+            <Point Performance="185" Wages="140" />
+            <Point Performance="145" Wages="100" />
+            <Point Performance="100" Wages="60" />
+            <Point Performance="70" Wages="40" />
+            <Point Performance="0" Wages="30" />
+        </WageFunction>
+    </Config>
+
+    <Gains XP="15" Skill="3">
+        <LoseTrait Trait="Nervous" Threshold="30" Action="WORKSTRIP">
+            ${name} has had so many people see her naked she is no longer nervous about anything.
+        </LoseTrait>
+        <GainTrait Trait="Sexy Air" Threshold="80" Action="WORKSTRIP">
+            ${name} has been stripping and having to be sexy for so long she now reeks of sexyness.
+        </GainTrait>
+        <GainTrait Trait="Exhibitionist" Threshold="60" Action="WORKSTRIP">
+            ${name} has been stripping for so long she loves to be naked now.
+        </GainTrait>
+        <Skill Name="Performance" Weight="2" />
+        <Skill Name="Strip" Weight="2" />
+    </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} was stripping in the brothel.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>"${name} refused to strip for customers in your brothel to${shift}</Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            <Text>She must be the perfect stripper - customers go on and on about her and always come to see her when she works.</Text>
+        </Message>
+
+        <Message Name="work.great">
+            <Text>She's unbelievable at this and is always getting praised by the customers for her work.</Text>
+        </Message>
+
+        <Message Name="work.good">
+            <Text>She's good at this job and gets praised by the customers often.</Text>
+        </Message>
+
+        <Message Name="work.ok">
+            <Text>She made a few mistakes but overall she is okay at this.</Text>
+        </Message>
+
+        <Message Name="work.bad">
+            <Text>She was nervous and made a few mistakes. She isn't that good at this.</Text>
+        </Message>
+
+        <Message Name="work.worst">
+            <Text>She was nervous and constantly making mistakes. She really isn't very good at this job.</Text>
+        </Message>
+
+        <Message Name="event.post">
+            <Text Condition="stat:Beauty>85" Chance="20" Updates="Tips+=25">
+                Stunned by her beauty a customer left her a great tip.
+            </Text>
+            <Text Condition="Clumsy" Chance="5" Updates="Earnings-=15">
+                Her clumsy nature caused her to slide off the pole causing her to have to stop stripping for a few hours.
+            </Text>
+            <Group Condition="Pessimist" Chance="5">
+                <Text Condition="Performance > 120" Updates="Tips+=10">
+                    ${name} was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.
+                </Text>
+                <Text Condition="Performance <= 140" Updates="Tips-=10">
+                    Her pessimistic mood depressed the customers making them tip less.
+                </Text>
+            </Group>
+            <Group Condition="Optimist" Chance="5">
+                <Text Condition="Performance > 120" Updates="Tips+=10">
+                    Her optimistic mood made patrons cheer up increasing the amount they tip.
+                </Text>
+                <Text Condition="Performance <= 149" Updates="Tips-=10">
+                    ${name} was in a cheerful mood but the patrons thought she needed to work more on her services.
+                </Text>
+            </Group>
+            <Group Condition="Great Figure" Chance="20">
+                <Text Condition="Performance > 125" Updates="Tips+=15">
+                    ${name}'s great figure draws a large crowed to the stage and her skill at stripping makes them pay up to see the show up close.
+                </Text>
+                <Text Condition="Performance <= 125" Updates="Tips+=5">
+                    ${name} has a great figure so she draws a few extra patrons even if she needed to work more on her stripping.
+                </Text>
+            </Group>
+            <Text Priority="-1"/>
+        </Message>
+    </Messages>
+</Job>
