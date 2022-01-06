@@ -222,7 +222,6 @@ DECL_JOB(BeastCare);
 
 // - Brothel
 DECL_JOB(BrothelStripper);
-DECL_JOB(PeepShow);
 DECL_JOB(Whore);
 
 // house
@@ -253,7 +252,6 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_BEASTCARER, BeastCare, "BstC", "She will look after the needs of the beasts in your Brothel.");;
 
     REGISTER_JOB(JOB_BROTHELSTRIPPER, BrothelStripper, "BStp", "She will strip for the customers.");
-    REGISTER_JOB(JOB_PEEP, PeepShow, "Peep",  "She will let people watch her change and maybe more...");
 
     REGISTER_JOB(JOB_WHOREGAMBHALL, Whore, "HWhr", "She will give her sexual favors to the customers.");
     REGISTER_JOB(JOB_BARWHORE, Whore, "SWhr", "She will provide sex to the customers.");

@@ -1,0 +1,160 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Peep">
+    <Description>
+        She will let people watch her change and maybe more...
+    </Description>
+
+    <Performance>
+        <!-- intel and agility for smarts and speed to cheat; cust service, performance to bluff/cheat, and a bit of magic for 'luck'-->
+        <Factor Stat="Charisma" Weight="1"/>
+        <Factor Stat="Beauty" Weight="1"/>
+        <Factor Skill="Strip" Weight="1"/>
+        <Factor Skill="Performance" Weight="1"/>
+        <!-- TODO malus for pregnant -->
+        <Mod>work.peepshow</Mod>
+    </Performance>
+
+    <Gains XP="15" Skill="3">
+        <Skill Name="Strip" Weight="1" Max="50" />
+        <Skill Name="Performance" Weight="1" Max="50"/>
+        <LoseTrait Trait="Nervous" Threshold="30" Action="WORKSTRIP">
+            ${name} has had so many people see her naked she is no longer nervous about anything.
+        </LoseTrait>
+    </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to be in your brothel's peep show to${shift}</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} let the customers watch her get naked.</Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            She must be the perfect teaser she never goes to fast but never to slow, she knows just when to do things. The customers can't get enough of her.
+
+            <Text>
+                Knowing every trick in the book and not hesitating to use them, she makes a lot of money today.
+            </Text>
+            <Text>
+                She is just a gold mine.
+            </Text>
+            <Text>
+                She certainly knows how to sell the show. After hours of teasing she finally gets naked.
+            </Text>
+            <Text>
+                ${name} was requested by name by a single customer.
+                He paid double of her daily earnings for the privilege of getting an exclusive performance.
+            </Text>
+            <Text>
+                ${name} is performing today. Like always the cleaning crew have a lot of work after her shows.
+            </Text>
+        </Message>
+
+        <Message Name="work.great">
+            She is unbelievable at this and is always finding new ways of pleasing the customers.
+
+            <Text>
+                She is really good at this, knowing how to tease customers into staying and paying for hours.
+            </Text>
+            <Text>
+                ${name} swinging her boobs and ass in a very sexual way.
+                As a result causing heavy breathing from the booths.
+            </Text>
+            <Text>
+                Her body movement is flawless and very sensual, earning a nice sum today.
+            </Text>
+            <Text>
+                ${name} gave a very good performance, making her clients very satisfied with the time they spent here.
+            </Text>
+            <Text>
+                ${name} was requested by name by a group of customers.
+                She gave them a special performance for a really high price.
+            </Text>
+        </Message>
+
+        <Message Name="work.good">
+            She's good at this job and knows a few tricks to drive the customers wild.
+
+            <Text>
+                She has a good body and sense of rhythm,
+                but she strips too fast, so she makes less money from today performance.
+            </Text>
+            <Text>
+                She makes the mistake of getting naked too fast, ending the show prematurely.
+            </Text>
+            <Text>
+                She certainly has the skills for this job, but with more work she will get even better.
+            </Text>
+            <Text>
+                ${name} comes on stage with some 'toys' that she uses to prolong her performance.
+            </Text>
+            <Text>
+                Having confidence in her skills, ${name} gives a very good performance.
+            </Text>
+        </Message>
+
+        <Message Name="work.ok">
+            She made a few mistakes but overall she is okay at this.
+
+            <Text>
+                ${name} can strip and people come here to see her do that but there is nothing extraordinary in her performance.
+            </Text>
+            <Text>
+                Pretty boring show, But at least she gets naked all the way through.
+            </Text>
+            <Text>
+                Having stage fright, her movement seems mechanical, leaving paying customers unsatisfied.
+            </Text>
+            <Text>
+                Not too confident in herself, ${name}'s tense performance rubs off on the customers.
+            </Text>
+            <Text>
+                She did good today. With improving her skills, ${name} could become one of the best.
+            </Text>
+        </Message>
+
+        <Message Name="work.bad">
+            She was nervous and made a few mistakes. She isn't that good at this.
+
+            <Text>
+                When it was time for ${name} to take off her panties,
+                she collapsed on the floor covering her breasts and crying.
+            </Text>
+            <Text>
+                Not being able to unbuckle her fancy bra, she struggled for minutes.
+                Some of the customers left demanding their money back.
+            </Text>
+            <Text>
+                She gets naked but in a boring and not exciting way.
+            </Text>
+            <Text>
+                Trying a more advanced pose, she hurts herself, falling painfully on the floor.
+            </Text>
+            <Text>
+                ${name} definitely tries to give a good performance, but having only good will isn't enough.
+            </Text>
+        </Message>
+
+        <Message Name="work.worst">
+            She was nervous and constantly making mistakes. She really isn't very good at this job.
+
+            <Text>
+                She is awful at this job. Her stage movement and striptease are lifeless.
+            </Text>
+            <Text>
+                Her stripping ability could be compared to getting undressed before a shower.
+            </Text>
+            <Text>
+                Her show was so bad, that you could swear you heard snoring from one booth.
+            </Text>
+            <Text>
+                When trying to take off her t-shirt, ${name}'s head got stuck for minutes.
+            </Text>
+            <Text>
+                Trying to give her best, ${name} gave a poor performance.
+            </Text>
+        </Message>
+
+    </Messages>
+</Job>

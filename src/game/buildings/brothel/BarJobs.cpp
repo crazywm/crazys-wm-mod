@@ -1675,6 +1675,326 @@ bool cMasseuseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     return false;
 }
 
+class cPeepShowJob : public cBarJob {
+public:
+    cPeepShowJob();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+protected:
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+};
+
+cPeepShowJob::cPeepShowJob() : cBarJob(JOB_PEEP, "PeepShow.xml", sBarJobData{ACTION_WORKSTRIP}) {
+}
+
+IGenericJob::eCheckWorkResult cPeepShowJob::CheckWork(sGirl& girl, bool is_night) {
+    return SimpleRefusalCheck(girl, ACTION_WORKSTRIP);
+}
+
+bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    int roll_c = d100();
+    m_Earnings = girl.askprice() + uniform(0, 50);
+    m_Tips = std::max(uniform(-10, 40), 0);
+    int enjoy = 0, fame = 0;
+    SKILLS sextype = SKILL_STRIP;
+    int imagetype = IMGTYPE_STRIP;
+
+#pragma endregion
+#pragma region //    Job Performance            //
+
+    double mod = 0.0;
+
+    if (m_Performance >= 245)
+    {
+        mod = 3.0;
+    }
+    else if (m_Performance >= 185)
+    {
+        mod = 2.0;
+    }
+    else if (m_Performance >= 145)
+    {
+        mod = 1.5;
+    }
+    else if (m_Performance >= 100)
+    {
+        mod = 1.0;
+    }
+    else if (m_Performance >= 70)
+    {
+        mod = 0.9;
+    }
+    else
+    {
+        mod = 0.8;
+    }
+
+
+    //try and add randomness here
+    if (girl.libido() > 80)
+    {
+        if (girl.has_active_trait("Lesbian") && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Succubus")))
+        {
+            ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.\n";
+            sextype = SKILL_LESBIAN;
+            /* `J` cGirls::GirlFucks handles skill gain from sex
+            girl.lesbian(1);
+            //*/
+        }
+        else if (girl.has_active_trait("Bisexual") && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Succubus")))
+        {
+            if (roll_c <= 50)
+            {
+                ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.\n";
+                sextype = SKILL_LESBIAN;
+                /* `J` cGirls::GirlFucks handles skill gain from sex
+                girl.lesbian(1);
+                //*/
+            }
+            else
+            {
+                ss << "\nShe was horny and she loves sex so she brought in one of the customers and had sex with him while the others watched.";
+                sextype = SKILL_NORMALSEX;
+            }
+        }
+        else if (girl.has_active_trait("Straight") && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Succubus")))
+        {
+            ss << "\nShe was horny and she loves sex so she brought in one of the customers and had sex with him while the others watched.\n";
+            sextype = SKILL_NORMALSEX;
+        }
+            // new stuff
+        else if (girl.has_active_trait("Futanari"))
+        {
+            //Addiction bypasses confidence check
+            if (girl.has_active_trait("Cum Addict"))
+            {
+                //Autofellatio, belly gets in the way if pregnant, requires extra flexibility
+                if (girl.has_active_trait("Flexible") && !(girl.is_pregnant()) && chance(50))
+                {
+                    ss << "\nDuring her shift ${name} couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
+                    girl.oralsex(1);
+                    girl.happiness(1);
+                    fame += 1;
+                    m_Tips += 30;
+                }
+                else
+                {
+                    //default Cum Addict
+                    ss << "\n${name} won't miss a chance to taste some yummy cum. She came up on the stage with a goblet, cummed in it and then drank the content to entertain the customers.";
+                    girl.happiness(1);
+                    m_Tips += 10;
+                }
+                cJobManager::GetMiscCustomer(brothel);
+                brothel.m_Happiness += 100;
+                girl.upd_temp_stat(STAT_LIBIDO, -30, true);
+                // work out the pay between the house and the girl
+                m_Earnings += girl.askprice() + 60;
+                fame += 1;
+                imagetype = IMGTYPE_MAST;
+            }
+                //Let's see if she has what it takes to do it: Confidence > 65 or Exhibitionist trait, maybe shy girls should be excluded
+            else if (!girl.has_active_trait("Cum Addict") && girl.has_active_trait("Exhibitionist") || !girl.has_active_trait(
+                    "Cum Addict") && girl.confidence() > 65)
+            {
+                //Some variety
+                //Autopaizuri, requires very big breasts
+                if (chance(25) && girl.has_active_trait("Abnormally Large Boobs") || chance(25) && (girl.has_active_trait(
+                        "Titanic Tits")))
+                {
+                    ss << "\n${name} was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
+                    girl.tittysex(1);
+                    fame += 1;
+                    m_Tips += 30;
+                }
+                    //cums over self
+                else if (girl.dignity() < -40 && chance(25))
+                {
+                    ss << "\nThe customers were really impressed when ${name} finished her show by cumming all over herself";
+                    m_Tips += 10;
+                }
+                    //Regular futa masturbation
+                else
+                {
+                    ss << "\n${name}'s cock was hard all the time and she ended up cumming on stage. The customers enjoyed it but the cleaning crew won't be happy.";
+                    brothel.m_Filthiness += 1;
+                }
+                cJobManager::GetMiscCustomer(brothel);
+                brothel.m_Happiness += 100;
+                girl.upd_temp_stat(STAT_LIBIDO, -30, true);
+                // work out the pay between the house and the girl
+                m_Earnings += girl.askprice() + 60;
+                fame += 1;
+                imagetype = IMGTYPE_MAST;
+            }
+            else
+            {
+                ss << "\nThere was a noticeable bulge in ${name}'s panties but she didn't have enough confidence to masturbate in public.";
+            }
+        }
+        else
+        {
+            //GirlFucks handles all the stuff for the other events but it isn't used here so everything has to be added manually
+            //It's is the same text as the XXX entertainer masturbation event, so I'll just copy the rest
+            ss << "\nShe was horny and ended up masturbating for the customers, making them very happy.";
+            cJobManager::GetMiscCustomer(brothel);
+            brothel.m_Happiness += 100;
+            girl.upd_temp_stat(STAT_LIBIDO, -30, true);
+            // work out the pay between the house and the girl
+            m_Earnings += girl.askprice() + 60;
+            fame += 1;
+            imagetype = IMGTYPE_MAST;
+        }
+    }
+    else if (chance(5))  //glory hole event
+    {
+        ss << "A man managed to cut a hole out from his booth and made himself a glory hole, ${name} saw his cock sticking out and ";
+        {
+            if (girl.has_active_trait("Meek") || girl.has_active_trait("Shy"))
+            {
+                enjoy -= 5;
+                ss << "meekly ran away from it.\n";
+            }
+            else if (girl.has_active_trait("Lesbian"))
+            {
+                enjoy -= 2;
+                girl.upd_temp_stat(STAT_LIBIDO, -10, true);
+                ss << "she doesn't understand the appeal of them, which turned her off.\n";
+            }
+            else if (brothel.is_sex_type_allowed(SKILL_NORMALSEX) && !is_virgin(girl) && (girl.has_active_trait(
+                    "Nymphomaniac") ||
+                                                                                           girl.has_active_trait("Succubus")) && girl.libido() >= 80) //sex
+            {
+                sextype = SKILL_NORMALSEX;
+                ss << "decided she needed to use it for her own entertainment.\n";
+            }
+            else if (brothel.is_sex_type_allowed(SKILL_ORALSEX) && (girl.has_active_trait("Nymphomaniac") ||
+                                                                     girl.has_active_trait("Succubus") ||
+                                                                     girl.has_active_trait("Cum Addict")) && girl.libido() >= 60) //oral
+            {
+                sextype = SKILL_ORALSEX;
+                ss << "decided she needed to taste it.\n";
+            }
+            else if (brothel.is_sex_type_allowed(SKILL_FOOTJOB) && (girl.has_active_trait("Nymphomaniac") ||
+                                                                     girl.has_active_trait("Succubus") || girl.dignity() < -30) && girl.libido() >= 40) //foot
+            {
+                sextype = SKILL_FOOTJOB;
+                imagetype = IMGTYPE_FOOT;
+                ss << "decided she would give him a foot job for being so brave.\n";
+            }
+            else if (brothel.is_sex_type_allowed(SKILL_HANDJOB) && (girl.has_active_trait("Nymphomaniac") ||
+                                                                     girl.has_active_trait("Succubus") || girl.dignity() < -30))    //hand job
+            {
+                sextype = SKILL_HANDJOB;
+                ss << "decided she would give him a hand job for being so brave.\n";
+            }
+            else
+            {
+                ss << "pointed and laughed.\n";
+            }
+
+            /* `J` suggest adding bad stuff,
+            else if (girl.has_trait( "Merciless") && girl.has_item("Dagger") != -1 && chance(10))
+            {
+            imagetype = IMGTYPE_COMBAT;
+            ss << "decided she would teach this guy a lesson and cut his dick off.\n";
+            }
+            *
+            * This would probably require some other stuff and would deffinatly reduce her pay.
+            * It may even get the girl arrested if the players suspicion were too high
+            *
+            //*/
+        }
+    }
+
+    // `J` calculate base pay and tips with mod before special pay and tips are added
+    m_Tips = std::max(0, int(m_Tips * mod));
+    m_Earnings = std::max(0, int(m_Earnings * mod));
+
+    if (girl.beauty() > 85 && chance(20))
+    {
+        ss << "Stunned by her beauty, a customer left her a great tip.\n \n";
+        m_Tips += uniform(10, 60);
+    }
+
+    if (sextype != SKILL_STRIP)
+    {
+        // `J` get the customer and configure them to what is already known about them
+        sCustomer Cust = cJobManager::GetMiscCustomer(brothel);
+        Cust.m_Amount = 1;                                        // always only 1
+        Cust.m_SexPref = sextype;                                // they don't get a say in this
+        if (sextype == SKILL_LESBIAN) Cust.m_IsWoman = true;    // make sure it is a lesbian
+
+        std::string message = ss.str();
+        cGirls::GirlFucks(&girl, is_night, &Cust, false, message, sextype);
+        ss.str(""); ss << message;
+        brothel.m_Happiness += Cust.happiness();
+
+        /* `J` cGirls::GirlFucks handles libido and customer happiness
+        Cust.m_Stats[STAT_HAPPINESS] = max(100, Cust.m_Stats[STAT_HAPPINESS] + 50);
+        girl.upd_temp_stat(STAT_LIBIDO, -20);
+        //*/
+
+        int sexwages = std::min(uniform(0, Cust.m_Money / 4) + girl.askprice(), int(Cust.m_Money));
+        Cust.m_Money -= sexwages;
+        int sextips = std::max(0, int(uniform(0, Cust.m_Money) - (Cust.m_Money / 2)));
+        Cust.m_Money -= sextips;
+        m_Earnings += sexwages;
+        m_Tips += sextips;
+
+        ss << "The customer she had sex with gave her " << sexwages << " gold for her services";
+        if (sextips > 0) ss << " and slipped her another " << sextips << " under the table.\n \n";
+        else ss << ".\n \n";
+
+        if (imagetype == IMGTYPE_STRIP)
+        {
+            /* */if (sextype == SKILL_ANAL)            imagetype = IMGTYPE_ANAL;
+            else if (sextype == SKILL_BDSM)            imagetype = IMGTYPE_BDSM;
+            else if (sextype == SKILL_NORMALSEX)    imagetype = IMGTYPE_SEX;
+            else if (sextype == SKILL_BEASTIALITY)    imagetype = IMGTYPE_BEAST;
+            else if (sextype == SKILL_GROUP)        imagetype = IMGTYPE_GROUP;
+            else if (sextype == SKILL_LESBIAN)        imagetype = IMGTYPE_LESBIAN;
+            else if (sextype == SKILL_ORALSEX)        imagetype = IMGTYPE_ORAL;
+            else if (sextype == SKILL_TITTYSEX)        imagetype = IMGTYPE_TITTY;
+            else if (sextype == SKILL_HANDJOB)        imagetype = IMGTYPE_HAND;
+            else if (sextype == SKILL_FOOTJOB)        imagetype = IMGTYPE_FOOT;
+        }
+    }
+
+
+#pragma endregion
+#pragma region    //    Enjoyment and Tiredness        //
+
+    int roll_a = d100();
+    //enjoyed the work or not
+    /* */if (roll_a <= 5)    { enjoy -= 1; ss << "\nSome of the patrons abused her during the shift."; }
+    else if (roll_a <= 25)    { enjoy += 3; ss << "\nShe had a pleasant time working."; }
+    else /*           */    { enjoy += 1; ss << "\nOtherwise, the shift passed uneventfully."; }
+
+#pragma endregion
+#pragma region    //    Finish the shift            //
+
+
+    girl.upd_Enjoyment(ACTION_WORKSTRIP, enjoy);
+
+    // work out the pay between the house and the girl
+    girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+
+    // Improve stats
+    HandleGains(girl, enjoy, fame);
+
+    //gain traits
+    if (m_Performance >= 140 && chance(25))
+    {
+        cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", is_night);
+    }
+    if (sextype != SKILL_STRIP && girl.dignity() < 0 && chance(25))
+    {
+        cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
+    }
+
+#pragma endregion
+    return false;
+}
+
 void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarCookJob>());
     mgr.register_job(std::make_unique<cBarMaidJob>());
@@ -1686,4 +2006,5 @@ void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cEntertainerJob>());
     mgr.register_job(std::make_unique<cXXXEntertainerJob>());
     mgr.register_job(std::make_unique<cMasseuseJob>());
+    mgr.register_job(std::make_unique<cPeepShowJob>());
 }
