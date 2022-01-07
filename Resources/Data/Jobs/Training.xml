@@ -59,7 +59,7 @@
                 After hours of sweaty exercise, ${mistress} is sure that ${name} has made some progress.
             </Text>
             <Text Condition="skill:NormalSex > 60 ^ skill:NormalSex < 85">
-                ${girl} is already quite good, so ${mistress} decides that it is time to teach her
+                ${name} is already quite good, so ${mistress} decides that it is time to teach her
                 the finer points of professional intercourse: How to make sure he doesn't cum too fast,
                 what to say afterwards, etc.
 
@@ -67,123 +67,123 @@
                 happier with his choice of career.
             </Text>
             <Text Condition="skill:NormalSex > 80">
-                ${girl} is already basically a sex goddess, so ${mistress} just fetched some of your goons.
-                This will boost morale greatly, and makes sure ${girl} doesn't get rusty. And some of the more
+                ${name} is already basically a sex goddess, so ${mistress} just fetched some of your goons.
+                This will boost morale greatly, and makes sure ${name} doesn't get rusty. And some of the more
                 athletic positions definitely also count as cardio.
             </Text>
         </Message>
 
         <Message Name="train.Strip">
             <Text Condition="Clumsy^skill:Strip < 30">
-                While practicing a strip dance with ${mistress}, Clumsy ${girl} managed to get her panties
+                While practicing a strip dance with ${mistress}, Clumsy ${name} managed to get her panties
                 caught in her heels and fell. After patching her up, ${mistress} decided to end the lesson
                 for the day.
             </Text>
             <Group Condition="skill:Strip < 20">
                 <Text Condition="Nymphomaniac|Exhibitionist">
-                    ${girl} is so eager to get out of her clothes that ${mistress} spends the entire lesson trying to
+                    ${name} is so eager to get out of her clothes that ${mistress} spends the entire lesson trying to
                     slow her down so that the "strip tease" can take longer than 10 seconds. So far, she hasn't been
                     very successful at this.
                 </Text>
                 <Text Condition="Chaste|Shy">
-                    ${girl} is extremely uncomfortable with the thought of getting naked in front of strangers.
-                    For now, ${mistress} allows her to keep on her underwear. Even still, ${girl} is shivering
+                    ${name} is extremely uncomfortable with the thought of getting naked in front of strangers.
+                    For now, ${mistress} allows her to keep on her underwear. Even still, ${name} is shivering
                     uncontrollably at the end of the lesson.
                 </Text>
                 <Text>
-                    "Wow, that was the least sexy strip tease I've ever seen", ${mistress} complains once ${girl}
-                    has finished. ${mistress} decides to start very simple and lets ${girl} ignore the pole for now,
+                    "Wow, that was the least sexy strip tease I've ever seen", ${mistress} complains once ${name}
+                    has finished. ${mistress} decides to start very simple and lets ${name} ignore the pole for now,
                     and just asks her to remove her clothing slowly. It looks very awkward.
                 </Text>
             </Group>
             <Group Condition="skill:Strip > 15 ^ skill:Strip < 30">
                 <Text Condition="Chaste|Shy">
-                    ${girl} is still very uncomfortable with the thought of getting naked in front of strangers, but
+                    ${name} is still very uncomfortable with the thought of getting naked in front of strangers, but
                     she must learn to cope with this. ${mistress} orders her to strip, but she immediately tries
-                    to cover herself with her hands as soon as her bra comes off. ${mistress} gently moves ${girl}'s
+                    to cover herself with her hands as soon as her bra comes off. ${mistress} gently moves ${name}'s
                     hands away. "See, this isn't so bad"
                 </Text>
                 <Text Condition="Nymphomaniac|Exhibitionist">
-                    ${girl} is so too eager to get out of her clothes quickly. ${mistress} explains to her that is she
+                    ${name} is so too eager to get out of her clothes quickly. ${mistress} explains to her that is she
                     strips more slowly, her audience will admire her body even more and become more aroused. The idea
-                    clearly appeals to ${girl}, and on her next try she deliberately slows down her movements. While
+                    clearly appeals to ${name}, and on her next try she deliberately slows down her movements. While
                     it looks a bit stiff and awkward, this is a major improvement.
                 </Text>
                 <Text>
-                    ${mistress} ties to get ${girl} to make sensual movements while removing her clothing. However,
+                    ${mistress} ties to get ${name} to make sensual movements while removing her clothing. However,
                     her success in this is rather limited.
                 </Text>
             </Group>
             <Group Condition="skill:Strip > 25 ^ skill:Strip < 45">
                 <Text Condition="Chaste|Shy">
-                    Even though ${girl} is clearly uncomfortable with the situation, she manages to present ${mistress}
+                    Even though ${name} is clearly uncomfortable with the situation, she manages to present ${mistress}
                     with a fairly decent strip tease.
 
                     "Good, we're finally getting somewhere. I think it is time you practiced in front of an actual
                     audience."
 
-                    "A..Audience?", ${girl} stammers, her face suddenly very pale.
+                    "A..Audience?", ${name} stammers, her face suddenly very pale.
 
                     Mistress calls into the hallway: "Mark, Pete, come in here, there is something I want you to see!"
                 </Text>
                 <Text>
-                    By now, ${girl} has learned to remove her clothing in a way that could, by a generous definition
+                    By now, ${name} has learned to remove her clothing in a way that could, by a generous definition
                     of the word, be considered alluring. Thus ${mistress} thinks it is time to have her practice some
                     basic exercises at the pole.
                 </Text>
             </Group>
             <Group Condition="skill:Strip > 40 ^ skill:Strip < 66">
                 <Text Condition="Chaste|Shy">
-                    ${girl} feels uncomfortable when stripping in front of an audience, but has learned to hide
+                    ${name} feels uncomfortable when stripping in front of an audience, but has learned to hide
                     this very well. ${mistress} is pleased with her progress, and starts instructing her on how
                     to include the pole in her performance.
                 </Text>
                 <Text>
-                    ${girl} knows all the basic moves of a stripper, so ${mistress} focuses her instruction on
+                    ${name} knows all the basic moves of a stripper, so ${mistress} focuses her instruction on
                     some finer points. "A successful stripper has to interact with her audience, then she'll be able
-                    to sell private lap dances. This is were the real money is", she explains while she has ${girl}
+                    to sell private lap dances. This is were the real money is", she explains while she has ${name}
                     practice eye contact with the goons she invited for the lesson.
                 </Text>
             </Group>
             <Group Condition="skill:Strip > 60 ^ skill:Strip < 85">
                 <Text>
-                    ${girl} is a fairly skillful stripper, so ${mistress} is confident that she will attract the interest
+                    ${name} is a fairly skillful stripper, so ${mistress} is confident that she will attract the interest
                     of some patrons once you let her perform in one of your establishments. She will need to transform
                     that interest into monetary gain, and therefore ${mistress} has her practicing lap dances with a few
                     of you staff who are currently on break.
                 </Text>
             </Group>
             <Text Condition="skill:Strip>80">
-                ${mistress} has ${girl} practice some challenging acrobatic moves on the stripper pole. Even for someone
-                as skilled as ${girl}, they are no easy feat, and she has to repeat them several times until ${mistress}
+                ${mistress} has ${name} practice some challenging acrobatic moves on the stripper pole. Even for someone
+                as skilled as ${name}, they are no easy feat, and she has to repeat them several times until ${mistress}
                 is happy with the results.
             </Text>
         </Message>
 
         <Message Name="train.BDSM">
             <Group Condition="skill:BDSM < 20">
-                ${girl} has no experience with BDSM, so ${mistress} decides to start her training slowly.
+                ${name} has no experience with BDSM, so ${mistress} decides to start her training slowly.
                 <Text>
-                    ${girl} is blindfolded and tied naked to the bed.
+                    ${name} is blindfolded and tied naked to the bed.
                 </Text>
                 <Text>
-                    She has ${girl} wear a $[ball|ring|bit|cleave] gag for the duration of the lesson. She has to
+                    She has ${name} wear a $[ball|ring|bit|cleave] gag for the duration of the lesson. She has to
                     get used to this.
                 </Text>
             </Group>
             <Group Condition="skill:BDSM < 30 ^ skill:BDSM > 10">
                 <Text>
-                    ${mistress} is trying to get ${girl} used to some light BDSM play. She orders her
+                    ${mistress} is trying to get ${name} used to some light BDSM play. She orders her
                     to lie on her stomach, and proceeds to spank her ass until the the skin turns bright red.
-                    She takes out a flogger, and ${girl} -- with panic in her eyes -- begs her to stop. Given
-                    ${girl}'s lack of BDSM experience, ${mistress} decides to take it easy. She lets ${girl}
+                    She takes out a flogger, and ${name} -- with panic in her eyes -- begs her to stop. Given
+                    ${name}'s lack of BDSM experience, ${mistress} decides to take it easy. She lets ${name}
                     beg for a few more minutes, but then puts the flogger away.
                 </Text>
                 <Text Condition="Nymphomaniac|stat:Libido>90">
                     "I really don't like pain, but just the thought of getting fucked while tied up makes me wet",
-                    ${girl} proclaims as ${mistress} announces that they will do some BDSM training today.
-                    "I can arrange that", she smirks, and five minutes later ${girl} is cuffed to the bed and a
-                    well-equipped man enters the room. ${girl} looks at him hungrily, but her attention is captured
+                    ${name} proclaims as ${mistress} announces that they will do some BDSM training today.
+                    "I can arrange that", she smirks, and five minutes later ${name} is cuffed to the bed and a
+                    well-equipped man enters the room. ${name} looks at him hungrily, but her attention is captured
                     by ${mistress} who produces a pair of nipple clamps. "Oh, I forgot to mention - you're not getting
                     fucked without these. And I'm only putting them on if you beg for it!"
 
@@ -205,14 +205,14 @@
         <Message Name="train.Handjob">
             <Text Condition="skill:Handjob < 20">
                 After a very painful accident when practicing with one of your
-                guys, ${mistress} decides that for now, ${girl} should give
+                guys, ${mistress} decides that for now, ${name} should give
                 handjobs only to inanimate objects.
 
                 Once she manages to stroke a dildo in a way that does not look
                 like it would cause serious physical injury, maybe she can try again.
             </Text>
             <Text Condition="skill:Handjob > 15 ^ skill:Handjob < 33">
-                ${mistress} picks one of your goons and orders ${girl} to
+                ${mistress} picks one of your goons and orders ${name} to
                 give him a handjob. Going by the expression on your goon's face,
                 she is not doing a very good job.
 
@@ -220,37 +220,37 @@
                 finishes him off.
             </Text>
             <Text Condition="skill:Handjob > 28 ^ skill:Handjob < 50">
-                ${mistress} picks one of your goons and orders ${girl} to
+                ${mistress} picks one of your goons and orders ${name} to
                 give him a handjob. She is experienced enough to get him to
                 cum quickly, but the performance is probably not very memorable.
 
-                ${mistress} uses the rest of the lesson to explain to ${girl} that
+                ${mistress} uses the rest of the lesson to explain to ${name} that
                 her goal is not to make him cum as quickly as possible, but to have
                 him enjoy the experience so much that he will visit again and pay
                 more money.
             </Text>
             <Text Condition="skill:Handjob > 45 ^ skill:Handjob < 66">
-                ${girl} knows how to give decent handjobs, so ${mistress} decides
-                to give her some more advanced instructions. She has ${girl}
+                ${name} knows how to give decent handjobs, so ${mistress} decides
+                to give her some more advanced instructions. She has ${name}
                 practice varying her speed, rhythm, and movements. The guard who
                 was brought in for practice certainly appreciated ${mistress}'s
                 command to give his balls some love too.
             </Text>
             <Text Condition="skill:Handjob > 60 ^ skill:Handjob < 85">
-                ${girl} knows how to give good handjobs, so ${mistress} decides
+                ${name} knows how to give good handjobs, so ${mistress} decides
                 to give her some more advanced instructions. Left-handed, right-handed,
                 both hands, fast, slow, only the tip or along the entire shaft, ${mistress}
-                has her practice all sorts of variations. She also makes sure that ${girl}
+                has her practice all sorts of variations. She also makes sure that ${name}
                 uses the rest of her body to properly tease the lucky guy.
             </Text>
             <Text Condition="skill:Handjob > 80">
-                ${girl} is an expert at giving handjobs, so ${mistress} decides to
+                ${name} is an expert at giving handjobs, so ${mistress} decides to
                 present her with a real challenge today. One of your guards, only called
                 $[Limp Leo|Soft Sven|Flaccid Frederick] by the others, has certain performance
-                problems. Yet after a few minutes, ${girl} is pumping away on his rock-hard cock,
+                problems. Yet after a few minutes, ${name} is pumping away on his rock-hard cock,
                 and soon he splurges a huge load all over her.
 
-                "I guess you've been really saving that, eh", ${mistress} comments dryly, "Good work, ${girl}!".
+                "I guess you've been really saving that, eh", ${mistress} comments dryly, "Good work, ${name}!".
             </Text>
         </Message>
 
@@ -386,11 +386,11 @@
                 is starting to pay off.
             </Text>
             <Group Condition="skill:Anal>35 ^ skill:Anal<66">
-                ${girl} has some anal experience, and ${mistress} decides that today they are going to
+                ${name} has some anal experience, and ${mistress} decides that today they are going to
                 increase the intensity of the training a bit. She calls in three of your goons, who spent
-                the next few hours taking turns fucking ${girl} in the ass.
+                the next few hours taking turns fucking ${name} in the ass.
                 <Text Condition="skill:Anal < 55">
-                    After the lesson ends, you can see ${girl} wincing as she sits down.
+                    After the lesson ends, you can see ${name} wincing as she sits down.
                 </Text>
                 <Text Condition="skill:Anal > 45">
                     She is a little sore after the lesson, but overall her training seems to pay off nicely.
@@ -398,7 +398,7 @@
             </Group>
 
             <Text Condition="skill:Anal > 55 ^ skill:Anal < 75">
-                ${girl} has enough anal experience for ${mistress} to start the more advanced training.
+                ${name} has enough anal experience for ${mistress} to start the more advanced training.
                 Instead of just passively getting penetrated, she now has to take an active part. While
                 she does so in the beginning, after a short while the man ends up doing all the work.
 
@@ -408,7 +408,7 @@
             </Text>
 
             <Text Condition="skill:Anal > 70 ^ skill:Anal <= 90">
-                "Your anal sex skills are pretty good", ${mistress} tells ${girl}, "but I think we still can improve
+                "Your anal sex skills are pretty good", ${mistress} tells ${name}, "but I think we still can improve
                 the variety you provide. Lets practice the
                 $[Lotus|Cowgirl|Piledriver|Turtle|Leap Frog|Bodyguard|Burning Man|Cross|Pump|Bulldog|See Saw|Jockey]
                 position today.
@@ -418,7 +418,7 @@
                 ${mistress} presents an enormous butt-plug to ${name}. "I've heard you like a challenge",
                 she says, "so go on and impress me!"
 
-                It took ${girl} more than half an hour and a copious amount of spit, but finally, she managed to
+                It took ${name} more than half an hour and a copious amount of spit, but finally, she managed to
                 insert the device up to the base into her ass.
 
                 "It seems like I need to get an even bigger one specifically manufactured for you. I really did not
