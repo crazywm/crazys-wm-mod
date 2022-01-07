@@ -4,6 +4,7 @@
 * removed npclove stat that wasn't really implemented anyway
 * matron now gives obedience buff to all girls instead of directly changing the chance of refusal. 
 This bonus accumulates and decays over time and depends on the quality of the matron. 
+* Adjusted hitpoint calculation for combat
 
 ## Fixes
 * fixed centre manager job (thanks @g539812)

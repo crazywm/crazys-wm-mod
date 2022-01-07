@@ -80,7 +80,7 @@ double Combatant::get_magic() const {
 
 Combatant::Combatant(std::string n, int HP, int MP, int tiredness_, int constitution_, int combat_, int magic_,
                      int agility_, int strength_) :
-                     name(std::move(n)), hitpoints(500 + (5 * HP * constitution_) / 100 ), mana(10*MP), max_mana(10*MP),
+                     name(std::move(n)), hitpoints((10 * (HP + 10) / 11 * (constitution_ + 100)) / 20 ), mana(10*MP), max_mana(10*MP),
                      vitality(std::min(1000, 500 - 10 * tiredness_ + 10 * constitution_)),
                      constitution(constitution_), agility(agility_), combat(combat_),
                      strength(strength_), magic(magic_), tiredness(tiredness_),
