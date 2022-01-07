@@ -43,6 +43,7 @@ protected:
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override {
         return eCheckWorkResult::ACCEPTS;
     }
+    void ApplyMatronEffect(const sGirl& girl);
 
     const char* m_WorkerTitle;
 };
@@ -98,6 +99,8 @@ sWorkJobResult MatronJob::DoWork(sGirl& girl, bool is_night) {
     ss << m_WorkerTitle << " ${name} ";
 
     int conf = 0;
+
+    ApplyMatronEffect(girl);
 
     // Complications
     HandleMatronResult(girl, conf);
@@ -166,6 +169,24 @@ void MatronJob::HandleMatronResult(sGirl& girl, int &conf) {
     }
 }
 
+void MatronJob::ApplyMatronEffect(const sGirl& girl) {
+    auto brothel = girl.m_Building;
+    int change;
+    int perf = GetPerformance(girl, true);
+    if(perf < 70) {
+        change = 1;
+    } else if (perf < 120) {
+        change = 2;
+    } else {
+        change = 3;
+    }
+    brothel->girls().apply([&girl, change](sGirl& g){
+        // temporarily raise obedience of all other girls
+        if(&g == &girl) return;
+        g.upd_temp_stat(STAT_OBEDIENCE, change);
+    });
+}
+
 sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 
@@ -174,6 +195,8 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
     if (is_night) return {false, 0, 0, 0};    // and is only checked once
 
     ss << "Matron ${name} ";
+
+    ApplyMatronEffect(girl);
 
     // `J` zzzzzz - this needs to be updated for building flow
     if (girl.disobey_check(actiontype, JOB_MATRON))

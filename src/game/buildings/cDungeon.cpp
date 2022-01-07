@@ -288,7 +288,7 @@ FormattedCellData sDungeonGirl::GetDetail(const std::string& detailName) const
     {
         // `J` Dungeon "Matron" can be a Torturer from any brothel
         bool has_torturer = (random_girl_on_job(g_Game->buildings(), JOB_TORTURER, false) != nullptr);
-        return mk_num(cGirls::GetRebelValue(*m_Girl, has_torturer));
+        return mk_num(cGirls::GetRebelValue(*m_Girl));
     }
     else if (detailName == "Reason")
     {

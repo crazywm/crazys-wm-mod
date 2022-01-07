@@ -748,7 +748,7 @@ std::string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
     {
         text += " has been sent to your dungeon, since your current brothel is full.";
     }
-    else if (cGirls::GetRebelValue(*girl, false) >= 35)
+    else if (cGirls::GetRebelValue(*girl) >= 35)
     {
         if (g_Game->player().disposition() >= 80)                //Benevolent
         {

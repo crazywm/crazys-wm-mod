@@ -121,7 +121,7 @@ namespace {
 
 
 sFilmObedienceData cFilmSceneJob::CalcChanceToObey(const sGirl& girl) const {
-    int base_chance = 100 - cGirls::GetRebelValue(girl, false, job());
+    int base_chance = 100 - cGirls::GetRebelValue(girl, job());
     base_chance /= 2;      // get a conventional percentage value
 
     int libido = libido_influence(m_PleasureFactor, girl);

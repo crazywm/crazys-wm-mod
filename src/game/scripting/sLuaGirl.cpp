@@ -273,7 +273,7 @@ int sLuaGirl::acquire_girl(lua_State* L) {
 /*
 *    OK: how rebellious is this floozy?
 */
-    if(cGirls::GetRebelValue(girl, false) >= 35) {
+    if(cGirls::GetRebelValue(girl) >= 35) {
         text += " has been sent to your dungeon, as she is rebellious and poorly trained.";
         g_Game->push_message(text, 0);
         g_Game->dungeon().AddGirl(std::move(girl_owner), DUNGEON_NEWGIRL);

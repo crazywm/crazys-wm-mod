@@ -129,7 +129,7 @@ bool sGirl::disobey_check(int action, JOBS job)
 {
     int diff;
     int chance_to_obey = 0;                            // high value - more likely to obey
-    chance_to_obey = -cGirls::GetRebelValue(*this, false, job);    // let's start out with the basic rebelliousness
+    chance_to_obey = -cGirls::GetRebelValue(*this, job);    // let's start out with the basic rebelliousness
     chance_to_obey += 100;                            // make it range from 0 to 200
     chance_to_obey /= 2;                            // get a conventional percentage value
     /*
@@ -1266,12 +1266,7 @@ FormattedCellData sGirl::GetDetail_Job(std::string const& detailName) const
 
 int sGirl::rebel() const
 {
-    if (this->m_DayJob == JOB_INDUNGEON)    // `J` Dungeon "Matron" can be a Torturer from any brothel
-        return cGirls::GetRebelValue(*this, random_girl_on_job(g_Game->buildings(), JOB_TORTURER, 0));
-    if(m_Building)
-        return cGirls::GetRebelValue(*this, m_Building->matron_count() > 0);
-    g_LogFile.log(ELogLevel::ERROR, "Getting rebel value of girl '", FullName(), "' that is not associated with any building!");
-    return 0;
+    return cGirls::GetRebelValue(*this);
 }
 
 bool sGirl::FixFreeTimeJobs()

@@ -1004,15 +1004,15 @@ sGirl* cGirls::GetGirl(int girl)
     return m_Girls->get_girl(girl);
 }
 
-int cGirls::GetRebelValue(const sGirl& girl, bool matron, JOBS job)
+int cGirls::GetRebelValue(const sGirl& girl, JOBS job)
 {
     /*
-    *    WD:    Added test to ingnore STAT_HOUSE value
-    *    if doing a job that the palyer is paying
+    *    WD:    Added test to ignore STAT_HOUSE value
+    *    if doing a job that the player is paying
     *    only when processing Day or Night Shift
     *
     *    This is to make it so that the jobs that
-    *    cost the player support where the hosue take
+    *    cost the player support where the house take
     *    has no effect has no impact on the chance of
     *    refusal.
     */
@@ -1022,9 +1022,6 @@ int cGirls::GetRebelValue(const sGirl& girl, bool matron, JOBS job)
     int houseStat = girl.house();
     int happyStat = girl.happiness();
     bool girlIsSlave = girl.is_slave();
-
-    // a matron (or torturer in dungeon) will help convince a girl to obey
-    if (matron)    chanceNo -= 15;
 
     chanceNo -= girl.pclove() / 5;
     chanceNo += girl.spirit() / 2;

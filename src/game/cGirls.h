@@ -107,7 +107,7 @@ public:
 
     int GetNumYourDaughterGirls();
 
-    static int GetRebelValue(const sGirl& girl, bool matron, JOBS job=NUM_JOBS);
+    static int GetRebelValue(const sGirl& girl, JOBS job=NUM_JOBS);
     static void EquipCombat(sGirl& girl);        // girl makes sure best armor and weapons are equipped, ready for combat
     static void UnequipCombat(sGirl& girl);    // girl unequips armor and weapons, ready for brothel work or other non-aggressive jobs
 

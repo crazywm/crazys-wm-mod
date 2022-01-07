@@ -1,13 +1,17 @@
 # Version 7.1.2beta1
 
+## Gameplay Changes
+* removed npclove stat that wasn't really implemented anyway
+* matron now gives obedience buff to all girls instead of directly changing the chance of refusal. 
+This bonus accumulates and decays over time and depends on the quality of the matron. 
+
 ## Fixes
 * fixed centre manager job (thanks @g539812)
-* removed npclove stat that wasn't really implemented anyway
 * fixed using stat instead of skill when determining skill of children
 * Fixed wages for bar jobs
 
 ## Code changes
-* Dealer, Entertainer, XXEntertainer, Masseuse, Stripper, Peep-Show jobs now xml-based
+* Dealer, Entertainer, XXXEntertainer, Masseuse, Stripper, Peep-Show jobs now xml-based
 * Some generic cleanup
 
 # Version 7.1.2alpha4
