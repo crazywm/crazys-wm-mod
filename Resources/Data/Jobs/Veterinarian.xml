@@ -52,12 +52,42 @@
         <Stat Name="Intelligence" Weight="1" />
     </Gains>
 
+    <Config>
+        <WageFunction>
+            <Point Performance="245" Wages="155" />
+            <Point Performance="185" Wages="95" />
+            <Point Performance="145" Wages="55" />
+            <Point Performance="100" Wages="15" />
+            <Point Performance="70" Wages="-5" />
+            <Point Performance="0" Wages="-15" />
+        </WageFunction>
+    </Config>
+
     <Messages>
         <Message Name="work">
             <Text>${name} worked as a Veterinarian on the farm.</Text>
         </Message>
         <Message Name="refuse">
             <Text>${name} refused to work during the ${shift} shift.</Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            <Text>She must be perfect at this.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>She's unbelievable at this and is always getting praised by people for her work.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>She's good at this job and gets praised by people often.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>She made a few mistakes but overall she is okay at this.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>She was nervous and made a few mistakes. She isn't that good at this.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>She was nervous and constantly making mistakes. She really isn't very good at this job.</Text>
         </Message>
     </Messages>
 </Job>

@@ -38,7 +38,7 @@ sWorkJobResult GenericCraftingJob::DoWork(sGirl& girl, bool is_night) {
 
 bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
-#pragma region //    Job setup                //
+    //    Job setup                //
 
     ss << m_CraftingData.MsgWork << "\n \n";
 
@@ -47,8 +47,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     int imagetype = m_CraftingData.Image;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-#pragma endregion
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
     craftpoints = m_Performance;
 
@@ -63,13 +62,11 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     performance_msg();
     ss << "\n \n";
 
-#pragma endregion
-#pragma region    //    Enjoyment and Tiredness        //
+    //    Enjoyment and Tiredness        //
     DoWorkEvents(girl);
     if(girl.is_dead())
         return false;    // not refusing, she is dead
     // TODO tiredness
-#pragma endregion
 
     // not receiving money reduces motivation
     float girl_pay = girl.is_unpaid() ? 0.f : 1.f - girl.house() / 100.f;
@@ -92,7 +89,6 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     // Update Enjoyment
     girl.upd_Enjoyment(m_CraftingData.Action, enjoy);
 
-#pragma endregion
     return false;
 }
 

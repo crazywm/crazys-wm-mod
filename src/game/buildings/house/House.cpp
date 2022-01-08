@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jobs/BasicJob.h"
+#include "jobs/SimpleJob.h"
 #include "character/sGirl.h"
 #include "character/cPlayer.h"
 #include "character/cCustomers.h"
@@ -29,10 +29,9 @@
 #include "IGame.h"
 
 namespace {
-    struct HouseCook: public cBasicJob {
+    struct HouseCook: public cSimpleJob {
         HouseCook();
-        sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
-        eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+        bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
     };
 
     struct HousePet: public cBasicJob {
@@ -56,76 +55,17 @@ namespace {
     };
 }
 
-HouseCook::HouseCook() : cBasicJob(JOB_HOUSECOOK, "HouseCook.xml") {
+HouseCook::HouseCook() : cSimpleJob(JOB_HOUSECOOK, "HouseCook.xml", {ACTION_WORKCOOKING}) {
 
 }
 
-IGenericJob::eCheckWorkResult HouseCook::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKCOOKING);
-}
+bool HouseCook::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    m_Wages += (int)m_PerformanceToEarnings((float)m_Performance);
+    brothel.update_all_girls_stat(STAT_HAPPINESS, get_performance_class(m_Performance) - 2);
+    add_performance_text();
 
-sWorkJobResult HouseCook::DoWork(sGirl& girl, bool is_night) {
-    auto brothel = girl.m_Building;
-    add_text("work") << "\n \n";
-
-    int enjoy = 0;
-
-    cGirls::UnequipCombat(girl);    // put that shit away
-
-    if (m_Performance >= 245)
-    {
-        ss << " She must be the perfect at this.";
-        brothel->update_all_girls_stat(STAT_HAPPINESS, 3);
-        m_Wages += 20;
-    }
-    else if (m_Performance >= 185)
-    {
-        ss << " She's unbelievable at this.";
-        brothel->update_all_girls_stat(STAT_HAPPINESS, 2);
-        m_Wages += 15;
-    }
-    else if (m_Performance >= 145)
-    {
-        ss << " She's good at this job.";
-        brothel->update_all_girls_stat(STAT_HAPPINESS, 1);
-        m_Wages += 10;
-    }
-    else if (m_Performance >= 100)
-    {
-        ss << " She made a few mistakes but overall she is okay at this.";
-        m_Wages += 5;
-    }
-    else if (m_Performance >= 70)
-    {
-        ss << " She was nervous and made a few mistakes. She isn't that good at this.";
-        brothel->update_all_girls_stat(STAT_HAPPINESS, -1);
-        m_Wages -= 5;
-    }
-    else
-    {
-        ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
-        brothel->update_all_girls_stat(STAT_HAPPINESS, -2);
-        m_Wages -= 15;
-    }
-    ss << "\n \n";
-
-    //enjoyed the work or not
-    int roll = d100();
-    if (roll <= 5)
-    {
-        ss << "Some of the girls made fun of her cooking during the shift.";
-        enjoy -= 1;
-    }
-    else if (roll <= 25)
-    {
-        ss << "She had a pleasant time working.";
-        enjoy += 3;
-    }
-    else
-    {
-        ss << "Otherwise, the shift passed uneventfully.";
-        enjoy += 1;
-    }
+    // enjoyed the work or not
+    shift_enjoyment();
 
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
@@ -133,15 +73,12 @@ sWorkJobResult HouseCook::DoWork(sGirl& girl, bool is_night) {
         m_Wages = 0;
     }
 
-
     // do all the output
     girl.AddMessage(ss.str(), IMGTYPE_COOK, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
-    apply_gains(girl, m_Performance);
+    HandleGains(girl, 0);
 
-    girl.upd_Enjoyment(ACTION_WORKCOOKING, enjoy);
-
-    return {false, 0, 0, m_Wages};
+    return false;
 }
 
 
@@ -951,8 +888,7 @@ double Recruiter::GetPerformance(const sGirl& girl, bool estimate) const {
     if (girl.is_slave()) return -1000;
 
     int HateLove = girl.pclove() - girl.pchate();
-    double jobperformance =
-            (HateLove + girl.charisma());
+    double jobperformance = (HateLove + girl.charisma());
     if (!estimate)
     {
         int t = girl.tiredness() - 80;

@@ -59,5 +59,24 @@
         <Message Name="refuse">
             <Text>${name} refused to work during the ${shift} shift.</Text>
         </Message>
+
+        <Message Name="work.perfect">
+            <Text>Her basket practically fills itself as she walks down the rows of crops.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>Her hands moved like lightning as she picked only the best crops.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>She knows exactly when the crops are ready to be picked and how to best collect them.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>She can pick the crops fairly well without too many culls.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>She isn't very good at knowing which plants are ripe and which should have been left a little longer.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>She seems to take more of the unuseable parts of the plants than she takes the edible parts.</Text>
+        </Message>
     </Messages>
 </Job>

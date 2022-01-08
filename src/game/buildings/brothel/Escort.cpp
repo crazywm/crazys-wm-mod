@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "BarJobs.h"
+#include "BrothelJobs.h"
 #include <character/predicates.h>
 #include "jobs/BasicJob.h"
 #include "character/sGirl.h"
@@ -39,12 +39,10 @@ namespace {
     };
 }
 
-sWorkJobResult cEscortJob::DoWork(sGirl& girl, bool is_night) {
+bool cEscortJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     Action_Types actiontype = ACTION_WORKESCORT;
     m_Escort = 0;
     m_Prepare = (girl.agility() + girl.service() / 2);
-
-    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int fame = 0;
     int imagetype = IMGTYPE_ESCORT;
@@ -513,33 +511,17 @@ sWorkJobResult cEscortJob::DoWork(sGirl& girl, bool is_night) {
 
 
     // work out the pay between the house and the girl
-    m_Wages = (int)(girl.askprice() * cust_type * cust_wealth);
+    m_Earnings = (int)(girl.askprice() * cust_type * cust_wealth);
     // m_Tips = (jobperformance > 0) ? (rng%jobperformance) * cust_type * cust_wealth : 0;
-    ss << "\n \n${name} receives " << m_Wages << " in payment for her work as an Escort for a " << cust_type_text << " client. Her fame as an Escort has changed by " << fame << ".";
+    ss << "\n \n${name} receives " << m_Earnings << " in payment for her work as an Escort for a " << cust_type_text << " client. Her fame as an Escort has changed by " << fame << ".";
 
     // Improve stats
-    int xp = 20, skill = 3;
-
-    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
-
-    girl.exp(xp);
-    girl.intelligence(uniform(0, skill));
-    girl.confidence(uniform(0, skill));
-    girl.fame(uniform(0, skill - 1));
-    girl.performance(uniform(0, skill));
+    apply_gains(girl, m_Performance);
+    girl.fame(uniform(0, 2));
 
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
-    //gain traits
-    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with customers and talking with them about their problems has made ${name} more Charismatic.", is_night);
-    cGirls::PossiblyGainNewTrait(girl, "Elegant", 40, actiontype, "Playing the doting girlfriend has given ${name} an Elegant nature.", is_night);
-
-    //lose traits
-    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 40, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", is_night);
-    cGirls::PossiblyLoseExistingTrait(girl, "Aggressive", 70, actiontype, "Controlling her temper has greatly reduced ${name}'s Aggressive tendencies.", is_night);
-
-    return {false, std::max(0, m_Tips), std::max(0, m_Wages), 0};
+    return false;
 }
 
 IGenericJob::eCheckWorkResult cEscortJob::CheckWork(sGirl& girl, bool is_night) {
@@ -549,11 +531,6 @@ IGenericJob::eCheckWorkResult cEscortJob::CheckWork(sGirl& girl, bool is_night) 
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
     }
-    ss << "${name} has been assigned to work as an Escort. She is informed that various men will ask for her to accompany them on dates, "
-          "whether because they need a date for a social engagement of some kind or because of their own loneliness. "
-          "Her skills in service, her beauty, her charisma, her intelligence, and her refinement may all be tested to provide the ideal date that each client requests. "
-          "And, of course, should she decide to spend some \"extra\" time with the client, she will need to perform well with each of their sexual proclivities. "
-          "This is her choice, however.\n \n";
 
     if (girl.has_active_trait("Deaf") && chance(50))
     {
@@ -684,7 +661,7 @@ auto cEscortJob::choose_sex(const std::string& prefix, const sGirl& girl, const 
     return type;
 }
 
-cEscortJob::cEscortJob() : cBasicJob(JOB_ESCORT, "Escort.xml") {
+cEscortJob::cEscortJob() : cSimpleJob(JOB_ESCORT, "Escort.xml", {ACTION_WORKESCORT}) {
     RegisterVariable("Escort", m_Escort);
     RegisterVariable("Prepare", m_Prepare);
 }

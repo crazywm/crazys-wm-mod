@@ -66,6 +66,17 @@
             ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
         </LoseTrait>
     </Gains>
+
+    <Config>
+        <WageFunction>
+            <Point Performance="245" Wages="20" />
+            <Point Performance="185" Wages="15" />
+            <Point Performance="145" Wages="10" />
+            <Point Performance="100" Wages="5" />
+            <Point Performance="70" Wages="0" />
+            <Point Performance="0" Wages="-15" />
+        </WageFunction>
+    </Config>
     
     <Messages>
         <Message Name="work">

@@ -21,6 +21,9 @@
         <Message Name="refuse">
             <Text>${name} refused to work during the ${shift} shift.</Text>
         </Message>
+        <Message Name="work">
+            <Text>${name} worked feeding the poor.</Text>
+        </Message>
 
         <Message Name="work.perfect">
             She must be perfect at this.

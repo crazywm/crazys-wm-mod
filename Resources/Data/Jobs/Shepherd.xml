@@ -54,5 +54,24 @@
         <Message Name="refuse">
             <Text>${name} refused to work during the ${shift} shift.</Text>
         </Message>
+
+        <Message Name="work.perfect">
+            <Text>The animals come to ${name} when they are ready for market.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>${name} seems to know just when to choose the best animals to send to market.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>${name} has little trouble finding animals to send to market.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>${name} usually sends the right animals to market.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>${name} doesn't know what animals to send to the market so she just guesses.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>${name} has no idea what she is doing.</Text>
+        </Message>
     </Messages>
 </Job>

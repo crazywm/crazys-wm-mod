@@ -54,5 +54,24 @@
         <Message Name="refuse">
             <Text>${name} refused to work during the ${shift} shift.</Text>
         </Message>
+
+        <Message Name="work.perfect">
+            <Text>Her milk bucket practically fills itself as she walks down the rows of cows.</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>Her hands moved like lightning as she gracefully milks the cows teats.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>She knows exactly when the cows are ready to be milked and how to best milk them.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>She can milk the cows without spilling much.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>She isn't very good at aiming the teats into the bucket.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>She can't seem to get the hang of this.</Text>
+        </Message>
     </Messages>
 </Job>

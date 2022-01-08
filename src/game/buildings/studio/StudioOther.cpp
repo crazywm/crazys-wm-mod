@@ -18,6 +18,7 @@
 */
 
 #include "StudioJobs.h"
+#include "jobs/SimpleJob.h"
 #include "character/sGirl.h"
 #include "cGirls.h"
 #include "IGame.h"
@@ -27,31 +28,23 @@
 #include "buildings/cBuildingManager.h"
 
 namespace {
-    class cJobMovieOther : public cBasicJob {
+    class cJobMovieOther : public cSimpleJob {
     public:
-        using cBasicJob::cBasicJob;
-
-        eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+        cJobMovieOther(JOBS job, const char* xml) : cSimpleJob(job, xml, {ACTION_MOVIECREW}) {}
     };
 
     class cJobMarketResearch : public cJobMovieOther {
     public:
         cJobMarketResearch();
 
-        sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
-
+        bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
     };
 
-    IGenericJob::eCheckWorkResult cJobMovieOther::CheckWork(sGirl& girl, bool is_night) {
-        return SimpleRefusalCheck(girl, ACTION_MOVIECREW);
-    }
 
     cJobMarketResearch::cJobMarketResearch() : cJobMovieOther(JOB_MARKET_RESEARCH, "MarketResearch.xml") {
     }
 
-    sWorkJobResult cJobMarketResearch::DoWork(sGirl& girl, bool is_night) {
-        add_text("work") << "\n";
-        cGirls::UnequipCombat(girl);    // not for studio crew
+    bool cJobMarketResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         m_Wages = 50;
 
         // slave girls not being paid for a job that normally you would pay directly for do less work
@@ -111,26 +104,21 @@ namespace {
         // Improve stats
         apply_gains(girl, m_Performance);
 
-        return {false, 0, 0, m_Wages};
+        return false;
     }
 }
 class cJobMoviePromoter : public cJobMovieOther {
 public:
     cJobMoviePromoter();
-    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
 cJobMoviePromoter::cJobMoviePromoter() : cJobMovieOther(JOB_PROMOTER, "Promoter.xml") {
 }
 
-sWorkJobResult cJobMoviePromoter::DoWork(sGirl& girl, bool is_night) {
-    add_text("work") << "\n";
-    auto brothel = girl.m_Building;
-
+bool cJobMoviePromoter::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     bool movies = !g_Game->movie_manager().get_movies().empty();
     if (!movies)    ss << "There were no movies for her to promote, so she just promoted the studio in general.\n \n";
-
-    cGirls::UnequipCombat(girl);    // not for studio crew
 
     m_Wages = 50;
     int enjoy = 0;
@@ -168,7 +156,7 @@ sWorkJobResult cJobMoviePromoter::DoWork(sGirl& girl, bool is_night) {
     }
 
     m_Performance = std::max(m_Performance, 1);
-    int ad_money = brothel->m_AdvertisingBudget / brothel->num_girls_on_job(JOB_PROMOTER, is_night);
+    int ad_money = brothel.m_AdvertisingBudget / brothel.num_girls_on_job(JOB_PROMOTER, is_night);
 
     for(int tries = 0; tries < 5; ++tries) {
         auto& mm = g_Game->movie_manager();
@@ -211,7 +199,7 @@ sWorkJobResult cJobMoviePromoter::DoWork(sGirl& girl, bool is_night) {
     // Improve girl
     apply_gains(girl, m_Performance);
 
-    return {false, 0, 0, m_Wages};
+    return false;
 }
 
 void RegisterOtherStudioJobs(cJobManager& mgr) {

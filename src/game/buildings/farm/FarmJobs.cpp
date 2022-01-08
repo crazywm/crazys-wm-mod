@@ -36,97 +36,51 @@ namespace settings {
     extern const char* SLAVE_MARKET_UNIQUE_CHANCE;
 }
 
-cFarmJob::cFarmJob(JOBS job, std::string xml, sFarmJobData data) :
-    cBasicJob(job, std::move(xml)), m_Data(data) {
-}
-
-
-sWorkJobResult cFarmJob::DoWork(sGirl& girl, bool is_night) {
-    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
-
-    ss << get_text("work") << "\n \n";
-
-    // farm jobs are generally not tipping jobs
-    m_Wages = m_Data.BaseWages;
-
-    bool refused = JobProcessing(girl, *girl.m_Building, is_night, m_Performance);
-    return {refused, 0, 0, m_Wages};
-}
-
-void cFarmJob::HandleGains(sGirl& girl, int enjoy) {
+void cFarmJob::HandleGains(sGirl& girl) {
     // update enjoyment
-    girl.upd_Enjoyment(m_Data.Action, enjoy);
+    girl.upd_Enjoyment(m_Data.Action, m_Enjoyment);
     apply_gains(girl, m_Performance);
 }
-
-IGenericJob::eCheckWorkResult cFarmJob::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, m_Data.Action);
-}
-
 
 class cFarmJobFarmer : public cFarmJob {
 public:
     cFarmJobFarmer();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance);
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
 cFarmJobFarmer::cFarmJobFarmer() : cFarmJob(
         JOB_FARMER, "Farmer.xml", {ACTION_WORKFARM, 20}) {
 }
 
-bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
+bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100(), roll_c = d100();
 
-    int enjoy = 0;
     int imagetype = IMGTYPE_FARM;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
-    double foodproduced = performance;
+    double foodproduced = m_Performance;
     int alchemyproduced = 0;
     int goodsproduced = 0;
 
-    if (performance >= 245)
-    {
-        ss << "Her basket practically fills itself as she walks down the rows of crops.";
-        foodproduced *= 5; roll_a += 10; roll_b += 25;
-    }
-    else if (performance >= 185)
-    {
-        ss << "Her hands moved like lightning as she picked only the best crops.";
-        foodproduced *= 4; roll_a += 5; roll_b += 18;
-    }
-    else if (performance >= 145)
-    {
-        ss << "She knows exactly when the crops are ready to be picked and how to best collect them.";
-        foodproduced *= 3; roll_a += 2; roll_b += 10;
-    }
-    else if (performance >= 100)
-    {
-        ss << "She can pick the crops fairly well without too many culls.";
-        foodproduced *= 2;
-    }
-    else if (performance >= 70)
-    {
-        ss << "She isn't very good at knowing which plants are ripe and which should have been left a little longer.";
-        roll_a -= 2; roll_b -= 5;
-    }
-    else
-    {
-        ss << "She seems to take more of the unuseable parts of the plants than she takes the edible parts.";
-        m_Wages -= 10; foodproduced *= 0.8; roll_a -= 5; roll_b -= 10;
-    }
-    ss << "\n \n";
+    add_performance_text();
+    foodproduced *= performance_based_lookup(0.8, 1.0, 2.0, 3.0, 4.0, 5.0);
+    roll_a += performance_based_lookup(-10, -2, 0, 2, 5, 10);
+    roll_b += performance_based_lookup(-10, -5, 0, 10, 18, 25);
 
-#pragma endregion
-#pragma region    //    Enjoyment and Tiredness        //
+    if (m_Performance < 70)
+    {
+        m_Wages -= 10;
+    }
 
-    int tired = (300 - (int)performance);    // this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
+    //    Enjoyment and Tiredness        //
+
+    int tired = (300 - (int)m_Performance);    // this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
     if (roll_a <= 10)
     {
         tired /= 8;
-        enjoy -= uniform(0, 2);
+        m_Enjoyment -= uniform(0, 2);
         if (roll_b < 20)    // injury
         {
             girl.health(-uniform(1, 5));
@@ -156,22 +110,21 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     {
         tired /= 12;
         foodproduced *= 1.1;
-        enjoy += uniform(0, 2);
+        m_Enjoyment += uniform(0, 2);
         /* */if (roll_b < 50)    ss << "She kept a steady pace by humming a pleasant tune.";
         else /*            */    ss << "She had a great time working today.";
     }
     else
     {
         tired /= 10;
-        enjoy += uniform(0, 1);
+        m_Enjoyment += uniform(0, 1);
         ss << "The shift passed uneventfully.";
     }
     ss << "\n \n";
 
-#pragma endregion
-#pragma region    //    Create Items                //
+    //    Create Items                //
 
-    if (chance((girl.farming() + girl.magic()) / 10) && chance(performance / 10))
+    if (chance((girl.farming() + girl.magic()) / 10) && chance(m_Performance / 10))
     {
         std::string itemname; int itemnumber = 1;
         /* */if (roll_c > 30)    { itemname = "Nut of Knowledge";        itemnumber = (roll_c > 90 ? uniform(2, 4) : 1); }
@@ -188,7 +141,7 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
             foodproduced -= itemnumber;
         }
     }
-    if (chance(girl.herbalism() / 2) && chance(performance / 10))
+    if (chance(girl.herbalism() / 2) && chance(m_Performance / 10))
     {
         alchemyproduced = uniform(1, girl.herbalism() / 10);
         ss << "While sorting the day's haul, ${name} came across ";
@@ -197,7 +150,7 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
         ss << " that would work well in potions.\n";
         foodproduced -= alchemyproduced;
     }
-    if (chance(girl.crafting() / 2) && chance(performance / 10))
+    if (chance(girl.crafting() / 2) && chance(m_Performance / 10))
     {
         goodsproduced = uniform(1, girl.crafting() / 10);
         ss << "${name} created ";
@@ -207,8 +160,7 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     }
     if (foodproduced <= 0) foodproduced = 0;
 
-#pragma endregion
-#pragma region    //    Money                    //
+    //    Money                    //
 
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
@@ -221,8 +173,7 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
         m_Wages += (int)foodproduced / 100; // `J` Pay her based on how much she brought in
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
+    //    Finish the shift            //
 
     if (foodproduced > 0)
     {
@@ -233,23 +184,22 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     if (goodsproduced > 0)        g_Game->storage().add_to_goods((int)goodsproduced);
 
     // Update Enjoyment
-    if (performance < 50) enjoy -= 1;
-    if (performance < 0) enjoy -= 1;    // if she doesn't do well at the job, she enjoys it less
-    if (performance > 200) enjoy *= 2;        // if she is really good at the job, her enjoyment (positive or negative) is doubled
-    HandleGains(girl, enjoy);
+    if (m_Performance < 50) m_Enjoyment -= 1;
+    if (m_Performance < 0) m_Enjoyment -= 1;    // if she doesn't do well at the job, she enjoys it less
+    if (m_Performance > 200) m_Enjoyment *= 2;        // if she is really good at the job, her enjoyment (positive or negative) is doubled
+    HandleGains(girl);
     if (tired > 0) girl.tiredness(tired);
 
     // Push out the turn report
     girl.AddMessage(ss.str(), imagetype, msgtype);
 
-#pragma endregion
     return false;
 }
 
 class cFarmJobMarketer : public cFarmJob {
 public:
     cFarmJobMarketer();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
@@ -264,14 +214,12 @@ double cFarmJobMarketer::GetPerformance(const sGirl& girl, bool estimate) const 
     return basic;
 }
 
-bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
+bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100();
-    int enjoy = 0;
     int imagetype = IMGTYPE_PROFILE;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-#pragma endregion
-#pragma region    //    Create Items                //
+    //    Create Items                //
 
     int ForSale_HandmadeGoods = g_Game->storage().get_excess_goods();
     int ForSale_Beasts = g_Game->storage().get_excess_beasts();
@@ -321,45 +269,16 @@ bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         }
     }
 
-#pragma endregion
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
-    if (performance >= 245)
-    {
-        ss << " She must be the perfect at this.\n \n";
-        pricemultiplier += 1.0;
-    }
-    else if (performance >= 185)
-    {
-        ss << " She's unbelievable at this.\n \n";
-        pricemultiplier += 0.5;
-    }
-    else if (performance >= 145)
-    {
-        ss << " She's good at this job.\n \n";
-        pricemultiplier += 0.2;
-    }
-    else if (performance >= 100)
-    {
-        ss << " She made a few mistakes but overall she is okay at this.\n \n";
-    }
-    else if (performance >= 70)
-    {
-        ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
-        pricemultiplier -= 0.2;
-    }
-    else
-    {
-        ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
-        pricemultiplier -= 0.5;
-    }
+    add_performance_text();
+    pricemultiplier += performance_based_lookup(-0.5, -0.2, 0.0, 0.2, 0.5, 1.0);
 
-#pragma endregion
-#pragma region    //    Enjoyment and Tiredness        //
+    //    Enjoyment and Tiredness        //
 
     if (roll_a <= 10)
     {
-        enjoy -= uniform(0, 2);
+        m_Enjoyment -= uniform(0, 2);
         pricemultiplier -= 0.1;
         girl.happiness(-uniform(0, 10));
         ss << "She did not like selling things today.";
@@ -367,33 +286,34 @@ bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     else if (roll_a >= 90)
     {
         pricemultiplier += 0.1;
-        enjoy += uniform(0, 2);
+        m_Enjoyment += uniform(0, 2);
         girl.happiness(uniform(0, 7));
         ss << "She had a great time selling today.";
     }
     else
     {
-        enjoy += uniform(0, 1);
+        m_Enjoyment += uniform(0, 1);
         ss << "The shift passed uneventfully.";
     }
     ss << "\n \n";
 
-#pragma endregion
-#pragma region    //    Money                    //
+    //    Money                    //
 
     double gold = 0.0;
     // start with how many of each she can sell
-    int Sell_HandmadeGoods    = std::min(ForSale_HandmadeGoods,    (int)(performance / 2.0 * ForSale_HandmadeGoods));
-    int Sell_Beasts            = std::min(ForSale_Beasts,            (int)(performance / 2.5 * ForSale_Beasts));
-    int Sell_Food            = std::min(ForSale_Food,                (int)(performance / 2.0 * ForSale_Food));
-    int Sell_Drinks            = std::min(ForSale_Drinks,            (int)(performance / 2.0 * ForSale_Drinks));
-    int Sell_Alchemy        = std::min(ForSale_Alchemy,            (int)(performance / 3.0 * ForSale_Alchemy));
+    int Sell_HandmadeGoods  = std::min(ForSale_HandmadeGoods,    (int)(m_Performance / 2.0 * ForSale_HandmadeGoods));
+    int Sell_Beasts         = std::min(ForSale_Beasts,           (int)(m_Performance / 2.5 * ForSale_Beasts));
+    int Sell_Food           = std::min(ForSale_Food,             (int)(m_Performance / 2.0 * ForSale_Food));
+    int Sell_Drinks         = std::min(ForSale_Drinks,           (int)(m_Performance / 2.0 * ForSale_Drinks));
+    int Sell_Alchemy        = std::min(ForSale_Alchemy,          (int)(m_Performance / 3.0 * ForSale_Alchemy));
+
     // for how much
     gold += (pricemultiplier * 1 * Sell_HandmadeGoods);
     gold += (pricemultiplier * uniform(50, 500) * Sell_Beasts);
     gold += (pricemultiplier * 0.1 * Sell_Food);
     gold += (pricemultiplier * 0.1 * Sell_Drinks);
     gold += (pricemultiplier * uniform(10, 150) * Sell_Alchemy);
+
     // remove them from the count
     g_Game->storage().add_to_goods(-Sell_HandmadeGoods);
     g_Game->storage().add_to_beasts(-Sell_Beasts);
@@ -439,16 +359,14 @@ bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         ss << "She made a total of " << (int)gold << " from it all.\nShe gets 1% of the sales: " << (int)(gold / 100)<<".\nThe rest goes directly into your coffers.\n \n";
         m_Wages += (int)(gold / 100); // `J` Pay her based on how much she brought in
         gold -= (int)(gold / 100);
-        enjoy += (int)(m_Wages / 100);        // the more she gets paid, the more she likes selling
+        m_Enjoyment += (int)(m_Wages / 100);        // the more she gets paid, the more she likes selling
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
-
+    //    Finish the shift            //
 
     // Money
     g_Game->gold().farm_income(gold);
-    HandleGains(girl, enjoy);
+    HandleGains(girl);
 
     // Push out the turn report
     girl.AddMessage(ss.str(), imagetype, msgtype);
@@ -460,7 +378,7 @@ bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
 class cFarmJobVeterinarian : public cFarmJob {
 public:
     cFarmJobVeterinarian();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 private:
 };
 
@@ -468,152 +386,77 @@ cFarmJobVeterinarian::cFarmJobVeterinarian() : cFarmJob(
         JOB_VETERINARIAN, "Veterinarian.xml", {ACTION_WORKFARM, 20}) {
 }
 
-bool cFarmJobVeterinarian::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
+bool cFarmJobVeterinarian::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100();
-    int enjoy = 0;
 
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
     int fame = 0;
-    if (performance >= 245)
+    add_performance_text();
+    m_Earnings = (int)m_PerformanceToEarnings((float)m_Performance);
+    if (m_Performance >= 245)
     {
-        m_Wages += 155;    fame += 2;
-        ss << " She must be the perfect at this.\n \n";
+        fame += 2;
     }
-    else if (performance >= 185)
+    else if (m_Performance >= 185)
     {
-        m_Wages += 95;    fame += 1;
-        ss << " She's unbelievable at this.\n \n";
+        fame += 1;
     }
-    else if (performance >= 145)
-    {
-        m_Wages += 55;
-        ss << " She's good at this job.\n \n";
-    }
-    else if (performance >= 100)
-    {
-        m_Wages += 15;
-        ss << " She made a few mistakes but overall she is okay at this.\n \n";
-    }
-    else if (performance >= 70)
-    {
-        ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
-        m_Wages -= 5;
-    }
-    else
-    {
-        ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
-        m_Wages -= 15;
-    }
-
-
-#pragma endregion
-#pragma region    //    Enjoyment and Tiredness        //
+    //    Enjoyment and Tiredness        //
 
     //enjoyed the work or not
-    if (roll_a <= 5)
-    {
-        ss << "\nSome of the patrons abused her during the shift.";
-        enjoy -= 1;
-    }
-    else if (roll_a <= 25)
-    {
-        ss << "\nShe had a pleasant time working.";
-        enjoy += 3;
-    }
-    else
-    {
-        ss << "\nOtherwise, the shift passed uneventfully.";
-        enjoy += 1;
-    }
+    shift_enjoyment();
 
-#pragma endregion
-#pragma region    //    Money                    //
-
-
-#pragma endregion
-#pragma region    //    Create Items                //
+    //    Create Items                //
 
     // `J` Farm Bookmark - adding in items that can be created in the farm
 
-
-#pragma endregion
-#pragma region    //    Finish the shift            //
+    //    Finish the shift            //
 
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
     girl.fame(fame);
-    HandleGains(girl, enjoy);
+    HandleGains(girl);
 
-#pragma endregion
     return false;
 }
 
 class cFarmJobShepherd : public cFarmJob {
 public:
     cFarmJobShepherd();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
 cFarmJobShepherd::cFarmJobShepherd() : cFarmJob(
         JOB_SHEPHERD, "Shepherd.xml", {ACTION_WORKFARM, 20}) {
 }
 
-bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
+bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
-    int enjoy = 0;
     int imagetype = IMGTYPE_HERD;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
 #pragma region //    Job Performance            //
 
     // brings in food and rarely beasts
-    double beasts = performance / 100;
-    double food = performance;
+    double beasts = m_Performance / 100.0;
+    double food = m_Performance;
+    beasts *= performance_based_lookup(0.5, 0.8, 1.0, 1.2, 1.6, 2.0);
+    food *= performance_based_lookup(0.5, 0.8, 1.0, 1.2, 1.6, 2.0);
+    roll_a += performance_based_lookup(-10, -2, 0, 2, 5, 10);
+    roll_b += performance_based_lookup(-10, -5, 0, 10, 18, 25);
 
-    if (performance >= 245)
-    {
-        ss << "The animals come to ${name} when they are ready for market.";
-        beasts *= 2.0; food *= 2.0; roll_a += 10; roll_b += 25;
-    }
-    else if (performance >= 185)
-    {
-        ss << "${name} seems to know just when to choose the best animals to send to market.";
-        beasts *= 1.6; food *= 1.6; roll_a += 5; roll_b += 18;
-    }
-    else if (performance >= 145)
-    {
-        ss << "${name} has little trouble finding animals to send to market.";
-        beasts *= 1.2; food *= 1.2; roll_a += 2; roll_b += 10;
-    }
-    else if (performance >= 100)
-    {
-        ss << "${name} usually sends the right animals to market.";
-    }
-    else if (performance >= 70)
-    {
-        ss << "${name} doesn't know what animals to send to the market so she just guesses.";
-        beasts *= 0.8; food *= 0.8; roll_a -= 2; roll_b -= 5;
-    }
-    else
-    {
-        ss << "${name} has no idea what she is doing.";
-        beasts *= 0.5; food *= 0.5; m_Wages -= 10; roll_a -= 5; roll_b -= 10;
-    }
-    ss << "\n \n";
-
-#pragma endregion
-#pragma region    //    Enjoyment and Tiredness        //
+     //    Enjoyment and Tiredness        //
 
     // Complications
     if (roll_a <= 10)
     {
-        enjoy -= uniform(1, 3);
+        m_Enjoyment -= uniform(1, 3);
         ss << "The animals were uncooperative and some didn't even let her get near them.\n";
         if (chance(20))
         {
-            enjoy--;
+            m_Enjoyment--;
             ss << "Several animals got out and ${name} had to chase them down.\n";
             girl.happiness(-uniform(1, 5));
             girl.tiredness(uniform(1, 15));
@@ -622,7 +465,7 @@ bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         }
         if (chance(20))
         {
-            enjoy--;
+            m_Enjoyment--;
             int healthmod = uniform(1, 10);
             girl.health(-healthmod);
             girl.happiness(-uniform(healthmod, 2*healthmod));
@@ -640,27 +483,25 @@ bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     }
     else if (roll_a >= 90)
     {
-        enjoy += uniform(1, 3);
+        m_Enjoyment += uniform(1, 3);
         ss << "The animals were pleasant and cooperative today.\n";
         beasts *= 1.1;
         food *= 1.1;
     }
     else
     {
-        enjoy += uniform(0, 1);
+        m_Enjoyment += uniform(0, 1);
         ss << "She had an uneventful day tending the animals.\n";
     }
 
-#pragma endregion
-#pragma region    //    Create Items                //
+    //    Create Items                //
 
 
 
 
     // `J` Farm Bookmark - adding in items that can be created in the farm
 
-#pragma endregion
-#pragma region    //    Money                    //
+     //    Money                    //
 
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
@@ -675,8 +516,7 @@ bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         if (beasts > 0)        m_Wages += (int)beasts;
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
+    //    Finish the shift            //
 
     ss << "\n${name}";
     if ((int)beasts > 0)
@@ -701,76 +541,48 @@ bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     
     girl.AddMessage(ss.str(), imagetype, msgtype);
     
-    HandleGains(girl, enjoy);
+    HandleGains(girl);
 
-#pragma endregion
     return false;
 }
 
 class cFarmJobRancher : public cFarmJob {
 public:
     cFarmJobRancher();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
 cFarmJobRancher::cFarmJobRancher() : cFarmJob(
         JOB_RANCHER, "Rancher.xml", {ACTION_WORKFARM, 20}) {
 }
 
-bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
+bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
 
-    int enjoy = 0;
     int imagetype = IMGTYPE_FARM;
 
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
     // brings in beasts and food
-    double beasts = performance / 50;
-    double food = performance / 5;
+    double beasts = m_Performance / 50.0;
+    double food = m_Performance / 5.0;
+    beasts *= performance_based_lookup(0.5, 0.8, 1.0, 1.2, 1.6, 2.0);
+    food *= performance_based_lookup(0.5, 0.8, 1.0, 1.2, 1.6, 2.0);
+    roll_a += performance_based_lookup(-10, -2, 0, 2, 5, 10);
+    roll_b += performance_based_lookup(-10, -5, 0, 10, 18, 25);
 
-    if (performance >= 245)
-    {
-        ss << "The animals come to ${name} when they are ready for market.";
-        beasts *= 2.0; food *= 2.0; roll_a += 10; roll_b += 25;
-    }
-    else if (performance >= 185)
-    {
-        ss << "${name} seems to know just when to choose the best animals to send to market.";
-        beasts *= 1.6; food *= 1.6; roll_a += 5; roll_b += 18;
-    }
-    else if (performance >= 145)
-    {
-        ss << "${name} has little trouble finding animals to send to market.";
-        beasts *= 1.2; food *= 1.2; roll_a += 2; roll_b += 10;
-    }
-    else if (performance >= 100)
-    {
-        ss << "${name} usually sends the right animals to market.";
-    }
-    else if (performance >= 70)
-    {
-        ss << "${name} doesn't know what animals to send to the market so she just guesses.";
-        beasts *= 0.8; food *= 0.8; roll_a -= 2; roll_b -= 5;
-    }
-    else
-    {
-        ss << "${name} has no idea what she is doing.";
-        beasts *= 0.5; food *= 0.5; m_Wages -= 10; roll_a -= 5; roll_b -= 10;
-    }
-    ss << "\n \n";
+    add_performance_text();
 
-#pragma endregion
-#pragma region    //    Enjoyment and Tiredness        //
+    //    Enjoyment and Tiredness        //
 
     // Complications
     if (roll_a <= 10)
     {
-        enjoy -= uniform(1, 3);
+        m_Enjoyment -= uniform(1, 3);
         ss << "The animals were uncooperative and some didn't even let her get near them.\n";
         if (chance(20))
         {
-            enjoy--;
+            m_Enjoyment--;
             ss << "Several animals got out and ${name} had to chase them down.\n";
             girl.happiness(-uniform(1, 5));
             girl.tiredness(uniform(1, 15));
@@ -779,7 +591,7 @@ bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
         }
         if (chance(20))
         {
-            enjoy--;
+            m_Enjoyment--;
             int healthmod = uniform(1, 10);
             girl.health(-healthmod);
             girl.happiness(-uniform(healthmod, 2*healthmod));
@@ -797,26 +609,22 @@ bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     }
     else if (roll_a >= 90)
     {
-        enjoy += uniform(1, 3);
+        m_Enjoyment += uniform(1, 3);
         ss << "The animals were pleasant and cooperative today.\n";
         beasts *= 1.1;
         food *= 1.1;
     }
     else
     {
-        enjoy += uniform(0, 1);
+        m_Enjoyment += uniform(0, 1);
         ss << "She had an uneventful day tending the animals.\n";
     }
 
-
-#pragma endregion
-#pragma region    //    Create Items                //
+    //    Create Items                //
 
     // `J` Farm Bookmark - adding in items that can be created in the farm
 
-
-#pragma endregion
-#pragma region    //    Money                    //
+    //    Money                    //
 
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
@@ -831,8 +639,7 @@ bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
         if (beasts > 0)        m_Wages += (int)beasts;
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
+    //    Finish the shift            //
 
     ss << "\n${name}";
     if ((int)beasts > 0)
@@ -858,9 +665,7 @@ bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
-    HandleGains(girl, enjoy);
-
-#pragma endregion
+    HandleGains(girl);
     return false;
 }
 
@@ -868,81 +673,56 @@ bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
 class cFarmJobMilker : public cFarmJob {
 public:
     cFarmJobMilker();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night);
 };
 
 cFarmJobMilker::cFarmJobMilker() : cFarmJob(
         JOB_MILKER, "Milker.xml", {ACTION_WORKFARM, 20}) {
 }
 
-bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
+bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
-    int enjoy = 0;
     int imagetype = IMGTYPE_FARM;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
-    double drinks = performance / 2;
+    double drinks = m_Performance / 2;
 
-    if (performance >= 245)
-    {
-        ss << "Her milk bucket practically fills itself as she walks down the rows of cows.";
-        drinks *= 5; roll_a += 10; roll_b += 25;
-    }
-    else if (performance >= 185)
-    {
-        ss << "Her hands moved like lightning as she gracefully milks the cows teats.";
-        drinks *= 4; roll_a += 5; roll_b += 18;
-    }
-    else if (performance >= 145)
-    {
-        ss << "She knows exactly when the cows are ready to be milked and how to best milk them.";
-        drinks *= 3; roll_a += 2; roll_b += 10;
-    }
-    else if (performance >= 100)
-    {
-        ss << "She can milk the cows without spilling much.";
-        drinks *= 2;
-    }
-    else if (performance >= 70)
-    {
-        ss << "She isn't very good at aiming the teats into the bucket.";
-        roll_a -= 2; roll_b -= 5;
-    }
-    else
-    {
-        ss << "She can't seem to get the hang of this.";
-        m_Wages -= 10; drinks *= 0.8; roll_a -= 5; roll_b -= 10;
-    }
-    ss << "\n \n";
+    drinks *= performance_based_lookup(0.8, 1.0, 2.0, 3.0, 4.0, 5.0);
+    roll_a += performance_based_lookup(-10, -2, 0, 2, 5, 10);
+    roll_b += performance_based_lookup(-10, -5, 0, 10, 18, 25);
 
-#pragma endregion
-#pragma region    //    Enjoyment and Tiredness        //
+    if (m_Performance < 70)
+    {
+        m_Wages -= 10;
+    }
+
+    //    Enjoyment and Tiredness        //
 
     // Complications
     if (roll_a <= 10)
     {
-        enjoy -= uniform(1, 3);
+        m_Enjoyment -= uniform(1, 3);
         ss << "The animals were uncooperative and some didn't even let her get near them.\n";
         drinks *= 0.8;
         if (chance(20))
         {
-            enjoy--;
+            m_Enjoyment--;
             ss << "Several animals kicked over the milking buckets and soaked ${name}.\n";
             girl.happiness(-uniform(1, 5));
             drinks -= uniform(5, 10);
         }
         if (chance(20))
         {
-            enjoy--;
+            m_Enjoyment--;
             ss << "One of the animals urinated on ${name} and contaminated the milk she had collected.\n";
             girl.happiness(-uniform(1, 3));
             drinks -= uniform(5, 10);
         }
         if (chance(20))
         {
-            enjoy--;
+            m_Enjoyment--;
             int healthmod = uniform(1, 10);
             girl.health(-healthmod);
             girl.happiness(-uniform(healthmod, 2 * healthmod));
@@ -959,18 +739,17 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     }
     else if (roll_a >= 90)
     {
-        enjoy += uniform(1, 3);
+        m_Enjoyment += uniform(1, 3);
         ss << "The animals were pleasant and cooperative today.\n";
         drinks *= 1.2;
     }
     else
     {
-        enjoy += uniform(0, 1);
+        m_Enjoyment += uniform(0, 1);
         ss << "She had an uneventful day milking.\n";
     }
 
-#pragma endregion
-#pragma region    //    Money                    //
+    //    Money                    //
 
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
@@ -983,8 +762,7 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
         m_Wages += (int)drinks / 100; // `J` Pay her based on how much she brought in
     }
 
-#pragma endregion
-#pragma region    //    Create Items                //
+    //    Create Items                //
 
     int milk = int(drinks / 10);    // plain milk is made here, breast milk from girls is made in WorkMilk
     if (milk > 0)
@@ -1041,10 +819,7 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     // `J` zzzzzz - need to add the girl milking herself - can be done easier after WorkMilk is done
 
 
-
-
-#pragma endregion
-#pragma region    //    Finish the shift            //
+    //    Finish the shift            //
 
     ss << "\n${name}";
     if ((int)drinks > 0)
@@ -1056,10 +831,7 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
 
     girl.AddMessage(ss.str(), imagetype, msgtype);
 
-    HandleGains(girl, enjoy);
-
-
-#pragma endregion
+    HandleGains(girl);
     return false;
 }
 
@@ -1067,25 +839,25 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
 class cFarmJobBeastCapture : public cFarmJob {
 public:
     cFarmJobBeastCapture();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night);
 };
 
 cFarmJobBeastCapture::cFarmJobBeastCapture() : cFarmJob(
         JOB_BEASTCAPTURE, "BeastCapture.xml", {ACTION_COMBAT, 40}) {
 }
 
-bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
+bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
 
+    // TODO this is contrary to simplejob from which all the farm jobs derive
     cGirls::EquipCombat(girl);    // ready armor and weapons!
 
-    int enjoy = 0;
     int imagetype = IMGTYPE_COMBAT;
     int msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-#pragma region //    The Fight to get the Beasts        //
+    //    The Fight to get the Beasts        //
 
     int tired = 0;
-    int gainmax = (int)(performance / 30) + 1;
+    int gainmax = (int)(m_Performance / 30) + 1;
     int gain = uniform(1, gainmax);
     // TODO make this a real MONSTER, not a girl the player never sees anyway
     auto tempgirl = g_Game->CreateRandomGirl(SpawnReason::CATACOMBS);
@@ -1099,7 +871,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
             ss << "She had fun hunting today and came back with " << gain << " new beasts.";;
             imagetype = IMGTYPE_COMBAT;
             tired = uniform(0, 3*gain);
-            enjoy += uniform(2, 5);
+            m_Enjoyment += uniform(2, 5);
         }
         else        // she lost or it was a draw
         {
@@ -1118,7 +890,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
                 ss << " captured beast" << (gain > 1 ? "s" : "") << " behind her.";
             }
             imagetype = IMGTYPE_COMBAT;
-            enjoy -= uniform(1, 3);
+            m_Enjoyment -= uniform(1, 3);
             tired = uniform(20, 20 + 10 * gain);
         }
     }
@@ -1133,8 +905,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
     }
     ss << "\n \n";
 
-#pragma endregion
-#pragma region    //    A Little Randomness            //
+    //    A Little Randomness            //
 
     //SIN: A little randomness
     if (((girl.animalhandling() + girl.charisma()) > 125) && chance(30))
@@ -1198,8 +969,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
         }
     }
 
-#pragma endregion
-#pragma region    //    Collect Pets                //
+    //    Collect Pets                //
 
     // `J` Farm Bookmark - adding in items that can be gathered in the farm
     if (chance(5))
@@ -1256,8 +1026,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
         }
     }
 
-#pragma endregion
-#pragma region    //    Money                    //
+    //    Money                    //
 
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
@@ -1269,15 +1038,14 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
         m_Wages += gain * 10; // `J` Pay her based on how much she brings back
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
+    //    Finish the shift            //
 
     g_Game->storage().add_to_beasts(gain);
 
     // Improve girl
     if (tired > 0) girl.tiredness(tired);
 
-    HandleGains(girl, enjoy);
+    HandleGains(girl);
 
     if (chance(25) && girl.strength() >= 60 && girl.combat() > girl.magic())
     {
@@ -1286,7 +1054,6 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
 
     girl.AddMessage(ss.str(), imagetype, msgtype ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
-#pragma endregion
     return false;
 }
 
@@ -1294,21 +1061,20 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
 class cFarmJobGetMilked : public cFarmJob { 
 public:
     cFarmJobGetMilked();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 private:
     double toOz(int ml)            { return (0.0338 * ml); }
 };
 
 cFarmJobGetMilked::cFarmJobGetMilked() : cFarmJob(
-        JOB_MILK, "GetMilked.xml", {ACTION_WORKMILK, 0}) {
+        JOB_MILK, "GetMilked.xml", {ACTION_WORKMILK}) {
 }
 
-bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
+bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     const sGirl* farmmanonduty = random_girl_on_job(*girl.m_Building, JOB_FARMMANGER, is_night);
     std::string farmmanname = (farmmanonduty ? "Farm Manager " + farmmanonduty->FullName() + "" : "the Farm Manager");
 
-    int enjoy = 0;
     int roll = d100();
     /*int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();*/
 
@@ -1536,7 +1302,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
 
     if (ease < 75)
     {
-        enjoy -= 2 * (roll % 3 + 2);                                // -8 to -4
+        m_Enjoyment -= 2 * (roll % 3 + 2);                                // -8 to -4
         girl.health(-(roll % 6));            // 0 to 5 damage
         ss << "She's barely lactating, so this was a slow, painful process that left her with raw, ";
         if (girl.has_active_trait("Missing Nipple") || girl.has_active_trait("No Nipples")) ss << "aching breasts.";
@@ -1544,34 +1310,34 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     }
     else if (ease < 150)
     {
-        enjoy -= 2 * (roll % 3 + 1);                                // -6 to -2
+        m_Enjoyment -= 2 * (roll % 3 + 1);                                // -6 to -2
         girl.health(-(roll % 3));            // 0 to 2 damage
         ss << "She's barely producing so all the squeezing, tugging and suction-cup just left her breasts raw and painful.";
     }
     else if (ease < 300)
     {
-        enjoy -= roll % 3 + 1;                                        // -3 to -1
+        m_Enjoyment -= roll % 3 + 1;                                        // -3 to -1
         ss << "It was unpleasant. She produced little milk and the suction-cup left her breasts aching.";
     }
     else if (ease < 600)
     {
-        enjoy++;                                                    // +1
+        m_Enjoyment++;                                                    // +1
         ss << "Being milked was okay for her.";
     }
     else if (ease < 1200)
     {
-        enjoy += roll % 3 + 1;                                        // +1 to +3
+        m_Enjoyment += roll % 3 + 1;                                        // +1 to +3
         ss << "Being milked felt good today.";
     }
     else if (ease < 1600)
     {
-        enjoy += 2 * (roll % 3 + 1);                                // +2 to +6
+        m_Enjoyment += 2 * (roll % 3 + 1);                                // +2 to +6
         girl.happiness((roll % 3));        // 0 to 2 happiness
         ss << "Her breasts were uncomfortably full. Getting that weight off felt great.";
     }
     else
     {
-        enjoy += 2 * (roll % 3 + 2);                                // +4 to +8
+        m_Enjoyment += 2 * (roll % 3 + 2);                                // +4 to +8
         girl.happiness((roll % 6));        // 0 to 5 happiness
         ss << "Her breasts were so full milk was leaking through her clothes. Finally getting milked felt incredible.";
     }
@@ -1699,25 +1465,25 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
                 if (girl.is_slave()) ssextra << ", almost like she's forgotten who owns her";
                 ssextra << ".\n \n";
                 girl.pchate(5);
-                enjoy -= 5;
+                m_Enjoyment -= 5;
             }
             else if (HateLove <= 0)
             {
                 ssextra << "She's upset you took advantage of her. She thought you were better than that.\n \n";
                 girl.pchate(2);
-                enjoy -= 2;
+                m_Enjoyment -= 2;
             }
             else if (HateLove <= 50)
             {
                 ssextra << "She was surprised, but pleased you noticed her. She enjoyed it.\n \n";
                 girl.pclove(1);
-                enjoy += 2;
+                m_Enjoyment += 2;
             }
             else
             {
                 ssextra << "She loved it! It made milking much more enjoyable.\n \n";
                 girl.pclove(4);
-                enjoy += 4;
+                m_Enjoyment += 4;
             }
         }
         else if (g_Game->player().disposition() < 40)   // not that good
@@ -1739,12 +1505,12 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
                     ssextra << "The trader sends back 100 gold and a note apologizing, and promising this will never happen again. He says you can do what you like with the "
                             << "delivery boy, \"But if you ever release the fool, tell him he'll need a new job.\"\n";
                     g_Game->dungeon().AddCust(DUNGEON_CUSTBEATGIRL, 0, false);
-                    m_Wages += 100;
+                    m_Earnings += 100;
                     break;
                 case 1:
                     ssextra << "The trader arrives soon after, begging for his son's release. Eventually you agree, adding that if his boy EVER enters your farm again "
                             << "his balls will be staying here. The trader thanks you repeatedly for your kindness and apologizes to ${name}, giving her 200 extra gold for her... discomfort.\n";
-                    m_Wages += 200;
+                    m_Earnings += 200;
                     break;
                 case 2:
                     ssextra << "You never hear a word from the market trader.\n";
@@ -1771,7 +1537,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
         //Ditched the above - too cumbersome.
         ss << "Something happened here today (see extra message).\n";
     }
-    m_Wages += milkValue;
+    m_Earnings += milkValue;
 
     //Output
     //
@@ -1784,13 +1550,13 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     {
         ss << "a trickle of ";
         if (girl.has_active_trait("Cat Girl"))    ss << "Cat-Girl ";
-        ss << "breast-milk, earning just " << m_Wages << " gold.";
+        ss << "breast-milk, earning just " << m_Earnings << " gold.";
     }
     else
     {
         ss << "just over " << (int)milkProduced << " ounces. This fine, freshly-squeezed ";
         if (girl.has_active_trait("Cat Girl"))    ss << "Cat-Girl ";
-        ss << "breast-milk earns " << m_Wages << " gold.";
+        ss << "breast-milk earns " << m_Earnings << " gold.";
     }
 
     // `J` Farm Bookmark - adding in items that can be created in the farm
@@ -1800,7 +1566,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     if (extraEvent) girl.AddMessage(ssextra.str(), extraimage, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
-    HandleGains(girl, enjoy);
+    HandleGains(girl);
 
     return false;
 }
@@ -1824,7 +1590,7 @@ double cFarmJobGetMilked::GetPerformance(const sGirl& girl, bool estimate) const
 class cFarmJobCatacombRancher : public cFarmJob {
 public:
     cFarmJobCatacombRancher();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 private:
 };
 
@@ -1832,71 +1598,23 @@ cFarmJobCatacombRancher::cFarmJobCatacombRancher() : cFarmJob(
         JOB_CATACOMBRANCHER, "CatacombRancher.xml", {ACTION_WORKFARM, 20}) {
 }
 
-bool cFarmJobCatacombRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
+bool cFarmJobCatacombRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     cGirls::EquipCombat(girl);    // This job can be dangerous so any protection is good.
 
-    int enjoy = 0;
+    m_Earnings = 20 + (int)m_PerformanceToEarnings((float)m_Performance);
+    add_performance_text();
 
-    if (performance >= 245)
-    {
-        ss << " She must be the perfect at this.";
-        m_Wages += 155;
-    }
-    else if (performance >= 185)
-    {
-        ss << " She's unbelievable at this.";
-        m_Wages += 95;
-    }
-    else if (performance >= 145)
-    {
-        ss << " She's good at this job.";
-        m_Wages += 55;
-    }
-    else if (performance >= 100)
-    {
-        ss << " She made a few mistakes but overall she is okay at this.";
-        m_Wages += 15;
-    }
-    else if (performance >= 70)
-    {
-        ss << " She was nervous and made a few mistakes. She isn't that good at this.";
-        m_Wages -= 5;
-    }
-    else
-    {
-        ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
-        m_Wages -= 15;
-    }
-    ss << "\n \n";
-
-
-    //enjoyed the work or not
-    int roll = d100();
-    if (roll <= 5)
-    {
-        ss << "Some of the patrons abused her during the shift.";
-        enjoy -= 1;
-    }
-    else if (roll <= 25)
-    {
-        ss << "She had a pleasant time working.";
-        enjoy += 3;
-    }
-    else
-    {
-        ss << "Otherwise, the shift passed uneventfully.";
-        enjoy += 1;
-    }
+    // enjoyed the work or not
+    shift_enjoyment();
 
     //    Finish the shift            //
 
     girl.AddMessage(ss.str(), IMGTYPE_HERD, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
-    int roll_max = (girl.beauty() + girl.charisma());
-    roll_max /= 4;
+    int roll_max = (girl.beauty() + girl.charisma()) / 4;
     m_Wages += uniform(10, 10 + roll_max);
 
-    HandleGains(girl, enjoy);
+    HandleGains(girl);
     
     return false;
 }
@@ -1904,20 +1622,17 @@ bool cFarmJobCatacombRancher::JobProcessing(sGirl& girl, IBuilding& brothel, boo
 class cFarmJobResearch : public cFarmJob {
 public:
     cFarmJobResearch();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-cFarmJobResearch::cFarmJobResearch() : cFarmJob(JOB_RESEARCH, "FarmResearch.xml", {ACTION_WORKTRAINING, 20}) {
+cFarmJobResearch::cFarmJobResearch() : cFarmJob(JOB_RESEARCH, "FarmResearch.xml", {ACTION_WORKTRAINING, 40}) {
 }
 
-bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) {
-    cGirls::UnequipCombat(girl);    // put that shit away
-
-    int enjoy = 0;
+bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100(), roll_c = d100();
     
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
     int train = 0;                                                // main skill trained
     int tanm = girl.animalhandling();                            // Starting level - train = 1
@@ -1996,19 +1711,17 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     }
     ss << "\n \n";
 
-#pragma endregion
-#pragma region    //    Enjoyment and Tiredness        //
+     //    Enjoyment and Tiredness        //
 
 
     //enjoyed the work or not
-    /* */if (roll_c <= 10)    { enjoy -= uniform(1, 3);    ss << "She did not enjoy her time training."; }
-    else if (roll_c >= 90)    { enjoy += uniform(1, 3);    ss << "She had a pleasant time training."; }
-    else /*             */    { enjoy += uniform(0, 1);        ss << "Otherwise, the shift passed uneventfully."; }
+    /* */if (roll_c <= 10)    { m_Enjoyment -= uniform(1, 3);    ss << "She did not enjoy her time training."; }
+    else if (roll_c >= 90)    { m_Enjoyment += uniform(1, 3);    ss << "She had a pleasant time training."; }
+    else /*             */    { m_Enjoyment += uniform(0, 1);    ss << "Otherwise, the shift passed uneventfully."; }
 
     ss << "\n \n";
 
-#pragma endregion
-#pragma region    //    Create Items                //
+    //    Create Items                //
 
 
 
@@ -2169,20 +1882,14 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         }
     }
 
-
-
-#pragma endregion
-#pragma region    //    Money                    //
+    //    Money                    //
 
     if (girl.is_unpaid()) { m_Wages = 0; }
     else { m_Wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
 
+    //    Finish the shift            //
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
-
-
-    girl.upd_Enjoyment(m_Data.Action, enjoy);
+    girl.upd_Enjoyment(m_Data.Action, m_Enjoyment);
 
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
@@ -2195,7 +1902,6 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     girl.exp(uniform(1, xp) );
     girl.upd_temp_stat(STAT_LIBIDO, skill / 2);
 
-#pragma endregion
     return false;
 }
 

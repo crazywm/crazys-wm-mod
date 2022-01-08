@@ -23,7 +23,35 @@
         <Mod>work.escort</Mod>
     </Performance>
 
+    <Gains XP="20" Skill="3">
+        <Skill Name="Performance" Weight="1" Max="60"/>
+        <Stat Name="Intelligence" Weight="1" Max="60"/>
+        <Stat Name="Confidence" Weight="1" Max="60"/>
+
+        <GainTrait Trait="Charismatic" Threshold="60" Action="WORKESCORT">
+            Dealing with customers and talking with them about their problems has made ${name} more Charismatic.
+        </GainTrait>
+        <GainTrait Trait="Elegant" Threshold="40" Action="WORKESCORT">
+            Playing the doting girlfriend has given ${name} an Elegant nature.
+        </GainTrait>
+        <LoseTrait Trait="Nervous" Threshold="40" Action="WORKESCORT">
+            ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
+        </LoseTrait>
+        <LoseTrait Trait="Aggressive" Threshold="70" Action="WORKESCORT">
+            Controlling her temper has greatly reduced ${name}'s Aggressive tendencies.
+        </LoseTrait>
+    </Gains>
+
     <Messages>
+        <Message Name="work">
+            <Text>
+                ${name} has been assigned to work as an Escort. She is informed that various men will ask for her to accompany them on dates,
+                whether because they need a date for a social engagement of some kind or because of their own loneliness.
+                Her skills in service, her beauty, her charisma, her intelligence, and her refinement may all be tested to provide the ideal date that each client requests.
+                And, of course, should she decide to spend some \"extra\" time with the client, she will need to perform well with each of their sexual proclivities.
+                This is her choice, however.
+            </Text>
+        </Message>
         <Message Name="pre-text">
             <Text Condition="Aggressive|Assassin|Yandere|Brawler|Tsundere" Updates="Escort-=2">
                 ${name} has some particularly aggressive tendencies that make her a poor choice for patrons seeking polite conversation.

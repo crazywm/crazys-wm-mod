@@ -170,6 +170,7 @@ IGenericJob::eCheckWorkResult cBasicJob::SimpleRefusalCheck(sGirl& girl, Action_
     }
     return eCheckWorkResult::ACCEPTS;
 }
+
 void cBasicJob::add_performance_text() {
     if (m_Performance >= 245)
     {

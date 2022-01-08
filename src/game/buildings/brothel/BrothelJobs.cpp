@@ -18,7 +18,7 @@
 */
 
 #include "xml/util.h"
-#include "BarJobs.h"
+#include "BrothelJobs.h"
 #include "cGirls.h"
 #include "IGame.h"
 #include "sStorage.h"
@@ -29,32 +29,6 @@
 #include "cInventory.h"
 #include "character/cCustomers.h"
 #include "character/cPlayer.h"
-
-sWorkJobResult cBarJob::DoWork(sGirl& girl, bool is_night)
-{
-    auto brothel = girl.m_Building;
-    add_text("work") << "\n\n";
-    cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
-
-    return {JobProcessing(girl, *brothel, is_night), m_Tips, m_Earnings, m_Wages};
-}
-
-cBarJob::cBarJob(JOBS job, const char* xml, sBarJobData data) : cBasicJob(job, xml), m_Data(data) {
-}
-
-void cBarJob::HandleGains(sGirl& girl, int enjoy, int fame) {
-    // update enjoyment
-    girl.upd_Enjoyment(m_Data.Action, enjoy);
-
-    if (girl.fame() < 10 && m_Performance >= 70)        { fame += 1; }
-    if (girl.fame() < 20 && m_Performance >= 100)        { fame += 1; }
-    if (girl.fame() < 40 && m_Performance >= 145)        { fame += 1; }
-    if (girl.fame() < 60 && m_Performance >= 185)        { fame += 1; }
-
-    girl.fame(fame);
-
-    apply_gains(girl, m_Performance);
-}
 
 IGenericJob::eCheckWorkResult cBarJob::CheckWork(sGirl& girl, bool is_night) {
     if (girl.libido() >= 90 && girl.has_active_trait("Nymphomaniac") && chance(20))
@@ -76,36 +50,6 @@ IGenericJob::eCheckWorkResult cBarJob::CheckWork(sGirl& girl, bool is_night) {
     return eCheckWorkResult::ACCEPTS;
 }
 
-void cBarJob::load_from_xml_callback(const tinyxml2::XMLElement& job_element) {
-    auto wages = job_element.FirstChildElement("WageFunction");
-    if(wages) {
-        PerformanceToEarnings = LoadLinearFunction(*wages, "Performance", "Wages");
-    }
-}
-
-int cBarJob::shift_enjoyment() {
-    ss << "\n";
-    int roll = d100();
-    if (roll <= 5)
-    {
-        ss << rng().select_text({
-            "Some of the patrons abused her during the shift.",
-            "Several patrons heckled her and made her shift generally unpleasant."
-        });
-        return -1;
-    }
-    else if (roll <= 25)
-    {
-        ss << "She had a pleasant time working.";
-        return 3;
-    }
-    else
-    {
-        ss << "Otherwise, the shift passed uneventfully.";
-        return 1;
-    }
-}
-
 struct cBarCookJob : public cBarJob {
     cBarCookJob();
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
@@ -116,9 +60,8 @@ cBarCookJob::cBarCookJob() : cBarJob(JOB_BARCOOK, "BarCook.xml", {ACTION_WORKBAR
 
 bool cBarCookJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
 {
-    int roll_a = d100(), roll_b = d100();
-    int enjoy = 0, fame = 0;
-    m_Earnings = 15 + (int)PerformanceToEarnings((float)m_Performance);
+    int fame = 0;
+    m_Earnings = 15 + (int)m_PerformanceToEarnings((float)m_Performance);
 
     int imagetype = IMGTYPE_COOK;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
@@ -128,8 +71,8 @@ bool cBarCookJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     add_performance_text();
     add_text("post-work-text");
 
-    //enjoyed the work or not
-    enjoy += shift_enjoyment();
+    // enjoyed the work or not
+    shift_enjoyment();
 
     girl.AddMessage(ss.str(), imagetype, msgtype);
 
@@ -137,7 +80,7 @@ bool cBarCookJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     m_Earnings += uniform(10, 10 + roll_max);
 
     // Improve stats
-    HandleGains(girl, enjoy, fame);
+    HandleGains(girl, fame);
     return false;
 }
 
@@ -152,18 +95,17 @@ cBarMaidJob::cBarMaidJob() : cBarJob(JOB_BARMAID, "BarMaid.xml", {ACTION_WORKBAR
 }
 
 bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
-#pragma region //    Job setup                //
+    //    Job setup                //
     Action_Types actiontype = ACTION_WORKBAR;
     int roll_jp = d100(), roll_e = d100(), roll_c = d100();
 
-    m_Earnings = 15 + (int)PerformanceToEarnings(float(m_Performance));
-    int enjoy = 0, fame = 0;                // girl
+    m_Earnings = 15 + (int)m_PerformanceToEarnings(float(m_Performance));
+    int fame = 0;                // girl
     int Bhappy = 0, Bfame = 0, Bfilth = 0;    // brothel
     int imagetype = IMGTYPE_WAIT;
     int msgtype = is_night;
 
-#pragma endregion
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
     int numbarmaid = brothel.num_girls_on_job(JOB_BARMAID, is_night);
     int numbarwait = brothel.num_girls_on_job(JOB_WAITRESS, is_night);
@@ -233,39 +175,34 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     }
 
     add_performance_text();
+    double drink_factors[] = {0.8, 0.9, 1.0, 1.1, 1.3, 1.6};
+    drinkssold *= drink_factors[get_performance_class(m_Performance)];
     if (m_Performance >= 245)
     {
-        drinkssold *= 1.6;
         roll_e += 10;        // enjoy adj
     }
     else if (m_Performance >= 185)
     {
-        drinkssold *= 1.3;
         roll_e += 7;        // enjoy adj
     }
     else if (m_Performance >= 145)
     {
-        drinkssold *= 1.1;
         roll_e += 3;        // enjoy adj
     }
     else if (m_Performance >= 100)
     {
-        drinkssold *= 1.0;
         roll_e += 0;        // enjoy adj
     }
     else if (m_Performance >= 70)
     {
-        drinkssold *= 0.9;
         roll_e -= 3;        // enjoy adj
     }
     else
     {
-        drinkssold *= 0.8;
         roll_e -= 7;        // enjoy adj
     }
 
-#pragma endregion
-#pragma region    //    Tips and Adjustments        //
+    //    Tips and Adjustments        //
 
     m_Tips += (drinkssold - drinkswasted) * ((double)roll_e / 100.0);    //base tips
 
@@ -349,9 +286,8 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
         girl.happiness(5);//girls like compliments
     }
 
-#pragma endregion
-#pragma region    //    Money                    //
-    enjoy += shift_enjoyment();
+    //    Money                    //
+    shift_enjoyment();
     if (girl.is_unpaid())
         drinkssold *= 0.9;
 
@@ -505,8 +441,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
 
     g_Game->gold().bar_income(profit);
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
+    //    Finish the shift            //
 
     brothel.m_Happiness += Bhappy;
     brothel.m_Fame += Bfame;
@@ -514,11 +449,9 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
 
     girl.AddMessage(ss.str(), imagetype, msgtype ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
-
     // Improve stats
-    HandleGains(girl, enjoy, fame);
+    HandleGains(girl, fame);
 
-#pragma endregion
     return false;
 }
 
@@ -539,16 +472,15 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     const sGirl* cookonduty = random_girl_on_job(*girl.m_Building, JOB_BARCOOK, is_night);
     std::string cookname = (cookonduty ? "Cook " + cookonduty->FullName() : "the cook");
 
-    int enjoy = 0, fame = 0;
+    int fame = 0;
 
-    m_Earnings = 15 + (int)PerformanceToEarnings((float)m_Performance);
+    m_Earnings = 15 + (int)m_PerformanceToEarnings((float)m_Performance);
 
     int imagetype = IMGTYPE_WAIT;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
     int HateLove = girl.pclove() - girl.pchate();
 
-#pragma endregion
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
     //a little pre-game randomness
     add_text("pre-work-text");
@@ -635,11 +567,10 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
         }
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
+    //    Finish the shift            //
 
     //enjoyed the work or not
-    enjoy += shift_enjoyment();
+    shift_enjoyment();
 
     girl.AddMessage(ss.str(), imagetype, msgtype);
 
@@ -648,13 +579,12 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     m_Earnings += uniform(10, 10+roll_max);
 
     // Improve stats
-    HandleGains(girl, enjoy, fame);
+    HandleGains(girl, fame);
     if (m_Performance > 150 && girl.constitution() > 65)
     {
         cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 60, m_Data.Action, "${name} has been dodging between tables and avoiding running into customers for so long she has become Fleet of Foot.", is_night);
     }
-    
-#pragma endregion
+
     return false;
 }
 
@@ -673,11 +603,11 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     std::string singername = (singeronduty ? "Singer " + singeronduty->FullName() + "" : "the Singer");
 
     m_Earnings = 20;
-    int enjoy = 0, fame = 0;
+    int fame = 0;
     int imagetype = IMGTYPE_PIANO;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
     m_Tips = (int)((m_Performance / 8.0) * ((rng() % (girl.beauty() + girl.charisma()) / 20.0) + (girl.performance() / 5.0)));
 
@@ -707,30 +637,30 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         }
     }
 
-#pragma endregion
-#pragma region    //    Enjoyment                //
+
+    //    Enjoyment                //
 
     //enjoyed the work or not
     if (roll_b <= 10)
     {
         ss << "Some of the patrons abused her during the shift.";
-        enjoy -= uniform(1, 3);
+        m_Enjoyment -= uniform(1, 3);
         m_Tips = int(m_Tips * 0.9);
     }
     else if (roll_b >= 90)
     {
         ss << "She had a pleasant time working.";
-        enjoy += uniform(1, 3);
+        m_Enjoyment += uniform(1, 3);
         m_Tips = int(m_Tips * 1.1);
     }
     else
     {
         ss << "Otherwise, the shift passed uneventfully.";
-        enjoy += uniform(0, 1);
+        m_Enjoyment += uniform(0, 1);
     }
 
-#pragma endregion
-#pragma region    //    Money                    //
+
+    //    Money                    //
 
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
@@ -742,16 +672,10 @@ bool cBarPianoJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     {
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
-
-    // Update Enjoyment
-    if (m_Performance < 50) enjoy -= 1;
-    if (m_Performance < 0) enjoy -= 1;    // if she doesn't do well at the job, she enjoys it less
-    if (m_Performance > 200) enjoy *= 2;        // if she is really good at the job, her enjoyment (positive or negative) is doubled
+    //    Finish the shift            //
 
     // Base Improvement and trait modifiers
-    HandleGains(girl, enjoy, fame);
+    HandleGains(girl, fame);
 
     // Push out the turn report
     girl.AddMessage(ss.str(), imagetype, msgtype);
@@ -771,11 +695,11 @@ bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
 {
     int roll_a = d100(), roll_b = d100();
 
-    int enjoy = 0, happy = 0, fame = 0;
+    int happy = 0, fame = 0;
     int imagetype = IMGTYPE_SING;
     EventType msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-    m_Earnings = 15 + (int)PerformanceToEarnings((float)m_Performance);
+    m_Earnings = 15 + (int)m_PerformanceToEarnings((float)m_Performance);
 
     const sGirl* pianoonduty = random_girl_on_job(*girl.m_Building, JOB_PIANO, is_night);
     std::string pianoname = (pianoonduty ? "Pianist " + pianoonduty->FullName() + "" : "the Pianist");
@@ -805,7 +729,7 @@ bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
         }
     }
 
-    enjoy += shift_enjoyment();
+    shift_enjoyment();
 
     brothel.m_Fame += fame;
     brothel.m_Happiness += happy;
@@ -815,7 +739,7 @@ bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
     m_Earnings += uniform(10, 10 + roll_max);
 
     // Improve stats
-    HandleGains(girl, enjoy, fame);
+    HandleGains(girl, fame);
     if (girl.fame() >= 70 && chance(10))
     {
         cGirls::PossiblyGainNewTrait(girl, "Idol", 50, m_Data.Action, "Her fame and singing skills has made ${name} an Idol in Crossgate.", is_night);
@@ -825,27 +749,24 @@ bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
 }
 
 
-class cDealerJob : public cBarJob {
+class cDealerJob : public cSimpleJob {
 public:
     cDealerJob();
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-protected:
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 };
 
 // TODO rename this, I would expect 'Dealer' to refer to a different job
-cDealerJob::cDealerJob() : cBarJob(JOB_DEALER, "Dealer.xml", sBarJobData{ACTION_WORKHALL}) {
+cDealerJob::cDealerJob() : cSimpleJob(JOB_DEALER, "Dealer.xml", {ACTION_WORKHALL}) {
 }
 
 bool cDealerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100();
 
     m_Earnings = 25;
-    int work = 0, fame = 0;
+    int fame = 0;
     int imagetype = IMGTYPE_CARD;
 
-#pragma endregion
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
     const sGirl* enteronduty = random_girl_on_job(*girl.m_Building, JOB_ENTERTAINMENT, is_night);
     std::string entername = (enteronduty ? "Entertainer " + enteronduty->FullName() + "" : "the Entertainer");
@@ -891,7 +812,7 @@ bool cDealerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     }
 
     add_performance_text();
-    m_Earnings += (int)PerformanceToEarnings((float)m_Performance);
+    m_Earnings += (int)m_PerformanceToEarnings((float)m_Performance);
     //I'm not aware of tipping card dealers being a common practice, so no base tips
 
     // try and add randomness here
@@ -989,10 +910,8 @@ bool cDealerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
 
     if (m_Earnings < 0) m_Earnings = 0;
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
-
-    work += shift_enjoyment();
+    //    Finish the shift            //
+    shift_enjoyment();
 
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
@@ -1001,25 +920,18 @@ bool cDealerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
 
     // Improve girl
     if (!girl.has_active_trait("Straight"))    { girl.upd_temp_stat(STAT_LIBIDO, std::min(3, brothel.num_girls_on_job(JOB_XXXENTERTAINMENT, false))); }
-    HandleGains(girl, work, fame);
+    HandleGains(girl, fame);
 
     return false;
 }
 
-IGenericJob::eCheckWorkResult cDealerJob::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKHALL);
-}
-
-
-class cEntertainerJob : public cBarJob {
+class cEntertainerJob : public cSimpleJob {
 public:
     cEntertainerJob();
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-protected:
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 };
 
-cEntertainerJob::cEntertainerJob() : cBarJob(JOB_ENTERTAINMENT, "Entertainer.xml", sBarJobData{ACTION_WORKHALL}) {
+cEntertainerJob::cEntertainerJob() : cSimpleJob(JOB_ENTERTAINMENT, "Entertainer.xml", {ACTION_WORKHALL}) {
 }
 
 
@@ -1030,7 +942,7 @@ bool cEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     std::string dealername = (dealeronduty ? "Dealer " + dealeronduty->FullName() + "" : "the Dealer");
 
     m_Earnings = 25;
-    int work = 0, fame = 0;
+    int fame = 0;
     int imagetype = IMGTYPE_BUNNY;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
@@ -1071,7 +983,7 @@ bool cEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     }
 
     add_performance_text();
-    m_Earnings += (int)PerformanceToEarnings((float)m_Performance);
+    m_Earnings += (int)m_PerformanceToEarnings((float)m_Performance);
 
 
     //base tips, aprox 5-30% of base wages
@@ -1094,45 +1006,34 @@ bool cEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
         }
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
-    work += shift_enjoyment();
+    //    Finish the shift            //
+    shift_enjoyment();
 
-    HandleGains(girl, work, fame);
+    HandleGains(girl, fame);
     girl.AddMessage(ss.str(), imagetype, msgtype);
 
     m_Earnings += uniform(10, 10 + (girl.beauty() + girl.charisma()) / 4);
 
-#pragma endregion
     return false;
 }
 
-IGenericJob::eCheckWorkResult cEntertainerJob::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKHALL);
-}
-
-class cXXXEntertainerJob : public cBarJob {
+class cXXXEntertainerJob : public cSimpleJob {
 public:
     cXXXEntertainerJob();
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-protected:
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 };
 
 
-cXXXEntertainerJob::cXXXEntertainerJob() : cBarJob(JOB_XXXENTERTAINMENT, "XXXEntertainer.xml", sBarJobData{ACTION_WORKSTRIP}) {
+cXXXEntertainerJob::cXXXEntertainerJob() : cSimpleJob(JOB_XXXENTERTAINMENT, "XXXEntertainer.xml", {ACTION_WORKSTRIP}) {
 }
 
 bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
-#pragma region //    Job setup                //
-
     m_Earnings = 25;
-    int work = 0, fame = 0;
+    int fame = 0;
     int imagetype = IMGTYPE_BUNNY;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-#pragma endregion
-#pragma region //    Job Performance            //
+     //    Job Performance            //
 
     // SIN: A little pre-show randomness - temporary stats that may affect show
     if (chance(20))
@@ -1201,7 +1102,7 @@ bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_
     }
 
     add_performance_text();
-    m_Earnings += PerformanceToEarnings((float)m_Performance);
+    m_Earnings += m_PerformanceToEarnings((float)m_Performance);
 
 
     //base tips, aprox 5-30% of base wages
@@ -1319,11 +1220,10 @@ bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_
         }
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
+    //    Finish the shift            //
 
-    work += shift_enjoyment();
-    HandleGains(girl, work, fame);
+    shift_enjoyment();
+    HandleGains(girl, fame);
     if (m_Performance >= 140 && chance(25))
     {
         cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", is_night);
@@ -1333,38 +1233,25 @@ bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_
 
 
     m_Earnings += uniform(10, 10 + (girl.beauty() + girl.charisma()) / 4);
-
-#pragma endregion
     return false;
 }
 
-IGenericJob::eCheckWorkResult cXXXEntertainerJob::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKSTRIP);
-}
-
-class cMasseuseJob : public cBarJob {
+class cMasseuseJob : public cSimpleJob {
 public:
     cMasseuseJob();
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-protected:
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 };
 
-cMasseuseJob::cMasseuseJob() : cBarJob(JOB_MASSEUSE, "Masseuse.xml", sBarJobData{ACTION_WORKMASSEUSE}) {
-}
-
-IGenericJob::eCheckWorkResult cMasseuseJob::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKMASSEUSE);
+cMasseuseJob::cMasseuseJob() : cSimpleJob(JOB_MASSEUSE, "Masseuse.xml", {ACTION_WORKMASSEUSE}) {
 }
 
 bool cMasseuseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     m_Earnings = girl.askprice() + 40;
     int imageType = IMGTYPE_MASSAGE;
     int fame = 0;
-    int work = 0;
 
     add_performance_text();
-    m_Earnings += PerformanceToEarnings((float)m_Performance);
+    m_Earnings += m_PerformanceToEarnings((float)m_Performance);
 
     //base tips, aprox 5-30% of base wages
     m_Tips += (int)(((5 + m_Performance / 8) * m_Earnings) / 100);
@@ -1440,8 +1327,8 @@ bool cMasseuseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         //girl.m_Events.AddMessage(ss.str(), imageType, Day0Night1);
     }
 
-    work += shift_enjoyment();
-    HandleGains(girl, work, fame);
+    shift_enjoyment();
+    HandleGains(girl, fame);
     if (m_Performance >= 140 && chance(25))
     {
         cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", is_night);
@@ -1451,61 +1338,28 @@ bool cMasseuseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     return false;
 }
 
-class cPeepShowJob : public cBarJob {
+class cPeepShowJob : public cSimpleJob {
 public:
     cPeepShowJob();
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-protected:
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 };
 
-cPeepShowJob::cPeepShowJob() : cBarJob(JOB_PEEP, "PeepShow.xml", sBarJobData{ACTION_WORKSTRIP}) {
-}
-
-IGenericJob::eCheckWorkResult cPeepShowJob::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKSTRIP);
+cPeepShowJob::cPeepShowJob() : cSimpleJob(JOB_PEEP, "PeepShow.xml", {ACTION_WORKSTRIP}) {
 }
 
 bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_c = d100();
     m_Earnings = girl.askprice() + uniform(0, 50);
     m_Tips = std::max(uniform(-10, 40), 0);
-    int enjoy = 0, fame = 0;
+    int fame = 0;
     SKILLS sextype = SKILL_STRIP;
     int imagetype = IMGTYPE_STRIP;
 
-#pragma endregion
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
-    double mod = 0.0;
-
+    double mods[] = {0.8, 0.9, 1.0, 1.5, 2.0, 3.0};
+    double mod = mods[get_performance_class(m_Performance)];
     add_performance_text();
-
-    if (m_Performance >= 245)
-    {
-        mod = 3.0;
-    }
-    else if (m_Performance >= 185)
-    {
-        mod = 2.0;
-    }
-    else if (m_Performance >= 145)
-    {
-        mod = 1.5;
-    }
-    else if (m_Performance >= 100)
-    {
-        mod = 1.0;
-    }
-    else if (m_Performance >= 70)
-    {
-        mod = 0.9;
-    }
-    else
-    {
-        mod = 0.8;
-    }
-
 
     //try and add randomness here
     if (girl.libido() > 80)
@@ -1628,12 +1482,12 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         {
             if (girl.has_active_trait("Meek") || girl.has_active_trait("Shy"))
             {
-                enjoy -= 5;
+                m_Enjoyment -= 5;
                 ss << "meekly ran away from it.\n";
             }
             else if (girl.has_active_trait("Lesbian"))
             {
-                enjoy -= 2;
+                m_Enjoyment -= 2;
                 girl.upd_temp_stat(STAT_LIBIDO, -10, true);
                 ss << "she doesn't understand the appeal of them, which turned her off.\n";
             }
@@ -1737,17 +1591,14 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         }
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
-
-    enjoy += shift_enjoyment();
-    girl.upd_Enjoyment(ACTION_WORKSTRIP, enjoy);
+    //    Finish the shift            //
+    shift_enjoyment();
 
     // work out the pay between the house and the girl
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
-    HandleGains(girl, enjoy, fame);
+    HandleGains(girl, fame);
 
     //gain traits
     if (m_Performance >= 140 && chance(25))
@@ -1759,34 +1610,24 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
     }
 
-#pragma endregion
     return false;
 }
 
-class cBrothelStripper : public cBarJob {
+class cBrothelStripper : public cSimpleJob {
 public:
     cBrothelStripper();
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-protected:
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 };
 
-cBrothelStripper::cBrothelStripper() : cBarJob(JOB_BROTHELSTRIPPER, "BrothelStripper.xml", sBarJobData{ACTION_WORKSTRIP}) {
-}
-
-IGenericJob::eCheckWorkResult cBrothelStripper::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKSTRIP);
+cBrothelStripper::cBrothelStripper() : cSimpleJob(JOB_BROTHELSTRIPPER, "BrothelStripper.xml", {ACTION_WORKSTRIP}) {
 }
 
 bool cBrothelStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
-#pragma region //    Job setup                //
-    Action_Types actiontype = ACTION_WORKSTRIP;
-    int enjoy = 0, fame = 0;
+    int fame = 0;
     int imagetype = IMGTYPE_STRIP;
     m_Earnings = 45;
 
-#pragma endregion
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
     int lapdance = (girl.intelligence() / 2 +
                     girl.performance() / 2 +
@@ -1836,7 +1677,7 @@ bool cBrothelStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     }
 
     add_performance_text();
-    m_Earnings += (int)PerformanceToEarnings((float)m_Performance);
+    m_Earnings += (int)m_PerformanceToEarnings((float)m_Performance);
 
     //base tips, aprox 5-40% of base wages
     m_Tips += (int)(((5 + m_Performance / 6) * m_Earnings) / 100);
@@ -2054,24 +1895,22 @@ bool cBrothelStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         girl.tiredness(10 - girl.strength() / 20 );
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
+    //    Finish the shift            //
 
     if (girl.has_active_trait("Exhibitionist"))
     {
-        enjoy += 1;
+        m_Enjoyment += 1;
     }
-    enjoy += shift_enjoyment();
-    girl.upd_Enjoyment(actiontype, enjoy);
+    shift_enjoyment();
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
-    HandleGains(girl, enjoy, fame);
+    HandleGains(girl, fame);
 
     //gained
     if (m_Performance >= 140 && chance(25))
     {
-        cGirls::PossiblyGainNewTrait(girl, "Agile", 40, actiontype, "${name} has been working the pole long enough to become quite Agile.", is_night);
+        cGirls::PossiblyGainNewTrait(girl, "Agile", 40, ACTION_WORKSTRIP, "${name} has been working the pole long enough to become quite Agile.", is_night);
     }
     if (sex && girl.dignity() < 0 && chance(25))
     {
@@ -2080,33 +1919,28 @@ bool cBrothelStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     //lose
     if (m_Performance > 150 && girl.confidence() > 65)
     {
-        cGirls::PossiblyLoseExistingTrait(girl, "Shy", 60, actiontype, "${name} has been stripping for so long now that her confidence is super high and she is no longer Shy.", is_night);
+        cGirls::PossiblyLoseExistingTrait(girl, "Shy", 60, ACTION_WORKSTRIP, "${name} has been stripping for so long now that her confidence is super high and she is no longer Shy.", is_night);
     }
     return false;
 }
 
-class ClubBarmaid : public cBarJob {
+class ClubBarmaid : public cSimpleJob {
 public:
     ClubBarmaid();
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
 
-ClubBarmaid::ClubBarmaid() : cBarJob(JOB_SLEAZYBARMAID, "StripBarMaid.xml", {ACTION_WORKCLUB}) {
+ClubBarmaid::ClubBarmaid() : cSimpleJob(JOB_SLEAZYBARMAID, "StripBarMaid.xml", {ACTION_WORKCLUB}) {
 
-}
-
-IGenericJob::eCheckWorkResult ClubBarmaid::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKCLUB);
 }
 
 bool ClubBarmaid::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
-    int enjoy = 0, fame = 0;
+    int fame = 0;
     int imagetype = IMGTYPE_ECCHI;
 
     add_performance_text();
-    m_Earnings = 15 + (int)PerformanceToEarnings((float)m_Performance);
+    m_Earnings = 15 + (int)m_PerformanceToEarnings((float)m_Performance);
 
     //base tips, aprox 10-20% of base m_Earnings
     m_Tips += (int)(((10 + m_Performance / 22) * m_Earnings) / 100);
@@ -2141,7 +1975,7 @@ bool ClubBarmaid::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     {
         ss << "${name} spilled a drink all over a man's lap. He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
         imagetype = IMGTYPE_ORAL;
-        enjoy -= 3;
+        m_Enjoyment -= 3;
     }
 
     if (chance(5)) //may get moved to waitress
@@ -2166,14 +2000,14 @@ bool ClubBarmaid::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     }
 
     //enjoyed the work or not
-    enjoy += shift_enjoyment();
+    shift_enjoyment();
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     int roll_max = (girl.beauty() + girl.charisma()) / 4;
     m_Earnings += 10 + uniform(0, roll_max);
 
     // Improve stats
-    HandleGains(girl, enjoy, fame);
+    HandleGains(girl, fame);
 
     //gained
     if (m_Performance < 100 && chance(2)) { cGirls::PossiblyGainNewTrait(girl, "Assassin", 10, ACTION_WORKCLUB, "${name}'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", is_night); }
@@ -2184,25 +2018,19 @@ bool ClubBarmaid::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     return false;
 }
 
-class ClubStripper : public cBarJob {
+class ClubStripper : public cSimpleJob {
 public:
     ClubStripper();
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-ClubStripper::ClubStripper() : cBarJob(JOB_BARSTRIPPER, "StripStripper.xml", {ACTION_WORKSTRIP}) {
-}
-
-IGenericJob::eCheckWorkResult ClubStripper::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKSTRIP);
+ClubStripper::ClubStripper() : cSimpleJob(JOB_BARSTRIPPER, "StripStripper.xml", {ACTION_WORKSTRIP}) {
 }
 
 bool ClubStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_c = d100();
 
     m_Earnings = 30;
-    int enjoy = 0;
     int imagetype = IMGTYPE_STRIP;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
@@ -2266,7 +2094,7 @@ bool ClubStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         m_Performance += 5; m_Tips += 15;
     }
 
-    m_Earnings += (int)PerformanceToEarnings((float)m_Performance);
+    m_Earnings += (int)m_PerformanceToEarnings((float)m_Performance);
     add_performance_text();
     if (m_Performance >= 245)
     {
@@ -2338,16 +2166,16 @@ bool ClubStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
 
     if (girl.has_active_trait("Exhibitionist"))
     {
-        enjoy += 1;
+        m_Enjoyment += 1;
     }
-    enjoy += shift_enjoyment();
+    shift_enjoyment();
 
     girl.AddMessage(ss.str(), imagetype, msgtype);
 
     int roll_max = (girl.beauty() + girl.charisma()) / 4;
     m_Earnings += uniform(10, 10+roll_max);
 
-    HandleGains(girl, enjoy, 0);
+    HandleGains(girl, 0);
 
     //gained
     if (m_Performance >= 140 && chance(25))
@@ -2364,28 +2192,22 @@ bool ClubStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     return false;
 }
 
-class ClubWaitress : public cBarJob {
+class ClubWaitress : public cSimpleJob {
 public:
     ClubWaitress();
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-ClubWaitress::ClubWaitress() : cBarJob(JOB_SLEAZYWAITRESS, "StripWaitress.xml", {ACTION_WORKCLUB}) {
+ClubWaitress::ClubWaitress() : cSimpleJob(JOB_SLEAZYWAITRESS, "StripWaitress.xml", {ACTION_WORKCLUB}) {
 
-}
-
-IGenericJob::eCheckWorkResult ClubWaitress::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKCLUB);
 }
 
 bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     m_Earnings = 25;
-    int enjoy = 0, anal = 0, oral = 0, hand = 0, fame = 0;
+    int anal = 0, oral = 0, hand = 0, fame = 0;
     int imagetype = IMGTYPE_ECCHI;
 
-#pragma endregion
-#pragma region //    Job Performance            //
+    //    Job Performance            //
 
     auto undignified = [&](){
         switch (uniform(0, 10))
@@ -2393,7 +2215,7 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
             case 1:        girl.sanity(-uniform(0, 5));        if (chance(50)) break;
             case 2:        girl.confidence(-uniform(0, 5));    if (chance(50)) break;
             case 3:        girl.dignity(-uniform(0, 5));        if (chance(50)) break;
-            default:    enjoy -= uniform(0, 5);    break;
+            default:       m_Enjoyment -= uniform(0, 5);    break;
         }
     };
 
@@ -2412,7 +2234,7 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     }
 
     add_performance_text();
-    m_Earnings += (int)PerformanceToEarnings((float)m_Performance);
+    m_Earnings += (int)m_PerformanceToEarnings((float)m_Performance);
     if (m_Performance >= 245)
     {
         brothel.m_Fame += 5;
@@ -2592,7 +2414,7 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     if ((girl.has_active_trait("Meek") || girl.has_active_trait("Shy")) && chance(5))
     {
         ss << "${name} was taking an order from a rather rude patron when he decide to grope her. She isn't the kind of girl to resist this and had a bad day at work because of this.\n";
-        enjoy -= 5;
+        m_Enjoyment -= 5;
     }
 
     if (girl.libido() > 90 && chance(25) && !girl.has_active_trait("Lesbian") && (girl.has_active_trait(
@@ -2885,10 +2707,9 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         m_Tips *= 0.9;
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
+    //    Finish the shift            //
 
-    enjoy += shift_enjoyment();
+    shift_enjoyment();
 
     int roll_max = (girl.beauty() + girl.charisma()) / 4;
     m_Earnings += uniform(10, 10 + roll_max);
@@ -2899,7 +2720,7 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
-    HandleGains(girl, enjoy, fame);
+    HandleGains(girl, fame);
 
     if (!girl.has_active_trait("Straight"))    {
         girl.upd_temp_stat(STAT_LIBIDO, std::min(3, brothel.num_girls_on_job(JOB_BARSTRIPPER, false)));
@@ -2912,28 +2733,22 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
     }
 
-#pragma endregion
     return false;
 }
 
-class AdvertisingJob : public cBarJob {
+class AdvertisingJob : public cSimpleJob {
 public:
     AdvertisingJob();
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-AdvertisingJob::AdvertisingJob() : cBarJob(JOB_ADVERTISING, "Advertising.xml", {ACTION_WORKADVERTISING}) {
+AdvertisingJob::AdvertisingJob() : cSimpleJob(JOB_ADVERTISING, "Advertising.xml", {ACTION_WORKADVERTISING}) {
 
-}
-
-IGenericJob::eCheckWorkResult AdvertisingJob::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKADVERTISING);
 }
 
 bool AdvertisingJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     //    Job setup                //
-    int enjoy = 0, fame = 0;
+    int fame = 0;
     int imagetype = IMGTYPE_SIGN;
     auto msgtype = EVENT_SUMMARY;
 
@@ -2974,11 +2789,11 @@ bool AdvertisingJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     int roll_a = d100();
     if (roll_a <= 10)
     {
-        enjoy -= uniform(1, 3);
+        m_Enjoyment -= uniform(1, 3);
         ss << "She was harassed and made fun of while advertising.\n";
         if (girl.happiness() < 50)
         {
-            enjoy -= 1;
+            m_Enjoyment -= 1;
             ss << "Other then that she mostly just spent her time trying to not breakdown and cry.\n";
             fame -= uniform(0, 1);
         }
@@ -2987,14 +2802,14 @@ bool AdvertisingJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     }
     else if (roll_a >= 90)
     {
-        enjoy += uniform(1, 3);
+        m_Enjoyment += uniform(1, 3);
         ss << "She made sure many people were interested in the buildings facilities.\n";
         m_Performance = m_Performance * 100 / 100;
         fame += uniform(0, 2);
     }
     else
     {
-        enjoy += uniform(0, 1);
+        m_Enjoyment += uniform(0, 1);
         ss << "She had an uneventful day advertising.\n";
     }
 
@@ -3041,29 +2856,23 @@ bool AdvertisingJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     // now to boost the brothel's advertising level accordingly
     brothel.m_AdvertisingLevel += (m_Performance / 100);
 
-    HandleGains(girl, enjoy, fame);
+    HandleGains(girl, fame);
 
     if (girl.strip() > 50)
         cGirls::PossiblyGainNewTrait(girl, "Exhibitionist", 50, ACTION_WORKADVERTISING, "${name} has become quite the Exhibitionist, she seems to prefer Advertising topless whenever she can.", is_night);
 
-#pragma endregion
     return false;
 }
 
 
-class CustServiceJob : public cBarJob {
+class CustServiceJob : public cSimpleJob {
 public:
     CustServiceJob();
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
 };
 
-CustServiceJob::CustServiceJob() : cBarJob(JOB_CUSTOMERSERVICE, "CustService.xml", {ACTION_WORKCUSTSERV}) {
+CustServiceJob::CustServiceJob() : cSimpleJob(JOB_CUSTOMERSERVICE, "CustService.xml", {ACTION_WORKCUSTSERV}) {
 
-}
-
-IGenericJob::eCheckWorkResult CustServiceJob::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKCUSTSERV);
 }
 
 bool CustServiceJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
@@ -3078,15 +2887,15 @@ bool CustServiceJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     if (roll <= 5)
     {
         ss << "Some of the patrons abused her during the shift.";
-        girl.upd_Enjoyment(actiontype, -1);
+        m_Enjoyment -= 1;
     } else if (roll <= 15)
     {
         ss << "A customer mistook her for a whore and was abusive when she wouldn't provide THAT service.";
-        girl.upd_Enjoyment(actiontype, -1);
+        m_Enjoyment -= 1;
     }
     else if (roll >= 75) {
         ss << "She had a pleasant time working.";
-        girl.upd_Enjoyment(actiontype, +3);
+        m_Enjoyment += 3;
     }
     else
     {
@@ -3125,7 +2934,7 @@ bool CustServiceJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
         bonus = -20;
         ss << "\n \nHer efforts only made the customers angrier.";
         //And she's REALLY not going to like this job if she's failing at it, so...
-        girl.upd_Enjoyment(actiontype, -5);
+        m_Enjoyment -= 5;
     }
 
     // Now let's take care of our neglected customers.
@@ -3167,7 +2976,7 @@ bool CustServiceJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Raise skills
-    HandleGains(girl, 0, 1);
+    HandleGains(girl, 1);
     // additional XP bonus for many customers
     girl.exp(serviced / 5);
 

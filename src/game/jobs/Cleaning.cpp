@@ -17,18 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "BasicJob.h"
+#include "SimpleJob.h"
 #include "character/sGirl.h"
 #include "buildings/IBuilding.h"
 #include "cGirls.h"
 
 
 namespace {
-    struct Cleaning : public cBasicJob {
-        using cBasicJob::cBasicJob;
+    struct Cleaning : public cSimpleJob {
+        Cleaning(JOBS job, const char* xml);
 
-        sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
-        eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+        bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
         void CleaningUpdateGirl(sGirl& girl, bool is_night, int enjoy, int clean_amount);
 
         virtual void DoneEarly(sGirl& girl) = 0;
@@ -62,6 +61,9 @@ namespace {
     };
 }
 
+Cleaning::Cleaning(JOBS job, const char* xml) : cSimpleJob(job, xml, {ACTION_WORKCLEANING}) {
+}
+
 void Cleaning::CleaningUpdateGirl(sGirl& girl, bool is_night, int enjoy, int clean_amount) {
     girl.m_Building->m_Filthiness -= (int)clean_amount;
 
@@ -91,25 +93,9 @@ void Cleaning::CleaningUpdateGirl(sGirl& girl, bool is_night, int enjoy, int cle
         cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", is_night);
 }
 
-IGenericJob::eCheckWorkResult Cleaning::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(ACTION_WORKCLEANING, job()))
-    {
-        add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
-    }
-
-    return eCheckWorkResult::ACCEPTS;
-}
-
-sWorkJobResult Cleaning::DoWork(sGirl& girl, bool is_night) {
+bool Cleaning::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night){
     ImageType = IMGTYPE_MAID;
-    auto brothel = girl.m_Building;
-    add_text("work") << "\n \n";
-
-    cGirls::UnequipCombat(girl);    // put that shit away
-
-    double CleanAmt = girl.job_performance(JOB_CLEANARENA, false);
+    double CleanAmt = m_Performance;
     int enjoy = 0;
     bool playtime = false;
 
@@ -146,7 +132,7 @@ sWorkJobResult Cleaning::DoWork(sGirl& girl, bool is_night) {
     }
 
     // `J` if she can clean more than is needed, she has a little free time after her shift
-    if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
+    if (brothel.m_Filthiness < CleanAmt / 2) playtime = true;
     ss << "\n \nCleanliness rating improved by " << (int)CleanAmt;
     if (playtime)    // `J` needs more variation
     {
@@ -157,7 +143,7 @@ sWorkJobResult Cleaning::DoWork(sGirl& girl, bool is_night) {
     girl.AddMessage(ss.str(), ImageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     CleaningUpdateGirl(girl, is_night, enjoy, CleanAmt);
-    return {false, m_Tips, 0, m_Wages};
+    return false;
 }
 
 CleanArena::CleanArena() : Cleaning(JOB_CLEANARENA, "CleanArena.xml") {

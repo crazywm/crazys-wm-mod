@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "jobs/BasicJob.h"
+#include "jobs/SimpleJob.h"
 #include "character/sGirl.h"
 #include "character/cCustomers.h"
 #include "character/predicates.h"
@@ -29,31 +29,20 @@ extern const char* const CarePointsBasicId;
 extern const char* const CarePointsGoodId;
 extern const char* const DoctorInteractionId;
 
-struct DoctorJob : public cBasicJob {
+struct DoctorJob : public cSimpleJob {
     DoctorJob();
-    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 };
 
-DoctorJob::DoctorJob() : cBasicJob(JOB_DOCTOR, "Doctor.xml") {
+DoctorJob::DoctorJob() : cSimpleJob(JOB_DOCTOR, "Doctor.xml", {ACTION_WORKDOCTOR, 100}) {
     m_Info.FullTime = true;
     m_Info.FreeOnly = true;
     m_Info.Provides.emplace_back(DoctorInteractionId);
 }
 
-sWorkJobResult DoctorJob::DoWork(sGirl& girl, bool is_night) {
-    Action_Types actiontype = ACTION_WORKDOCTOR;
-    add_text("work");
-
-    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the patients!
-
-    int enjoy = 0;
-    m_Wages = 100;
-
+bool DoctorJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     // this will be added to the clinic's code eventually - for now it is just used for her pay
-    int patients = 0;            // `J` how many patients the Doctor can see in a shift
-
-
     // Doctor is a full time job now
     girl.m_DayJob = girl.m_NightJob = JOB_DOCTOR;
 
@@ -63,29 +52,28 @@ sWorkJobResult DoctorJob::DoWork(sGirl& girl, bool is_night) {
     int roll = d100();
     if (roll <= 10)
     {
-        enjoy -= uniform(1, 3);
+        m_Enjoyment -= uniform(1, 3);
         m_Performance *= 0.9;
         ss << "Some of the patients abused her during the shift.\n";
     }
     else if (roll >= 90)
     {
-        enjoy += uniform(1, 3);
+        m_Enjoyment += uniform(1, 3);
         m_Performance *= 1.1;
         ss << "She had a pleasant time working.\n";
     }
     else
     {
-        enjoy += uniform(0, 1);
+        m_Enjoyment += uniform(0, 1);
         ss << "Otherwise, the shift passed uneventfully.\n";
     }
 
     girl.AddMessage(ss.str(), IMGTYPE_NURSE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-    patients += (int)(m_Performance / 10);        // `J` 1 patient per 10 point of performance
+    // TODO figure out external patients
 
     // Improve stats
-    girl.upd_Enjoyment(actiontype, enjoy);
-    apply_gains(girl, m_Performance);
-    return {false, m_Tips, 0, m_Wages};
+    HandleGains(girl, 0);
+    return false;
 }
 
 IGenericJob::eCheckWorkResult DoctorJob::CheckWork(sGirl& girl, bool is_night) {
@@ -113,79 +101,35 @@ IGenericJob::eCheckWorkResult DoctorJob::CheckWork(sGirl& girl, bool is_night) {
     return eCheckWorkResult::ACCEPTS;
 }
 
-struct NurseJob : public cBasicJob {
+struct NurseJob : public cSimpleJob {
     NurseJob();
-    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 };
 
-NurseJob::NurseJob() : cBasicJob(JOB_NURSE, "Nurse.xml") {
+NurseJob::NurseJob() : cSimpleJob(JOB_NURSE, "Nurse.xml", {ACTION_WORKNURSE}) {
     m_Info.FullTime = true;
     m_Info.Provides.emplace_back(CarePointsBasicId);
     m_Info.Provides.emplace_back(CarePointsGoodId);
 }
 
-sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
-    auto brothel = girl.m_Building;
-#pragma region //    Job setup                //
-    Action_Types actiontype = ACTION_WORKNURSE;
-    std::stringstream ss;
+bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
-    ss << get_text("work") << "\n \n";
-    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the patients!
-
-    int enjoy = 0, fame = 0;
+    int fame = 0;
     bool hand = false, sex = false, les = false;
 
     int imagetype = IMGTYPE_NURSE;
-
-#pragma endregion
-#pragma region //    Job Performance            //
-
-
 
     // this will be added to the clinic's code eventually - for now it is just used for her pay
     int patients = 0;            // `J` how many patients the Doctor can see in a shift
 
     //Adding cust here for use in scripts...
-    sCustomer Cust = cJobManager::GetMiscCustomer(*brothel);
+    sCustomer Cust = cJobManager::GetMiscCustomer(brothel);
 
-    int basic_care = 0;
-    int quality_care = 0;
     add_performance_text();
-    if (m_Performance >= 245)
-    {
-        basic_care = 20;
-        quality_care = 10;
-        m_Wages += 155;
-    }
-    else if (m_Performance >= 185)
-    {
-        basic_care = 16;
-        quality_care = 6;
-        m_Wages += 95;
-    }
-    else if (m_Performance >= 135)
-    {
-        basic_care = 12;
-        quality_care = 2;
-        m_Wages += 55;
-    }
-    else if (m_Performance >= 85)
-    {
-        basic_care = 8;
-        m_Wages += 15;
-    }
-    else if (m_Performance >= 65)
-    {
-        basic_care = 6;
-        m_Wages -= 5;
-    }
-    else
-    {
-        basic_care = 4;
-        m_Wages -= 15;
-    }
+    m_Wages += (int)m_PerformanceToEarnings((float)m_Performance);
+    int basic_care = performance_based_lookup(4, 6, 8, 12, 16, 20);
+    int quality_care = performance_based_lookup(0, 0, 0, 2, 6, 10);
 
     ProvideResource(CarePointsBasicId, basic_care);
     ProvideResource(CarePointsGoodId, quality_care);
@@ -241,11 +185,11 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
         && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Slut") || girl.has_active_trait("Succubus") ||
             girl.has_active_trait("Bimbo")))
     {
-        if (girl.libido() > 65 && (brothel->is_sex_type_allowed(SKILL_NORMALSEX) || brothel->is_sex_type_allowed(SKILL_ANAL)))
+        if (girl.libido() > 65 && (brothel.is_sex_type_allowed(SKILL_NORMALSEX) || brothel.is_sex_type_allowed(SKILL_ANAL)))
         {
             m_Tips += 50;
             sex = true;
-            enjoy += 1;
+            m_Enjoyment += 1;
             ss << "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. The man took advantage and fucked her brains out!\n";
         }
         else
@@ -258,35 +202,33 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
         girl.libido() > 65 && chance(10))
     {
         les = true;
-        enjoy += 1;
+        m_Enjoyment += 1;
         ss << "When giving a sponge bath to one of her female patients she couldn't help herself and took advantage of the situation.\n";
     }
     ss << "\n";
 
-#pragma endregion
-#pragma region    //    Enjoyment and Tiredness        //
     //enjoyed the work or not
     if (roll_a <= 5)
     {
-        enjoy -= uniform(1, 3);
+        m_Enjoyment -= uniform(1, 3);
         m_Performance *= 0.9;
         ss << "Some of the patrons abused her during the shift.";
     }
     else if (roll_a <= 25)
     {
-        enjoy += uniform(1, 3);
+        m_Enjoyment += uniform(1, 3);
         m_Performance *= 1.1;
         ss << "She had a pleasant time working.";
     }
     else
     {
-        enjoy += uniform(0, 1);
+        m_Enjoyment += uniform(0, 1);
         ss << "Otherwise, the shift passed uneventfully.";
     }
 
     if (sex)
     {
-        if (brothel->is_sex_type_allowed(SKILL_NORMALSEX) && (roll_b <= 50 || brothel->is_sex_type_allowed(SKILL_ANAL))) //Tweak to avoid an issue when roll > 50 && anal is restricted
+        if (brothel.is_sex_type_allowed(SKILL_NORMALSEX) && (roll_b <= 50 || brothel.is_sex_type_allowed(SKILL_ANAL))) //Tweak to avoid an issue when roll > 50 && anal is restricted
         {
             imagetype = IMGTYPE_SEX;
             girl.normalsex(2);
@@ -299,24 +241,24 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
                 g_Game->push_message(girl.FullName() + " has gotten pregnant", 0);
             }
         }
-        else if (brothel->is_sex_type_allowed(SKILL_ANAL))
+        else if (brothel.is_sex_type_allowed(SKILL_ANAL))
         {
             imagetype = IMGTYPE_ANAL;
             girl.anal(2);
         }
-        brothel->m_Happiness += 100;
+        brothel.m_Happiness += 100;
         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
         girl.upd_Enjoyment(ACTION_SEX, +3);
     }
     else if (hand)
     {
-        brothel->m_Happiness += uniform(60, 130);
+        brothel.m_Happiness += uniform(60, 130);
         girl.handjob(2);
         imagetype = IMGTYPE_HAND;
     }
     else if (les)
     {
-        brothel->m_Happiness += uniform(30, 100);
+        brothel.m_Happiness += uniform(30, 100);
         imagetype = IMGTYPE_LESBIAN;
         girl.lesbian(2);
     }
@@ -333,35 +275,23 @@ sWorkJobResult NurseJob::DoWork(sGirl& girl, bool is_night) {
         m_Wages += patients * 2;                // `J` pay her 2 for each patient you send to her
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
-
-
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     /* `J` this will be a place holder until a better payment system gets done
     *  this does not take into account any of your girls in surgery
     */
-    int earned = 0;
+    m_Earnings = 0;
     for (int i = 0; i < patients; i++)
     {
-        earned += uniform(5, 40); // 5-40 gold per customer
+        m_Earnings += uniform(5, 40); // 5-40 gold per customer
     }
-    brothel->m_Finance.clinic_income(earned);
-    ss.str("");    ss << "${name} earned " << earned << " gold from taking care of " << patients << " patients.";
+    brothel.m_Finance.clinic_income(m_Earnings);
+    ss.str("");    ss << "${name} earned " << m_Earnings << " gold from taking care of " << patients << " patients.";
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
-
     // Improve stats
-    if (girl.fame() < 10 && m_Performance >= 70)        { fame += 1; }
-    if (girl.fame() < 20 && m_Performance >= 100)        { fame += 1; }
-    if (girl.fame() < 40 && m_Performance >= 145)        { fame += 1; }
-    if (girl.fame() < 50 && m_Performance >= 185)        { fame += 1; }
-    girl.fame(fame);
-    apply_gains(girl, m_Performance);
-    girl.upd_Enjoyment(actiontype, enjoy);
+    HandleGains(girl, fame);
 
-#pragma endregion
-    return {false, m_Tips, 0, m_Wages};
+    return false;
 }
 
 IGenericJob::eCheckWorkResult NurseJob::CheckWork(sGirl& girl, bool is_night) {

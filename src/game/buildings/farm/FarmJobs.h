@@ -20,23 +20,14 @@
 #ifndef WM_FARMJOBS_H
 #define WM_FARMJOBS_H
 
-#include "jobs/BasicJob.h"
+#include "jobs/SimpleJob.h"
 
-struct sFarmJobData {
-    Action_Types Action;
-    int BaseWages;
-};
-
-class cFarmJob : public cBasicJob {
+class cFarmJob : public cSimpleJob {
 public:
-    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
-    virtual bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night, double performance) = 0;
-
+    using cSimpleJob::cSimpleJob;
 protected:
-    cFarmJob(JOBS job, std::string xml, sFarmJobData data);
-    void HandleGains(sGirl& girl, int enjoy);
-    sFarmJobData m_Data;
+    // a version of handle gains that leaves fame unaffected
+    void HandleGains(sGirl& girl);
 };
 
 #endif //WM_FARMJOBS_H
