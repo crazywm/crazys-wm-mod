@@ -12,7 +12,7 @@
         <Mod>work.counselor</Mod>
     </Performance>
 
-    <Gains XP="5" Skill="2">
+    <Gains XP="10" Skill="2">
         <Skill Name="Service" Weight="1" />
         <Stat Name="Charisma" Weight="1" />
         <GainTrait Trait="Charismatic" Threshold="60" Action="WORKCOUNSELOR">

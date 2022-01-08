@@ -14,7 +14,7 @@
         <Trait Name="Manly" Value="-10" />
     </Performance>
 
-    <Gains XP="10" Skill="3">
+    <Gains XP="15" Skill="3">
         <Skill Name="Performance" Weight="2" />
         <Skill Name="Strip" Weight="1" />
         <Stat Name="Charisma" Weight="1" Max="50"/>

@@ -40,7 +40,7 @@
         <Trait Name="Nervous" Value="-15"/>
     </Performance>
 
-    <Gains XP="10" Skill="3">
+    <Gains XP="15" Skill="3">
         <Skill Name="Performance" Weight="2" Max="66"/>
         <Skill Name="OralSex" Weight="1" Max="75"/>
         <Stat Name="Constitution" Weight="1" Max="33"/>

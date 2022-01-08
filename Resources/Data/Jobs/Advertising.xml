@@ -17,7 +17,7 @@
         <Mod>work.advertising</Mod>
     </Performance>
 
-    <Gains XP="5" Skill="3">
+    <Gains XP="10" Skill="3">
         <Skill Name="Performance" Weight="1" Max="50"/>
         <Stat Name="Charisma" Weight="1" Max="50"/>
         <Skill Name="Service" Weight="1" Max="50"/>

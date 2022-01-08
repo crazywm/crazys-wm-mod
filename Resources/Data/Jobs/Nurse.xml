@@ -55,7 +55,7 @@
         <Trait Name="Viras Blood Addict" Value="-25"/>
     </Performance>
 
-    <Gains XP="10" Skill="2">
+    <Gains XP="15" Skill="2">
         <Skill Name="Medicine" Weight="2"/>
         <Stat Name="Charisma" Weight="1" />
         <Stat Name="Intelligence" Weight="1" />

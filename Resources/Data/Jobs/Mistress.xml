@@ -32,7 +32,7 @@
         <Trait Name="Queen" Value="5" />
     </Performance>
 
-    <Gains XP="5" Skill="3">
+    <Gains XP="15" Skill="3">
         <Stat Name="Spirit" Max="80" />
         <Stat Name="Confidence" Max="80" />
         <!--

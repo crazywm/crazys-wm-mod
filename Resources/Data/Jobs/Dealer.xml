@@ -15,7 +15,7 @@
         <Mod>work.halldealer</Mod>
     </Performance>
 
-    <Gains XP="10" Skill="2">
+    <Gains XP="15" Skill="2">
         <Stat Name="Intelligence" Weight="1" Max="50" />
         <Stat Name="Charisma" Weight="1" Max="50"/>
         <Stat Name="Confidence" Weight="1" Min="20" />

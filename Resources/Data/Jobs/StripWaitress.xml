@@ -13,7 +13,7 @@
         <Mod>work.sleazywaitress</Mod>
     </Performance>
 
-    <Gains XP="15" Skill="3">
+    <Gains XP="20" Skill="3">
         <LoseTrait Trait="Clumsy" Threshold="30" Action="WORKCLUB">
             It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.
         </LoseTrait>

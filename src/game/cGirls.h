@@ -75,13 +75,15 @@ public:
 
     sGirl* GetGirl(int girl);    // gets the girl by count
 
-    static void GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, std::string& message, SKILLS &SexType);    // does the logic for fucking
+    // If first == true, then this is the first for the night and we get full XP, otherwise XP is reduced.
+    static void GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, std::string& message, SKILLS &SexType, bool first);    // does the logic for fucking
 
     // MYR: More functions for attack/defense/agility-style combat.
     static bool GirlInjured(sGirl& girl, unsigned int unModifier, std::function<void(std::string)> handler = {});
 
     static void LevelUp(sGirl& girl);    // advances a girls level
     static void LevelUpStats(sGirl& girl); // Functionalized stat increase for LevelUp
+    static int GetRequiredXP(const sGirl& girl);
 
     /// Changes to the girl's stats when you enslave her
     static void SetSlaveStats(sGirl& girl);

@@ -1556,7 +1556,7 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         if (sextype == SKILL_LESBIAN) Cust.m_IsWoman = true;    // make sure it is a lesbian
 
         std::string message = ss.str();
-        cGirls::GirlFucks(&girl, is_night, &Cust, false, message, sextype);
+        cGirls::GirlFucks(&girl, is_night, &Cust, false, message, sextype, true);
         ss.str(""); ss << message;
         brothel.m_Happiness += Cust.happiness();
 

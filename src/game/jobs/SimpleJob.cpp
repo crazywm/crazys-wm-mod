@@ -91,6 +91,11 @@ void cSimpleJob::shift_enjoyment() {
     if (m_Performance > 200) m_Enjoyment *= 2;          // if she is really good at the job, her enjoyment (positive or negative) is doubled
 }
 
+void cSimpleJob::InitWork() {
+    cBasicJob::InitWork();
+    m_Enjoyment = 0;
+}
+
 int cSimpleJob::get_performance_class(int performance) {
     if (performance >= 245) { return 5; }
     else if (performance >= 185) { return 4; }

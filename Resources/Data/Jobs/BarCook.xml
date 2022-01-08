@@ -41,7 +41,7 @@
         <Trait Name="Viras Blood Addict" Value="-25"/>
     </Performance>
 
-    <Gains XP="10" Skill="3">
+    <Gains XP="15" Skill="3">
         <LoseTrait Trait="Clumsy" Threshold="30" Action="WORKBAR">
             It took her breaking hundreds of dishes, and just as many reprimands,
             but ${name} has finally stopped being so Clumsy.

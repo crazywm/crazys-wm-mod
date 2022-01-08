@@ -23,7 +23,7 @@
         <Mod>work.escort</Mod>
     </Performance>
 
-    <Gains XP="20" Skill="3">
+    <Gains XP="25" Skill="3">
         <Skill Name="Performance" Weight="1" Max="60"/>
         <Stat Name="Intelligence" Weight="1" Max="60"/>
         <Stat Name="Confidence" Weight="1" Max="60"/>

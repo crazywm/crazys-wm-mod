@@ -17,7 +17,7 @@
         -->
     </Performance>
 
-    <Gains XP="15" Skill="3">
+    <Gains XP="20" Skill="3">
         <LoseTrait Trait="Nervous" Threshold="20" Action="WORKSTRIP">
             ${name} has had so many people see her naked she is no longer nervous about anything.
         </LoseTrait>

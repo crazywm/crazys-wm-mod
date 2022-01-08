@@ -21,6 +21,7 @@ function Training(girl)
             Dialog("You hand her a bag of gold containing the lesson fee and send her on her way.")
             wm.TakePlayerGold(500)
             -- TODO this is a bit weird, magic training works better if she is good at magic
+            girl:experience(wm.Range(5, 10))
             if wm.Percent(girl:magic()) then
                 Dialog("She arrives at the Citadel a few minutes before her appointed time wearing he best robes.")
                 Dialog("The Mages were impressed with her decorum and willingness to learn.  They praise her for her diligence and aptitude.")
@@ -47,6 +48,7 @@ function Training(girl)
         if girl:obey_check(wm.ACTIONS.GENERAL) then
             wm.TakePlayerGold(250)
             -- TODO this is a bit weird, agility training works better if she is good at agility
+            girl:experience(wm.Range(5, 10))
             if wm.Percent(girl:agility()) then
                 Dialog("She finds the plaza easily and introduced herself to the Head Troubadour. She easily picked up on the subtle important motions involved with tumbling and they acrobats were impressed by her natural flexibility.")
                 Dialog("She had a fun day and learned a great deal from the troupe.")
@@ -74,6 +76,7 @@ function Training(girl)
         Dialog("You have been lacking in exercise lately.  I've bribed the foreman of the shipyard workers to let you work with them for the day.")
         if girl:obey_check(wm.ACTIONS.GENERAL) then
             wm.TakePlayerGold(300)
+            girl:experience(wm.Range(5, 10))
             if wm.Percent(girl:constitution()) then
                 Dialog("She shows up early at the docks and she remembered to bring a pair of thick leather gloves with her.")
                 Dialog("It was hard work, and just as they thought they had unloaded the last ship, another was spotted on the horizon.  The Foreman could be heard shouting \"Looks like we got some overtime tonight, Lads!\"")
@@ -101,6 +104,7 @@ function Training(girl)
         Dialog("\"Grab your armor and gear.  I'm sending you to study with the veteran warrior, Titus Pullo.\"")
         if girl:obey_check(wm.ACTIONS.GENERAL) then
             wm.TakePlayerGold(500)
+            girl:experience(wm.Range(5, 10))
             if wm.Percent(girl:combat()) then
                 Dialog("She arrives early to the combat ring and becomes lost in thought as she waits...")
                 Dialog("She is startled out of her thoughts by the feeling of a hand between her thighs. She swings wildly at the brash pervert, but her attack is deflected.  \"Oh, You're some nice cunny aren't you, girl!\"  yells the man.  she attacks again and again, but each attack is deflected and followed by some other perverted comment.")
@@ -134,6 +138,7 @@ function Training(girl)
         end
         if girl:obey_check(wm.ACTIONS.ACTRESS) then
             wm.TakePlayerGold(300)
+            girl:experience(wm.Range(5, 10))
             if girl:performance() < 33 then
                 Dialog(girl:name() .. " takes part in some basic acting, singing, and dancing lessons. Pretty easy stuff, " ..
                         "but she still needs to learn this.")

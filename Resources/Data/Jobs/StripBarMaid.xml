@@ -20,7 +20,7 @@
         <Trait Name="Shy" Value="-10"/>
     </Performance>
 
-    <Gains XP="15" Skill="3">
+    <Gains XP="20" Skill="3">
         <LoseTrait Trait="Nervous" Threshold="20" Action="WORKBAR">
             ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
         </LoseTrait>

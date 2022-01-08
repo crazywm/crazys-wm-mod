@@ -38,6 +38,7 @@ public:
 
 protected:
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+    void InitWork() override;
     void HandleGains(sGirl& girl, int fame);
     sSimpleJobData m_Data;
 

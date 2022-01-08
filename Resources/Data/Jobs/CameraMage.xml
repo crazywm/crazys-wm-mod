@@ -12,7 +12,7 @@
         <Factor Skill="Service" Weight="1"/>
     </Performance>
 
-    <Gains XP="5" Skill="2">
+    <Gains XP="10" Skill="2">
         <Skill Name="Magic" Weight="2" Max="66" />
         <Skill Name="Service" Weight="1" Max="50" />
         <Stat Name="Agility" Weight="1" Max="66" />

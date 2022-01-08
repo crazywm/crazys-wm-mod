@@ -28,7 +28,7 @@
         <Trait Name="Meek" Value="-20"/>
     </Performance>
 
-    <Gains XP="5" Skill="3">
+    <Gains XP="10" Skill="3">
         <Stat Name="Charisma" Weight="1" />
         <Stat Name="Confidence" Weight="1" />
         <Stat Name="Fame" Weight="1" />

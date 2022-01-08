@@ -12,7 +12,7 @@
         <Factor Stat="Agility" Weight="1"/>
     </Performance>
 
-    <Gains XP="5" Skill="3">
+    <Gains XP="10" Skill="3">
         <Skill Name="Crafting" Weight="4"/>
         <Skill Name="Magic" Weight="1"/>
         <Stat Name="Confidence" Weight="1"/>

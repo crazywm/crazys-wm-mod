@@ -75,7 +75,7 @@
         <Trait Name="Zombie" Value="-50"/>
     </Performance>
 
-    <Gains XP="10" Skill="3">
+    <Gains XP="15" Skill="3">
         <Stat Name="Charisma" Weight="1" />
         <Skill Name="Service" Weight="1" Max="50"/>
     </Gains>

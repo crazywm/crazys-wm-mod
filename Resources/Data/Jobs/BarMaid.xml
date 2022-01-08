@@ -23,7 +23,7 @@
         <Trait Name="Cum Addict" Value="-5"/>
     </Performance>
 
-    <Gains XP="10" Skill="3">
+    <Gains XP="15" Skill="3">
         <LoseTrait Trait="Nervous" Threshold="40" Action="WORKBAR">
             ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
         </LoseTrait>

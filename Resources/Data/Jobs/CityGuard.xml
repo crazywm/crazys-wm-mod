@@ -11,7 +11,7 @@
         <Factor Stat="Constitution" Weight="1"/>
     </Performance>
 
-    <Gains XP="8" Skill="3">
+    <Gains XP="13" Skill="3">
         <GainTrait Trait="Tough" Threshold="20" Action="WORKSECURITY">
             She has become pretty Tough from all of the fights she's been in.
         </GainTrait>

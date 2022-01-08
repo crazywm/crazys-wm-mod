@@ -44,7 +44,7 @@
         <Trait Name="Alcoholic" Value="-5"/>
     </Performance>
 
-    <Gains XP="10" Skill="3">
+    <Gains XP="15" Skill="3">
         <Skill Name="Performance" Weight="2" />
         <Skill Name="Cooking" Weight="1" Max="50"/>
         <Stat Name="Charisma" Weight="1" />

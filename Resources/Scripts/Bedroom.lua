@@ -63,7 +63,7 @@ end
 function NormalSex(girl)
     if girl:obey_check(wm.ACTIONS.SEX) then
         wm.UpdateImage(wm.IMG.SEX)
-        girl:experience(3)
+        girl:experience(6)
         girl:tiredness(3)
         if girl:skill_check(wm.SKILLS.NORMALSEX, 75) then
             Dialog("As the head of your penis passes her labia you feel her squeeze her muscles around your member.  She starts rocking her hips and pushing against you.")
@@ -92,7 +92,7 @@ function LesbianSex(girl)
     Dialog("She notices that you have not come alone.  Following her gaze you speak \"Ah I see you noticed.  I'd like you two girls to get to know each other better and...  :you wink slyly:  I'd like to watch.\"")
     if girl:obey_check(wm.ACTIONS.SEX) then
         wm.UpdateImage(wm.IMG.LESBIAN)
-        girl:experience(3)
+        girl:experience(6)
         girl:tiredness(3)
         Dialog("You sit down on the bed and make yourself comfortable as the girls approach one another.")
         if girl:skill_check(wm.SKILLS.LESBIAN, 75) then
@@ -124,7 +124,7 @@ function BeastSex(girl)
     Dialog("I wonder if you would cheer up my pet Malboro. He's been down lately and could really use a good fucking.")
     if girl:obey_check(wm.ACTIONS.SEX) then
         wm.UpdateImage(wm.IMG.BEAST)
-        girl:experience(3)
+        girl:experience(6)
         girl:tiredness(5)
         Dialog("She smiles and nods. I've always liked that \"little\" guy.  Let's go cheer him up.")
         if girl:skill_check(wm.SKILLS.BEASTIALITY, 75) then
@@ -159,7 +159,7 @@ function AnalSex(girl)
     if girl:obey_check(wm.ACTIONS.SEX) then
         wm.UpdateImage(wm.IMG.ANAL)
         Dialog("She shakes her ass and bends over further; slightly pulling down her panties.  'Well, come and get it.\" she purrs")
-        girl:experience(3)
+        girl:experience(6)
         girl:tiredness(3)
         if girl:skill_check(wm.SKILLS.ANAL, 75) then
             Dialog("You move toward her and slide the panties down to the floor.  She reaches back and grips your rod, rubbing it against her wet pussy for lubrication and finally presses the now slick tip against her anus.")
@@ -193,7 +193,7 @@ function BDSMSex(girl)
     Dialog("\"Take a look.\" you say. Her eyes widen at the sight of the whips, chains, and harnesses.")
     if girl:obey_check(wm.ACTIONS.SEX) then
         wm.UpdateImage(wm.IMG.BDSM)
-        girl:experience(3)
+        girl:experience(6)
         girl:tiredness(5)
         Dialog("A smile graces her face as she picks through the plethora of various bondage toys. ")
         if girl:skill_check(wm.SKILLS.BDSM, 75) then
@@ -229,7 +229,7 @@ function MasturbateSex(girl)
     Dialog("\"Oh, you don't have to stop on my account.\" you say with a wink.")
     if girl:obey_check(wm.ACTIONS.WORKSTRIP) then
         wm.UpdateImage(wm.IMG.STRIP)
-        girl:experience(3)
+        girl:experience(6)
         girl:tiredness(2)
         Dialog("She relaxes and grins devilishly.  \"Alright, I hope you will enjoy the show,\" she then adds \"but no touching.\"")
         if girl:skill_check(wm.SKILLS.STRIP, 75) then
@@ -265,7 +265,7 @@ function GroupSex(girl)
     Dialog("You ask the group of men to wait in the hall as you enter her room.")
     Dialog("You find her relaxing on her bed looking through some of her lingerie.  She looks up as you speak.\"I wonder if you could help me, my dear.  I've got a group of gentlemen outside and I was wondering if you could help me entertain them?\"")
     if girl:obey_check(wm.ACTIONS.SEX) then
-        girl:experience(3)
+        girl:experience(6)
         girl:tiredness(5)
         Dialog("She nods in agreement, but asks for a few minutes to get ready.  As the door closes behind you, many rumbling and rustling sounds can be heard.  A minute or so later she declares that she is ready.")
         if girl:has_trait("Nymphomaniac") then
@@ -310,7 +310,7 @@ function Strip(girl)
     else
         if girl:obey_check(wm.ACTIONS.SEX) then
             wm.UpdateImage(wm.IMG.STRIP)
-            girl:experience(2)
+            girl:experience(4)
             girl:tiredness(2)
             Dialog("She leads you to a comfortable chair next to a small stage with a tall, metal pole in the center.")
             if girl:skill_check(wm.SKILLS.STRIP, 75) then
@@ -349,7 +349,7 @@ function Blowjob(girl)
     Dialog("\"Now let's see how well you've learned to suck a cock.\"")
     if girl:obey_check(wm.ACTIONS.SEX) then
 
-        girl:experience(3)
+        girl:experience(6)
         girl:tiredness(2)
         if girl:skill_check(wm.SKILLS.ORALSEX, 75) then
             wm.UpdateImage(wm.IMG.SUCKBALLS)
@@ -382,7 +382,7 @@ function Deepthroat(girl)
     Dialog("\"I want to see how much of this you can fit in your mouth.\"")
     if girl:obey_check(wm.ACTIONS.SEX) then
         wm.UpdateImage(wm.IMG.DEEPTHROAT)
-        girl:experience(3)
+        girl:experience(6)
         girl:tiredness(2)
         if girl:skill_check(wm.SKILLS.BDSM, 75) then
             Dialog("She eyes your cock hungrily and begins to suck the tip, swirling her tongue around the head.  She sucks harder and harder and you feel yourself being pulled deeper and deeper inside.")
@@ -413,7 +413,7 @@ function Tittyfuck(girl)
     if girl:obey_check(wm.ACTIONS.SEX) then
         wm.UpdateImage(wm.IMG.TITTY)
         -- TODO TRAITS
-        girl:experience(3)
+        girl:experience(6)
         girl:tiredness(2)
         if girl:has_trait("Abnormally Large Boobs") then
             Dialog("As she frees her massive jugs from her, top you marvel at their size.  Your dick becomes lost in the undulating sea of soft pillowy flesh.")

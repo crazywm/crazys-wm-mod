@@ -32,7 +32,7 @@ function DungeonInteractChoice(girl)
             if girl:pclove() > 90 then
                 girl:happiness(5)
                 girl:libido(1)
-                girl:experience(1)
+                girl:experience(2)
                 girl:tiredness(1)
                 girl:obedience(1)
                 girl:pcfear(-1)

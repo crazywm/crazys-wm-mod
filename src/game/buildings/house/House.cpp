@@ -357,8 +357,7 @@ sWorkJobResult HousePet::DoWork(sGirl& girl, bool is_night) {
 
 
     // Improve stats
-    int xp = 10;
-    girl.exp(xp);
+    girl.exp(15);
     girl.upd_Enjoyment(actiontype, enjoy);
     girl.upd_Training(TRAINING_PUPPY, training);
     girl.obedience(ob);
@@ -377,7 +376,6 @@ PersonalTraining::PersonalTraining() : cBasicJob(JOB_PERSONALTRAINING, "Personal
 sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 
-    Action_Types actiontype = ACTION_SEX;
     add_text("work") << "\n\n";
 
     cGirls::UnequipCombat(girl);    // put that shit away, not needed for sex training
@@ -428,7 +426,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
 
     int Disp = g_Game->player().disposition();
 
-    int xp = uniform(4, 12);
+    int xp = uniform(10, 20);
     if (girl.has_active_trait("Quick Learner"))        { xp += 3; }
     else if (girl.has_active_trait("Slow Learner"))    { xp -= 3; }
 

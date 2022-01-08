@@ -125,7 +125,7 @@ std::string stringtolowerj(std::string name)
     return s;
 }
 
-bool sGirl::disobey_check(int action, JOBS job)
+bool sGirl::disobey_check(Action_Types action, JOBS job)
 {
     int diff;
     int chance_to_obey = 0;                            // high value - more likely to obey

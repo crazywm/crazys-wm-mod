@@ -277,7 +277,7 @@ sWorkJobResult cJobStageHand::DoWork(sGirl& girl, bool is_night) {
     brothel->m_Filthiness = std::max(0, brothel->m_Filthiness - int(CleanAmt));
 
     // Improve girl
-    int xp = filming ? 10 : 5, skill = 3;
+    int xp = filming ? 15 : 10, skill = 3;
     if (enjoyc + enjoym > 2)                            { xp += 1; skill += 1; }
     if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
     else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }

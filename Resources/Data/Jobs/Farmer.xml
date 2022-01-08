@@ -43,7 +43,7 @@
         <Trait Name="Viras Blood Addict" Value="-25"/>
     </Performance>
 
-    <Gains XP="5" Skill="3">
+    <Gains XP="10" Skill="3">
         <GainTrait Trait="Tough" Threshold="30" Action="WORKFARM">
             Working in the heat of the sun has made ${name} rather Tough.
         </GainTrait>

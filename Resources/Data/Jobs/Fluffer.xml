@@ -10,7 +10,7 @@
         <Factor Skill="Service" Weight="1"/>
     </Performance>
 
-    <Gains XP="10" Skill="1">
+    <Gains XP="15" Skill="1">
         <Skill Name="OralSex" Weight="1" />
         <Skill Name="Service" Weight="1" />
     </Gains>

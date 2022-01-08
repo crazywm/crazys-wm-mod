@@ -42,7 +42,7 @@
         <Trait Name="Viras Blood Addict" Value="-25"/>
     </Performance>
 
-    <Gains XP="5" Skill="3">
+    <Gains XP="10" Skill="3">
         <Skill Name="AnimalHandling" Weight="2" />
         <Stat Name="Strength" Weight="2" />
         <Skill Name="Medicine" Weight="1" Max="33" />

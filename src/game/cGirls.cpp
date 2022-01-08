@@ -146,7 +146,7 @@ void cGirls::LevelUp(sGirl& girl)
 {
     int level = girl.level();
     int xp = girl.exp();
-    int xpneeded = min(32000, (level + 1) * 125);
+    int xpneeded = GetRequiredXP(girl);
 
     if (xp < xpneeded) return;
 
@@ -193,6 +193,9 @@ void cGirls::LevelUp(sGirl& girl)
             addedtrait--;
         }
     }
+
+    // check if the girl managed to jump a level.
+    LevelUp(girl);
 }
 
 void cGirls::LevelUpStats(sGirl& girl)
@@ -462,7 +465,7 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
 
     const int level = girl.level();
     const int exp = girl.exp();
-    const int exptolv = min(32000, (level + 1) * 125);
+    const int exptolv = GetRequiredXP(girl);
     const int expneed = exptolv - exp;
 
     // display level and exp
@@ -1742,7 +1745,7 @@ void cGirls::updateHappyTraits(sGirl& girl)
 
 // ----- Sex
 
-void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, SKILLS &SexType)
+void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, SKILLS &SexType, bool first)
 {
     int check = girl->get_skill(SexType);
     string girlName = girl->FullName();
@@ -3001,9 +3004,13 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     }
 
     // Now calculate other skill increases
-    int skillgain = 4;    int exp = 5;
-    if (girl->has_active_trait("Quick Learner"))        { skillgain += 1; exp += 2; }
-    else if (girl->has_active_trait("Slow Learner"))    { skillgain -= 1; exp -= 2; }
+    int skillgain = 3;    int exp = 4;
+    if(first) {
+        // more gains for first time per night, and  quick learner only has an effect once
+        skillgain = 4;
+        if (girl->has_active_trait("Quick Learner"))        { skillgain += 1; exp += 1; }
+        else if (girl->has_active_trait("Slow Learner"))    { skillgain -= 1; exp -= 1; }
+    }
     if (SexType == SKILL_GROUP)
     {
         girl->upd_skill(SKILL_ANAL, max(0, g_Dice % skillgain + 1));
@@ -3020,10 +3027,15 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     }
     else    // single sex act focus gets more base gain
     {
-        girl->upd_skill(SexType, g_Dice % (skillgain + 2) + 1);
+        girl->upd_skill(SexType, g_Dice.closed_uniform(1, skillgain + 2));
     }
     girl->upd_skill(SKILL_SERVICE, max(0, g_Dice % skillgain - 1));    // everyone gets some service gain
-    girl->upd_base_stat(STAT_EXP, max(1, (g_Dice % (exp * 3))));
+    if(first) {
+        girl->upd_base_stat(STAT_EXP, g_Dice.closed_uniform(1, exp * 3));
+    } else {
+        // reduced xp gain
+        girl->upd_base_stat(STAT_EXP, g_Dice.closed_uniform(1, exp * 2));
+    }
 
     int enjoy = 1;
     if (girl->has_active_trait("Nymphomaniac"))
@@ -4068,4 +4080,9 @@ void cGirls::SetSlaveStats(sGirl& girl) {
 
 std::shared_ptr<sGirl> cGirls::CreateRandomGirl(SpawnReason reason, int age) {
     return m_RandomGirls.spawn(reason, age);
+}
+
+int cGirls::GetRequiredXP(const sGirl& girl) {
+    int level = girl.level();
+    return min(32000, (level + 1) * 100);
 }

@@ -11,7 +11,7 @@
         <Mod>work.communityservice</Mod>
     </Performance>
 
-    <Gains XP="10" Skill="3">
+    <Gains XP="15" Skill="3">
         <Stat Name="Intelligence" Weight="1" Max="50"/>
         <Skill Name="Cooking" Weight="1" Max="70"/>
         <Skill Name="Service" Weight="1" Max="70"/>

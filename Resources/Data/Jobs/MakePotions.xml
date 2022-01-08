@@ -24,7 +24,7 @@
         <Trait Name="Meek" Value="-20"/>
     </Performance>
 
-    <Gains XP="5" Skill="3">
+    <Gains XP="10" Skill="3">
         <Skill Name="Brewing" Weight="3" />
         <Skill Name="Herbalism" Weight="3"/>
         <Skill Name="Cooking" Weight="1"/>

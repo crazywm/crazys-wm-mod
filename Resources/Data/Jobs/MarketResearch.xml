@@ -9,7 +9,7 @@
         <Factor Stat="Intelligence" Weight="1" Max="50"/>
     </Performance>
 
-    <Gains XP="5" Skill="3">
+    <Gains XP="10" Skill="3">
         <Stat Name="Charisma" Weight="1" Max="75"/>
         <Stat Name="Intelligence" Weight="1" Max="50"/>
     </Gains>

@@ -13,7 +13,7 @@
         <Mod>work.beastcare</Mod>
     </Performance>
 
-    <Gains XP="5" Skill="3">
+    <Gains XP="10" Skill="3">
         <Skill Name="AnimalHandling" Weight="1"/>
         <Skill Name="Service" Weight="1" Max="50"/>
 

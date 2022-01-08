@@ -439,7 +439,7 @@ sWorkJobResult WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
         // Horizontal boogy
         std::string fm;
         /// TODO this has the possibility of the girl running away. In that case, the job should stop.
-        cGirls::GirlFucks(&girl, Day0Night1, &Cust, group, fm, SexType);
+        cGirls::GirlFucks(&girl, Day0Night1, &Cust, group, fm, SexType, NumSleptWith == 0);
         fuckMessage << fm;
 
         /* */if (SexType == SKILL_ORALSEX)        oralcount += 5;

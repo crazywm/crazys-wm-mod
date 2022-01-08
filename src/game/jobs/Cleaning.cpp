@@ -68,7 +68,7 @@ void Cleaning::CleaningUpdateGirl(sGirl& girl, bool is_night, int enjoy, int cle
     girl.m_Building->m_Filthiness -= (int)clean_amount;
 
     // Base Improvement and trait modifiers
-    int xp = 5, skill = 3;
+    int xp = 10, skill = 3;
     /* */if (girl.has_active_trait("Quick Learner"))    { skill += 1; xp += 3; }
     else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
     // EXP and Libido

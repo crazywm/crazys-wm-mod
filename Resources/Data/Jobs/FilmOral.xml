@@ -38,7 +38,7 @@
         <Trait Name="Clumsy" Value="-25"/>
     </Performance>
 
-    <Gains XP="10" Skill="3">
+    <Gains XP="15" Skill="3">
         <Skill Name="Performance" Weight="2" Max="75"/>
         <Skill Name="OralSex" Weight="1" Max="50"/>
 

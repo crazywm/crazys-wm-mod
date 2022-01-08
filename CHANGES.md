@@ -5,6 +5,8 @@
 * matron now gives obedience buff to all girls instead of directly changing the chance of refusal. 
 This bonus accumulates and decays over time and depends on the quality of the matron. 
 * Adjusted hitpoint calculation for combat
+* Increased XP gains for jobs and decreased XP for whoring. 
+* Decreased XP required for level-up slightly.
 
 ## Fixes
 * Fixed centre manager job (thanks @g539812)
@@ -12,6 +14,7 @@ This bonus accumulates and decays over time and depends on the quality of the ma
 * Fixed wages for bar jobs
 * Fixed HousePet.xml and Training.xml (thanks @CriticalMaestro)
 * Fixed crash when girl runs away during job processing
+* Fixed girl leveling up two levels if she has enough XP
 
 ## Code changes
 * Dealer, Entertainer, XXXEntertainer, Masseuse, Stripper, Peep-Show, Advertising, 
