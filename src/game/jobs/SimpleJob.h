@@ -58,6 +58,7 @@ protected:
             case 3: return good;
             case 4: return great;
             case 5: return perfect;
+            default: __builtin_unreachable();
         }
     }
 

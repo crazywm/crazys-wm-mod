@@ -20,9 +20,9 @@
 * [ ] Pre-generate list of all images for each girl on game start
 * [ ] De-interlacing
 * [ ] Convert job functions to classes
-  - [ ] Advertising
-  - [ ] BeastCare
-  - [ ] Customer Service
+  - [x] Advertising
+  - [x] BeastCare
+  - [x] Customer Service
   - [ ] Explore Catacombs
   - [ ] Security
   - [ ] Torturer

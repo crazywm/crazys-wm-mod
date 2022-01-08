@@ -1,0 +1,36 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="BstC">
+    <Description>
+        She will look after the needs of the beasts in your Brothel.
+    </Description>
+
+    <Performance>
+        <Factor Skill="Service" Weight="1"/>
+        <Factor Skill="Magic" Weight="1"/>
+        <Factor Stat="Intelligence" Weight="1"/>
+        <Factor Skill="AnimalHandling" Weight="4"/>
+
+        <Mod>work.beastcare</Mod>
+    </Performance>
+
+    <Gains XP="5" Skill="3">
+        <Skill Name="AnimalHandling" Weight="1"/>
+        <Skill Name="Service" Weight="1" Max="50"/>
+
+        <LoseTrait Trait="Elegant" Threshold="40" Action="WORKCARING">
+            Working with dirty, smelly beasts has damaged ${name}'s hair, skin and nails making her less Elegant.
+        </LoseTrait>
+    </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} worked taking care of beasts.</Text>
+        </Message>
+        <Message Name="no-beasts">
+            <Text>There were no beasts in the brothel for ${name} to take care of.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to take care of beasts during the ${shift} shift</Text>
+        </Message>
+    </Messages>
+</Job>

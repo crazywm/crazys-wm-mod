@@ -2985,6 +2985,118 @@ bool CustServiceJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
 }
 
 
+class BeastCareJob : public cSimpleJob {
+public:
+    BeastCareJob();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+};
+
+BeastCareJob::BeastCareJob() : cSimpleJob(JOB_BEASTCARER, "BeastCarer.xml", {ACTION_WORKCARING, 20}) {
+}
+
+bool BeastCareJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    if (g_Game->storage().beasts() < 1) {
+        add_text("no-beasts") << "\n\n";
+    }
+    int imagetype = IMGTYPE_FARM;
+    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
+
+    //    Job Performance            //
+
+    int numhandle = girl.animalhandling() * 2;    // `J` first we assume a girl can take care of 2 beasts per point of animalhandling
+    int addbeasts = -1;
+
+    // `J` if she has time to spare after taking care of the current beasts, she may try to get some new ones.
+    if (numhandle / 2 > g_Game->storage().beasts() && chance(50))    // `J` these need more options
+    {
+        if (girl.magic() > 70 && girl.mana() >= 30)
+        {
+            addbeasts = uniform(1, girl.mana() / 30);
+            ss << "${name}";
+            ss << (addbeasts > 0 ? " used" : " tried to use") << " her magic to summon ";
+            if (addbeasts < 2) ss << "a beast";
+            else ss << addbeasts << " beasts";
+            ss << " for the brothel" << (addbeasts > 0 ? "." : " but failed.");
+            girl.magic(addbeasts);
+            girl.mana(-30 * std::max(1, addbeasts));
+        }
+        else if (girl.animalhandling() > 50 && girl.charisma() > 50)
+        {
+            addbeasts =
+                    chance(girl.combat()) +
+                    chance(girl.charisma()) +
+                    chance(girl.animalhandling());
+            if (addbeasts <= 0)
+            {
+                addbeasts = 0;
+                ss << "${name} tried to lure in some beasts for the brothel but failed.";
+            }
+            else
+            {
+                ss << "${name} lured in ";
+                if (addbeasts == 1) ss << "a stray beast";
+                else ss << addbeasts << " stray beasts";
+                ss << " for the brothel.";
+                girl.confidence(addbeasts);
+            }
+        }
+        else if (girl.combat() > 50 && (girl.has_active_trait("Adventurer") || girl.confidence() > 70))
+        {
+            addbeasts = uniform(0, 1);
+            ss << "${name} stood near the entrance to the catacombs, trying to lure out a beast by making noises of an injured animal.\n";
+            if (addbeasts > 0) ss << "After some time, a beast came out of the catacombs. ${name} threw a net over it and wrestled it into submission.\n";
+            else ss << "After a few hours, she gave up.";
+            girl.combat(addbeasts);
+        }
+    }
+    if (addbeasts >= 0) ss << "\n \n";
+
+    //    Enjoyment and Tiredness        //
+    int roll_a = d100();
+    if (roll_a <= 10)
+    {
+        m_Enjoyment -= uniform(1, 3);
+        addbeasts--;
+        ss << "The animals were restless and disobedient.";
+    }
+    else if (roll_a >= 90)
+    {
+        m_Enjoyment += uniform(1, 3);
+        addbeasts++;
+        ss << "She enjoyed her time working with the animals today.";
+    }
+    else
+    {
+        m_Enjoyment += uniform(0, 1);
+        ss << (addbeasts>=0 ? "Otherwise, the" : "The") << " shift passed uneventfully.\n \n";
+    }
+
+    //    Money                    //
+
+    if (addbeasts < 0)    addbeasts = 0;
+    // slave girls not being paid for a job that normally you would pay directly for do less work
+    if (girl.is_unpaid())
+    {
+        m_Wages = 0;
+    }
+    else
+    {
+        m_Wages += g_Game->storage().beasts()/5;
+        m_Tips += addbeasts * 5;                // a little bonus for getting new beasts
+    }
+
+    //    Finish the shift            //
+
+    g_Game->storage().add_to_beasts(addbeasts);
+    girl.AddMessage(ss.str(), imagetype, msgtype);
+
+    // Improve girl
+    HandleGains(girl, 0);
+    girl.exp( std::min(3, g_Game->storage().beasts() / 10));
+    return false;
+}
+
+
 void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarCookJob>());
     mgr.register_job(std::make_unique<cBarMaidJob>());
@@ -3003,4 +3115,5 @@ void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<ClubWaitress>());
     mgr.register_job(std::make_unique<AdvertisingJob>());
     mgr.register_job(std::make_unique<CustServiceJob>());
+    mgr.register_job(std::make_unique<BeastCareJob>());
 }
