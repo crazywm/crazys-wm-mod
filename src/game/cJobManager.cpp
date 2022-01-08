@@ -1403,10 +1403,11 @@ sPaymentData cJobManager::CalculatePay(sGirl& girl, sWorkJobResult result)
         }
     }
 
-    auto& finance = girl.m_Building->m_Finance;
-
-    // TODO check where we are handling the money processing for girl's payment
-    finance.girl_support(result.Wages);
+    // TODO when can this be false? How do we handle that case?
+    if(girl.m_Building) {
+        // TODO check where we are handling the money processing for girl's payment
+        girl.m_Building->m_Finance.girl_support(result.Wages);
+    }
     retval.PlayerGets -= result.Wages;
     girl.m_Money += result.Wages;    // she gets it all
     retval.GirlGets += result.Wages;
@@ -1425,7 +1426,10 @@ sPaymentData cJobManager::CalculatePay(sGirl& girl, sWorkJobResult result)
 
     girl.m_Money += result.Earnings - house;               // The girl collects her part of the pay
     retval.GirlGets += result.Earnings - house;
-    finance.brothel_work(house);                         // and add the rest to the brothel finances
+    if(girl.m_Building) {
+        // TODO ditto
+        girl.m_Building->m_Finance.brothel_work(house);                         // and add the rest to the brothel finances
+    }
 
     if (!stolen) return retval;                                    // If she didn't steal anything, we're done
     sGang* gang = g_Game->gang_manager().GetGangOnMission(MISS_SPYGIRLS);    // if no-one is watching for theft, we're done

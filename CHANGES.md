@@ -7,10 +7,11 @@ This bonus accumulates and decays over time and depends on the quality of the ma
 * Adjusted hitpoint calculation for combat
 
 ## Fixes
-* fixed centre manager job (thanks @g539812)
-* fixed using stat instead of skill when determining skill of children
+* Fixed centre manager job (thanks @g539812)
+* Fixed using stat instead of skill when determining skill of children
 * Fixed wages for bar jobs
 * Fixed HousePet.xml and Training.xml (thanks @CriticalMaestro)
+* Fixed crash when girl runs away during job processing
 
 ## Code changes
 * Dealer, Entertainer, XXXEntertainer, Masseuse, Stripper, Peep-Show, Advertising, 
