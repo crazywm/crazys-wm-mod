@@ -1,0 +1,42 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Adv">
+    <Description>
+        She will advertise the building's features in the city.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Beauty" Weight="3"/>
+        <Factor Stat="Confidence" Weight="3"/>
+        <Factor Stat="Intelligence" Weight="3"/>
+        <Factor Skill="Service" Weight="3"/>
+
+        <Factor Skill="Performance" Weight="4"/>
+        <Factor Stat="Charisma" Weight="4"/>
+        <Factor Stat="Fame" Weight="4"/>
+
+        <Mod>work.advertising</Mod>
+    </Performance>
+
+    <Gains XP="5" Skill="3">
+        <Skill Name="Performance" Weight="1" Max="50"/>
+        <Stat Name="Charisma" Weight="1" Max="50"/>
+        <Skill Name="Service" Weight="1" Max="50"/>
+        <Stat Name="Confidence" Weight="1" Max="50"/>
+
+        <GainTrait Trait="Charismatic" Threshold="70" Action="WORKADVERTISING">
+            Advertising on a daily basis has made ${name} more Charismatic.
+        </GainTrait>
+        <LoseTrait Trait="Nervous" Threshold="40" Action="WORKADVERTISING">
+            ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
+        </LoseTrait>
+    </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} is assigned to advertise the brothel.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to advertise the brothel to${shift}.</Text>
+        </Message>
+    </Messages>
+</Job>

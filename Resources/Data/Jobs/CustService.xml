@@ -1,0 +1,41 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="CS">
+    <Description>
+        She will look after customer needs.
+    </Description>
+
+    <Performance>
+        <Factor Stat="Beauty" Weight="2"/>
+        <Factor Stat="Confidence" Weight="2"/>
+        <Factor Stat="Spirit" Weight="2"/>
+        <Factor Skill="Performance" Weight="2"/>
+
+        <Factor Skill="Service" Weight="4"/>
+        <Factor Stat="Charisma" Weight="4"/>
+
+        <Mod>work.customerservice</Mod>
+    </Performance>
+
+    <Gains XP="5" Skill="3">
+        <Skill Name="Performance" Weight="1" Max="50"/>
+        <Stat Name="Spirit" Weight="1" Max="50"/>
+        <Skill Name="Service" Weight="1" Max="50"/>
+        <Stat Name="Confidence" Weight="1" Max="50"/>
+
+        <GainTrait Trait="Charismatic" Threshold="70" Action="WORKADVERTISING">
+            Advertising on a daily basis has made ${name} more Charismatic.
+        </GainTrait>
+        <LoseTrait Trait="Nervous" Threshold="40" Action="WORKADVERTISING">
+            ${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.
+        </LoseTrait>
+    </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} worked as Customer Service.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to provide Customer Service in your brothel to${shift}.</Text>
+        </Message>
+    </Messages>
+</Job>

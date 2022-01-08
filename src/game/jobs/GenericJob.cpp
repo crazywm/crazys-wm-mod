@@ -214,8 +214,6 @@ double JP_##Fn(const sGirl& girl, bool estimate)
 // - General
 DECL_JOB(Freetime);
 DECL_JOB(Security);
-DECL_JOB(Advertising);
-DECL_JOB(CustService);
 DECL_JOB(Torturer);
 DECL_JOB(ExploreCatacombs);
 DECL_JOB(BeastCare);
@@ -244,8 +242,6 @@ namespace {
 void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_RESTING, Freetime, "TOff", "She will take some time off, maybe do some shopping or walk around town. If the girl is unhappy she may try to escape.");
     REGISTER_JOB(JOB_SECURITY, Security, "Sec", "She will patrol the building, stopping mis-deeds.");
-    REGISTER_JOB(JOB_ADVERTISING, Advertising, "Adv", "She will advertise the building's features in the city.");
-    REGISTER_JOB(JOB_CUSTOMERSERVICE, CustService, "CS", "She will look after customer needs.");
     REGISTER_JOB(JOB_TORTURER, Torturer, "Trtr", "She will torture the prisoners in addition to your tortures, she will also look after them to ensure they don't die. (max 1 for all brothels)").full_time().free_only();
     REGISTER_JOB(JOB_EXPLORECATACOMBS, ExploreCatacombs, "ExC", "She will explore the catacombs looking for treasure and capturing monsters and monster girls. Needless to say, this is a dangerous job.");
     REGISTER_JOB(JOB_BEASTCARER, BeastCare, "BstC", "She will look after the needs of the beasts in your Brothel.");;

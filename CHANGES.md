@@ -13,7 +13,7 @@ This bonus accumulates and decays over time and depends on the quality of the ma
 * Fixed HousePet.xml and Training.xml (thanks @CriticalMaestro)
 
 ## Code changes
-* Dealer, Entertainer, XXXEntertainer, Masseuse, Stripper, Peep-Show jobs now xml-based
+* Dealer, Entertainer, XXXEntertainer, Masseuse, Stripper, Peep-Show, Advertising jobs now xml-based
 * Some generic cleanup
 
 # Version 7.1.2alpha4

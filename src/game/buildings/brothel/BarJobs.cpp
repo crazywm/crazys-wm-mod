@@ -2916,6 +2916,266 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     return false;
 }
 
+class AdvertisingJob : public cBarJob {
+public:
+    AdvertisingJob();
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+};
+
+AdvertisingJob::AdvertisingJob() : cBarJob(JOB_ADVERTISING, "Advertising.xml", {ACTION_WORKADVERTISING}) {
+
+}
+
+IGenericJob::eCheckWorkResult AdvertisingJob::CheckWork(sGirl& girl, bool is_night) {
+    return SimpleRefusalCheck(girl, ACTION_WORKADVERTISING);
+}
+
+bool AdvertisingJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    //    Job setup                //
+    int enjoy = 0, fame = 0;
+    int imagetype = IMGTYPE_SIGN;
+    auto msgtype = EVENT_SUMMARY;
+
+    //    Job Performance            //
+
+    if(girl.is_unpaid())
+        m_Performance = m_Performance * 90 / 100;    // unpaid slaves don't seem to want to advertise as much.
+    if (girl.is_free())
+        m_Performance = m_Performance * 110 / 100;    // paid free girls seem to attract more business
+
+    // add some more randomness
+#if 0 // work in progress
+
+    ss << "She gave a tour of building making sure not to show the rooms that are messy.\n";
+    if ()
+    {
+        ss << "as she was walking the people around she would make sure to slip in a few recommendations for girls the people would enjoy getting services from.";
+    }
+    else
+    {
+        ss << "She spent more time trying to flirt with the customers then actually getting anywhere with showing them around,\n";
+        ss << "She still got the job done but it was nowhere as good as it could have been";
+    }
+    if ()
+    {
+        ss << "Most of the time she spent reading or doing anything else to spend her time to pass the time.\n";
+    }
+    else
+    {
+        ss << "She decided not to get in trouble so she just waited there silently for someone to come so she could do her job properly.\n";
+    }
+
+#endif
+
+    //    Enjoyment and Tiredness        //
+
+    // Complications
+    int roll_a = d100();
+    if (roll_a <= 10)
+    {
+        enjoy -= uniform(1, 3);
+        ss << "She was harassed and made fun of while advertising.\n";
+        if (girl.happiness() < 50)
+        {
+            enjoy -= 1;
+            ss << "Other then that she mostly just spent her time trying to not breakdown and cry.\n";
+            fame -= uniform(0, 1);
+        }
+        m_Performance = m_Performance * 80 / 100;
+        fame -= uniform(0, 1);
+    }
+    else if (roll_a >= 90)
+    {
+        enjoy += uniform(1, 3);
+        ss << "She made sure many people were interested in the buildings facilities.\n";
+        m_Performance = m_Performance * 100 / 100;
+        fame += uniform(0, 2);
+    }
+    else
+    {
+        enjoy += uniform(0, 1);
+        ss << "She had an uneventful day advertising.\n";
+    }
+
+    /* `J` If she is not happy at her job she may ask you to change her job.
+    *    Submitted by MuteDay as a subcode of bad complications but I liked it and made it as a separate section
+    *    I will probably make it its own function when it works better.
+    */
+    if (girl.m_Enjoyment[ACTION_WORKADVERTISING] < -10)                         // if she does not like the job
+    {
+        int enjoyamount = girl.m_Enjoyment[ACTION_WORKADVERTISING];
+        int saysomething = uniform(0, girl.confidence()) - enjoyamount;    // the more she does not like the job the more likely she is to say something about it
+        saysomething -= girl.pcfear() / (girl.is_free() ? 2 : 1);    // reduce by fear (half if free)
+
+        if (saysomething > 50)
+        {
+            girl.AddMessage("${name} comes up to you and asks you to change her job, She does not like advertizing.\n",
+                            IMGTYPE_PROFILE, EVENT_WARNING);
+        }
+        else if (saysomething > 25)
+        {
+            ss << "She looks at you like she has something to say but then turns around and walks away.\n";
+        }
+    }
+
+    //    Money                    //
+
+    ss << "She managed to stretch the effectiveness of your advertising budget by about " << int(m_Performance) << "%.";
+    // if you pay slave girls out of pocket  or if she is a free girl  pay them
+    if (!girl.is_unpaid())
+    {
+        m_Wages += 70;
+        g_Game->gold().advertising_costs(70);
+        ss << " You paid her 70 gold for her advertising efforts.";
+    }
+    else
+    {
+        ss << " You do not pay your slave for her advertising efforts.";
+    }
+
+    //    Finish the shift            //
+
+    girl.AddMessage(ss.str(), imagetype, msgtype);
+
+    // now to boost the brothel's advertising level accordingly
+    brothel.m_AdvertisingLevel += (m_Performance / 100);
+
+    HandleGains(girl, enjoy, fame);
+
+    if (girl.strip() > 50)
+        cGirls::PossiblyGainNewTrait(girl, "Exhibitionist", 50, ACTION_WORKADVERTISING, "${name} has become quite the Exhibitionist, she seems to prefer Advertising topless whenever she can.", is_night);
+
+#pragma endregion
+    return false;
+}
+
+
+class CustServiceJob : public cBarJob {
+public:
+    CustServiceJob();
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+};
+
+CustServiceJob::CustServiceJob() : cBarJob(JOB_CUSTOMERSERVICE, "CustService.xml", {ACTION_WORKCUSTSERV}) {
+
+}
+
+IGenericJob::eCheckWorkResult CustServiceJob::CheckWork(sGirl& girl, bool is_night) {
+    return SimpleRefusalCheck(girl, ACTION_WORKCUSTSERV);
+}
+
+bool CustServiceJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    Action_Types actiontype = ACTION_WORKCUSTSERV;
+    // Note: Customer service needs to be done last, after all the whores have worked.
+
+    int numCusts = 0; // The number of customers she can handle
+    int serviced = 0;
+
+    // Complications
+    int roll = d100();
+    if (roll <= 5)
+    {
+        ss << "Some of the patrons abused her during the shift.";
+        girl.upd_Enjoyment(actiontype, -1);
+    } else if (roll <= 15)
+    {
+        ss << "A customer mistook her for a whore and was abusive when she wouldn't provide THAT service.";
+        girl.upd_Enjoyment(actiontype, -1);
+    }
+    else if (roll >= 75) {
+        ss << "She had a pleasant time working.";
+        girl.upd_Enjoyment(actiontype, +3);
+    }
+    else
+    {
+        ss << "The shift passed uneventfully.";
+    }
+    // Decide how many customers the girl can handle
+    if (girl.confidence() > 0)
+        numCusts += girl.confidence() / 10; // 0-10 customers for confidence
+    if (girl.spirit() > 0)
+        numCusts += girl.spirit() / 20; // 0-5 customers for spirit
+    if (girl.service() > 0)
+        numCusts += girl.service() / 25; // 0-4 customers for service
+    numCusts++;
+    // A single girl working customer service can take care of 1-20 customers in a week.
+    // So she can take care of lots of customers. It's not like she's fucking them.
+
+    // Add a small amount of happiness to each serviced customer
+    // First, let's find out what her happiness bonus is
+    int bonus = 0;
+    if (girl.charisma() > 0)
+        bonus += girl.charisma() / 20;
+    if (girl.beauty() > 0)
+        bonus += girl.beauty() / 20;
+    // Beauty and charisma will only take you so far, if you don't know how to do service.
+    if (girl.performance() > 0)            // `J` added
+        bonus += girl.performance() / 20;
+    if (girl.service() > 0)
+        bonus += girl.service() / 20;
+    // So this means a maximum of 20 extra points of happiness to each
+    // customer serviced by customer service, if a girl has 100 charisma,
+    // beauty, performance and service.
+
+    // Let's make customers angry if the girl sucks at customer service.
+    if (bonus < 5)
+    {
+        bonus = -20;
+        ss << "\n \nHer efforts only made the customers angrier.";
+        //And she's REALLY not going to like this job if she's failing at it, so...
+        girl.upd_Enjoyment(actiontype, -5);
+    }
+
+    // Now let's take care of our neglected customers.
+    for (int i=0; i<numCusts; i++)
+    {
+        if (g_Game->GetNumCustomers() > 0)
+        {
+            sCustomer Cust = g_Game->GetCustomer(brothel);
+            // Let's find out how much happiness they started with.
+            // They're not going to start out very happy. They're seeing customer service, after all.
+            Cust.set_stat(STAT_HAPPINESS, 22 + uniform(0, 9) + uniform(0, 9)); // average 31 range 22 to 40
+            // Now apply her happiness bonus.
+            Cust.happiness(bonus);
+            // update how happy the customers are on average
+            brothel.m_Happiness += Cust.happiness();
+            // And decrement the number of customers to be taken care of
+            g_Game->customers().AdjustNumCustomers(-1);
+            serviced++;
+        }
+        else
+        {
+            //If there aren't enough customers to take care of, time to quit.
+            girl.AddMessage(girl.FullName() + " ran out of customers to take care of.", IMGTYPE_PROFILE,
+                            is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+            break;
+        }
+    }
+    // So in the end, customer service can take care of lots of customers, but won't do it
+    // as well as good service from a whore. This is acceptable to me.
+    ss << "\n \n${name} took care of " << serviced << " customers this shift.";
+
+    /* Note that any customers that aren't handled by either customer service or a whore count as a 0 in the
+     * average for the brothel's customer happiness. So customer service leaving customers with 27-60 in their
+     * happiness stat is going to be a huge impact. Again, not as good as if the whores do their job, but better
+     * than nothing. */
+
+    // Bad customer service reps will leave the customer with 2-20 happiness. Bad customer service is at least better than no customer service.
+    // Now pay the girl.
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+
+    // Raise skills
+    HandleGains(girl, 0, 1);
+    // additional XP bonus for many customers
+    girl.exp(serviced / 5);
+
+    m_Wages = 50;
+    return false;
+}
+
+
 void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarCookJob>());
     mgr.register_job(std::make_unique<cBarMaidJob>());
@@ -2932,4 +3192,6 @@ void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<ClubBarmaid>());
     mgr.register_job(std::make_unique<ClubStripper>());
     mgr.register_job(std::make_unique<ClubWaitress>());
+    mgr.register_job(std::make_unique<AdvertisingJob>());
+    mgr.register_job(std::make_unique<CustServiceJob>());
 }

@@ -44,12 +44,10 @@ set(BUILDINGS_SRC
         buildings/studio/cMovieStudio.cpp
         buildings/queries.cpp
         buildings/cBuildingManager.cpp
-        buildings/brothel/WorkAdvertising.cpp
         buildings/house/Training.cpp
         buildings/brothel/WorkBeastCare.cpp
         buildings/brothel/WorkWhore.cpp
         buildings/studio/StudioCrew.cpp
-        buildings/brothel/WorkCustService.cpp
         buildings/brothel/WorkExploreCatacombs.cpp
         buildings/farm/WorkFarmPonyGirl.cpp
         buildings/clinic/cClinic.cpp
