@@ -15,6 +15,7 @@ This bonus accumulates and decays over time and depends on the quality of the ma
 * Fixed HousePet.xml and Training.xml (thanks @CriticalMaestro)
 * Fixed crash when girl runs away during job processing
 * Fixed girl leveling up two levels if she has enough XP
+* Fixed default theme
 
 ## Code changes
 * Dealer, Entertainer, XXXEntertainer, Masseuse, Stripper, Peep-Show, Advertising, 

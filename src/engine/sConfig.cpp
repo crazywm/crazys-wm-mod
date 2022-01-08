@@ -76,7 +76,7 @@ sConfigData::sConfigData(const char *a_filename) : cSimpleKeyValue("Entry", "Key
     add_setting("folders.default_images", "Items Folder", (DirPath() << "Resources" << "DefaultImages").str());
     add_setting("folders.prefer_defaults", "Prefer Defaults", false);
 
-    add_setting("interface.theme", "Interface Theme", "J_1024x768");
+    add_setting("interface.theme", "Interface Theme", "Light-16-9");
     add_setting("interface.fullscreen", "Fullscreen", false);
     add_setting("interface.width", "Width", positive(1024));
     add_setting("interface.height", "Height", positive(768));
