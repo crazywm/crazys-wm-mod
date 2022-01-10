@@ -26,7 +26,7 @@
   - [ ] Explore Catacombs
   - [ ] Security
   - [ ] Torturer
-  - [ ] Whore
+  - [x] Whore
   - [ ] PersonalBedWarmer
 * [ ] adjustable unique chance for overworld encounters
 
@@ -76,3 +76,4 @@
 * [ ] WalkTown image appears too early
 * [ ] WalkTown thrown into dungeon but still appears in regular building
 * [ ] Distorted text in multipage messages 
+* [ ] New game starts at week 4

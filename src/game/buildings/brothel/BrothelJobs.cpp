@@ -3116,4 +3116,8 @@ void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<AdvertisingJob>());
     mgr.register_job(std::make_unique<CustServiceJob>());
     mgr.register_job(std::make_unique<BeastCareJob>());
+    mgr.register_job(std::make_unique<cWhoreJob>(JOB_WHOREGAMBHALL, "HWhr", "She will give her sexual favors to the customers."));
+    mgr.register_job(std::make_unique<cWhoreJob>(JOB_BARWHORE, "SWhr", "She will provide sex to the customers."));
+    mgr.register_job(std::make_unique<cWhoreJob>(JOB_WHOREBROTHEL, "BWhr", "She will whore herself to customers within the building's walls. This is safer but a little less profitable."));
+    mgr.register_job(std::make_unique<cWhoreJob>(JOB_WHORESTREETS, "StWr", "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable."));
 }

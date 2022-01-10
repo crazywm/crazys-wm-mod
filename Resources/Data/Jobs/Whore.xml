@@ -1,0 +1,19 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<!-- TODO currently using Dummy values because there are different variations of the job -->
+<Job ShortName="DUMMY">
+    <Description>
+       DUMMY
+    </Description>
+
+    <Gains XP="0" Skill="0">
+        <GainTrait Trait="Good Kisser" Threshold="50" Action="SEX">
+            ${name} has had a lot of practice kissing and as such has become a Good Kisser.
+        </GainTrait>
+        <GainTrait Trait="Slut" Threshold="60" Action="SEX">
+            ${name} has turned into quite a slut.
+        </GainTrait>
+        <GainTrait Trait="Nymphomaniac" Threshold="70" Action="SEX">
+            ${name} has been having so much sex she is now wanting sex all the time.
+        </GainTrait>
+    </Gains>
+</Job>

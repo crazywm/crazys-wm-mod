@@ -54,4 +54,18 @@ private:
     Image_Types handle_sex(const std::string& prefix, int& fame, sGirl& girl, SexType type);
 };
 
+class cWhoreJob : public cSimpleJob {
+public:
+    cWhoreJob(JOBS job, const char* short_name, const char* description);
+
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+    double GetPerformance(const sGirl& girl, bool estimate) const override;
+
+private:
+    void HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night);
+    int m_NumSleptWith = 0;
+    int m_OralCount = 0;
+    std::stringstream m_FuckMessage;
+};
+
 #endif //WM_BROTHELJOBS_H
