@@ -1224,10 +1224,6 @@ bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_
 
     shift_enjoyment();
     HandleGains(girl, fame);
-    if (m_Performance >= 140 && chance(25))
-    {
-        cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", is_night);
-    }
 
     girl.AddMessage(ss.str(), imagetype, msgtype);
 
@@ -1329,10 +1325,6 @@ bool cMasseuseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
 
     shift_enjoyment();
     HandleGains(girl, fame);
-    if (m_Performance >= 140 && chance(25))
-    {
-        cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", is_night);
-    }
 
     girl.AddMessage(ss.str(), imageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     return false;
@@ -1601,10 +1593,6 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     HandleGains(girl, fame);
 
     //gain traits
-    if (m_Performance >= 140 && chance(25))
-    {
-        cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", is_night);
-    }
     if (sextype != SKILL_STRIP && girl.dignity() < 0 && chance(25))
     {
         cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
@@ -1908,10 +1896,6 @@ bool cBrothelStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     HandleGains(girl, fame);
 
     //gained
-    if (m_Performance >= 140 && chance(25))
-    {
-        cGirls::PossiblyGainNewTrait(girl, "Agile", 40, ACTION_WORKSTRIP, "${name} has been working the pole long enough to become quite Agile.", is_night);
-    }
     if (sex && girl.dignity() < 0 && chance(25))
     {
         cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
@@ -2176,12 +2160,6 @@ bool ClubStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     m_Earnings += uniform(10, 10+roll_max);
 
     HandleGains(girl, 0);
-
-    //gained
-    if (m_Performance >= 140 && chance(25))
-    {
-        cGirls::PossiblyGainNewTrait(girl, "Agile", 40, ACTION_WORKSTRIP, "${name} has been working the pole long enough to become quite Agile.", is_night);
-    }
 
     //lose
     if (m_Performance > 150 && girl.confidence() > 65)

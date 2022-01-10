@@ -27,6 +27,9 @@
         <GainTrait Trait="Exhibitionist" Threshold="60" Action="WORKSTRIP">
             ${name} has been stripping for so long she loves to be naked now.
         </GainTrait>
+        <GainTrait Trait="Agile" Threshold="40" Action="WORKSTRIP" Chance="25" MinPerformance="140">
+            ${name} has been working the pole long enough to become quite Agile.
+        </GainTrait>
         <Stat Name="Charisma" Weight="1"/>
         <Skill Name="Performance" Weight="2" />
         <Skill Name="Strip" Weight="2" />

@@ -20,6 +20,9 @@
         <LoseTrait Trait="Nervous" Threshold="30" Action="WORKSTRIP">
             ${name} has had so many people see her naked she is no longer nervous about anything.
         </LoseTrait>
+        <GainTrait Trait="Sexy Air" Threshold="80" Action="WORKSTRIP" Chance="25" MinPerformance="140">
+            ${name} has been having to be sexy for so long she now reeks sexiness.
+        </GainTrait>
     </Gains>
 
     <Messages>

@@ -26,6 +26,9 @@
         <GainTrait Trait="Exhibitionist" Threshold="50" Action="WORKSTRIP">
             Performing sexual entertainment for strangers every day has made ${name} quite keen to show off her sexuality.
         </GainTrait>
+        <GainTrait Trait="Sexy Air" Threshold="80" Action="WORKSTRIP" Chance="25" MinPerformance="140">
+            ${name} has been having to be sexy for so long she now reeks sexiness.
+        </GainTrait>
     </Gains>
 
     <Config>

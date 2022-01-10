@@ -17,6 +17,9 @@
     <Gains XP="20" Skill="3">
         <Skill Name="Medicine" Weight="1" Max="50"/>
         <Skill Name="Service" Weight="1" Max="50"/>
+        <GainTrait Trait="Sexy Air" Threshold="80" Action="WORKSTRIP" Chance="25" MinPerformance="140">
+            ${name} has been having to be sexy for so long she now reeks sexiness.
+        </GainTrait>
     </Gains>
 
     <Config>
