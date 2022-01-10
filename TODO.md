@@ -24,7 +24,7 @@
   - [x] BeastCare
   - [x] Customer Service
   - [ ] Explore Catacombs
-  - [ ] Security
+  - [x] Security
   - [ ] Torturer
   - [x] Whore
   - [ ] PersonalBedWarmer
@@ -52,6 +52,10 @@
 * [ ] LoadGame delete button
 * [ ] Inventory screen resets
 * [ ] Restore Property Management screen
+
+## Gameplay
+* [ ] Girls ask for job change
+* [ ] Choose your job interaction
 
 ## Bugs
 * [ ] some parts of the old scripts are still missing

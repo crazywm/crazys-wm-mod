@@ -114,11 +114,6 @@ bool cWhoreJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     *
     */
 
-    std::stringstream fuckMessage;
-    int iNum = 0;
-    int iOriginal = 0;
-    int AskPrice = girl.askprice();
-
     m_OralCount = 0;        // how much oral she gave for use with AdjustTraitGroupGagReflex
     const JOBS job = girl.get_job(is_night);
     const bool bStreetWork = (job == JOB_WHORESTREETS);
@@ -137,7 +132,6 @@ bool cWhoreJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     if (bStreetWork)
     {
         NumCusts = NumCusts * 2 / 3;
-        AskPrice = AskPrice * 2 / 3;
     }
 
     /*
@@ -159,8 +153,8 @@ bool cWhoreJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
             ss << "${name} ran into some enemy goons and was attacked.\n";
 
             // WD: Health loss, Damage 0-15, 25% chance of 0 damage
-            iNum = std::max(uniform(0, 20) - 5, 0);
-            iOriginal = girl.health();
+            int iNum = std::max(uniform(0, 20) - 5, 0);
+            int iOriginal = girl.health();
             girl.health(-iNum);
             iNum = iOriginal - girl.health();
 
@@ -205,7 +199,7 @@ bool cWhoreJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     }
 
     // WD:    Reduce number of availabe customers for next whore
-    iNum = g_Game->GetNumCustomers();        // WD: Should not happen but lets make sure
+    int iNum = g_Game->GetNumCustomers();        // WD: Should not happen but lets make sure
     if (iNum < m_NumSleptWith)    g_Game->customers().AdjustNumCustomers(-iNum);
     else                        g_Game->customers().AdjustNumCustomers(-m_NumSleptWith);
 
@@ -309,7 +303,6 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
         m_FuckMessage << "The customer sees that you are offering up a Skeleton for sex and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n \n";
         brothel.m_Fame -= 5;
         g_Game->player().customerfear(2);
-        acceptsGirl = false;
         return;
     }
     if (Cust.m_Fetish == FETISH_SPECIFICGIRL)

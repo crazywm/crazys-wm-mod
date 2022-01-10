@@ -9,6 +9,7 @@
         <Factor Skill="Magic" Weight="1"/>
         <Factor Stat="Agility" Weight="1"/>
         <Factor Stat="Constitution" Weight="1"/>
+        <Mod Weight="1">work.security</Mod>
     </Performance>
 
     <Gains XP="13" Skill="3">

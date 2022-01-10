@@ -258,7 +258,7 @@
         <Trait Name="Viras Blood Addict" Value="-25"/>
     </Modifier>
 
-    <Modifier Name="work.cityguard">
+    <Modifier Name="work.security">
         <!-- Good traits -->
         <Trait Name="Incorporeal" Value="100"/>    <!-- I'm fucking Superman! -->
         <Trait Name="Assassin"

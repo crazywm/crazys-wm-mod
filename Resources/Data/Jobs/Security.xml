@@ -1,0 +1,31 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="Sec">
+    <Description>
+        She will patrol the building, stopping mis-deeds.
+    </Description>
+
+    <Gains XP="15" Skill="3">
+        <Skill Name="Combat" Weight="1"/>
+        <Skill Name="Magic" Weight="1"/>
+        <Stat Name="Agility" Weight="1" />
+
+        <GainTrait Trait="Tough" Threshold="15" Action="WORKSECURITY">
+            She has become pretty Tough from all of the fights she's been in.
+        </GainTrait>
+        <GainTrait Trait="Adventurer" Threshold="45" Action="WORKSECURITY">
+            She has been in enough tough spots to consider herself Adventurer.
+        </GainTrait>
+        <LoseTrait Trait="Aggressive" Threshold="60" Action="WORKSECURITY">
+            She is getting rather Aggressive from her enjoyment of combat.
+        </LoseTrait>
+    </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to work security in your brothel to${shift}</Text>
+        </Message>
+        <Message Name="work">
+            <Text>${name} worked Security in the brothel.</Text>
+        </Message>
+    </Messages>
+</Job>

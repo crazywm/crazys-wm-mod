@@ -52,7 +52,6 @@ set(BUILDINGS_SRC
         buildings/clinic/Surgery.cpp
         buildings/clinic/ClinicJobs.cpp
         buildings/house/WorkPersonalBedWarmer.cpp
-        buildings/brothel/WorkSecurity.cpp
         buildings/brothel/WorkTorturer.cpp
         buildings/studio/StudioFilming.cpp
         buildings/centre/Therapy.cpp

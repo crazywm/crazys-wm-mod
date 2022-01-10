@@ -40,10 +40,10 @@ IGenericJob::eCheckWorkResult cBarJob::CheckWork(sGirl& girl, bool is_night) {
     } else {
         return SimpleRefusalCheck(girl, m_Data.Action);
     }
-    /*else if (brothel->m_TotalCustomers < 1)
+    /*else if (brothel.m_TotalCustomers < 1)
     {
         ss << "There were no customers in the bar on the " << (is_night ? "night" : "day") << " shift so ${name} just cleaned up a bit.";
-        brothel->m_Filthiness -= 20 + girl.service() * 2;
+        brothel.m_Filthiness -= 20 + girl.service() * 2;
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return eCheckWorkResult::IMPOSSIBLE;
     }*/
@@ -1771,7 +1771,7 @@ bool cBrothelStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     //try and add randomness here
     add_text("event.post");
 
-    //if (rng.percent(10))//ruffe event
+    //if (chance(10))//ruffe event
     //{
     //    ss << "A patron keep buying her drinks \n";
     //    if (girl.herbalism > 35)
@@ -3074,6 +3074,180 @@ bool BeastCareJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     return false;
 }
 
+class SecurityJob : public cSimpleJob {
+public:
+    SecurityJob();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+    double GetPerformance(const sGirl& girl, bool estimate) const override;
+};
+
+SecurityJob::SecurityJob() : cSimpleJob(JOB_SECURITY, "Security.xml", {ACTION_WORKSECURITY}) {
+
+}
+
+bool SecurityJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    int roll_a = d100();
+    int imagetype = IMGTYPE_COMBAT;
+
+    cGirls::EquipCombat(girl);    // ready armor and weapons!
+
+    const sGirl* stripperonduty = random_girl_on_job(brothel, JOB_BARSTRIPPER, is_night);
+    std::string strippername = (stripperonduty ? "Stripper " + stripperonduty->FullName() + "" : "the Stripper");
+
+    const sGirl* whoreonduty = random_girl_on_job(brothel, JOB_WHOREBROTHEL, is_night);
+    std::string whorename = (whoreonduty ? "Whore " + whoreonduty->FullName() + "" : "the Whore");
+
+
+    double SecLev = m_Performance;
+    
+    // Complications
+    if (roll_a <= 25)
+    {
+        switch(uniform(0, 4))
+        {
+            case 2: //'Mute' Unrulely Customers rape her
+            {
+                m_Enjoyment -= uniform(1, 3);
+                SecLev-=SecLev/10;
+                ss<< "She tried to Fight off some unruly patrons, but they turned on her and raped her.";
+                int custCount= uniform(1, 4);
+                cJobManager::customer_rape(girl, custCount);
+                break;
+            }
+            case 3:
+            {
+                m_Enjoyment -= uniform(1, 3);
+                double secLvlMod = SecLev / 10.0;
+                ss << "She stumbled across some patrons trying to rape a female customer.\n";
+                int combatMod = (girl.combat() + girl.magic() + girl.agility()) / 3;
+                if (chance(combatMod))
+                {
+                    ss << "She succeeded in saving the girl from being raped."; //'Mute" TODO add posiblity of adding female customers to dungeon
+                    SecLev += secLvlMod;
+                }
+                else
+                {
+                    SecLev -= secLvlMod;
+                    int rapers = uniform(1, 4);
+                    ss << "She failed in saving her. They where both raped by " << rapers << " men.\n";
+                    cJobManager::customer_rape(girl, rapers);
+                }
+                break;
+            }
+            default:
+            {
+                m_Enjoyment -=uniform(1, 3);
+                SecLev -= SecLev / 10;
+                ss << "She had to deal with some very unruly patrons that gave her a hard time.";
+                break;
+            }
+        }
+
+    }
+    else if (roll_a >= 75)
+    {
+        m_Enjoyment +=uniform(1, 3);
+        SecLev += SecLev / 10;
+        ss << "She successfully handled unruly patrons.";
+    }
+    else
+    {
+        m_Enjoyment += uniform(0, 1);
+        ss << "She had an uneventful day watching over the brothel.";
+    }
+    ss << "\n \n";
+
+    if (girl.libido() >= 70 && chance(20))
+    {
+        int choice = uniform(0, 1);
+        ss << "Her libido caused her to get distracted while watching ";
+        /*might could do more with this FIXME CRAZY*/
+        if (girl.has_active_trait("Lesbian")) choice = 0;
+        if (girl.has_active_trait("Straight")) choice = 1;
+        switch (choice)
+        {
+            case 0:
+                ss << (stripperonduty ? strippername : "one of the strippers") << " dance.\n";
+                break;
+            case 1:
+            default:
+                ss << (whoreonduty ? whorename : "one of the whores") << " with a client.\n";
+                break;
+        }
+        SecLev -= 20;
+        ss << "\n \n";
+
+    }
+
+    if ((girl.libido() > 50 && chance(girl.libido() / 5)) || (girl.has_active_trait("Nymphomaniac") && chance(20)))
+    {
+        ss <<"\nGave some bonus service to the well behaved patrons, ";
+        int l = 0;
+        switch (uniform(0, 4))        // `J` just roll for the 4 sex options and flash only if sex is restricted
+        {
+            case 1:    if (brothel.is_sex_type_allowed(SKILL_ORALSEX))    { l = 10;    imagetype = IMGTYPE_ORAL;    ss << "She sucked them off";    break; }
+            case 2:    if (brothel.is_sex_type_allowed(SKILL_TITTYSEX))    { l = 7;    imagetype = IMGTYPE_TITTY;    ss << "She used her tits to get them off";    break; }
+            case 3:    if (brothel.is_sex_type_allowed(SKILL_HANDJOB))    { l = 6;    imagetype = IMGTYPE_HAND;    ss << "She jerked them off";    break; }
+            case 4:    if (brothel.is_sex_type_allowed(SKILL_FOOTJOB))    { l = 4;    imagetype = IMGTYPE_FOOT;    ss << "She used her feet to get them off";    break; }
+            default:/*                         */    { l = 2;    imagetype = IMGTYPE_STRIP;    ss << "She flashed them";    break; }
+        }
+        ss << ".\n \n";
+        girl.upd_temp_stat(STAT_LIBIDO, -l, true);
+    }
+
+    if (SecLev < 10) SecLev = 10;
+    brothel.m_SecurityLevel += int(SecLev);
+
+    ss << "\nPatrolling the building, ${name} increased the security level by " << int(SecLev) << ".";
+    girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+
+    // Improve girl
+    m_Wages += 70;
+    HandleGains(girl, 0);
+    return false;
+}
+
+double SecurityJob::GetPerformance(const sGirl& girl, bool estimate) const {
+    /*    MYR: Modified security level calculation & added traits for it
+*    A gang of 1-10 customers attack girls now in function work_related_violence.
+*    It takes (# members x 5) security points to intercept them.
+*    See work_related_violence for details.
+*/
+    int SecLev = 0;
+    // 'Mute' Updated
+    if (estimate)    // for third detail string
+    {
+        SecLev = girl.combat() + (girl.magic() + girl.agility()) / 2;
+    }
+    else            // for the actual check
+    {
+
+        SecLev = g_Dice % (girl.combat() / 2)
+                 /*  */ + g_Dice % (girl.magic() / 4)
+                 /*  */ + g_Dice % (girl.agility() / 4);
+    }
+
+    SecLev += girl.get_trait_modifier("work.security");
+
+    if (!estimate)
+    {
+        int t = girl.tiredness() - 70;
+        if (t > 0) SecLev -= t * 2;
+
+        int h = girl.health();
+        if (h < 10) SecLev -= (20 - h) * 5;
+        else if (h < 20) SecLev -= (20 - h) * 2;
+        else if (h < 30) SecLev -= 30 - h;
+
+        int y = girl.happiness();
+        if (y < 20) SecLev -= 20 - y;
+
+        if (SecLev < 0)    SecLev = 0;
+    }
+
+    return SecLev;
+}
+
 
 void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarCookJob>());
@@ -3094,6 +3268,7 @@ void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<AdvertisingJob>());
     mgr.register_job(std::make_unique<CustServiceJob>());
     mgr.register_job(std::make_unique<BeastCareJob>());
+    mgr.register_job(std::make_unique<SecurityJob>());
     mgr.register_job(std::make_unique<cWhoreJob>(JOB_WHOREGAMBHALL, "HWhr", "She will give her sexual favors to the customers."));
     mgr.register_job(std::make_unique<cWhoreJob>(JOB_BARWHORE, "SWhr", "She will provide sex to the customers."));
     mgr.register_job(std::make_unique<cWhoreJob>(JOB_WHOREBROTHEL, "BWhr", "She will whore herself to customers within the building's walls. This is safer but a little less profitable."));
