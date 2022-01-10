@@ -23,11 +23,12 @@
   - [x] Advertising
   - [x] BeastCare
   - [x] Customer Service
-  - [ ] Explore Catacombs
+  - [x] Explore Catacombs
   - [x] Security
   - [ ] Torturer
   - [x] Whore
   - [ ] PersonalBedWarmer
+  - [ ] Free Time
 * [ ] adjustable unique chance for overworld encounters
 
 ## Scripting
@@ -54,8 +55,9 @@
 * [ ] Restore Property Management screen
 
 ## Gameplay
-* [ ] Girls ask for job change
+* [ ] Generic event: girls ask for job change
 * [ ] Choose your job interaction
+* [ ] Unify Hate and Love into one stat?
 
 ## Bugs
 * [ ] some parts of the old scripts are still missing
@@ -79,5 +81,5 @@
 * [ ] Recruiters, cooks and cleaners in the house do not appear to cost any money???
 * [ ] WalkTown image appears too early
 * [ ] WalkTown thrown into dungeon but still appears in regular building
-* [ ] Distorted text in multipage messages 
+* [x] Distorted text in multipage messages 
 * [ ] New game starts at week 4
