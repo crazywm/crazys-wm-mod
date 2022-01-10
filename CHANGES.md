@@ -19,7 +19,7 @@ This bonus accumulates and decays over time and depends on the quality of the ma
 
 ## Code changes
 * Dealer, Entertainer, XXXEntertainer, Masseuse, Stripper, Peep-Show, Advertising, 
-Beast Care jobs now xml-based
+Beast Care, Whore, Catacombs, Security jobs now xml-based
 * Some generic cleanup
 
 # Version 7.1.2alpha4

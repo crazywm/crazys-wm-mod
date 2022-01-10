@@ -1,0 +1,45 @@
+<!DOCTYPE Job SYSTEM "job.dtd">
+<Job ShortName="ExC">
+    <Description>
+        She will explore the catacombs looking for treasure and capturing monsters and monster girls.
+        Needless to say, this is a dangerous job.
+    </Description>
+
+    <Performance>
+        <Factor Skill="Combat" Weight="3"/>
+        <Factor Skill="Magic" Weight="1" />
+        <Factor Stat="Agility" Weight="1" />
+        <Factor Stat="Constitution" Weight="1" />
+        <Mod>work.explorecatacombs</Mod>
+    </Performance>
+
+    <Gains XP="15" Skill="3">
+        <Skill Name="Combat" Weight="2"/>
+        <Skill Name="Magic" Weight="2"/>
+        <Stat Name="Agility" Weight="1"/>
+        <Stat Name="Constitution" Weight="1"/>
+        <Stat Name="Strength" Weight="1"/>
+
+        <GainTrait Trait="Tough" Threshold="30" Action="COMBAT">
+            She has become pretty Tough from all the fights she's been in.
+        </GainTrait>
+        <GainTrait Trait="Adventurer" Threshold="40" Action="COMBAT">
+            She has been in enough tough spots to consider herself an Adventurer.
+        </GainTrait>
+        <GainTrait Trait="Aggressive" Threshold="60" Action="COMBAT">
+            She is getting rather Aggressive from her enjoyment of combat.
+        </GainTrait>
+        <LoseTrait Trait="Fragile" Threshold="75" Action="COMBAT">
+            ${name} has had to heal from so many injuries you can't say she is Fragile anymore.
+        </LoseTrait>
+    </Gains>
+
+    <Messages>
+        <Message Name="work">
+            <Text>${name} went into the catacombs to see what she can find.</Text>
+        </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to go into the catacombs during the ${shift} shift.</Text>
+        </Message>
+    </Messages>
+</Job>

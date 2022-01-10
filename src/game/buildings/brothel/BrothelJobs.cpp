@@ -29,6 +29,16 @@
 #include "cInventory.h"
 #include "character/cCustomers.h"
 #include "character/cPlayer.h"
+// all of these are for catacombs, so maybe we should move that to a separate file
+#include "cGirlGangFight.h"
+#include "cObjectiveManager.hpp"
+#include "buildings/cDungeon.h"
+#include "cGangs.h"
+#include "cGangManager.hpp"
+
+namespace settings {
+    extern const char* WORLD_CATACOMB_UNIQUE;
+}
 
 IGenericJob::eCheckWorkResult cBarJob::CheckWork(sGirl& girl, bool is_night) {
     if (girl.libido() >= 90 && girl.has_active_trait("Nymphomaniac") && chance(20))
@@ -3248,6 +3258,242 @@ double SecurityJob::GetPerformance(const sGirl& girl, bool estimate) const {
     return SecLev;
 }
 
+class CatacombJob : public cSimpleJob {
+public:
+    CatacombJob();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+};
+
+bool CatacombJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    int num_monsters = 0;
+    int type_monster_girls = 0;
+    int type_unique_monster_girls = 0;
+    int type_beasts = 0;
+    int num_items = 0;
+    long gold = 0;
+    bool raped = false;
+    std::string UGirls_list;
+    std::string Girls_list;
+    std::string item_list;
+
+    cGirls::EquipCombat(girl);    // ready armor and weapons!
+
+    int haulcount = 2 + ((girl.strength() + girl.constitution()) / 10);    // how much she can bring back            - max 22 points
+    // each girl costs 5 haul points                        - max 5 girls
+    float beastpercent = g_Game->gang_manager().Gang_Gets_Beast();      // each beast costs 3 haul points                       - max 8 beasts
+    double itemspercent = g_Game->gang_manager().Gang_Gets_Items();     // each item costs 2 if an item is found or 1 if not    - max 11 items
+    int numgirls = 0, numitems = 0;
+
+    while (haulcount > 0 && girl.health() > 40)
+    {
+        gold += uniform(0, 150);
+        double roll = uniform(0, 10000) / 100.0;
+        int getwhat = 0;                                // 0=girl, 1=beast, 2=item
+        if (roll < beastpercent)                        getwhat = 1;
+        else if (roll < beastpercent + itemspercent)    getwhat = 2;
+
+        EFightResult fight_outcome = EFightResult::DRAW;
+        // she may be able to coax a beast or if they are looking for an item, it may be guarded
+        if ((getwhat == 1 && chance((girl.animalhandling() + girl.beastiality()) / 3))
+            || (getwhat == 2 && chance(50)))
+            fight_outcome = EFightResult::VICTORY;    // no fight so auto-win
+        else        // otherwise, do the fight
+        {
+            auto tempgirl = g_Game->CreateRandomGirl(SpawnReason::CATACOMBS);
+            if (tempgirl)        // `J` reworked in case there are no Non-Human Random Girls
+            {
+                fight_outcome = GirlFightsGirl(girl, *tempgirl);
+            }
+            else // `J` this should have been corrected with the addition of the default random girl but leaving it in just in case.
+            {
+                g_LogFile.log(ELogLevel::ERROR, "You have no Catacomb Girls for your girls to fight");
+                fight_outcome = EFightResult::DEFEAT;
+            }
+        }
+
+        if (fight_outcome == EFightResult::VICTORY)  // If she won
+        {
+            if (getwhat == 0)        { haulcount -= 5;    numgirls++; }                        // Catacombs girl type
+            else if (getwhat == 1)    { haulcount -= 3;    type_beasts++;    num_monsters++; }    // Beast type
+            else
+            {
+                haulcount--;
+                int chance_val = (girl.intelligence() + girl.agility()) / 2;
+                if (chance(chance_val))        // percent chance she will find an item
+                {
+                    haulcount--;
+                    numitems++;
+                }
+            }
+        }
+        else if (fight_outcome == EFightResult::DEFEAT) // she lost
+        {
+            haulcount -= 50;
+            raped = true;
+            break;
+        }
+        else if (fight_outcome == EFightResult::DRAW) // it was a draw
+        {
+            haulcount -= uniform(1, 5);
+        }
+    }
+
+    if (raped)
+    {
+        ss.str("");
+        int NumMon = uniform(1, 6);
+        ss << "${name} was defeated then" << ((NumMon <= 3) ? "" : " gang") << " raped and abused by " << NumMon << " monsters.";
+        int health = -NumMon, happy = -NumMon * 5, spirit = -NumMon, sex = -NumMon * 2, combat = -NumMon * 2, injury = 9 + NumMon;
+
+        if (girl.lose_trait("Virgin"))
+        {
+            ss << " That's a hell of a way to lose your virginity; naturally, she's rather distressed by this fact.";
+            health -= 1, happy -= 10, spirit -= 2, sex -= 2, combat -= 2, injury += 2;
+        }
+        girl.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+
+        if (!girl.calc_insemination(cGirls::GetBeast(), 1.0 + (NumMon * 0.5)))
+        {
+            g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
+            health -= 1, happy -= 10, spirit -= 4, sex -= 4, combat -= 2, injury += 2;
+        }
+
+        girl.health(health);
+        girl.happiness(happy);
+        girl.spirit(spirit);
+        cGirls::GirlInjured(girl, injury);
+        girl.upd_Enjoyment(ACTION_SEX, sex);
+        girl.upd_Enjoyment(ACTION_COMBAT, combat);
+
+        return false;
+    }
+
+    g_Game->storage().add_to_beasts(type_beasts);
+    while (numgirls > 0)
+    {
+        numgirls--;
+        std::shared_ptr<sGirl> ugirl = nullptr;
+        if (chance( (float)g_Game->settings().get_percent(settings::WORLD_CATACOMB_UNIQUE) ))    // chance of getting unique girl
+        {
+            ugirl = g_Game->GetRandomUniqueGirl(false, true);                // Unique monster girl type
+        }
+        if (ugirl == nullptr)        // if not unique or a unique girl can not be found
+        {
+            // the girl will be added to the dungeon, which will start managing object lifetimes
+            ugirl = g_Game->CreateRandomGirl(SpawnReason::CATACOMBS);    // create a random girl
+            if (ugirl)
+            {
+                type_monster_girls++;
+                Girls_list += ((Girls_list.empty()) ? "   " : ",\n   ") + ugirl->FullName();
+            }
+        }
+        else                // otherwise set the unique girls stuff
+        {
+            ugirl->remove_status(STATUS_CATACOMBS);
+            type_unique_monster_girls++;
+            UGirls_list += ((UGirls_list.empty()) ? "   " : ",\n   ") + ugirl->FullName();
+        }
+
+        if (ugirl)
+        {
+            num_monsters++;
+            if (g_Game->get_objective() && g_Game->get_objective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
+            {
+                g_Game->get_objective()->m_SoFar++;
+            }
+            std::stringstream Umsg;
+            ugirl->add_temporary_trait("Kidnapped", uniform(2, 16));
+            Umsg << ugirl->FullName() << " was captured in the catacombs by ${name}.\n";
+            ugirl->AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+            g_Game->dungeon().AddGirl(ugirl, DUNGEON_GIRLCAPTURED);    // Either type of girl goes to the dungeon
+        }
+    }
+    while (numitems > 0)
+    {
+        numitems--;
+        sInventoryItem* TempItem = g_Game->inventory_manager().GetRandomCatacombItem();
+        if(g_Game->player().add_item(TempItem)) {
+            item_list += ((item_list.empty()) ? "   " : ",\n   ") + TempItem->m_Name;
+            num_items++;
+        }
+    }
+
+    if (num_monsters > 0)
+    {
+        ss << "She encountered " << num_monsters << " monster" << (num_monsters > 1 ? "s" : "") << " and captured:\n";
+        if (type_monster_girls > 0)
+        {
+            ss << type_monster_girls << " catacomb girl" << (type_monster_girls > 1 ? "s" : "") << ":\n" << Girls_list << ".\n";
+        }
+        if (type_unique_monster_girls > 0)
+        {
+            ss << type_unique_monster_girls << " unique girl" << (type_unique_monster_girls > 1 ? "s" : "") << ":\n" << UGirls_list << ".\n";
+        }
+        if (type_beasts > 0)
+            ss << type_beasts << " beast" << (type_beasts > 1 ? "s." : ".");
+        ss << "\n \n";
+    }
+    if (num_items > 0)
+    {
+        ss << (num_monsters > 0 ? "Further, she" : "She") << " came out with ";
+        if (num_items == 1) ss << "one item:\n";
+        else    ss << num_items << " items:\n";
+        ss << item_list << ".\n \n";
+    }
+    if (gold > 0) ss << "She " << (num_monsters + num_items > 0 ? "also " : "") << "came out with " << gold << " gold.";
+
+    if (num_monsters + num_items + gold < 1) ss << "She came out empty handed.";
+
+    girl.AddMessage(ss.str(), IMGTYPE_COMBAT, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+
+    ss.str("");
+    if (girl.get_stat(STAT_LIBIDO) > 90 && type_monster_girls + type_unique_monster_girls > 0 && brothel.is_sex_type_allowed(SKILL_LESBIAN))
+    {
+        ss << "${name} was real horny so she had a little fun with the girl" << (type_monster_girls + type_unique_monster_girls > 1 ? "s" : "") << " she captured.";
+        girl.upd_temp_stat(STAT_LIBIDO, -50, true);
+        girl.lesbian(type_monster_girls + type_unique_monster_girls);
+        girl.AddMessage(ss.str(), IMGTYPE_LESBIAN, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    }
+    else if (girl.get_stat(STAT_LIBIDO) > 90 && type_beasts > 0 && brothel.is_sex_type_allowed(SKILL_BEASTIALITY))
+    {
+        ss << "${name} was real horny so she had a little fun with the beast" << (type_beasts > 1 ? "s" : "") << " she captured.";
+        girl.upd_temp_stat(STAT_LIBIDO, -50, true);
+        girl.beastiality(type_beasts);
+        girl.AddMessage(ss.str(), IMGTYPE_BEAST, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
+        {
+            g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
+        }
+    }
+
+    if (girl.is_pregnant())
+    {
+        if (girl.strength() >= 60)
+        {
+            ss << "\n \nFighting monsters and exploring the catacombs proved to be quite exhausting for a pregnant girl, even for one as strong as ${name} .\n";
+        }
+        else
+        {
+            ss << "\n \nFighting monsters and exploring the catacombs was quite exhausting for a pregnant girl like ${name} .\n";
+        }
+        girl.tiredness(10 - girl.strength() / 20 );
+    }
+
+    m_Wages += gold;
+
+    // Improve girl
+    HandleGains(girl, m_Performance);
+
+    if (chance(25) && girl.strength() >= 60 && girl.combat() > girl.magic())
+    {
+        cGirls::PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", is_night);
+    }
+
+    return false;
+}
+
+CatacombJob::CatacombJob() : cSimpleJob(JOB_EXPLORECATACOMBS, "ExploreCatacombs.xml", {ACTION_COMBAT}){
+}
 
 void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<cBarCookJob>());
@@ -3269,6 +3515,7 @@ void RegisterBarJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<CustServiceJob>());
     mgr.register_job(std::make_unique<BeastCareJob>());
     mgr.register_job(std::make_unique<SecurityJob>());
+    mgr.register_job(std::make_unique<CatacombJob>());
     mgr.register_job(std::make_unique<cWhoreJob>(JOB_WHOREGAMBHALL, "HWhr", "She will give her sexual favors to the customers."));
     mgr.register_job(std::make_unique<cWhoreJob>(JOB_BARWHORE, "SWhr", "She will provide sex to the customers."));
     mgr.register_job(std::make_unique<cWhoreJob>(JOB_WHOREBROTHEL, "BWhr", "She will whore herself to customers within the building's walls. This is safer but a little less profitable."));

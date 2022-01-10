@@ -46,7 +46,6 @@ set(BUILDINGS_SRC
         buildings/cBuildingManager.cpp
         buildings/house/Training.cpp
         buildings/studio/StudioCrew.cpp
-        buildings/brothel/WorkExploreCatacombs.cpp
         buildings/farm/WorkFarmPonyGirl.cpp
         buildings/clinic/cClinic.cpp
         buildings/clinic/Surgery.cpp

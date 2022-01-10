@@ -214,7 +214,6 @@ double JP_##Fn(const sGirl& girl, bool estimate)
 // - General
 DECL_JOB(Freetime);
 DECL_JOB(Torturer);
-DECL_JOB(ExploreCatacombs);
 
 // house
 DECL_JOB(PersonalBedWarmer);
@@ -237,7 +236,6 @@ namespace {
 void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_RESTING, Freetime, "TOff", "She will take some time off, maybe do some shopping or walk around town. If the girl is unhappy she may try to escape.");
     REGISTER_JOB(JOB_TORTURER, Torturer, "Trtr", "She will torture the prisoners in addition to your tortures, she will also look after them to ensure they don't die. (max 1 for all brothels)").full_time().free_only();
-    REGISTER_JOB(JOB_EXPLORECATACOMBS, ExploreCatacombs, "ExC", "She will explore the catacombs looking for treasure and capturing monsters and monster girls. Needless to say, this is a dangerous job.");
 
     // house
     REGISTER_JOB(JOB_PERSONALBEDWARMER, PersonalBedWarmer, "BdWm", "She will stay in your bed at night with you.");
