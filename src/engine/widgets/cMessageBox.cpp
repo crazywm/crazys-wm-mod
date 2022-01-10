@@ -61,10 +61,11 @@ void cMessageBox::DrawWidget(const CGraphics& gfx)
         m_Background[m_Color].DrawSurface(m_XPos + m_BorderSize, m_YPos + m_BorderSize);
     }
 
+    int offset = m_Position * m_Font->GetFontLineSkip();
     SDL_Rect srcRect;
     srcRect.x = 0;
-    srcRect.y = m_Position * m_Font->GetFontLineSkip();
-    srcRect.h = std::min(m_Height, m_PreRendered.GetHeight());
+    srcRect.y = offset;
+    srcRect.h = std::min(m_Height, m_PreRendered.GetHeight() - offset);
     srcRect.w = std::min(m_Width, m_PreRendered.GetWidth());
 
     m_PreRendered.DrawSurface(m_XPos + 2, m_YPos, &srcRect);

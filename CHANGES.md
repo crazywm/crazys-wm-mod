@@ -16,6 +16,7 @@ This bonus accumulates and decays over time and depends on the quality of the ma
 * Fixed crash when girl runs away during job processing
 * Fixed girl leveling up two levels if she has enough XP
 * Fixed default theme
+* Fixed rendering bug in multi-page message box
 
 ## Code changes
 * Dealer, Entertainer, XXXEntertainer, Masseuse, Stripper, Peep-Show, Advertising, 
