@@ -91,6 +91,7 @@ const std::string& cBasicJob::get_text(const std::string& prompt) const {
 }
 
 bool cBasicJob::has_text(const std::string& prompt) const {
+    if(!m_TextRepo) return false;
     return m_TextRepo->has_text(prompt);
 }
 
