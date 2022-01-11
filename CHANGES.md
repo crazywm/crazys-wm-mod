@@ -1,4 +1,4 @@
-# Version 7.1.2beta1
+# Version 7.1.2alpha5
 
 ## Gameplay Changes
 * removed npclove stat that wasn't really implemented anyway
@@ -17,11 +17,12 @@ This bonus accumulates and decays over time and depends on the quality of the ma
 * Fixed girl leveling up two levels if she has enough XP
 * Fixed default theme
 * Fixed rendering bug in multi-page message box
+* Fixed weeks played for new game
 
 ## Code changes
 * Dealer, Entertainer, XXXEntertainer, Masseuse, Stripper, Peep-Show, Advertising, 
 Beast Care, Whore, Catacombs, Security jobs now xml-based
-* Some generic cleanup
+* Some generic cleanup (reduces c++ code by ~3000 lines)
 
 # Version 7.1.2alpha4
 This version introduces dynamic skill caps. This means that the maximum

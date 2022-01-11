@@ -122,8 +122,8 @@ const Date& IGame::date() const
 
 unsigned IGame::get_weeks_played() const {
     const auto date = this->date();
-    const unsigned months = (date.year - 1209) * 12 + date.month;
-    const unsigned week = (months * 30 + date.day) / 7;
+    const unsigned months = (date.year - 1209) * 12 + (date.month - 1);
+    const unsigned week = (months * 30 + (date.day - 1)) / 7;
     return week;
 }
 

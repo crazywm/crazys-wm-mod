@@ -82,4 +82,4 @@
 * [ ] WalkTown image appears too early
 * [ ] WalkTown thrown into dungeon but still appears in regular building
 * [x] Distorted text in multipage messages 
-* [ ] New game starts at week 4
+* [x] New game starts at week 4
