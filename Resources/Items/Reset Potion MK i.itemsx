@@ -52,7 +52,6 @@
 <Effect What="Stat"  Name="Morality"                Amount="500"    /><Effect What="Stat"  Name="Morality"                Amount="-100"    />
 <Effect What="Stat"  Name="Obedience"               Amount="500"    /><Effect What="Stat"  Name="Obedience"               Amount="-100"    />
 <Effect What="Stat"  Name="PCFear"                  Amount="500"    /><Effect What="Stat"  Name="PCFear"                  Amount="-100"    />
-<Effect What="Stat"  Name="PCHate"                  Amount="500"    /><Effect What="Stat"  Name="PCHate"                  Amount="-100"    />
 <Effect What="Stat"  Name="PCLove"                  Amount="500"    /><Effect What="Stat"  Name="PCLove"                  Amount="-100"    />
 <Effect What="Stat"  Name="Refinement"              Amount="500"    /><Effect What="Stat"  Name="Refinement"              Amount="-100"    />
 <Effect What="Stat"  Name="Spirit"                  Amount="500"    /><Effect What="Stat"  Name="Spirit"                  Amount="-100"    />

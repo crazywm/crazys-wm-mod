@@ -62,7 +62,6 @@ sRandomGirl::sRandomGirl()
         case STAT_EXP:
         case STAT_PCFEAR:
         case STAT_PCLOVE:
-        case STAT_PCHATE:
         case STAT_ASKPRICE:
             MinStats[stat] = MaxStats[stat] = 0;
             break;
@@ -196,7 +195,7 @@ std::shared_ptr<sGirl> cRandomGirls::create_from_template(const sRandomGirl& tem
             newGirl->set_stat(STAT_SPIRIT, spirit);
             newGirl->set_stat(STAT_CONFIDENCE, conf);
             newGirl->set_stat(STAT_OBEDIENCE,  obey);
-            newGirl->set_stat(STAT_PCHATE, hate);
+            newGirl->set_stat(STAT_PCLOVE, -hate);
         }
             break;
         case SpawnReason::MEETING:
@@ -305,8 +304,11 @@ namespace {
             if(stat_name == "House") {
                 g_LogFile.warning("girl", "Girl ", target.Name, " specified House stat, which is obsolete.");
                 return;
-            }else if(stat_name == "NPCLove") {
+            } else if(stat_name == "NPCLove") {
                 g_LogFile.warning("girl", "Girl ", target.Name, " specified NPCLove stat, which is obsolete.");
+                return;
+            } else if(stat_name == "PCHate") {
+                g_LogFile.warning("girl", "Girl ", target.Name, " specified PCHate stat, which is obsolete.");
                 return;
             }
         }

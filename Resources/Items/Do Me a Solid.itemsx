@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Do Me a Solid"
-      Desc="Ask a girl to do you a little favor. (Obedience +3, Hate +1)"
+      Desc="Ask a girl to do you a little favor. (Obedience +3, Love -1)"
       Type="Food"
       Badness="0"
       Special="None"
@@ -9,6 +9,6 @@
       Rarity="Shop50"
       Infinite="false">
    <Effect What="Stat"  Name="Obedience"               Amount="3"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="1"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-1"    />
 </Item>
 </Items>

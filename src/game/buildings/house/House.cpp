@@ -399,8 +399,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
     {
         ss << "All sex is banned in this building so you just talk to her.";
         girl.pcfear(-uniform(-1, 2));
-        girl.pclove(+uniform(-1, 2));
-        girl.pchate(-uniform(-1, 2));
+        girl.pclove(+uniform(-2, 4));
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
         return {false, 0, 0, 0};
     }
@@ -694,7 +693,7 @@ sWorkJobResult Recruiter::DoWork(sGirl& girl, bool is_night) {
 
     cGirls::UnequipCombat(girl);    // put that shit away, are you are trying to recruit for the military?
 
-    int HateLove = girl.pclove() - girl.pchate();
+    int HateLove = girl.pclove();
     int findchance = 0;
 
     /* */if (HateLove < -80)    ss << "She hates you more then anything so she doesn't try that hard.";
@@ -885,8 +884,7 @@ sWorkJobResult Recruiter::DoWork(sGirl& girl, bool is_night) {
 double Recruiter::GetPerformance(const sGirl& girl, bool estimate) const {
     if (girl.is_slave()) return -1000;
 
-    int HateLove = girl.pclove() - girl.pchate();
-    double jobperformance = (HateLove + girl.charisma());
+    double jobperformance = (girl.pclove() + girl.charisma());
     if (!estimate)
     {
         int t = girl.tiredness() - 80;

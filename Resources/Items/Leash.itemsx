@@ -16,7 +16,7 @@
    <Effect What="Stat"  Name="Obedience"               Amount="20"    />
    <Effect What="Skill" Name="Beastiality"             Amount="10"    />
    <Effect What="Skill" Name="OralSex"                 Amount="10"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="10"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-10"   />
    <Effect What="Stat"  Name="PCFear"                  Amount="15"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="-20"    />
    <Effect What="Stat"  Name="Confidence"              Amount="-20"    />

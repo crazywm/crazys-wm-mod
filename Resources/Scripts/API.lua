@@ -23,8 +23,7 @@ function PlayerRapeGirl(girl)
     girl:confidence(-1);
     girl:obedience(2);
     girl:pcfear(2);
-    girl:pclove(-2);
-    girl:pchate(3);
+    girl:pclove(-5);
 
     if wm.Percent(2) then
         girl:add_trait("Broken Will")
@@ -98,47 +97,44 @@ end
 ---@param girl wm.Girl
 function ScoldGirl(girl)
     if girl:spirit() <= 10 then
-        Dialog("She is bawling the entire time you yell at her, obviously wanting to do her best", 0);
-        girl:happiness(-5);
-        girl:confidence(-5);
-        girl:obedience(10);
-        girl:spirit(-3);
-        girl:pclove(-4);
-        girl:pcfear(2);
-        girl:pchate(2);
+        Dialog("She is bawling the entire time you yell at her, obviously wanting to do her best", 0)
+        girl:happiness(-5)
+        girl:confidence(-5)
+        girl:obedience(10)
+        girl:spirit(-3)
+        girl:pclove(-6)
+        girl:pcfear(2)
     elseif girl:spirit() <= 20 then
-        Dialog("She sobs a lot while you yell at her and fearfully listens to your every word", 0);
-        girl:happiness(-2);
-        girl:confidence(-2);
-        girl:obedience(6);
-        girl:spirit(-2);
-        girl:pclove(-1);
-        girl:pcfear(1);
+        Dialog("She sobs a lot while you yell at her and fearfully listens to your every word", 0)
+        girl:happiness(-2)
+        girl:confidence(-2)
+        girl:obedience(6)
+        girl:spirit(-2)
+        girl:pclove(-1)
+        girl:pcfear(1)
     elseif girl:spirit() <= 30 then
-        Dialog("She listens with attention and promises to do better", 0);
-        girl:happiness(-1);
-        girl:confidence(-1);
-        girl:obedience(5);
-        girl:spirit(-2);
-        girl:pclove(-1);
+        Dialog("She listens with attention and promises to do better", 0)
+        girl:happiness(-1)
+        girl:confidence(-1)
+        girl:obedience(5)
+        girl:spirit(-2)
+        girl:pclove(-1)
     elseif girl:spirit() <= 50 then
-        Dialog("She listens to what you say but barely pays attention", 0);
-        girl:obedience(3);
-        girl:spirit(-2);
-        girl:pchate(1);
+        Dialog("She listens to what you say but barely pays attention", 0)
+        girl:obedience(3)
+        girl:spirit(-2)
+        girl:pclove(-1)
 
     elseif girl:spirit() <= 80 then
-        Dialog("She looks at you defiantly while you yell at her", 0);
-        girl:obedience(2);
-        girl:spirit(-1);
-        girl:pclove(-3);
-        girl:pchate(2);
+        Dialog("She looks at you defiantly while you yell at her", 0)
+        girl:obedience(2)
+        girl:spirit(-1)
+        girl:pclove(-5)
     else
-        Dialog("She stares you down while you yell at her, daring you to hit her", 0);
-        girl:obedience(-1);
-        girl:spirit(-1);
-        girl:pclove(-4);
-        girl:pchate(5);
+        Dialog("She stares you down while you yell at her, daring you to hit her", 0)
+        girl:obedience(-1)
+        girl:spirit(-1)
+        girl:pclove(-9)
     end
 end
 

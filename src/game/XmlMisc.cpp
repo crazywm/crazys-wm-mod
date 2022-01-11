@@ -115,7 +115,7 @@ bool LoadStatsXML(const tinyxml2::XMLElement* pStats, int * stats, int * statMod
                 break;
             case STAT_EXP:        max = 32000;    break;
             case STAT_LEVEL:    max = 255;        break;
-            case STAT_PCFEAR:        case STAT_PCHATE:    case STAT_PCLOVE:    case STAT_MORALITY:
+            case STAT_PCFEAR:        case STAT_PCLOVE:    case STAT_MORALITY:
             case STAT_REFINEMENT:    case STAT_DIGNITY:    case STAT_LACTATION:
                 min = -100;        break;
             default:    break;

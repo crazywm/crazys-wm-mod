@@ -2,7 +2,7 @@
 <Items>
     <Item
         Name="Homemade Sybian DeLuxe"
-        Desc="It looks like someone spent his saturday AND sunday glueing a dildo onto a saddle. Less prone to breaking or injury. (+15 sex, +10 perf/lib, +5 anal/beast, +5 obed, +3 fear/hate, -15 conf)"
+        Desc="It looks like someone spent his saturday AND sunday gluing a dildo onto a saddle. Less prone to breaking or injury. (+15 sex, +10 perf/lib, +5 anal/beast, +5 obed, +3 fear/hate, -15 conf)"
         Type="Misc"
         Badness="40"
         Special="None"
@@ -16,7 +16,7 @@
     <Effect     What="Stat"     Name="Libido"           Amount="10" />
     <Effect     What="Stat"     Name="Confidence"       Amount="-15" />
     <Effect     What="Stat"     Name="Obedience"        Amount="5" />
-    <Effect     What="Stat"     Name="PCHate"           Amount="3" />
+    <Effect     What="Stat"     Name="PCLove"           Amount="-3" />
     <Effect     What="Stat"     Name="PCFear"           Amount="3" />
         <Crafting CraftPoints="150" ManaCost="0">
             <Job Name="Make Items"/>

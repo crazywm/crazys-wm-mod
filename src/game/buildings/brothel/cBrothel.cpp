@@ -657,31 +657,12 @@ void do_food_and_digs(IBuilding& brothel, sGirl& girl)
     int san = g_Dice.bell(sanA, sanB);
 
     girl.happiness(hap);
-    girl.pclove(lov);
-    girl.pchate(hat);
+    girl.pclove(lov - hat);
     girl.pcfear(fea);
     girl.sanity(san);
 
 
     // after all the happy, love fear and hate are done, do some other checks.
-
-#if 0
-    if (girl.pchate() > girl.pcfear())        // if she hates you more than she fears you, she will disobey more
-    {
-        girl.obedience(g_Dice.bell(mod, 0));
-        girl.spirit(g_Dice.bell(-1, 2));
-    }
-    else                                        // otherwise she will obey more in hopes of getting an upgrade
-    {
-        girl.obedience(g_Dice.bell(0, -mod));
-        girl.spirit(g_Dice.bell(-2, 1));
-    }
-#endif
-
-
-
-
-
     int chance = 1 + (mod < 0 ? -mod : mod);
     if (!g_Dice.percent(chance)) return;
     // Only check if a trait gets modified if mod is far from 0
@@ -778,7 +759,7 @@ void updateGirlTurnBrothelStats(sGirl& girl)
         {
             girl.obedience(bonus);            // bonus vs house stat    0: 31-60, 1: 01-30, 2: 00
             girl.pcfear(-bonus);
-            girl.pchate(-bonus);
+            girl.pclove(bonus);
             bonus = (60 - statHouse) / 15;
             girl.happiness(bonus);            // bonus vs house stat    0: 46-60, 1: 31-45, 2: 16-30, 3: 01-15, 4: 00
         }
@@ -790,7 +771,7 @@ void updateGirlTurnBrothelStats(sGirl& girl)
         if (bonus > 0)                        // no increase for hate or fear
         {
             girl.pcfear(-bonus);
-            girl.pchate(-bonus);
+            girl.pclove(bonus);
         }
 
         bonus = (60 - statHouse) / 15;

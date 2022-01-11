@@ -12,7 +12,7 @@
 		<Effect			What="Stat"			Name="Refinement"		Amount="-15" />
 		<Effect			What="Stat"			Name="Dignity"			Amount="-15" />
 		<Effect			What="Stat"			Name="Obedience"		Amount="-15" />
-		<Effect			What="Stat"			Name="PCHate"			Amount="65" />
+		<Effect			What="Stat"			Name="PCLove"			Amount="-65" />
 		<Effect			What="Stat"			Name="PCFear"			Amount="-100" />
 		<Effect			What="GirlStatus"			Name="Controlled"			Amount="1" />
 	</Item>

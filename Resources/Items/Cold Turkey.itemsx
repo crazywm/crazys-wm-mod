@@ -8,8 +8,7 @@
 	<Effect What="Stat" Name="Happiness" Amount="20" />
 	<Effect What="Stat" Name="Tiredness" Amount="20" />
 	<Effect What="Stat" Name="PCFear" Amount="-5" />
-	<Effect What="Stat" Name="PCHate" Amount="-5" />
-	<Effect What="Stat" Name="PCLove" Amount="5" />
+	<Effect What="Stat" Name="PCLove" Amount="10" />
 	<Crafting CraftPoints="100" ManaCost="0">
             <Job Name="Butcher"/>
         </Crafting>
@@ -22,8 +21,7 @@
 	<Effect What="Stat" Name="Happiness" Amount="20" />
 	<Effect What="Stat" Name="Tiredness" Amount="20" />
 	<Effect What="Stat" Name="PCFear" Amount="-5" />
-	<Effect What="Stat" Name="PCHate" Amount="-5" />
-	<Effect What="Stat" Name="PCLove" Amount="5" />
+	<Effect What="Stat" Name="PCLove" Amount="10" />
 	<Effect What="Trait" Name="Former Addict" Amount="1" />
 	<Effect What="Trait" Name="Alcoholic" Amount="0" />
 	<Crafting CraftPoints="100" ManaCost="0">
@@ -38,8 +36,7 @@
 	<Effect What="Stat" Name="Happiness" Amount="20" />
 	<Effect What="Stat" Name="Tiredness" Amount="20" />
 	<Effect What="Stat" Name="PCFear" Amount="-5" />
-	<Effect What="Stat" Name="PCHate" Amount="-5" />
-	<Effect What="Stat" Name="PCLove" Amount="5" />
+	<Effect What="Stat" Name="PCLove" Amount="10" />
 	<Effect What="Trait" Name="Former Addict" Amount="1" />
 	<Effect What="Trait" Name="Viras Blood Addict" Amount="0" />
 	<Crafting CraftPoints="100" ManaCost="0">
@@ -54,8 +51,7 @@
 	<Effect What="Stat" Name="Happiness" Amount="20" />
 	<Effect What="Stat" Name="Tiredness" Amount="20" />
 	<Effect What="Stat" Name="PCFear" Amount="-5" />
-	<Effect What="Stat" Name="PCHate" Amount="-5" />
-	<Effect What="Stat" Name="PCLove" Amount="5" />
+	<Effect What="Stat" Name="PCLove" Amount="10" />
 	<Effect What="Trait" Name="Former Addict" Amount="1" />
 	<Effect What="Trait" Name="Shroud Addict" Amount="0" />
 	<Crafting CraftPoints="100" ManaCost="0">
@@ -70,8 +66,7 @@
 	<Effect What="Stat" Name="Happiness" Amount="20" />
 	<Effect What="Stat" Name="Tiredness" Amount="20" />
 	<Effect What="Stat" Name="PCFear" Amount="-5" />
-	<Effect What="Stat" Name="PCHate" Amount="-5" />
-	<Effect What="Stat" Name="PCLove" Amount="5" />
+	<Effect What="Stat" Name="PCLove" Amount="10" />
 	<Effect What="Trait" Name="Former Addict" Amount="1" />
 	<Effect What="Trait" Name="Fairy Dust Addict" Amount="0" />
 	<Crafting CraftPoints="100" ManaCost="0">
@@ -86,8 +81,7 @@
 	<Effect What="Stat" Name="Happiness" Amount="20" />
 	<Effect What="Stat" Name="Tiredness" Amount="20" />
 	<Effect What="Stat" Name="PCFear" Amount="-5" />
-	<Effect What="Stat" Name="PCHate" Amount="-5" />
-	<Effect What="Stat" Name="PCLove" Amount="5" />
+	<Effect What="Stat" Name="PCLove" Amount="10" />
 	<Effect What="Trait" Name="Former Addict" Amount="1" />
 	<Effect What="Trait" Name="Smoker" Amount="0" />
 	<Crafting CraftPoints="100" ManaCost="0">

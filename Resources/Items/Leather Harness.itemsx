@@ -85,8 +85,8 @@
             Amount="15" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="15" />
+            Name="PCLove"
+            Amount="-15" />
         <Effect
             What="Stat"
             Name="PCFear"

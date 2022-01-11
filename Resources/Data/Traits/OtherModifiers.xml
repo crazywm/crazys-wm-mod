@@ -388,20 +388,11 @@
 
     <Modifier Name="preg.abort.love">
         <!-- How love changes with an abortion - default is -5 -->
-        <Trait Name="Lesbian" Value="-1" />
+        <Trait Name="Lesbian" Value="-2" />
         <Trait Name="Sadistic" Value="-1" />
-        <Trait Name="Masochist" Value="-1" />
         <Trait Name="Your Daughter" Value="-3" />
-        <Trait Name="MILF" Value="-1" />
-        <Trait Name="Angel" Value="-5" />
-    </Modifier>
-
-    <Modifier Name="preg.abort.hate">
-        <!-- How hate changes with an abortion - default is 5 -->
-        <Trait Name="Lesbian" Value="1" />
-        <Trait Name="Masochist" Value="-1" />
-        <Trait Name="MILF" Value="1" />
-        <Trait Name="Angel" Value="5" />
+        <Trait Name="MILF" Value="-2" />
+        <Trait Name="Angel" Value="-10" />
     </Modifier>
 
     <Modifier Name="inseminated.abort.happy">

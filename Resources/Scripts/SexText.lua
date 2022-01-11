@@ -594,7 +594,7 @@ function GetBDSMMessage(girl, customer)
             else
                 if girl:weeks_pregnant() < ((3 * girl:pregnancy_term()) / 4) then
                     -- if she's showing
-                    message = "Seeing her condition, the customer was reluctant to do bondage. ${name} reassured him and showed him there was lots he could still do to her.";
+                    message = "Seeing her condition, the customer was reluctant to do bondage. ${name} reassured him and showed him there was lots he could still do to her."
                 else
                     -- if she's about to drop
                     message = "Seeing her advanced pregnancy, the customer figured bondage was impossible. ${name} helped him see there were lots of fun things he could still do to her."
@@ -1307,13 +1307,13 @@ function GetNormalMessage(girl, customer)
         elseif wm.Percent(35) and girl:has_trait("Phat Booty", "Plump Tush", "Wide Bottom", "Great Arse", "Tight Butt", "Deluxe Derriere") then
             message = "${name} is okay at sex, but the customer figured out: to have a really great time you have to grip dat ass and do her from behind."
             customer:happiness(20)
-        elseif wm.Percent(35) and girl:pclove() - girl:pchate() > 0 and wm.GetPlayerDisposition() > 40 then  -- bonus if you are nice
+        elseif wm.Percent(35) and girl:pclove() > 0 and wm.GetPlayerDisposition() > 40 then  -- bonus if you are nice
             message = "${name} is inspired by your kindness and wants you to succeed. She tried her best to give the customer great sex."
             customer:happiness(20);
             girl:happiness(2)
             girl:obedience(2)
             girl:enjoyment(wm.ACTIONS.SEX, 2)
-        elseif wm.Percent(35) and girl:pclove() - girl:pchate() > 60 then  -- if she likes you
+        elseif wm.Percent(35) and girl:pclove() > 60 then  -- if she likes you
             message = "When ${name} couldn't get in the mood for the customer, she closed her eyes and imagined it was you. She fucked him with some real passion."
             customer:happiness(15)
         elseif wm.Percent(35) and (girl:refinement() < 35 or girl:has_trait("Cum Addict")) then
@@ -1347,7 +1347,7 @@ function GetNormalMessage(girl, customer)
         elseif wm.Percent(25) and girl:has_trait("Alcoholic") then
             message = "Somehow ${name} had gotten hold of alcohol. She was completely wild, fucking the customer like crazy even after he came."
             customer:happiness(5)
-        elseif wm.Percent(35) and girl:pclove() - girl:pchate() > 0 and wm.GetPlayerDisposition() > 40 then  -- bonus if you are nice
+        elseif wm.Percent(35) and girl:pclove() > 0 and wm.GetPlayerDisposition() > 40 then  -- bonus if you are nice
             message = "${name} knows you are the best "
             if girl:is_slave() then
                 message = message .. "master"
@@ -1359,7 +1359,7 @@ function GetNormalMessage(girl, customer)
             girl:happiness(2)
             girl:obedience(2)
             girl:enjoyment(wm.ACTIONS.SEX, 2)
-        elseif wm.Percent(35) and girl:pclove() - girl:pchate() > 60 then  -- if she likes you
+        elseif wm.Percent(35) and girl:pclove() > 60 then  -- if she likes you
             message = "${name} closed her eyes and imagined it was you. She fucked him dry."
             customer:happiness(15)
         elseif wm.Percent(35) and (girl:refinement() < 35 or girl:has_trait("Cum Addict")) then
@@ -1411,7 +1411,7 @@ function GetNormalMessage(girl, customer)
         elseif wm.Percent(25) and girl:has_trait("Alcoholic") then
             message = "Somehow ${name} was drunk. She was completely wild and uninhibited fucking and sucking the customer like crazy even after he came twice."
             customer:happiness(15)
-        elseif wm.Percent(35) and girl:pclove() - girl:pchate() > 0 and wm.GetPlayerDisposition() > 40 then  -- bonus if you are nice
+        elseif wm.Percent(35) and girl:pclove() > 0 and wm.GetPlayerDisposition() > 40 then  -- bonus if you are nice
             message = "${name}knows you are the kindest "
             if girl:is_slave() then
                 message = message .. "master"

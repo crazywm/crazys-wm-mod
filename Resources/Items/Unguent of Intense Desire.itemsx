@@ -8,8 +8,7 @@
       Cost="1200" 
       Rarity="Shop05" 
       Infinite="false">
-   <Effect What="Stat" Name="PCHate" Amount="10" />
-   <Effect What="Stat" Name="PCLove" Amount="-10" />
+   <Effect What="Stat" Name="PCLove" Amount="-20" />
    <Effect What="Stat" Name="Obedience" Amount="-30" />
    <Effect What="Trait" Name="Nymphomaniac" Amount="1" />
    <Effect What="Trait" Name="Fast Orgasms" Amount="0" />

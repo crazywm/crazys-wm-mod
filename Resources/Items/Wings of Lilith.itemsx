@@ -10,7 +10,7 @@
       Infinite="false">
    <Effect What="Skill" Name="Magic"                   Amount="60"    />
    <Effect What="Stat"  Name="Charisma"                Amount="15"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-15"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="15"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-60"    />
    <Effect What="Stat"  Name="Intelligence"            Amount="25"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="25"    />

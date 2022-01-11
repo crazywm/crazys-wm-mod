@@ -8,7 +8,7 @@
       Cost="2400" 
       Rarity="Shop05" 
       Infinite="false">
-   <Effect What="Stat" Name="PCHate" Amount="10" />
+   <Effect What="Stat" Name="PCLove" Amount="-10" />
    <Effect What="Stat" Name="PCFear" Amount="10" />
    <Effect What="Stat" Name="Constitution" Amount="-10" />
    <Effect What="Stat" Name="Obedience" Amount="-30" />

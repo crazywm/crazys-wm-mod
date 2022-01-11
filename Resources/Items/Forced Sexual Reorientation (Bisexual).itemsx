@@ -7,8 +7,7 @@
         <Effect What="Stat" Name="Health" Amount="-50" />
         <Effect What="Stat" Name="Tiredness" Amount="30" />
         <Effect What="Stat" Name="PCFear" Amount="50" />
-        <Effect What="Stat" Name="PCHate" Amount="50" />
-        <Effect What="Stat" Name="PCLove" Amount="-20" />
+        <Effect What="Stat" Name="PCLove" Amount="-70" />
         <Effect What="Trait" Name="Straight" Amount="0" />
         <Effect What="Trait" Name="Lesbian" Amount="0" />
         <Effect What="Trait" Name="Bisexual" Amount="1" />

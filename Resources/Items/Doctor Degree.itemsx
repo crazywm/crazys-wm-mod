@@ -18,9 +18,8 @@
    <Effect What="Stat" Name="Spirit" Amount="75" />
    <Effect What="Stat" Name="Health" Amount="75" />
    <Effect What="Stat" Name="Tiredness" Amount="75" />
-   <Effect What="Stat" Name="PCHate" Amount="-75" />
    <Effect What="Stat" Name="PCFear" Amount="-75" />
-   <Effect What="Stat" Name="PCLove" Amount="75" />
+   <Effect What="Stat" Name="PCLove" Amount="150" />
    <Effect What="Skill" Name="Service" Amount="70" />
    <Effect What="Skill" Name="Medicine" Amount="70" />
    <Effect What="Trait" Name="Retarded" Amount="0" />

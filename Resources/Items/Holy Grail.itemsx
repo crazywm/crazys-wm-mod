@@ -41,9 +41,6 @@
         <Effect What="Stat" Name="Mana" Amount="100" />
         <Effect What="Stat" Name="Morality" Amount="30" />
         <Effect What="Stat" Name="Obedience" Amount="0" />
-        <Effect What="Stat" Name="PCFear" Amount="0" />
-        <Effect What="Stat" Name="PCHate" Amount="0" />
-        <Effect What="Stat" Name="PCLove" Amount="0" />
         <Effect What="Stat" Name="Refinement" Amount="30" />
         <Effect What="Stat" Name="Spirit" Amount="30" />
         <Effect What="Stat" Name="Age" Amount="-10" />

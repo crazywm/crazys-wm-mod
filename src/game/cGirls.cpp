@@ -333,7 +333,7 @@ string cGirls::GetGirlMood(const sGirl& girl)
     stringstream ss;
     ss << girl.FullName();
 
-    int HateLove = girl.pclove() - girl.pchate();
+    int HateLove = girl.pclove();
     ss << " feels the player ";
 
     if (girl.has_active_trait("Your Daughter"))
@@ -559,11 +559,11 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
     // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetMoreDetailsString
     ss << "STATS";
     const int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE,
-                            STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION ,STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
+                            STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION ,STAT_PCFEAR, STAT_PCLOVE };
     const int statnumsize = 15;
     const string statstr[] = { "Charisma : \t", "Beauty : \t", "Libido : \t", "Mana : \t", "Intelligence : \t", "Confidence : \t",
                          "Obedience : \t", "Spirit : \t", "Agility : \t", "Strength : \t", "Fame : \t", "Lactation : \t",
-                         "PCFear : \t", "PCLove : \t", "PCHate : \t", "Gold : \t" };
+                         "PCFear : \t", "PCLove : \t", "Gold : \t" };
 
     const int show = statnumsize - 3;
 
@@ -571,7 +571,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
 
     if (!purchase)
     {
-        ss << '\n' << statstr[15];
+        ss << '\n' << statstr[14];
         if (g_Game->gang_manager().GetGangOnMission(MISS_SPYGIRLS))
         {
             ss << girl.m_Money;
@@ -1448,12 +1448,12 @@ void cGirls::UseItems(sGirl& girl)
                     case STATUS_PREGNANT_BY_PLAYER:
                         if (curEffect->m_Amount == 1 && !girl.is_pregnant())
                         {
-                            if (girl.pchate()<10 && girl.pclove()>80)    // she love you and wants to have your child
+                            if (girl.pclove()>80)    // she love you and wants to have your child
                                 checktouseit--;
                         }
                         if (curEffect->m_Amount == 0 && girl.has_status(STATUS_PREGNANT_BY_PLAYER))
                         {
-                            if (girl.pchate()>90 && girl.pclove()<10)    // she hates you and doesn't want to have your child
+                            if (girl.pclove()<-90)    // she hates you and doesn't want to have your child
                                 checktouseit--;
                         }
                         break;
@@ -3453,8 +3453,7 @@ void cGirls::updateGirlTurnStats(sGirl& girl)
         {
             b = bonus / 2 + 1;                // halve the damage
             girl.health(-b);                // Girl will hate player more if badly hurt from being tired
-            girl.pclove(-1);
-            girl.pchate(1);
+            girl.pclove(-2);
         }
         else girl.health(-bonus);            // Really tired girls lose more health
     }
@@ -3463,8 +3462,8 @@ void cGirls::updateGirlTurnStats(sGirl& girl)
     bonus = 40 - girl.health();
     if (bonus > 0)                            // bonus is 1-40
     {
-        girl.pchate(1);                    // Base loss for being hurt
-        girl.pclove(-1);
+        // Base loss for being hurt
+        girl.pclove(-2);
         girl.happiness(-1);
 
         bonus = bonus / 8 + 1;                // bonus vs health values 1: 33-39, 2: 25-32, 3: 17-24, 4: 09-16 5: 01-08
@@ -3873,8 +3872,7 @@ void cGirls::TakeGold(sGirl& girl) {
         girl.confidence(-1);
         girl.obedience(5);
         girl.spirit(-2);
-        girl.pchate(5);
-        girl.pclove(-5);
+        girl.pclove(-10);
         girl.pcfear(5);
         girl.happiness(-20);
     }
@@ -3883,8 +3881,7 @@ void cGirls::TakeGold(sGirl& girl) {
         girl.confidence(-5);
         girl.obedience(5);
         girl.spirit(-10);
-        girl.pchate(30);
-        girl.pclove(-30);
+        girl.pclove(-60);
         girl.pcfear(10);
         girl.happiness(-50);
     }
@@ -3988,15 +3985,14 @@ void cGirls::FreeGirls(const std::vector<sGirl*>& targets, bool party) {
         if(party) {
             g_Game->player().disposition(7);
             // if she really hates you, a freedom party alone won't sway her
-            if(girl->pchate() > 50) {
+            if(girl->pclove() < -50) {
                 girl->pcfear(-10);
-                girl->pchate(-25);
+                girl->pclove(25);
                 girl->happiness(20);
                 girl->dignity(5);
             } else {
-                girl->pclove(10);
+                girl->pclove(35);
                 girl->pcfear(-20);
-                girl->pchate(-25);
                 girl->obedience(5);
                 girl->happiness(50);
                 girl->obedience(10);
@@ -4006,9 +4002,8 @@ void cGirls::FreeGirls(const std::vector<sGirl*>& targets, bool party) {
             girl->tiredness(5);
         } else {
             g_Game->player().disposition(5);
-            girl->pclove(10);
+            girl->pclove(35);
             girl->pcfear(-20);
-            girl->pchate(-25);
             girl->happiness(35);
         }
     }
@@ -4070,8 +4065,7 @@ void cGirls::SetSlaveStats(sGirl& girl) {
     girl.set_slave();
     girl.obedience(-10);
     girl.pcfear(10);
-    girl.pclove(-20);
-    girl.pchate(15);
+    girl.pclove(-35);
     girl.happiness(-50);
     girl.spirit(-5);
     girl.dignity(-5);

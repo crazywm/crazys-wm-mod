@@ -23,8 +23,7 @@
    <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
    <Effect What="Stat"  Name="Health"                  Amount="100"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-100"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="100"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-200"    />
    <Effect What="Trait" Name="Cool Scars"              Amount="1"    />
    <Effect What="Trait" Name="Cool Person"             Amount="1"    />
    <Effect What="Trait" Name="Strong"                  Amount="1"    />

@@ -10,7 +10,7 @@
       Infinite="false">
    <Effect What="Stat"  Name="Health"                  Amount="-20"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="5"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
    <Effect What="Stat"  Name="Intelligence"            Amount="50"    />
    <Effect What="Stat"  Name="Exp"                     Amount="5"    />
    <Effect What="Trait" Name="Nerd"                    Amount="1"    />

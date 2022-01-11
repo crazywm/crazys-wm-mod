@@ -8,9 +8,8 @@
       Cost="10000"
       Rarity="Catacomb15"
       Infinite="false">
-   <Effect What="Stat"  Name="PCLove"                  Amount="-20"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-40"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="20"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="20"    />
    <Effect What="Stat"  Name="Happiness"               Amount="-20"    />
    <Effect What="Stat"  Name="Obedience"               Amount="30"    />
    <Effect What="Stat"  Name="Libido"                  Amount="30"    />

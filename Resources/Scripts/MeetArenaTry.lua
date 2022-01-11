@@ -114,8 +114,7 @@ function PersonalSupervision(girl)
                 Dialog("Many women obviously let inferior opponents defeat them, and the eventual winner knows she isn't actually the best warrior in the arena today.")
                 if wm.Percent(50) < 5 then
                     Dialog("Still, when you offer her the job, she takes it. You hear her mutter under her breath, \"Better working for an asshole than starving to death.\"")
-                    girl:pclove(-100)
-                    girl:pchate(25)
+                    girl:pclove(-125)
                     wm.AcquireGirl(girl)
                     return
                 else

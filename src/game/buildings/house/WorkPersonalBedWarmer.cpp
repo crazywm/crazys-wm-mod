@@ -45,7 +45,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
 
     //initiate things I need
     int wages = 0, tips = 0;
-    int HateLove = girl.pclove() - girl.pchate();
+    int HateLove = girl.pclove();
 
 
     // Headgirl can influence against refusal
@@ -161,7 +161,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                     girl.health(-1);
                     g_Game->gold().misc_debit(20); //drug/spell money
                     girl.upd_temp_stat(STAT_LIBIDO, 2, true);
-                    girl.pchate(5); //she'll hate you later
+                    girl.pclove(-5); //she'll hate you later
                     HateLove = 50;  //probably best fit for next bit...
                 }
             }
@@ -320,7 +320,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                         << "\nYour drug delivers the perfect blend of horniness and suggestibility. ${name} will participate. Fully.\n";
                     g_Game->gold().misc_debit(100); //drug money
                     girl.upd_temp_stat(STAT_LIBIDO, 10, true);
-                    girl.pchate(+10); //she'll hate you later
+                    girl.pclove(-10); //she'll hate you later
                     HateLove = 50;  //probably best fit for next bit...
                 }
                 //Lucky?
@@ -377,7 +377,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                     girl.health(-1);
                     g_Game->gold().misc_debit(20); //drug/spell money
                     girl.upd_temp_stat(STAT_LIBIDO, 2, true);
-                    girl.pchate(5); //she'll hate you later
+                    girl.pclove(-5); //she'll hate you later
                     HateLove = 50;  //probably best fit for next bit...
                 }
             }
@@ -439,7 +439,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                         << "\nYour drug delivers a perfect blend of horniness and suggestibility. ${name} will now participate. Fully.\n";
                     g_Game->gold().misc_debit(100); //drug money
                     girl.upd_temp_stat(STAT_LIBIDO, 10, true);
-                    girl.pchate(+20); //she'll hate you later
+                    girl.pclove(-20); //she'll hate you later
                     HateLove = 50;  //probably best fit for next bit...
                 }
                 //if nothing can change her mind
@@ -1281,8 +1281,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         else if (girl.lose_trait("Herpes",30))
         {
             g_Game->gold().misc_debit(1000);
-            girl.pclove(1);
-            girl.pchate(-1);
+            girl.pclove(2);
             const char* ssm = "${name} gave you herpes.\nMedicine for it costs you 1,000 gold.\nYou use the medicine to clear her up too.\n";
             ss << ssm;
             g_Game->push_message(ssm, 0);
@@ -1290,8 +1289,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         else if (girl.lose_trait("Syphilis", 30))
         {
             g_Game->gold().misc_debit(3500);
-            girl.pclove(3);
-            girl.pchate(-3);
+            girl.pclove(6);
             const char* ssm = "${name} gave you syphilis.\nMedicine for it is hard to track down, costing you 3,500 gold.\nYou share it with her.\n";
             ss << ssm;
             g_Game->push_message(ssm, 0);
@@ -1299,8 +1297,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         else if (girl.lose_trait("AIDS", 30))
         {
             g_Game->gold().misc_debit(8000);
-            girl.pclove(6);
-            girl.pchate(-6);
+            girl.pclove(12);
             const char* ssm = "${name} gave you AIDS.\n8,000 gold later and the wizards' incantations have finally cleansed you both.\n";
             ss << ssm;
             g_Game->push_message(ssm, 0);

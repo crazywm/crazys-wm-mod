@@ -192,8 +192,6 @@ public:
     int pcfear(int n)                               { return upd_base_stat(STATS::STAT_PCFEAR, n, true); }
     int pclove() const                              { return get_stat(STATS::STAT_PCLOVE); }
     int pclove(int n)                               { return upd_base_stat(STATS::STAT_PCLOVE, n, true); }
-    int pchate() const                              { return get_stat(STATS::STAT_PCHATE); }
-    int pchate(int n)                               { return upd_base_stat(STATS::STAT_PCHATE, n, true); }
     int morality() const                            { return get_stat(STATS::STAT_MORALITY); }
     int morality(int n)                             { return upd_base_stat(STATS::STAT_MORALITY, n, true); }
     int refinement() const                          { return get_stat(STATS::STAT_REFINEMENT); }

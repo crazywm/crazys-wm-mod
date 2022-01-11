@@ -10,9 +10,8 @@
       Infinite="false" 
       GirlBuyChance="0">
    <Effect What="Stat" Name="Happiness" Amount="100" />
-   <Effect What="Stat" Name="PCHate" Amount="-20" />
    <Effect What="Stat" Name="PCFear" Amount="-20" />
-   <Effect What="Stat" Name="PCLove" Amount="60" />
+   <Effect What="Stat" Name="PCLove" Amount="80" />
    <Crafting CraftPoints="200" ManaCost="50">
          <Job Name="Gardener"/>
          <Skill Name="Herbalism" Minimum="25" />

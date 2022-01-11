@@ -9,8 +9,7 @@
       Rarity="Catacomb15"
       Infinite="false">
    <Effect What="Stat" Name="PCFear" Amount="-10" />
-   <Effect What="Stat" Name="PCLove" Amount="10" />
-   <Effect What="Stat" Name="PCHate" Amount="-10" />
+   <Effect What="Stat" Name="PCLove" Amount="20" />
    <Effect What="Stat" Name="Spirit" Amount="15" />
    <Effect What="Stat" Name="Age" Amount="-5" />
    <Effect What="Trait" Name="Cute" Amount="1" />

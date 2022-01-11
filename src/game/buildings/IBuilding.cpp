@@ -164,7 +164,7 @@ void IBuilding::BeginWeek()
         // increase all the girls fear and hate of the player for letting her die (whether his fault or not)
         m_Girls->apply([&](auto& girl) {
             girl.pcfear(2 * dead_girls.size());
-            girl.pchate(1 * dead_girls.size());
+            girl.pclove(-1 * dead_girls.size());
         });
 
         for (auto& dead : dead_girls) {
@@ -725,7 +725,7 @@ void IBuilding::do_daily_items(sGirl& girl)
 
     std::stringstream ss;
     std::string girlName = girl.FullName();
-    int HateLove = girl.pclove() - girl.pchate();
+    int HateLove = girl.pclove();
 
     int mast = false;
     int strip = false;
@@ -747,7 +747,7 @@ void IBuilding::do_daily_items(sGirl& girl)
         if (g_Dice.percent(20))        // it always works but doesn't always say anything
             ss << girlName << " went around wearing her Disguised Slave Band having no idea of what it really does to her.\n \n";
         girl.obedience(1);
-        girl.pchate(-1);
+        girl.pclove(1);
     }
 
 
@@ -867,7 +867,7 @@ void IBuilding::do_daily_items(sGirl& girl)
     else if (girl.has_item("Ladonna's Dress"))
     {
         ss << girlName << " went around wearing Ladonna's Dress today making her look fashonable but hideous.\n \n";
-        girl.pchate(g_Dice % 2);
+        girl.pclove(-(g_Dice % 2));
         girl.refinement(1);
         girl.dignity(-1);
     }
@@ -1080,8 +1080,7 @@ void IBuilding::do_daily_items(sGirl& girl)
             else if (HateLove > 10)
             {
                 ss << " and smiled";
-                girl.pclove(1);
-                girl.pchate(-1);
+                girl.pclove(2);
                 girl.happiness(g_Dice % 4);
             }
             else if (HateLove > 30)
@@ -1091,14 +1090,12 @@ void IBuilding::do_daily_items(sGirl& girl)
             else if (HateLove > 80)
             {
                 ss << ". She looked at it incredulously for a bit then pushed it back behind some other things on the shelf";
-                girl.pclove(g_Dice.bell(-2, 0));
-                girl.pchate(g_Dice.bell(0, 2));
+                girl.pclove(g_Dice.bell(-4, 0));
             }
             else
             {
-                ss << ". She looked at it angerly for a bit then threw it in the trash";
-                girl.pclove(g_Dice.bell(-5, -1));
-                girl.pchate(g_Dice.bell(2, 5));
+                ss << ". She looked at it angrily for a bit then threw it in the trash";
+                girl.pclove(g_Dice.bell(-10, 1));
                 girl.remove_item(girl.has_item("Appreciation Trophy"));
             }
         }
@@ -1122,14 +1119,12 @@ void IBuilding::do_daily_items(sGirl& girl)
             else if (HateLove > 70)
             {
                 ss << ". She looked at it incredulously for a bit then pushed it back behind some other things on the shelf";
-                girl.pclove(g_Dice.bell(-4, 1));
-                girl.pchate(g_Dice.bell(-1, 4));
+                girl.pclove(g_Dice.bell(-8, 2));
             }
             else
             {
                 ss << ". She looked at it angerly for a bit then threw it in the trash";
-                girl.pclove(g_Dice.bell(-7, -2));
-                girl.pchate(g_Dice.bell(2, 7));
+                girl.pclove(g_Dice.bell(-14, 0));
                 girl.remove_item(girl.has_item("Appreciation Trophy"));
             }
         }
@@ -1163,11 +1158,10 @@ void IBuilding::do_daily_items(sGirl& girl)
     }
     if (girl.has_item("Lovers Orb") && g_Dice.percent(50))
     {
-        if (girl.pclove() > girl.pchate() && g_Dice.percent(girl.pclove()))
+        if (girl.pclove() > 0 && g_Dice.percent(girl.pclove()))
         {
-            girl.pclove(1 + g_Dice % 3);
+            girl.pclove(1 + g_Dice % 6);
             girl.pcfear(-(g_Dice % 3));
-            girl.pchate(-(g_Dice % 3));
             girl.happiness(3 + g_Dice % 3);
             girl.tiredness(1 + g_Dice % 3);
             if (g_Dice.percent(50))
@@ -1188,9 +1182,8 @@ void IBuilding::do_daily_items(sGirl& girl)
         }
         else    // everyone else
         {
-            girl.pclove(g_Dice % 3);
+            girl.pclove(g_Dice % 5);
             girl.pcfear(-(g_Dice % 2));
-            girl.pchate(-(g_Dice % 2));
             girl.happiness(1 + g_Dice % 3);
             girl.tiredness(1 + g_Dice % 3);
         }
@@ -1202,9 +1195,8 @@ void IBuilding::do_daily_items(sGirl& girl)
             if (g_Dice.percent(50))
                 ss << girlName << " comes to you and tells you she had a happy dream about you.\n \n";
             girl.happiness(4 + g_Dice % 5);
-            girl.pclove(g_Dice % 2);
+            girl.pclove(g_Dice % 4);
             girl.pcfear(-(g_Dice % 2));
-            girl.pchate(-(g_Dice % 2));
         }
         else    // everyone else
         {
@@ -1229,7 +1221,7 @@ void IBuilding::do_daily_items(sGirl& girl)
                 }
             }
             girl.pcfear(-(g_Dice % 2));
-            girl.pchate(-(g_Dice % 2));
+            girl.pclove((g_Dice % 2));
         }
         else    // everyone else
         {
@@ -1245,7 +1237,7 @@ void IBuilding::do_daily_items(sGirl& girl)
         girl.happiness(2 + g_Dice % 4);
         girl.tiredness(-(g_Dice % 10));
         girl.pcfear(-(g_Dice % 2));
-        girl.pchate(-(g_Dice % 2));
+        girl.pclove((g_Dice % 2));
     }
 #endif
 
@@ -1372,16 +1364,14 @@ void IBuilding::do_daily_items(sGirl& girl)
                 if (HateLove > 60)
                 {
                     ss << ", all of them with your last name";
-                    girl.pclove(g_Dice % 5);
-                    girl.pchate(-(g_Dice % 5));
+                    girl.pclove(g_Dice % 10);
                     girl.pcfear(-(g_Dice % 3));
                     girl.happiness(g_Dice % 10);
                 }
                 else if (HateLove > 20)
                 {
                     ss << ", sometimes with your last name";
-                    girl.pclove(g_Dice % 2);
-                    girl.pchate(-(g_Dice % 2));
+                    girl.pclove(g_Dice % 4);
                     girl.happiness(g_Dice % 5);
                 }
                 else if (HateLove > -20)
@@ -1392,15 +1382,13 @@ void IBuilding::do_daily_items(sGirl& girl)
                 else if (HateLove > -60)
                 {
                     ss << ", sometimes when she uses your last name she scratches it out";
-                    girl.pclove(-(g_Dice % 5));
-                    girl.pchate(g_Dice % 5);
+                    girl.pclove(-(g_Dice % 10));
                     girl.happiness(g_Dice.bell(-3, 3));
                 }
                 else
                 {
                     ss << ", she never uses your last name or any name similar to yours";
-                    girl.pclove(-(g_Dice % 10));
-                    girl.pchate(g_Dice % 10);
+                    girl.pclove(-(g_Dice % 20));
                     girl.pcfear(g_Dice % 5);
                     girl.happiness(-(g_Dice % 5));
                 }
@@ -1410,8 +1398,7 @@ void IBuilding::do_daily_items(sGirl& girl)
                 if (HateLove > 60)
                 {
                     ss << ", sometimes she would use your last name hopeing you would take her child as your own";
-                    girl.pclove(g_Dice % 3);
-                    girl.pchate(-(g_Dice % 3));
+                    girl.pclove(g_Dice % 6);
                     girl.pcfear(-(g_Dice % 2));
                 }
                 girl.happiness(g_Dice % 5);
@@ -1431,11 +1418,11 @@ void IBuilding::do_daily_items(sGirl& girl)
             case 4:        girl.spirit(1);                    thoughts = " positive";        break;
             case 5:        girl.spirit(-1);                    thoughts = " negative";        break;
             case 6:        girl.obedience(1);                    thoughts = " helpful";        break;
-            case 7:        girl.obedience(-1);                thoughts = " anoying";        break;
+            case 7:        girl.obedience(-1);                thoughts = " annoying";        break;
             case 8:        girl.pclove(1);                    thoughts = " loving";        break;
             case 9:        girl.pclove(-1);                    thoughts = " unloving";        break;
-            case 10:    girl.pchate(1);                    thoughts = " hateful";        break;
-            case 11:    girl.pchate(-1);                    thoughts = " carefree";        break;
+            case 10:    girl.pclove(-1);                    thoughts = " hateful";        break;
+            case 11:    girl.pclove(1);                    thoughts = " carefree";        break;
             case 12:    girl.pcfear(1);                    thoughts = " fearful";        break;
             case 13:    girl.pcfear(-1);                    thoughts = " fearless";        break;
             case 14:    girl.dignity(1);                    thoughts = " proper";        break;
@@ -1494,8 +1481,8 @@ void IBuilding::do_daily_items(sGirl& girl)
         case 7:        girl.combat(1);                    paintingtype = "combat";        break;
         case 8:        girl.pclove(1);                    paintingtype = "loving";        break;
         case 9:        girl.pclove(-1);                    paintingtype = "angry";            break;
-        case 10:    girl.pchate(1);                    paintingtype = "hateful";        break;
-        case 11:    girl.pchate(-1);                    paintingtype = "carefree";        break;
+        case 10:    girl.pclove(-1);                    paintingtype = "hateful";        break;
+        case 11:    girl.pclove(1);                    paintingtype = "carefree";        break;
         case 12:    girl.pcfear(1);                    paintingtype = "fearful";        break;
         case 13:    girl.pcfear(-1);                    paintingtype = "fearless";        break;
         case 14:    girl.dignity(1);                    paintingtype = "proper";        break;

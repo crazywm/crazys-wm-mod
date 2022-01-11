@@ -7,6 +7,6 @@
         <Effect What="Stat" Name="Constitution" Amount="10" />
         <Effect What="Stat" Name="Agility" Amount="-5" />
         <Effect What="Stat" Name="PCFear" Amount="-40" />
-        <Effect What="Stat" Name="PCHate" Amount="-20" />
+        <Effect What="Stat" Name="PCLove" Amount="20" />
     </Item>
 </Items>

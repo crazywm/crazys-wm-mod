@@ -704,17 +704,17 @@ Abortion::Abortion() : ITreatmentJob(JOB_GETABORT, "Abrt") {
 
 namespace
 {
-    void process_happiness(std::stringstream& ss, sGirl& girl, int happy, int& hate, std::array<const char*, 7> messages) {
+    void process_happiness(std::stringstream& ss, sGirl& girl, int happy, int& love, std::array<const char*, 7> messages) {
         if (happy < -50)
         {
             ss << messages[0];
-            hate += 10;
+            love -= 10;
             girl.add_temporary_trait("Pessimist", 20);
         }
         else if (happy < -25)
         {
             ss << messages[1];
-            hate += 5;
+            love -= 5;
         }
         else if (happy < -5)
         {
@@ -735,7 +735,7 @@ namespace
         else
         {
             ss << messages[6];
-            hate -= 5;
+            love += 5;
             girl.add_temporary_trait("Optimist", 20);
         }
 
@@ -781,13 +781,13 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
         msgtype = EVENT_GOODNEWS;
 
         // `J` first set the base stat modifiers
-        int happy = -10, health = -20, mana = -20, spirit = -5, love = -5, hate = 5;
+        int happy = -10, health = -20, mana = -20, spirit = -5, love = -10;
 
         if (TryConsumeResource(CarePointsBasicId, 3))
         {
             ss << "The Nurse tried to keep her healthy and happy during her recovery.\n";
             // `J` then adjust if a nurse helps her through it
-            happy += 10;    health += 10;    mana += 10;    spirit += 5;    love += 1;    hate -= 1;
+            happy += 10;    health += 10;    mana += 10;    spirit += 5;    love += 2;
         }
         else
         {
@@ -796,7 +796,6 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
 
         happy += girl.get_trait_modifier("preg.abort.happy");
         love += girl.get_trait_modifier("preg.abort.love");
-        hate += girl.get_trait_modifier("preg.abort.hate");
 
         // `J` next, check traits
         if (girl.has_active_trait("Fragile"))        // natural adj
@@ -811,7 +810,7 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
         // `J` finally see what type of pregnancy it is and get her reaction to the abortion.
         if (girl.has_status(STATUS_PREGNANT))
         {
-            process_happiness(ss, girl, happy, hate,
+            process_happiness(ss, girl, happy, love,
                               {"She is very distraught about the loss of her baby.",
                                "She is distraught about the loss of her baby.",
                                "She is sad about the loss of her baby.",
@@ -824,13 +823,13 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
         else if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))
         {
             // `J` adjust her happiness by her hate-love for you
-            happy += int(((girl.pchate() + hate) - (girl.pclove() + love)) / 2);
+            happy -= (girl.pclove() + love) / 2;
             if (girl.has_active_trait("Your Wife"))// "Why?"
             {
-                happy -= 20;    spirit -= 1;    love -= 3;    hate += 0;
+                happy -= 20;    spirit -= 1;    love -= 3;
             }
 
-            process_happiness(ss, girl, happy, hate,
+            process_happiness(ss, girl, happy, love,
                               {"She is very distraught about the loss of your baby.",
                                "She is distraught about the loss of your baby.",
                                "She is sad about the loss of your baby.",
@@ -845,14 +844,13 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
             // `J` Some traits would react differently to non-human pregnancies.
             happy += girl.get_trait_modifier("inseminated.abort.happy");
             love += girl.get_trait_modifier("inseminated.abort.love");
-            hate += girl.get_trait_modifier("inseminated.abort.hate");
 
             if (girl.has_active_trait("Angel"))        // "DEAR GOD, WHAT WAS THAT THING?"
             {
                 spirit -= 5;    mana -= 5;
             }
 
-            process_happiness(ss, girl, happy, hate,
+            process_happiness(ss, girl, happy, love,
                               {"She is very distraught about the loss of the creature growing inside her.",
                                "She is distraught about the loss of the creature growing inside her.",
                                "She is sad about the loss of the creature growing inside her.",
@@ -868,7 +866,6 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
         girl.mana(mana);
         girl.spirit(spirit);
         girl.pclove(love);
-        girl.pchate(hate);
 
         girl.m_ChildrenCount[CHILD09_ABORTIONS]++;
         girl.clear_pregnancy();

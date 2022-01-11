@@ -7,6 +7,7 @@ This bonus accumulates and decays over time and depends on the quality of the ma
 * Adjusted hitpoint calculation for combat
 * Increased XP gains for jobs and decreased XP for whoring. 
 * Decreased XP required for level-up slightly.
+* Merged Hate and Love stats
 
 ## Fixes
 * Fixed centre manager job (thanks @g539812)

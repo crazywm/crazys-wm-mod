@@ -9,7 +9,7 @@
       Rarity="Shop25"
       Infinite="false">
    <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="10"    />
    <Effect What="Trait" Name="Sterile"                 Amount="1"    />
 </Item>
 <Item Name="Prophylactic Ring"
@@ -21,7 +21,7 @@
       Rarity="Catacomb15"
       Infinite="false">
    <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="10"    />
    <Effect What="Trait" Name="Sterile"                 Amount="1"    />
 </Item>
 </Items>

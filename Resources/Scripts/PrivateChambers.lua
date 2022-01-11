@@ -138,16 +138,14 @@ function Dinner(girl)
             Dialog("She swallows it all down in one gulp and licks her lips.  \"Now that was really satisfying.\"  she says with that devilish grin.  She thanks you for the wonderful evening and returns to her room.")
             girl:oralsex(2)
             girl:happiness(3)
-            girl:pclove(2)
-            girl:pchate(-2)
+            girl:pclove(4)
         elseif girl:has_trait("Nymphomaniac") then
             Dialog("\"Wait\" She says \"I want to make you a dessert myself.\"  She excuses herself to the kitchen for a few moments.")
             Dialog("You nearly fall out of your chair when she returns wearing nothing but whipped cream lingerie with cherries over her nipples. \"I wanted to make you a banana split, but I couldn't find a good banana in the kitchen.\" she smiles coyly \"Do you know where I can find a banana?\"")
             Dialog("\"I think I can help you out with that\" you reply as you approach her.  You spend the rest of the evening applying and removing whipped cream from each others bodies.")
             PlayerFucksGirl(girl)
             girl:happiness(3)
-            girl:pclove(2)
-            girl:pchate(-2)
+            girl:pclove(4)
         elseif wm.Percent(65) then
             Dialog("You both enjoy sharing a large piece of creamy cheesecake.  She sighs contentedly as you feed her the last bite.  You both pause for several moments gazing into each others eyes.")
             return AfterDinner(girl)
@@ -173,7 +171,7 @@ function AfterDinner(girl)
         if girl:tiredness() > 40 then
             Dialog("She yawns and apologizes. \"I'm sorry, but I think it might be best to call it a night.\"")
             return HerRoom(girl)
-        elseif girl:pchate() > 50 then
+        elseif girl:pclove() < -50 then
             Dialog("She looks at you seriously. \"I appreciate that you're trying to be nice and all, but if you think a little wine and food means i'm going to fuck you, then you can go to hell.\"  She turns to storm out of your quarters.")
             -- GOTO 555 // 8
         elseif girl:pclove() > 50 then

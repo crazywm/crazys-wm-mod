@@ -64,7 +64,7 @@ namespace {
                 ss << "She was gagging and retching the whole scene, and was violently sick. She was exhausted and felt awful afterward.\n \n";
                 girl.health((10 + impact));
                 girl.tiredness((10 + impact));
-                girl.pchate(2);
+                girl.pclove(-2);
                 girl.pcfear(1);
             }
             else if (girl.has_active_trait("Gag Reflex"))
@@ -72,7 +72,7 @@ namespace {
                 ss << "She gagged and retched a lot. It was exhausting and left her feeling sick.\n \n";
                 girl.health(2 + impact);
                 girl.tiredness(5 + impact);
-                girl.pchate(1);
+                girl.pclove(-1);
             }
 
             if (chance(5) && (girl.happiness() > 80) && (girl.get_enjoyment(ACTION_PORNSTAR) > 75))

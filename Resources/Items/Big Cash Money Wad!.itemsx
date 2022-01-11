@@ -10,8 +10,7 @@
       Infinite="false">
    <Effect What="Stat" Name="Happiness" Amount="100" />
    <Effect What="Stat" Name="PCFear" Amount="-100" />
-   <Effect What="Stat" Name="PCHate" Amount="-100" />
-   <Effect What="Stat" Name="PCLove" Amount="100" />
+   <Effect What="Stat" Name="PCLove" Amount="200" />
    <Effect What="Stat" Name="Spirit" Amount="100" />
 </Item>
 </Items>

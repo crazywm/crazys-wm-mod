@@ -13,9 +13,9 @@
    <Effect What="Stat"  Name="Confidence"              Amount="50"    />
    <Effect What="Stat"  Name="Fame"                    Amount="20"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="40"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-50"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-50"    />
-   <Effect What="Trait" Name="Elegant"                 Amount="1"    />
-   <Effect What="Trait" Name="Princess"                Amount="1"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-50"   />
+   <Effect What="Stat"  Name="PCLove"                  Amount="50"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="1"     />
+   <Effect What="Trait" Name="Princess"                Amount="1"     />
 </Item>
 </Items>

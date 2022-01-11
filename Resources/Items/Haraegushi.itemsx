@@ -33,7 +33,7 @@
             Amount="-24" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-12" />
+            Name="PCLove"
+            Amount="12" />
     </Item>
 </Items>

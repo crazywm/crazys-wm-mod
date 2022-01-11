@@ -71,8 +71,7 @@ sWorkJobResult WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                 case 0:
                     ss << ("She hates you for making her do this today.\n");
-                    girl.pclove(-(rng % 2));
-                    girl.pchate(rng % 2);
+                    girl.pclove(-(rng % 4));
                     break;
                 case 1:
                     ss << ("${name} is terrified that you treat people like this.\n");
@@ -134,8 +133,7 @@ sWorkJobResult WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
                 break;
             case 3:
                 ss << ("${name} appreciates that you entrust her with this kind of work.");
-                girl.pclove(rng % 2);
-                girl.pchate(-(rng % 2));
+                girl.pclove(rng % 4);
                 break;
             default:
                 ss << ("${name} did something completely unexpected. [error]");

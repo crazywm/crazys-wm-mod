@@ -5,8 +5,7 @@ function ChatDungeon(girl)
         Dialog("You both sit and chat about all manner of things")
         girl:happiness(2)
         girl:pcfear(-1)
-        girl:pchate(-1)
-        girl:pclove(1)
+        girl:pclove(2)
     elseif choice == 1 then
         if girl:happiness() > 50 then
             Dialog("She tells you she is happy with her life.")
@@ -33,7 +32,7 @@ function ChatDungeon(girl)
             Dialog("She then says you are a little scary to be around.")
         end
 
-        if girl:pchate() < 50 then
+        if girl:pclove() > -50 then
             Dialog("She lastly tells you that she doesn't hate anything about you.")
         else
             Dialog("She lastly tells you that despite all her other feelings, she feels some hatred towards you.")
@@ -50,8 +49,7 @@ function ChatBrothel(girl)
         Dialog("After some small talk, your conversation turns to several subjects. She seems to enjoy the chance to chat.")
         girl:happiness(wm.Range(0, 4))
         girl:pcfear(wm.Range(-3, 0))
-        girl:pclove(wm.Range(0, 2))
-        girl:pchate(wm.Range(-3, 0))
+        girl:pclove(wm.Range(0, 5))
     elseif choice == 1 then
         Dialog("How are you feeling my dear? Are you happy? Are you healthy?")
         if girl:happiness() >= 80 then
@@ -100,16 +98,16 @@ function ChatBrothel(girl)
             Dialog("\"In truth, I am in love with you.\" she blushes.")
         elseif girl:pclove() > 60 then
             Dialog("She smiles a bit at the question.  \"I don't hate you.  I think you're the perfect gentlemen.\"")
-        elseif girl:pchate() > 95 then
+        elseif girl:pclove() < -95 then
             Dialog("She spits at you and screams \"I hope you fucking die with a dick in your ass!\"")
             Dialog("She grabs the nearest object and leaps at you, swinging wildly.  You quickly master your surprise and with a hard backhand you knock her to the ground.")
             Dialog("Your bodyguards rush into the room.  Seeing the girl lying on the floor they ask. \"What do you want us to do with her , boss?\"")
-            girl:pchate(wm.Range(2, 5))
+            girl:pclove(-wm.Range(2, 5))
             girl:health(wm.Range(-5, -1))
             Punish(girl)
-        elseif girl:pchate() > 50 then
+        elseif girl:pclove() < -50 then
             Dialog("She glares at you before she responds. \"You're a sick, perverted asshole.\"")
-        elseif girl:pchate() > 30 then
+        elseif girl:pclove() < -30 then
             Dialog("She rolls her eyes, \"No more than the average whore hates her pimp.\"")
         else
             Dialog("She tells you she doesn't hate you and that you have been a good, kind employer")

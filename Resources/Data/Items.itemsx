@@ -296,8 +296,8 @@
             Amount="15" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
         <Effect
             What="Stat"
             Name="PCFear"
@@ -338,8 +338,8 @@
             Amount="-32" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-16" />
+            Name="PCLove"
+            Amount="16" />
     </Item>
     <Item
         Name="Armor of the Battlemaiden"
@@ -368,8 +368,8 @@
             Amount="-10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-10" />
+            Name="PCLove"
+            Amount="10" />
         <Effect
             What="Stat"
             Name="Agility"
@@ -809,8 +809,8 @@
             Amount="-20" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-10" />
+            Name="PCLove"
+            Amount="10" />
     </Item>
     <Item
         Name="Chain Mail"
@@ -839,8 +839,8 @@
             Amount="-10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-10" />
+            Name="PCLove"
+            Amount="10" />
         <Effect
             What="Stat"
             Name="Agility"
@@ -997,8 +997,8 @@
             Amount="-15" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-15" />
+            Name="PCLove"
+            Amount="15" />
         <Effect
             What="Stat"
             Name="PCFear"
@@ -1159,8 +1159,8 @@
             Amount="-16" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-8" />
+            Name="PCLove"
+            Amount="8" />
     </Item>
     <Item
         Name="Cure for Fairy Dust Addiction"
@@ -1242,8 +1242,8 @@
             Amount="-10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
     </Item>
     <Item
         Name="Dancer Costume"
@@ -1710,8 +1710,8 @@
             Amount="15" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-20" />
+            Name="PCLove"
+            Amount="20" />
     </Item>
     <Item
         Name="Expensive Chocolates"
@@ -1942,8 +1942,8 @@
             Amount="-8" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-4" />
+            Name="PCLove"
+            Amount="4" />
     </Item>
     <Item
         Name="Glass Shoes"
@@ -1994,8 +1994,8 @@
             Amount="-25" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-25" />
+            Name="PCLove"
+            Amount="25" />
         <Effect
             What="Skill"
             Name="Combat"
@@ -2043,8 +2043,8 @@
             Amount="-100" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-100" />
+            Name="PCLove"
+            Amount="100" />
         <Effect
             What="GirlStatus"
             Name="Controlled"
@@ -2323,8 +2323,8 @@
             Amount="-10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
     </Item>
     <Item
         Name="Kung Fu Shoes"
@@ -2439,8 +2439,8 @@
             Amount="10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="10" />
+            Name="PCLove"
+            Amount="-10" />
         <Effect
             What="Stat"
             Name="PCFear"
@@ -2485,8 +2485,8 @@
             Amount="-5" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
         <Effect
             What="Stat"
             Name="Agility"
@@ -2582,8 +2582,8 @@
             Amount="-5" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
         <Effect
             What="Skill"
             Name="BDSM"
@@ -2691,8 +2691,8 @@
             Amount="-20" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-10" />
+            Name="PCLove"
+            Amount="10" />
     </Item>
     <Item
         Name="Love Potion"
@@ -2740,8 +2740,8 @@
             Amount="-5" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
         <Effect
             What="Skill"
             Name="Combat"
@@ -3309,8 +3309,8 @@
             Amount="50" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="50" />
+            Name="PCLove"
+            Amount="-50" />
         <Effect
             What="Trait"
             Name="Demon"
@@ -3348,8 +3348,8 @@
             Amount="50" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="50" />
+            Name="PCLove"
+            Amount="-50" />
         <Effect
             What="Trait"
             Name="Demon"
@@ -3478,8 +3478,8 @@
             Amount="-10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
     </Item>
     <Item
         Name="Pacifist's Armlet"
@@ -3509,8 +3509,8 @@
             Amount="60" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="30" />
+            Name="PCLove"
+            Amount="-30" />
         <Effect
             What="Skill"
             Name="BDSM"
@@ -3670,8 +3670,8 @@
             Amount="15" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="10" />
+            Name="PCLove"
+            Amount="-10" />
         <Effect
             What="Stat"
             Name="Spirit"
@@ -3953,8 +3953,8 @@
             Amount="-5" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
         <Effect
             What="Stat"
             Name="Constitution"
@@ -3987,8 +3987,8 @@
             Amount="-15" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-15" />
+            Name="PCLove"
+            Amount="15" />
         <Effect
             What="Stat"
             Name="Agility"
@@ -4081,8 +4081,8 @@
             Amount="-50" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="25" />
+            Name="PCLove"
+            Amount="-25" />
         <Effect
             What="Stat"
             Name="PCFear"
@@ -4107,8 +4107,8 @@
             Amount="-10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-10" />
+            Name="PCLove"
+            Amount="10" />
         <Effect
             What="Trait"
             Name="Sterile"
@@ -4184,8 +4184,8 @@
             Amount="50" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-20" />
+            Name="PCLove"
+            Amount="20" />
     </Item>
     <Item
         Name="Refined Mandragora Extract"
@@ -4386,8 +4386,8 @@
             Amount="-100" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-100" />
+            Name="PCLove"
+            Amount="100" />
         <Effect
             What="GirlStatus"
             Name="Controlled"
@@ -4474,8 +4474,8 @@
             Amount="-24" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-12" />
+            Name="PCLove"
+            Amount="12" />
     </Item>
     <Item
         Name="Sandals of Mercury"
@@ -4624,8 +4624,8 @@
             Amount="-75" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="75" />
+            Name="PCLove"
+            Amount="-75" />
         <Effect
             What="Trait"
             Name="Strong Magic"
@@ -4713,8 +4713,8 @@
             Amount="-4" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-2" />
+            Name="PCLove"
+            Amount="2" />
         <Effect
             What="Skill"
             Name="BDSM"
@@ -4747,8 +4747,8 @@
             Amount="-10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
     </Item>
     <Item
         Name="Shroud Cola"
@@ -4864,8 +4864,8 @@
             Amount="5" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
         <Effect
             What="Stat"
             Name="PCFear"
@@ -5025,8 +5025,8 @@
             Amount="-2" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-10" />
+            Name="PCLove"
+            Amount="10" />
         <Effect
             What="Stat"
             Name="PCFear"
@@ -5183,8 +5183,8 @@
             Amount="-40" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-10" />
+            Name="PCLove"
+            Amount="10" />
     </Item>
     <Item
         Name="Sword of Forever"
@@ -5209,8 +5209,8 @@
             Amount="-30" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-15" />
+            Name="PCLove"
+            Amount="15" />
         <Effect
             What="Stat"
             Name="Age"
@@ -5348,8 +5348,8 @@
             Amount="10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="2" />
+            Name="PCLove"
+            Amount="-2" />
         <Effect
             What="Trait"
             Name="Elegant"
@@ -5499,8 +5499,8 @@
             Amount="-10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
         <Effect
             What="Stat"
             Name="PCFear"
@@ -5525,8 +5525,8 @@
             Amount="15" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-15" />
+            Name="PCLove"
+            Amount="15" />
         <Effect
             What="Stat"
             Name="PCFear"
@@ -5627,8 +5627,8 @@
             Amount="-10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-10" />
+            Name="PCLove"
+            Amount="10" />
     </Item>
     <Item
         Name="Perfection"
@@ -5935,8 +5935,8 @@
             Amount="10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="10" />        
+            Name="PCLove"
+            Amount="-10" />        
         <Effect
             What="Stat"
             Name="Charisma"
@@ -6021,8 +6021,8 @@
             Amount="20" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="20" />        
+            Name="PCLove"
+            Amount="-20" />        
         <Effect
             What="Stat"
             Name="Happiness"
@@ -6103,8 +6103,8 @@
             Amount="10" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="10" />        
+            Name="PCLove"
+            Amount="-10" />        
         <Effect
             What="Stat"
             Name="Charisma"
@@ -6189,8 +6189,8 @@
             Amount="50" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="50" />        
+            Name="PCLove"
+            Amount="-50" />        
         <Effect
             What="Stat"
             Name="Charisma"
@@ -6367,8 +6367,8 @@
             Amount="30" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="30" />        
+            Name="PCLove"
+            Amount="-30" />        
         <Effect
             What="Stat"
             Name="Happiness"
@@ -6433,8 +6433,8 @@
             Amount="20" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="20" />        
+            Name="PCLove"
+            Amount="-20" />        
         <Effect
             What="Stat"
             Name="Happiness"

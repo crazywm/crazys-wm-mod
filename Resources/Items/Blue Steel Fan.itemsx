@@ -8,7 +8,7 @@
         <Effect What="Stat" Name="Confidence" Amount="2" />
         <Effect What="Stat" Name="Charisma" Amount="2" />
         <Effect What="Stat" Name="PCFear" Amount="-10" />
-        <Effect What="Stat" Name="PCHate" Amount="-5" />
+        <Effect What="Stat" Name="PCLove" Amount="5" />
         <Effect What="Trait" Name="Elegant" Amount="1" />
         <Crafting CraftPoints="50" ManaCost="0">
             <Job Name="Blacksmith"/>

@@ -4,8 +4,7 @@
         Type="Food" Badness="0" Special="None" Cost="12000" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
         <Effect What="Stat" Name="Happiness" Amount="50" />
         <Effect What="Stat" Name="Libido" Amount="50" />
-        <Effect What="Stat" Name="PCHate" Amount="-50" />
-        <Effect What="Stat" Name="PCLove" Amount="80" />
+        <Effect What="Stat" Name="PCLove" Amount="130" />
         <Effect What="Trait" Name="Spirit Possessed" Amount="5" />
     </Item>
 </Items>

@@ -13,7 +13,7 @@
    <Effect What="Stat"  Name="Agility"                 Amount="-5"    />
    <Effect What="Stat"  Name="Charisma"                Amount="-2"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="5"     />
    <Effect What="Skill" Name="Combat"                  Amount="-5"    />
    <Crafting CraftPoints="80" ManaCost="20">
       <Job Name="Tailor"/>

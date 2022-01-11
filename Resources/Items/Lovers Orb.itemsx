@@ -14,14 +14,10 @@
         <Effect
             What="Stat"
             Name="PCLove"
-            Amount="5" />
+            Amount="6" />
         <Effect
             What="Stat"
             Name="PCFear"
-            Amount="-1" />
-        <Effect
-            What="Stat"
-            Name="PCHate"
             Amount="-1" />
         <Crafting CraftPoints="100" ManaCost="30">
             <Job Name="Make Items"/>

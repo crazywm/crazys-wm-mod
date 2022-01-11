@@ -412,7 +412,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
                 else if (girl.m_Money >= e)        // she has enough to pay it back
                 {
                     girl.pcfear(rng().bell(-1, 2));
-                    girl.pchate(rng().bell(-1, 2));
+                    girl.pclove(-rng().bell(-1, 2));
                     ss << "\nYou take all her wages and tips and then make her pay for the rest out of her own money";
                     girl.m_Money -= e;
                     profit += e;
@@ -420,7 +420,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
                 else                                // she does not have all but can pay some
                 {
                     girl.pcfear(rng().bell(-1, 4));
-                    girl.pchate(rng().bell(-1, 2));
+                    girl.pclove(-rng().bell(-1, 2));
                     ss << "\nYou take all her wages and tips and then make her pay for what she can of the rest out of her own money";
                     e = girl.m_Money;
                     girl.m_Money -= e;
@@ -488,7 +488,7 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
 
     int imagetype = IMGTYPE_WAIT;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
-    int HateLove = girl.pclove() - girl.pchate();
+    int HateLove = girl.pclove();
 
     //    Job Performance            //
 
@@ -979,7 +979,7 @@ bool cEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
                 ss << "A born stripper, ${name} wears her clothes just short of showing flesh, just the way the customers like it.\n";
                 m_Performance += 15;
             }
-            if (girl.pchate() > girl.pcfear())
+            if (-girl.pclove() > girl.pcfear())
             {
                 ss << " ${name} opened with some rather rude jokes about you. While this annoys you a little, ";
                 if (girl.has_active_trait("Your Daughter"))

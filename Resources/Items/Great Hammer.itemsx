@@ -33,8 +33,8 @@
             Amount="-20" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-10" />
+            Name="PCLove"
+            Amount="10" />
         <Effect
             What="Trait"
             Name="Agile"

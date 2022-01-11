@@ -9,9 +9,8 @@
       Rarity="Catacomb15"
       Infinite="false">
    <Effect What="Stat"  Name="Happiness"               Amount="50"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="50"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="100"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-50"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-50"    />
    <Effect What="Trait" Name="Aggressive"              Amount="1"    />
    <Crafting CraftPoints="150" ManaCost="50">
       <Job Name="Make Items"/>

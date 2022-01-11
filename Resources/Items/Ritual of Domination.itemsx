@@ -12,7 +12,7 @@
    <Effect What="Stat"  Name="Confidence"              Amount="-100"    />
    <Effect What="Stat"  Name="Obedience"               Amount="100"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="-100"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="100"    />
    <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
    <Effect What="Trait" Name="Iron Will"               Amount="0"    />
    <Effect What="Trait" Name="Fearless"                Amount="0"    />
@@ -32,7 +32,7 @@
    <Effect What="Stat"  Name="Confidence"              Amount="-100"    />
    <Effect What="Stat"  Name="Obedience"               Amount="100"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="-100"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="100"    />
    <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
    <Effect What="Trait" Name="Iron Will"               Amount="0"    />
    <Effect What="Trait" Name="Fearless"                Amount="0"    />

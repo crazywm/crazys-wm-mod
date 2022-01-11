@@ -34,7 +34,7 @@ function MeetCasting(girl)
                 wm.AcquireGirl(girl)
                 Dialog("You suspect when she really finds out what she's signed up for, she's not going to like you very much.")
                 girl:happiness(-50)
-                girl.pchate(80)
+                girl.pclove(-80)
                 wm.SetPlayerDisposition(-25)
                 return
             else
@@ -56,8 +56,7 @@ function MeetCasting(girl)
         else
             Dialog("Girl: \"Oh, pooh.  I thought you were interested in just me.\"")
             wm.AcquireGirl(girl)
-            girl:pclove(-25)
-            girl:pchate(25)
+            girl:pclove(-50)
             if wm.Percent(50) then
                 Dialog("Girl: \"I don't have sister, but I can tell you where to find a girl who would be easy to... recruit.\"")
                 choice = ChoiceBox("",

@@ -10,9 +10,8 @@
       Infinite="true">
    <Effect What="Stat"  Name="Happiness"               Amount="10"    />
    <Effect What="Stat"  Name="Tiredness"               Amount="-15"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="10"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="20"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
    <Crafting CraftPoints="10" ManaCost="0">
       <Job Name="Cobbler"/>
    </Crafting>

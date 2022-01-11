@@ -13,7 +13,7 @@
    <Effect What="Stat"  Name="Constitution"            Amount="10"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="45"    />
    <Effect What="Stat"  Name="Obedience"               Amount="-5"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="5"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-5"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="20"    />
    <Effect What="Trait" Name="Cool Person"             Amount="1"    />
    <Effect What="Trait" Name="Fearless"                Amount="1"    />

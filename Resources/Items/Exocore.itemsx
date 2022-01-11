@@ -40,8 +40,7 @@
    <Effect What="Stat" Name="Spirit" Amount="40" />
    <Effect What="Stat" Name="Beauty" Amount="40" />
    <Effect What="Stat" Name="Health" Amount="100" />
-   <Effect What="Stat" Name="PCLove" Amount="20" />
-   <Effect What="Stat" Name="PCHate" Amount="-20" />
+   <Effect What="Stat" Name="PCLove" Amount="40" />
    <Effect What="Skill" Name="Magic" Amount="50" />
    <Effect What="Skill" Name="Combat" Amount="50" />
    <Effect What="Skill" Name="Service" Amount="50" />

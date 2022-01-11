@@ -6,7 +6,7 @@
         <Effect What="Stat" Name="Confidence" Amount="10" />
         <Effect What="Stat" Name="Charisma" Amount="-10" />
         <Effect What="Stat" Name="PCFear" Amount="-20" />
-        <Effect What="Stat" Name="PCHate" Amount="-10" />
+        <Effect What="Stat" Name="PCLove" Amount="10" />
         <Crafting CraftPoints="60" ManaCost="0">
             <Job Name="Blacksmith"/>
             <Skill Name="Combat" Minimum="20" />

@@ -8,7 +8,7 @@
         <Effect What="Stat" Name="Confidence" Amount="2" />
         <Effect What="Stat" Name="Happiness" Amount="2" />
         <Effect What="Stat" Name="PCFear" Amount="-8" />
-        <Effect What="Stat" Name="PCHate" Amount="-5" />
+        <Effect What="Stat" Name="PCLove" Amount="5" />
         <Crafting CraftPoints="100" ManaCost="90">
             <Job Name="Make Items"/>
         </Crafting>

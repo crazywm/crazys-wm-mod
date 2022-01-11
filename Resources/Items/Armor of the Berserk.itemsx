@@ -17,7 +17,7 @@
    <Effect What="Stat"  Name="Confidence"              Amount="100"    />
    <Effect What="Stat"  Name="Exp"                     Amount="100"    />
    <Effect What="Stat"  Name="Health"                  Amount="-40"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="30"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-30"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="30"    />
    <Effect What="Stat"  Name="Confidence"              Amount="45"    />
 

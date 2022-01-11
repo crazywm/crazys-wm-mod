@@ -246,7 +246,7 @@ IGenericJob::eCheckWorkResult PracticeJob::CheckWork(sGirl& girl, bool is_night)
             girl.obedience(2);
             girl.upd_temp_stat(STAT_OBEDIENCE, 5);
             girl.pcfear(1);
-            girl.pchate(1);
+            girl.pclove(-1);
             girl.spirit(-1);
             girl.happiness(-2);
             girl.tiredness(2);
@@ -305,7 +305,7 @@ void TrainingJob::update_progress(sGirl& girl) {
 
     // Negative Stats/Skills
     girl.m_WorkingDay -= girl.spirit() / 25;
-    if (girl.pchate() > 30)                girl.m_WorkingDay -= uniform(0, girl.pchate() / 10);        // She will not do what you want
+    if (girl.pclove() < -30)               girl.m_WorkingDay -= uniform(0, -girl.pclove() / 10);        // She will not do what you want
     if (girl.happiness() < 50)             girl.m_WorkingDay -= uniform(1, 5);                        // She is not feeling like it
     if (girl.health() < 50)                girl.m_WorkingDay -= uniform(1, 5);                        // She is feeling sick
     if (girl.tiredness() > 50)             girl.m_WorkingDay -= uniform(1, 5);                        // She is tired

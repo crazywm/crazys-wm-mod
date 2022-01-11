@@ -16,11 +16,7 @@
 		<Effect
 			What="Stat"
 			Name="PCLove"
-			Amount="3" />
-		<Effect
-			What="Stat"
-			Name="PCHate"
-			Amount="-3" />
+			Amount="6" />
 		<Effect
 			What="Stat"
 			Name="PCFear"
@@ -54,11 +50,7 @@
 		<Effect
 			What="Stat"
 			Name="PCLove"
-			Amount="1" />
-		<Effect
-			What="Stat"
-			Name="PCHate"
-			Amount="-1" />
+			Amount="2" />
 		<Effect
 			What="Stat"
 			Name="PCFear"
@@ -92,11 +84,7 @@
 		<Effect
 			What="Stat"
 			Name="PCLove"
-			Amount="2" />
-		<Effect
-			What="Stat"
-			Name="PCHate"
-			Amount="-2" />
+			Amount="4" />
 		<Effect
 			What="Stat"
 			Name="PCFear"

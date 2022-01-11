@@ -109,8 +109,7 @@ sWorkJobResult TherapyJob::DoWork(sGirl& girl, bool is_night) {
     {    // Don't kill the girl from therapy if a Counselor is on duty
         girl.set_stat(STAT_HEALTH, 1);
         girl.pcfear(5);
-        girl.pclove(-10);
-        girl.pchate(10);
+        girl.pclove(-20);
         ss << "She almost died in " << m_TherapyData.TreatmentName << " but the Counselor saved her.\n";
         ss << "She hates you a little more for forcing this on her.\n \n";
         msgtype = EVENT_DANGER;

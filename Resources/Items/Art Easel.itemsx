@@ -12,9 +12,8 @@
    <Effect What="Stat"  Name="Intelligence"            Amount="10"    />
    <Effect What="Stat"  Name="Tiredness"               Amount="-5"    />
    <Effect What="Stat"  Name="Fame"                    Amount="5"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="10"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
    <Crafting CraftPoints="120" ManaCost="0">
       <Job Name="Make Items"/>
    </Crafting>

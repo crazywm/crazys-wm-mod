@@ -10,8 +10,7 @@
       Infinite="false">
    <Effect What="Skill" Name="Magic"                   Amount="5"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-15"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="25"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-15"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="40"    />
    <Crafting CraftPoints="240" ManaCost="0">
       <Job Name="Jeweler"/>
    </Crafting>

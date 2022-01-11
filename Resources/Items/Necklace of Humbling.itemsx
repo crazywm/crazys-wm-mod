@@ -14,7 +14,7 @@
    <Effect What="Stat" Name="Charisma" Amount="-10" />
    <Effect What="Stat" Name="Spirit" Amount="-50" />
    <Effect What="Stat" Name="Confidence" Amount="-50" />
-   <Effect What="Stat" Name="PCHate" Amount="10" />
+   <Effect What="Stat" Name="PCLove" Amount="-10" />
    <Effect What="Stat" Name="PCFear" Amount="10" />
    <Effect What="Trait" Name="Abnormally Large Boobs" Amount="0" />
    <Effect What="Trait" Name="Aggressive" Amount="0" />

@@ -33,8 +33,8 @@
             Amount="-5" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="-5" />
+            Name="PCLove"
+            Amount="5" />
         <Crafting CraftPoints="120" ManaCost="0">
             <Job Name="Tailor"/>
         </Crafting>

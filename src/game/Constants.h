@@ -74,7 +74,6 @@ enum STATS {
     STAT_HEALTH                ,    //
     STAT_PCFEAR                ,    //
     STAT_PCLOVE                ,    //
-    STAT_PCHATE                ,    //
     STAT_MORALITY            ,    //
     STAT_REFINEMENT            ,    //
     STAT_DIGNITY            ,    //

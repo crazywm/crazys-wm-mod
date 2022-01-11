@@ -126,7 +126,7 @@ sFilmObedienceData cFilmSceneJob::CalcChanceToObey(const sGirl& girl) const {
 
     int libido = libido_influence(m_PleasureFactor, girl);
     int enjoy = (2 * girl.get_enjoyment(m_PrimaryAction) + girl.get_enjoyment(m_SecondaryAction)) / 3;
-    int love_hate = (girl.pclove() + girl.pcfear() - girl.pchate()) / 10;
+    int love_hate = (girl.pclove() + girl.pcfear()) / 10;
 
     return {base_chance, libido, enjoy, love_hate};
 }
@@ -152,7 +152,7 @@ bool cFilmSceneJob::CheckRefuseWork(sGirl& girl) {
     if (girl_obeys)                                            // there's a price to be paid for relying on love or fear
     {
         if (diff < (girl.pclove() / 10)) girl.pclove(-1);    // if the only reason she obeys is love it wears away that love
-        if (diff < (girl.pcfear() / 10)) girl.pchate(+1);    // just a little bit. And if she's only doing it out of fear, she will hate you more
+        if (diff < (girl.pcfear() / 10)) girl.pclove(-1);    // just a little bit. And if she's only doing it out of fear, she will hate you more
     }
 
     // if she doesn't want to do it, but still works, her enjoyment decreases
@@ -190,7 +190,7 @@ bool cFilmSceneJob::RefusedTieUp(sGirl& girl) {
             add_text("disobey.slave.nice");
             girl.pclove(1);
             girl.pcfear(-1);
-            girl.pchate(-1);
+            girl.pclove(1);
             girl.obedience(-1);
             girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
             return true;
@@ -199,7 +199,7 @@ bool cFilmSceneJob::RefusedTieUp(sGirl& girl) {
         {
             add_text("disobey.slave.neutral") << "\n \n";
             girl.pclove(-1);
-            girl.pchate(2);
+            girl.pclove(-2);
             girl.pcfear(1);
             g_Game->player().disposition(-1);
             m_Enjoyment -= 5;
@@ -209,7 +209,7 @@ bool cFilmSceneJob::RefusedTieUp(sGirl& girl) {
         {
             add_text("disobey.slave.evil")<< "\n \n";
             girl.pclove(-4);
-            girl.pchate(+5);
+            girl.pclove(-5);
             girl.pcfear(+5);
             girl.spirit(-1);
             g_Game->player().disposition(-2);

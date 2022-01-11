@@ -10,9 +10,8 @@
       Infinite="false"
       GirlBuyChance="0">
    <Effect What="Stat"  Name="Happiness"               Amount="20"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="30"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="50"    />
    <Effect What="Stat"  Name="Libido"                  Amount="50"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-20"    />
    <Crafting CraftPoints="140" ManaCost="0">
        <Job Name="Gardener"/>
    </Crafting>

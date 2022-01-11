@@ -17,8 +17,7 @@
    <Effect What="Stat" Name="Obedience" Amount="10" />
    <Effect What="Stat" Name="Spirit" Amount="10" />
    <Effect What="Stat" Name="PCFear" Amount="-10" />
-   <Effect What="Stat" Name="PCLove" Amount="10" />
-   <Effect What="Stat" Name="PCHate" Amount="-10" />
+   <Effect What="Stat" Name="PCLove" Amount="20" />
    <Effect What="Trait" Name="Cute" Amount="1" />
    <Crafting CraftPoints="50" ManaCost="10" Weight="2">
       <Job Name="Baker"/>

@@ -12,7 +12,7 @@
    <Effect What="Stat"  Name="Strength"                Amount="-10"    />
    <Effect What="Stat"  Name="Happiness"               Amount="-10"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="5"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="5"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-5"    />
    <Effect What="Trait" Name="Strong"                  Amount="0"    />
    <Effect What="Trait" Name="Strong Magic"            Amount="0"    />
    <Effect What="Trait" Name="Psychic"                 Amount="0"    />

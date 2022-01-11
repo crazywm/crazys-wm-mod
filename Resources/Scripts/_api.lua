@@ -42,7 +42,6 @@ function g:animalhandling(change) end
 function g:performance(change) end
 function g:combat(change) end
 function g:pcfear(change) end
-function g:pchate(change) end
 function g:pclove(change) end
 function g:tiredness(change) end
 function g:obedience(change) end

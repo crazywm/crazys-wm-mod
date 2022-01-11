@@ -649,7 +649,7 @@ void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
     {
         girl->tiredness(-10);
         girl->pcfear(4);
-        girl->pchate(1);
+        girl->pclove(-1);
         girl->mana(5);
         girl->bdsm(1);
 
@@ -682,7 +682,7 @@ void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
         girl->bdsm(2);
         if (girl->is_slave())    // Slave being starved
         {
-            girl->pchate(1);
+            girl->pclove(-1);
             girl->pclove(-2);
             girl->pcfear(4);
             girl->tiredness(1);
@@ -690,7 +690,7 @@ void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
         }
         else    // Free girl being starved
         {
-            girl->pchate(4);
+            girl->pclove(-4);
             girl->pclove(-5);
             girl->pcfear(6);
             girl->tiredness(2);

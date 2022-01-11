@@ -12,12 +12,12 @@
    <Effect What="Stat"  Name="Constitution"            Amount="15"    />
    <Effect What="Stat"  Name="Strength"                Amount="15"    />
    <Effect What="Stat"  Name="Confidence"              Amount="15"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
-   <Effect What="Stat"  Name="Agility"                 Amount="-15"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-10"   />
+   <Effect What="Stat"  Name="PCLove"                  Amount="10"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="-15"   />
    <Effect What="Stat"  Name="Charisma"                Amount="-5"    />
-   <Effect What="Skill" Name="Magic"                   Amount="-20"    />
-   <Effect What="Skill" Name="BDSM"                    Amount="8"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-20"   />
+   <Effect What="Skill" Name="BDSM"                    Amount="8"     />
    <Effect What="Skill" Name="Strip"                   Amount="15"    />
    <Crafting CraftPoints="200" ManaCost="20">
       <Job Name="Blacksmith"/>

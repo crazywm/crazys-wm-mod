@@ -17,8 +17,8 @@
    <Effect What="Stat"  Name="Spirit"                  Amount="20"    />
    <Effect What="Stat"  Name="Beauty"                  Amount="20"    />
    <Effect What="Stat"  Name="Health"                  Amount="20"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-20"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-20"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="20"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-20"   />
    <Effect What="Trait" Name="Cool Person"             Amount="1"    />
    <Effect What="Trait" Name="Nervous"                 Amount="0"    />
    <Effect What="Trait" Name="Optimist"                Amount="1"    />

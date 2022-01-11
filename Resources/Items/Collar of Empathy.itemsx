@@ -10,7 +10,7 @@
       Infinite="false" 
       GirlBuyChance="0">
    <Effect What="Skill" Name="Combat" Amount="-30" />
-   <Effect What="Stat" Name="PCHate" Amount="-30" />
+   <Effect What="Stat" Name="PCLove" Amount="30" />
    <Effect What="Stat" Name="Obedience" Amount="30" />
    <Effect What="Stat" Name="Charisma" Amount="20" />
    <Effect What="Stat" Name="Spirit" Amount="50" />

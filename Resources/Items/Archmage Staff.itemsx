@@ -12,7 +12,7 @@
    <Effect What="Skill" Name="Combat"                  Amount="8"    />
    <Effect What="Stat"  Name="Confidence"              Amount="16"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-32"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-16"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="16"    />
    <Crafting CraftPoints="120" ManaCost="60">
       <Job Name="Make Items"/>
    </Crafting>

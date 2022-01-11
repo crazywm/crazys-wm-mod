@@ -17,7 +17,7 @@
    <Effect What="Stat"  Name="Spirit"                  Amount="10"    />
    <Effect What="Stat"  Name="Tiredness"               Amount="10"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="10"    />
    <Effect What="Stat"  Name="Confidence"              Amount="20"    />
    <Crafting CraftPoints="15" ManaCost="0" Weight="5">
       <Job Name="Brewer"/>

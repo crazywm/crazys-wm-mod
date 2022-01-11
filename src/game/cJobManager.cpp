@@ -860,9 +860,8 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
                     custgirl->equip(item_p, true);
                     g_Game->player().inventory().remove_item(item_p);
                     custgirl->add_temporary_trait("Emprisoned Customer", std::max(5, g_Dice.bell(0, 20)));
-                    custgirl->pclove(-(g_Dice % 50 + 50));
+                    custgirl->pclove(-(g_Dice % 100 + 100));
                     custgirl->pcfear(g_Dice % 50 + 50);
-                    custgirl->pchate(g_Dice % 50 + 50);
                     custgirl->m_Enjoyment[ACTION_COMBAT] -= (g_Dice % 50 + 20);
                     custgirl->m_Enjoyment[ACTION_SEX] -= (g_Dice % 50 + 20);
                     g_Game->player().suspicion(g_Dice % 10);
@@ -949,8 +948,7 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
         SecGuard->upd_temp_stat(STAT_LIBIDO, -40, true);
         SecGuard->tiredness(60);
         SecGuard->pcfear(20);
-        SecGuard->pclove(-20);
-        SecGuard->pchate(20);
+        SecGuard->pclove(-40);
         cGirls::GirlInjured(*SecGuard, 10); // MYR: Note
         SecGuard->upd_Enjoyment(ACTION_WORKSECURITY, -30);
         SecGuard->upd_Enjoyment(ACTION_COMBAT, -30);
@@ -1101,8 +1099,7 @@ void cJobManager::customer_rape(sGirl& girl, int numberofattackers)
     girl.upd_temp_stat(STAT_LIBIDO, -40, true);
     girl.tiredness(60);
     girl.pcfear(20);
-    girl.pclove(-20);
-    girl.pchate(20);
+    girl.pclove(-40);
     cGirls::GirlInjured(girl, 10); // MYR: Note
     girl.upd_Enjoyment(ACTION_SEX, -30);
 
@@ -1373,9 +1370,9 @@ double calc_pilfering(sGirl& girl)
         factor += (is_addict(girl, true) ? 0.5 : 0.1);        // hard drugs will make her steal more
     // let's work out what if she is going steal anything
     if (girl.pclove() >= 50 || girl.obedience() >= 50) return factor;            // love or obedience will keep her honest
-    if (girl.pcfear() > girl.pchate()) return factor;                            // if her fear is greater than her hate, she won't dare steal
+    if (girl.pcfear() > -girl.pclove()) return factor;                            // if her fear is greater than her hate, she won't dare steal
     // `J` yes they do // if (girl.is_slave()) return factor;                    // and apparently, slaves don't steal
-    if (girl.pchate() > 40) return factor + 0.15;                                // given all the above, if she hates him enough, she'll steal
+    if (girl.pclove() < -40) return factor + 0.15;                                // given all the above, if she hates him enough, she'll steal
     if (girl.confidence() > 70 && girl.spirit() > 50) return factor + 0.15;    // if she's not motivated by hatred, she needs to be pretty confident
     return factor;    // otherwise, she stays honest (aside from addict factored-in earlier)
 }
@@ -1533,9 +1530,8 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
                                                  18 + (std::max(0, g_Dice % 40 - 10)));
         cGirls::SetSlaveStats(*custgirl);
         int emprisontraittime = 1;
-        custgirl->pclove(-(g_Dice % 50 + 50));
+        custgirl->pclove(-(g_Dice % 100 + 100));
         custgirl->pcfear(g_Dice % 50 + 50);
-        custgirl->pchate(g_Dice % 50 + 50);
         custgirl->m_Enjoyment[ACTION_COMBAT] -= (g_Dice % 50 + 20);
         custgirl->m_Enjoyment[ACTION_SEX] -= (g_Dice % 50 + 20);
 
@@ -1550,9 +1546,8 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
             custgirl->set_stat(STAT_HAPPINESS, g_Dice % 50);
             custgirl->set_stat( STAT_TIREDNESS, 50 + g_Dice % 51);
             girl.obedience(g_Dice % 10);
-            girl.pchate(g_Dice % 10);
             girl.pcfear(g_Dice % 10);
-            girl.pclove(-(g_Dice % 10));
+            girl.pclove(-(g_Dice % 20));
             girl.spirit(-(g_Dice % 10));
         } else        // item was found
         {

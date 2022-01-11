@@ -329,8 +329,7 @@ void cGirlTorture::UpdateStats()
         m_Girl->obedience(10);
         m_Girl->spirit(-5);
         m_Girl->tiredness(5);
-        m_Girl->pchate(3);
-        m_Girl->pclove(-5);
+        m_Girl->pclove(-8);
         m_Girl->pcfear(5);
         m_Girl->bdsm(1);
     }
@@ -343,8 +342,7 @@ void cGirlTorture::UpdateStats()
         m_Girl->obedience(4);
         m_Girl->spirit(-2);
         m_Girl->tiredness(2);
-        m_Girl->pchate(1);
-        m_Girl->pclove(-2);
+        m_Girl->pclove(-3);
         m_Girl->pcfear(3);
     }
 }

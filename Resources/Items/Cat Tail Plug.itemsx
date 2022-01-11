@@ -49,8 +49,8 @@
             Amount="-5" />
         <Effect
             What="Stat"
-            Name="PCHate"
-            Amount="2" />
+            Name="PCLove"
+            Amount="-2" />
         <Effect
             What="Stat"
             Name="Happiness"

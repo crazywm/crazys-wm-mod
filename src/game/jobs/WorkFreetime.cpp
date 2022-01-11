@@ -62,7 +62,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
     int roll_c = rng.d100();
     int roll_d = rng.d100();
     int HateLove = 0;
-    HateLove = girl.pclove() - girl.pchate();
+    HateLove = girl.pclove();
 
     int choice = 0;    bool choicemade = false;
     /*    First we give her all the possible choices in the freetimechoice enum

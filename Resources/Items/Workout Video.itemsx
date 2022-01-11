@@ -14,7 +14,7 @@
    <Effect What="Stat" Name="Spirit" Amount="15" />
    <Effect What="Stat" Name="Health" Amount="15" />
    <Effect What="Stat" Name="PCFear" Amount="-15" />
-   <Effect What="Stat" Name="PCHate" Amount="-15" />
+   <Effect What="Stat" Name="PCLove" Amount="15" />
    <Effect What="Stat" Name="Strength" Amount="15" />
    <Effect What="Stat" Name="Constitution" Amount="15" />
    <Effect What="Stat" Name="Confidence" Amount="15" />
@@ -34,7 +34,7 @@
    <Effect What="Stat" Name="Spirit" Amount="15" />
    <Effect What="Stat" Name="Health" Amount="15" />
    <Effect What="Stat" Name="PCFear" Amount="-15" />
-   <Effect What="Stat" Name="PCHate" Amount="-15" />
+   <Effect What="Stat" Name="PCLove" Amount="15" />
    <Effect What="Stat" Name="Strength" Amount="15" />
    <Effect What="Stat" Name="Constitution" Amount="15" />
    <Effect What="Stat" Name="Confidence" Amount="15" />
@@ -54,7 +54,7 @@
    <Effect What="Stat" Name="Spirit" Amount="15" />
    <Effect What="Stat" Name="Health" Amount="15" />
    <Effect What="Stat" Name="PCFear" Amount="-15" />
-   <Effect What="Stat" Name="PCHate" Amount="-15" />
+   <Effect What="Stat" Name="PCLove" Amount="15" />
    <Effect What="Stat" Name="Strength" Amount="15" />
    <Effect What="Stat" Name="Constitution" Amount="15" />
    <Effect What="Stat" Name="Confidence" Amount="15" />

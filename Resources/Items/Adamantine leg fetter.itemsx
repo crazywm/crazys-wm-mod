@@ -2,9 +2,8 @@
 <Items>
     <Item Name="Adamantine leg fetter" Desc="It really interfers with her ability to move around. (+20 con +20 libido/obedience +10 group +20 best/BDSM/anal -lots service/strip/magic/combat/strength -fleet of foot)"
 	Type="Misc" Badness="30" Special="None" Cost="20000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
-        <Effect What="Stat" Name="PCLove" Amount="-20" />
+        <Effect What="Stat" Name="PCLove" Amount="-40" />
         <Effect What="Stat" Name="PCFear" Amount="20" />
-        <Effect What="Stat" Name="PCHate" Amount="20" />
         <Effect What="Stat" Name="Happiness" Amount="-20" />
         <Effect What="Stat" Name="Obedience" Amount="20" />
         <Effect What="Stat" Name="Libido" Amount="20" />

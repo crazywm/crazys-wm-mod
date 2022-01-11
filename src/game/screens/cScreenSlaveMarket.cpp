@@ -578,9 +578,8 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
         girl.health(g_Dice % 10);
         girl.happiness(g_Dice % 20);
         girl.tiredness(-(g_Dice % 10));
-        girl.pclove(g_Dice.bell(-1, 5));
+        girl.pclove(g_Dice.bell(-2, 10));
         girl.pcfear(g_Dice.bell(-5, 1));
-        girl.pchate(g_Dice.bell(-5, 1));
         girl.obedience(g_Dice.bell(-1, 5));
         girl.confidence(g_Dice.bell(-1, 5));
         girl.spirit(g_Dice.bell(-2, 10));
@@ -595,9 +594,8 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
         girl.health(g_Dice % 5);
         girl.happiness(g_Dice % 10);
         girl.tiredness(-(g_Dice % 5));
-        girl.pclove(g_Dice.bell(-1, 3));
+        girl.pclove(g_Dice.bell(-2, 6));
         girl.pcfear(g_Dice.bell(-3, 1));
-        girl.pchate(g_Dice.bell(-3, 1));
         girl.obedience(g_Dice.bell(-1, 3));
         girl.confidence(g_Dice.bell(-1, 3));
         girl.spirit(g_Dice.bell(-1, 5));
@@ -609,9 +607,8 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
     else if (g_Game->player().disposition() >= 10)            // Pleasant
     {
         girl.happiness(g_Dice % 5);
-        girl.pclove(g_Dice.bell(-1, 1));
+        girl.pclove(g_Dice.bell(-2, 2));
         girl.pcfear(g_Dice.bell(-1, 1));
-        girl.pchate(g_Dice.bell(-1, 1));
         girl.obedience(g_Dice.bell(-1, 1));
         girl.confidence(g_Dice.bell(-1, 1));
         girl.spirit(g_Dice.bell(-1, 1));
@@ -628,9 +625,8 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
         girl.health(-(g_Dice % 2));
         girl.happiness(-(g_Dice % 10));
         girl.tiredness(-(g_Dice % 3));
-        girl.pclove(-(g_Dice % 5));
+        girl.pclove(-(g_Dice % 10));
         girl.pcfear(g_Dice % 5);
-        girl.pchate(g_Dice % 5);
         girl.obedience(g_Dice.bell(-1, 2));
         girl.confidence(-(g_Dice % 3));
         girl.spirit(-(g_Dice % 5));
@@ -645,9 +641,8 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
         girl.health(-(g_Dice % 3));
         girl.happiness(-(g_Dice % 20));
         girl.tiredness(-(g_Dice % 5));
-        girl.pclove(-(g_Dice % 10));
+        girl.pclove(-(g_Dice % 20));
         girl.pcfear(g_Dice % 10);
-        girl.pchate(g_Dice % 10);
         girl.obedience(g_Dice.bell(-1, 4));
         girl.confidence(-(g_Dice % 5));
         girl.spirit(-(g_Dice % 10));
@@ -662,9 +657,8 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
         girl.health(-(g_Dice % 5));
         girl.happiness(-(g_Dice % 40));
         girl.tiredness(-(g_Dice % 10));
-        girl.pclove(-(g_Dice % 20));
+        girl.pclove(-(g_Dice % 40));
         girl.pcfear(g_Dice % 20);
-        girl.pchate(g_Dice % 20);
         girl.obedience(g_Dice.bell(-2, 5));
         girl.confidence(-(g_Dice % 10));
         girl.spirit(-(g_Dice % 20));
@@ -815,8 +809,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
             // you have a reputation for not torturing so they are not afraid (but you are sending them to a dungeon so...)
             girl.m_AccLevel = 0;
             girl.pcfear(g_Dice.bell(-3, 1));
-            girl.pchate(g_Dice.bell(-3, 1));
-            girl.pclove(g_Dice.bell(-1, 3));
+            girl.pclove(g_Dice.bell(-2, 6));
             girl.happiness(g_Dice.bell(-5, 10));
             girl.spirit(g_Dice.bell(-2, 4));
             girl.obedience(g_Dice.bell(-2, 5));
@@ -826,8 +819,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         // you have a reputation for not torturing much so they are less afraid (but you are sending them to a dungeon so...)
         girl.m_AccLevel = 0;
         girl.pcfear(g_Dice.bell(-2, 2));
-        girl.pchate(g_Dice.bell(-2, 2));
-        girl.pclove(g_Dice.bell(-2, 2));
+        girl.pclove(g_Dice.bell(-4, 4));
         girl.happiness(g_Dice.bell(-10, 5));
         girl.spirit(g_Dice.bell(-2, 2));
         girl.obedience(g_Dice.bell(-2, 2));
@@ -837,8 +829,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         bool mas = girl.has_active_trait("Masochist");
         girl.m_AccLevel = 0;
         girl.pcfear(g_Dice % 5 + (mas ? 0 : 3));
-        girl.pchate(g_Dice % 3 + (mas ? 0 : 2));
-        girl.pclove(-(g_Dice % 6 - (mas ? 2 : 0)));
+        girl.pclove(-(g_Dice % 9) + (mas ? 2 : -2));
         girl.happiness(-(g_Dice % 6 - (mas ? 2 : 0)));
         girl.spirit(-(g_Dice % 4 - (mas ? 2 : 0)));
         girl.obedience(g_Dice % 3 - 1);
@@ -847,8 +838,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         bool mas = girl.has_active_trait("Masochist");
         girl.m_AccLevel = 0;
         girl.pcfear(g_Dice % 5 + (mas ? 0 : 3));
-        girl.pchate(g_Dice % 3 + (mas ? 0 : 2));
-        girl.pclove(-(g_Dice % 6 - (mas ? 2 : 0)));
+        girl.pclove(-(g_Dice % 9) + (mas ? 2 : -2));
         girl.happiness(-(g_Dice % 6 - (mas ? 2 : 0)));
         girl.spirit(-(g_Dice % 4 - (mas ? 2 : 0)));
         girl.obedience(g_Dice % 3 - 1);
@@ -857,8 +847,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         bool mas = girl.has_active_trait("Masochist");
         girl.m_AccLevel = 0;
         girl.pcfear(g_Dice % 10 + (mas ? 0 : 5));
-        girl.pchate(g_Dice % 5 + (mas ? 0 : 3));
-        girl.pclove(-(g_Dice % 12 - (mas ? 3 : 0)));
+        girl.pclove(-(g_Dice % 17 - (mas ? 3 : -3)));
         girl.happiness(-(g_Dice % 12 - (mas ? 3 : 0)));
         girl.spirit(-(g_Dice % 7 - (mas ? 2 : 0)));
         girl.obedience(g_Dice % 5 - 2);
@@ -869,8 +858,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         bool mas = girl.has_active_trait("Masochist");
         girl.m_AccLevel = 0;
         girl.pcfear(g_Dice % 20 + (mas ? 0 : 10));
-        girl.pchate(g_Dice % 10 + (mas ? 0 : 5));
-        girl.pclove(-(g_Dice % 25 - (mas ? 5 : 0)));
+        girl.pclove(-(g_Dice % 35 - (mas ? 5 : -5)));
         girl.happiness(-(g_Dice % 25 - (mas ? 5 : 0)));
         girl.spirit(-(g_Dice % 15 - (mas ? 3 : 0)));
         girl.obedience(g_Dice % 10 - 3);
@@ -880,8 +868,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         bool mas = girl.has_active_trait("Masochist");
         girl.m_AccLevel = 0;
         girl.pcfear(g_Dice % 40 + (mas ? 0 : 20));
-        girl.pchate(g_Dice % 20 + (mas ? 0 : 10));
-        girl.pclove(-(g_Dice % 50 - (mas ? 10 : 0)));
+        girl.pclove(-(g_Dice % 70 - (mas ? 10 : 10)));
         girl.happiness(-(g_Dice % 50 - (mas ? 10 : 0)));
         girl.spirit(-(g_Dice % 30 - (mas ? 5 : 0)));
         girl.obedience(g_Dice % 20 - 5);

@@ -1115,7 +1115,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     int pregMultiplier = ((isPregnant) ? 2 : 1);
     bool yours = girl.has_status(STATUS_PREGNANT_BY_PLAYER);
     int HateLove = 0;
-    HateLove = girl.pclove() - girl.pchate();
+    HateLove = girl.pclove();
     //BSIN: Update: to generate an extra message in case of certain event
     std::stringstream ssextra;
     int extraimage = 0;
@@ -1464,13 +1464,13 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
                 ssextra << "She's pissed now, telling the other girls you raped her";
                 if (girl.is_slave()) ssextra << ", almost like she's forgotten who owns her";
                 ssextra << ".\n \n";
-                girl.pchate(5);
+                girl.pclove(-5);
                 m_Enjoyment -= 5;
             }
             else if (HateLove <= 0)
             {
                 ssextra << "She's upset you took advantage of her. She thought you were better than that.\n \n";
-                girl.pchate(2);
+                girl.pclove(-2);
                 m_Enjoyment -= 2;
             }
             else if (HateLove <= 50)

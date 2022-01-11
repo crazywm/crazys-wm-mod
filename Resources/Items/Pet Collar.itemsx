@@ -14,7 +14,7 @@
    <Effect What="Stat"  Name="Charisma"                Amount="-5"    />
    <Effect What="Stat"  Name="Happiness"               Amount="-5"    />
    <Effect What="Stat"  Name="Obedience"               Amount="15"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="10"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-10"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="-15"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />
    <Crafting CraftPoints="30" ManaCost="0">

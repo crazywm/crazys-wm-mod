@@ -173,16 +173,14 @@ struct cInventoryProviderGirl : public IInventoryProvider {
         while (amount > 0) {
             int   goodbad  = item->m_Badness;
             int   type     = item->m_Type;
-            int   HateLove = m_Girl->pclove() - m_Girl->pchate();
-            g_Game->push_message(cScreenItemManagement::GiveItemText(goodbad, HateLove, *m_Girl), 0);
+            g_Game->push_message(cScreenItemManagement::GiveItemText(goodbad, m_Girl->pclove(), *m_Girl), 0);
 
             if (goodbad < 20) {
                 int happiness = g_Game->inventory_manager().HappinessFromItem(item);
 
                 m_Girl->obedience(1);
                 m_Girl->happiness(happiness);
-                m_Girl->pchate(-2);
-                m_Girl->pclove(happiness - 1);
+                m_Girl->pclove(happiness + 1);
                 m_Girl->pcfear(-1);
             }
 
