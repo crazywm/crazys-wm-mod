@@ -8,7 +8,7 @@ if(UNIX)
 else()
     # on windows, don't put the dlls/exes into their own directory
     set(CMAKE_INSTALL_BINDIR .)
-    set(CMAKE_INSTALL SYSTEM RUNTIME DESTINATION .)
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
     # and find the required mingw dlls in its bin dir; add them to installation
     if( MINGW )
         message( STATUS "    Searching for MinGW DLLs." )
@@ -55,11 +55,6 @@ if(NOT ${PROJECT_VERSION_TYPE} STREQUAL "alpha")
 endif()
 install(FILES README.md CHANGES.md "Special Thanks.txt" gpl.txt config.xml segoeui.ttf DESTINATION .)
 install(TARGETS WhoreMaster lua tinyxml2)
-
-#  install the system packages
-if( CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS )
-    install( PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION bin COMPONENT System )
-endif( CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS )
 
 set(CPACK_GENERATOR "ZIP")
 include(CPack)
