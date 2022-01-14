@@ -25,6 +25,7 @@
 #include "xml/util.h"
 #include "xml/getattr.h"
 #include "utils/streaming_random_selection.hpp"
+#include "utils/DirPath.h"
 #include <boost/algorithm/string/trim_all.hpp>
 #include <boost/algorithm/string/split.hpp>
 
@@ -272,6 +273,13 @@ void cTextRepository::load(const tinyxml2::XMLElement& root) {
         auto result = m_Texts.emplace(name, TextGroup(std::unique_ptr<ICondition>{},std::unique_ptr<IAction>{},
                                                       0, 100));
         parse_group(name, entry, result.first->second, "", "");
+    }
+
+    for(auto& incl : IterateChildElements(root, "Include")) {
+        DirPath source;
+        source << "Resources" << "Data" << "Include" << incl.GetText();
+        auto doc = LoadXMLDocument(source.str());
+        load(*doc->RootElement());
     }
 }
 

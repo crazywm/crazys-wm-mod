@@ -731,8 +731,8 @@ sWorkJobResult FightTraining::DoWork(sGirl& girl, bool is_night) {
 
 
     //enjoyed the work or not
-    /* */if (roll_c <= 10)    { enjoy -= uniform(1, 3);    ss << "\nShe did not enjoy her time training."; }
-    else if (roll_c >= 90)    { enjoy += uniform(1, 3);    ss << "\nShe had a pleasant time training."; }
+    /* */if (roll_c <= 10)    { enjoy -= uniform(1, 3);    ss << "\n"; }
+    else if (roll_c >= 90)    { enjoy += uniform(1, 3);    ss << "\n"; }
     else /*             */    { enjoy += uniform(0, 1);        ss << "\nOtherwise, the shift passed uneventfully."; }
     girl.upd_Enjoyment(ACTION_COMBAT, enjoy);
     girl.upd_Enjoyment(ACTION_WORKTRAINING, enjoy);

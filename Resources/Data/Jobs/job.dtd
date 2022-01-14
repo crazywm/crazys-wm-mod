@@ -20,7 +20,7 @@
 <!ELEMENT Stat (EMPTY)>
 <!ATTLIST Stat Name CDATA #REQUIRED Weight CDATA Min CDATA Max CDATA>
 
-<!ELEMENT Messages (Message*)>
+<!ELEMENT Messages (Message|Include)*)>
 <!ELEMENT Message ((Text|Group)+)>
 <!ATTLIST Message Name CDATA #REQUIRED>
 <!ELEMENT Text (#PCDATA)>
@@ -36,3 +36,5 @@
 
 <!ELEMENT Mod (#PCDATA)>
 <!ATTLIST Mod Weight CDATA #IMPLIED>
+
+<!ELEMENT Include (#PCDATA)>

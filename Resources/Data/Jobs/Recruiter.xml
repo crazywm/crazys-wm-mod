@@ -52,5 +52,15 @@
         <Message Name="work.worst">
             <Text>She was nervous and constantly making mistakes. She really isn't very good at this job.</Text>
         </Message>
+
+        <Message Name="shift.good">
+            <Text>She had a pleasant time working.</Text>
+        </Message>
+        <Message Name="shift.bad">
+            <Text>Some of the people abused her during the shift.</Text>
+        </Message>
+        <Message Name="shift.neutral">
+            <Text>Otherwise, the shift passed uneventfully.</Text>
+        </Message>
     </Messages>
 </Job>

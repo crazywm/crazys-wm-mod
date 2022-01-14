@@ -795,23 +795,7 @@ bool Recruiter::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
 
     ss << "\n \n";
 
-    int roll_a = d100();
-    //enjoyed the work or not
-    if (roll_a <= 5)
-    {
-        ss << "Some of the people abused her during the shift.";
-        m_Enjoyment -= 1;
-    }
-    else if (roll_a <= 25)
-    {
-        ss << "She had a pleasant time working.";
-        m_Enjoyment += 3;
-    }
-    else
-    {
-        ss << "Otherwise, the shift passed uneventfully.";
-        m_Enjoyment += 1;
-    }
+    shift_enjoyment();
 
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     int roll_max = (girl.charisma() + girl.service()) / 4;

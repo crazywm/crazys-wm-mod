@@ -69,20 +69,32 @@ void cSimpleJob::shift_enjoyment() {
     int roll = d100();
     if (roll <= 5)
     {
-        ss << rng().select_text({
-                                        "Some of the patrons abused her during the shift.",
-                                        "Several patrons heckled her and made her shift generally unpleasant."
-                                });
+        if(has_text("shift.bad")) {
+            add_text("shift.bad");
+        } else {
+            ss << rng().select_text({
+                                            "Some of the patrons abused her during the shift.",
+                                            "Several patrons heckled her and made her shift generally unpleasant."
+                                    });
+        }
         m_Enjoyment -= 1;
     }
     else if (roll <= 25)
     {
-        ss << "She had a pleasant time working.";
+        if(has_text("shift.good")) {
+            add_text("shift.good");
+        } else {
+            ss << "She had a pleasant time working.";
+        }
         m_Enjoyment += 3;
     }
     else
     {
-        ss << "Otherwise, the shift passed uneventfully.";
+        if(has_text("shift.neutral")) {
+            add_text("shift.neutral");
+        } else {
+            ss << "Otherwise, the shift passed uneventfully.";
+        }
         m_Enjoyment += 1;
     }
 

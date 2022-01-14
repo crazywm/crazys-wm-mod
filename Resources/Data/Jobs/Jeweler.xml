@@ -33,5 +33,6 @@
         <Message Name="produce">
             <Text>${name} crafted:</Text>
         </Message>
+        <Include>DefaultPerformanceMessages.xml</Include>
     </Messages>
 </Job>

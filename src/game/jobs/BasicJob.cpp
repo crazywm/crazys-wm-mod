@@ -75,6 +75,7 @@ void cBasicJob::load_from_xml_internal(const tinyxml2::XMLElement& job_data, con
             g_Game->error("Detected some problems when loading " + file_name);
         }
     }
+
     const auto* config_el = job_data.FirstChildElement("Config");
     if(config_el) {
         load_from_xml_callback(*config_el);

@@ -20,38 +20,25 @@
 #ifndef WM_JOBS_CRAFTING_H
 #define WM_JOBS_CRAFTING_H
 
-#include "BasicJob.h"
+#include "SimpleJob.h"
 #include <sstream>
 #include <vector>
 
 
-struct sCraftingJobData {
-    Image_Types  Image;             //!< The image type used in the job event.
-    Action_Types Action;            //!< Secondary action (besides WORKMOVIE) that can gain enjoyment. Set to NUM_ACTIONTYPES to disable
-    int          Wages;             //!< Default wages for that job
-    const char*  MsgWork;           //!< Default message for doing the work
-    const char*  MsgRepair;         //!< Message for doing repairs
-    const char*  MsgProduce;        //!< Message for production
-};
-
-class GenericCraftingJob : public cBasicJob {
+class GenericCraftingJob : public cSimpleJob {
 public:
-    explicit GenericCraftingJob(JOBS id, const char* xml, sCraftingJobData data) :
-        cBasicJob(id, xml), m_CraftingData(std::move(data)) {
+    explicit GenericCraftingJob(JOBS id, const char* xml, Action_Types action, int BaseWages, Image_Types image) :
+        cSimpleJob(id, xml, {action, BaseWages}) {
     }
 
-    sWorkJobResult DoWork(sGirl& girl, bool is_night) final;
 protected:
-    bool WorkCrafting(sGirl& girl, bool is_night);
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night);
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 
-    // common data
-    sCraftingJobData m_CraftingData;
+    Image_Types m_Image;
 
     // shift processing data
-    int enjoy;
     int craftpoints;
-    int sales;
 private:
     virtual void performance_msg();
     virtual void DoWorkEvents(sGirl& girl);

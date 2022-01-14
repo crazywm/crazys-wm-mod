@@ -29,38 +29,24 @@ namespace settings {
     extern const char* MONEY_SELL_ITEM;
 }
 
-sWorkJobResult GenericCraftingJob::DoWork(sGirl& girl, bool is_night) {
-    enjoy = 0;
-    sales = 0;
-    m_Wages = m_CraftingData.Wages * (1.0 + (m_Performance - 70) / 100.0);
-    return {WorkCrafting(girl, is_night), 0, sales, m_Wages};
-}
-
-bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
-    auto brothel = girl.m_Building;
-    //    Job setup                //
-
-    ss << m_CraftingData.MsgWork << "\n \n";
-
-    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
-
-    int imagetype = m_CraftingData.Image;
+bool GenericCraftingJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
+    m_Wages = m_Data.BaseWages * (1.0 + (m_Performance - 70) / 100.0);
+    int imagetype = m_Image;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    Job Performance            //
 
     craftpoints = m_Performance;
 
-    int dirtyloss = brothel->m_Filthiness / 10;        // craftpoints lost due to repairing equipment
+    int dirtyloss = brothel.m_Filthiness / 10;        // craftpoints lost due to repairing equipment
     if (dirtyloss > 0)
     {
         craftpoints -= dirtyloss * 2;
-        brothel->m_Filthiness -= dirtyloss * 10;
-        ss << m_CraftingData.MsgRepair << "\n";
+        brothel.m_Filthiness -= dirtyloss * 10;
+        add_text("repair") << "\n\n";
     }
 
     performance_msg();
-    ss << "\n \n";
 
     //    Enjoyment and Tiredness        //
     DoWorkEvents(girl);
@@ -77,7 +63,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
         float item_worth = DoCrafting(girl, craftpoints);
         if(item_worth > 0) {
             msgtype = EVENT_GOODNEWS;
-            sales += item_worth * girl_pay;
+            m_Earnings += item_worth * girl_pay;
         }
     }
 
@@ -87,7 +73,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     apply_gains(girl, m_Performance);
 
     // Update Enjoyment
-    girl.upd_Enjoyment(m_CraftingData.Action, enjoy);
+    girl.upd_Enjoyment(m_Data.Action, m_Enjoyment);
 
     return false;
 }
@@ -112,7 +98,10 @@ float GenericCraftingJob::DoCrafting(sGirl& girl, int craft_points) {
 
         points_remaining -= item->m_Crafting.craft_cost();
         girl.mana(-item->m_Crafting.mana_cost());
-        if (numitems == 0)    ss << "\n \n" << m_CraftingData.MsgProduce << ":";
+        if (numitems == 0)    {
+            ss << "\n";
+            add_text("produce") << ":";
+        }
         ss << "\n" << item->m_Name;
         g_Game->player().add_item(item);
         numitems++;
@@ -124,54 +113,15 @@ float GenericCraftingJob::DoCrafting(sGirl& girl, int craft_points) {
 }
 
 void GenericCraftingJob::DoWorkEvents(sGirl& girl) {
-    int roll = d100();
-    //enjoyed the work or not
-    if (roll <= 5)
-    {
-        ss << "\nSome of the patrons abused her during the shift.";
-        enjoy -= 1;
-    }
-    else if (roll <= 25)
-    {
-        ss << "\nShe had a pleasant time working.";
-        enjoy += 3;
-    }
-    else
-    {
-        ss << "\nOtherwise, the shift passed uneventfully.";
-        enjoy += 1;
-    }
+    shift_enjoyment();
 }
 
 void GenericCraftingJob::performance_msg() {
-    if (m_Performance >= 245)
-    {
-        ss << " She must be the perfect at this.";
-    }
-    else if (m_Performance >= 185)
-    {
-        ss << " She's unbelievable at this.";;
-    }
-    else if (m_Performance >= 145)
-    {
-        ss << " She's good at this job.";
-    }
-    else if (m_Performance >= 100)
-    {
-        ss << " She made a few mistakes but overall she is okay at this.";
-    }
-    else if (m_Performance >= 70)
-    {
-        ss << " She was nervous and made a few mistakes. She isn't that good at this.";
-    }
-    else
-    {
-        ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
-    }
+    add_performance_text();
 }
 
 IGenericJob::eCheckWorkResult GenericCraftingJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(m_CraftingData.Action, job()))            // they refuse to work
+    if (girl.disobey_check(m_Data.Action, job()))            // they refuse to work
     {
         ss << "${name} refused to work during the " << (is_night ? "night" : "day") << " shift.";
         girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
@@ -187,11 +137,7 @@ struct cBlacksmithJob : GenericCraftingJob {
 
 cBlacksmithJob::cBlacksmithJob() :
         GenericCraftingJob(JOB_BLACKSMITH, "Blacksmith.xml",
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
-                 40
-                }
-
-        ) {
+                           ACTION_WORKMAKEITEMS, 40, IMGTYPE_CRAFT) {
 
 }
 
@@ -202,7 +148,7 @@ void cBlacksmithJob::DoWorkEvents(sGirl& girl) {
     if (roll_a <= 10)
     {
         tired /= 8;
-        enjoy -= uniform(0, 3);
+        m_Enjoyment -= uniform(0, 3);
         if (roll_b < 10)    // fire
         {
             int fire = std::max(0, rng().bell(-2, 10));
@@ -246,14 +192,14 @@ void cBlacksmithJob::DoWorkEvents(sGirl& girl) {
     {
         tired /= 12;
         craftpoints *= 1.1;
-        enjoy += uniform(0, 3);
+        m_Enjoyment += uniform(0, 3);
         /* */if (roll_b < 50)    ss << "She kept a steady pace of hammer blows by humming a pleasant tune.";
         else /*            */    ss << "She had a great time working today.";
     }
     else
     {
         tired /= 10;
-        enjoy += uniform(0, 2);
+        m_Enjoyment += uniform(0, 2);
         ss << "The shift passed uneventfully.";
     }
     ss << "\n \n";
@@ -266,7 +212,7 @@ struct cCobblerJob : GenericCraftingJob {
 
 cCobblerJob::cCobblerJob() :
     GenericCraftingJob(JOB_COBBLER, "Cobbler.xml",
-            {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,20}) {
+                       ACTION_WORKMAKEITEMS, 20, IMGTYPE_CRAFT) {
 }
 
 void cCobblerJob::DoWorkEvents(sGirl& girl) {
@@ -276,7 +222,7 @@ void cCobblerJob::DoWorkEvents(sGirl& girl) {
     if (roll_a <= 10)
     {
         tired /= 10;
-        enjoy -= uniform(0, 3);
+        m_Enjoyment -= uniform(0, 3);
         if (roll_b < 20)    // injury
         {
             girl.health(-uniform(1, 5));
@@ -307,14 +253,14 @@ void cCobblerJob::DoWorkEvents(sGirl& girl) {
     {
         tired /= 14;
         craftpoints *= 1.1;
-        enjoy += uniform(0, 3);
+        m_Enjoyment += uniform(0, 3);
         /* */if (roll_b < 50)    ss << "She kept a steady pace with her needle work by humming a pleasant tune.";
         else /*            */    ss << "She had a great time working today.";
     }
     else
     {
         tired /= 12;
-        enjoy += uniform(0, 2);
+        m_Enjoyment += uniform(0, 2);
         ss << "The shift passed uneventfully.";
     }
     ss << "\n \n";
@@ -323,13 +269,12 @@ void cCobblerJob::DoWorkEvents(sGirl& girl) {
 
 struct cMakeItemJob : GenericCraftingJob {
     cMakeItemJob();
-
     void DoWorkEvents(sGirl& girl) override;
 };
 
 cMakeItemJob::cMakeItemJob() :
         GenericCraftingJob(JOB_MAKEITEM, "MakeItem.xml",
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,20}) {
+                           ACTION_WORKMAKEITEMS, 20, IMGTYPE_CRAFT) {
 }
 
 void cMakeItemJob::DoWorkEvents(sGirl& girl) {
@@ -339,7 +284,7 @@ void cMakeItemJob::DoWorkEvents(sGirl& girl) {
     if (roll_a <= 10)
     {
         tired /= 14;
-        enjoy -= uniform(0, 3);
+        m_Enjoyment -= uniform(0, 3);
         if (roll_b < 30)    // injury
         {
             girl.health(-uniform(1, 5));
@@ -368,14 +313,14 @@ void cMakeItemJob::DoWorkEvents(sGirl& girl) {
     {
         tired /= 20;
         craftpoints *= 1.1;
-        enjoy += uniform(0, 3);
+        m_Enjoyment += uniform(0, 3);
         /* */if (roll_b < 50)    ss << "She kept a steady pace by humming a pleasant tune.";
         else /*            */    ss << "She had a great time working today.";
     }
     else
     {
         tired /= 17;
-        enjoy += uniform(0, 2);
+        m_Enjoyment += uniform(0, 2);
         ss << "The shift passed uneventfully.";
     }
     ss << "\n \n";
@@ -384,14 +329,13 @@ void cMakeItemJob::DoWorkEvents(sGirl& girl) {
 
 struct cMakePotionsJob : GenericCraftingJob {
     cMakePotionsJob();
-
     void DoWorkEvents(sGirl& girl) override;
 };
 
 
 cMakePotionsJob::cMakePotionsJob() :
         GenericCraftingJob(JOB_MAKEPOTIONS, "MakePotions.xml",
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEPOTIONS,20}) {
+                           ACTION_WORKMAKEPOTIONS, 20, IMGTYPE_CRAFT) {
 }
 
 void cMakePotionsJob::DoWorkEvents(sGirl& girl) {
@@ -399,12 +343,12 @@ void cMakePotionsJob::DoWorkEvents(sGirl& girl) {
     //enjoyed the work or not
     if (roll >= 90)
     {
-        enjoy += uniform(1, 4);
+        m_Enjoyment += uniform(1, 4);
         ss << "She had a great time making potions today.";
     }
     else if (roll <= 10)
     {
-        enjoy -= uniform(1, 6);
+        m_Enjoyment -= uniform(1, 6);
         ss << "Some potions blew up in her face today.";
         girl.health(-uniform(0, 10));
         girl.happiness(-uniform(0, 20));
@@ -413,12 +357,12 @@ void cMakePotionsJob::DoWorkEvents(sGirl& girl) {
     }
     else if (roll <= 20)
     {
-        enjoy -= uniform(1, 4);
+        m_Enjoyment -= uniform(1, 4);
         ss << "She did not like making potions today.";
     }
     else
     {
-        enjoy += uniform(0, 2);
+        m_Enjoyment += uniform(0, 2);
         ss << "The shift passed uneventfully.";
     }
     ss << "\n \n";
@@ -433,7 +377,7 @@ struct cTailorJob : GenericCraftingJob {
 
 cTailorJob::cTailorJob() :
         GenericCraftingJob(JOB_TAILOR, "Tailor.xml",
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,20}) {
+                           ACTION_WORKMAKEITEMS, 20, IMGTYPE_CRAFT) {
 }
 
 void cTailorJob::DoWorkEvents(sGirl& girl) {
@@ -443,7 +387,7 @@ void cTailorJob::DoWorkEvents(sGirl& girl) {
     if (roll_a <= 10)
     {
         tired /= 8;
-        enjoy -= uniform(0, 3);
+        m_Enjoyment -= uniform(0, 3);
         if (roll_b < 20)    // injury
         {
             girl.health(-uniform(1, 6));
@@ -473,14 +417,14 @@ void cTailorJob::DoWorkEvents(sGirl& girl) {
     {
         tired /= 12;
         craftpoints *= 1.1;
-        enjoy += uniform(0, 3);
+        m_Enjoyment += uniform(0, 3);
         /* */if (roll_b < 50)    ss << "She kept a steady pace with her needle work by humming a pleasant tune.";
         else /*            */    ss << "She had a great time working today.";
     }
     else
     {
         tired /= 10;
-        enjoy += uniform(0, 2);
+        m_Enjoyment += uniform(0, 2);
         ss << "The shift passed uneventfully.";
     }
     ss << "\n \n";
@@ -493,13 +437,7 @@ struct cGardenerJob : GenericCraftingJob {
 
 cGardenerJob::cGardenerJob() :
         GenericCraftingJob(JOB_GARDENER, "Gardener.xml",
-                {IMGTYPE_FARM, ACTION_WORKFARM,
-                 20,
-                 "${name} worked as a gardener on the farm.",
-                 "She spent some of her time repairing the Farm's equipment instead of gardening.",
-                 "${name} was able to harvest:",
-                }
-        ) {
+                           ACTION_WORKFARM, 20, IMGTYPE_FARM) {
 }
 
 struct cJewelerJob : GenericCraftingJob {
@@ -509,9 +447,7 @@ struct cJewelerJob : GenericCraftingJob {
 
 cJewelerJob::cJewelerJob() :
         GenericCraftingJob(JOB_JEWELER, "Jeweler.xml",
-                {IMGTYPE_CRAFT, ACTION_WORKMAKEITEMS,
-                 40}
-        ) {
+                           ACTION_WORKMAKEITEMS, 40, IMGTYPE_CRAFT) {
 }
 
 void cJewelerJob::DoWorkEvents(sGirl& girl) {
@@ -521,7 +457,7 @@ void cJewelerJob::DoWorkEvents(sGirl& girl) {
     if (roll_a <= 10)
     {
         tired /= 8;
-        enjoy -= uniform(0, 3);
+        m_Enjoyment -= uniform(0, 3);
         if (roll_b < 10)    // fire
         {
             int fire = std::max(0, rng().bell(-2, 10));
@@ -565,14 +501,14 @@ void cJewelerJob::DoWorkEvents(sGirl& girl) {
     {
         tired /= 12;
         craftpoints *= 1.1;
-        enjoy += uniform(0, 3);
+        m_Enjoyment += uniform(0, 3);
         /* */if (roll_b < 50)    ss << "She kept a steady pace of hammer blows by humming a pleasant tune.";
         else /*            */    ss << "She had a great time working today.";
     }
     else
     {
         tired /= 10;
-        enjoy += uniform(0, 2);
+        m_Enjoyment += uniform(0, 2);
         ss << "The shift passed uneventfully.";
     }
     ss << "\n \n";
@@ -580,19 +516,11 @@ void cJewelerJob::DoWorkEvents(sGirl& girl) {
 
 void RegisterCraftingJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<GenericCraftingJob>(
-            JOB_BAKER, "Baker.xml", sCraftingJobData{
-            IMGTYPE_COOK, ACTION_WORKCOOKING, 20
-            }));
+            JOB_BAKER, "Baker.xml", ACTION_WORKCOOKING, 20, IMGTYPE_COOK));
     mgr.register_job(std::make_unique<GenericCraftingJob>(
-            JOB_BREWER, "Brewer.xml", sCraftingJobData{
-                 IMGTYPE_COOK, ACTION_WORKCOOKING,
-                 20
-            }));
+            JOB_BREWER, "Brewer.xml", ACTION_WORKCOOKING, 20, IMGTYPE_COOK));
     mgr.register_job(std::make_unique<GenericCraftingJob>(
-            JOB_BUTCHER, "Butcher.xml", sCraftingJobData{
-                    IMGTYPE_COOK, ACTION_WORKCOOKING,
-                    20
-            }));
+            JOB_BUTCHER, "Butcher.xml", ACTION_WORKCOOKING, 20, IMGTYPE_COOK));
     mgr.register_job(std::make_unique<cBlacksmithJob>());
     mgr.register_job(std::make_unique<cCobblerJob>());
     mgr.register_job(std::make_unique<cGardenerJob>());

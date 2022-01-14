@@ -62,5 +62,6 @@
         <Message Name="produce">
             <Text>${name} made:</Text>
         </Message>
+        <Include>DefaultPerformanceMessages.xml</Include>
     </Messages>
 </Job>

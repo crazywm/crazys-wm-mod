@@ -38,5 +38,6 @@
         <Message Name="produce">
             <Text>${name} was able to harvest:</Text>
         </Message>
+        <Include>DefaultPerformanceMessages.xml</Include>
     </Messages>
 </Job>
