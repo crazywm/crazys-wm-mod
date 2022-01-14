@@ -83,7 +83,17 @@ void cWindowManager::Pop()
     m_WindowStack.pop_back();
     if(!m_WindowStack.empty()) {
         g_LogFile.info("interface", "New window is '", m_WindowStack.back()->name(), "', calling init");
-        m_WindowStack.back()->init(true);
+#ifndef FUZZ_TESTING
+        try {
+#endif
+            m_WindowStack.back()->init(true);
+#ifndef FUZZ_TESTING
+        } catch (std::exception& exception) {
+            g_LogFile.error("interface", "Error when popping to window ", m_WindowStack.back()->name(), ":", exception.what());
+            m_WindowStack.pop_back();
+            PushError(exception.what());
+        }
+#endif
     }
 }
 
