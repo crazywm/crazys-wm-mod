@@ -1,3 +1,8 @@
+# Version 7.1.2alpha6
+
+## Fixes
+* Show dungeon events in turn summary
+
 # Version 7.1.2alpha5
 
 ## Gameplay Changes

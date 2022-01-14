@@ -305,6 +305,7 @@ void cScreenTurnSummary::change_item(int selection)
         if (girl) {
             set_active_girl(girl->m_Girl);
         }
+        Fill_Events(selected_girl().get());
     }
         break;
     case Summary_GIRLS: {
