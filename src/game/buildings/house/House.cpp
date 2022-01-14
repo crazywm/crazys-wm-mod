@@ -54,7 +54,7 @@ namespace {
     };
 }
 
-HouseCook::HouseCook() : cSimpleJob(JOB_HOUSECOOK, "HouseCook.xml", {ACTION_WORKCOOKING}) {
+HouseCook::HouseCook() : cSimpleJob(JOB_HOUSECOOK, "HouseCook.xml", {ACTION_WORKCOOKING, 20}) {
 
 }
 
@@ -668,7 +668,7 @@ double PersonalTraining::GetPerformance(const sGirl& girl, bool estimate) const 
     return 0;
 }
 
-Recruiter::Recruiter() : cSimpleJob(JOB_RECRUITER, "Recruiter.xml", {ACTION_WORKRECRUIT}) {
+Recruiter::Recruiter() : cSimpleJob(JOB_RECRUITER, "Recruiter.xml", {ACTION_WORKRECRUIT, 100}) {
     m_Info.FullTime = true;
     m_Info.FreeOnly = true;
 }
@@ -678,14 +678,13 @@ IGenericJob::eCheckWorkResult Recruiter::CheckWork(sGirl& girl, bool is_night) {
 }
 
 bool Recruiter::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
-    m_Wages = 100;
     int fame = 0;
 
     int imagetype = IMGTYPE_PROFILE;
 
     int HateLove = girl.pclove();
 
-    /* */if (HateLove < -80)    ss << "She hates you more then anything so she doesn't try that hard.";
+    if (HateLove < -80)         ss << "She hates you more then anything so she doesn't try that hard.";
     else if (HateLove < -60)    ss << "She hates you.";
     else if (HateLove < -40)    ss << "She doesn't like you.";
     else if (HateLove < -20)    ss << "She finds you to be annoying.";
@@ -819,7 +818,6 @@ bool Recruiter::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     m_Wages += 10 + uniform(0, roll_max);
 
     // Improve stats
-    girl.fame(fame);
     HandleGains(girl, fame);
 
     return false;
