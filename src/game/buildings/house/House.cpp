@@ -40,11 +40,10 @@ namespace {
         eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     };
 
-    struct Recruiter: public cBasicJob {
+    struct Recruiter: public cSimpleJob {
         Recruiter();
-        sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
+        bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
         eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
-        double GetPerformance(const sGirl& girl, bool estimate) const override;
     };
 
     struct PersonalTraining: public cBasicJob {
@@ -669,7 +668,7 @@ double PersonalTraining::GetPerformance(const sGirl& girl, bool estimate) const 
     return 0;
 }
 
-Recruiter::Recruiter() : cBasicJob(JOB_RECRUITER, "Recruiter.xml") {
+Recruiter::Recruiter() : cSimpleJob(JOB_RECRUITER, "Recruiter.xml", {ACTION_WORKRECRUIT}) {
     m_Info.FullTime = true;
     m_Info.FreeOnly = true;
 }
@@ -678,23 +677,13 @@ IGenericJob::eCheckWorkResult Recruiter::CheckWork(sGirl& girl, bool is_night) {
     return SimpleRefusalCheck(girl, ACTION_WORKRECRUIT);
 }
 
-sWorkJobResult Recruiter::DoWork(sGirl& girl, bool is_night) {
-    Action_Types actiontype = ACTION_WORKRECRUIT;
-    add_text("work") << "\n\n";
-
+bool Recruiter::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     m_Wages = 100;
-    int enjoy = 0, fame = 0;
+    int fame = 0;
 
     int imagetype = IMGTYPE_PROFILE;
 
-#pragma endregion
-#pragma region //    Job Performance            //
-
-
-    cGirls::UnequipCombat(girl);    // put that shit away, are you are trying to recruit for the military?
-
     int HateLove = girl.pclove();
-    int findchance = 0;
 
     /* */if (HateLove < -80)    ss << "She hates you more then anything so she doesn't try that hard.";
     else if (HateLove < -60)    ss << "She hates you.";
@@ -708,38 +697,8 @@ sWorkJobResult Recruiter::DoWork(sGirl& girl, bool is_night) {
     else                        ss << "She loves you more then anything so she gives it her all.";
     ss << "\n \n";
 
-    double jobperformance = girl.job_performance(JOB_RECRUITER, false);
-    if (jobperformance >= 245)
-    {
-        ss << "She must be the perfect recruiter.";
-        findchance = 20;
-    }
-    else if (jobperformance >= 185)
-    {
-        ss << "She's unbelievable at this.";
-        findchance = 15;
-    }
-    else if (jobperformance >= 135)
-    {
-        ss << "She's good at this job.";
-        findchance = 12;
-    }
-    else if (jobperformance >= 85)
-    {
-        ss << "She made a few mistakes but overall she is okay at this.";
-        findchance = 10;
-    }
-    else if (jobperformance >= 65)
-    {
-        ss << "She was nervous and made a few mistakes. She isn't that good at this.";
-        findchance = 8;
-    }
-    else
-    {
-        ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.";
-        findchance = 4;
-    }
-    ss << "\n \n";
+    add_performance_text();
+    int findchance = performance_based_lookup(4, 8, 10, 12, 15, 20);
 
     // `J` add in player's disposition so if the girl has heard of you
     int dispmod = 0;
@@ -837,63 +796,33 @@ sWorkJobResult Recruiter::DoWork(sGirl& girl, bool is_night) {
 
     ss << "\n \n";
 
-#pragma endregion
-#pragma region    //    Enjoyment and Tiredness        //
     int roll_a = d100();
     //enjoyed the work or not
     if (roll_a <= 5)
     {
         ss << "Some of the people abused her during the shift.";
-        enjoy -= 1;
+        m_Enjoyment -= 1;
     }
     else if (roll_a <= 25)
     {
         ss << "She had a pleasant time working.";
-        enjoy += 3;
+        m_Enjoyment += 3;
     }
     else
     {
         ss << "Otherwise, the shift passed uneventfully.";
-        enjoy += 1;
+        m_Enjoyment += 1;
     }
 
-#pragma endregion
-#pragma region    //    Finish the shift            //
-
-
-    girl.upd_Enjoyment(actiontype, enjoy);
     girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-    int roll_max = (girl.charisma() + girl.service());
-    roll_max /= 4;
+    int roll_max = (girl.charisma() + girl.service()) / 4;
     m_Wages += 10 + uniform(0, roll_max);
 
     // Improve stats
-    if (girl.fame() < 10 && jobperformance >= 70)        { fame += 1; }
-    if (girl.fame() < 20 && jobperformance >= 100)        { fame += 1; }
-    if (girl.fame() < 40 && jobperformance >= 145)        { fame += 1; }
-    if (girl.fame() < 50 && jobperformance >= 185)        { fame += 1; }
-
     girl.fame(fame);
+    HandleGains(girl, fame);
 
-    apply_gains(girl, m_Performance);
-
-#pragma endregion
-    return {false, 0, 0, std::max(0, m_Wages)};
-}
-
-double Recruiter::GetPerformance(const sGirl& girl, bool estimate) const {
-    if (girl.is_slave()) return -1000;
-
-    double jobperformance = (girl.pclove() + girl.charisma());
-    if (!estimate)
-    {
-        int t = girl.tiredness() - 80;
-        if (t > 0)
-            jobperformance -= (t + 2) * (t / 3);
-    }
-    jobperformance += girl.get_trait_modifier("work.recruiter");
-
-    return jobperformance;
+    return false;
 }
 
 void RegisterHouseJobs(cJobManager& mgr) {

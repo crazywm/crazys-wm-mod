@@ -4,6 +4,11 @@
         She will go out and try and recruit girls for you.
     </Description>
 
+    <Performance>
+        <Factor Stat="PCLove" Weight="1" />
+        <Factor Stat="Charisma" Weight="1" />
+    </Performance>
+
     <Gains XP="15" Skill="3">
         <Skill Name="Service" Weight="1"/>
         <Skill Name="Lesbian" Weight="1"/>
@@ -27,6 +32,25 @@
         </Message>
         <Message Name="refuse">
             <Text>${name} refused to work during the ${shift} shift.</Text>
+        </Message>
+
+        <Message Name="work.perfect">
+            <Text>She must be the perfect recruiter."</Text>
+        </Message>
+        <Message Name="work.great">
+            <Text>She's unbelievable at this.</Text>
+        </Message>
+        <Message Name="work.good">
+            <Text>"She's good at this job.</Text>
+        </Message>
+        <Message Name="work.ok">
+            <Text>She made a few mistakes but overall she is okay at this.</Text>
+        </Message>
+        <Message Name="work.bad">
+            <Text>She was nervous and made a few mistakes. She isn't that good at this.</Text>
+        </Message>
+        <Message Name="work.worst">
+            <Text>She was nervous and constantly making mistakes. She really isn't very good at this job.</Text>
         </Message>
     </Messages>
 </Job>

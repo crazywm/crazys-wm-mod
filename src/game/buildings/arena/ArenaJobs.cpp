@@ -216,7 +216,6 @@ sWorkJobResult FightBeasts::DoWork(sGirl& girl, bool is_night) {
 
     m_Wages = 175;
     int enjoy = 0;
-    double jobperformance = girl.job_performance(JOB_FIGHTBEASTS, false);
 
     // TODO need better dialog
     Combat combat(ECombatObjective::KILL, ECombatObjective::KILL);
@@ -309,13 +308,13 @@ sWorkJobResult FightBeasts::DoWork(sGirl& girl, bool is_night) {
     }
 
     int earned = 0;
-    for (int i = 0; i < jobperformance; i++)
+    for (int i = 0; i < m_Performance; i++)
     {
         earned += uniform(5, 15); // 5-15 gold per customer  This may need tweaked to get it where it should be for the pay
     }
     brothel->m_Finance.arena_income(earned);
     ss.str("");
-    ss << "${name} drew in " << jobperformance << " people to watch her and you earned " << earned << " from it.";
+    ss << "${name} drew in " << m_Performance << " people to watch her and you earned " << earned << " from it.";
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     girl.upd_Enjoyment(ACTION_COMBAT, enjoy);
@@ -345,11 +344,6 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
     int enjoy = 0, fame = 0;
 
     int imagetype = IMGTYPE_COMBAT;
-
-#pragma endregion
-#pragma region //    Job Performance            //
-
-    double jobperformance = girl.job_performance(JOB_FIGHTARENAGIRLS, false);
 
     cGirls::EquipCombat(girl);        // ready armor and weapons!
     auto tempgirl = g_Game->CreateRandomGirl(SpawnReason::ARENA);
@@ -460,13 +454,13 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
     *
     */
     int earned = 0;
-    for (int i = 0; i < jobperformance; i++)
+    for (int i = 0; i < m_Performance; i++)
     {
         earned += uniform(5, 15); // 5-15 gold per customer  This may need tweaked to get it where it should be for the pay
     }
     brothel->m_Finance.arena_income(earned);
     ss.str("");
-    ss << "${name} drew in " << jobperformance << " people to watch her and you earned " << earned << " from it.";
+    ss << "${name} drew in " << m_Performance << " people to watch her and you earned " << earned << " from it.";
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
 

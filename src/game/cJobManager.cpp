@@ -1347,22 +1347,6 @@ std::string cJobManager::GetGirlAttackedString(int attacktype)
     return ss.str();
 }
 
-bool WorkTraining(sGirl& girl, bool Day0Night1, cRng& rng)
-{
-    return false;
-}
-double JP_Training(const sGirl& girl, bool estimate)
-{
-    double jobperformance = 0.0;
-
-    jobperformance +=
-        (100 - cGirls::GetAverageOfSexSkills(girl)) +
-        (100 - cGirls::GetAverageOfNSxSkills(girl))
-        ;
-
-    return jobperformance;
-}
-
 double calc_pilfering(sGirl& girl)
 {
     double factor = 0.0;

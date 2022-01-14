@@ -27,6 +27,7 @@
 #include "IGame.h"
 
 double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {
+    if(m_Info.FreeOnly && girl.is_slave()) return -1000;
     return m_PerformanceData.eval(girl, estimate);
 }
 
