@@ -84,12 +84,13 @@ private:
     std::unique_ptr<ITextRepository> m_TextRepo;
     cBasicJobTextInterface m_Interface;
 
-    void load_from_xml_internal(const tinyxml2::XMLElement& source, const std::string& file_name) override;
-    virtual void load_from_xml_callback(const tinyxml2::XMLElement& job_element) {};
-
     friend class cBasicJobTextInterface;
 
     std::unordered_map<std::string, std::string> m_Replacements;
+protected:
+    // protected, so derived classes can call the base-class version
+    void load_from_xml_internal(const tinyxml2::XMLElement& source, const std::string& file_name) override;
+    virtual void load_from_xml_callback(const tinyxml2::XMLElement& job_element) {};
 };
 
 #endif //WM_BASICJOB_H

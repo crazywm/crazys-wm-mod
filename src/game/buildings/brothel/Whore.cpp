@@ -55,8 +55,8 @@ namespace {
 
 cWhoreJob::cWhoreJob(JOBS job, const char* short_name, const char* description) :
         cSimpleJob(job, "Whore.xml", {ACTION_SEX}) {
-    m_Info.Description = description;
-    m_Info.ShortName = short_name;
+    m_CacheDescription = description;
+    m_CacheShortName = short_name;
 }
 
 bool cWhoreJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
@@ -735,4 +735,19 @@ double cWhoreJob::GetPerformance(const sGirl& girl, bool estimate) const {
     {
     }
     return jobperformance;
+}
+
+IGenericJob::eCheckWorkResult cWhoreJob::CheckWork(sGirl& girl, bool is_night) {
+    // whores accept or reject individual customers atm, I think?
+    return eCheckWorkResult::ACCEPTS;
+}
+
+void cWhoreJob::load_from_xml_internal(const tinyxml2::XMLElement& source, const std::string& file_name) {
+    // TODO fix this ugly workaround. it is needed because all whore jobs share the same xml file, but should have
+    // different job codes.
+    // call the base class loader
+    cSimpleJob::load_from_xml_internal(source, file_name);
+    // and reset
+    m_Info.ShortName = m_CacheShortName;
+    m_Info.Description = m_CacheDescription;
 }

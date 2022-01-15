@@ -60,12 +60,17 @@ public:
 
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
     double GetPerformance(const sGirl& girl, bool estimate) const override;
-
+    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 private:
+    void load_from_xml_internal(const tinyxml2::XMLElement& source, const std::string& file_name) override;
     void HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night);
     int m_NumSleptWith = 0;
     int m_OralCount = 0;
     std::stringstream m_FuckMessage;
+
+    /// TODO get rid of this ugly workaround
+    std::string m_CacheShortName;
+    std::string m_CacheDescription;
 };
 
 #endif //WM_BROTHELJOBS_H
