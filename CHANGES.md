@@ -11,6 +11,7 @@
 * More game aspects configurable by xml
 * Further general code cleanup
 * Some UI improvements
+* Added Theme support and a simple dark theme.
 
 ## Fixes since 7.1.2alpha5
 * Show dungeon events in turn summary
