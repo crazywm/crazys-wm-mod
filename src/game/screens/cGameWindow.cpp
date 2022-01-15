@@ -128,7 +128,7 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "virginsex*.", "virgingroup*.", "virginbdsm*.", "virginbeast*.",                                            // `J` new .06.03.01 for DarkArk
                             "escort*.", "sport*.", "study*.", "teacher*.",                                                                // `J` new .06.03.02 for grishnak
                             "massage*.", "studiocrew*.", "cameramage*.", "director*.", "crystalpurifier*.", "stagehand*.",
-                            "piano*.", "music*", "refuse*",
+                            "piano*.", "music*.", "refuse*.",
                             "preg*.",    // pregnant varients
                             "preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
                             "pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
@@ -145,7 +145,7 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "pregvirginsex*.", "pregvirgingroup*.", "pregvirginbdsm*.", "pregvirginbeast*.",                            // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "pregescort*.", "pregsport*.", "pregstudy*.", "pregteacher*.",                                             // `J` new .06.03.02 for grishnak
                             "pregmassage*.", "pregstudiocrew*.", "pregcameramage*.", "pregdirector*.", "pregcrystalpurifier*.", "pregstagehand*.",
-                            "pregpiano*.", "pregmusic*", "pregrefuse*",
+                            "pregpiano*.", "pregmusic*.", "pregrefuse*.",
                     };
 std::string galtxt[] =
                     {

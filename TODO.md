@@ -20,13 +20,7 @@
 * [ ] Pre-generate list of all images for each girl on game start
 * [ ] De-interlacing
 * [ ] Convert job functions to classes
-  - [x] Advertising
-  - [x] BeastCare
-  - [x] Customer Service
-  - [x] Explore Catacombs
-  - [x] Security
   - [ ] Torturer
-  - [x] Whore
   - [ ] PersonalBedWarmer
   - [ ] Free Time
 * [ ] adjustable unique chance for overworld encounters
@@ -57,10 +51,8 @@
 ## Gameplay
 * [ ] Generic event: girls ask for job change
 * [ ] Choose your job interaction
-* [ ] Unify Hate and Love into one stat?
 
 ## Bugs
-* [ ] some parts of the old scripts are still missing
 * [ ] Pregnancies of runaway/prison girls currently don't work
 * [ ] GetRandomRivalToSabotage function is wrong
 * [ ] async scripts and messages may get scrambled
@@ -70,7 +62,6 @@
   - [ ] "your inventory is full" for sell button
   - [ ] Equip / unequip shown simultaneously
 * [ ] gracefully handle missing/corrupt config file
-* [ ] Setting jobs for multiple girls when girl list is not in default sort order
 * [ ] animated webps don't load
 * [ ] order of events:
   When matron puts girl into resting state, 
@@ -81,5 +72,3 @@
 * [x] Recruiters, cooks and cleaners in the house do not appear to cost any money???
 * [ ] WalkTown image appears too early
 * [ ] WalkTown thrown into dungeon but still appears in regular building
-* [x] Distorted text in multipage messages 
-* [x] New game starts at week 4
