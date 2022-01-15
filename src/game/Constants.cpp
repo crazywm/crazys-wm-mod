@@ -44,12 +44,12 @@ const std::array<sAttribute, NUM_STATS>& get_all_stats () {
             sAttribute{"Beauty",       "Bty", ""},
             sAttribute{"Tiredness",    "Trd", ""},
             sAttribute{"Health",       "HP",  "", 0, 100, 100},
-            sAttribute{"PCFear",       "PCF", "", 100},
-            sAttribute{"PCLove",       "PCL", "", 100},
-            sAttribute{"Morality",     "Mor", "", 100},
-            sAttribute{"Refinement",   "Ref", "", 100},
-            sAttribute{"Dignity",      "Dig", "", 100},
-            sAttribute{"Lactation",    "Lac", "", 100},
+            sAttribute{"PCFear",       "PCF", "", -100},
+            sAttribute{"PCLove",       "PCL", "", -100},
+            sAttribute{"Morality",     "Mor", "", -100},
+            sAttribute{"Refinement",   "Ref", "", -100},
+            sAttribute{"Dignity",      "Dig", "", -100},
+            sAttribute{"Lactation",    "Lac", "", -100},
             sAttribute{"Strength",     "Str", ""},
             sAttribute{"Sanity",       "San", ""}
     };
