@@ -100,7 +100,7 @@ float GenericCraftingJob::DoCrafting(sGirl& girl, int craft_points) {
         girl.mana(-item->m_Crafting.mana_cost());
         if (numitems == 0)    {
             ss << "\n";
-            add_text("produce") << ":";
+            add_text("produce");
         }
         ss << "\n" << item->m_Name;
         g_Game->player().add_item(item);
