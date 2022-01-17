@@ -1,5 +1,8 @@
 # Version 7.1.2beta2
 
+## Gameplay
+* In the first two weeks, "Walk around town" will always lead to an encounter
+
 ## Fixes
 * Fixed event type for Advertise job
 * Fixed money computation for Barmaid and Catacombs

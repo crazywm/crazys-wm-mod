@@ -187,7 +187,12 @@ void cScreenTown::do_walk()
         return;
     }
     // most of the time, you're not going to find anyone unless you're cheating, of course.
-    if (!g_Dice.percent(g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_CHANCE)) && !g_Game->allow_cheats())
+    bool found = g_Dice.percent(g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_CHANCE));
+    // special condition: first weeks, so you can actually start the game
+    if(g_Game->get_weeks_played() < 2) {
+        found = true;
+    }
+    if (!found && !g_Game->allow_cheats())
     {
         push_message(walk_no_luck(), COLOR_BLUE);
         return;
