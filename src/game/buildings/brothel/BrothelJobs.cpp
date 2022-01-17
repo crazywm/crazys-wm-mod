@@ -329,117 +329,79 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
 
     if (girl.is_unpaid())
     {
-        bool keep_tips = girl.keep_tips();
-        if (!keep_tips)
-        {
-            m_Earnings += (int)m_Tips;
-            m_Tips = 0;
-        }
         /* */if ((int)m_Earnings > 0)    ss << "\n${name} turned in an extra " << (int)m_Earnings << " gold from other sources.";
         else if ((int)m_Earnings < 0)    ss << "\nShe cost you " << (int)m_Earnings << " gold from other sources.";
-        if ((int)m_Tips > 0 && keep_tips)
-        {
-            ss << "\nShe made " << (int)m_Tips << " gold in tips";
-            if ((int)m_Earnings < 0)
-            {
-                ss << " but you made her pay back what she could of the losses";
-                int l = (int)m_Tips + (int)m_Earnings;
-                if (l > 0)        // she can pay it all
-                {
-                    m_Tips -= l;
-                    m_Earnings += l;
-                }
-                else
-                {
-                    m_Earnings += (int)m_Tips;
-                    m_Tips = 0;
-                }
-            }
-            ss << ".";
-        }
-        profit += (int)m_Earnings;    // all of it goes to the house
-        m_Earnings = 0;
+        m_Earnings += profit;
     }
     else
     {
         if (profit >= 10)    // base pay is 10 unless she makes less
         {
             ss << "\n \n"<< "${name} made the bar a profit so she gets paid 10 gold for the shift.";
-            m_Earnings += 10;
-            profit -= 10;
+            m_Earnings -= 10;
+            m_Wages += 10;
         }
         if (profit > 0)
         {
             int b = profit / 50;
             if (b > 0) ss << "\nShe gets 2% of the profit from her drink sales as a bonus totaling " << b << " gold.";
-            m_Earnings += b;                    // 2% of profit from drinks sold
-            profit -= b;
+            m_Wages += b;                    // 2% of profit from drinks sold
+            m_Earnings -= b;
             girl.happiness(b / 5);
         }
         if (dw > 0)
         {
             girl.happiness(-(dw / 5));
 
-            int c = std::min(dw, (int)m_Earnings);
+            int c = std::min(dw, (int)m_Wages);
             int d = std::min(dw - c, (int)m_Tips);
             int e = std::min(0, dw - d);
             bool left = false;
-            if (dw < (int)m_Earnings)                    // she pays for all wasted drinks out of wages
+            if (dw < (int)m_Wages)                    // she pays for all wasted drinks out of wages
             {
-                ss << "\nYou take 1 gold out of her pay for each drink she wasted ";
-                m_Earnings -= c;
+                ss << "\nYou take 1 gold out of her pay for each drink she wasted.";
+                m_Wages -= c;
                 profit += c;
                 left = true;
             }
-            else if (dw < (int)m_Earnings + (int)m_Tips)    // she pays for all wasted drinks out of wages and tips
+            else if (dw < (int)m_Wages + (int)m_Tips)    // she pays for all wasted drinks out of wages and tips
             {
-                ss << "\nYou take 1 gold from her wages and tips for each drink she wasted ";
-                m_Earnings -= c;
+                ss << "\nYou take 1 gold from her wages and tips for each drink she wasted.";
+                m_Wages -= c;
                 m_Tips -= d;
-                profit += c + d;
+                m_Earnings += c + d;
                 left = true;
             }
             else                                    // no pay plus she has to pay from her pocket
             {
-                m_Earnings -= c;
+                m_Wages -= c;
                 m_Tips -= d;
-                profit += c + d;
+                m_Earnings += c + d;
                 if (girl.m_Money < 1)                // she can't pay so you scold her
                 {
                     girl.pcfear(rng().bell(-1,5));
-                    ss << "\nYou take all her wages and tips and then scold her for wasting so many drinks";
+                    ss << "\nYou take all her wages and tips and then scold her for wasting so many drinks.";
                 }
                 else if (girl.m_Money >= e)        // she has enough to pay it back
                 {
                     girl.pcfear(rng().bell(-1, 2));
                     girl.pclove(-rng().bell(-1, 2));
-                    ss << "\nYou take all her wages and tips and then make her pay for the rest out of her own money";
+                    ss << "\nYou take all her wages and tips and then make her pay for the rest out of her own money.";
                     girl.m_Money -= e;
-                    profit += e;
+                    m_Earnings += e;
                 }
                 else                                // she does not have all but can pay some
                 {
                     girl.pcfear(rng().bell(-1, 4));
                     girl.pclove(-rng().bell(-1, 2));
-                    ss << "\nYou take all her wages and tips and then make her pay for what she can of the rest out of her own money";
+                    ss << "\nYou take all her wages and tips and then make her pay for what she can of the rest out of her own money.";
                     e = girl.m_Money;
                     girl.m_Money -= e;
-                    profit += e;
+                    m_Earnings += e;
                 }
             }
-
-            if (left)
-            {
-                ss << "leaving her with ";
-                /* */if ((int)m_Earnings + (int)m_Tips < 1)    ss << "nothing";
-                else if ((int)m_Earnings + (int)m_Tips < 2)    ss << "just one gold";
-                else/*                            */    ss << (int)m_Earnings + (int)m_Tips << "gold";
-            }
-            ss << ".";
         }
     }
-
-
 
     // tiredness
     int t0 = d1;
@@ -2738,7 +2700,7 @@ bool AdvertisingJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     //    Job setup                //
     int fame = 0;
     int imagetype = IMGTYPE_SIGN;
-    auto msgtype = EVENT_SUMMARY;
+    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    Job Performance            //
 
@@ -3479,7 +3441,7 @@ bool CatacombJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
         girl.tiredness(10 - girl.strength() / 20 );
     }
 
-    m_Wages += gold;
+    m_Earnings += gold;
 
     // Improve girl
     HandleGains(girl, m_Performance);

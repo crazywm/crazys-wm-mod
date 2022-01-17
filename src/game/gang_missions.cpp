@@ -881,14 +881,17 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
 
         if (choice < gang_manager().Gang_Gets_Girls())                    // get girl = 10 point
         {
+            g_LogFile.debug("gang", "Gang is trying to collect a girl.");
             std::shared_ptr<sGirl> ugirl = nullptr;
             bool unique = g_Dice.percent(g_Game->settings().get_percent(settings::WORLD_CATACOMB_UNIQUE));    // chance of getting unique girl
             if (unique) {
                 ugirl = g_Game->GetRandomUniqueGirl(false, true);
-                if (ugirl == nullptr) unique = false;
+                if (!ugirl) {
+                    g_LogFile.warning("girl", "Could not create a unique girl for catacombs.");
+                }
             }
 
-            if(!unique) {
+            if(!ugirl) {
                 ugirl = g_Game->CreateRandomGirl(SpawnReason::CATACOMBS);
             }
 
@@ -901,6 +904,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
         }
         else if (choice < gang_manager().Gang_Gets_Girls() + gang_manager().Gang_Gets_Items())    // get item = 4 points
         {
+            g_LogFile.debug("gang", "Gang is trying to collect an item.");
             bool gotitem = false;
             if (g_Dice.percent(33))    // item is guarded
             {
@@ -928,6 +932,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
         }
         else                                    // get beast = 2 point
         {
+            g_LogFile.debug("gang", "Gang is trying to collect beasts.");
             bool gotbeast = false;
             if (gang.num_nets() > 0)    // try to capture using net
             {

@@ -1,3 +1,9 @@
+# Version 7.1.2beta2
+
+## Fixes
+* Fixed event type for Advertise job
+* Fixed money computation for Barmaid and Catacombs
+
 # Version 7.1.2beta1
 
 ## Gameplay changes since 7.1.1
