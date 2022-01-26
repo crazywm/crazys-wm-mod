@@ -291,7 +291,7 @@ namespace {
     void process_item_xml(sRandomGirl& target, const tinyxml2::XMLElement& el)
     {
         std::string item_name = GetStringAttribute(el, "Name");
-        sInventoryItem *item = g_Game->inventory_manager().GetItem(item_name);
+        const sInventoryItem *item = g_Game->inventory_manager().GetItem(item_name);
         if (!item)
         {
             g_LogFile.log(ELogLevel::ERROR, "Can't find Item: '", item_name, "' - skipping it.");

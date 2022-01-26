@@ -106,7 +106,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
             {
                 for (int i = 0; i < MAXNUM_RIVAL_INVENTORY && curr->m_Gold + income + upkeep < 1000; i++)
                 {
-                    sInventoryItem* temp = curr->m_Inventory[i];
+                    const sInventoryItem* temp = curr->m_Inventory[i];
                     if (temp)
                     {
                         income += (temp->m_Cost / 2);
@@ -596,7 +596,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                                    && item.m_Rarity <= Item_Rarity::CATACOMB01;
                              };
 
-                        sInventoryItem* temp
+                        const sInventoryItem* temp
                            = g_Game->inventory_manager().GetRandomItem(filter);
 
                         bool add = false;
@@ -642,7 +642,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                 {
                     for (int i = 0; i < MAXNUM_RIVAL_INVENTORY && curr->m_Gold + income + upkeep - (profit * 2) < 0; i++)
                     {
-                        sInventoryItem* temp = curr->m_Inventory[i];
+                        const sInventoryItem* temp = curr->m_Inventory[i];
                         if (temp) {
                             income += (temp->m_Cost / 2);
                             curr->remove_from_inventory(i);
@@ -708,7 +708,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
             {
                 for (int i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
                 {
-                    sInventoryItem* temp = curr->m_Inventory[i];
+                    const sInventoryItem* temp = curr->m_Inventory[i];
                     if (temp && g_Dice.percent(50))
                     {
                         if (g_Dice.percent(50)) income += (temp->m_Cost / 2);
@@ -756,7 +756,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
             int i = 0;
             while (i < 6)
             {
-                sInventoryItem* item = g_Game->inventory_manager().GetRandomItem();
+                const sInventoryItem* item = g_Game->inventory_manager().GetRandomItem();
                 if (item && item->m_Rarity <= Item_Rarity::CATACOMB01 && g_Dice.percent(rper[(int)item->m_Rarity])
                     && curr->m_Gold + income + upkeep > item->m_Cost)
                 {
@@ -1195,22 +1195,20 @@ void cRivalManager::SellRivalInvItem(cRival* rival, int num)
     }
 }
 
-sInventoryItem* cRivalManager::GetRivalItem(cRival* rival, int num)
+const sInventoryItem* cRivalManager::GetRivalItem(cRival* rival, int num)
 {
-    sInventoryItem *ipt;
-    ipt = rival->m_Inventory[num];
-    return ipt;
+    return rival->m_Inventory[num];
 }
 
-sInventoryItem* cRivalManager::GetRandomRivalItem(cRival* rival)
+const sInventoryItem* cRivalManager::GetRandomRivalItem(cRival* rival)
 {
-    sInventoryItem *ipt;
+    const sInventoryItem *ipt = nullptr;
     if (rival->m_NumInventory <= 0) return nullptr;
     int start = g_Dice%MAXNUM_RIVAL_INVENTORY;
 
-    for (int i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
+    for (auto& item : rival->m_Inventory)
     {
-        ipt = rival->m_Inventory[i];
+        ipt = item;
         if (!ipt)
         {
             start++;
@@ -1226,14 +1224,12 @@ sInventoryItem* cRivalManager::GetRandomRivalItem(cRival* rival)
 
 int cRivalManager::GetRandomRivalItemNum(cRival* rival)
 {
-    sInventoryItem *ipt;
     if (rival->m_NumInventory <= 0) return -1;
     int start = g_Dice%MAXNUM_RIVAL_INVENTORY;
 
     for (int i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
     {
-        ipt = rival->m_Inventory[i];
-        if (!ipt)
+        if (!rival->m_Inventory[i])
         {
             start++;
             if (start>MAXNUM_RIVAL_INVENTORY) start = 0;
@@ -1268,7 +1264,7 @@ bool cRival::remove_from_inventory(int num)
     return false;
 }
 
-int cRival::add_to_inventory(sInventoryItem * item)
+int cRival::add_to_inventory(const sInventoryItem* item)
 {
     int i;
     for (i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)

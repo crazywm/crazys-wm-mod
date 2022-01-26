@@ -211,21 +211,20 @@ struct sInventoryItem
 class cInventory
 {
 public:
-    cInventory() {
-    }
+    cInventory() = default;
     ~cInventory();
 
     bool LoadItemsXML(const std::string& filename);
-    sInventoryItem* GetItem(std::string name);
+    const sInventoryItem* GetItem(const std::string& name);
 
 
     // Returns a random item; if none can be found (that is, if the
     // internal item list is empty) ,`nullptr` is returned instead.
     //
     // Note: Will not spuriously return `nullptr`.
-    sInventoryItem* GetRandomItem() const
+    const sInventoryItem* GetRandomItem() const
     {
-       return GetRandomItem([](auto& /*item*/){return true;});;
+       return GetRandomItem([](auto& /*item*/) { return true; } );
     }
 
     // Returns a random item that satisfies the predicate `pred`; if
@@ -233,7 +232,7 @@ public:
     //
     // Note: Will not spuriously return `nullptr`.
     template<typename Pred>
-    sInventoryItem* GetRandomItem(Pred pred) const
+    const sInventoryItem* GetRandomItem(Pred pred) const
     {
        RandomSelector<sInventoryItem> sel;
 
@@ -253,8 +252,6 @@ public:
 
     void Equip(sGirl& girl, const sInventoryItem* item, bool force);
 
-    void AddItem(sInventoryItem* item);
-
     int HappinessFromItem(const sInventoryItem * item);  // determines how happy a girl will be to receive an item (or how unhappy to lose it)
 
     void GivePlayerAllItems();
@@ -268,7 +265,7 @@ public:
 
 
 private:
-    mutable std::vector<std::unique_ptr<sInventoryItem>> m_Items;  // Master list of items?
+    std::vector<std::unique_ptr<sInventoryItem>> m_Items;  // Master list of items?
 };
 
 #endif

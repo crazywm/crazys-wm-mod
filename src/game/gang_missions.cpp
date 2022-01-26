@@ -433,7 +433,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
     {
         cRivalManager r;
         int num = r.GetRandomRivalItemNum(rival);
-        sInventoryItem* item = r.GetRivalItem(rival, num);
+        const sInventoryItem* item = r.GetRivalItem(rival, num);
         if (item)
         {
             ss << "\nYour men steal an item from them, one " << item->m_Name << ".";
@@ -1132,7 +1132,7 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
             default:    itemfound = "Cat";                break;
             }
 
-            sInventoryItem* item = g_Game->inventory_manager().GetItem(itemfound);
+            const sInventoryItem* item = g_Game->inventory_manager().GetItem(itemfound);
             if (item)
             {
                 IBuilding* brothel = g_Game->buildings().random_building_with_type(BuildingType::BROTHEL);

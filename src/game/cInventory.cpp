@@ -224,7 +224,7 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
     return temp;
 }
 
-sInventoryItem* cInventory::GetItem(string name)
+const sInventoryItem* cInventory::GetItem(const string& name)
 {
     for (auto& item : m_Items)
     {

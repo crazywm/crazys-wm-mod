@@ -431,7 +431,7 @@ void cObjectiveManager::PassObjective()
             while (numItems > 0 && tries > 0)
             {
                 tries--;
-                sInventoryItem* item = g_Game->inventory_manager().GetRandomItem();
+                const sInventoryItem* item = g_Game->inventory_manager().GetRandomItem();
                 if(!item)
                    break;       // supplier is all out :(
                 else if (item->m_Rarity < Item_Rarity::SCRIPTONLY)

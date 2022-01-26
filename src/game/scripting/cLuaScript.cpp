@@ -235,7 +235,7 @@ int cLuaScript::GivePlayerRandomSpecialItem(lua_State* state) {
         return item.m_Rarity >= Item_Rarity::SHOP05;
          };
 
-    sInventoryItem* item = g_Game->inventory_manager().GetRandomItem(filter);
+    const sInventoryItem* item = g_Game->inventory_manager().GetRandomItem(filter);
     if(!item)
     {
        g_Game->push_message(" There are no suitable items to be had\n", COLOR_RED);

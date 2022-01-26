@@ -890,7 +890,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     /* */if (girl.has_active_trait("Fairy Dust Addict"))    { itemprefix = "a vial of"; itemname = "Fairy Dust"; }
                     else if (girl.has_active_trait("Shroud Addict"))        { itemprefix = "a"; itemname = "Shroud Mushroom"; }
                     else if (girl.has_active_trait("Viras Blood Addict"))    { itemprefix = "a vial of"; itemname = "Vira Blood"; }
-                    sInventoryItem* item = g_Game->inventory_manager().GetItem(itemname);
+                    const sInventoryItem* item = g_Game->inventory_manager().GetItem(itemname);
                     while (!item)
                     {
                         int numtry = rng % 6;    if (numtry >= 3)    numtry = rng % 15;

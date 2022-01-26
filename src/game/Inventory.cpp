@@ -152,7 +152,7 @@ void Inventory::load_from_xml(const tinyxml2::XMLElement& root, ICharacter* char
     {
         if (elItem.Attribute("Name"))
         {
-            sInventoryItem* item = g_Game->inventory_manager().GetItem(elItem.Attribute("Name"));
+            const sInventoryItem* item = g_Game->inventory_manager().GetItem(elItem.Attribute("Name"));
             if (!item) {
                 // TODO log error
                 continue;

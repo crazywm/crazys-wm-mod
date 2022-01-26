@@ -131,7 +131,7 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
         else if (roll_c > 10)    { itemname = "Mango of Knowledge";        itemnumber = (roll_c > 28 ? 2 : 1); }
         else/*            */    { itemname = "Watermelon of Knowledge"; itemnumber = (roll_c == 9 ? 2 : 1); }
 
-        sInventoryItem* item = g_Game->inventory_manager().GetItem(itemname);
+        auto* item = g_Game->inventory_manager().GetItem(itemname);
         if (item)
         {
             g_Game->player().add_item(item, itemnumber);
@@ -769,7 +769,7 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     {
         int milkmade[5] = { 0, 0, 0, 0, 0 };    // (total,gallon,quart,pint,shots}
         // check if the milk items exist and only do the checks if at least one of them does
-        sInventoryItem* milkitems[4] = { g_Game->inventory_manager().GetItem("Milk"), g_Game->inventory_manager().GetItem("Milk (pt)"), g_Game->inventory_manager().GetItem("Milk (qt)"), g_Game->inventory_manager().GetItem("Milk (g)") };
+        const sInventoryItem* milkitems[4] = { g_Game->inventory_manager().GetItem("Milk"), g_Game->inventory_manager().GetItem("Milk (pt)"), g_Game->inventory_manager().GetItem("Milk (qt)"), g_Game->inventory_manager().GetItem("Milk (g)") };
         if (milkitems[0] != nullptr || milkitems[1] != nullptr || milkitems[2] != nullptr || milkitems[3] != nullptr)
         {
             while (milk > 0)    // add milk
@@ -1018,7 +1018,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
             itemfoundtext = "a rather large shark tooth and brought it home.";
         }
 
-        sInventoryItem* item = g_Game->inventory_manager().GetItem(itemfound);
+        const sInventoryItem* item = g_Game->inventory_manager().GetItem(itemfound);
         if (item)
         {
             ss << "${name} found " << itemfoundtext;
@@ -1728,7 +1728,7 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     // `J` Farm Bookmark - adding in items that can be created in the farm
     if (girl.intelligence() + girl.crafting() > 100 && chance(girl.intelligence() + girl.crafting() / 10))    // 10-20%
     {
-        sInventoryItem* item = nullptr;
+        const sInventoryItem* item = nullptr;
         std::string itemname;
         for (int tries = skill; itemname.empty() && tries > 0; --tries)
         {

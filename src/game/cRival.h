@@ -52,7 +52,7 @@ public:
 
     bool is_defeated() const;
     bool remove_from_inventory(int num);
-    int add_to_inventory(sInventoryItem* item);
+    int add_to_inventory(const sInventoryItem* item);
 
     // variables
     std::string m_Name;
@@ -67,7 +67,7 @@ public:
     int m_BribeRate;
     int m_Influence;    // based on the bribe rate this is the percentage of influence you have
     int m_NumInventory;                                        // current amount of inventory the brothel has
-    sInventoryItem* m_Inventory[MAXNUM_RIVAL_INVENTORY];    // List of inventory items they have (40 max)
+    const sInventoryItem* m_Inventory[MAXNUM_RIVAL_INVENTORY];    // List of inventory items they have (40 max)
 };
 
 class cRivalManager
@@ -99,8 +99,8 @@ public:
     int AddRivalInv(cRival* rival, sInventoryItem* item);    // add item
     bool RemoveRivalInvByNumber(cRival* rival, int num);    // remove item
     void SellRivalInvItem(cRival* rival, int num);        // sell item
-    sInventoryItem* GetRandomRivalItem(cRival* rival);
-    sInventoryItem* GetRivalItem(cRival* rival, int num);
+    const sInventoryItem* GetRandomRivalItem(cRival* rival);
+    const sInventoryItem* GetRivalItem(cRival* rival, int num);
     int GetRandomRivalItemNum(cRival* rival);
 
 

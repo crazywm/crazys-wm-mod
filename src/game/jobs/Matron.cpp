@@ -243,7 +243,7 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
         int cost = 0;
         int method = 0;    // 1 = out of pocket, 2 = brothel money, 3 = sex, 4 = bj
         // 'Mute' Added so if the cost of the item changes then the gold amout will be correct
-        sInventoryItem* item = nullptr;
+        const sInventoryItem* item = nullptr;
         std::string itemName;
         /* */if (girl.has_active_trait("Viras Blood Addict"))    { itemName = "Vira Blood"; }
         else if (girl.has_active_trait("Shroud Addict"))        { itemName = "Shroud Mushroom"; }

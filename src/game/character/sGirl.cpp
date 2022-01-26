@@ -713,7 +713,7 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
         if (tag == "Item")    //get the item name
             {
             pt = child.Attribute("Name");
-            sInventoryItem* item = g_Game->inventory_manager().GetItem(pt);
+            const sInventoryItem* item = g_Game->inventory_manager().GetItem(pt);
             if (item)
             {
                 girl->add_item(item);

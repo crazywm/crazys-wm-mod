@@ -855,7 +855,7 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
                     cGirls::SetSlaveStats(*custgirl);
 
                     // `J` and adjust her stats
-                    sInventoryItem* item_p = g_Game->inventory_manager().GetItem(item);
+                    const sInventoryItem* item_p = g_Game->inventory_manager().GetItem(item);
                     custgirl->add_item(item_p);
                     custgirl->equip(item_p, true);
                     g_Game->player().inventory().remove_item(item_p);
@@ -1496,7 +1496,7 @@ bool cJobManager::is_Surgery_Job(int testjob) {
 }
 
 void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const sGang* guardgang) {// try to find an item
-    sInventoryItem* item = nullptr;
+    const sInventoryItem* item = nullptr;
     if(g_Game->player().inventory().has_item("Brainwashing Oil")) {
         item = g_Game->inventory_manager().GetItem("Brainwashing Oil");
     } else if(g_Game->player().inventory().has_item("Necklace of Control")) {
