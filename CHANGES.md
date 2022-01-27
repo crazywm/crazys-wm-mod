@@ -2,10 +2,14 @@
 
 ## Gameplay
 * In the first two weeks, "Walk around town" will always lead to an encounter
+* Adapted success chance in skill checks in the lua scripts. 
+  If too much skill is lacking, chance is now 0%
 
 ## Fixes
 * Fixed event type for Advertise job
 * Fixed money computation for Barmaid and Catacombs
+* Improved behaviour if no suitable random girl is found
+* Fixed error in Office lua script
 
 # Version 7.1.2beta1
 

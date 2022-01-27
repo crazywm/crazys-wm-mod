@@ -439,6 +439,7 @@ int sLuaGirl::obey_check(lua_State * L)
 
 int sLuaGirl::skill_check(lua_State* L) {
     // probability increases linearly until target is reached, where it becomes 100%
+    // if less than target - 33, it is 0%
     auto& girl = check_type(L, 1);
     long skill = luaL_checkinteger(L, 2);
     long target = luaL_checkinteger(L, 3);
@@ -449,7 +450,11 @@ int sLuaGirl::skill_check(lua_State* L) {
         return 1;
     }
     int deficiency = target - skill_val;
-    lua_pushboolean(L, g_Dice.percent(100 - 100 * deficiency / 100));
+    if(deficiency > 33) {
+        lua_pushboolean(L, false);
+    } else {
+        lua_pushboolean(L, g_Dice.percent(100 - 100 * deficiency / 33));
+    }
     return 1;
 }
 

@@ -49,7 +49,7 @@ function InteractOffice(girl)
             if action == 1 then
                 wm.UpdateImage(wm.IMG.ORAL)
                 Dialog("You lay back on your leather couch and pull your erect member from your trousers.   \"Now my dear, I'm going to teach you the right way to suck a cock...\"")
-                girl:oral(2)
+                girl:oralsex(2)
             elseif action == 2 then
                 PlayerFucksGirl(girl)
                 Dialog("You gently help her remove her clothing and lay her down on the sofa.  As you position yourself on top of her you begin explaining the finer points of vaginal sex.")
