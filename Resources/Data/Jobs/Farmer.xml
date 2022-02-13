@@ -18,7 +18,7 @@
         <Trait Name="Quick Learner" Value="5"/>
 
         <!-- bad traits -->
-        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Dependent" Value="-50"/> <!-- needs others to do the job -->
         <Trait Name="Nervous" Value="-20"/> <!-- don't like to be around people -->
         <Trait Name="City Girl" Value="-20"/>
         <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->

@@ -34,7 +34,7 @@
         <Trait Name="Retarded" Value="-30"/>
         <Trait Name="Broken Will" Value="-30"/>
         <Trait Name="Nervous" Value="-30"/>    <!-- don't like to be around people -->
-        <Trait Name="Dependant" Value="-30"/>  <!-- needs others to do the job -->
+        <Trait Name="Dependent" Value="-30"/>  <!-- needs others to do the job -->
         <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
         <Trait Name="Meek" Value="-20"/>
         <Trait Name="Slow Learner" Value="-10"/>

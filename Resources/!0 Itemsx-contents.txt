@@ -165,7 +165,7 @@ Some other traits may conflict with others but may not require the removal of th
    <Effect What="Trait" Name="Aggressive" Amount="0" />
    <Effect What="Trait" Name="Fearless" Amount="0" />
    <Effect What="Trait" Name="Meek" Amount="0" />
-   <Effect What="Trait" Name="Dependant" Amount="0" />
+   <Effect What="Trait" Name="Dependent" Amount="0" />
    <Effect What="Trait" Name="Nervous" Amount="0" />
 
 

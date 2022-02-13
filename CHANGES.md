@@ -10,6 +10,7 @@
 * Fixed money computation for Barmaid and Catacombs
 * Improved behaviour if no suitable random girl is found
 * Fixed error in Office lua script
+* Fixed spelling of `Dependent` tag; still accepts old spelling.
 
 # Version 7.1.2beta1
 

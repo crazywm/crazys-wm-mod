@@ -26,7 +26,7 @@
    <Effect What="Trait" Name="Aggressive" Amount="0" />
    <Effect What="Trait" Name="Clumsy" Amount="0" />
    <Effect What="Trait" Name="Meek" Amount="0" />
-   <Effect What="Trait" Name="Dependant" Amount="0" />
+   <Effect What="Trait" Name="Dependent" Amount="0" />
    <Effect What="Trait" Name="Nervous" Amount="0" />
    <Effect What="Trait" Name="Fearless" Amount="1" />
    <Effect What="Trait" Name="Construct" Amount="1" />

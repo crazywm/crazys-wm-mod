@@ -599,7 +599,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
         if (Girl.m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
             g_Game->push_message(("You must have a counselor for therapy."), 0);
         else if (!Girl.has_active_trait("Nervous")
-            && !Girl.has_active_trait("Dependant")
+            && !Girl.has_active_trait("Dependent")
             && !Girl.has_active_trait("Pessimist"))
             g_Game->push_message(("She has no need of therapy."), 0);
         else

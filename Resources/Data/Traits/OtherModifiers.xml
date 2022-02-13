@@ -20,7 +20,7 @@
 
         <Trait Name="Tomboy" Value="-0.5" />
         <Trait Name="Open Minded" Value="-0.5" /> <!-- 'I can sleep anywhere' -->
-        <Trait Name="Dependant" Value="-1.0" /> <!-- she will take what you give her -->
+        <Trait Name="Dependent" Value="-1.0" /> <!-- she will take what you give her -->
         <Trait Name="Adventurer" Value="-1.0" /> <!-- she likes sleeping under the stars -->
         <Trait Name="Farmers Daughter" Value="-1.5" />
         <Trait Name="Country Gal" Value="-1.5" />
@@ -51,7 +51,7 @@
      <Trait Name="Country Gal" Value="+5" />
      <Trait Name="Cum Addict" Value="-50" />
      <Trait Name="Demon" Value="+10" />
-     <Trait Name="Dependant" Value="-50" />
+     <Trait Name="Dependent" Value="-50" />
      <Trait Name="Doctor" Value="+50" /> <!-- knows what to look for -->
      <Trait Name="Dominatrix" Value="+10" /> <!-- force an truth out -->
      <Trait Name="Dryad" Value="+5" />
@@ -163,7 +163,7 @@
         <Trait Name="Clumsy" Value="-2" />
         <Trait Name="Deaf" Value="-5" />
         <Trait Name="Delicate" Value="-10" />
-        <Trait Name="Dependant" Value="-20" />
+        <Trait Name="Dependent" Value="-20" />
         <Trait Name="Elegant" Value="-5" />
         <Trait Name="Fragile" Value="-10" />
         <Trait Name="Malformed" Value="-2" />

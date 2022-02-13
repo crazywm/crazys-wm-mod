@@ -111,7 +111,7 @@ After choosing all the traits, the game cleans out any that are overridden by ot
    <Trait Name="Aggressive" Percent="#" />
    <Trait Name="Fearless" Percent="#" />
    <Trait Name="Meek" Percent="#" />
-   <Trait Name="Dependant" Percent="#" />
+   <Trait Name="Dependent" Percent="#" />
    <Trait Name="Nervous" Percent="#" />
 
    <Trait Name="Perky Nipples" Percent="#" />

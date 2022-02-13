@@ -3,7 +3,7 @@
     <Item Name="Ring of Entrancement" Desc="The moment she slips this enchanted ring onto her finger she'll instantly fall in love with its gifter. Take it off again and she'll probably be less than pleased."
         Type="Ring" Badness="60" Special="None" Cost="8000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
         <Effect What="Stat" Name="PCLove" Amount="130" />
-        <Effect What="Trait" Name="Dependant" Amount="1" />
+        <Effect What="Trait" Name="Dependent" Amount="1" />
         <Crafting CraftPoints="250" ManaCost="90">
             <Job Name="Jeweler"/>
             <Skill Name="Magic" Minimum="80" />

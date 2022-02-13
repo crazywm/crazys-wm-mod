@@ -10,6 +10,6 @@
       Infinite="false">
    <Effect What="Stat"  Name="Intelligence"            Amount="100"    />
    <Effect What="Stat"  Name="Agility"                 Amount="-50"    />
-   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Dependent"               Amount="1"    />
 </Item>
 </Items>

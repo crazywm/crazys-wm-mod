@@ -23,7 +23,7 @@
         <Trait Name="Priestess" Value="10"/>
 
         <!-- bad traits -->
-        <Trait Name="Dependant" Value="-50"/>
+        <Trait Name="Dependent" Value="-50"/>
         <Trait Name="Clumsy" Value="-20"/>
         <Trait Name="Aggressive" Value="-20"/>
         <Trait Name="Nervous" Value="-50"/>

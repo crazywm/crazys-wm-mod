@@ -282,9 +282,14 @@ void cRandomGirls::load_from_file(const std::string& filename, const std::string
 }
 
 namespace {
-    void process_trait_xml(sRandomGirl& target, const tinyxml2::XMLElement& el)
+    void process_trait_xml(sRandomGirl& target, const tinyxml2::XMLElement& el, bool is_v0)
     {
-        target.TraitNames.emplace_back(GetStringAttribute(el, "Name"));
+        std::string trait_name = GetStringAttribute(el, "Name");
+        if(is_v0 && trait_name == "Dependant") {
+            trait_name = "Dependent";
+            g_LogFile.warning("traits", "Found misspelled trait `Dependant` for random girl ", target.Name);
+        }
+        target.TraitNames.emplace_back(trait_name);
         target.TraitChance.emplace_back(el.IntAttribute("Percent", 100));
     }
 
@@ -405,7 +410,7 @@ namespace {
                 } else if (tag == "Skill") {
                     process_skill_xml(target, child);
                 } else if (tag == "Trait") {
-                    process_trait_xml(target, child);
+                    process_trait_xml(target, child, true);
                 } else if (tag == "Item") {
                     process_item_xml(target, child);
                 } else {
@@ -439,7 +444,7 @@ namespace {
                 } else if (tag == "Skill") {
                     process_skill_xml(target, child);
                 } else if (tag == "Trait") {
-                    process_trait_xml(target, child);
+                    process_trait_xml(target, child, false);
                 } else if (tag == "Item") {
                     process_item_xml(target, child);
                 } else if (tag == "Trigger") {

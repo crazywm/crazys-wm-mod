@@ -29,7 +29,7 @@
         </Modifiers>
         <Excludes>Meek</Excludes>
         <Excludes>Nervous</Excludes>
-        <Excludes>Dependant</Excludes>
+        <Excludes>Dependent</Excludes>
     </Trait>
 
     <Trait InheritChance="1" Name="Bimbo" RandomChance="2" Type="Mental">
@@ -65,7 +65,7 @@
     </Trait>
 
 
-    <Trait InheritChance="1" Name="Dependant" RandomChance="10" Type="Mental">
+    <Trait InheritChance="1" Name="Dependent" RandomChance="10" Type="Mental">
         <description>This girl is rather dependent on other people for survival. Will not strike out on her own. (+obedience)</description>
         <Modifiers>
             <Modifier Name="stat:Spirit" Value="-30" />

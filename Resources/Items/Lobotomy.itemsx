@@ -29,7 +29,7 @@
    <Effect What="Trait" Name="Strange Eyes"            Amount="1"    />
    <Effect What="Trait" Name="Mind Fucked"             Amount="1"    />
    <Effect What="Trait" Name="One Eye"                 Amount="1"    />
-   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Dependent"               Amount="1"    />
    <Effect What="Trait" Name="Charming"                Amount="0"    />
    <Effect What="Trait" Name="Charismatic"             Amount="0"    />
    <Effect What="Trait" Name="Pessimist"               Amount="0"    />
@@ -62,7 +62,7 @@
    <Effect What="Trait" Name="Strange Eyes"            Amount="1"    />
    <Effect What="Trait" Name="Mind Fucked"             Amount="1"    />
    <Effect What="Trait" Name="One Eye"                 Amount="1"    />
-   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Dependent"               Amount="1"    />
    <Effect What="Trait" Name="Charming"                Amount="0"    />
    <Effect What="Trait" Name="Charismatic"             Amount="0"    />
    <Effect What="Trait" Name="Pessimist"               Amount="0"    />

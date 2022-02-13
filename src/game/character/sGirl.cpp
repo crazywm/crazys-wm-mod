@@ -706,9 +706,13 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
         }
         if (tag == "Trait")    //get the trait name
             {
-            pt = child.Attribute("Name");
+            std::string trait_name = child.Attribute("Name");
             /// TODO (traits) allow inherent / permanent / inactive
-            girl->raw_traits().add_inherent_trait(pt);
+            if(trait_name == "Dependant") {
+                trait_name = "Dependent";
+                g_LogFile.warning("traits", "Found misspelled trait `Dependant` for girl ", girl->m_Name);
+            }
+            girl->raw_traits().add_inherent_trait(trait_name.c_str());
             }
         if (tag == "Item")    //get the item name
             {

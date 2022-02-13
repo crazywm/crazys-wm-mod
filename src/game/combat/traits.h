@@ -35,7 +35,7 @@ namespace ct {
     const char* INCORPOREAL = "Incorporeal";
     if (m_girl->has_trait("Clumsy"))        m_odds -= 0.05;
     if (m_girl->has_trait("Meek"))            m_odds -= 0.05;
-    if (m_girl->has_trait("Dependant"))        m_odds -= 0.10;
+    if (m_girl->has_trait("Dependent"))        m_odds -= 0.10;
     if (m_girl->has_trait("Fearless"))        m_odds += 0.10;
     if (m_girl->has_trait("Fleet of Foot"))    m_odds += 0.10;
     if (m_girl->has_trait("Brawler"))        m_odds += 0.15;
@@ -45,7 +45,7 @@ namespace ct {
     if (m_girl->has_trait("Yandere"))        casualties++;
     if (m_girl->has_trait("Tsundere"))        casualties++;
     if (m_girl->has_trait("Meek"))            casualties--;
-    if (m_girl->has_trait("Dependant"))        casualties -= 2;
+    if (m_girl->has_trait("Dependent"))        casualties -= 2;
     if (m_girl->has_trait("Fleet of Foot")) casualties -= 2;
     */
 }

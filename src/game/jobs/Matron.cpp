@@ -74,7 +74,7 @@ double MatronJob::GetPerformance(const sGirl& girl, bool estimate) const {
         //if (girl.has_trait("Teacher")) jobperformance += 10;
 
         //bad traits
-        //if (girl.has_trait("Dependant")) jobperformance -= 50;
+        //if (girl.has_trait("Dependent")) jobperformance -= 50;
         //if (girl.has_trait("Mind Fucked")) jobperformance -= 50;
         //if (girl.has_trait("Retarded")) jobperformance -= 60;
         //if (girl.has_trait("Bimbo")) jobperformance -= 10;

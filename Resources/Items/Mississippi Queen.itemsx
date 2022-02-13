@@ -32,7 +32,7 @@
       Infinite="false">
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
-   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Dependent"               Amount="1"    />
    <Crafting CraftPoints="50" ManaCost="20">
       <Job Name="Brewer"/>
       <Skill Name="Brewing" Minimum="45" />

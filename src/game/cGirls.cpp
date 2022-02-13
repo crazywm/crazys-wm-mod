@@ -1065,7 +1065,7 @@ int cGirls::GetRebelValue(const sGirl& girl, JOBS job)
 
     /*
     *    `J` "Kidnapped" and "Emprisoned Customer" are factored in twice, before and after mental trait modifiers
-    *    This will allow them to have at least some effect on "Mind Fucked", "Dependant" or "Meek" girls
+    *    This will allow them to have at least some effect on "Mind Fucked", "Dependent" or "Meek" girls
     */
 
     // these are factoring in twice before and after mental trait modifiers
@@ -1077,7 +1077,7 @@ int cGirls::GetRebelValue(const sGirl& girl, JOBS job)
     // guarantee certain rebelliousness values for specific traits
     if (girl.has_active_trait("Retarded")) chanceNo -= 30;
     if (girl.has_active_trait("Mind Fucked") && chanceNo > -50) chanceNo = -50;
-    if (girl.has_active_trait("Dependant") && chanceNo > -40) chanceNo = -40;
+    if (girl.has_active_trait("Dependent") && chanceNo > -40) chanceNo = -40;
     if (girl.has_active_trait("Meek") && chanceNo > 20) chanceNo = 20;
 
     // chanceNo += kep;

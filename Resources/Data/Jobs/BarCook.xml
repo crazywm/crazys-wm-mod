@@ -16,7 +16,7 @@
         <Trait Name="Mixologist" Value="20"/>  <!-- Good with measures -->
 
         <!-- bad traits -->
-        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Dependent" Value="-50"/> <!-- needs others to do the job -->
         <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
         <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
         <Trait Name="Nervous" Value="-20"/> <!-- don't like to be around people -->

@@ -11,7 +11,7 @@
       GirlBuyChance="0">
    <Effect What="Stat" Name="PCLove" Amount="30" />
    <Effect What="Stat" Name="Confidence" Amount="-50" />
-   <Effect What="Trait" Name="Dependant" Amount="1" />
+   <Effect What="Trait" Name="Dependent" Amount="1" />
     <Crafting CraftPoints="160" ManaCost="25">
      <Job Name="Jeweler"/>
      <Skill Name="Magic" Minimum="30" />

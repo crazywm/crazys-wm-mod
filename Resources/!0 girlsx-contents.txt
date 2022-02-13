@@ -103,7 +103,7 @@ After loading all the traits, the game cleans out any that are overridden by oth
    <Trait Name="Aggressive" />
    <Trait Name="Fearless" />
    <Trait Name="Meek" />
-   <Trait Name="Dependant" />
+   <Trait Name="Dependent" />
    <Trait Name="Nervous" />
 
    <Trait Name="Perky Nipples" />

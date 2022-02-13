@@ -198,7 +198,7 @@ Many many changes by myrikhan, as follows:
 * when a girl captures beasts, it now indicates how many
 * number of owned beasts is now shown on brothel screen
 * rearranged job and job type lists on girl management screen a tad bit
-* Girls with "Dependant" trait or "Mind Fucked" trait no longer have guaranteed -100 rebelliousness, it's now guaranteed -40 and -50 respectively  --  thanks to tlib for finding the root of this one
+* Girls with "Dependent" trait or "Mind Fucked" trait no longer have guaranteed -100 rebelliousness, it's now guaranteed -40 and -50 respectively  --  thanks to tlib for finding the root of this one
 * You could not generally transfer items directly from the store to a girl.  --  the item transferring code was a bit wonky and was separate for transferring either way; I consolidated and cleane up the code, fixing it in the process
 * Item lists on Item Management screen are now sorted alphabetically
 * When viewing player or girl inventory item, it shows "Value: x  Sell For: y" instead of "Cost: x"

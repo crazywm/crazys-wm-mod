@@ -29,7 +29,7 @@
         <Trait Name="Bisexual" Value="5"/> <!-- can flirt with everyone -->
 
         <!-- bad traits -->
-        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Dependent" Value="-50"/> <!-- needs others to do the job -->
         <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
         <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
         <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->

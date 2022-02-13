@@ -11,6 +11,6 @@
    <Effect What="Skill" Name="Service"                 Amount="20"    />
    <Effect What="Skill" Name="NormalSex"               Amount="20"    />
    <Effect What="Trait" Name="Meek"                    Amount="1"    />
-   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Dependent"               Amount="1"    />
 </Item>
 </Items>

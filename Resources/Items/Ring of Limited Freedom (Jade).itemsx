@@ -11,7 +11,7 @@
       GirlBuyChance="0">
    <Effect What="GirlStatus" Name="Slave" Amount="0" />
    <Effect What="Stat" Name="Obedience" Amount="10" />
-   <Effect What="Trait" Name="Dependant" Amount="1" />
+   <Effect What="Trait" Name="Dependent" Amount="1" />
    <Effect What="Trait" Name="Nervous" Amount="1" />
    <Effect What="Trait" Name="Nervous" Amount="1" />
    <Crafting CraftPoints="180" ManaCost="30">

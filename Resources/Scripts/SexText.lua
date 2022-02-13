@@ -1758,7 +1758,7 @@ function GetOralMessage(girl, customer)
             --    {
             --    sexMessage << "\"To make sure, I carried out other checks: she's young-looking, obviously; ";
             --    if (girl->has_trait("Delicate") || girl->has_trait("Fragile") || GetStat(girl, STAT_CONSTITUTION) < 40) sexMessage << "she's childishly delicate; ";
-            --    if (girl->has_trait("Dependant")) sexMessage << "she's dependent, showing little sign of being able to care for herself; ";
+            --    if (girl->has_trait("Dependent")) sexMessage << "she's dependent, showing little sign of being able to care for herself; ";
             --    if (girl->has_trait("Tight Butt"))
             --    {
             --    sexMessage << "she has ";
@@ -1834,7 +1834,7 @@ function GetOralMessage(girl, customer)
         --    {
         --    sexMessage << "\"When she failed THAT,\" he explained. \"I carried out further tests to establish her maturity: firstly, she's clearly very young-looking; ";
         --    if (girl->has_trait("Delicate") || girl->has_trait("Fragile") || GetStat(girl, STAT_CONSTITUTION) < 40) sexMessage << "she's childishly delicate; ", evidence++;
-        --    if (girl->has_trait("Dependant")) sexMessage << "she's dependent, showing little sign of being able to care for herself; ", evidence++;
+        --    if (girl->has_trait("Dependent")) sexMessage << "she's dependent, showing little sign of being able to care for herself; ", evidence++;
         --    if (girl->has_trait("Tight Butt"))
         --    {
         --    sexMessage << "she has ";

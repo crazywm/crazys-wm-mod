@@ -12,7 +12,7 @@
    <Effect What="Trait" Name="Quick Learner"           Amount="0"    />
    <Effect What="Trait" Name="Optimist"                Amount="0"    />
    <Effect What="Trait" Name="Pessimist"               Amount="0"    />
-   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Dependent"               Amount="1"    />
    <Effect What="Trait" Name="Meek"                    Amount="1"    />
 </Item>
 </Items>

@@ -25,7 +25,7 @@
         <Trait Name="Natural Pheromones" Value="15"/>
 
         <!-- bad traits -->
-        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Dependent" Value="-50"/> <!-- needs others to do the job -->
         <Trait Name="Aggressive" Value="-10"/> <!-- gets mad easy and may attack people -->
         <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
         <Trait Name="Meek" Value="-20"/>

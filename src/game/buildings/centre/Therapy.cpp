@@ -329,7 +329,7 @@ void RegisterTherapyJobs(cJobManager& mgr) {
         "therapy",
         3, 10, 5, 4,
         {{"Nervous", "She is no longer nervous all the time."},
-         {"Dependant", "She is no longer Dependant on others."},
+         {"Dependent", "She is no longer Dependant on others."},
          {"Pessimist", "She is no longer a Pessimist about everything."}}
     }));
 

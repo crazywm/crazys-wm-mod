@@ -31,7 +31,7 @@
         <Effect What="Trait" Name="Good Kisser" Amount="0" Duration="5" />
         <Effect What="Trait" Name="Elegant" Amount="0" Duration="5" />
         <Effect What="Trait" Name="Iron Will" Amount="0" Duration="5" />
-        <Effect What="Trait" Name="Dependant" Amount="1" Duration="5" />
+        <Effect What="Trait" Name="Dependent" Amount="1" Duration="5" />
     </Item>
     <Item Name="MDMA" Desc="Also known as Ecstasy, this drug makes your girl want more sex more often, but watch out for counter effects. (Temporary) (Adds Open Minded, Cum Addict, Dick-Sucking Lips, Bisexual, Deep Throat, Fake Orgasm Expert,Fast Orgasms, Slut, Fertile, Nymphomaniac, Dependant. Removes Tough, Iron Will, Powerful and Strong Magic, Good Kisser, Elegant) (Libedo + 100, Anal, BDSM, Normal, Bestiality, Group, Oral, Lesbian, Titty +15, Happiness +10, Handjob, Strip, Health -10, Tiredness + 25)" Type="Food" Badness="50" Special="Temporary" Cost="3500" Rarity="Shop05" Infinite="false" GirlBuyChance="3" ItemWeight="0.0">
         <Effect What="Skill" Name="Anal" Amount="15" />
@@ -64,7 +64,7 @@
         <Effect What="Trait" Name="Good Kisser" Amount="0" Duration="5" />
         <Effect What="Trait" Name="Elegant" Amount="0" Duration="5" />
         <Effect What="Trait" Name="Iron Will" Amount="0" Duration="5" />
-        <Effect What="Trait" Name="Dependant" Amount="1" Duration="5" />
+        <Effect What="Trait" Name="Dependent" Amount="1" Duration="5" />
     </Item>
     <Item Name="MDMA" Desc="Also known as Ecstasy, this drug makes your girl want more sex more often, but watch out for counter effects. (Temporary) (Adds Open Minded, Cum Addict, Dick-Sucking Lips, Bisexual, Deep Throat, Fake Orgasm Expert,Fast Orgasms, Slut, Fertile, Nymphomaniac, Dependant. Removes Tough, Iron Will, Powerful and Strong Magic, Good Kisser, Elegant) (Libedo + 100, Anal, BDSM, Normal, Bestiality, Group, Oral, Lesbian, Titty +15, Happiness +10, Handjob, Strip, Health -10, Tiredness + 25)" Type="Food" Badness="50" Special="Temporary" Cost="3500" Rarity="Catacomb05" Infinite="false" GirlBuyChance="3" ItemWeight="0.0">
         <Effect What="Skill" Name="Anal" Amount="15" />
@@ -97,6 +97,6 @@
         <Effect What="Trait" Name="Good Kisser" Amount="0" Duration="5" />
         <Effect What="Trait" Name="Elegant" Amount="0" Duration="5" />
         <Effect What="Trait" Name="Iron Will" Amount="0" Duration="5" />
-        <Effect What="Trait" Name="Dependant" Amount="1" Duration="5" />
+        <Effect What="Trait" Name="Dependent" Amount="1" Duration="5" />
     </Item>
 </Items>

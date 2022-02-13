@@ -1700,7 +1700,7 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
             case 1:
                 break;
             case 2:
-                if (girl.lose_trait( "Dependant"))
+                if (girl.lose_trait( "Dependent"))
                 {
                     ss << "She seems to be getting over her Dependancy with her training.";
                     gaintrait = false;

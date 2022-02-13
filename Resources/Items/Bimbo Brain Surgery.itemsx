@@ -25,7 +25,7 @@
    <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
    <Effect What="Trait" Name="Retarded"                Amount="1"    />
    <Effect What="Trait" Name="Aggressive"              Amount="1"    />
-   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Dependent"               Amount="1"    />
    <Effect What="Trait" Name="Nerd"                    Amount="0"    />
    <Effect What="Trait" Name="Assassin"                Amount="0"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />

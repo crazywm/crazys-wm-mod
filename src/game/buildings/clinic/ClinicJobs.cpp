@@ -429,7 +429,7 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
                 }
                 break;
             case 2:
-                if (girl.lose_trait( "Dependant"))
+                if (girl.lose_trait( "Dependent"))
                 {
                     ss << "She seems to be getting over her Dependancy with her training.";
                     gaintrait = false;

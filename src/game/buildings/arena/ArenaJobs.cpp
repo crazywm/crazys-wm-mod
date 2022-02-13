@@ -596,7 +596,7 @@ sWorkJobResult FightTraining::DoWork(sGirl& girl, bool is_night) {
                 }
                 break;
             case 2:
-                if (girl.has_active_trait("Nervous") || girl.has_active_trait("Meek") || girl.has_active_trait("Dependant"))
+                if (girl.has_active_trait("Nervous") || girl.has_active_trait("Meek") || girl.has_active_trait("Dependent"))
                 {
                     if (girl.lose_trait( "Nervous",  50))
                     {
@@ -608,7 +608,7 @@ sWorkJobResult FightTraining::DoWork(sGirl& girl, bool is_night) {
                         ss << "She seems to be getting over her Meakness with her training.";
                         gaintrait = false;
                     }
-                    else if (girl.lose_trait( "Dependant", 50))
+                    else if (girl.lose_trait( "Dependent", 50))
                     {
                         ss << "She seems to be getting over her Dependancy with her training.";
                         gaintrait = false;
