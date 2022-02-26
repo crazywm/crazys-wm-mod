@@ -70,6 +70,16 @@ inline std::size_t case_insensitive_hash(const char* str)
     return result;
 }
 
+struct sCaseInsensitiveHash {
+    template<class T>
+    std::size_t operator()(const T& str) const { return case_insensitive_hash(str); };
+};
+
+struct sCaseInsensitiveEqual {
+    template<class T>
+    bool operator()(const T& left, const T& right) const { return iequals(left, right); };
+};
+
 // Read one line from `is`. The terminating newline is '\n', '\r' (or
 // '\r\n'. End-of-file also ends the line.
 std::string readline(std::istream& is);

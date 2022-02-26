@@ -22,14 +22,15 @@
 
 #include <unordered_map>
 #include "CLog.h"
+#include <cassert>
+#include "string.hpp"
 
 template<class T>
-using id_lookup_t = std::unordered_map<std::string, T>;
+using id_lookup_t = std::unordered_map<std::string, T, sCaseInsensitiveHash, sCaseInsensitiveEqual>;
 
 template<class T, std::size_t N>
 inline id_lookup_t<T> create_lookup_table(const std::array<const char*, N>& names) {
     id_lookup_t<T> lookup;
-    // TODO make this case insensitive
     for(std::size_t i = 0; i < N; ++i) {
         auto inserted = lookup.insert(std::make_pair(names[i], static_cast<T>(i)));
         assert(inserted.second);
