@@ -28,7 +28,6 @@
 #include "utils/DirPath.h"
 #include "cGangs.h"
 #include "cGangManager.hpp"
-#include "cInventory.h"
 #include "CLog.h"
 #include "xml/util.h"
 #include "scripting/cScriptManager.h"
@@ -100,20 +99,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
             // The AI is in danger so will stop extra spending
             curr->m_BribeRate = 0;
             curr->m_Influence = 0;
-
-            // first try to sell any items
-            if (curr->m_NumInventory > 0)
-            {
-                for (int i = 0; i < MAXNUM_RIVAL_INVENTORY && curr->m_Gold + income + upkeep < 1000; i++)
-                {
-                    const sInventoryItem* temp = curr->m_Inventory[i];
-                    if (temp)
-                    {
-                        income += (temp->m_Cost / 2);
-                        curr->remove_from_inventory(i);
-                    }
-                }
-            }
 
             // try to buy at least one of each to make up for losses
             if (curr->m_NumBrothels <= 0 && curr->m_Gold + income + upkeep - 20000 >= 0)
@@ -584,34 +569,8 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                 {
                     // determine loot
                     int gold = cG1.m_Num;
-                    gold += g_Dice % (cG1.m_Num * 100);
+                    gold += g_Dice % (cG1.m_Num * 200);
                     income += gold;
-
-                    int items = 0;
-                    while (g_Dice.percent(60) && items <= (cG1.m_Num / 3) && curr->m_NumInventory < MAXNUM_RIVAL_INVENTORY)
-                    {
-                        auto filter
-                           = [](sInventoryItem const& item) {
-                                return item.m_Rarity >= Item_Rarity::SHOP25
-                                   && item.m_Rarity <= Item_Rarity::CATACOMB01;
-                             };
-
-                        const sInventoryItem* temp
-                           = g_Game->inventory_manager().GetRandomItem(filter);
-
-                        bool add = false;
-                        switch (temp->m_Rarity) {
-                            case Item_Rarity::SHOP25:                                      add = true;        break;
-                        case Item_Rarity::SHOP05:           if (g_Dice.percent(25)) add = true; break;
-                            case Item_Rarity::CATACOMB15:   if (g_Dice.percent(15)) add = true; break;
-                            case Item_Rarity::CATACOMB05:   if (g_Dice.percent(5))     add = true;        break;
-                        case Item_Rarity::CATACOMB01:       if (g_Dice.percent(1))     add = true;        break;
-                        // adding these cases to shut the compiler up
-                        case Item_Rarity::COMMON: case Item_Rarity::SHOP50: case Item_Rarity::SCRIPTONLY: case Item_Rarity::SCRIPTORREWARD:
-                            default: break;
-                        }
-                        if (add) curr->add_to_inventory(temp);
-                    }
 
                     int girls = 0;
                     while (g_Dice.percent(40) && girls <= 4)    // up to 4 girls
@@ -637,19 +596,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
             danger = true;                        // this will make sure AI doesn't replace them this turn
             while (curr->m_Gold + income + upkeep - (profit * 2) < 0 && !sellfail)
             {
-                // first try to sell any items
-                if (curr->m_NumInventory > 0)
-                {
-                    for (int i = 0; i < MAXNUM_RIVAL_INVENTORY && curr->m_Gold + income + upkeep - (profit * 2) < 0; i++)
-                    {
-                        const sInventoryItem* temp = curr->m_Inventory[i];
-                        if (temp) {
-                            income += (temp->m_Cost / 2);
-                            curr->remove_from_inventory(i);
-                        }
-                    }
-                }
-
                 // sell extra stuff - hall or bar
                 if (curr->m_NumGamblingHalls > curr->m_NumBrothels)
                 {
@@ -703,20 +649,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 
         if (!danger)
         {
-            // use or sell items
-            if (curr->m_NumInventory > 0)
-            {
-                for (int i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
-                {
-                    const sInventoryItem* temp = curr->m_Inventory[i];
-                    if (temp && g_Dice.percent(50))
-                    {
-                        if (g_Dice.percent(50)) income += (temp->m_Cost / 2);
-                        curr->remove_from_inventory(i);
-                    }
-                }
-            }
-
             // buy a new brothel if they have enough money
             if (curr->m_Gold + income + upkeep - 20000 > 0 && curr->m_NumGirls + 2 >= curr->m_NumBrothels * 20 && curr->m_NumBrothels < 6)
             {
@@ -749,25 +681,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
             {
                 curr->m_NumBars++;
                 upkeep -= 2500;
-            }
-
-            // buy items
-            int rper[7] = { 90, 70, 50, 30, 10, 5, 1 };
-            int i = 0;
-            while (i < 6)
-            {
-                const sInventoryItem* item = g_Game->inventory_manager().GetRandomItem();
-                if (item && item->m_Rarity <= Item_Rarity::CATACOMB01 && g_Dice.percent(rper[(int)item->m_Rarity])
-                    && curr->m_Gold + income + upkeep > item->m_Cost)
-                {
-                    if (g_Dice.percent(50))
-                    {
-                        curr->add_to_inventory(item); // buy 50%, use 50%
-                    }
-                    upkeep -= item->m_Cost;
-                }
-                i++;
-
             }
         }
 
@@ -927,13 +840,6 @@ bool cRivalManager::LoadRivalsXML(const tinyxml2::XMLElement* pRivalManager)
             // `J` cleanup rival power for .06.01.17
             if (current->m_Power > 50) current->m_Power = std::max(0, current->m_NumBrothels * 5) + std::max(0, current->m_NumGamblingHalls * 2) + std::max(0, current->m_NumBars * 1);
 
-            //jim: re-initializing rival inventory to zero (hopefully fixes Linux segfaults)
-            current->m_NumInventory = 0;
-            for(auto & i : current->m_Inventory)
-            {
-                i = nullptr;
-            }
-
             g_LogFile.log(ELogLevel::DEBUG, "loaded rival: ", current->m_Name);
 
             m_Rivals.push_back(std::move(current));
@@ -961,15 +867,6 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
                               std::max(0, rival->m_NumBrothels * 5) +
                               std::max(0, rival->m_NumGamblingHalls * 2) +
                               std::max(0, rival->m_NumBars * 1));
-        
-    //jim: initializing rival inventory to zero (hopefully fixes Linux segfaults)
-      rival->m_NumInventory = 0;
-      for(auto & i : rival->m_Inventory)
-      {
-            i = nullptr;
-      }
-
-
 
     for (;;)
     {
@@ -1011,13 +908,6 @@ void cRivalManager::CreateRandomRival()
     while (rival->m_NumGirls == 0)
         rival->m_NumGirls = (g_Dice % ((rival->m_NumBrothels) * 20)) + 20;
     rival->m_NumGangs = g_Dice % 5+3;
-        
-    //jim: initializing rival inventory to zero (hopefully fixes Linux segfaults)
-    rival->m_NumInventory = 0;
-    for(auto & i : rival->m_Inventory)
-    {
-        i = nullptr;
-    }
 
     for (;;) {
         rival->m_Name = names.random();
@@ -1158,90 +1048,6 @@ void cRivalManager::peace_breaks_out()
     return;
 }
 
-int cRivalManager::AddRivalInv(cRival* rival, sInventoryItem* item)
-{
-    int i;
-    for (i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
-    {
-        if (rival->m_Inventory[i] == nullptr)
-        {
-            rival->m_Inventory[i] = item;
-            rival->m_NumInventory++;
-            return i;  // MYR: return i for success, -1 for failure
-        }
-    }
-    return -1;
-}
-
-bool cRivalManager::RemoveRivalInvByNumber(cRival* rival, int num)
-{
-    // rivals inventories don't stack items
-    if (rival->m_Inventory[num] != nullptr)
-    {
-        rival->m_Inventory[num] = nullptr;
-        rival->m_NumInventory--;
-        return true;
-    }
-    return false;
-}
-
-void cRivalManager::SellRivalInvItem(cRival* rival, int num)
-{
-    if (rival->m_Inventory[num] != nullptr)
-    {
-        rival->m_Gold += (int)((float)rival->m_Inventory[num]->m_Cost*0.5f);
-        rival->m_NumInventory--;
-        rival->m_Inventory[num] = nullptr;
-    }
-}
-
-const sInventoryItem* cRivalManager::GetRivalItem(cRival* rival, int num)
-{
-    return rival->m_Inventory[num];
-}
-
-const sInventoryItem* cRivalManager::GetRandomRivalItem(cRival* rival)
-{
-    const sInventoryItem *ipt = nullptr;
-    if (rival->m_NumInventory <= 0) return nullptr;
-    int start = g_Dice%MAXNUM_RIVAL_INVENTORY;
-
-    for (auto& item : rival->m_Inventory)
-    {
-        ipt = item;
-        if (!ipt)
-        {
-            start++;
-            if (start>MAXNUM_RIVAL_INVENTORY) start = 0;
-        }
-        else
-        {
-            return ipt;
-        }
-    }
-    return nullptr;
-}
-
-int cRivalManager::GetRandomRivalItemNum(cRival* rival)
-{
-    if (rival->m_NumInventory <= 0) return -1;
-    int start = g_Dice%MAXNUM_RIVAL_INVENTORY;
-
-    for (int i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
-    {
-        if (!rival->m_Inventory[i])
-        {
-            start++;
-            if (start>MAXNUM_RIVAL_INVENTORY) start = 0;
-        }
-        else
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
 void cRivalManager::AddMessage(std::string message, EventType event_type) {
     m_Events.AddMessage(std::move(message), IMGTYPE_PROFILE, event_type);
 }
@@ -1249,32 +1055,6 @@ void cRivalManager::AddMessage(std::string message, EventType event_type) {
 bool cRival::is_defeated() const
 {
     return m_Gold <= 0 && m_NumBrothels <= 0 && m_NumGangs <= 0 && m_NumGirls <= 0 && m_NumGamblingHalls <= 0 &&
-        m_NumBars <= 0 && m_NumInventory <= 0;
+        m_NumBars <= 0;
 }
 
-bool cRival::remove_from_inventory(int num)
-{
-    // rivals inventories don't stack items
-    if (m_Inventory[num] != nullptr)
-    {
-        m_Inventory[num] = nullptr;
-        m_NumInventory--;
-        return true;
-    }
-    return false;
-}
-
-int cRival::add_to_inventory(const sInventoryItem* item)
-{
-    int i;
-    for (i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
-    {
-        if (m_Inventory[i] == nullptr)
-        {
-            m_Inventory[i] = item;
-            m_NumInventory++;
-            return i;  // MYR: return i for success, -1 for failure
-        }
-    }
-    return -1;
-}

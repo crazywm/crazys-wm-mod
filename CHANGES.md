@@ -4,6 +4,7 @@
 * In the first two weeks, "Walk around town" will always lead to an encounter
 * Adapted success chance in skill checks in the lua scripts. 
   If too much skill is lacking, chance is now 0%
+* Removed rival inventory simulation
 
 ## Fixes
 * Fixed event type for Advertise job

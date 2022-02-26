@@ -429,15 +429,12 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
     }
     else ss << "The losers have no gold to take.\n";
 
-    if (rival->m_NumInventory > 0 && g_Dice.percent(std::min(75, gang.intelligence())))
+    if (g_Dice.percent(std::min(75, gang.intelligence())))
     {
-        cRivalManager r;
-        int num = r.GetRandomRivalItemNum(rival);
-        const sInventoryItem* item = r.GetRivalItem(rival, num);
+        const sInventoryItem* item = g_Game->inventory_manager().GetRandomCatacombItem();
         if (item)
         {
             ss << "\nYour men steal an item from them, one " << item->m_Name << ".";
-            rival->remove_from_inventory(num);
             g_Game->player().inventory().add_item(item);
         }
     }

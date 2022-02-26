@@ -26,7 +26,6 @@
 #include <memory>
 #include <functional>
 
-class sInventoryItem;
 namespace tinyxml2 {
     class XMLElement;
 }
@@ -51,8 +50,6 @@ public:
     ~cRival()    {    }
 
     bool is_defeated() const;
-    bool remove_from_inventory(int num);
-    int add_to_inventory(const sInventoryItem* item);
 
     // variables
     std::string m_Name;
@@ -66,8 +63,6 @@ public:
     int m_BusinessesExtort;
     int m_BribeRate;
     int m_Influence;    // based on the bribe rate this is the percentage of influence you have
-    int m_NumInventory;                                        // current amount of inventory the brothel has
-    const sInventoryItem* m_Inventory[MAXNUM_RIVAL_INVENTORY];    // List of inventory items they have (40 max)
 };
 
 class cRivalManager
@@ -93,16 +88,6 @@ public:
     void check_rivals();        // `J` moved from cBrothel
     std::string new_rival_text();    // `J` moved from cBrothel
     void peace_breaks_out();    // `J` moved from cBrothel
-
-
-    // `J` New - rival inventory
-    int AddRivalInv(cRival* rival, sInventoryItem* item);    // add item
-    bool RemoveRivalInvByNumber(cRival* rival, int num);    // remove item
-    void SellRivalInvItem(cRival* rival, int num);        // sell item
-    const sInventoryItem* GetRandomRivalItem(cRival* rival);
-    const sInventoryItem* GetRivalItem(cRival* rival, int num);
-    int GetRandomRivalItemNum(cRival* rival);
-
 
     int GetNumBusinesses();
     int GetNumRivals()                { return m_Rivals.size(); }
