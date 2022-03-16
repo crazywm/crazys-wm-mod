@@ -191,6 +191,44 @@
                     like pain" "Please, mistress, I want the clamps!"
                 </Text>
             </Group>
+            <Group Condition="skill:BDSM < 50 ^ skill:BDSM > 25">
+                <Text>
+                    ${mistress} ties ${name} to a St. Andrews cross and proceeds to flog her until every inch of the
+                    skin on her back has turned red and tears a flowing down her face. Not much subtlety to this training,
+                    but then her future clients won't be subtle either. Better for her to experience this here first,
+                    under controlled circumstances where ${mistress} can take care of her afterwards, than to have her
+                    mindbroken after the first client gets too rough.
+                </Text>
+                <Text Condition="Fragile|stat:Health<25">
+                    ${name} looks so fragile that ${mistress} is afraid any real BDSM training will seriously harm her.
+                    She decides to tie ${name} down tightly, and proceeds to tickle her with a feather. The ropes
+                    prevent her from thrashing around and hurting herself. Nonetheless, her body shows some bruising
+                    after the session.
+                </Text>
+            </Group>
+            <Group Condition="skill:BDSM < 75 ^ skill:BDSM > 45">
+                <Group Condition="Tough | stat:Constitution>75">
+                    ${girl} is rather tough, and can endure an astonishing amount of physical torment.
+                    Therefore, ${mistress} decides to do something entirely different for ${girl}'s bondage training for
+                    today. "Aren't you going to tie me up?", ${girl} asks confused.
+                    <Text Condition="stat:Dignity>30" Updates="stat:Dignity-=1">
+                        "No, you worthless whore, " ${mistress} shouts at her. "Don't you think I have better things I
+                        could be doing instead of 'teaching' you?". ${name} is taken aback: "But... but..."
+                        "Other girls, I can teach to be highly-praised courtesans skilled in the art of making love,
+                        but you, you will never be more than a piece of fuck-meat!" ${name} starts crying uncontrollably.
+                        "That's not ... that's not true!" she sobs. "Maybe not, but that's what others will say about
+                        you, and what they want you to say about yourself." This is going to be a long and exhausting
+                        session for both of them.
+                    </Text>
+                    <Text Condition="stat:Dignity<40">
+                        "No. Tell me something degrading about yourself!" "I'm... I'm a whore...", ${name} ventures.
+                        "That was pathetic", ${mistress} chides, "you are a worthless slut, a piece of fuck-meat! Tell me that!"
+                    </Text>
+                </Group>
+                <Text>
+                    TODO
+                </Text>
+            </Group>
             <Text>
                 BDSM training.
             </Text>
