@@ -22,6 +22,7 @@
 #include "cGirls.h"
 #include "buildings/IBuilding.h"
 #include "utils/streaming_random_selection.hpp"
+#include "IGame.h"
 
 extern const char* const TrainingInteractionId;
 
@@ -182,6 +183,13 @@ sWorkJobResult PracticeJob::DoWork(sGirl& girl, bool is_night) {
             if(my_value < other_value) {
                 weight += float(other_value - my_value) / 2;
             }
+
+            // don't train values close to skill cap
+            int cap = g_Game->get_skill_cap(skill, girl);
+            if(my_value >= cap - 5) {
+                weight = 2;
+            }
+
             selector.process(&skill, weight);
         }
 
