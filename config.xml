@@ -8,5 +8,5 @@
     <Entry Key="folders.default_images" Value="./Resources/DefaultImages"/>
     <Entry Key="folders.items" Value="./Resources/Items"/>
     <Entry Key="folders.saves" Value="./Saves"/>
-    <Entry Key="folders.characters" Value="./Resources/Characters;/mnt/stuff/WM/"/>
+    <Entry Key="folders.characters" Value="./Resources/Characters"/>
 </Config>

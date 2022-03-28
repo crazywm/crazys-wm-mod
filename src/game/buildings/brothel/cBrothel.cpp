@@ -55,6 +55,7 @@ sBrothel::sBrothel() :
 
     m_FirstJob = JOB_RESTING;
     m_LastJob = JOB_WHORESTREETS;
+    m_MatronJob = JOB_MATRON;
 }
 
 sBrothel::~sBrothel()            // destructor
