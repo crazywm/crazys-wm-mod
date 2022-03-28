@@ -65,6 +65,16 @@ auto cify_int_arg(F&& f) {
 }
 
 template <class F>
+auto cify_int_arg_ret(F&& f) {
+    static F fn = std::forward<F>(f);
+    return [] (lua_State* state) -> int {
+        int arg = luaL_checkinteger(state, -1);
+        lua_pushinteger(state, fn(arg));
+        return 1;
+    };
+}
+
+template <class F>
 auto cify_no_arg(F&& f) {
     static F fn = std::forward<F>(f);
     return [] (lua_State* state) -> int {
@@ -85,7 +95,7 @@ static const luaL_Reg funx [] = {
         { "AddBeasts",                   cify_int_arg([](int amount) { g_Game->storage().add_to_beasts(amount); })},
         { "GetBeasts",                   cify_no_arg([](){ return g_Game->storage().beasts(); })},
         { "AddPlayerGold",               cify_int_arg([](int amount) { g_Game->gold().misc_credit(amount); })},
-        { "TakePlayerGold",              cify_int_arg([](int amount) { return g_Game->gold().misc_debit(amount); })},
+        { "TakePlayerGold",              cify_int_arg_ret([](int amount) { return g_Game->gold().misc_debit(amount); })},
         { "GameOver",                    cLuaScript::GameOver},
         { "GivePlayerRandomSpecialItem", cLuaScript::GivePlayerRandomSpecialItem},
         { "AddCustomerToDungeon",        cLuaScript::AddCustomerToDungeon},

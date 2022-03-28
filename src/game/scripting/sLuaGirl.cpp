@@ -193,7 +193,7 @@ int sLuaGirl::has_trait(lua_State *L) {
     bool has = false;
     // take an arbitrary number of trait names, return whether one of them is present
     for(int i = 2; i <= lua_gettop(L); ++i) {
-        const char* trait = luaL_checkstring(L, 2);
+        const char* trait = luaL_checkstring(L, i);
         has |= girl.has_active_trait(trait);
     }
     lua_pushboolean(L, has);

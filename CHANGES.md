@@ -2,6 +2,9 @@
 ## Gameplay
 * Training job less likely to select skills close to skill cap
 
+## Fixes
+* Set correct matron job for brothel. This fixes obedience calculations.
+* Fixed some errors in lua bindings
 
 # Version 7.1.2beta2
 
