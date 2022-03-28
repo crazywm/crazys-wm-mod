@@ -1,6 +1,6 @@
 function InteractOffice(girl)
     local choice = ChoiceBox("", "Instruct her to tidy up your office", "Review her performance",
-            "Send her on a mission", "Personal instruction", "Inspect her", "Go Back")
+            "Send her on a mission", "Personal instruction", "Inspect her", "Manage Tattoos", "Manage Piercings", "Go Back")
     if choice == 0 then
         if girl:obey_check(wm.ACTIONS.WORKCLEANING) then
             wm.UpdateImage(wm.IMG.MAID)
@@ -129,6 +129,302 @@ function InteractOffice(girl)
             return girl:trigger("girl:refuse")
         end
     elseif choice == 5 then
+        if ManageTattoos(girl) then
+            return
+        else
+            return InteractOffice(girl)
+        end
+    elseif choice == 6 then
+        if ManagePiercings(girl) then
+            return
+        else
+            return InteractOffice(girl)
+        end
+    elseif choice == 7 then
         Dialog("Go Back")
     end
+end
+
+---@param girl wm.Girl
+function ManageTattoos(girl)
+    if girl:tiredness() > 75 then
+        Dialog("She is too tired for a tattoo session.")
+        return false
+    elseif girl:health() < 40 then
+        Dialog("She is not healthy enough for a tattoo session.")
+        return false
+    end
+
+    if girl:has_trait("Heavily Tattooed") then
+        Dialog(girl:name() .. "'s entire body is covered in tattoos.")
+    elseif girl:has_trait("Tattooed") then
+        Dialog(girl:name() .. " has a large tattoo")
+    elseif girl:has_trait("Small Tattoos") then
+        Dialog(girl:name() .. " has a few small tattoos.")
+    else
+        Dialog(girl:name() .. "doesn't have any tattoos.")
+    end
+
+    local choice = ChoiceBox("What do you want her to get?",
+            "Get a cheap back-alley tattoo (100)",
+            "Get a small tattoo professionally done (200)",
+            "Get a large professional tattoo (400)",
+            "Send her to multiple tattooing sessions (750)",
+            "Tattoo removal (300)",
+            "Go Back"
+    )
+
+    if choice < 4 then
+        if not girl:obey_check() then
+            Dialog(girl:name() .. " refuses to get tattooed.")
+            girl:trigger("girl:refuse")
+            return true
+        end
+    end
+
+    if choice == 0 then
+        if not wm.TakePlayerGold(100) then
+            Dialog("You don't have enough money")
+            return false
+        end
+
+        Dialog("Sometimes you just can't afford to have it professionally done. You send " .. girl:name() ..
+                " to the cheapest a back-alley tattoo artist you could find.")
+        girl:tiredness(10)
+        girl:health(-20)
+
+        if girl:has_trait("Heavily Tattooed", "Tattooed") then
+            Dialog(girl:name() .. "'s body is already covered in tattoos.")
+            return false
+        else
+            if wm.Percent(20)and girl:has_trait("Small Tattoos") then
+                girl:remove_trait("Small Tattoos")
+                girl:add_trait("Tattooed")
+            else
+                girl:add_trait( "Small Tattoos")
+            end
+        end
+
+        if wm.Percent(33) then
+            if wm.Percent(50) then
+                if girl:health() > 20 then
+                    girl:health(-10)
+                end
+                Dialog("The cheap ink became infected, and the surrounding skin is now Scarred.")
+                girl:add_trait("Small Scars")
+            else
+                Dialog("Maybe you should have invested a bit more to find a tattoo artist who uses clean needles. It appears that " .. girl:name() .. " has contracted AIDS.")
+                girl:add_trait("AIDS")
+            end
+        else
+            Dialog("Everything went well, and after a short recovery period ".. girl:name() .. " can show off her new Tattoo.")
+        end
+    elseif choice == 1 then
+        if not wm.TakePlayerGold(200) then
+            Dialog("You don't have enough money")
+            return false
+        end
+        if girl:has_trait("Heavily Tattooed") then
+            Dialog(girl:name() .. "'s entire body is already covered in tattoos.")
+            return false
+        end
+
+        Dialog("You send " .. girl:name() .. " to a professional tattoo artist to get a small tattoo.")
+        girl:tiredness(5)
+        girl:health(-5)
+
+        if girl:has_trait("Small Tattoos") then
+            if wm.Percent(33) then
+                Dialog("By now she has accumulated enough tattoos to be considered Tattooed.")
+                girl:remove_trait("Small Tattoos")
+                girl:add_trait("Tattooed")
+            end
+        elseif girl:has_trait("Tattooed") then
+            if wm.Percent(10) then
+                Dialog("By now she has accumulated enough tattoos to be considered Heavily Tattooed.")
+                girl:remove_trait("Tattooed")
+                girl:add_trait("Heavily Tattooed")
+            else
+                Dialog("She now has one more small tattoo on her already Tattooed body.")
+            end
+        else
+            girl:add_trait( "Small Tattoos")
+        end
+    elseif choice == 2 then
+        if not wm.TakePlayerGold(400) then
+            Dialog("You don't have enough money")
+            return false
+        end
+        if girl:has_trait("Heavily Tattooed") then
+            Dialog(girl:name() .. "'s entire body is already covered in tattoos.")
+            return false
+        end
+
+        Dialog("You send " .. girl:name() .. " to a professional tattoo artist to get a large tattoo.")
+        girl:tiredness(10)
+        girl:health(-10)
+
+        if girl:has_trait("Tattooed") then
+            if wm.Percent(33) then
+                Dialog("With this new tattoo, her entire body appears to be covered in tattoos")
+                girl:remove_trait("Tattooed")
+                girl:add_trait("Heavily Tattooed")
+            end
+        else
+            girl:remove_trait("Small Tattoos")
+            girl:add_trait( "Tattooed")
+        end
+    elseif choice == 3 then
+        if not wm.TakePlayerGold(750) then
+            Dialog("You don't have enough money")
+            return false
+        end
+
+        if girl:has_trait("Heavily Tattooed") then
+            Dialog(girl:name() .. "'s entire body is already covered in tattoos.")
+            return false
+        end
+
+        Dialog("You send " .. girl:name() .. " to a professional tattoo artist to get her entire body tattooed.")
+
+        if girl:has_trait("Tattooed", "Small Tattoos", "Tough") then
+            girl:tiredness(10)
+            girl:health(-10)
+            Dialog("Getting her body covered in tattoos is a long and arduous process, but " .. girl:name() .. " handled it like a champ.")
+        else
+            Dialog("She has no previous experience of getting tattoos. These long extended sessions take a heavy toll on her body.")
+            girl:tiredness(20)
+            girl:health(-20)
+            girl:happiness(-20)
+        end
+        girl:remove_trait("Small Tattoos")
+        girl:remove_trait("Tattooed")
+        girl:add_trait("Heavily Tattooed")
+    elseif choice == 4 then
+        if not wm.TakePlayerGold(300) then
+            Dialog("You don't have enough money")
+            return false
+        end
+
+        if not girl:has_trait("Heavily Tattooed", "Tattooed", "Small Tattoos") then
+            Dialog(girl:name() .. " has no tattoos that could be removed.")
+            return false
+        end
+
+        girl:tiredness(10)
+        girl:health(-10)
+        local where = RandomChoice("back", "calf", "arm", "belly", "chest", "ass")
+        if girl:has_trait("Heavily Tattooed") then
+            if wm.Percent(50) then
+                Dialog(girl:name() .. " gets a large tattoo removed from her " .. where .. ". Given her amount of ink, this hardly makes a difference though.")
+            else
+                Dialog(girl:name() .. " gets a large tattoo removed from her " .. where .. ".")
+                girl:remove_trait("Heavily Tattooed")
+                girl:add_trait("Tattooed")
+            end
+        elseif girl:has_trait("Tattooed") then
+            if wm.Percent(50) then
+                Dialog(girl:name() .. " gets a tattoo removed from her " .. where .. ". She still has quite a few remaining.")
+            else
+                Dialog(girl:name() .. " gets a tattoo removed from her " .. where .. ".")
+                girl:remove_trait("Tattooed")
+                girl:add_trait("Small Tattoos")
+            end
+        elseif girl:has_trait("Small Tattoos") then
+            if wm.Percent(50) then
+                Dialog(girl:name() .. " gets a small tattoo removed from her " .. where .. ". She still has some tattoos remaining.")
+            else
+                Dialog(girl:name() .. " gets a small tattoo removed from her " .. where .. ".")
+                girl:remove_trait("Small Tattoos")
+            end
+        end
+    elseif choice == 5 then
+        return false
+    end
+
+    return true
+end
+
+---@param girl wm.Girl
+function ManagePiercings(girl)
+    if girl:tiredness() > 75 then
+        Dialog("She is too tired to get pierced.")
+        return false
+    elseif girl:health() < 40 then
+        Dialog("She is not healthy enough to get pierced.")
+        return false
+    end
+
+    local piercings = ""
+    local any = false
+    if girl:has_trait("Pierced Tongue") then
+        piercings = "She has a pierced tongue.\n"
+        any = true
+    end
+    if girl:has_trait("Pierced Nose") then
+        piercings = piercings .. "She has her nose pierced.\n"
+        any = true
+    end
+    if girl:has_trait("Pierced Navel") then
+        piercings = piercings .. "She has a piercing in her navel.\n"
+        any = true
+    end
+    if girl:has_trait("Pierced Nipples") then
+        piercings = piercings .. "Her nipples are pierced.\n"
+        any = true
+    end
+    if girl:has_trait("Pierced Clit") then
+        piercings = piercings .. "She has a clit piercing.\n"
+        any = true
+    end
+    if not any then
+        piercings = "She has no piercings."
+    end
+    Dialog(piercings)
+
+
+    local choice = ChoiceBox("Where should she get pierced?",
+            "Tongue (100)",
+            "Nose (100)",
+            "Navel (100)",
+            "Nipples (200)",
+            "Clit (200)"
+    )
+
+    if choice == 0 then
+        return HandleGetPiercing(girl, 100, "Tongue")
+    elseif choice == 1 then
+        return HandleGetPiercing(girl, 100, "Nose")
+    elseif choice == 2 then
+        return HandleGetPiercing(girl, 100, "Navel")
+    elseif choice == 3 then
+        return HandleGetPiercing(girl, 200, "Nipples")
+    elseif choice == 4 then
+        return HandleGetPiercing(girl, 200, "Clit")
+    elseif choice == 5 then
+        return false
+    end
+end
+
+function HandleGetPiercing(girl, cost, where)
+    if not wm.TakePlayerGold(cost) then
+        Dialog("You don't have enough money")
+        return false
+    end
+    if girl:has_trait("Pierced " .. where) then
+        Dialog("Her " .. where .. " is already pierced.")
+        return false
+    end
+
+    if not girl:obey_check() then
+        Dialog(girl:name() .. " refuses to get her " .. where .. " pierced.")
+        girl:trigger("girl:refuse")
+        return true
+    end
+
+    Dialog("You send " .. girl:name() .. " to a piercing parlour and let her get her " .. where .. " pierced.")
+    girl:health(-10)
+    girl:tiredness(10)
+    girl:add_trait("Pierced " .. where)
+    return true
 end
