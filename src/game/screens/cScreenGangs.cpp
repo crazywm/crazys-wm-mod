@@ -25,6 +25,7 @@
 #include "cGangManager.hpp"
 #include "IGame.h"
 #include "CLog.h"
+#include <vector>
 
 static std::stringstream ss;
 
@@ -437,11 +438,19 @@ int cScreenGangs::set_mission_desc(int mid)
 
 void cScreenGangs::hire_recruitable()
 {
-    ForAllSelectedItems(recruitlist_id, [shift = 0](int sel_recruit) mutable {
-        sel_recruit -= shift;
+    int max_hire = g_Game->gang_manager().GetNumHireableGangs();
+    std::vector<int> translate(max_hire);
+    for(int i = 0; i < max_hire; ++i) {
+        translate[i] = i;
+    }
+
+    ForAllSelectedItems(recruitlist_id, [&](int sel_recruit) {
         if ((g_Game->gang_manager().GetNumGangs() >= g_Game->gang_manager().GetMaxNumGangs()) || (sel_recruit == -1)) return;
-        g_Game->gang_manager().HireGang(sel_recruit);
-        ++shift;
+        int translated = translate.at(sel_recruit);
+        g_Game->gang_manager().HireGang(translated);
+        for(int i = sel_recruit; i < max_hire; ++i) {
+            --translate[i];
+        }
     });
 
     init(false);
