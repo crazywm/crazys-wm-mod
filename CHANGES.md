@@ -5,7 +5,8 @@
 
 ## Fixes
 * Set correct matron job for brothel. This fixes obedience calculations.
-* Fixed some errors in lua bindings
+* Fixed some errors in lua bindings.
+* Fixed crash for runaway when branding in dungeon
 
 # Version 7.1.2beta2
 

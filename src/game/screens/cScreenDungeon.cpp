@@ -396,9 +396,8 @@ int cScreenDungeon::enslave()
         case EGirlEscapeAttemptResult::SUCCESS:
             ss << "After defeating you goons and you, she escapes to the outside.\n";
             ss << "She will escape for good in 6 weeks if you don't send someone after her.";
-            g_Game->dungeon().RemoveGirl(girl);
-            numGirlsRemoved++;
             girl->run_away();
+            numGirlsRemoved++;
             g_Game->player().suspicion(15);                    // suspicion goes up
             g_Game->player().evil(15);                        // so does evil
             push_message(ss.str(), COLOR_RED);    // add to the message queue
