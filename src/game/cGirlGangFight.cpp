@@ -98,8 +98,18 @@ EAttemptCaptureResult AttemptCapture(sGang& gang, sGirl& girl) {
     gang.GetEvents().AddMessage(combat.round_summaries().back(), EVENT_GANG, report);
     gang.m_Combat = true;
 
-    if (result == ECombatResult::VICTORY)
+    if (result == ECombatResult::VICTORY) {
+        if(girl.health() < 1) {
+            // If she was badly hurt during combat, keep her alive
+            // but increase tiredness and put a temporary fragile state
+            girl.set_stat(STAT_HEALTH, 1);
+            girl.tiredness(20);
+            girl.constitution(-5);
+            girl.strength(-5);
+            girl.add_temporary_trait("Fragile", 10);
+        }
         return EAttemptCaptureResult::CAPTURED;
+    }
     return EAttemptCaptureResult::ESCAPED;
 }
 

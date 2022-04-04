@@ -2,6 +2,7 @@
 ## Gameplay
 * Training job less likely to select skills close to skill cap
 * New Tattoo/Piercing management in office interactions
+* Prevent gangs from accidentally killing their catacomb captures
 
 ## Fixes
 * Set correct matron job for brothel. This fixes obedience calculations.
