@@ -3,6 +3,8 @@
 * Training job less likely to select skills close to skill cap
 * New Tattoo/Piercing management in office interactions
 * Prevent gangs from accidentally killing their catacomb captures
+* Girls at very low health, but with constitution and stamina, 
+will regenerate health more quickly but lose stamina/strength 
 
 ## Fixes
 * Set correct matron job for brothel. This fixes obedience calculations.

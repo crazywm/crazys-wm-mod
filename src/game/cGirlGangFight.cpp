@@ -99,14 +99,21 @@ EAttemptCaptureResult AttemptCapture(sGang& gang, sGirl& girl) {
     gang.m_Combat = true;
 
     if (result == ECombatResult::VICTORY) {
-        if(girl.health() < 1) {
+        if(girl.health() < 5) {
+            int hurt = 5 - girl.health();
             // If she was badly hurt during combat, keep her alive
             // but increase tiredness and put a temporary fragile state
-            girl.set_stat(STAT_HEALTH, 1);
-            girl.tiredness(20);
-            girl.constitution(-5);
-            girl.strength(-5);
-            girl.add_temporary_trait("Fragile", 10);
+            girl.set_stat(STAT_HEALTH, 5);
+            girl.tiredness(20 + hurt);
+            girl.constitution(-5 - hurt);
+            girl.strength(-5 - hurt);
+            girl.add_temporary_trait("Fragile", 5);
+            girl.add_temporary_trait("Bruises", 5 + hurt);
+            girl.AddMessage("She has been badly wounded in the fight. You gang has performed first-aid measures"
+                            " to keep her alive, but her injuries will leave scars.", IMGTYPE_DEATH, EVENT_DANGER);
+            girl.gain_trait("Small Scars", 50);
+        } else if(girl.health() < 33) {
+            girl.add_temporary_trait("Bruises", 2);
         }
         return EAttemptCaptureResult::CAPTURED;
     }

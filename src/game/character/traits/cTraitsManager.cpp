@@ -69,7 +69,7 @@ void cTraitsManager::load_modifiers(const tinyxml2::XMLElement& root, std::strin
 
         bool has_modifiers = load_modifier(modifier_el, std::move(modifier));
         if(!has_modifiers) {
-            g_LogFile.warning("traits", "Did not find any <Trait> element for modifier ", modifier);
+            g_LogFile.warning("traits", "Did not find any <Trait> element for modifier ", modifier, ". Found on line ", modifier_el.GetLineNum());
         }
     }
 }

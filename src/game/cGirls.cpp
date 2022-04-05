@@ -3470,6 +3470,21 @@ void cGirls::updateGirlTurnStats(sGirl& girl)
         girl.tiredness(bonus);
     }
 
+    // very hurt girls exchange strength and constitution for some more health
+    if(girl.health() < 10) {
+        if(girl.strength() > 10) {
+            girl.strength(-2);
+            girl.health(2);
+        }
+        if(girl.constitution() > 10) {
+            girl.constitution(-2);
+            girl.health(2);
+        }
+
+        girl.libido(-1);
+        girl.happiness(-1);
+    }
+
     // LOVE love is updated only if happiness is >= 100 or < 50
     if (girl.happiness() >= 100)
     {
