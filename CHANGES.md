@@ -11,6 +11,8 @@ will regenerate health more quickly but lose stamina/strength
 * Fixed some errors in lua bindings.
 * Fixed crash for runaway when branding in dungeon
 * Fixed hiring of multiple gangs at the same time in non-default order
+* Fixed saving/loading of beasts and other stored goods
+
 
 # Version 7.1.2beta2
 

@@ -59,6 +59,7 @@ public:
     int get_excess(const std::string& key) const;
 
     void load_from_xml(const tinyxml2::XMLElement& el);
+    void save_to_xml(tinyxml2::XMLElement& el) const;
 
 private:
     struct StorageRecord {

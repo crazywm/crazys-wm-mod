@@ -18,6 +18,9 @@
 */
 
 #include "sStorage.h"
+#include "xml/util.h"
+#include "xml/getattr.h"
+#include <tinyxml2.h>
 
 std::string sStorage::food_key    = "food";
 std::string sStorage::drink_key   = "drink";
@@ -49,7 +52,19 @@ int sStorage::get_excess(const std::string& key) const {
 
 void sStorage::load_from_xml(const tinyxml2::XMLElement& el)
 {
-// TODO
+    for(auto& child: IterateChildElements(el)) {
+        int amount = GetIntAttribute(child, "Amount");
+        std::string what = GetStringAttribute(child, "What");
+        m_Storage.at(what).amount = amount;
+    }
+}
+
+void sStorage::save_to_xml(tinyxml2::XMLElement& el) const {
+    for(const auto& good : m_Storage) {
+        auto& nel = PushNewElement(el, "Store");
+        nel.SetAttribute("What", good.first.c_str());
+        nel.SetAttribute("Amount", good.second.amount);
+    }
 }
 
 sStorage::sStorage() {
@@ -59,4 +74,5 @@ sStorage::sStorage() {
     m_Storage[goods_key].amount = 0;
     m_Storage[alchemy_key].amount = 0;
 }
+
 

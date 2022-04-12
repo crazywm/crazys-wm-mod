@@ -396,6 +396,8 @@ void cGame::SaveGame(tinyxml2::XMLElement& root) {
     auto& market = PushNewElement(el, "SlaveMarket");
     GetSlaveMarket().SaveXML(market);
 
+    storage().save_to_xml(PushNewElement(el, "Storage"));
+
     // output gangs
     gang_manager().SaveGangsXML(el);
 
