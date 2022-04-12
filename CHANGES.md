@@ -13,6 +13,7 @@ will regenerate health more quickly but lose stamina/strength
 * Fixed hiring of multiple gangs at the same time in non-default order
 * Fixed saving/loading of beasts and other stored goods
 * Added missing refuse text for `Intern` job
+* Fixed disease traits to actually be registered as diseases.
 
 
 # Version 7.1.2beta2
