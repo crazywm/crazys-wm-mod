@@ -250,12 +250,12 @@ offset gives the base value that is applied when all factors contribute zero, e.
     <!-- Non-Sexual skills -->
     <Skill Name="Brewing">
         <Cap Offset="25">
-            <Factor Attribute="Level" Factor="500" />
+            <Factor Attribute="Level" Factor="1000" />
         </Cap>
     </Skill>
     <Skill Name="AnimalHandling">
         <Cap Offset="25">
-            <Factor Attribute="Level" Factor="500" />
+            <Factor Attribute="Level" Factor="1000" />
         </Cap>
     </Skill>
     <Skill Name="Cooking">
@@ -308,8 +308,8 @@ offset gives the base value that is applied when all factors contribute zero, e.
             <Factor Attribute="Spirit" Factor="100" />
         </Cap>
 
-        <Cap Offset="10">
-            <Factor Attribute="Level" Factor="500" />
+        <Cap Offset="15">
+            <Factor Attribute="Level" Factor="1000" />
         </Cap>
     </Skill>
 
@@ -318,8 +318,8 @@ offset gives the base value that is applied when all factors contribute zero, e.
             <Factor Attribute="Intelligence" Factor="100" />
         </Cap>
 
-        <Cap Offset="10">
-            <Factor Attribute="Level" Factor="500" />
+        <Cap Offset="15">
+            <Factor Attribute="Level" Factor="1000" />
         </Cap>
     </Skill>
 
@@ -330,8 +330,8 @@ offset gives the base value that is applied when all factors contribute zero, e.
             <Factor Attribute="Agility" Factor="50" />
         </Cap>
 
-        <Cap Offset="10">
-            <Factor Attribute="Level" Factor="500" />
+        <Cap Offset="15">
+            <Factor Attribute="Level" Factor="1000" />
         </Cap>
     </Skill>
 
