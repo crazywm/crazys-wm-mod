@@ -13,5 +13,8 @@
         <Message Name="work">
             <Text>${name} trains in the Medical field.</Text>
         </Message>
+        <Message Name="refuse">
+            <Text>${name} refuses to work as an Intern in the Hospital.</Text>
+        </Message>
     </Messages>
 </Job>
