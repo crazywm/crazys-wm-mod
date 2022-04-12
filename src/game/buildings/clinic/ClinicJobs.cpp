@@ -400,14 +400,6 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
     if (train == 2) { sgInt = skill; ss << "She got smarter today.\n"; }                        else sgInt = uniform(0, 1);
     if (train == 3) { sgCha = skill; ss << "She got more charismatic today.\n"; }                else sgCha = uniform(0, 1);
 
-    if (sgMed + sgInt + sgCha > 0)
-    {
-        ss << "She managed to gain:\n";
-        if (sgMed > 0) { ss << sgMed << " Medicine.\n";        girl.medicine(sgMed); }
-        if (sgInt > 0) { ss << sgInt << " Intelligence.\n";    girl.intelligence(sgInt); }
-        if (sgCha > 0) { ss << sgCha << " Charisma.\n";        girl.charisma(sgCha); }
-    }
-
     int trycount = 10;
     while (gaintrait && trycount > 0)    // `J` Try to add a trait
     {
@@ -455,6 +447,32 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
         }
     }
 
+    // Improve stats
+    int xp = 5 + skill;
+
+    if (girl.has_active_trait("Quick Learner"))        { xp += 2; }
+    else if (girl.has_active_trait("Slow Learner"))    { xp -= 2; }
+
+    int exp_start = girl.exp();
+    girl.exp(uniform(1, xp));
+    girl.upd_temp_stat(STAT_LIBIDO, skill / 2);
+
+    auto get_update = [&](StatSkill target, int amount){
+        int before = girl.get_attribute(target);
+        int after = girl.update_attribute(target, amount);
+        return after - before;
+    };
+
+
+    sgMed = get_update(SKILL_MEDICINE, sgMed);
+    sgInt = get_update(STAT_INTELLIGENCE, sgInt);
+    sgCha = get_update(STAT_CHARISMA, sgCha);
+    ss << "She managed to gain:\n";
+    if (sgMed > 0) { ss << sgMed << " Medicine.\n";}
+    if (sgInt > 0) { ss << sgInt << " Intelligence.\n"; }
+    if (sgCha > 0) { ss << sgCha << " Charisma.\n"; }
+    ss << girl.exp() - exp_start << " Exp.\n";
+
 
 
     //enjoyed the work or not
@@ -467,15 +485,6 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
 
     if (girl.is_unpaid()) { m_Wages = 0; }
     else { m_Wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
-
-    // Improve stats
-    int xp = 5 + skill;
-
-    if (girl.has_active_trait("Quick Learner"))        { xp += 2; }
-    else if (girl.has_active_trait("Slow Learner"))    { xp -= 2; }
-
-    girl.exp(uniform(1, xp));
-    girl.upd_temp_stat(STAT_LIBIDO, skill / 2);
 
     if (girl.medicine() + girl.intelligence() + girl.charisma() >= 300) promote = true;
     if (promote)

@@ -944,7 +944,7 @@ void Healing::ReceiveTreatment(sGirl& girl, bool is_night) {
 
     if (doctor)
     {
-        ss << " Doctor" << doctor->FullName() << " takes care of her.";
+        ss << " Doctor " << doctor->FullName() << " takes care of her.";
         if (girl.has_active_trait("Half-Construct") || girl.has_active_trait("Construct")) {
             health += 20;    // Less healing for constructs
         } else {
