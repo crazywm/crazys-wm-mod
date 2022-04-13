@@ -14,6 +14,7 @@ will regenerate health more quickly but lose stamina/strength
 * Fixed saving/loading of beasts and other stored goods
 * Added missing refuse text for `Intern` job
 * Fixed disease traits to actually be registered as diseases.
+* Full-Time job correctly applied to both day- and night-shift
 
 
 # Version 7.1.2beta2

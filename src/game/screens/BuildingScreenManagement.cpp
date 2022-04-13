@@ -201,6 +201,9 @@ void IBuildingScreenManagement::on_select_job(int selection)
         EditTextItem(job_manager().get_job_description((JOBS)selection), jobdesc_id);        // first handle the descriptions
         ForAllSelectedItems(girllist_id, [&](int sel) {
             auto girl = active_building().get_girl(sel);
+            if(job_manager().FullTimeJob(new_job))
+                fulltime = true;
+
             if (girl)
             {
                 assign_job(*girl, new_job, sel, fulltime);
