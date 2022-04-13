@@ -15,6 +15,7 @@ will regenerate health more quickly but lose stamina/strength
 * Added missing refuse text for `Intern` job
 * Fixed disease traits to actually be registered as diseases.
 * Full-Time job correctly applied to both day- and night-shift
+* Fix text in dungeon screen, and joined together message for multiple brandings
 
 
 # Version 7.1.2beta2

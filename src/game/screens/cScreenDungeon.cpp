@@ -355,6 +355,8 @@ int cScreenDungeon::enslave()
     int numGirlsRemoved = 0;
     int deadcount = 0;
 
+    std::vector<std::string> submitted;
+
     // roll on vectors!
     ForAllSelectedItems(girllist_id, [&](int selection) {
         if ((selection - (g_Game->dungeon().GetNumGirls() + numGirlsRemoved)) >= 0)    // it is a customer
@@ -372,9 +374,7 @@ int cScreenDungeon::enslave()
         switch(result) {
         case EGirlEscapeAttemptResult::SUBMITS:
             cGirls::SetSlaveStats(*girl);
-            ss.str("");
-            ss << girl->FullName() << " submits the the enchanted slave tattoo being placed upon her.";
-            push_message(ss.str(), 0);
+            submitted.push_back(girl->FullName());
             break;
         case EGirlEscapeAttemptResult::STOPPED_BY_GOONS:
             g_Game->player().evil(5);    // evil up the player for doing a naughty thing and adjust the girl's stats
@@ -394,6 +394,7 @@ int cScreenDungeon::enslave()
             push_message(ss.str(), COLOR_RED);
             break;
         case EGirlEscapeAttemptResult::SUCCESS:
+            ss.str("");
             ss << "After defeating you goons and you, she escapes to the outside.\n";
             ss << "She will escape for good in 6 weeks if you don't send someone after her.";
             girl->run_away();
@@ -404,6 +405,21 @@ int cScreenDungeon::enslave()
         }
     });
     if (deadcount > 0) push_message("There's not much point in using a slave tattoo on a dead body.", 0);
+
+    if(!submitted.empty()) {
+        ss.str("");
+        ss << submitted.front();
+        if (submitted.size() > 1) {
+            for(int i = 1; i < submitted.size(); ++i) {
+                ss << ", " << submitted[i];
+            }
+            ss << " submit the the enchanted slave tattoo being placed upon them.";
+        } else {
+            ss << " submits the the enchanted slave tattoo being placed upon her.";
+        }
+        push_message(ss.str(), 0);
+    }
+
     init(false);
     return Return;
 }
