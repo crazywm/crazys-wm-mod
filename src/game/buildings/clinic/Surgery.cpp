@@ -190,7 +190,15 @@ IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) 
     }
 
     if (!HasInteraction(DoctorInteractionId)) {
-        ss << "${name} does nothing. You don't have any Doctors working. (require 1) ";
+        // calling request-interaction because we still want to count how many interactions where requested.
+        RequestInteraction(DoctorInteractionId);
+        int dp = girl.m_Building->GetInteractionProvided(DoctorInteractionId);
+        if(dp > 0) {
+            ss << "${name} does nothing. You don't have enough Doctors working. All " << dp << " Doctor Interactions have already been used up.";
+        } else {
+            ss << "${name} does nothing. You don't have any Doctors working.";
+        }
+
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }

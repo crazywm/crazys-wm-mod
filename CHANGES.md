@@ -5,6 +5,7 @@
 * Prevent gangs from accidentally killing their catacomb captures
 * Girls at very low health, but with constitution and stamina, 
 will regenerate health more quickly but lose stamina/strength 
+* Clinic will generate a warning message or status update for the number of treatments performed/requested/possible.
 
 ## Fixes
 * Set correct matron job for brothel. This fixes obedience calculations.
@@ -16,6 +17,7 @@ will regenerate health more quickly but lose stamina/strength
 * Fixed disease traits to actually be registered as diseases.
 * Full-Time job correctly applied to both day- and night-shift
 * Fix text in dungeon screen, and joined together message for multiple brandings
+* Fixed error message if not enough doctors are present
 
 
 # Version 7.1.2beta2

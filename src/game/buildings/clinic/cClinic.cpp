@@ -135,6 +135,20 @@ void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
      });
 */
     EndShift(is_night);
+
+    int total_doctor_actions = GetInteractionConsumed(DoctorInteractionId);
+    int possible_doctor_actions = GetInteractionProvided(DoctorInteractionId);
+
+    if(total_doctor_actions > possible_doctor_actions) {
+        std::stringstream msg;
+        msg << "You tried to get " << total_doctor_actions << " girls treated, but doctors could only take care of " << possible_doctor_actions << ".\n";
+        AddMessage(msg.str(), EventType::EVENT_WARNING);
+    } else if(possible_doctor_actions > 0) {
+        std::stringstream msg;
+        msg << "Your clinic has enough doctors for " << possible_doctor_actions << " patients. This week you requested treatment for " << total_doctor_actions << " girls.\n";
+        AddMessage(msg.str(), EventType::EVENT_BUILDING);
+    }
+
 }
 
 void sClinic::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)
