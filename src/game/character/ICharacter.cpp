@@ -407,6 +407,7 @@ bool ICharacter::lose_trait(const char *trait_name, bool hide, int chance) {
 
 void ICharacter::add_temporary_trait(const char *trait_name, int duration) {
     m_Traits->add_temporary_trait(trait_name, duration);
+    m_Traits->update();
 }
 
 bool ICharacter::has_dormant_trait(const char *trait_name) const {

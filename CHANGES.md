@@ -9,6 +9,7 @@ obedience.
 
 ## Fixes
 * Added missing `Weight` parameter to `Blacksmith.xml`
+* Traits now update correctly after a temporary trait is added
  
 # Version 7.1.2beta3
 ## Gameplay
