@@ -1,5 +1,12 @@
 # Version 7.1.2beta4
 
+## Gameplay
+* Added two new temporary traits, "Recently Punished" and "Recently Scolded", 
+that get activated through your interactions. If you scold a recently scolded girl,
+it is less effective, if you scold a recently punished girl it is more effective. Allowing
+a girl to refuse an interaction while the recently scolded trait is active will decrease her
+obedience.
+
 ## Fixes
 * Added missing `Weight` parameter to `Blacksmith.xml`
  

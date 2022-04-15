@@ -30,4 +30,22 @@
         <description>This girl was was a customer but broke the law in some way, allowing you to take her as a slave.</description>
     </Trait>
 
+    <Trait InheritChance="0" RandomChance="0" Name="Recently Punished" Type="Temporary">
+        <description>You have recently punished this girl. Her fear and obedience are increased.</description>
+        <Modifiers>
+            <Modifier Name="stat:PCFear" Value="15" />
+            <Modifier Name="stat:Obedience" Value="15" />
+            <Modifier Name="stat:Spirit" Value="-5" />
+        </Modifiers>
+    </Trait>
+    <Trait InheritChance="0" RandomChance="0" Name="Recently Scolded" Type="Temporary">
+        <description>You have recently scolded this girl. Her fear and obedience are increased.
+            Scolding her again will be less effective.</description>
+        <Modifiers>
+            <Modifier Name="stat:PCFear" Value="5" />
+            <Modifier Name="stat:Obedience" Value="5" />
+            <Modifier Name="stat:Spirit" Value="-2" />
+            <Modifier Name="stat:Confidence" Value="-2" />
+        </Modifiers>
+    </Trait>
 </Traits>

@@ -202,7 +202,7 @@ function BrothelInteractChoice(girl)
     local choice = ChoiceBox("What would you like to do?", "Reward " .. girl:name(),
             "Chat with " .. girl:name(), "Visit " .. girl:name() .. "'s Bedroom",
             "Call " .. girl:name() .. " to your office", "Invite " .. girl:name() .. " to your private chambers",
-            "Train " .. girl:name(), "Scold " .. girl:name()
+            "Train " .. girl:name(), "Scold " .. girl:name(), "Punish " .. girl:name()
     )
 
     if choice == 0 then
@@ -226,8 +226,10 @@ function BrothelInteractChoice(girl)
         end
     elseif choice == 5 then
         return girl:trigger("girl:training")
-    else
+    elseif choice == 6 then
         ScoldGirl(girl)
+    else
+        PunishGirl(girl)
     end
 end
 
@@ -236,7 +238,12 @@ function Refuse(girl)
         "Force Sex")
     if choice == 0 then
         Dialog("You say nothing and go about your other business.")
+        if girl:has_trait("Recently Scolded") then
+            girl:pcfear(-3)
+            girl:obedience(-1)
+        end
         wm.SetPlayerDisposition(3)
+        girl:pcfear(-1)
     elseif choice == 1 then
         ScoldGirl(girl)
     elseif choice == 2 then
@@ -247,6 +254,8 @@ function Refuse(girl)
         girl:happiness(-3)
         girl:health(-1)
         girl:obedience(3)
+        girl:pcfear(5)
+        girl:add_trait("Recently Punished", 3)
     elseif choice == 3 then
         Dialog("\"Oh I see.  You feel you have no need to obey me?\"  You ask calmly.  \"Perhaps then you also have no need for the things I have given you?\" ")
         Dialog("\"I'll just be taking a few things back then.\"  You order your guards to strip her naked and make her stand in front of the brothel all day and night.")
@@ -256,6 +265,7 @@ function Refuse(girl)
         girl:happiness(-3)
         girl:pclove(-10)
         girl:obedience(5)
+        girl:add_trait("Recently Punished", 1)
     elseif choice == 4 then
         Dialog("Your eyes flash with rage. \"You dare refuse? I'll show you what happens to whores that refuse to do their master's bidding\"")
         Dialog("You knock her down and begin to tear away her clothing.  She cries out as you force yourself inside her.")
@@ -265,84 +275,9 @@ function Refuse(girl)
         girl:obedience(5)
         girl:pclove(-20)
         girl:pcfear(10)
+        wm.SetPlayerDisposition(-3)
+        girl:add_trait("Recently Punished", 4)
     end
 end
 
----@param girl wm.Girl
-function Punish(girl)
-    local choice = ChoiceBox("", "\"Guard the door, I'm going to teach this bitch a lesson!\"",
-            "\"Boys, help me teach this whore some manners!\"",
-            "\"Hold her! I'm going to beat some sense into her!\"",
-            "\"Throw her into the beast pit for a while!\"",
-            "\"Nothing.  She's had enough.  Take her back to her room.\""
-    )
-    if choice == 0 then
-        PlayerRapeGirl(girl)
-        wm.SetPlayerDisposition(-40)
-        Dialog("Now you'll really hate me girl. 'Cuz I'm gonna fuck you, and you won't enjoy it.")
-        Dialog("She tries to crawl away but you're quickly on top of her.  You pull out your throbbing cock and thrust it violently into her cunt. ")
-        if girl:libido() > 75 then
-            Dialog("Despite your words she moans with pleasure as you continually ram her tight pussy.  She shakes with a massive orgasm as you release your semen into her.")
-            girl:happiness(30)
-        else
-            Dialog("You release a huge load into her and leave her sobbing on the floor.")
-            girl:happiness(-50)
-            girl:pcfear(30)
-        end
-    elseif choice == 1 then
-        PlayerFucksGirl_Group(girl)
-        wm.SetPlayerDisposition(-40)
-        Dialog("You and your men spend a few hours passing her around the room.")
-        Dialog("For the grand finale you all stand around her and spray her with load after load of cum.")
-        if girl:has_trait("Nymphomaniac") then
-            Dialog("She lies on the floor breathing heavily from the marathon of orgasms; both the group's and her's.")
-            girl:libido(5)
-            girl:happiness(2)
-            girl:tiredness(10)
-        else
-            Dialog("She lies gasping and gagging on the floor humiliated and sticky from sweat and semen.")
-            girl:happiness(-30)
-            girl:tiredness(20)
-            girl:pcfear(5)
-        end
-    elseif choice == 2 then
-        -- Flavour text doesn't mention penis-in-vagina penetration,
-        -- so don't call PlayerFucksGirl_BDSM()
-        wm.UpdateImage(wm.IMG.BDSM)
-        wm.SetPlayerDisposition(-40)
-        Dialog("Your men seize her arms and drag her to stand before you.")
-        if wm.Percent(girl:bdsm()) then
-            Dialog("She cries out with every lash from the bullwhip, but each stroke sends a wave of pleasure as well. " ..
-                    "Soon her thighs are covered with her hot juices.  Since she seems to be doing well with this you reward " ..
-                    "her by ramming the handle of the whip into her pussy.  She  cums so hard that you men almost drop her as her legs give out.")
-            girl:health(-10)
-            girl:happiness(2)
-            girl:tiredness(10)
-            girl:obedience(5)
-        else
-            Dialog("She begs you to stop as you land blow after blow upon her. you are careful to avoid her face (wouldn't want to damage your earnings).")
-            Dialog("Your men drag her limp body back to her room and toss her in like a ragdoll.")
-            girl:happiness(-60)
-            girl:tiredness(30)
-            girl:health(-40)
-            girl:pcfear(30)
-        end
-    elseif choice == 3 then
-        wm.UpdateImage(wm.IMG.BEST)
-        Dialog("Player: \"Let's see if a night with Cthulu's cousin improves her mood?\"")
-        Dialog("Your men pick the girl up from the floor and haul her off to the beast pit.")
-        Dialog("beast sex dialog")
-        girl:happiness(-20)
-        girl:tiredness(20)
-        girl:pcfear(10)
-    elseif choice == 4 then
-        if girl:obey_check(wm.ACTIONS.WORKSTRIP) then
-            wm.UpdateImage(wm.IMG.NUDE)
-            Dialog("However, they don't like when anyone disrespects their employer.  Before they leave her room they tear away her clothing and leave her naked and sobbing.")
-        else
-            Dialog("Your men don't like when someone disrespects their boss.  They tell her that they are going to strip her naked when they get to her room...")
-            Dialog("However, as the group rounds the corner to the girl's dormitorys she makes a quick dash for her room and bolts the door behind her.  Your men pound on the door yelling for a bit, but eventually walk away.")
-        end
-    end
-end
 

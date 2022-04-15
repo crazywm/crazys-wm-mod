@@ -104,7 +104,7 @@ function ChatBrothel(girl)
             Dialog("Your bodyguards rush into the room.  Seeing the girl lying on the floor they ask. \"What do you want us to do with her , boss?\"")
             girl:pclove(-wm.Range(2, 5))
             girl:health(wm.Range(-5, -1))
-            Punish(girl)
+            PunishGirl(girl)
         elseif girl:pclove() < -50 then
             Dialog("She glares at you before she responds. \"You're a sick, perverted asshole.\"")
         elseif girl:pclove() < -30 then
