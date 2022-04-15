@@ -1,3 +1,8 @@
+# Version 7.1.2beta4
+
+## Fixes
+* Added missing `Weight` parameter to `Blacksmith.xml`
+ 
 # Version 7.1.2beta3
 ## Gameplay
 * Training job less likely to select skills close to skill cap

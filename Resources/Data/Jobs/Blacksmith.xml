@@ -10,7 +10,7 @@
         <Factor Skill="Combat" Weight="1"/>
         <Factor Skill="Magic" Weight="1"/>
         <Factor Stat="Intelligence" Weight="1"/>
-        <Factor Stat="Constitution" Weight=""/>
+        <Factor Stat="Constitution" Weight="1"/>
     </Performance>
 
     <Gains XP="10" Skill="3">
