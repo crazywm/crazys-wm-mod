@@ -46,6 +46,7 @@ void sLuaGirl::init(lua_State* L) {
             {"check_virginity", sLuaGirl::check_virginity},
             {"lose_virginity", sLuaGirl::lose_virginity},
             {"name", sLuaGirl::get_name},
+            {"firstname", sLuaGirl::get_first_name},
             {"is_slave", sLuaGirl::is_slave},
             {"calc_player_pregnancy", sLuaGirl::calc_player_pregnancy},
             {"calc_group_pregnancy", sLuaGirl::calc_group_pregnancy},
@@ -211,6 +212,12 @@ int sLuaGirl::remove_trait(lua_State *L) {
 int sLuaGirl::get_name(lua_State *L) {
     auto& girl = check_type(L, 1);
     lua_pushstring(L, girl.FullName().c_str());
+    return 1;
+}
+
+int sLuaGirl::get_first_name(lua_State *L) {
+    auto& girl = check_type(L, 1);
+    lua_pushstring(L, girl.FirstName().c_str());
     return 1;
 }
 

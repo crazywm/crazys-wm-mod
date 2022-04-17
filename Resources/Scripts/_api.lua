@@ -7,6 +7,7 @@ function g:calc_group_pregnancy(good, factor) end
 function g:stat(stat, change) end
 function g:skill(skill, change) end
 function g:name() end
+function g:firstname() end
 function g:torture() end
 function g:give_money() end
 function g:trigger(event) end
@@ -73,6 +74,7 @@ function wm.AddCustomerToDungeon(reason, daughters, wife) end
 function wm.AddFamilyToDungeon(num_daughters, mother) end
 function wm.Percent(percent) end
 function wm.Range(min, max) end
+function wm.RandName(mode) end
 function wm.GameOver() end
 
 function wm.AcquireGirl(girl) end

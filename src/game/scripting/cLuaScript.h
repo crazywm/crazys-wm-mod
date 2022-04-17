@@ -56,6 +56,7 @@ namespace scripting {
         // random boolean with the given chance of being true
         static int Percent(lua_State* state);
         static int Range(lua_State* state);
+        static int RandomName(lua_State* state);
     };
 }
 

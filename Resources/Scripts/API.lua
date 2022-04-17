@@ -241,3 +241,15 @@ function RandomChoice(...)
     local choice = wm.Range(1, #options)
     return options[choice]
 end
+
+function RandomGirlName()
+    return wm.RandName(0)
+end
+
+function RandomBoyName()
+    return wm.RandName(1)
+end
+
+function RandomSurname()
+    return wm.RandName(2)
+end
