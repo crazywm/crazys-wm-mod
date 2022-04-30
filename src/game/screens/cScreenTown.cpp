@@ -198,6 +198,7 @@ void cScreenTown::do_walk()
         return;
     }
 
+    m_MeetingGirl = nullptr;
     if(g_Dice.percent( g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_UNIQUE) )) {
         m_MeetingGirl = g_Game->GetRandomUniqueGirl(false, false, false, false, false);
     }
