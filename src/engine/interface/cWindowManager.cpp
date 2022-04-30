@@ -56,6 +56,7 @@ void cWindowManager::push(const std::string& window_name)
     try {
         m_WindowStack.back()->init(false);
     } catch(...) {
+        g_LogFile.error("interface", "An error occurred when trying to initialize '", window_name, "'");
         m_WindowStack.pop_back();
         throw;
     }
@@ -65,6 +66,7 @@ void cWindowManager::replace(const std::string& window_name)
 {
     g_LogFile.info("interface", "Replace Window '", window_name, '\'');
     auto current = m_WindowStack.back();
+    // remove old window, but to not re-initialize the window under it, since we immediately push a new window on top.
     m_WindowStack.pop_back();
     //try {
         push(window_name);
@@ -79,7 +81,7 @@ void cWindowManager::replace(const std::string& window_name)
 // remove function from the stack
 void cWindowManager::Pop()
 {
-    g_LogFile.info("interface", "Pop Window");
+    g_LogFile.info("interface", "Pop Window. Current stack size: ", m_WindowStack.size() );
     m_WindowStack.pop_back();
     if(!m_WindowStack.empty()) {
         g_LogFile.info("interface", "New window is '", m_WindowStack.back()->name(), "', calling init");
@@ -94,6 +96,8 @@ void cWindowManager::Pop()
             PushError(exception.what());
         }
 #endif
+    } else {
+        g_LogFile.info("interface", "Popped last window");
     }
 }
 
@@ -111,6 +115,7 @@ void cWindowManager::PopToWindow(const std::string& window_name)
     }
 
     if(m_WindowStack.empty()) {
+        g_LogFile.info("screens", "Removed all windows and pushed ", window_name);
         m_WindowStack.push_back(windows.at(window_name));
     }
 
@@ -315,6 +320,7 @@ void cWindowManager::InputChoice(std::string question, std::vector<std::string> 
 }
 
 void cWindowManager::PopAll() {
+    g_LogFile.info("screens", "Pop all");
     m_WindowStack.clear();
 }
 
@@ -337,6 +343,7 @@ std::shared_ptr<cModalWindow> cWindowManager::GetModalWindow() {
         try {
             m_WindowStack.back()->init(false);
         } catch (...) {
+            g_LogFile.info("screens", "Failed to initialize choice window!");
             m_WindowStack.pop_back();
             throw;
         }

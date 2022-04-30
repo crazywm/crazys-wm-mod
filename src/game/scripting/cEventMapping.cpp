@@ -155,6 +155,10 @@ sScriptValue cEventMapping::RunSynchronous(const sEventID& event, std::initializ
 
 sAsyncScriptHandle cEventMapping::RunAsyncWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const
 {
+    if(!m_Manager) {
+        throw std::logic_error("Trying to run event but no script manager has been set: " + m_Name);
+    }
+
     if(event.is_specific()) {
         return m_Manager->RunEventAsync(GetEvent(event), params);
     } else {
@@ -170,6 +174,10 @@ sAsyncScriptHandle cEventMapping::RunAsyncWithParams(const sEventID& event, std:
 
 sScriptValue
 cEventMapping::RunSyncWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const {
+    if(!m_Manager) {
+        throw std::logic_error("Trying to run event but no script manager has been set: " + m_Name);
+    }
+
     if(event.is_specific()) {
         return m_Manager->RunEventSync(GetEvent(event), params);
     } else {
@@ -185,6 +193,9 @@ cEventMapping::RunSyncWithParams(const sEventID& event, std::initializer_list<sL
 
 void cEventMapping::SetEventHandler(sEventID id, std::string script, std::string function)
 {
+    if(!m_Manager) {
+        throw std::logic_error("Trying to set event handler but no script manager has been set: " + m_Name);
+    }
     // ensure that script is valid
     if(!m_Manager->VerifyScript(script, function)) {
         throw std::logic_error("Cannot set event handler for" + id.name + ", because the script " + function + "@" + script + "is not valid.");

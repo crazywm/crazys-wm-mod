@@ -25,7 +25,6 @@ class static_brothel_data;
 class cScreenTown : public cGameWindow
 {
 private:
-    int back_id;            // Back button
     int gold_id;            // Player Gold
     int walk_id;            // Walk Around Town button
     int curbrothel_id;      // Current Brothel text
@@ -44,7 +43,6 @@ private:
     int brothel4_id;        // Brothel 4 map button
     int brothel5_id;        // Brothel 5 map button
     int brothel6_id;        // Brothel 6 map button
-    int setup_id;           // setup map button
     int girlimage_id;       // Girl image
     int next_week_id;       // Next Week Button
 

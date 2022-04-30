@@ -271,9 +271,13 @@ int sLuaGirl::acquire_girl(lua_State* L) {
     girl.house(60);
 
     std::shared_ptr<sGirl> girl_owner = girl.shared_from_this();
-    assert(girl_owner != nullptr);
-    assert(girl.m_Building == nullptr);
-    // of she's in the global girl pool, we can now remove her.
+    if(girl_owner == nullptr) {
+        return luaL_error(L, "Girl %s does not have an associated shared_ptr. Aborting.", girl.FullName().c_str());
+    }
+    if(girl.m_Building != nullptr) {
+        return luaL_error(L, "Girl %s already is associated with a building. Something went wrong.", girl.FullName().c_str());
+    }
+    // if she's in the global girl pool, we can now remove her.
     g_Game->girl_pool().TakeGirl(&girl);
 
     std::string text = girl.FullName();
@@ -307,7 +311,7 @@ int sLuaGirl::acquire_girl(lua_State* L) {
 /*
 *    otherwise, it's very simple
 */
-    text += (" has been sent to your current brothel.");
+    text += " has been sent to your current brothel.";
     building.add_girl(std::move(girl_owner));
     g_Game->push_message(text, 0);
     return 0;

@@ -148,6 +148,7 @@ int main(int ac, char* av[])    // `J` Bookmark - #1 - Entering the game
 
     while(true) {
         bool running = true;
+        window_manager().PopAll();
         window_manager().push("Main Menu");
         FuzzyMouse mouse(false);
         while (running) {
