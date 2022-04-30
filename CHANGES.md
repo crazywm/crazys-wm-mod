@@ -11,6 +11,7 @@ obedience.
 * Added missing `Weight` parameter to `Blacksmith.xml`
 * Traits now update correctly after a temporary trait is added
 * Duplicate girl bug when walking streets
+* Added skill gains for waitress job
  
 # Version 7.1.2beta3
 ## Gameplay

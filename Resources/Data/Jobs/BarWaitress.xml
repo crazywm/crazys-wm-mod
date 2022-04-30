@@ -68,6 +68,11 @@
         <GainTrait Trait="Charming" Threshold="70" Action="WORKBAR">
             ${name} has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.
         </GainTrait>
+
+        <Skill Name="Service" Weight="2" />
+        <Stat Name="Charisma" Weight="2"/>
+        <Skill Name="Performance" Weight="1" />
+        <Stat Name="Confidence" Weight="1" Max="50" />
     </Gains>
 
     <Config>
