@@ -1,5 +1,5 @@
 ---@param girl wm.Girl
----@param dangerLev int
+---@param dangerLev number
 function BouncerShakedown(girl, dangerLev)
     Dialog("Guard: \"Sir, please enjoy your drinks. You picked a really hot girl, and I know you want to touch things you are not allowed to.\"")
     Dialog("The guard actually winks at you. \"But just between us gentlemen, for a sufficient tip, I won\'t be watching what you and the lady are doing.\"")
@@ -10,10 +10,10 @@ function BouncerShakedown(girl, dangerLev)
     if shakedown == 0 then
         Dialog("You pay the man and he goes back to his post with a smile on his face. You think he may enjoy watching, as well as pocketing the money.")
         wm.TakePlayerGold(500)
-        Dialog("You turn back to the girl, and realize you have made a major mistake.")
-        Dialog("She snarls at you. \"I'm a stripper, not a whore. I don\'t care what you and that asshole guard decided, keep your hands to yourself.\"")
-        Dialog("You wanted a pleasant diversion, but having an angry girl on your lap isn't that much fun, even when she is pretty and naked.")
-        Dialog("You give it up as a bad job, and head home a little wiser.")
+        Dialog("You turn back to the girl, and realize you have made a major mistake.\n" ..
+                "She snarls at you. \"I'm a stripper, not a whore. I don\'t care what you and that asshole guard decided, keep your hands to yourself.\"")
+        Dialog("You wanted a pleasant diversion, but having an angry girl on your lap isn't that much fun, even when she is pretty and naked.\n" ..
+                "You give it up as a bad job, and head home a little wiser.")
     elseif shakedown == 1 then
         Dialog("The guard looks a bit miffed when you stiff him on the tip. The girl on your lap giggles, nibbles on your ear, and whispers, \"Thank you\".")
         wm.TakePlayerGold(300)
@@ -287,17 +287,16 @@ function DinnerAndADrink(girl)
                 Dialog("\"You bought dinner, not a ticket into my pants. Jerk off, jerk.\" The door slams in your face, and it seems your date is over.")
                 return
             else
-                Dialog("hand value=", wm.IMG.HAND)
                 wm.UpdateImage(wm.IMG.HAND)
-                Dialog("She hesitates, and you see the alcohol from dinner working on her.")
-                Dialog("She shrugs and frowns, but then rubs her hand across your crotch. \"Sure, why not?\"")
-                Dialog("She pulls you into some bushes by the side of her house. \"Shhh, keep quiet, we don't want to wake up my roommates.\"")
-                Dialog("She unzips you, pulls your cock out, turns you around to face the house, and reaches around to start tugging.")
+                Dialog("She hesitates, and you see the alcohol from dinner working on her.\n" ..
+                        "She shrugs and frowns, but then rubs her hand across your crotch. \"Sure, why not?\"")
+                Dialog("She pulls you into some bushes by the side of her house. \"Shhh, keep quiet, we don't want to wake up my roommates.\"\n" ..
+                        "She unzips you, pulls your cock out, turns you around to face the house, and reaches around to start tugging.")
                 Dialog("This isn\'t exactly what you had in mind, but it\'s really hard to complain.")
                 Dialog("She knows what she\'s doing, as one hand tugs away lustily while her other rubs your taint through your pants.")
                 Dialog("You spasm and coat the wall of her house with a few spoonfuls of spunk.")
-                Dialog("It\'s only then that you notice several other stains on the wall. Apparently this isn\'t the first time she\'s done a reach-around here.")
-                Dialog("You chuckle and turn around to thank her, but she's already up the stairs. The evening is obviously over, so you zip up and head home.")
+                Dialog("It\'s only then that you notice several other stains on the wall. Apparently this isn\'t the first time she\'s done a reach-around here." ..
+                        "You chuckle and turn around to thank her, but she's already up the stairs. The evening is obviously over, so you zip up and head home.")
                 return
             end 
         elseif kiss == 1 then
@@ -334,7 +333,6 @@ function DinnerAndADrink(girl)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
 function GirlAudition(girl)
     local debug = 0
     
@@ -761,7 +759,7 @@ function GirlDescription(girl)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
+---@param dangerLev number
 function GroupChurch(girl, dangerLev)
     if dangerLev == 1 then
         Dialog("GroupChurch1 coming soon!")
@@ -775,7 +773,7 @@ function GroupChurch(girl, dangerLev)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
+---@param dangerLev number
 function GroupStreets(girl, dangerLev)
     if (dangerLev == 3) and wm.Percent(75) then
         Dialog("The women in the town seem to be smarter than you, and most are staying off the dangerous streets.")
@@ -1045,7 +1043,7 @@ function GroupStreets(girl, dangerLev)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
+---@param dangerLev number
 function GroupShopping(girl, dangerLev)
     Dialog("GroupShopping danger=" .. dangerLev)
     if dangerLev == 1 then
@@ -1086,7 +1084,7 @@ function GroupShopping(girl, dangerLev)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
+---@param dangerLev number
 function GroupStripClub(girl, dangerLev)
     if dangerLev == 1 then
         Dialog("You and your bodyguards strut confidently through the quiet city streets to a local strip club.")
@@ -1411,13 +1409,12 @@ function ShakeDown(girl)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
+---@param dangerLev number
 function SoloChurch(girl, dangerLev)
     Dialog("SoloChurch coming soon! danger=" .. dangerLev)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
 function SoloEncounter(girl)
     if wm.Percent(50) then
         LadyOfNegotiableAffection(girl)
@@ -1427,13 +1424,13 @@ function SoloEncounter(girl)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
+---@param dangerLev number
 function SoloShopping(girl, dangerLev)
     Dialog("SoloShopping coming soon! danger=" .. dangerLev)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
+---@param dangerLev number
 function SoloStreets(girl, dangerLev)
     if dangerLev == 1 then
         SoloEncounter(girl)
@@ -1453,7 +1450,6 @@ function SoloStreets(girl, dangerLev)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
 function StraightAsk(girl)
     Dialog("You: \"My dear, my brothel is looking for beautiful young women like yourself. You could make a mint at my establishment. Are you interested in a job?\"")
     if girl:has_trait("Nymphomaniac") or girl:has_trait("Demon Possessed") or girl:has_trait("Succubus") then
@@ -1499,13 +1495,13 @@ function StraightAsk(girl)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
+---@param dangerLev number
 function SoloStripClub(girl, dangerLev)
     Dialog("SoloStripClub coming soon! danger=" .. dangerLev)
 end
 
 ---@param girl wm.girl
----@param dangerLev int
+---@param dangerLev number
 function StreetAmbush(girl, dangerLev)
     Dialog("You decide to go to your normal club, where everyone knows your name.")
     Dialog("Despite the deserted streets, there is an electric feeling of danger in the air.")
@@ -1568,7 +1564,7 @@ function StreetAmbush(girl, dangerLev)
 end
 
 ---@param girl wm.Girl
----@param dangerLev int
+---@param dangerLev number
 function StripperOrWaitress(girl, dangerLev)
     Dialog("You take a table to yourself. You watch the girl onstage removing her clothes, and also notice that your waitress is stunning.")
     local mission = ChoiceBox("What do you do?", "Tip the stripper.", "Hit on the waitress.")
@@ -1590,7 +1586,7 @@ function StripperOrWaitress(girl, dangerLev)
         if stripmission == 0 then
             Dialog("You see the guard intercept your waitress. He brings the bottle to the table himself.")
             wm.TakePlayerGold(100)
-            BouncerShakedown(girl)
+            BouncerShakedown(girl, dangerLev)
         elseif stripmission == 1 then
             Dialog("She looks over and giggles. \"That\'s Star. She will do anything for tips. But I am afraid I like my job, and won\'t risk it.\"")
             Dialog("You: \"What if I can offer you a better job?\"")
@@ -1744,7 +1740,7 @@ function MeetTown(girl)
 ---                                  "Scout the streets for new tail.",
 ---                                  "Do a little shopping.",
 ---                                  "Go to church services.")
-        mission = 1
+        local mission = 1
         if mission == 0 then
             SoloStripClub(girl, dangerLev)
         elseif mission == 1 then

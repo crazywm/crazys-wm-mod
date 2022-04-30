@@ -69,6 +69,5 @@
   It is always at the top, instead of in the correct time sequence. 
   This appears to also be a problem with girls who get in fights or are attacked, 
   and if the girl refuses a customer due to sexual preference.
-* [x] Recruiters, cooks and cleaners in the house do not appear to cost any money???
 * [ ] WalkTown image appears too early
 * [ ] WalkTown thrown into dungeon but still appears in regular building
