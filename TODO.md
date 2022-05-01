@@ -70,4 +70,3 @@
   This appears to also be a problem with girls who get in fights or are attacked, 
   and if the girl refuses a customer due to sexual preference.
 * [ ] WalkTown image appears too early
-* [ ] WalkTown thrown into dungeon but still appears in regular building

@@ -1190,16 +1190,16 @@ function LadyOfNegotiableAffection(girl)
     end
     GirlDescription(girl)
     local partychoice = ChoiceBox("Do you want to \"party\" with her?",
-                                  RandomChoice("\"If we are partying but I\'m not paying, then \"Yes!\"",
-                                               "\"You don\'t measure up to my standards, babe.\"",
-                                               "\"I am afraid I don\'t pay for parties."),
-                                  RandomChoice("\"Looks like today might be my \'getting lucky\' day!\"",
+                                  RandomChoice("\"If we are partying but I'm not paying, then \"Yes!\"",
+                                               "\"You don't measure up to my standards, babe.\"",
+                                               "\"I am afraid I don't pay for parties."),
+                                  RandomChoice("\"Looks like today might be my 'getting lucky' day!\"",
                                                "\"You are just what I have been looking for today, girl!\"",
                                                "\"Well, well, you are certainly in the right place at the right time!\""))
     if partychoice == 0 then
-        Dialog("She sniffs. \"You are saying no to me? Honey, you just missed out on ten minutes of heaven.\"")
-        Dialog("Then she sneeringly looks you up and down. \"Naw, I take that back. Thirty seconds tops.\"")
-        Dialog("She flips you off as she walks away.")
+        Dialog("She sniffs. \"You are saying no to me? Honey, you just missed out on ten minutes of heaven.\"\n" ..
+                "Then she sneeringly looks you up and down. \"Naw, I take that back. Thirty seconds tops.\"\n" ..
+                "She flips you off as she walks away.")
     elseif partychoice == 1 then
         GirlAudition(girl)
     end
@@ -1268,9 +1268,9 @@ function RapeGirl(girl)
         return
     else
         wm.UpdateImage(wm.IMG.RAPE)
-        Dialog("Before she knows what is happening, you hustle her down the alley and place your knife at her throat.")
-        Dialog("You snarl at her. \"Keep quiet, do exactly what I say, and you will live through this. Understand?\"")
-        Dialog("She wimpers a little and nods her head.")
+        Dialog("Before she knows what is happening, you hustle her down the alley and place your knife at her throat.\n" ..
+                "You snarl at her. \"Keep quiet, do exactly what I say, and you will live through this. Understand?\"\n " ..
+                "She whimpers a little and nods her head.")
         local rape = ChoiceBox("What do you make her do?", "Hand job", "Blow job", "Titfuck", "Vaginal Sex")
         if rape == 0 then
             wm.UpdateImage(wm.IMG.HAND)
@@ -1299,25 +1299,25 @@ function RapeGirl(girl)
                                 "Tell her you know where she lives, and you will kill her if she says anything.",
                                 "In for a penny... Kidnap her and throw her in your dungeon.")
         if after == 0 then
-            Dialog("You shrug. \"Sorry, honey. It's been fun.\" You slash her throat while trying to muffle her cries of agony.")
-            Dialog("Unfortunately, she gets out one or two shrill screams before the deed is done.")
-            Dialog("The noise attracts the attention of a city guard. \"What are you doing? Unhand that woman!\"")
-            Dialog("That\'s when the guard sees the blood, and that the woman\'s head is half cut off. \"You'll hang for that, you monster!\"")
-            Dialog("You are too drained from your exertions to outrun this cop.")
-            Dialog("Your only chance is to kill this guard before reinforcements arrive. You draw your sword and charge.")
+            Dialog("You shrug. \"Sorry, honey. It's been fun.\" You slash her throat while trying to muffle her cries of agony.\n\n" ..
+                    "Unfortunately, she gets out one or two shrill screams before the deed is done.")
+            Dialog("The noise attracts the attention of a city guard. \"What are you doing? Unhand that woman!\"\n" ..
+                    "That\'s when the guard sees the blood, and that the woman\'s head is half cut off. \"You'll hang for that, you monster!\"")
+            Dialog("You are too drained from your exertions to outrun this cop." ..
+                    "Your only chance is to kill this guard before reinforcements arrive. You draw your sword and charge.")
             Dialog("Unfortunately, this guard is an old vet, who calmly draws a pistol and blows your brains out. \"Never bring a sword to a gun fight.\"")
             wm.GameOver()
             return
         elseif after == 1 then
-            Dialog("She meekly nods that she understands. \"I... I won't say nothin\' to no one. Just leave me be!\"")
-            Dialog("You take your leave, but make a note to expect increased police scrutiny.")
+            Dialog("She meekly nods that she understands. \"I... I won't say nothin\' to no one. Just leave me be!\"\n" ..
+                    "You take your leave, but make a note to expect increased police scrutiny.")
             wm.SetPlayerSuspicion(100)
             wm.SetPlayerDisposition(-50)
         elseif after == 2 then
-            Dialog("You: \"Honey, that was some mighty fine action. I\'m gonna need some more of that. You are going to enjoy working for me.\"")
-            Dialog("You knock her unconscious and carry her home.")
+            Dialog("You: \"Honey, that was some mighty fine action. I\'m gonna need some more of that. You are going to enjoy working for me.\"\n" ..
+                    "You knock her unconscious and carry her home.")
             wm.AcquireGirl(girl)
-            wm.ToDungeon(girl, "Kidnapped")
+            wm.ToDungeon(girl, 3)  -- 3 is kidnapped
             girl:happiness(-100)
             girl:obedience(-100)
             girl:tiredness(100)

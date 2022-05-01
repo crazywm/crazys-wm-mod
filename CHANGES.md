@@ -7,11 +7,15 @@ it is less effective, if you scold a recently punished girl it is more effective
 a girl to refuse an interaction while the "Recently Scolded" trait is active will decrease her
 obedience.
 
+## UI
+* Slightly increased dialog font size
+
 ## Fixes
 * Added missing `Weight` parameter to `Blacksmith.xml`
 * Traits now update correctly after a temporary trait is added
 * Duplicate girl bug when walking streets
 * Added skill gains for waitress job
+* Fixed error in TownMeet kidnap scenario
  
 # Version 7.1.2beta3
 ## Gameplay
