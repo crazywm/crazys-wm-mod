@@ -195,7 +195,7 @@ function SheIsAsleep(girl)
                 Dialog("She starts stroking your cock, and it doesn't take her long to get you to spurt your load.")
                 wm.UpdateImage(wm.IMG.BED)
                 Dialog("\"This was a nice surprise, but I really need to get some sleep now.\" She seems to be in a good mood despite your actions, so you decide to leave it at that.")
-            elseif true or (girl:is_slave() and girl:obey_check(wm.ACTION.SEX)) or wm.Percent(50 - 2*girl:spirit()) then
+            elseif true or (girl:is_slave() and girl:obey_check(wm.ACTIONS.SEX)) or wm.Percent(50 - 2*girl:spirit()) then
                 -- meekly accepts fate
                 Dialog("She awakes with a sudden start and stares wide-eyed at your fingers inside her and your erection moving closer. " ..
                         "After the initial moment of shock, her face takes on resigned look and she passively lets you continue your fondling.")

@@ -181,7 +181,7 @@ function TavernQuest(girl)
                 -- TODO special item
             elseif result > 60 then
                 Dialog("tavern group. construct. success. get EXP.")
-                girl.experience(35)
+                girl:experience(35)
             elseif result > 10 then
                 Dialog("tavern group. construct. failure.  cannot pass through gateway.")
             else
@@ -196,7 +196,7 @@ function TavernQuest(girl)
                 wm.AddPlayerGold(wm.Range(500, 3000))
             elseif result > 60 then
                 Dialog("tavern group. adventurer. success. get exp.")
-                girl.experience(35)
+                girl:experience(35)
             elseif result > 10 then
                 Dialog("tavern group. adventurer. failure. raid wipe.  she does well, but the casters were standing in bad.")
             else
@@ -208,11 +208,11 @@ function TavernQuest(girl)
             local result = wm.Range(1, 100)
             if result >= 95 then
                 Dialog("Tavern group. thief. critical success. finds dragons weakness. gets exp and bonus item.")
-                girl.experience(50)
+                girl:experience(50)
                 -- TODO special item
             elseif result > 60 then
                 Dialog("tavern group. thief. success.")
-                girl.experience(35)
+                girl:experience(35)
             elseif result > 10 then
                 Dialog("tavern group. thief. failure. dragon chases them back to town.")
             else
@@ -226,7 +226,7 @@ function TavernQuest(girl)
                 Dialog("Tavern group. Assassin Critical success.")
             elseif result > 60 then
                 Dialog("tavern group. assassin. success")
-                girl.experience(35)
+                girl:experience(35)
             elseif result > 10 then
                 Dialog("tavern group. assassin. failure")
             else
@@ -240,7 +240,7 @@ function TavernQuest(girl)
                 Dialog("Tavern group. Mage. critical success.")
             elseif result > 60 then
                 Dialog("Tavern Group. Mage. Success.")
-                girl.experience(35)
+                girl:experience(35)
             elseif result > 10 then
                 Dialog("tavern group. mage. failure.")
             else
@@ -488,7 +488,7 @@ function ChurchQuest(girl)
                 Dialog("church. naughty nun. futa. critical failure.  she is caught with her dick in the nuns ass ,and the nun is forced to leave.")
                 -- TODO Lesbian Sex
             end
-        elseif girl:sevice() > 70 then
+        elseif girl:service() > 70 then
             Dialog("Church. Naughty Nun. Service. Help her clean up.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -798,8 +798,8 @@ function StreetsQuest(girl)
                 girl:normalsex(5)
                 girl:oralsex(5)
                 girl:tittysex(5)
-                girl:hand(5)
-                girl:foot(5)
+                girl:handjob(5)
+                girl:footjob(5)
                 girl:group(5)
                 girl:lesbian(5)
                 girl:strip(5)
@@ -821,7 +821,7 @@ function StreetsQuest(girl)
                 Dialog("Streets. underground. construct.  Crit Fail.  Alchemist captures her. He \"explores\" her for hours before wiping he memory of the location and letting her go.")
                 -- TODO normal sex
                 girl:tiredness(80)
-                girl:exp(-40)
+                girl:experience(-40)
             elseif wm.Percent(girl:constitution()) then
                 Dialog("Streets. Underground. Construct. Con. pass.  she finds some potions to improve her constitution.")
             else

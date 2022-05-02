@@ -10,7 +10,7 @@ function GirlDied(girl)
 end
 
 function CustDied(cust)
-    Dialog("A customer has died in the dungeon.\nTheir body will be removed by the end of the week.", 1);
+    Dialog("A customer has died in the dungeon.\nTheir body will be removed by the end of the week.");
 
     if wm.Percent(10) then -- only 10% of being discovered
         wm.SetPlayerSuspicion(1)

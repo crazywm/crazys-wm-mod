@@ -34,6 +34,7 @@ function MeetArena(girl)
 
 end
 
+---@param girl wm.Girl
 function PersonalSupervision(girl)
     Dialog("You make your way to the arena sand.")
     Dialog("You are pleased by the turnout. It looks like 30 or 40 women want to work for you. Surely one of them will measure up.")

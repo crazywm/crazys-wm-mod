@@ -46,13 +46,18 @@ local g = {}
 ---@overload fun(trait: string, duration: number) @add temporary trait
 ---@overload fun(trait: string): number
 function g:add_trait(trait, duration) end
-function g:has_trait(trait) end
+function g:has_trait(trait, ...) end
 function g:remove_trait(trait) end
+
+function g:has_item(item) end
 
 function g:calc_player_pregnancy(good, factor) end
 function g:calc_group_pregnancy(good, factor) end
+function g:weeks_pregnant() end
+function g:pregnancy_term() end
 function g:stat(stat, change) end
 function g:skill(skill, change) end
+function g:enjoyment(what, change) end
 function g:name() end
 function g:firstname() end
 function g:torture() end
@@ -104,6 +109,9 @@ function g:handjob(change) end
 ---@overload fun(change: number): number
 ---@overload fun(): number
 function g:footjob(change) end
+---@overload fun(change: number): number
+---@overload fun(): number
+function g:magic(change) end
 
 ---@overload fun(change: number): number
 ---@overload fun(): number
@@ -183,6 +191,21 @@ function g:experience(change) end
 ---@overload fun(change: number): number
 ---@overload fun(): number
 function g:dignity(change) end
+---@overload fun(change: number): number
+---@overload fun(): number
+function g:constitution(change) end
+---@overload fun(change: number): number
+---@overload fun(): number
+function g:agility(change) end
+---@overload fun(change: number): number
+---@overload fun(): number
+function g:fame(change) end
+---@overload fun(change: number): number
+---@overload fun(): number
+function g:lactation(change) end
+---@overload fun(change: number): number
+---@overload fun(): number
+function g:strength(change) end
 
 g.ACTIONS = {}
 

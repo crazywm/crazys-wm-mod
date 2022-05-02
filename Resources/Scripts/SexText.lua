@@ -252,23 +252,23 @@ function GetBestialityMessage(girl, customer)
             message = message .. " was docile and unresponsive"
             if wm.Percent(50) then
                 message = message .. " as the beast tried a number of ways to mate with her cold, motionless body.\nThe customer was entertained.\n";
-                customer.happiness(30)
+                customer:happiness(30)
             else
                 message = message .. ". The beast instinctively recoiled, refusing to go anywhere near her.\nThe customer was disappointed.\n"
-                customer.happiness(-30)
+                customer:happiness(-30)
             end
         else
             message = message .. " was irrational and aggressive. With an angry grunt she lurched and clawed at the amorous beast"
             if wm.Percent(girl:combat()) then
                 message = message .. " quickly tearing the poor creature apart and feasting on its flesh.\nThe customer seemed a little shocked.\n";
-                wm:AddBeasts(-1)
+                wm.AddBeasts(-1)
                 girl:happiness(5)
                 girl:health(5);
-                customer.happiness(-10)
+                customer:happiness(-10)
             else
                 message = message .. ", but your beast easily overpowered her.\nThe customer is thrilled to watch as your beast pins and fucks this furious, snarling zombie-girl.\n";
                 girl:health(-10)
-                customer.happiness(50)
+                customer:happiness(50)
             end
         end
         return message
@@ -298,10 +298,10 @@ function GetBestialityMessage(girl, customer)
         end
         if wm.Percent(harmchance) then
             message = message .. "${name} accidentally harmed some beasts during the act.\n"
-            wm:AddBeasts(-wm.Range(1, 3))
+            wm.AddBeasts(-wm.Range(1, 3))
         elseif wm.Percent(harm) then
             message = message .. "${name} \"accidentally\" harmed a beast during the act.\n" --Made it actually use quote marks CRAZY
-            wm:AddBeasts(-1)
+            wm.AddBeasts(-1)
         end
     end
 
@@ -827,7 +827,7 @@ function HandleBDSMAggressiveCustomer(girl, customer)
             message = message .. "Your guard, " .. guard:name() .. ", felt oddly compelled to help ${name}, demanding the customer take it easier on ${name}.\n";
             damage = damage - 2;
             upset = upset - 2;
-            customer.happiness(-5)
+            customer:happiness(-5)
         else
             message = message .. "Your guard, " .. guard:name() .. ", heard " .. girl:name() .. "'s screams, but didn't care to do anything. It's bought and paid for.\n";
             girl:sanity(-4)
@@ -840,7 +840,7 @@ function HandleBDSMAggressiveCustomer(girl, customer)
             PCLove = PCLove + 3;     -- ditto
             damage = damage - 2;     -- reduced damage
             upset = upset - 3;         -- and upset
-            customer.happiness(-5)
+            customer:happiness(-5)
         elseif wm.Percent(50) and (girl:has_trait("Psychic", "Strong Magic")) then
             -- If girl can compel
             message = message .. "Your defending gang felt oddly compelled to help ${name}, demanding the customer take it easier on her.\n";
