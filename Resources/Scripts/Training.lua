@@ -19,6 +19,7 @@ function Training(girl)
         Dialog("Today you will spend the day at in the care of the mages at the Citadel.  Learn well from them. ")
         if girl:obey_check(wm.ACTIONS.GENERAL) then
             Dialog("You hand her a bag of gold containing the lesson fee and send her on her way.")
+            wm.UpdateImage(wm.IMG.MAGIC)
             wm.TakePlayerGold(500)
             -- TODO this is a bit weird, magic training works better if she is good at magic
             girl:experience(wm.Range(5, 10))
@@ -36,7 +37,7 @@ function Training(girl)
                 girl:magic(wm.Range(1, 5))
                 girl:intelligence(wm.Range(0, 1))
                 girl:confidence(wm.Range(0, 2))
-                girl:libido(wm.Range(2, 10))
+                AdjustLust(girl, wm.Range(2, 10))
                 girl:tiredness(wm.Range(1, 10))
             end
         else
@@ -49,6 +50,7 @@ function Training(girl)
             wm.TakePlayerGold(250)
             -- TODO this is a bit weird, agility training works better if she is good at agility
             girl:experience(wm.Range(5, 10))
+            wm.UpdateImage(wm.IMG.SPORT)
             if wm.Percent(girl:agility()) then
                 Dialog("She finds the plaza easily and introduced herself to the Head Troubadour. She easily picked up on the subtle important motions involved with tumbling and they acrobats were impressed by her natural flexibility.")
                 Dialog("She had a fun day and learned a great deal from the troupe.")
@@ -64,7 +66,7 @@ function Training(girl)
                 girl:agility(wm.Range(1, 5))
                 girl:strength(wm.Range(0, 1))
                 girl:charisma(wm.Range(0, 1))
-                girl:libido(wm.Range(5, 25))
+                AdjustLust(girl, wm.Range(5, 25))
                 girl:tiredness(wm.Range(1, 10))
                 wm.AddPlayerGold(wm.Range(20, 90))
             end
@@ -76,6 +78,7 @@ function Training(girl)
         Dialog("You have been lacking in exercise lately.  I've bribed the foreman of the shipyard workers to let you work with them for the day.")
         if girl:obey_check(wm.ACTIONS.GENERAL) then
             wm.TakePlayerGold(300)
+            wm.UpdateImage(wm.IMG.SPORT)
             girl:experience(wm.Range(5, 10))
             if wm.Percent(girl:constitution()) then
                 Dialog("She shows up early at the docks and she remembered to bring a pair of thick leather gloves with her.")
@@ -92,7 +95,7 @@ function Training(girl)
                 Dialog("She worked hard for the last half of the day, but she may have gotten more out of it if she had been on time.")
                 girl:strength(wm.Range(1, 5))
                 girl:constitution(wm.Range(1, 5))
-                girl:libido(wm.Range(2, 10))
+                AdjustLust(girl, wm.Range(2, 10))
                 girl:refinement(-wm.Range(1, 3))
                 girl:tiredness(wm.Range(1, 15))
             end
@@ -105,6 +108,7 @@ function Training(girl)
         if girl:obey_check(wm.ACTIONS.GENERAL) then
             wm.TakePlayerGold(500)
             girl:experience(wm.Range(5, 10))
+            wm.UpdateImage(wm.IMG.COMBAT)
             if wm.Percent(girl:combat()) then
                 Dialog("She arrives early to the combat ring and becomes lost in thought as she waits...")
                 Dialog("She is startled out of her thoughts by the feeling of a hand between her thighs. She swings wildly at the brash pervert, but her attack is deflected.  \"Oh, You're some nice cunny aren't you, girl!\"  yells the man.  she attacks again and again, but each attack is deflected and followed by some other perverted comment.")
@@ -112,7 +116,7 @@ function Training(girl)
                 girl:combat(wm.Range(3, 8))
                 girl:strength(wm.Range(1, 5))
                 girl:constitution(wm.Range(1, 7))
-                girl:libido(wm.Range(5, 20))
+                AdjustLust(girl, wm.Range(5, 20))
                 girl:tiredness(wm.Range(2, 20))
             else
                 Dialog("She arrives late to the combat ring and not yet wearing her armor.  Her instructor continues to drink as he waits for her to be ready.")
@@ -121,7 +125,7 @@ function Training(girl)
                 girl:combat(wm.Range(1, 5))
                 girl:strength(wm.Range(0, 2))
                 girl:constitution(wm.Range(0, 2))
-                girl:libido(wm.Range(2, 10))
+                AdjustLust(girl, wm.Range(2, 10))
                 girl:tiredness(wm.Range(2, 20))
             end
         else
@@ -136,6 +140,7 @@ function Training(girl)
         else
             Dialog("\"I want you to go to the conservatory and perfect your skills in the performing arts!\"")
         end
+        wm.UpdateImage(wm.IMG.SING)
         if girl:obey_check(wm.ACTIONS.ACTRESS) then
             wm.TakePlayerGold(300)
             girl:experience(wm.Range(5, 10))

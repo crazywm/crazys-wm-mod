@@ -660,7 +660,7 @@ enum Image_Types {
     IMGTYPE_BDSM,                        // 
     IMGTYPE_SEX,                        // 
     IMGTYPE_BEAST,                        // 
-    IMGTYPE_GROUP,                        // 
+    IMGTYPE_GROUP,                        //
     IMGTYPE_LESBIAN,                    // 
     IMGTYPE_TORTURE,                    // `J` added
     IMGTYPE_DEATH,                        // 
@@ -668,7 +668,8 @@ enum Image_Types {
     IMGTYPE_COMBAT,                        // 
     IMGTYPE_ORAL,                        // 
     IMGTYPE_ECCHI,                        // 
-    IMGTYPE_STRIP,                        // 
+    IMGTYPE_STRIP,                        //
+    IMGTYPE_KISS,
     IMGTYPE_MAID,                        // 
     IMGTYPE_SING,                        // 
     IMGTYPE_WAIT,                        // 
@@ -736,6 +737,8 @@ enum Image_Types {
     IMGTYPE_PIANO,                      // Playing the piano
     IMGTYPE_MUSIC,                      // Playing another instrument
     IMGTYPE_REFUSE,                     // refuse to do a job
+    IMGTYPE_DRINKS,
+    IMGTYPE_DINNER,
 
     /*
 IMGTYPE_WATER            - "water*."            - "Watersports"        - watersports
@@ -767,7 +770,8 @@ IMGTYPE_PETLICK            - "petlick*."        - "PetLick"            - lick, o
     IMGTYPE_PREGCOMBAT,                    // 
     IMGTYPE_PREGORAL,                    // 
     IMGTYPE_PREGECCHI,                    // 
-    IMGTYPE_PREGSTRIP,                    // 
+    IMGTYPE_PREGSTRIP,                    //
+    IMGTYPE_PREGKISS,
     IMGTYPE_PREGMAID,                    // 
     IMGTYPE_PREGSING,                    // 
     IMGTYPE_PREGWAIT,                    // 
@@ -835,6 +839,8 @@ IMGTYPE_PETLICK            - "petlick*."        - "PetLick"            - lick, o
     IMGTYPE_PREG_PIANO,
     IMGTYPE_PREG_MUSIC,
     IMGTYPE_PREG_REFUSE,
+    IMGTYPE_PREG_DRINKS,
+    IMGTYPE_PREG_DINNER,
 
     NUM_IMGTYPES    // `J` All image types can have a pregnant variation (except pregnant-pregnant)
 };

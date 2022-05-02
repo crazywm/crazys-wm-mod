@@ -11,6 +11,7 @@ end
 
 ---@param girl wm.Girl
 function DungeonInteractChoice(girl)
+    wm.UpdateImage(wm.IMG.JAIL)
     local choice = ChoiceBox("What would you like to do with her?", "Torture", "Chat", "Scold", "Ask", "Force")
     if choice == 0 then
         girl:torture()
@@ -144,7 +145,7 @@ function DungeonInteractChoice(girl)
                 "To be in a bondage session", "For a blowjob", "For some anal sex", "For a threesome (not yet working)",
                 "To join in with a group session", "Go Back")
         if choice == 0 then
-            PlayerFucksGirl(girl)
+            PlayerRapeGirl(girl)
             Dialog("She stuggles to no avail as you force yourself inside her, you fuck her roughly until you unload yourself into her.")
         elseif choice == 1 then
             wm.UpdateImage(wm.IMG.LESBIAN)
@@ -186,7 +187,7 @@ function DungeonInteractChoice(girl)
             return DungeonInteractChoice(girl)
         end
         girl:happiness(-4)
-        girl:libido(1)
+        AdjustLust(girl, 1)
         girl:confidence(-1)
         girl:obedience(1)
         girl:spirit(-1)
@@ -199,6 +200,7 @@ end
 
 
 function BrothelInteractChoice(girl)
+    wm.UpdateImage(wm.IMG.PROFILE)
     local choice = ChoiceBox("What would you like to do?", "Reward " .. girl:name(),
             "Chat with " .. girl:name(), "Visit " .. girl:name() .. "'s Bedroom",
             "Call " .. girl:name() .. " to your office", "Invite " .. girl:name() .. " to your private chambers",
@@ -234,6 +236,7 @@ function BrothelInteractChoice(girl)
 end
 
 function Refuse(girl)
+    wm.UpdateImage(wm.IMG.REFUSE)
     local choice = ChoiceBox("", "Allow Her to Refuse.", "Scold Her", "Spank Her", "Take Her Clothing.",
         "Force Sex")
     if choice == 0 then
@@ -248,8 +251,9 @@ function Refuse(girl)
         ScoldGirl(girl)
     elseif choice == 2 then
         Dialog("\"You will learn to obey me!\" You yell as you grab her arm and drag her across your knees.")
-        Dialog("She begins to cry as you pull her clothing and expose her ass.  \"Perhaps this will teach you some discipline.\" ")
-        Dialog("You smack her ass until her cheeks are rosy red and send her away sobbing.")
+        wm.UpdateImage(wm.IMG.SPANKING)
+        Dialog("She begins to cry as you pull her clothing and expose her ass.  \"Perhaps this will teach you some discipline.\" \n" ..
+                "You smack her ass until her cheeks are rosy red and send her away sobbing.")
         wm.SetPlayerDisposition(-3)
         girl:happiness(-3)
         girl:health(-1)

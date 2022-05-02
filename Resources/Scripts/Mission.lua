@@ -227,7 +227,7 @@ function GoOnMission(girl)
                 Dialog("Regular Combat Critical Failure")
                 -- TODO Bondage Sex
                 if girl:has_trait("Nymphomaniac") then
-                    girl:libido(15)
+                    AdjustLust(girl, 15)
                 end
                 Dialog("Stealing Critical fail")
                 girl:health(-5)
@@ -245,7 +245,7 @@ end
 
 function AssassinatePolitician(girl)
     Dialog("I have a new target for you.")
-    if girl:obey_check() then  -- TODO select action
+    if girl:obey_check(wm.ACTIONS.COMBAT) then  -- TODO select action
         Dialog("\"A particular political figure has been starting a crusade to outlaw brothels within the city limits.\"  *You hand her the dossier*  \"Of course this is just a smoke screen for his true goal of raising the taxes on brothels everywhere.\"")
         Dialog("\"What's worse is he is using evidence gathered about me as his leverage to push this all through.\"  *You give her a hard look* \"I don't want him to wake up tomorrow.\"")
         wm.SetPlayerDisposition(-20)
@@ -258,7 +258,8 @@ function AssassinatePolitician(girl)
         if girl:has_trait("Assassin") then
             Dialog("She vanishes from view before she even makes it to the door.")
             Dialog("Moving silently amongst the shadows of the city, She stalks her prey.  Patience is her tool and she waits for her moment.")
-            Dialog("Her prey turns down a crowded street, choked with the evenings drunken revellers.  She moves to strike.  Effortlessly she slithers through the crowd and falls in step with the mark.")
+            Dialog("Her prey turns down a crowded street, choked with the evenings drunken revellers. She moves to strike. Effortlessly she slithers through the crowd and falls in step with the mark.")
+            wm.UpdateImage(wm.IMG.COMBAT)
             Dialog("Her thin, long blade slides quickly and cleanly through the ribs beneath his shoulder blades. The second blade slices the arteries in his neck.  He staggers a moment before falling silently to the ground.")
             Dialog("The bodyguards who had been busy deflecting drunks turn back around to find their client lying dead in a large pool of blood.  They search the area for the killer, but find nothing.")
             Dialog("She returns to your office several hours later and places the evidence against you and the politician's signet ring on your desk.")
@@ -266,7 +267,9 @@ function AssassinatePolitician(girl)
         elseif girl:has_trait("Sadistic") then
             Dialog("The politician, carrying his latest bribe, enters his home from the servant's entrance to avoid prying eyes.  As the lamps illuminate the room he notices the droplets of blood.  Following the trail to the sitting room  he doesn't notice the bodies at first as his attention was on the floor and the now massive pool of blood.  He looks up.")
             Dialog("He sees them now.  His wife, children, and servants are arranged around the room in a macabre tea party.  The bodies are so broken and bloody he almost can't recognize them.  Terror grips his heart and he turns to run.")
+            wm.UpdateImage(wm.IMG.DOM)
             Dialog("He stops immediately as a woman blocks his path.  She is naked save for the coating of blood from her head to her feet.  \"Leaving the party so soon?\" she inquires.  He strikes at her with wild abandon, but he counters and knocks him to the floor. She picks up the bag of gold. \"Looks like the boss gets a bonus.\"")
+            wm.UpdateImage(wm.IMG.COMBAT)
             Dialog("He awakes as a steel rod strikes him across his face.  He locks eyes with her.  There is a demonic fire in her eyes as she speaks \"Now, the party can start for real....\"")
             Dialog("You walk into your office the next morning to find your obsessive little killer still naked, bloody and balled up on your couch sleeping soundly.  You find the bag of gold, the politicians head, and the evidence on your desk.")
             wm.SetPlayerSuspicion(-25)
@@ -287,6 +290,7 @@ function AssassinatePolitician(girl)
                 wm.AddPlayerGold(-200)
             end
         elseif girl:has_trait("Strong Magic") then
+            wm.UpdateImage(wm.IMG.MAGIC)
             Dialog("She whispers a few incantations and disappears from your office.")
             Dialog("She reappears on a rooftop overlooking the Politician's residence.  She begins preparing her components as she waits for him to return home.")
             Dialog("She watches as he walks into his home and greets his family.  She waits until he is alone in his study and teleports into the room.")

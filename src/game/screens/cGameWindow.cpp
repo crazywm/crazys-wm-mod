@@ -117,7 +117,7 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                     {
                             // `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cImageItem > pic_types
                             "anal*.", "bdsm*.", "sex*.", "beast*.", "group*.", "les*.", "torture*.",
-                            "death*.", "profile*.", "combat*.", "oral*.", "ecchi*.", "strip*.", "maid*.", "sing*.",
+                            "death*.", "profile*.", "combat*.", "oral*.", "ecchi*.", "strip*.", "kiss*.", "maid*.", "sing*.",
                             "wait*.", "card*.", "bunny*.", "nude*.", "mast*.", "titty*.", "milk*.", "hand*.",
                             "foot*.", "bed*.", "farm*.", "herd*.", "cook*.", "craft*.", "swim*.", "bath*.",
                             "nurse*.", "formal*.", "shop*.", "magic*.", "sign*.", "presented*.", "dom*.",
@@ -128,11 +128,11 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "virginsex*.", "virgingroup*.", "virginbdsm*.", "virginbeast*.",                                            // `J` new .06.03.01 for DarkArk
                             "escort*.", "sport*.", "study*.", "teacher*.",                                                                // `J` new .06.03.02 for grishnak
                             "massage*.", "studiocrew*.", "cameramage*.", "director*.", "crystalpurifier*.", "stagehand*.",
-                            "piano*.", "music*.", "refuse*.",
+                            "piano*.", "music*.", "refuse*.", "drink*.", "dinner*.",
                             "preg*.",    // pregnant varients
                             "preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
                             "pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
-                            "pregstrip*.", "pregmaid*.", "pregsing*.", "pregwait*.", "pregcard*.", "pregbunny*.", "pregnude*.",
+                            "pregstrip*.", "pregkiss*.", "pregmaid*.", "pregsing*.", "pregwait*.", "pregcard*.", "pregbunny*.", "pregnude*.",
                             "pregmast*.", "pregtitty*.", "pregmilk*.", "preghand*.", "pregfoot*.", "pregbed*.", "pregfarm*.",
                             "pregherd*.", "pregcook*.", "pregcraft*.", "pregswim*.", "pregbath*.", "pregnurse*.", "pregformal*.",
                             "pregshop*.", "pregmagic*.", "pregsign*.", "pregpresented*.", "pregdom*.", "pregdeep*.",
@@ -145,13 +145,13 @@ std::string pic_types[] =    // `J` moved this out to global and removed file ex
                             "pregvirginsex*.", "pregvirgingroup*.", "pregvirginbdsm*.", "pregvirginbeast*.",                            // `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
                             "pregescort*.", "pregsport*.", "pregstudy*.", "pregteacher*.",                                             // `J` new .06.03.02 for grishnak
                             "pregmassage*.", "pregstudiocrew*.", "pregcameramage*.", "pregdirector*.", "pregcrystalpurifier*.", "pregstagehand*.",
-                            "pregpiano*.", "pregmusic*.", "pregrefuse*.",
+                            "pregpiano*.", "pregmusic*.", "pregrefuse*.", "pregdrink*.", "pregdinner*."
                     };
 std::string galtxt[] =
                     {
                             // `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cImageItem.cpp > galtxt
                             "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile", "Combat",
-                            "Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", "Milk", "Hand",
+                            "Oral", "Ecchi", "Strip", "Kiss", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", "Milk", "Hand",
                             "Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop", "Magic", "Sign",
                             "Presented", "Dominatrix", "Deepthroat", "Eatout", "Dildo", "Sub", "Strapon", "Les69ing", "Lick",
                             "Balls", "Cowgirl", "Revcowgirl", "Sexdoggy", "Jail", "Puppygirl", "Ponygirl", "Catgirl",
@@ -160,12 +160,12 @@ std::string galtxt[] =
                             "Virgin Sex", "Virgin Group", "Virgin Bondage", "Virgin Beast",                                                // `J` new .06.03.01 for DarkArk
                             "Escort", "Sport", "Study", "Teacher", "Massage",                                                                        // `J` new .06.03.02 for grishnak
                             "Studio Crew", "Camera Mage", "Director", "Crystal Purifier", "Stage Hand", "Piano",
-                            "Music", "Refuse",
+                            "Music", "Refuse", "Drinks", "Dinner",
 
                             "Pregnant",    // pregnant varients
                             "Pregnant Anal", "Pregnant BDSM", "Pregnant Sex", "Pregnant Beast", "Pregnant Group",
                             "Pregnant Lesbian", "Pregnant Torture", "Pregnant Death", "Pregnant Profile", "Pregnant Combat",
-                            "Pregnant Oral", "Pregnant Ecchi", "Pregnant Strip", "Pregnant Maid", "Pregnant Sing", "Pregnant Wait",
+                            "Pregnant Oral", "Pregnant Ecchi", "Pregnant Strip", "Pregnant Kiss", "Pregnant Maid", "Pregnant Sing", "Pregnant Wait",
                             "Pregnant Card", "Pregnant Bunny", "Pregnant Nude", "Pregnant Mast", "Pregnant Titty", "Pregnant Milk",
                             "Pregnant Hand", "Pregnant Foot", "Pregnant Bed", "Pregnant Farm", "Pregnant Herd", "Pregnant Cook",
                             "Pregnant Craft", "Pregnant Swim", "Pregnant Bath", "Pregnant Nurse", "Pregnant Formal", "Pregnant Shop",
@@ -180,7 +180,7 @@ std::string galtxt[] =
                             "Pregnant Escort", "Pregnant Sport", "Pregnant Study", "Pregnant Teacher",                                    // `J` new .06.03.02 for grishnak
                             "Pregnant Massage", "Pregnant Studio Crew", "Pregnant Camera Mage", "Pregnant Director",
                             "Pregnant Crystal Purifier", "Pregnant Stage Hand", "Pregnant Piano",
-                            "Pregnant Music", "Pregnant Refuse"
+                            "Pregnant Music", "Pregnant Refuse", "Pregnant Drinks", "Pregnant Dinner"
                     };
 
 static_assert(sizeof(galtxt) == sizeof(pic_types), "Mismatch between pic types and names");
@@ -1017,6 +1017,12 @@ int TryImageType(int imagetype, int tries)
         return IMGTYPE_PREGNANT;
     }break;
 
+    // kiss falls back to ecchi
+    case IMGTYPE_KISS:
+        return IMGTYPE_ECCHI;
+    case IMGTYPE_PREGKISS:
+        return IMGTYPE_PREGECCHI;
+
         //    Pregnant versions of anything that only has profile as an alternative
     case IMGTYPE_PREGFARM:
     case IMGTYPE_PREGPRESENTED:
@@ -1028,6 +1034,8 @@ int TryImageType(int imagetype, int tries)
     case IMGTYPE_PREGSIGN:
     case IMGTYPE_PREGSPORT:
     case IMGTYPE_PREGSTUDY:
+    case IMGTYPE_PREG_DINNER:
+    case IMGTYPE_PREG_DRINKS:
     {
         if (tries > 25)    // try nonpreg base
         {
@@ -1040,7 +1048,6 @@ int TryImageType(int imagetype, int tries)
         if (tries > 3)    return IMGTYPE_PREGNANT;
         return trytype - PREG_OFFSET;    // the nonpregnant version
     }break;
-
         //    anything that only has profile as an alternative
     case IMGTYPE_FARM:
     case IMGTYPE_PRESENTED:
@@ -1056,6 +1063,8 @@ int TryImageType(int imagetype, int tries)
     case IMGTYPE_CATGIRL:
     case IMGTYPE_SPORT:
     case IMGTYPE_STUDY:
+    case IMGTYPE_DINNER:
+    case IMGTYPE_DRINKS:
     default:
         return IMGTYPE_PROFILE;
         break;

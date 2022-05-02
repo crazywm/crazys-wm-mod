@@ -35,7 +35,7 @@ function PlayerRapeGirl(girl)
     local preg = girl:calc_player_pregnancy(false, 1.0)
     if preg then Dialog(girl:name() .. " has gotten pregnant") end
     -- set image if possible
-    wm.UpdateImage(wm.IMG.SEX)
+    wm.UpdateImage(wm.IMG.RAPE)
 end
 
 ---@param girl wm.Girl
@@ -111,7 +111,7 @@ function ScoldGirl(girl)
     end
 
     if spirit <= 10 then
-        Dialog("She is bawling the entire time you yell at her, obviously wanting to do her best", 0)
+        Dialog("She is bawling the entire time you yell at her, obviously wanting to do her best")
         girl:happiness(-5)
         girl:confidence(-5)
         girl:obedience(10)
@@ -119,7 +119,7 @@ function ScoldGirl(girl)
         girl:pclove(-6)
         girl:pcfear(2)
     elseif spirit <= 20 then
-        Dialog("She sobs a lot while you yell at her and fearfully listens to your every word", 0)
+        Dialog("She sobs a lot while you yell at her and fearfully listens to your every word")
         girl:happiness(-2)
         girl:confidence(-2)
         girl:obedience(6)
@@ -127,25 +127,25 @@ function ScoldGirl(girl)
         girl:pclove(-1)
         girl:pcfear(1)
     elseif  spirit <= 30 then
-        Dialog("She listens with attention and promises to do better", 0)
+        Dialog("She listens with attention and promises to do better")
         girl:happiness(-1)
         girl:confidence(-1)
         girl:obedience(5)
         girl:spirit(-2)
         girl:pclove(-1)
     elseif spirit <= 50 then
-        Dialog("She listens to what you say but barely pays attention", 0)
+        Dialog("She listens to what you say but barely pays attention")
         girl:obedience(3)
         girl:spirit(-2)
         girl:pclove(-1)
 
     elseif spirit <= 80 then
-        Dialog("She looks at you defiantly while you yell at her", 0)
+        Dialog("She looks at you defiantly while you yell at her")
         girl:obedience(2)
         girl:spirit(-1)
         girl:pclove(-5)
     else
-        Dialog("She stares you down while you yell at her, daring you to hit her", 0)
+        Dialog("She stares you down while you yell at her, daring you to hit her")
         girl:obedience(-1)
         girl:spirit(-1)
         girl:pclove(-9)
@@ -183,7 +183,8 @@ function PunishGirl(girl)
         Dialog("For the grand finale you all stand around her and spray her with load after load of cum.")
         if girl:has_trait("Nymphomaniac") then
             Dialog("She lies on the floor breathing heavily from the marathon of orgasms; both the group's and her's.")
-            girl:libido(5)
+            AdjustLust(girl, 5)
+            girl:libido(1)
             girl:happiness(2)
             girl:tiredness(10)
         else
@@ -217,7 +218,7 @@ function PunishGirl(girl)
         end
         girl:add_trait("Recently Punished", 4)
     elseif choice == 3 then
-        wm.UpdateImage(wm.IMG.BEST)
+        wm.UpdateImage(wm.IMG.BEAST)
         Dialog("Player: \"Let's see if a night with Cthulu's cousin improves her mood?\"")
         Dialog("Your men pick the girl up from the floor and haul her off to the beast pit.")
         Dialog("beast sex dialog")
@@ -252,4 +253,33 @@ end
 
 function RandomSurname()
     return wm.RandName(2)
+end
+
+---@param girl wm.Girl
+function PlayerTitleFor(girl)
+    if girl:is_slave() then
+        return "Master"
+    else
+        return "Sir"
+    end
+end
+
+---@param girl wm.Girl
+--- This function adjusts the libido stat in a temporary way. Until we get a separated LUST stat, this is the way
+--- to adjust lust levels of the girl, without changing her libido over the long run.
+function AdjustLust(girl, amount)
+    girl:stat(wm.STATS.LIBIDO, amount, true)
+end
+
+
+---@param girl wm.Girl
+--- This function temporarily decreases the libido stat, unless the girl is multi-orgasmic. It also adjusts happiness and tiredness.
+function SheJustCame(girl, amount)
+    if not girl:has_trait("Nymphomaniac") then
+        girl:stat(wm.STATS.LIBIDO, -amount, true)
+        girl:tiredness(amount // 2)
+    else
+        girl:tiredness(amount // 4)
+    end
+    girl:happiness(amount // 2)
 end

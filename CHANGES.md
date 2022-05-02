@@ -6,9 +6,11 @@ that get activated through your interactions. If you scold a recently scolded gi
 it is less effective, if you scold a recently punished girl it is more effective. Allowing
 a girl to refuse an interaction while the "Recently Scolded" trait is active will decrease her
 obedience.
+* Updates to the interaction script
 
 ## UI
 * Slightly increased dialog font size
+* New image types `drink`, `dinner`, `kiss`, currently only used as part of the interactions
 
 ## Fixes
 * Added missing `Weight` parameter to `Blacksmith.xml`
