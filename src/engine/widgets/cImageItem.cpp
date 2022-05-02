@@ -48,8 +48,10 @@ bool cImageItem::SetImage(std::string filename, bool transparent)
         m_AnimatedImage = {};
         return (bool)m_Image;
     }
-    else
+    else {
         m_loaded = false;
+        Reset();
+    }
 
     return false;
 }

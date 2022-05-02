@@ -239,6 +239,8 @@ void ICharacter::LoadXML(const tinyxml2::XMLElement& elRoot)
     auto inv = elRoot.FirstChildElement("Inventory");
     if(inv)
         m_Inventory->load_from_xml(*inv, this);
+
+    save_statistics();
 }
 
 void ICharacter::DecayTemp()

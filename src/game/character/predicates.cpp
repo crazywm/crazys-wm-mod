@@ -43,3 +43,7 @@ bool is_nonhuman(const ICharacter& character) {
 bool is_your_daughter(const ICharacter& character) {
     return character.has_active_trait("Your Daughter");
 }
+
+bool is_futa(const ICharacter& character) {
+    return character.has_active_trait("Futanari");
+}

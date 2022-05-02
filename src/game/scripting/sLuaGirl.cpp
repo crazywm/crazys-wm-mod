@@ -60,6 +60,7 @@ void sLuaGirl::init(lua_State* L) {
             {"obey_check", sLuaGirl::obey_check},
             {"skill_check", sLuaGirl::skill_check},
             {"add_message", sLuaGirl::add_message},
+            {"format", sLuaGirl::format},
             {"give_money", sLuaGirl::give_money},
             {"torture", sLuaGirl::torture},
             {"trigger", sLuaGirl::trigger_event},
@@ -116,11 +117,19 @@ sGirl& sLuaGirl::check_type(lua_State* L, int index) {
 
 template<class T>
 int sCharacter<T>::getset_stat(lua_State* L) {
-    auto& girl = T::check_type(L, 1);
+    ICharacter& girl = T::check_type(L, 1);
     long stat = luaL_checkinteger(L, 2);
-    if(lua_gettop(L) == 3) {
+    if(lua_gettop(L) >= 3) {
         long value = luaL_checkinteger(L, 3);
-        girl.upd_base_stat((STATS)stat, value);
+        bool temp = false;
+        if(lua_gettop(L) == 4) {
+            temp = lua_toboolean(L, 4);
+        }
+        if(temp) {
+            girl.upd_temp_stat((STATS)stat, value);
+        } else {
+            girl.upd_base_stat((STATS) stat, value);
+        }
         return 0;
     } else {
         int value = girl.get_stat((STATS)stat);
@@ -379,6 +388,15 @@ int sLuaGirl::add_message(lua_State *L) {
     girl.AddMessage(message, imgtype, evtype);
     return 0;
 }
+
+int sLuaGirl::format(lua_State* L) {
+    auto& girl = check_type(L, 1);
+    const char* pattern = luaL_checkstring(L, 2);
+    std::string processed = girl.Interpolate(pattern);
+    lua_pushstring(L, processed.c_str());
+    return 1;
+}
+
 
 int sLuaGirl::clear_pregnancy(lua_State *L) {
     auto& girl = check_type(L, 1);

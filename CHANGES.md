@@ -16,6 +16,8 @@ obedience.
 * Duplicate girl bug when walking streets
 * Added skill gains for waitress job
 * Fixed error in TownMeet kidnap scenario
+* Image reset if no file could be loaded
+* Correctly present stat/skill changes after loading girl
  
 # Version 7.1.2beta3
 ## Gameplay

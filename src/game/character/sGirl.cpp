@@ -1464,19 +1464,7 @@ double sGirl::job_performance(JOBS job, bool estimate) const {
 }
 
 void sGirl::AddMessage(const std::string& message, int nImgType, EventType event) {
-    m_Events.AddMessage(interpolate_string(message,
-                                           [this](const std::string& pattern) -> std::string {
-        if(pattern == "name") {
-            return this->FullName();
-        } else if(pattern == "surname") {
-            return this->Surname();
-        } else if(pattern == "firstname") {
-            return this->FirstName();
-        } else if(pattern == "middlename") {
-            return this->MiddleName();
-        }
-        throw std::runtime_error("Invalid pattern " + pattern);
-        }, g_Dice), nImgType, event);
+    m_Events.AddMessage(Interpolate(message), nImgType, event);
 }
 
 const DirPath& sGirl::GetImageFolder() const {
@@ -1498,4 +1486,20 @@ FormattedCellData sGirl::GetJobRating(JOBS job) const {
     else if (value >= 70)    return {1, "D"};             // Don't bother
     else                     return {0, "E"};  // Expect Failure
 
+}
+
+std::string sGirl::Interpolate(const std::string& pattern) {
+    return interpolate_string(pattern,
+    [this](const std::string& pattern) -> std::string {
+      if(pattern == "name") {
+          return this->FullName();
+      } else if(pattern == "surname") {
+          return this->Surname();
+      } else if(pattern == "firstname") {
+          return this->FirstName();
+      } else if(pattern == "middlename") {
+          return this->MiddleName();
+      }
+      throw std::runtime_error("Invalid pattern " + pattern);
+    }, g_Dice);
 }
