@@ -11,6 +11,7 @@ obedience.
 ## UI
 * Slightly increased dialog font size
 * New image types `drink`, `dinner`, `kiss`, currently only used as part of the interactions
+* Added some more default images
 
 ## Fixes
 * Added missing `Weight` parameter to `Blacksmith.xml`
