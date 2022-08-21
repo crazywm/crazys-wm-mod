@@ -1,4 +1,6 @@
 # Version 7.1.2beta4
+* Made fraction of items replaced in the shop each week configurable. Default is the old value of 50%
+
 
 ## Gameplay
 * Added two new temporary traits, "Recently Punished" and "Recently Scolded", 

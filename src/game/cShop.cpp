@@ -23,6 +23,10 @@
 #include "cGirls.h"
 #include "IGame.h"
 
+namespace settings {
+    extern const char* WORLD_SHOP_UPDATE;
+}
+
 bool is_warrior(const sGirl& girl) {
     return girl.has_active_trait("Adventurer") || girl.has_active_trait("Assassin") ||
         girl.combat() >= 50 || girl.magic() >= 50;
@@ -124,9 +128,10 @@ int cShop::BuyItem(const sInventoryItem *item, int amount) {
 }
 
 void cShop::RestockShop() {
-    // remove 50% of old items
+    // remove x% of old items
+    sPercent update_chance = g_Game->settings().get_percent(settings::WORLD_SHOP_UPDATE);
     for(auto it = m_Inventory.all_items().begin(); it != m_Inventory.all_items().end(); ) {
-        if(g_Dice.percent(50)) {
+        if(g_Dice.percent(update_chance)) {
             it = m_Inventory.all_items().erase(it);
         } else {
             it = ++it;

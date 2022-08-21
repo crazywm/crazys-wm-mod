@@ -43,6 +43,7 @@ namespace settings {
     const char* WORLD_ENCOUNTER_UNIQUE   = "world.encounter.unique_chance";
     const char* WORLD_RAPE_STREETS       = "world.rape-chance.streets";
     const char* WORLD_RAPE_BROTHEL       = "world.rape-chance.brothel";
+    const char* WORLD_SHOP_UPDATE        = "world.shop.update";
 
     const char* GANG_MAX_RECRUIT_LIST    = "gang.max_recruit_list";
     const char* GANG_MIN_START_MEMBERS   = "gang.min_start_members";
@@ -142,6 +143,8 @@ cGameSettings::cGameSettings() : cKeyValueBase("Setting", "Name", "Value")
                 sPercent(5));
     add_setting(WORLD_RAPE_BROTHEL, "Rape Brothel", "Chance that a customer will try to rape a girl when whoring in the brothel",
                 sPercent(1));
+    add_setting(WORLD_SHOP_UPDATE, "Shop Update", "Fraction of items that are changed in the shop each week.",
+                sPercent(50));
 
     add_setting(GANG_MAX_RECRUIT_LIST, "Max Recruit List", "The maximum amount of gangs available for recruitment.",
                 positive(6));
