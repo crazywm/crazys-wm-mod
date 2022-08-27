@@ -260,6 +260,10 @@ void cInterfaceWindow::SetEditBoxText(int ID, std::string text)
     GetEditBox(ID)->SetText(std::move(text));
 }
 
+void cInterfaceWindow::SetEditBoxCallback(int id, std::function<void(const std::string&)> cb) {
+    GetEditBox(id)->SetCallback(std::move(cb));
+}
+
 cEditBox* cInterfaceWindow::GetEditBox(int id)
 {
     if (id == -1) return nullptr;

@@ -125,6 +125,7 @@ public:
     std::string GetEditBoxText(int ID);
     void SetEditBoxText(int ID, std::string text);
     cEditBox* GetEditBox(int id);
+    void SetEditBoxCallback(int id, std::function<void(const std::string&)>);
 
     // Text Items
     void EditTextItem(std::string text, int ID, bool as_table=false);

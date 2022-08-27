@@ -39,6 +39,9 @@ public:
     bool HandleClick(int x, int y, bool press) override;
     bool HandleKeyPress(SDL_Keysym sym) override;
     void HandleTextInput(const char* t) override;
+    void SetCallback(std::function<void(const std::string&)>);
+
+    void SetOptions(std::vector<std::string> options);
 
 
     cSurface m_TextGFX;
@@ -51,6 +54,9 @@ public:
 
 private:
     cFont m_Font;
+    std::function<void(const std::string&)> m_Callback;
+    /// If this is non-empty, then these are the options available for the text.
+    std::vector<std::string> m_Options;
 
     void UpdateText();
 };

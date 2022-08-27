@@ -90,6 +90,10 @@ bool cEditBox::HandleKeyPress(SDL_Keysym sym)
     }
     else if (sym.sym == SDLK_ESCAPE) {
         ClearText();
+    } else if(sym.sym == SDLK_RETURN) {
+        if(m_Callback) {
+            m_Callback(m_Text);
+        }
     }
     return true;
 }
@@ -109,9 +113,17 @@ void cEditBox::HandleTextInput(const char* t) {
 bool cEditBox::HandleSetFocus(bool focus)
 {
     if(focus) {
-        window_manager().EnableTextInput();
+        if(m_Options.empty()) {
+            window_manager().EnableTextInput();
+        } else {
+            window_manager().InputChoice("", m_Options, [this](int select){
+                this->SetText(m_Options.at(select));
+            });
+        }
     } else {
-        window_manager().DisableTextInput();
+        if(m_Options.empty()) {
+            window_manager().DisableTextInput();
+        }
     }
     return true;
 }
@@ -125,4 +137,12 @@ void cEditBox::SetText(std::string text)
 {
     m_Text = std::move(text);
     UpdateText();
+}
+
+void cEditBox::SetCallback(std::function<void(const std::string&)> callback) {
+    m_Callback = std::move(callback);
+}
+
+void cEditBox::SetOptions(std::vector<std::string> options) {
+    m_Options = std::move(options);
 }
