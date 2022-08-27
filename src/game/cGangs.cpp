@@ -296,7 +296,7 @@ void sGang::use_potion()
 }
 
 void sGang::AddMessage(std::string message, EventType event_type) {
-    m_Events.AddMessage(std::move(message), IMGTYPE_PROFILE, event_type);
+    m_Events.AddMessage(std::move(message), event_type);
 }
 
 int sGang::max_members() {

@@ -55,7 +55,7 @@ CommunityService::CommunityService() : cSimpleJob(JOB_COMUNITYSERVICE, "Communit
 bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     bool blow = false, sex = false;
     int fame = 0;
-    int imagetype = IMGTYPE_PROFILE;
+    sImagePreset imagetype = EImageBaseType::PROFILE;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //Adding cust here for use in scripts...
@@ -90,7 +90,7 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         if (brothel.is_sex_type_allowed(SKILL_NORMALSEX) && (roll_b <= 50 || brothel.is_sex_type_allowed(SKILL_ANAL))) //Tweak to avoid an issue when roll > 50 && anal is restricted
         {
             girl.normalsex(2);
-            imagetype = IMGTYPE_SEX;
+            imagetype = EImageBaseType::VAGINAL;
             if (girl.lose_trait("Virgin"))
             {
                 ss << "\nShe is no longer a virgin.\n";
@@ -103,7 +103,7 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         else if (brothel.is_sex_type_allowed(SKILL_ANAL))
         {
             girl.anal(2);
-            imagetype = IMGTYPE_ANAL;
+            imagetype = EImageBaseType::ANAL;
         }
         brothel.m_Happiness += 100;
         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
@@ -117,7 +117,7 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         dispo += 4;
         girl.oralsex(2);
         fame += 1;
-        imagetype = IMGTYPE_ORAL;
+        imagetype = EImagePresets::BLOWJOB;
     }
 
     if (girl.is_slave())
@@ -139,7 +139,7 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
 
     ss.str("");
     ss << "${name} helped " << help << " people today.";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
     HandleGains(girl, fame);
@@ -156,7 +156,7 @@ bool FeedPoor::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int feed = 0, fame = 0;
     int roll_b = d100();
 
-    int imagetype = IMGTYPE_PROFILE;
+    EImageBaseType imagetype = EImageBaseType::PROFILE;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //Adding cust here for use in scripts...
@@ -199,7 +199,7 @@ bool FeedPoor::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     {
         if (brothel.is_sex_type_allowed(SKILL_NORMALSEX) && (roll_b <= 50 || brothel.is_sex_type_allowed(SKILL_ANAL))) //Tweak to avoid an issue when roll > 50 && anal is restricted
         {
-            girl.AddMessage(ss.str(), IMGTYPE_SEX, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+            girl.AddMessage(ss.str(), EImageBaseType::VAGINAL, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             girl.normalsex(2);
             if (girl.lose_trait("Virgin"))
             {
@@ -212,7 +212,7 @@ bool FeedPoor::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         }
         else if (brothel.is_sex_type_allowed(SKILL_ANAL))
         {
-            girl.AddMessage(ss.str(), IMGTYPE_ANAL, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+            girl.AddMessage(ss.str(), EImageBaseType::ANAL, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             girl.anal(2);
         }
         brothel.m_Happiness += 100;
@@ -227,11 +227,11 @@ bool FeedPoor::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         dispo += 4;
         girl.oralsex(2);
         fame += 1;
-        girl.AddMessage(ss.str(), IMGTYPE_ORAL, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImagePresets::BLOWJOB, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
     else
     {
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
 
     feed += m_Performance / 10;        //  1 feed per 10 point of performance
@@ -263,7 +263,7 @@ bool Counselor::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     else if (roll_a >= 90)  { m_Enjoyment += uniform(1, 3);    ss << "She had a pleasant time working."; }
     else                    { m_Enjoyment += uniform(0, 1);    ss << "Otherwise, the shift passed uneventfully."; }
 
-    girl.AddMessage(ss.str(), IMGTYPE_TEACHER, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::TEACHER, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     int rehabers = brothel.num_girls_on_job(JOB_REHAB, is_night);
     // work out the pay between the house and the girl

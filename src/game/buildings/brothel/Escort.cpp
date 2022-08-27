@@ -45,7 +45,7 @@ bool cEscortJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     m_Prepare = (girl.agility() + girl.service() / 2);
 
     int fame = 0;
-    int imagetype = IMGTYPE_ESCORT;
+    sImagePreset imagetype = EImageBaseType::ESCORT;
 
     int roll_a = d100();                            // customer type
     double cust_wealth = 1;
@@ -321,7 +321,7 @@ bool cEscortJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
                     {
                         add_text("regular.group.virgin") << "\n";
                         fame += skill_to_mod(girl.lesbian());
-                        imagetype = IMGTYPE_LESBIAN;
+                        imagetype = EImagePresets::LESBIAN;
                         girl.lesbian(2);
                         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
                     }
@@ -329,7 +329,7 @@ bool cEscortJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
                     {
                         add_text("regular.group.sex") << "\n";
                         fame += skill_to_mod(girl.group());
-                        imagetype = IMGTYPE_GROUP;
+                        imagetype = EImagePresets::ORGY;
                         girl.group(2);
                         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
                     }
@@ -528,7 +528,7 @@ IGenericJob::eCheckWorkResult cEscortJob::CheckWork(sGirl& girl, bool is_night) 
     if (girl.disobey_check(ACTION_WORKESCORT, JOB_ESCORT))
     {
         ss << "${name} refused to work during the " << (is_night ? "night" : "day") << " shift.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
     }
 
@@ -549,7 +549,7 @@ IGenericJob::eCheckWorkResult cEscortJob::CheckWork(sGirl& girl, bool is_night) 
     return eCheckWorkResult::ACCEPTS;
 }
 
-Image_Types cEscortJob::handle_sex(const std::string& prefix, int& fame, sGirl& girl, SexType type) {
+sImagePreset cEscortJob::handle_sex(const std::string& prefix, int& fame, sGirl& girl, SexType type) {
     switch(type) {
     case SexType::SEX:
         add_text("client.normal-sex") << "\n";
@@ -557,7 +557,7 @@ Image_Types cEscortJob::handle_sex(const std::string& prefix, int& fame, sGirl& 
         fame += skill_to_mod(girl.normalsex());
         girl.normalsex(2);
         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
-        return IMGTYPE_SEX;
+        return EImageBaseType::VAGINAL;
     break;
     case SexType::ANAL:
         if (girl.has_item("Compelling Buttplug"))
@@ -575,7 +575,7 @@ Image_Types cEscortJob::handle_sex(const std::string& prefix, int& fame, sGirl& 
         add_text(prefix + ".anal-sex.outro");
         girl.anal(2);
         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
-        return IMGTYPE_ANAL;
+        return EImageBaseType::ANAL;
     break;
     case SexType::HAND:
         fame += skill_to_mod(girl.handjob());
@@ -583,7 +583,7 @@ Image_Types cEscortJob::handle_sex(const std::string& prefix, int& fame, sGirl& 
         add_text(prefix + ".handjob.outro");
         girl.handjob(2);
         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
-        return IMGTYPE_HAND;
+        return EImageBaseType::HAND;
     break;
     case SexType::TITTY:
         fame += skill_to_mod(girl.tittysex());
@@ -592,7 +592,7 @@ Image_Types cEscortJob::handle_sex(const std::string& prefix, int& fame, sGirl& 
         add_text(prefix + ".titty-sex.outro");
         girl.tittysex(2);
         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
-        return IMGTYPE_TITTY;
+        return EImageBaseType::TITTY;
     break;
     case SexType::ORAL:
         if (girl.has_active_trait("Strong Gag Reflex") || girl.has_active_trait("Gag Reflex"))
@@ -609,12 +609,12 @@ Image_Types cEscortJob::handle_sex(const std::string& prefix, int& fame, sGirl& 
         girl.oralsex(2);
         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
         if(girl.oralsex() > 60 && chance(25)) {
-            return IMGTYPE_SUCKBALLS;
+            return EImageBaseType::SUCKBALLS;
         }
-        return IMGTYPE_ORAL;
+        return EImagePresets::BLOWJOB;
         break;
     default:
-        return IMGTYPE_PROFILE;
+        return EImageBaseType::PROFILE;
         break;
     }
 }

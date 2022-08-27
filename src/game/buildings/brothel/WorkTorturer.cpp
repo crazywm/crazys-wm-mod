@@ -34,7 +34,7 @@ sWorkJobResult WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         ss << "${name} refused to torture anyone.";
         girl.morality(1);
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
         return {true, 0, 0, 0};
     }
     ss << "${name} is assigned to torture people in the dungeon.";
@@ -88,7 +88,7 @@ sWorkJobResult WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
             }
         }
-        girl.AddMessage(ss.str(), IMGTYPE_DOM, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::DOM, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
     else
     {
@@ -140,7 +140,7 @@ sWorkJobResult WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
                 break;
             }
         }
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
 
     // Improve girl

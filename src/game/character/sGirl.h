@@ -159,8 +159,10 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
 
     std::set<Fetishs> m_FetishTypes;            // the types of fetishes this girl has
 
-    void AddMessage(const std::string& message, int nImgType, EventType event);
+    void AddMessage(const std::string& message, const sImageSpec& spec, EventType event);
+    void AddMessage(const std::string& message, sImagePreset preset, EventType event);
     std::string Interpolate(const std::string& pattern);
+    sImageSpec MakeImageSpec(sImagePreset preset) const;
     cEvents& GetEvents() { return m_Events; }
     const cEvents& GetEvents() const { return m_Events; }
 

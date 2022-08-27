@@ -21,6 +21,7 @@
 #define WM_CGAMEWINDOW_H
 
 #include "interface/cInterfaceWindowXML.h"
+#include "images/sImageSpec.h"
 
 class IBuilding;
 class sGirl;
@@ -31,8 +32,14 @@ public:
 
     /// This function should be overwriden by screens that expect scripts to change an image.
     /// This is not a perfect solution, but will do for now.
-    virtual void UpdateImage(int imagetype) {};
-    void PrepareImage(int girlimage_id, sGirl* selected_girl, int imagetype, bool rand = true, int ImageNum = -1, bool gallery = false, std::string ImageName = "");
+    void UpdateImage(sImagePreset imagetype, std::uint64_t seed=0);
+    void UpdateImage(const sImageSpec& spec, std::uint64_t seed=0);
+    void UpdateImage(const std::string& file_name);
+    void PrepareImage(int id, const std::string& file_name);
+    void PrepareImage(int id, const sGirl& girl, const sImageSpec& spec, std::uint64_t seed=0);
+    void PrepareImage(int id, const sGirl& girl, sImagePreset image, std::uint64_t seed=0);
+    virtual sGirl* get_image_girl() { return nullptr; };
+
 protected:
     // active building
     IBuilding& active_building() const;
@@ -51,6 +58,8 @@ protected:
     bool remove_from_cycle();
 
     void add_to_cycle_list(std::shared_ptr<sGirl> girl);
+
+    int m_MainImageId;
 private:
 
 };

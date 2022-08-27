@@ -44,7 +44,7 @@ void cScreenDungeon::set_ids()
     header_id       = get_id("DungeonHeader");
     gold_id         = get_id("Gold");
     girllist_id     = get_id("GirlList");
-    girlimage_id    = get_id("GirlImage");
+    m_MainImageId    = get_id("GirlImage");
     brandslave_id   = get_id("BrandSlaveButton");
     release_id      = get_id("ReleaseButton");
     allowfood_id    = get_id("AllowFoodButton");
@@ -208,7 +208,7 @@ void cScreenDungeon::init(bool back)
     DisableWidget(releaseall_id, (g_Game->dungeon().GetNumGirls() <= 0));    // only enable "release all girls" if there are girls to release
     DisableWidget(releasecust_id, (g_Game->dungeon().GetNumCusts() <= 0));    // similarly...
 
-    HideWidget(girlimage_id, g_Game->dungeon().GetNumGirls() <= 0);
+    HideWidget(m_MainImageId, g_Game->dungeon().GetNumGirls() <= 0);
 
     ss.str("");    ss << "Release Girl to: " << m_ReleaseBuilding->name();
     EditTextItem(ss.str(), releaseto_id);
@@ -657,21 +657,16 @@ void cScreenDungeon::update_image()
 {
     if ((selection - g_Game->dungeon().GetNumGirls()) >= 0)    // Makes it so when on a customer it doesnt keep the last girls pic up
     {
-        HideWidget(girlimage_id, true);
+        HideWidget(m_MainImageId, true);
     }
     else if (selected_girl() && !IsMultiSelected(girllist_id))
     {
-        UpdateImage(selected_girl()->m_Tort ? IMGTYPE_TORTURE : IMGTYPE_JAIL);
+        UpdateImage(selected_girl()->m_Tort ? EImageBaseType::TORTURE : EImageBaseType::JAIL);
     }
     else
     {
-        HideWidget(girlimage_id, true);
+        HideWidget(m_MainImageId, true);
     }
-}
-
-void cScreenDungeon::UpdateImage(int imagetype) {
-    PrepareImage(girlimage_id, selected_girl().get(), imagetype, true, ImageNum);
-    HideWidget(girlimage_id, false);
 }
 
 void cScreenDungeon::get_selected_girls(std::vector<int> *girl_array)
@@ -680,4 +675,8 @@ void cScreenDungeon::get_selected_girls(std::vector<int> *girl_array)
         girl_array->push_back(sel);
     });
     sort(girl_array->begin(), girl_array->end());
+}
+
+sGirl* cScreenDungeon::get_image_girl() {
+    return selected_girl().get();
 }

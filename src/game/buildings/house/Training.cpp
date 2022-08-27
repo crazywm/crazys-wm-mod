@@ -33,7 +33,7 @@ namespace {
         const char* ProceedMessage;
         const char* ResistMessage;
         const char* ProgressMessage;
-        Image_Types ImageType;
+        sImagePreset ImageType;
     };
 
     class PracticeJob : public cBasicJob {
@@ -81,7 +81,7 @@ sWorkJobResult MistressJob::DoWork(sGirl& girl, bool is_night) {
         }
     }
 
-    girl.AddMessage(ss.str(), IMGTYPE_TEACHER, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::TEACHER, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     return {false, 0, 0, 100};
 }
 
@@ -94,34 +94,34 @@ PracticeJob::PracticeJob() : cBasicJob(JOB_TRAINING, "Training.xml") {
 }
 
 namespace {
-    Image_Types skill_to_image(SKILLS skill) {
+    sImagePreset skill_to_image(SKILLS skill) {
         switch (skill) {
             case SKILL_STRIP:
-                return IMGTYPE_STRIP;
+                return EImageBaseType::STRIP;
             case SKILL_GROUP:
-                return IMGTYPE_GROUP;
+                return EImagePresets::GROUP;
             case SKILL_BDSM:
-                return IMGTYPE_BDSM;
+                return EImageBaseType::BDSM;
             case SKILL_PERFORMANCE:
-                return IMGTYPE_MAST;
+                return EImagePresets::MASTURBATE;
             case SKILL_ANAL:
-                return IMGTYPE_ANAL;
+                return EImageBaseType::ANAL;
             case SKILL_NORMALSEX:
-                return IMGTYPE_SEX;
+                return EImageBaseType::VAGINAL;
             case SKILL_ORALSEX:
-                return IMGTYPE_ORAL;
+                return EImagePresets::BLOWJOB;
             case SKILL_TITTYSEX:
-                return IMGTYPE_TITTY;
+                return EImageBaseType::TITTY;
             case SKILL_LESBIAN:
-                return IMGTYPE_LESBIAN;
+                return EImagePresets::LESBIAN;
             case SKILL_HANDJOB:
-                return IMGTYPE_HAND;
+                return EImageBaseType::HAND;
             case SKILL_FOOTJOB:
-                return IMGTYPE_FOOT;
+                return EImageBaseType::FOOT;
             case SKILL_BEASTIALITY:
-                return IMGTYPE_BEAST;
+                return EImageBaseType::BEAST;
             default:
-                return IMGTYPE_PROFILE;
+                return EImageBaseType::PROFILE;
         }
     }
 }
@@ -145,7 +145,7 @@ sWorkJobResult PracticeJob::DoWork(sGirl& girl, bool is_night) {
         }
 
         girl.exp(5);
-        Image_Types image = IMGTYPE_MAST;
+        sImagePreset image = EImagePresets::MASTURBATE;
         if(selector.selection()) {
             auto target = *selector.selection();
             image = skill_to_image(target);
@@ -195,7 +195,7 @@ sWorkJobResult PracticeJob::DoWork(sGirl& girl, bool is_night) {
 
         // this will always be non NULL, because SKILL_PERFORMANCE cannot be forbidden
         SKILLS target = *selector.selection();
-        Image_Types image = skill_to_image(target);
+        sImagePreset image = skill_to_image(target);
 
         SetSubstitution("skill", get_skill_name(target));
         int my_value = girl.get_skill(target);
@@ -260,10 +260,10 @@ IGenericJob::eCheckWorkResult PracticeJob::CheckWork(sGirl& girl, bool is_night)
             girl.tiredness(2);
             girl.health(-2);
 
-            girl.AddMessage(ss.str(), IMGTYPE_TORTURE, EVENT_NOWORK);
+            girl.AddMessage(ss.str(), EImageBaseType::TORTURE, EVENT_NOWORK);
         } else {
             add_text("refuse");
-            girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
+            girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
         }
 
         return eCheckWorkResult::REFUSES;
@@ -353,7 +353,7 @@ double TrainingJob::GetPerformance(const sGirl& girl, bool estimate) const {
 IGenericJob::eCheckWorkResult TrainingJob::CheckWork(sGirl& girl, bool is_night) {
     if (girl.has_active_trait(m_Data.TargetTrait))
     {
-        girl.AddMessage(m_Data.HasAlreadyMessage, IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(m_Data.HasAlreadyMessage, EImageBaseType::PROFILE, EVENT_WARNING);
         girl.FullJobReset(JOB_RESTING);
         girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
@@ -362,7 +362,7 @@ IGenericJob::eCheckWorkResult TrainingJob::CheckWork(sGirl& girl, bool is_night)
     m_Mistress = RequestInteraction(TrainingInteractionId);
     if(!m_Mistress) {
         ss << "There is no Mistress available to train ${name}\n";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         return eCheckWorkResult::IMPOSSIBLE;
     }
 
@@ -431,11 +431,11 @@ void TrainingJob::OnRegularProgress(sGirl& girl, bool is_night) {
 class SoStraight : public TrainingJob {
 public:
     SoStraight() : TrainingJob(JOB_SO_STRAIGHT, "SOSt", {
-        "Straight", "${name} is already Straight.",
-        "You proceed to change ${name}'s sexual orientation to Straight.",
-        "She resisted all attempts to make her Straight.",
-        "Her Sexual Orientation conversion to Straight is ",
-        IMGTYPE_SEX}) {
+            "Straight", "${name} is already Straight.",
+            "You proceed to change ${name}'s sexual orientation to Straight.",
+            "She resisted all attempts to make her Straight.",
+            "Her Sexual Orientation conversion to Straight is ",
+            EImageBaseType::VAGINAL}) {
         m_Info.Description = "You will make sure she only likes having sex with men.";
     }
     void HandleTraining(sGirl& girl, bool is_night) override;
@@ -502,7 +502,7 @@ public:
                                "You proceed to change ${name}'s sexual orientation to Lesbian.",
                                "She resisted all attempts to make her a Lesbian.",
                                "Her Sexual Orientation conversion to Lesbian is ",
-                               IMGTYPE_SEX}) {
+                               EImageBaseType::VAGINAL}) {
         m_Info.Description = "You will make sure she only likes having sex with women.";
     }
     void HandleTraining(sGirl& girl, bool is_night) override;
@@ -569,7 +569,7 @@ public:
                                "You proceed to change ${name}'s sexual orientation to Bisexual.",
                                "She resisted all attempts to make her Bisexual.",
                                "Her Sexual Orientation conversion to Bisexual is ",
-                               IMGTYPE_LESBIAN}) {
+                               EImagePresets::LESBIAN}) {
         m_Info.Description = "You will make sure she likes having sex with both men and women.";
     }
     void HandleTraining(sGirl& girl, bool is_night) override;
@@ -645,7 +645,7 @@ public:
                           "You teach ${name} how to fake her orgasms.",
                           "She resisted all attempts to make her Bisexual.",
                           "Her Sexual Orientation conversion to Bisexual is ",
-                          IMGTYPE_MAST}) {
+                          EImagePresets::MASTURBATE}) {
         m_Info.Description = "You will teach her how to fake her orgasms.";
     }
     void HandleTraining(sGirl& girl, bool is_night) override;

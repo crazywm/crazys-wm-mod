@@ -406,7 +406,7 @@ int sLuaGirl::add_message(lua_State *L) {
     std::string message = luaL_checkstring(L, 2);
     int imgtype = luaL_checkinteger(L, 3);
     auto evtype = static_cast<EventType>(luaL_checkinteger(L, 4));
-    girl.AddMessage(message, imgtype, evtype);
+    girl.AddMessage(message, (EImageBaseType)imgtype, evtype);
     return 0;
 }
 

@@ -58,6 +58,7 @@ class cGirlPool;
 class cMovieManager;
 class ICharacter;
 class cSkillCapManager;
+class cImageLookup;
 
 namespace tinyxml2
 {
@@ -133,6 +134,11 @@ public:
 
     // gold
     cGold& gold();
+
+    // image mgr
+    cImageLookup& image_lookup() {
+        return *m_ImageLookup;
+    }
 
     // traits
     ITraitsManager& traits();
@@ -244,6 +250,8 @@ private:
     std::unique_ptr<IKeyValueStore> m_GameSettings;
     std::unique_ptr<scripting::cScriptManager> m_ScriptManager;
     std::unique_ptr<cMovieManager> m_MovieManager;
+    // TODO should this be here or in the interface code?
+    std::unique_ptr<cImageLookup> m_ImageLookup;
 
     // slave market stuff
     std::unique_ptr<cGirlPool> m_MarketGirls;

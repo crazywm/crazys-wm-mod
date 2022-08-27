@@ -174,13 +174,13 @@ void register_global_nav_keys(cInterfaceWindow& window) {
         window_manager().push("Town");
         window_manager().push("Mayor");
     });
-
+/*
     window.AddKeyCallback(SDLK_F9, []() {
         window_manager().PopToWindow("Brothel Management");
         window_manager().push("Town");
         window_manager().push("Bank");
     });
-
+*/
     window.AddKeyCallback(SDLK_F10, []() {
         window_manager().PopToWindow("Brothel Management");
         window_manager().push("Town");

@@ -83,7 +83,7 @@ sWorkJobResult CityGuard::DoWork(sGirl& girl, bool is_night) {
     int roll_a = d100(), roll_b = d100();
     m_Wages = 150;
     int enjoy = 0, enjoyc = 0, sus = 0;
-    int imagetype = IMGTYPE_PROFILE;
+    EImageBaseType imagetype = EImageBaseType::PROFILE;
 
     int agl = (girl.agility() / 2 + uniform(0, girl.combat() / 2));
 
@@ -126,7 +126,7 @@ sWorkJobResult CityGuard::DoWork(sGirl& girl, bool is_night) {
         if (tempgirl)        // `J` reworked incase there are no Non-Human Random Girls
         {
             auto outcome = GirlFightsGirl(girl, *tempgirl);
-            imagetype = IMGTYPE_COMBAT;
+            imagetype = EImageBaseType::COMBAT;
             if (outcome == EFightResult::VICTORY)    // she won
             {
                 enjoy += 3; enjoyc += 3;
@@ -169,13 +169,13 @@ IGenericJob::eCheckWorkResult FightBeasts::CheckWork(sGirl& girl, bool is_night)
     if (g_Game->storage().beasts() < 1)
     {
         ss << "${name} had no beasts to fight.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
     if (girl.disobey_check(ACTION_COMBAT, JOB_FIGHTBEASTS))
     {
         ss << "${name} refused to fight beasts today.\n";
-        girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
     }
     return eCheckWorkResult::ACCEPTS;
@@ -234,7 +234,7 @@ sWorkJobResult FightBeasts::DoWork(sGirl& girl, bool is_night) {
     {
         ss << " fights against a beast. She won the fight.";//was confusing
         enjoy += 3;
-        girl.AddMessage(ss.str(), IMGTYPE_COMBAT, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::COMBAT, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         int roll_max = girl.fame() + girl.charisma();
         roll_max /= 4;
         m_Wages += uniform(10, 10+roll_max);
@@ -250,7 +250,7 @@ sWorkJobResult FightBeasts::DoWork(sGirl& girl, bool is_night) {
             ss << " So as punishment you allow the beast to have its way with her."; enjoy -= 1;
             girl.upd_temp_stat(STAT_LIBIDO, -50, true);
             girl.beastiality(2);
-            girl.AddMessage(ss.str(), IMGTYPE_BEAST, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+            girl.AddMessage(ss.str(), EImageBaseType::BEAST, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
             {
                 g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
@@ -259,7 +259,7 @@ sWorkJobResult FightBeasts::DoWork(sGirl& girl, bool is_night) {
         else
         {
             ss << " So you send your men in to cage the beast before it can harm her.";
-            girl.AddMessage(ss.str(), IMGTYPE_COMBAT, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+            girl.AddMessage(ss.str(), EImageBaseType::COMBAT, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             girl.fame(-1);
         }
     }
@@ -315,7 +315,7 @@ sWorkJobResult FightBeasts::DoWork(sGirl& girl, bool is_night) {
     brothel->m_Finance.arena_income(earned);
     ss.str("");
     ss << "${name} drew in " << m_Performance << " people to watch her and you earned " << earned << " from it.";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     girl.upd_Enjoyment(ACTION_COMBAT, enjoy);
 
@@ -343,7 +343,7 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
 
     int enjoy = 0, fame = 0;
 
-    int imagetype = IMGTYPE_COMBAT;
+    EImageBaseType imagetype = EImageBaseType::COMBAT;
 
     cGirls::EquipCombat(girl);        // ready armor and weapons!
     auto tempgirl = g_Game->CreateRandomGirl(SpawnReason::ARENA);
@@ -384,7 +384,7 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
                 Umsg << Tmsg.str();
                 ss << msg.str();
                 g_Game->push_message(msg.str(), 0);
-                ugirl->AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+                ugirl->AddMessage(Umsg.str(), EImageBaseType::PROFILE, EVENT_DUNGEON);
 
                 g_Game->dungeon().AddGirl(ugirl, DUNGEON_NEWARENA);
             }
@@ -414,7 +414,7 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
     else {
         g_LogFile.log(ELogLevel::ERROR, "You have no Arena Girls for your girls to fight\n");
         ss << "There were no Arena Girls for her to fight.\n \n(Error: You need an Arena Girl to allow WorkFightArenaGirls randomness)";
-        imagetype = IMGTYPE_PROFILE;
+        imagetype = EImageBaseType::PROFILE;
     }
 
     if (girl.is_pregnant())
@@ -461,7 +461,7 @@ sWorkJobResult FightGirls::DoWork(sGirl& girl, bool is_night) {
     brothel->m_Finance.arena_income(earned);
     ss.str("");
     ss << "${name} drew in " << m_Performance << " people to watch her and you earned " << earned << " from it.";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
 
     //gain traits
@@ -737,7 +737,7 @@ sWorkJobResult FightTraining::DoWork(sGirl& girl, bool is_night) {
     girl.upd_Enjoyment(ACTION_COMBAT, enjoy);
     girl.upd_Enjoyment(ACTION_WORKTRAINING, enjoy);
 
-    girl.AddMessage(ss.str(), IMGTYPE_COMBAT, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::COMBAT, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     brothel->m_Filthiness += 2;    // fighting is dirty
     if (girl.is_unpaid()) { m_Wages = 0; }
     else { m_Wages = 25 + (skill * 5); } // `J` Pay her more if she learns more

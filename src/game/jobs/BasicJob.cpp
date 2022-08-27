@@ -168,7 +168,7 @@ IGenericJob::eCheckWorkResult cBasicJob::SimpleRefusalCheck(sGirl& girl, Action_
     if (girl.disobey_check(action, job()))
     {
         add_text("refuse");
-        girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
     }
     return eCheckWorkResult::ACCEPTS;

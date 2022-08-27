@@ -192,7 +192,7 @@ bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, std::shared_ptr<
 
     std::string girlName = girl->FullName();
     std::stringstream NGmsg;
-    int girlimagetype = IMGTYPE_PROFILE;
+    EImageBaseType girlimagetype = EImageBaseType::PROFILE;
     auto eventtype = EVENT_GANG;
     auto gangeventtype = EVENT_GANG;
     int dungeonreason = DUNGEON_GIRLKIDNAPPED;
@@ -231,7 +231,7 @@ bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, std::shared_ptr<
                break;
             case EAttemptCaptureResult::CAPTURED:
                 ss << "attempt to kidnap her.\n";
-                girlimagetype = IMGTYPE_DEATH;
+                girlimagetype = EImageBaseType::DEATH;
                 dungeonreason = DUNGEON_GIRLKIDNAPPED;
                 girl->set_stat(STAT_OBEDIENCE, 0);
                 girl->add_temporary_trait("Kidnapped", 10 + g_Dice % 11);
@@ -508,7 +508,7 @@ bool cMissionRecapture::execute_mission(sGang& gang, std::stringstream& event_te
     auto runaway = g_Game->GetRunaways().front();
     std::string girlName = runaway->FullName();
     bool captured = false;
-    int girlimagetype = IMGTYPE_PROFILE;
+    EImageBaseType girlimagetype = EImageBaseType::PROFILE;
     auto gangeventtype = EVENT_GANG;
 
     ss << "Your goons find " << girlName << " and ";
@@ -521,7 +521,7 @@ bool cMissionRecapture::execute_mission(sGang& gang, std::stringstream& event_te
             captured = true;
             break;
         case EAttemptCaptureResult::CAPTURED:
-            girlimagetype = IMGTYPE_DEATH;
+            girlimagetype = EImageBaseType::DEATH;
             ss << "she fights back but your men succeed in capturing her.\n";
             RGmsg << girlName << " fought with " << gang.name() << " but lost. She was dragged back to the dungeon.";
             gang.BoostSkill(SKILL_COMBAT, 1);
@@ -1001,7 +1001,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
                     std::stringstream NGmsg;
                     girl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
                     NGmsg << girl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
-                    girl->AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                    girl->AddMessage(NGmsg.str(), EImageBaseType::PROFILE, EVENT_GANG);
                     g_Game->dungeon().AddGirl(girl, DUNGEON_GIRLCAPTURED);
                 }
                 else
@@ -1010,7 +1010,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
                     std::stringstream NGmsg;
                     girl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
                     NGmsg << girl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
-                    girl->AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                    girl->AddMessage(NGmsg.str(), EImageBaseType::PROFILE, EVENT_GANG);
                     g_Game->dungeon().AddGirl(girl, DUNGEON_GIRLCAPTURED);
 
                 }
@@ -1149,7 +1149,7 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
                         else/*                        */    gss << item->m_Name;
                         gss << " and claimed it for herself.";
                     }
-                    girl->AddMessage(gss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                    girl->AddMessage(gss.str(), EImageBaseType::PROFILE, EVENT_GANG);
                     beasts--;
                     ss << "\n" << gss.str() << "\n";
                 }

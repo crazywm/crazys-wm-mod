@@ -32,7 +32,7 @@ namespace {
 
         virtual void DoneEarly(sGirl& girl) = 0;
 
-        Image_Types ImageType = IMGTYPE_MAID;
+        sImagePreset ImageType = EImageBaseType::MAID;
     };
 
     struct CleanArena : public Cleaning {
@@ -94,7 +94,7 @@ void Cleaning::CleaningUpdateGirl(sGirl& girl, bool is_night, int enjoy, int cle
 }
 
 bool Cleaning::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night){
-    ImageType = IMGTYPE_MAID;
+    ImageType = EImageBaseType::MAID;
     double CleanAmt = m_Performance;
     int enjoy = 0;
     bool playtime = false;
@@ -174,7 +174,7 @@ void CleanCentre::DoneEarly(sGirl& girl) {
         ss << "\n \n${name} finished her cleaning early so took a long bath to clean herself off.";
         girl.happiness(uniform(1, 3));
         girl.tiredness(-uniform(0, 2));
-        ImageType = IMGTYPE_BATH;
+        ImageType = EImageBaseType::BATH;
     }
     else
     {
@@ -303,7 +303,7 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
                 // TODO Tips
                 //tips *= 5; //customers tip 5 gold each
                 //ss << "She got " << tips << " in tips for this extra service.\n";
-                ImageType = IMGTYPE_ORAL;
+                ImageType = EImagePresets::BLOWJOB;
                 girl.m_NumCusts += tips;
             }
             else
@@ -344,7 +344,7 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
                 // TODO adjust tips
                 //tips = 20; // you tip her for cleaning you
                 ss << "she came to your room and cleaned you.\n \n${name} ran you a hot bath and bathed naked with you.";/* Need a check here so your daughters won't do this zzzzz FIXME*/
-                ImageType = IMGTYPE_BATH;
+                ImageType = EImageBaseType::BATH;
 
                 if (brothel->is_sex_type_allowed(SKILL_TITTYSEX))
                 {
@@ -369,7 +369,7 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
                         girl.spirit(-uniform(0, 1));
                         // tips += (rng % 20);  // tip her for hotness
                     }
-                    ImageType = IMGTYPE_ORAL;
+                    ImageType = EImagePresets::BLOWJOB;
                 }
                 girl.service(uniform(0, 4));
                 girl.medicine(uniform(0, 1));

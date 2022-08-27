@@ -35,20 +35,21 @@
 
 namespace {
     // Match image type to the deed done
-    Image_Types skill_to_image(SKILLS type) {
+    // TODO this is duplicated elsewhere!
+    sImagePreset skill_to_image(SKILLS type) {
         switch(type) {
-            case SKILL_ANAL: return IMGTYPE_ANAL;
-            case SKILL_BDSM: return IMGTYPE_BDSM;
-            case SKILL_NORMALSEX: return IMGTYPE_SEX;
-            case SKILL_BEASTIALITY: return IMGTYPE_BEAST;
-            case SKILL_GROUP: return IMGTYPE_GROUP;
-            case SKILL_LESBIAN: return IMGTYPE_LESBIAN;
-            case SKILL_ORALSEX: return IMGTYPE_ORAL;
-            case SKILL_TITTYSEX: return IMGTYPE_TITTY;
-            case SKILL_HANDJOB: return IMGTYPE_HAND;
-            case SKILL_FOOTJOB: return IMGTYPE_FOOT;
-            case SKILL_STRIP: return IMGTYPE_STRIP;
-            default: return IMGTYPE_SEX;
+            case SKILL_ANAL: return EImageBaseType::ANAL;
+            case SKILL_BDSM: return EImageBaseType::BDSM;
+            case SKILL_NORMALSEX: return EImageBaseType::VAGINAL;
+            case SKILL_BEASTIALITY: return EImageBaseType::BEAST;
+            case SKILL_GROUP: return EImagePresets::GANGBANG;
+            case SKILL_LESBIAN: return EImagePresets::LESBIAN;
+            case SKILL_ORALSEX: return EImagePresets::BLOWJOB;
+            case SKILL_TITTYSEX: return EImageBaseType::TITTY;
+            case SKILL_HANDJOB: return EImageBaseType::HAND;
+            case SKILL_FOOTJOB: return EImageBaseType::FOOT;
+            case SKILL_STRIP: return EImageBaseType::STRIP;
+            default: return EImageBaseType::VAGINAL;
         }
     }
 }
@@ -177,7 +178,7 @@ bool cWhoreJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
 
             if (chance(iNum)) rival->m_NumGangs--;            // WD:    Destroy rival gang
 
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+            girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         }
     }
 
@@ -210,7 +211,7 @@ bool cWhoreJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     else if (m_NumSleptWith < NumCusts)        { ss << "\n \nShe ran out of customers who like her."; }
     summary += ss.str();
 
-    girl.AddMessage(summary, IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(summary, EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     apply_gains(girl, m_Performance);
 
@@ -471,7 +472,7 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
     {
         if (m_FuckMessage.str().length() > 0)    // if there is a reason, include it in her messages.
         {
-            girl.AddMessage(m_FuckMessage.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+            girl.AddMessage(m_FuckMessage.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         }
         return;    // otherwise just move on
     }
@@ -717,7 +718,7 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
     }
 
     // Match image type to the deed done
-    int imageType = skill_to_image(SexType);
+    auto imageType = skill_to_image(SexType);
 
     // WD:    Save gold earned
     m_Earnings += pay;

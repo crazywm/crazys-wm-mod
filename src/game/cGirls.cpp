@@ -157,7 +157,7 @@ void cGirls::LevelUp(sGirl& girl)
 
     stringstream ss;
     ss << "${name} levelled up to " << girl.level() << ".";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_LEVELUP);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_LEVELUP);
     ss.str("");
 
     // add traits
@@ -188,7 +188,7 @@ void cGirls::LevelUp(sGirl& girl)
             {
                 addedtrait = 0;
                 ss << " She has gained the " << trait << " trait.";
-                girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+                girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
             }
             addedtrait--;
         }
@@ -250,7 +250,7 @@ void cGirls::EndDayGirls(IBuilding& brothel, sGirl& girl)
         girl.fame(10);
 
     }
-    if (goodnews.str().length() > 2)    girl.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+    if (goodnews.str().length() > 2)    girl.AddMessage(goodnews.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
 
 
     girl.m_NumCusts_old = girl.m_NumCusts;            // prepare for next week
@@ -1324,7 +1324,7 @@ bool HandleDrug(sGirl &girl, const char *drug_trait, const char* drug, std::init
                 girl.gain_trait("Former Addict");
                 stringstream goodnews;
                 goodnews << "Good News, ${name} has overcome her addiction to " << drug << ".";
-                girl.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+                girl.AddMessage(goodnews.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
             }
             else
             {
@@ -1383,7 +1383,7 @@ void cGirls::UseItems(sGirl& girl)
                 if (girl.is_dead()) {
                     stringstream cancer;
                     cancer << "${name} has died of cancer from smoking.";
-                    girl.AddMessage(cancer.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+                    girl.AddMessage(cancer.str(), EImageBaseType::PROFILE, EVENT_WARNING);
                     return;
                 }
             }
@@ -1583,7 +1583,7 @@ bool cGirls::PossiblyGainNewTrait(sGirl& girl, string Trait, int Threshold, int 
         int chance = (girl.m_Enjoyment[ActionType] - Threshold);
         if (girl.gain_trait(Trait.c_str(), chance))
         {
-            girl.AddMessage(Message, IMGTYPE_PROFILE, eventtype);
+            girl.AddMessage(Message, EImageBaseType::PROFILE, eventtype);
             return true;
         }
     }
@@ -1598,7 +1598,7 @@ bool cGirls::PossiblyLoseExistingTrait(sGirl& girl, string Trait, int Threshold,
         int chance = (girl.m_Enjoyment[ActionType] - Threshold);
         if (girl.lose_trait(Trait.c_str(), chance))
         {
-            girl.AddMessage(Message, IMGTYPE_PROFILE, EVENT_GOODNEWS);
+            girl.AddMessage(Message, EImageBaseType::PROFILE, EVENT_GOODNEWS);
             return true;
         }
     }
@@ -1654,7 +1654,7 @@ std::string AdjustTraitGroup(sGirl& girl, int adjustment, std::initializer_list<
         ss << gain_message << " '" << gain_name << "'.";
 
     // only send a message if called for
-    if (event)    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+    if (event)    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
 
     return ss.str();
 }
@@ -1730,12 +1730,12 @@ void cGirls::updateHappyTraits(sGirl& girl)
                 if (Schance < 50)        { ss << " talked her out of it."; }
                 else if (Schance < 90)    { ss << " stopped her."; }
                 else    { girl.set_stat(STAT_HEALTH, 1);    ss << " revived her."; }
-                girl.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+                girl.AddMessage(ss.str(), EImageBaseType::DEATH, EVENT_DANGER);
             }
             else
             {
                 string msg = girl.FullName() + " has killed herself since she was unhappy and depressed.";
-                girl.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
+                girl.AddMessage(msg, EImageBaseType::DEATH, EVENT_DANGER);
                 g_Game->push_message(msg, COLOR_RED);
                 girl.health(-1000);
             }
@@ -3109,51 +3109,51 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
     if (girl->has_active_trait("AIDS") && customer->gain_trait("AIDS", STDchance))
     {
-        girl->AddMessage("${name} gave the customer AIDS! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+        girl->AddMessage("${name} gave the customer AIDS! They are not happy about this.", EImageBaseType::PROFILE, EVENT_DANGER);
         customer->happiness(-100);
         enjoy -= 3;
     }
     else if (customer->has_active_trait("AIDS") && girl->gain_trait("AIDS", STDchance))
     {
-        girl->AddMessage("${name} has caught the disease AIDS! She will likely die, but a rare cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
+        girl->AddMessage("${name} has caught the disease AIDS! She will likely die, but a rare cure can sometimes be found in the shop.", EImageBaseType::PROFILE, EVENT_DANGER);
         girl->happiness(-50);
         enjoy -= 30;
     }
     if (girl->has_active_trait("Chlamydia") && customer->gain_trait("Chlamydia", STDchance))
     {
-        girl->AddMessage("${name} gave the customer Chlamydia! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+        girl->AddMessage("${name} gave the customer Chlamydia! They are not happy about this.", EImageBaseType::PROFILE, EVENT_DANGER);
         customer->happiness(-40);
         enjoy -= 3;
     }
     else if (customer->has_active_trait("Chlamydia") && girl->gain_trait("Chlamydia", STDchance))
     {
-        girl->AddMessage("${name} has caught the disease Chlamydia! A cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
+        girl->AddMessage("${name} has caught the disease Chlamydia! A cure can sometimes be found in the shop.", EImageBaseType::PROFILE, EVENT_DANGER);
         girl->happiness(-30);
         enjoy -= 30;
     }
 
     if (girl->has_active_trait("Syphilis") && customer->gain_trait("Syphilis", STDchance))
     {
-        girl->AddMessage("${name} gave the customer Syphilis! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+        girl->AddMessage("${name} gave the customer Syphilis! They are not happy about this.", EImageBaseType::PROFILE, EVENT_DANGER);
         customer->happiness(-50);
         enjoy -= 3;
     }
     else if (customer->has_active_trait("Syphilis") && girl->gain_trait("Syphilis", STDchance))
     {
-        girl->AddMessage("${name} has caught the disease Syphilis! This can be deadly, but a cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
+        girl->AddMessage("${name} has caught the disease Syphilis! This can be deadly, but a cure can sometimes be found in the shop.", EImageBaseType::PROFILE, EVENT_DANGER);
         girl->happiness(-30);
         enjoy -= 30;
     }
 
     if (girl->has_active_trait("Herpes") && customer->gain_trait("Herpes", STDchance))
     {
-        girl->AddMessage("${name} gave the customer Herpes! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+        girl->AddMessage("${name} gave the customer Herpes! They are not happy about this.", EImageBaseType::PROFILE, EVENT_DANGER);
         customer->happiness(-30);
         enjoy -= 3;
     }
     else if (customer->has_active_trait("Herpes") && girl->gain_trait("Herpes", STDchance))
     {
-        girl->AddMessage("${name} has caught the disease Herpes! A cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
+        girl->AddMessage("${name} has caught the disease Herpes! A cure can sometimes be found in the shop.", EImageBaseType::PROFILE, EVENT_DANGER);
         girl->happiness(-30);
         enjoy -= 30;
     }
@@ -3183,7 +3183,7 @@ bool cGirls::GirlInjured(sGirl& girl, unsigned int unModifier, std::function<voi
 
     if(!handler)
         handler = [&](std::string message){
-            girl.AddMessage(std::move(message), IMGTYPE_PROFILE, EVENT_WARNING);
+            girl.AddMessage(std::move(message), EImageBaseType::PROFILE, EVENT_WARNING);
     };
 
     // Sanity check, Can't get injured
@@ -3430,7 +3430,7 @@ void cGirls::updateSTD(sGirl& girl)
     if (girl.is_dead())
     {
         string msg = "${name} has died from STDs.";
-        girl.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
+        girl.AddMessage(msg, EImageBaseType::DEATH, EVENT_DANGER);
         g_Game->push_message(msg, COLOR_RED);
     }
 }
@@ -3671,7 +3671,7 @@ bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl& girl, sCusto
     {
         ss << girl.FullName() << " thought she detected that her customer had a disease and refused to allow them to touch her just to be safe.";
         g_Game->push_message(ss.str(), COLOR_RED);
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         return true;
     }
     // if the customer is clean, then it will return false
@@ -3707,7 +3707,7 @@ bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl& girl, sCusto
         ss << girl.FullName() << " detected that her customer has " << found_disease <<
             " and refused to allow them to touch her.";
         g_Game->push_message(ss.str(), COLOR_RED);
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         brothel->m_RejectCustomersDisease++;
     }
 

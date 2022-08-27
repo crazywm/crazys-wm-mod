@@ -20,6 +20,7 @@
 
 #include "cGameWindow.h"
 #include "cEvents.h"
+#include <deque>
 
 class cScreenTurnSummary : public cGameWindow
 {
@@ -76,4 +77,16 @@ public:
 
     void Fill_Items_RIVALS();
     void Fill_Events_Rivals();
+
+    void set_backdrop(const std::string& bd);
+
+private:
+    // Tracking recently presented images
+    struct sRecent {
+        const CEvent* Event;
+        std::string Image;
+    };
+    std::deque<sRecent> m_RecentImages;
+
+    void present_image(const CEvent& event);
 };

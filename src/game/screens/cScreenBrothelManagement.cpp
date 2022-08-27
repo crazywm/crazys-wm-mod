@@ -124,7 +124,7 @@ void IBuildingScreen::try_walk()
 
     if (girlimage_id != -1)
     {
-        PrepareImage(girlimage_id, girl.get(), IMGTYPE_PROFILE, true, -1);
+        PrepareImage(girlimage_id, *girl, EImageBaseType::PROFILE);
         HideWidget(girlimage_id, false);
     }
 }

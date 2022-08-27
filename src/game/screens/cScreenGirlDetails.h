@@ -26,7 +26,6 @@ class cScreenGirlDetails : public cGameWindow
 private:
     int girlname_id;        // Girl Name text
     int girldesc_id;        // Girl Description text
-    int girlimage_id;        // Girl image
     int antipreg_id;        // Use Anti-preg checkbox
     int senddungeon_id;        // Send To Dungeon button
     int reldungeon_id;        // Release From Dungeon button
@@ -77,5 +76,5 @@ public:
     void set_house_percentage(int value);
     void set_accomodation(int value);
 
-    void UpdateImage(int imagetype) override;
+    sGirl* get_image_girl() override;
 };

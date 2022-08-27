@@ -38,7 +38,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     int roll_a = rng.d100(), roll_c = rng.d100(), roll_d = rng.d100(), roll;
     //g_Building = BUILDING_HOUSE;
     cGirls::UnequipCombat(girl);    // put that shit away, not needed for sex training
-    int imagetype = IMGTYPE_MAID;
+    sImagePreset imagetype = EImageBaseType::MAID;
     auto msgtype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     ss << "You tell ${name} she is going to warm your bed tonight";
@@ -194,7 +194,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                             << "'s room.\nStill they did put on quite a show, and she probably learned something tonight.\n";
                         headGirl->lesbian(+2);
                         girl.lesbian(+2);
-                        girl.AddMessage(ss.str(), IMGTYPE_LESBIAN, EVENT_NOWORK);
+                        girl.AddMessage(ss.str(), EImagePresets::LESBIAN, EVENT_NOWORK);
                         return {true, 0, 0, 0};
                     }
                     else
@@ -231,7 +231,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                         && girl.combat() > (headGirl->combat() - 30))
                     {
                         ss << ". ${name} snaps, grabbing " << headName << " by the throat and telling her to go fuck herself.\n";
-                        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+                        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
                         return {true, 0, 0, 0};
                     }
                     else
@@ -258,7 +258,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                     else
                     {
                         ss << "She refuses.\n";
-                        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+                        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
                         return {true, 0, 0, 0};
                     }
                 }
@@ -267,7 +267,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 else
                 {
                     ss << " but is unable to change her mind.\n";
-                    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+                    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
                     return {true, 0, 0, 0};
                 }
             }
@@ -427,7 +427,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                     else
                     {
                         ss << "She refuses.\n";
-                        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+                        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
                         return {true, 0, 0, 0};
                     }
                 }
@@ -446,7 +446,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 else
                 {
                     ss << "She leaves.\n";
-                    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+                    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
                     return {true, 0, 0, 0};
                 }
             }
@@ -465,7 +465,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             ss << "${name} is diseased and refuses to put you at risk.\n";
             girl.morality(2);
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+            girl.AddMessage(ss.str(), EImageBaseType::PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             return {true, 0, 0, 0};
         }
         else if (HateLove > -40)  //if she doesn't care...
@@ -738,8 +738,8 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 girl.upd_Enjoyment(ACTION_WORKHAREM, +1);
                 girl.lose_trait("Virgin");
                 ss << "She is no longer a virgin.\n";
-                imagetype = IMGTYPE_SEX;
-                //girl.m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
+                imagetype = EImageBaseType::VAGINAL;
+                //girl.m_Events.AddMessage(ss.str(), EBaseImage::SEX, Day0Night1);
 
                 girl.calc_pregnancy(&g_Game->player(), 1.0);
             }
@@ -750,8 +750,8 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 girl.pcfear(2);
                 girl.lose_trait("Virgin");
                 ss << "She is no longer a virgin.\n";
-                imagetype = IMGTYPE_SEX;
-                //girl.m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
+                imagetype = EImageBaseType::VAGINAL;
+                //girl.m_Events.AddMessage(ss.str(), EBaseImage::SEX, Day0Night1);
 
                 girl.calc_pregnancy(&g_Game->player(), 1.0);
             }
@@ -762,22 +762,22 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     ss << ", and instead have her play around with another girl in your harem.";
                     girl.lesbian(2);
-                    imagetype = IMGTYPE_LESBIAN;
-                    //girl.m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1);
+                    imagetype = EImagePresets::LESBIAN;
+                    //girl.m_Events.AddMessage(ss.str(), EBaseImage::LESBIAN, Day0Night1);
                 }
                 else if (roll_c < 60)
                 {
                     ss << ", and instead fuck her ass.";
                     girl.anal(2);
-                    imagetype = IMGTYPE_ANAL;
-                    //girl.m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
+                    imagetype = EImageBaseType::ANAL;
+                    //girl.m_Events.AddMessage(ss.str(), EBaseImage::ANAL, Day0Night1);
                 }
                 else
                 {
                     ss << ", and instead have her 'clean it off' as you enjoy the other girls.";
                     girl.oralsex(2);
-                    imagetype = IMGTYPE_ORAL;
-                    //girl.m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
+                    imagetype = EImagePresets::BLOWJOB;
+                    //girl.m_Events.AddMessage(ss.str(), EBaseImage::ORAL, Day0Night1);
                 }
             }
         }
@@ -787,23 +787,23 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "While you enjoy another girl, ${name} grabs your cock and finishes you off with her mouth.\n";
                 girl.oralsex(2);
-                imagetype = IMGTYPE_ORAL;
-                //girl.m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
+                imagetype = EImagePresets::BLOWJOB;
+                //girl.m_Events.AddMessage(ss.str(), EBaseImage::ORAL, Day0Night1);
             }
             else if (roll_d <= 40)
             {
                 ss << "You watch ${name} play with another girl in the harem.";
                 girl.lesbian(2);
-                imagetype = IMGTYPE_LESBIAN;
-                //girl.m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1););
+                imagetype = EImagePresets::LESBIAN;
+                //girl.m_Events.AddMessage(ss.str(), EBaseImage::LESBIAN, Day0Night1););
             }
             else if (roll_d <= 60)
             {
                 ss << "You enjoy the pleasures of your harem, including fucking ${name}.\n";
                 girl.normalsex(2);
                 girl.lesbian(1);
-                imagetype = IMGTYPE_SEX;
-                //girl.m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
+                imagetype = EImageBaseType::VAGINAL;
+                //girl.m_Events.AddMessage(ss.str(), EBaseImage::SEX, Day0Night1);
 
                 girl.calc_pregnancy(&g_Game->player(), 1.0);
             }
@@ -811,8 +811,8 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "You tie up ${name} and get another girl to spank her as you fuck her.\n";
                 girl.bdsm(2);
-                imagetype = IMGTYPE_BDSM;
-                //girl.m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
+                imagetype = EImageBaseType::BDSM;
+                //girl.m_Events.AddMessage(ss.str(), EBaseImage::BDSM, Day0Night1);
 
                 girl.calc_pregnancy(&g_Game->player(), 1.0);
             }
@@ -820,8 +820,8 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "You spin ${name} around, push her down and fuck her ass.";
                 girl.anal(2);
-                imagetype = IMGTYPE_ANAL;
-                //girl.m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
+                imagetype = EImageBaseType::ANAL;
+                //girl.m_Events.AddMessage(ss.str(), EBaseImage::ANAL, Day0Night1);
             }
         }
         //Some group action randomness...
@@ -964,37 +964,37 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             girl.strip(2);
             ss << "does a little strip show for you.\n \n";
-            imagetype = IMGTYPE_STRIP;
-            //girl.m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
+            imagetype = EImageBaseType::STRIP;
+            //girl.m_Events.AddMessage(ss.str(), EBaseImage::STRIP, Day0Night1);
         }
         else if (roll_d <= 20 && brothel->is_sex_type_allowed(SKILL_TITTYSEX))
         {
             girl.tittysex(2);
             ss << "uses her tits on you.\n \n";
-            imagetype = IMGTYPE_TITTY;
-            //girl.m_Events.AddMessage(ss.str(), IMGTYPE_TITTY, Day0Night1);
+            imagetype = EImageBaseType::TITTY;
+            //girl.m_Events.AddMessage(ss.str(), EBaseImage::TITTY, Day0Night1);
         }
         else if (roll_d <= 30 && brothel->is_sex_type_allowed(SKILL_HANDJOB))
         {
             girl.handjob(2);
             ss << "gives you a hand job.\n \n";
-            imagetype = IMGTYPE_HAND;
-            //girl.m_Events.AddMessage(ss.str(), IMGTYPE_HAND, Day0Night1);
+            imagetype = EImageBaseType::HAND;
+            //girl.m_Events.AddMessage(ss.str(), EBaseImage::HAND, Day0Night1);
         }
         else if (roll_d <= 40 && brothel->is_sex_type_allowed(SKILL_FOOTJOB))
         {
             girl.footjob(2);
             ss << "gives you a foot job.\n \n";
-            imagetype = IMGTYPE_FOOT;
-            //girl.m_Events.AddMessage(ss.str(), IMGTYPE_FOOT, Day0Night1);
+            imagetype = EImageBaseType::FOOT;
+            //girl.m_Events.AddMessage(ss.str(), EBaseImage::FOOT, Day0Night1);
         }
         else if (roll_d <= 50 && brothel->is_sex_type_allowed(SKILL_ORALSEX))
         {
             girl.oralsex(2);
             ss << "decided to suck your cock.\n \n";
             if (girl.has_active_trait("Herpes")) risky = true;
-            imagetype = IMGTYPE_ORAL;
-            //girl.m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
+            imagetype = EImagePresets::BLOWJOB;
+            //girl.m_Events.AddMessage(ss.str(), EBaseImage::ORAL, Day0Night1);
 
         }
         else if (roll_d <= 60 && brothel->is_sex_type_allowed(SKILL_ANAL))
@@ -1002,8 +1002,8 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             girl.anal(2);
             ss << "lets you use her ass.\n \n";
             risky = true;
-            imagetype = IMGTYPE_ANAL;
-            //girl.m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
+            imagetype = EImageBaseType::ANAL;
+            //girl.m_Events.AddMessage(ss.str(), EBaseImage::ANAL, Day0Night1);
         }
         else if (roll_d <= 70 && brothel->is_sex_type_allowed(SKILL_BDSM))
         {
@@ -1014,8 +1014,8 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "She is no longer a virgin.\n";
             }
-            imagetype = IMGTYPE_BDSM;
-            //girl.m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
+            imagetype = EImageBaseType::BDSM;
+            //girl.m_Events.AddMessage(ss.str(), EBaseImage::BDSM, Day0Night1);
             girl.calc_pregnancy(&g_Game->player(), 1.0);
         }
         else if (roll_d <= 80 && brothel->is_sex_type_allowed(SKILL_NORMALSEX))
@@ -1027,8 +1027,8 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "She is no longer a virgin.\n";
             }
-            imagetype = IMGTYPE_SEX;
-            //girl.m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
+            imagetype = EImageBaseType::VAGINAL;
+            //girl.m_Events.AddMessage(ss.str(), EBaseImage::SEX, Day0Night1);
             girl.calc_pregnancy(&g_Game->player(), 1.0);
         }
         else if (roll_d <= 90)
@@ -1043,8 +1043,8 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             girl.upd_Enjoyment(ACTION_SEX, +1);
             girl.upd_temp_stat(STAT_LIBIDO, -15, true);
-            imagetype = IMGTYPE_MAST;
-            //girl.m_Events.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);
+            imagetype = EImagePresets::MASTURBATE;
+            //girl.m_Events.AddMessage(ss.str(), EBaseImage::MAST, Day0Night1);
         }
         else
         {
@@ -1056,8 +1056,8 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "just went to sleep.\n \n";
             }
-            //girl.m_Events.AddMessage(ss.str(), IMGTYPE_ECCHI, Day0Night1);
-            imagetype = IMGTYPE_ECCHI;
+            //girl.m_Events.AddMessage(ss.str(), EBaseImage::ECCHI, Day0Night1);
+            imagetype = EImageBaseType::ECCHI;
         }
     }
 
@@ -1145,37 +1145,37 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         girl.strip(2);
         ss << "does a little strip show for you.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
+        girl.AddMessage(ss.str(), EBaseImage::STRIP, Day0Night1);
     }
     else if (roll_d <= 20 && is_sex_type_allowed(SKILL_TITTYSEX, brothel))
     {
         girl.tittysex(2);
         ss << "uses her tits on you.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_TITTY, Day0Night1);
+        girl.AddMessage(ss.str(), EBaseImage::TITTY, Day0Night1);
     }
     else if (roll_d <= 30 && is_sex_type_allowed(SKILL_HANDJOB, brothel))
     {
         girl.handjob(2);
         ss << "gives you a hand job.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_HAND, Day0Night1);
+        girl.AddMessage(ss.str(), EBaseImage::HAND, Day0Night1);
     }
     else if (roll_d <= 40 && is_sex_type_allowed(SKILL_FOOTJOB, brothel))
     {
         girl.footjob(2);
         ss << "gives you a foot job.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_FOOT, Day0Night1);
+        girl.AddMessage(ss.str(), EBaseImage::FOOT, Day0Night1);
     }
     else if (roll_d <= 50 && is_sex_type_allowed(SKILL_ORALSEX, brothel))
     {
         girl.oralsex(2);
         ss << "decided to suck your cock.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
+        girl.AddMessage(ss.str(), EBaseImage::ORAL, Day0Night1);
     }
     else if (roll_d <= 60 && is_sex_type_allowed(SKILL_ANAL, brothel))
     {
         girl.anal(2);
         ss << "lets you use her ass.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
+        girl.AddMessage(ss.str(), EBaseImage::ANAL, Day0Night1);
     }
     else if (roll_d <= 70 && is_sex_type_allowed(SKILL_BDSM, brothel))
     {
@@ -1186,7 +1186,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             girl.lose_virginity();    // `J` updated for trait/status
             ss << "She is no longer a virgin.\n";
         }
-        girl.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
+        girl.AddMessage(ss.str(), EBaseImage::BDSM, Day0Night1);
         if (!girl.calc_pregnancy(&g_Game->player(), false, 1.0))
         {
             stringstream ssm;
@@ -1204,7 +1204,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             girl.lose_virginity();    // `J` updated for trait/status
             ss << "She is no longer a virgin.\n";
         }
-        girl.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
+        girl.AddMessage(ss.str(), EBaseImage::SEX, Day0Night1);
         if (!girl.calc_pregnancy(&g_Game->player(), false, 1.0))
         {
             stringstream ssm;
@@ -1225,7 +1225,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         }
         girl.upd_Enjoyment(ACTION_SEX, +1);
         girl.upd_temp_stat(STAT_LIBIDO, -15, true);
-        girl.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);
+        girl.AddMessage(ss.str(), EBaseImage::MAST, Day0Night1);
     }
     else
     {
@@ -1237,7 +1237,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             ss << "just went to sleep.\n \n";
         }
-        girl.AddMessage(ss.str(), IMGTYPE_ECCHI, Day0Night1);
+        girl.AddMessage(ss.str(), EBaseImage::ECCHI, Day0Night1);
     }
 #endif
 #if 1

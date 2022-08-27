@@ -73,7 +73,7 @@ bool HouseCook::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     }
 
     // do all the output
-    girl.AddMessage(ss.str(), IMGTYPE_COOK, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::COOK, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     HandleGains(girl, 0);
 
@@ -106,7 +106,7 @@ sWorkJobResult HousePet::DoWork(sGirl& girl, bool is_night) {
     else if (g_Game->player().disposition() >= -80)    dispmod = -2;    // "Mean"
     else /*                                  */    dispmod = -3;    // "Evil"
 
-    int imagetype = IMGTYPE_PUPPYGIRL;
+    sImageSpec image_spec = girl.MakeImageSpec(EImageBaseType::PUPPYGIRL);
 
     const sGirl* headonduty = random_girl_on_job(*girl.m_Building, JOB_HEADGIRL, is_night);
     SetSubstitution("headgirl", headonduty ? "Head Girl " + headonduty->FullName() + "" : "the Head girl");
@@ -205,7 +205,7 @@ sWorkJobResult HousePet::DoWork(sGirl& girl, bool is_night) {
                         training += 4;
                         ob += 4;
                         girl.lose_trait("Virgin");
-                        imagetype = IMGTYPE_SEX;
+                        image_spec.BasicImage = EImageBaseType::VAGINAL;
                     }
                     else
                     {
@@ -213,7 +213,7 @@ sWorkJobResult HousePet::DoWork(sGirl& girl, bool is_night) {
                         training += 4;
                         ob += 4;
                         girl.lose_trait("Virgin");
-                        imagetype = IMGTYPE_BEAST;
+                        image_spec.BasicImage = EImageBaseType::BEAST;
                     }
                 }
                 else
@@ -221,7 +221,8 @@ sWorkJobResult HousePet::DoWork(sGirl& girl, bool is_night) {
                     add_text("train.skilled.virgin.generic");
                     training += 4;
                     ob += 4;
-                    imagetype = IMGTYPE_ORAL;
+                    image_spec.BasicImage = EImageBaseType::ORAL;
+                    image_spec.Participants = ESexParticipants::HETERO;
                 }
             }
             else if (roll_b >= 80 && puppyonduty)
@@ -241,7 +242,7 @@ sWorkJobResult HousePet::DoWork(sGirl& girl, bool is_night) {
                     ss << " you reply, smiling as the dog plowed heavily into ${name}, and her tits began to sway violent, her tongue panting like a good dog.";
                     girl.upd_temp_stat(STAT_LIBIDO, -20, true);
                     girl.beastiality(2);
-                    imagetype = IMGTYPE_BEAST;
+                    image_spec.BasicImage = EImageBaseType::BEAST;
                     if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
                     {
                         g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
@@ -315,14 +316,16 @@ sWorkJobResult HousePet::DoWork(sGirl& girl, bool is_night) {
                     add_text("train.low.bad-oral");
                     training += 2;
                     girl.oralsex(2);
-                    imagetype = IMGTYPE_ORAL;
+                    image_spec.BasicImage = EImageBaseType::ORAL;
+                    image_spec.Participants = ESexParticipants::HETERO;
                 }
                 else
                 {
                     add_text("train.low.good-oral");
                     training += 2;
                     girl.oralsex(1);
-                    imagetype = IMGTYPE_ORAL;
+                    image_spec.BasicImage = EImageBaseType::ORAL;
+                    image_spec.Participants = ESexParticipants::HETERO;
                 }
             }
         }
@@ -352,7 +355,7 @@ sWorkJobResult HousePet::DoWork(sGirl& girl, bool is_night) {
     }
 
 
-    girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), image_spec, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
 
     // Improve stats
@@ -399,7 +402,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
         ss << "All sex is banned in this building so you just talk to her.";
         girl.pcfear(-uniform(-1, 2));
         girl.pclove(+uniform(-2, 4));
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
         return {false, 0, 0, 0};
     }
 
@@ -533,42 +536,42 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
         girl.strip(skill);
         ss << "You decide to have her strip for you.\n \n";
         ss << "She managed to gain " << skill << " Strip.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_STRIP, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::STRIP, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
     else if (roll_b <= 20 && girl.lesbian() < 100 && brothel->is_sex_type_allowed(SKILL_LESBIAN))
     {
         girl.lesbian(skill);
         ss << "You decide to bring in another girl for her.\n \n";
         ss << "She managed to gain " << skill << " Lesbian.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_LESBIAN, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImagePresets::LESBIAN, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
     else if (roll_b <= 27 && girl.tittysex() < 100 && brothel->is_sex_type_allowed(SKILL_TITTYSEX))
     {
         girl.tittysex(skill);
         ss << "You decide to have her use her tits on you.\n \n";
         ss << "She managed to gain " << skill << " Titty.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_TITTY, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::TITTY, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
     else if (roll_b <= 34 && girl.handjob() < 100 && brothel->is_sex_type_allowed(SKILL_HANDJOB))
     {
         girl.handjob(skill);
         ss << "You decide to teach her the art of manual stimulation.\n \n";
         ss << "She managed to gain " << skill << " Hand Job.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_HAND, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::HAND, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
     else if (roll_b <= 40 && girl.footjob() < 100 && brothel->is_sex_type_allowed(SKILL_FOOTJOB))
     {
         girl.footjob(skill);
         ss << "You decide to teach her the art of manual stimulation with her feet.\n \n";
         ss << "She managed to gain " << skill << " Foot Job.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_FOOT, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::FOOT, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
     else if (roll_b <= 50 && girl.oralsex() < 100 && brothel->is_sex_type_allowed(SKILL_ORALSEX))
     {
         girl.oralsex(skill);
         ss << "You decide to teach her the art of sucking a cock.\n \n";
         ss << "She managed to gain " << skill << " Oral.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_ORAL, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImagePresets::BLOWJOB, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
     else if (roll_b <= 70 && girl.normalsex() < 100 && brothel->is_sex_type_allowed(SKILL_NORMALSEX))
     {
@@ -579,7 +582,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
         {
             ss << "She is no longer a virgin.\n";
         }
-        girl.AddMessage(ss.str(), IMGTYPE_SEX, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::VAGINAL, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         girl.calc_pregnancy(&g_Game->player(), 1.0);
     }
     else if (roll_b <= 80 && girl.anal() < 100 && brothel->is_sex_type_allowed(SKILL_ANAL))
@@ -587,18 +590,19 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
         girl.anal(skill);
         ss << "You decide to teach her how to use her ass.\n \n";
         ss << "She managed to gain " << skill << " Anal Sex.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_ANAL, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::ANAL, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
     else if (roll_b <= 90 && girl.group() < 100 && brothel->is_sex_type_allowed(SKILL_GROUP))
     {
         girl.group(skill);
         ss << "You decide to over see her skill in a gang bang.\n \n";
         ss << "She managed to gain " << skill << " Group Sex.\n \n";
+        auto spec = girl.MakeImageSpec(EImagePresets::GANGBANG);
         if (girl.lose_trait("Virgin"))
         {
             ss << "She is no longer a virgin.\n";
         }
-        girl.AddMessage(ss.str(), IMGTYPE_GROUP, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), spec, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         // TODO chance to get pregnant by non-player!
         // TODO if we remove the virgin trait before the pregnancy calculation, it cannot affect preg chance!
         girl.calc_pregnancy(&g_Game->player(), 1.0);
@@ -612,7 +616,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
         {
             ss << "She is no longer a virgin.\n";
         }
-        girl.AddMessage(ss.str(), IMGTYPE_BDSM, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::BDSM, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         girl.calc_pregnancy(&g_Game->player(), 1.0);
     }
     else if (girl.beastiality() < 100 && brothel->is_sex_type_allowed(SKILL_BEASTIALITY))
@@ -624,7 +628,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
         {
             ss << "She is no longer a virgin.\n";
         }
-        girl.AddMessage(ss.str(), IMGTYPE_BEAST, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::BEAST, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
     else
     {
@@ -637,7 +641,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
         if (brothel->is_sex_type_allowed(SKILL_ANAL))            girl.anal(uniform(0, 2));
         if (brothel->is_sex_type_allowed(SKILL_BDSM))            girl.bdsm(uniform(0, 2));
         ss << "You couldn't decide what to teach her so you just fooled around with her.\n \n";
-        girl.AddMessage(ss.str(), IMGTYPE_ECCHI, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::ECCHI, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
 
     int pay = 0;
@@ -680,7 +684,7 @@ IGenericJob::eCheckWorkResult Recruiter::CheckWork(sGirl& girl, bool is_night) {
 bool Recruiter::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int fame = 0;
 
-    int imagetype = IMGTYPE_PROFILE;
+    EImageBaseType imagetype = EImageBaseType::PROFILE;
 
     int HateLove = girl.pclove();
 

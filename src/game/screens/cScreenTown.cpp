@@ -69,7 +69,7 @@ void cScreenTown::set_ids()
 {
     gold_id             = get_id("Gold", "*Unused*");//
     walk_id             = get_id("WalkButton");
-    girlimage_id        = get_id("GirlImage");
+    m_MainImageId        = get_id("GirlImage");
     curbrothel_id       = get_id("CurrentBrothel");
     slavemarket_id      = get_id("SlaveMarket");
     shop_id             = get_id("Shop");
@@ -156,7 +156,7 @@ void cScreenTown::init(bool back)
 void cScreenTown::process()
 {
     // TODO figure out a way to display the event graphics!
-    if (girlimage_id != -1) HideWidget(girlimage_id, true);
+    if (m_MainImageId != -1) HideWidget(m_MainImageId, true);
 }
 
 std::string cScreenTown::walk_no_luck()
@@ -214,10 +214,10 @@ void cScreenTown::do_walk()
         return;
     }
 
-    if (girlimage_id != -1)
+    if (m_MainImageId != -1)
     {
-        PrepareImage(girlimage_id, m_MeetingGirl.get(), IMGTYPE_PROFILE, true);
-        HideWidget(girlimage_id, false);
+        PrepareImage(m_MainImageId, *m_MeetingGirl, EImageBaseType::PROFILE);
+        HideWidget(m_MainImageId, false);
     }
 
     m_MeetingGirl->TriggerEvent("girl:meet:town");
@@ -286,8 +286,7 @@ void cScreenTown::check_building(int BrothelNum)
     }
 }
 
-void cScreenTown::UpdateImage(int imagetype) {
-    PrepareImage(girlimage_id, m_MeetingGirl.get(), imagetype, true);
-    HideWidget(girlimage_id, false);
+sGirl* cScreenTown::get_image_girl() {
+    return m_MeetingGirl.get();
 }
 

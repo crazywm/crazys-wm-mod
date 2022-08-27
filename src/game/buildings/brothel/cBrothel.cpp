@@ -146,11 +146,11 @@ void sBrothel::UpdateGirls(bool is_night)
                     else
                         current.m_NightJob = JOB_RESTING;
                     current.m_PrevDayJob = current.m_PrevNightJob = JOB_UNSET;
-                    current.AddMessage("The Matron puts ${name} back to work.\n", IMGTYPE_PROFILE, EVENT_BACKTOWORK);
+                    current.AddMessage("The Matron puts ${name} back to work.\n", EImageBaseType::PROFILE, EVENT_BACKTOWORK);
                 }
                 else
                 {;
-                    current.AddMessage("WARNING ${name} is doing nothing!\n", IMGTYPE_PROFILE, EVENT_WARNING);
+                    current.AddMessage("WARNING ${name} is doing nothing!\n", EImageBaseType::PROFILE, EVENT_WARNING);
                 }
             }
 
@@ -267,13 +267,13 @@ void sBrothel::UpdateGirls(bool is_night)
 
         if (!MatronMsg.empty())
         {
-            current.AddMessage(MatronMsg, IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+            current.AddMessage(MatronMsg, EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             MatronMsg = "";
         }
 
         if (!MatronWarningMsg.empty())
         {
-            current.AddMessage(MatronWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
+            current.AddMessage(MatronWarningMsg, EImageBaseType::PROFILE, EVENT_WARNING);
             MatronWarningMsg = "";
         }
         /*
@@ -363,7 +363,7 @@ bool sBrothel::runaway_check(sGirl& girl)
     {
         if (g_Dice.percent(g_Game->job_manager().guard_coverage() - girl.m_DaysUnhappy)) return false;
 
-        girl.AddMessage("She ran away.", IMGTYPE_PROFILE, EVENT_DANGER);
+        girl.AddMessage("She ran away.", EImageBaseType::PROFILE, EVENT_DANGER);
         girl.set_stat(STAT_TIREDNESS, 0);
         girl.set_stat(STAT_HEALTH, 100);
         girl.m_RunAway = 6;
@@ -434,7 +434,7 @@ bool sBrothel::runaway_check(sGirl& girl)
     */
     std::stringstream ss;
     ss << "This girl's unhappiness has turned her into " << (drug == "Alcoholic" ? "an" : "a") << " " << drug << ".";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
     return false;
 }
 
@@ -706,7 +706,7 @@ void do_food_and_digs(IBuilding& brothel, sGirl& girl)
         ss << girl.FullName() << " has started to view the world from a more \"Pessimistic\" point of view.";
     }
 
-    if (ss.str().length() > 0)    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+    if (ss.str().length() > 0)    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
 }
 
 // ----- Stats

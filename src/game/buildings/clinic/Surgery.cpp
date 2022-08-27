@@ -133,7 +133,7 @@ void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
             if(girl.strength() > 50) {
                 girl.strength(-uniform(0, 2));
             }
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
+            girl.AddMessage(ss.str(), EImageBaseType::PROFILE, msgtype);
             return;
         }
 
@@ -167,7 +167,7 @@ void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
         success(girl);
     }
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, msgtype);
 
     // Improve girl
     int libido = 0;
@@ -185,7 +185,7 @@ IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) 
         girl.FullJobReset(JOB_RESTING);
         girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
         ss << valid.Reason << " She was sent to the waiting room.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
@@ -199,7 +199,7 @@ IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) 
             ss << "${name} does nothing. You don't have any Doctors working.";
         }
 
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
@@ -624,7 +624,7 @@ void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
     } else {
         ss << "${name} was treated by " << doctor->FullName() << ".";
         doctor->AddMessage("${name} treated " + girl.FullName() + "'s " + diseases[0],
-                           IMGTYPE_NURSE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+                           EImageBaseType::NURSE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         int doc_pts = std::min(5, int(doctor->job_performance(JOB_DOCTOR, false) / 20));
         int nurse_pts = ConsumeResource(CarePointsBasicId, 4) + 2 * ConsumeResource(CarePointsGoodId, 2);
         if(nurse_pts == 0) {
@@ -664,7 +664,7 @@ void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
 
     brothel->m_Finance.clinic_costs(cost);    // pay for it
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, msgtype);
 }
 
 double CureDiseases::GetPerformance(const sGirl& girl, bool estimate) const {
@@ -689,7 +689,7 @@ auto CureDiseases::CheckWork(sGirl& girl, bool is_night) -> eCheckWorkResult {
         } else { ss << " so she was sent to the waiting room."; }
         girl.FullJobReset(new_job);
         girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
@@ -761,7 +761,7 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
     if (!doctor)
     {
         ss << "There is no doctor available to perform ${name}'s abortion!";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         return;    // not refusing
     }
     ss << "${name} is in the Clinic to get an abortion.\n \n";
@@ -886,7 +886,7 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
         ss << "The abortion is in progress (1 day remaining).";
     }
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, msgtype);
 
     // Improve girl
     int libido = -8;
@@ -904,7 +904,7 @@ IGenericJob::eCheckWorkResult Abortion::CheckWork(sGirl& girl, bool is_night) {
     if (!girl.is_pregnant())
     {
         ss << "${name} is not pregnant so she was sent to the waiting room.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         girl.FullJobReset(JOB_RESTING);
         girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
@@ -986,7 +986,7 @@ void Healing::ReceiveTreatment(sGirl& girl, bool is_night) {
         girl.m_NightJob = JOB_RESTING;
     }
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 }
 
 void RegisterSurgeryJobs(cJobManager& mgr) {

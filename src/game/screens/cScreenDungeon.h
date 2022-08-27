@@ -25,7 +25,6 @@ class cScreenDungeon : public cGameWindow
 {
 private:
     int girllist_id;        // Girls listbox
-    int girlimage_id;        // Girl image
     int header_id;            // Dungeon header text
     int gold_id;            // Player Gold
     int brandslave_id;        // Brand Slave button
@@ -93,5 +92,6 @@ public:
     void    talk();
     void    get_selected_girls(std::vector<int> *sel);
     void    update_image();
-    void UpdateImage(int imagetype) override;
+
+    sGirl* get_image_girl() override;
 };

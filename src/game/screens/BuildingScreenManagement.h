@@ -63,7 +63,6 @@ private:
 
     int gold_id;            // Player Gold
     int girldesc_id;        // Girl Description text
-    int girlimage_id;        // Girl image
     int firegirl_id;        // Fire Girl button
     int freeslave_id;        // Free Slave Button
     int sellslave_id;        // Sell Slave button

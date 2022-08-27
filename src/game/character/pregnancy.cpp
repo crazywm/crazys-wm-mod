@@ -220,7 +220,7 @@ bool child_is_due(sGirl& girl, sChild& child, std::string& summary, bool PlayerC
                         cGirls::AdjustTraitGroupFertility(girl, -1);
                     }
                 }
-                if (PlayerControlled) girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
+                if (PlayerControlled) girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_DANGER);
                 return true;
             }
             else    // the baby lives
@@ -263,7 +263,7 @@ bool child_is_due(sGirl& girl, sChild& child, std::string& summary, bool PlayerC
                     }
                 }
                 // queue the message and return false because we need to see this one grow up
-                if (PlayerControlled) girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
+                if (PlayerControlled) girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_DANGER);
                 return false;
             }
         }
@@ -362,7 +362,7 @@ bool child_is_due(sGirl& girl, sChild& child, std::string& summary, bool PlayerC
                 cGirls::AdjustTraitGroupFertility(girl, 1);
             }
 
-            if (PlayerControlled) girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
+            if (PlayerControlled) girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_DANGER);
 
             if (child.m_MultiBirth > 0) return false;    // there are some babies that survived so we need to keep them
             else return true;                            // or they all died so we can remove this pregnancy
@@ -507,7 +507,7 @@ bool child_is_due(sGirl& girl, sChild& child, std::string& summary, bool PlayerC
     *    because we're not interested in watching
     *    little tentacles grow to adulthood
     */
-    if (PlayerControlled) girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
+    if (PlayerControlled) girl.AddMessage(ss.str(), EImageBaseType::BIRTH_HUMAN, EVENT_DANGER);
     girl.m_JustGaveBirth = true;
     return true;
 }
@@ -538,7 +538,7 @@ void handle_son(sGirl& mom, std::string& summary, bool PlayerControlled)
         else ss << "got his own place in town";
         ss << ".\n";
     }
-    mom.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+    mom.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
 }
 
 int calc_abnormal_pc(const sGirl& mom, sGirl& sprog, bool is_players)
@@ -656,7 +656,7 @@ void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
 
     // TODO decide where to send the new girl.
     g_Game->dungeon().AddGirl(sprog, DUNGEON_KID);
-    mom.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+    mom.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
 }
 
 // returns false if the child is not grown up, returns true when the child grows up

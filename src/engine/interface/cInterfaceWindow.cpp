@@ -257,7 +257,10 @@ std::string cInterfaceWindow::GetEditBoxText(int ID)
 
 void cInterfaceWindow::SetEditBoxText(int ID, std::string text)
 {
-    GetEditBox(ID)->SetText(std::move(text));
+    auto* box = GetEditBox(ID);
+    if(box) {
+        box->SetText(std::move(text));
+    }
 }
 
 void cInterfaceWindow::SetEditBoxCallback(int id, std::function<void(const std::string&)> cb) {

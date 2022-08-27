@@ -55,7 +55,7 @@ cFarmJobFarmer::cFarmJobFarmer() : cFarmJob(
 bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100(), roll_c = d100();
 
-    int imagetype = IMGTYPE_FARM;
+    EImageBaseType imagetype = EImageBaseType::FARM;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    Job Performance            //
@@ -216,7 +216,7 @@ double cFarmJobMarketer::GetPerformance(const sGirl& girl, bool estimate) const 
 
 bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100();
-    int imagetype = IMGTYPE_PROFILE;
+    EImageBaseType imagetype = EImageBaseType::PROFILE;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    Create Items                //
@@ -261,7 +261,7 @@ bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
             ugirl->animalhandling(uniform(0, 10));            ugirl->cooking(uniform(0, 20));
 
             Umsg << "${name} was purchased by Farm Marketer ${name} in exchange for " << cost << " units of food.\n";
-            ugirl->AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+            ugirl->AddMessage(Umsg.str(), EImageBaseType::PROFILE, EVENT_DUNGEON);
             ss << "\n \nA merchant from a far off village brought a girl from his village to trade for " << cost << " units of food.\n" << ugirl->FullName() << " has been sent to your dungeon.\n";
 
             g_Game->dungeon().AddGirl(std::move(ugirl), DUNGEON_NEWGIRL);    // Either type of girl goes to the dungeon
@@ -413,7 +413,7 @@ bool cFarmJobVeterinarian::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
 
     //    Finish the shift            //
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
     girl.fame(fame);
@@ -434,7 +434,7 @@ cFarmJobShepherd::cFarmJobShepherd() : cFarmJob(
 
 bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
-    int imagetype = IMGTYPE_HERD;
+    EImageBaseType imagetype = EImageBaseType::HERD;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
 #pragma region //    Job Performance            //
@@ -559,7 +559,7 @@ cFarmJobRancher::cFarmJobRancher() : cFarmJob(
 bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
 
-    int imagetype = IMGTYPE_FARM;
+    EImageBaseType imagetype = EImageBaseType::FARM;
 
     //    Job Performance            //
 
@@ -682,7 +682,7 @@ cFarmJobMilker::cFarmJobMilker() : cFarmJob(
 
 bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
-    int imagetype = IMGTYPE_FARM;
+    EImageBaseType imagetype = EImageBaseType::FARM;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    Job Performance            //
@@ -851,7 +851,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
     // TODO this is contrary to simplejob from which all the farm jobs derive
     cGirls::EquipCombat(girl);    // ready armor and weapons!
 
-    int imagetype = IMGTYPE_COMBAT;
+    EImageBaseType imagetype = EImageBaseType::COMBAT;
     int msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    The Fight to get the Beasts        //
@@ -869,7 +869,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
             if (gain <= 2)    gain = 2;
             if (gain >= gainmax)    gain = gainmax;
             ss << "She had fun hunting today and came back with " << gain << " new beasts.";;
-            imagetype = IMGTYPE_COMBAT;
+            imagetype = EImageBaseType::COMBAT;
             tired = uniform(0, 3*gain);
             m_Enjoyment += uniform(2, 5);
         }
@@ -889,7 +889,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
                 if (gain > 1)    ss << gain;
                 ss << " captured beast" << (gain > 1 ? "s" : "") << " behind her.";
             }
-            imagetype = IMGTYPE_COMBAT;
+            imagetype = EImageBaseType::COMBAT;
             m_Enjoyment -= uniform(1, 3);
             tired = uniform(20, 20 + 10 * gain);
         }
@@ -1118,7 +1118,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     HateLove = girl.pclove();
     //BSIN: Update: to generate an extra message in case of certain event
     std::stringstream ssextra;
-    int extraimage = 0;
+    sImagePreset extraimage = EImageBaseType::NUM_TYPES;
     bool extraEvent = false;
     bool noAnti = girl.m_UseAntiPreg = false;
 
@@ -1142,7 +1142,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
         {
             ss << "She sends in one of your beasts to get the job done.";
             girl.beastiality(2);
-            girl.AddMessage(ss.str(), IMGTYPE_BEAST, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+            girl.AddMessage(ss.str(), EImageBaseType::BEAST, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
             {
                 g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
@@ -1152,7 +1152,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
         {
             ss << "She found a random man off the street and offered him the chance to have sex with ${name} for free as long as he cummed inside her. He jumped at the chance for it.";
             girl.normalsex(2);
-            girl.AddMessage(ss.str(), IMGTYPE_SEX, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+            girl.AddMessage(ss.str(), EImageBaseType::VAGINAL, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             if (!girl.calc_pregnancy(Cust, 1.0))
             {
                 g_Game->push_message(girl.FullName() + " has gotten pregnant", 0);
@@ -1437,21 +1437,21 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
                 ssextra << ", you decide, as you squeeze your dick into her ass.\n";
                 girl.anal(1);
                 girl.bdsm(1);
-                extraimage = IMGTYPE_ANAL;
+                extraimage = EImageBaseType::ANAL;
             }
             else if (is_virgin(girl))
             {
                 ssextra << " and you are about to enter her when you remember she is a virgin. Reluctantly, you switch and instead fuck her ass.\n";
                 girl.anal(1);
                 girl.bdsm(1);
-                extraimage = IMGTYPE_ANAL;
+                extraimage = EImageBaseType::ANAL;
             }
             else
             {
                 ssextra << " so you clamp your hands around that booty and fuck her pussy hard. ";
                 girl.normalsex(1);
                 girl.bdsm(1);
-                extraimage = IMGTYPE_SEX;
+                extraimage = EImageBaseType::VAGINAL;
 
                 if (!girl.calc_pregnancy(&g_Game->player(), 1.0))
                 {
@@ -1490,7 +1490,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
         {
             ssextra << ". Looking closer, she really does have a great butt. You stop for a moment, but decide that doing anything more just wouldn't be right. "
                     << "You give her butt a gentle pat and walk away.\n \n";
-            extraimage = IMGTYPE_COWGIRL;
+            //extraimage = EImageBaseType::COWGIRL;
         }
         else //you are good
         {
@@ -1523,12 +1523,12 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
                 girl.has_active_trait("Slut"))
             {
                 ssextra << ", pulls down your pants, and 'thanks'";
-                extraimage = IMGTYPE_ORAL;
+                extraimage = EImagePresets::BLOWJOB;
             }
             else
             {
                 ssextra << " and earnestly thanks";
-                extraimage = IMGTYPE_PROFILE;
+                extraimage = EImageBaseType::PROFILE;
             }
             ssextra << " you for your intervention.\n";
         }
@@ -1560,7 +1560,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     }
 
     // `J` Farm Bookmark - adding in items that can be created in the farm
-    girl.AddMessage(ss.str(), IMGTYPE_MILK, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::MILK, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     //generate extra message
     if (extraEvent) girl.AddMessage(ssextra.str(), extraimage, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
@@ -1609,7 +1609,7 @@ bool cFarmJobCatacombRancher::JobProcessing(sGirl& girl, IBuilding& brothel, boo
 
     //    Finish the shift            //
 
-    girl.AddMessage(ss.str(), IMGTYPE_HERD, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::HERD, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     int roll_max = (girl.beauty() + girl.charisma()) / 4;
     m_Wages += uniform(10, 10 + roll_max);
@@ -1891,7 +1891,7 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
 
     girl.upd_Enjoyment(m_Data.Action, m_Enjoyment);
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
     int xp = 5 + skill;

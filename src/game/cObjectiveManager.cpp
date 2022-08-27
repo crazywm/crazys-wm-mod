@@ -357,7 +357,7 @@ void cObjectiveManager::PassObjective()
                 std::stringstream ssg;
                 ss << girl->FullName() << "\n";
                 ssg << girl->FullName() << " was given to you as a reward for completing your objective.";
-                girl->AddMessage(ssg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+                girl->AddMessage(ssg.str(), EImageBaseType::PROFILE, EVENT_DUNGEON);
                 g_Game->dungeon().AddGirl(std::move(girl), DUNGEON_NEWGIRL);
                 girls--;
             }

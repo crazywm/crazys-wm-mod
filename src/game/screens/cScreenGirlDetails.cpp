@@ -42,7 +42,7 @@ void cScreenGirlDetails::set_ids()
 {
     girlname_id       = get_id("GirlName");
     girldesc_id       = get_id("GirlDescription");
-    girlimage_id      = get_id("GirlImage");
+    m_MainImageId      = get_id("GirlImage");
     antipreg_id       = get_id("UseAntiPregToggle");
     senddungeon_id    = get_id("SendDungeonButton");
     reldungeon_id     = get_id("ReleaseDungeonButton");
@@ -112,10 +112,6 @@ void cScreenGirlDetails::set_ids()
     SetSliderCallback(accom_id, [this](int value) { set_accomodation(value); });
 }
 
-void cScreenGirlDetails::UpdateImage(int imagetype) {
-    PrepareImage(girlimage_id, m_SelectedGirl.get(), imagetype, true, ImageNum);
-}
-
 void cScreenGirlDetails::init(bool back)
 {
     m_Refresh = false;
@@ -150,8 +146,8 @@ void cScreenGirlDetails::init(bool back)
     EditTextItem(detail, girldesc_id, true);
 
     /// TODO when do we reset the image?
-    if(!back) {
-        PrepareImage(girlimage_id, m_SelectedGirl.get(), IMGTYPE_PROFILE, true, ImageNum);
+    if(!back && m_SelectedGirl) {
+        PrepareImage(m_MainImageId, *m_SelectedGirl, EImageBaseType::PROFILE);
     }
 
     SliderRange(houseperc_id, 0, 100, m_SelectedGirl->house(), 10);
@@ -456,4 +452,8 @@ void cScreenGirlDetails::process()
     if(m_Refresh) {
         init(false);
     }
+}
+
+sGirl* cScreenGirlDetails::get_image_girl() {
+    return m_SelectedGirl.get();
 }

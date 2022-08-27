@@ -23,11 +23,12 @@
 #include "SimpleJob.h"
 #include <sstream>
 #include <vector>
+#include "images/sImageSpec.h"
 
 
 class GenericCraftingJob : public cSimpleJob {
 public:
-    explicit GenericCraftingJob(JOBS id, const char* xml, Action_Types action, int BaseWages, Image_Types image) :
+    explicit GenericCraftingJob(JOBS id, const char* xml, Action_Types action, int BaseWages, EImageBaseType image) :
         cSimpleJob(id, xml, {action, BaseWages}) {
     }
 
@@ -35,7 +36,7 @@ protected:
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 
-    Image_Types m_Image;
+    EImageBaseType m_Image;
 
     // shift processing data
     int craftpoints;

@@ -24,6 +24,10 @@
 #include "buildings/studio/manager.h"
 #include <sstream>
 #include "character/cSkillCap.h"
+#include "images/cImageLookup.h"
+#include "sConfig.h"
+
+extern cConfig cfg;
 
 cRivalManager& IGame::rivals()
 {
@@ -55,9 +59,12 @@ IGame::IGame() :
     m_MarketGirls( new cGirlPool() ),
     m_Prison( new cGirlPool() ),
     m_MovieManager(new cMovieManager),
-    m_SkillCaps( std::make_unique<cSkillCapManager>() )
+    m_SkillCaps( std::make_unique<cSkillCapManager>() ),
+    m_ImageLookup( std::make_unique<cImageLookup>(cfg.defaultimageloc(), DirPath() << "Resources" << "Data" << "ImageTypes.xml") )
 {
     m_Player = std::make_unique<cPlayer>( create_traits_collection() );
+    m_ImageLookup->load_file_name_matchers(DirPath() << "Resources" << "Data" << "ImageFiles.xml");
+    m_ImageLookup->load_transition_costs(DirPath() << "Resources" << "Data" << "ImageTransitions.xml");
 }
 
 ITraitsManager& IGame::traits()

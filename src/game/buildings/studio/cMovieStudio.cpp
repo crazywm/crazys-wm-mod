@@ -96,7 +96,7 @@ void sMovieStudio::UpdateGirls(bool is_night)
             if (girl.m_NightJob == JOB_STAGEHAND) { // these two can still work
                 g_Game->job_manager().handle_simple_job(girl, SHIFT_NIGHT);
             } else {
-                girl.AddMessage("There was no crew to film the scene, so ${name} took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
+                girl.AddMessage("There was no crew to film the scene, so ${name} took the day off", EImageBaseType::PROFILE, EVENT_NOWORK);
             }
         });
     } else {

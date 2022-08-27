@@ -357,7 +357,7 @@ bool sGirl::calc_pregnancy(int chance, int type, const ICharacter& father)
         break;
     }
 
-    AddMessage(text, IMGTYPE_PREGNANT, EVENT_DANGER);
+    AddMessage(text, EImageBaseType::PROFILE, EVENT_DANGER);
     create_pregnancy(*this, 1, type, father);
     return false;
 }
@@ -1463,8 +1463,8 @@ double sGirl::job_performance(JOBS job, bool estimate) const {
     return job_handler->GetPerformance(*this, estimate);
 }
 
-void sGirl::AddMessage(const std::string& message, int nImgType, EventType event) {
-    m_Events.AddMessage(Interpolate(message), nImgType, event);
+void sGirl::AddMessage(const std::string& message, const sImageSpec& spec, EventType event) {
+    m_Events.AddMessage(Interpolate(message), spec, event);
 }
 
 const DirPath& sGirl::GetImageFolder() const {
@@ -1486,6 +1486,20 @@ FormattedCellData sGirl::GetJobRating(JOBS job) const {
     else if (value >= 70)    return {1, "D"};             // Don't bother
     else                     return {0, "E"};  // Expect Failure
 
+}
+
+sImageSpec sGirl::MakeImageSpec(sImagePreset preset) const {
+    // add some variety to profile images.
+    auto base = preset.base_image();
+    auto participants = preset.participants();
+    return sImageSpec{base, participants,
+                      is_pregnant() ? ETriValue::Yes : ETriValue::No,
+                      is_futa(*this) ? ETriValue::Yes : ETriValue::No,
+                      preset.tied_up()};
+}
+
+void sGirl::AddMessage(const std::string& message, sImagePreset preset, EventType event) {
+    return AddMessage(message, MakeImageSpec(preset), event);
 }
 
 std::string sGirl::Interpolate(const std::string& pattern) {

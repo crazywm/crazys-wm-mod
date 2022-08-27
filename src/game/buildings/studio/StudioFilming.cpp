@@ -60,10 +60,10 @@ bool cFilmSceneJob::CheckCanWork(sGirl& girl) {
         if(brothel->NumInteractors(DirectorInteractionId) != 0 && brothel->NumInteractors(CamMageInteractionId) != 0 &&
         brothel->NumInteractors(CrystalPurifierInteractionId) != 0) {
             girl.AddMessage("There were more scenes scheduled for filming today than you crew could handle. ${name} took the day off.",
-                            IMGTYPE_PROFILE, EVENT_NOWORK);
+                            EImageBaseType::PROFILE, EVENT_NOWORK);
         } else {
             girl.AddMessage("There was no crew to film the scene, so she took the day off. You need at least a Director, a Camera Mage,"
-                            "and a Crystal Purifier to film a scene.", IMGTYPE_PROFILE,EVENT_NOWORK);
+                            "and a Crystal Purifier to film a scene.", EImageBaseType::PROFILE, EVENT_NOWORK);
         }
         // still, we notify the building that we wanted these interactions.
         // TODO maybe have a separate function for this.
@@ -77,13 +77,13 @@ bool cFilmSceneJob::CheckCanWork(sGirl& girl) {
     if (girl.health() < m_MinimumHealth)
     {
         add_text("crew.refuse.health");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
         return false;
     }
 
     if(m_RefuseIfPregnant && girl.is_pregnant()) {
         add_text("crew.refuse.pregnant");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
         return false;
     }
 
@@ -91,7 +91,7 @@ bool cFilmSceneJob::CheckCanWork(sGirl& girl) {
     if(m_PleasureFactor.Skill != NUM_SKILLS) {
         if(!brothel->is_sex_type_allowed(m_PleasureFactor.Skill)) {
             girl.AddMessage("A scene of this type cannot be filmed, because you have forbidden the corresponding sex type.",
-                            IMGTYPE_PROFILE, EVENT_NOWORK);
+                            EImageBaseType::PROFILE, EVENT_NOWORK);
             return false;
         }
     }
@@ -172,7 +172,7 @@ bool cFilmSceneJob::CheckRefuseWork(sGirl& girl) {
             return RefusedTieUp(girl);
         } else {
             add_text("refuse");
-            girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
+            girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
             produce_debug_message(girl);
         }
         return true;
@@ -192,7 +192,7 @@ bool cFilmSceneJob::RefusedTieUp(sGirl& girl) {
             girl.pcfear(-1);
             girl.pclove(1);
             girl.obedience(-1);
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+            girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
             return true;
         }
         else if (g_Game->player().disposition() > -30) //pragmatic
@@ -220,7 +220,7 @@ bool cFilmSceneJob::RefusedTieUp(sGirl& girl) {
     else // not a slave
     {
         add_text("disobey.free");
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
         return true;
     }
 
@@ -309,14 +309,12 @@ sWorkJobResult cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
         if(girl.has_active_trait("Iron Will")) {
             if (girl.lose_trait("Iron Will", 2))
             {
-                girl.AddMessage("${name}'s unwilling degradation has shattered her iron will.", IMGTYPE_TORTURE, EVENT_GOODNEWS);
-                return {true, 0, 0, 0};
+                girl.AddMessage("${name}'s unwilling degradation has shattered her iron will.", EImageBaseType::TORTURE, EVENT_GOODNEWS);
             }
         } else {
             if (girl.gain_trait("Mind Fucked", 2))
             {
-                girl.AddMessage("${name} has become Mind Fucked from the forced degradation.", IMGTYPE_TORTURE, EVENT_WARNING);
-                return {true, 0, 0, 0};
+                girl.AddMessage("${name} has become Mind Fucked from the forced degradation.", EImageBaseType::TORTURE, EVENT_WARNING);
             }
         }
     }
@@ -342,7 +340,9 @@ sWorkJobResult cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
         g_Game->error(error.what());
     }
 
-    girl.AddMessage(ss.str(), m_EventImage, EVENT_DAYSHIFT);
+    sImageSpec spec = girl.MakeImageSpec(m_EventImage);
+    if(m_IsForced)  spec.IsTied = ETriValue::Yes;
+    girl.AddMessage(ss.str(), spec, EVENT_DAYSHIFT);
 
     // Improve stats and gain traits
     apply_gains(girl, m_Performance);
@@ -354,7 +354,7 @@ sWorkJobResult cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
 }
 
 void cFilmSceneJob::produce_debug_message(sGirl& girl) const {
-//    girl.AddMessage(m_Dbg_Msg.str(), IMGTYPE_PROFILE, EVENT_DEBUG);
+//    girl.AddMessage(m_Dbg_Msg.str(), EBaseImage::PROFILE, EVENT_DEBUG);
 }
 
 void cFilmSceneJob::update_enjoyment(sGirl& girl) const {
@@ -367,7 +367,7 @@ void cFilmSceneJob::update_enjoyment(sGirl& girl) const {
             std::stringstream enjoy_message;
             enjoy_message << "${name} had fun working today (" << m_Enjoyment
                           << "), and now enjoys this job a little more (" << old_enjoyment << " -> " << girl.get_enjoyment(m_PrimaryAction) << ").";
-            girl.AddMessage(enjoy_message.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+            girl.AddMessage(enjoy_message.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
         }
     } else if (m_Enjoyment < old_enjoyment - 6) {
         int delta = old_enjoyment - 4 - m_Enjoyment;
@@ -376,7 +376,7 @@ void cFilmSceneJob::update_enjoyment(sGirl& girl) const {
             std::stringstream enjoy_message;
             enjoy_message << "${name} disliked working today (" << m_Enjoyment
                           << "), and now enjoys this job a little less (" << old_enjoyment << " -> " << girl.get_enjoyment(m_PrimaryAction) << ").";
-            girl.AddMessage(enjoy_message.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+            girl.AddMessage(enjoy_message.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         }
     }
 }
@@ -414,7 +414,7 @@ void cFilmSceneJob::PrintForcedSceneEval() {
     add_text("forced-filming");
 }
 
-cFilmSceneJob::cFilmSceneJob(JOBS job, const char* xml, Image_Types event_image, SceneType scene, SexAction sex) :
+cFilmSceneJob::cFilmSceneJob(JOBS job, const char* xml, sImagePreset event_image, SceneType scene, SexAction sex) :
     cBasicJob(job, xml), m_EventImage(event_image), m_SceneType(scene), m_SexAction(sex) {
 
     m_Info.Consumes.emplace_back(DirectorInteractionId);

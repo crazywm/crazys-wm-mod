@@ -21,6 +21,7 @@
 #define WM_BROTHELJOBS_H
 
 #include "jobs/SimpleJob.h"
+#include "images/sImageSpec.h"
 
 class cBarJob : public cSimpleJob {
 public:
@@ -51,7 +52,7 @@ private:
     };
 
     SexType choose_sex(const std::string& prefix, const sGirl& girl, const sClientData& client);
-    Image_Types handle_sex(const std::string& prefix, int& fame, sGirl& girl, SexType type);
+    sImagePreset handle_sex(const std::string& prefix, int& fame, sGirl& girl, SexType type);
 };
 
 class cWhoreJob : public cSimpleJob {

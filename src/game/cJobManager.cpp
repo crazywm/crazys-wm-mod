@@ -710,22 +710,22 @@ bool cJobManager::work_related_violence(sGirl& girl, bool Day0Night1, bool stree
         switch (g_Dice % 5)
             {
             case 0:
-                girl.AddMessage(("She beat the customer silly."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+                girl.AddMessage(("She beat the customer silly."), EImageBaseType::COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             case 1:
-                girl.AddMessage(("The customer's face annoyed her, so she punched it until it went away."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+                girl.AddMessage(("The customer's face annoyed her, so she punched it until it went away."), EImageBaseType::COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             case 2:
-                girl.AddMessage(("The customer acted like he owned her - so she pwned him."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+                girl.AddMessage(("The customer acted like he owned her - so she pwned him."), EImageBaseType::COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             case 3:
-                girl.AddMessage(("The customer's attitude was bad. She corrected it."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+                girl.AddMessage(("The customer's attitude was bad. She corrected it."), EImageBaseType::COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             case 4:
-                girl.AddMessage(("He tried to insert a bottle into her, so she 'gave it' to him instead."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+                girl.AddMessage(("He tried to insert a bottle into her, so she 'gave it' to him instead."), EImageBaseType::COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             default:
-                girl.AddMessage(("Did som(E)thing violent."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+                girl.AddMessage(("Did som(E)thing violent."), EImageBaseType::COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             }
         girl.fame(-1);
@@ -874,7 +874,7 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
                          << SecName << " gave her attacker a " << item << ", all the while scolding her for her actions.";
                     CGmsg << custgirl->FullName() << " was caught attacking a girl under your employ. She was given a "
                           << item << " and sent to the dungeon as your newest slave.";
-                    custgirl->AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
+                    custgirl->AddMessage(CGmsg.str(), EImageBaseType::DEATH, EVENT_WARNING);
                     // `J` add the customer to the dungeon
                     g_Game->dungeon().AddGirl(custgirl, DUNGEON_CUSTBEATGIRL);
                 }
@@ -913,15 +913,15 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
             Gmsg << Tmsg.str();
             SGmsg << Tmsg.str();
         }
-        SecGuard->AddMessage(SGmsg.str(), IMGTYPE_COMBAT, EVENT_WARNING);
-        girl.AddMessage(Gmsg.str(), IMGTYPE_COMBAT, EVENT_WARNING);
+        SecGuard->AddMessage(SGmsg.str(), EImageBaseType::COMBAT, EVENT_WARNING);
+        girl.AddMessage(Gmsg.str(), EImageBaseType::COMBAT, EVENT_WARNING);
         return true;
     }
     else if (result == ECombatResult::DRAW) {
         std::stringstream ss;
         ss << "Security Problem:\n" << "Trying to defend " << girl.FullName() << ". You defeated "
            << num << " of " << OrgNumMem << ". By now the guarding gangs have arrived, and will deal with the offenders.";
-        SecGuard->AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+        SecGuard->AddMessage(ss.str(), EImageBaseType::DEATH, EVENT_DANGER);
         return false;
     }
     else  // Loss
@@ -937,7 +937,7 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
         ss << ("Security Problem:\n") << ("Trying to defend ") << girl.FullName() << (". You defeated ")
            << num << (" of ") << OrgNumMem << (" before:\n") << SecGuard->FullName() << GetGirlAttackedString(attacktype);
 
-        SecGuard->AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+        SecGuard->AddMessage(ss.str(), EImageBaseType::DEATH, EVENT_DANGER);
 
         // Bad stuff
         SecGuard->happiness(-40);
@@ -971,7 +971,7 @@ bool cJobManager::gang_stops_rape(sGirl& girl, std::vector<sGang *> gangs_guardi
         gang_s << guarding_gang->name() << " was defeated defending " << girl.FullName() << ".";
         girl_s << guarding_gang->name() << " was defeated defending you from a gang of rapists.";
         guarding_gang->AddMessage(gang_s.str(), EVENT_WARNING);
-        girl.AddMessage(girl_s.str(), IMGTYPE_DEATH, EVENT_WARNING);
+        girl.AddMessage(girl_s.str(), EImageBaseType::DEATH, EVENT_WARNING);
         return false;
     }
 
@@ -1006,7 +1006,7 @@ bool cJobManager::gang_stops_rape(sGirl& girl, std::vector<sGang *> gangs_guardi
                 << " barely managed to hold him off until the city guard arrived.";
     }
 
-    girl.AddMessage(girl_ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+    girl.AddMessage(girl_ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
     guarding_gang->AddMessage(gang_ss.str());
 
     return true;
@@ -1065,7 +1065,7 @@ bool cJobManager::girl_fights_rape(sGirl& girl, sGang *enemy_gang, int day_night
             msg << ("A group of ") << OrgNumMem << (" customers tried to assault her. They fled after she killed ")
             << num << (" of them.");
         }
-        girl.AddMessage(msg.str(), IMGTYPE_COMBAT, EVENT_WARNING);
+        girl.AddMessage(msg.str(), EImageBaseType::COMBAT, EVENT_WARNING);
     }
 
     // Losing is dealt with later in customer_rapes (called from work_related_violence)
@@ -1087,7 +1087,7 @@ void cJobManager::customer_rape(sGirl& girl, int numberofattackers)
     std::stringstream ss;
     ss << girl.FullName() << GetGirlAttackedString(attacktype);
 
-    girl.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+    girl.AddMessage(ss.str(), EImageBaseType::DEATH, EVENT_DANGER);
 
     // Made this more harsh, so the player hopefully notices it
     //girl.health(-(g_Dice%10 + 5));  // Oops, can drop health below zero after combat is considered
@@ -1151,7 +1151,7 @@ void cJobManager::customer_rape(sGirl& girl, int numberofattackers)
             if (h)    { girl.gain_trait("Herpes");        ss << "Herpes"; }
             ss << ".\n \n";
         }
-        girl.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+        girl.AddMessage(ss.str(), EImageBaseType::DEATH, EVENT_DANGER);
     }
 }
 
@@ -1440,7 +1440,7 @@ void cJobManager::handle_simple_job(sGirl& girl, bool is_night)
     if (result.Refused)
     {
         brothel->m_Fame -= girl.fame();
-        girl.AddMessage("${name} refused to work so she made no money.", IMGTYPE_PROFILE, EVENT_SUMMARY);
+        girl.AddMessage("${name} refused to work so she made no money.", EImageBaseType::PROFILE, EVENT_SUMMARY);
     }
     else
     {
@@ -1456,7 +1456,7 @@ void cJobManager::handle_simple_job(sGirl& girl, bool is_night)
             ss << "spent " << -money_data.PlayerGets << " gold.";
         }
 
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_SUMMARY);
     }
 }
 
@@ -1568,7 +1568,7 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
         g_Game->player().customerfear(g_Dice % 10);
         custgirl->m_Money = 0;
 
-        custgirl->AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
+        custgirl->AddMessage(CGmsg.str(), EImageBaseType::DEATH, EVENT_WARNING);
         // `J` add the customer to the dungeon
         g_Game->dungeon().AddGirl(custgirl, DUNGEON_CUSTNOPAY);
     } else {
@@ -1633,7 +1633,7 @@ bool cJobManager::AddictBuysDrugs(std::string Addiction, std::string Drug, sGirl
     if ((brothel->num_girls_on_job(JOB_MATRON, true) >= 1 || brothel->num_girls_on_job(JOB_MATRON, false) >= 1)
         && g_Dice.percent(70))
     {
-        girl.AddMessage("Matron confiscates drugs", IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage("Matron confiscates drugs", EImageBaseType::PROFILE, EVENT_WARNING);
         return girl.remove_item(item) == 0;
         return false;
     }

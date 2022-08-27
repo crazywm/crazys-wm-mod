@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Transitions>
+    <Transition Name="Participants">
+        <Entry From="Solo" To="Lesbian" Cost = "50" />
+        <Entry From="Solo" To="Hetero" Cost = "100" />
+        <Entry From="Solo" To="FFM" Cost = "200" />
+        <Entry From="Solo" To="MMF" Cost = "200" />
+        <Entry From="Solo" To="Gangbang" Cost = "200" />
+        <Entry From="Solo" To="LesGroup" Cost = "100" />
+        <Entry From="Solo" To="Orgy" Cost = "200" />
+        <Entry From="Solo" To="Other" Cost = "50" />
+        <Entry From="Solo" To="Any" Cost = "40" />
+
+        <Entry From="Lesbian" To="Solo" Cost = "50" />
+        <Entry From="Lesbian" To="Hetero" Cost = "110" />
+        <Entry From="Lesbian" To="FFM" Cost = "100" />
+        <Entry From="Lesbian" To="MMF" Cost = "200" />
+        <Entry From="Lesbian" To="Gangbang" Cost = "200" />
+        <Entry From="Lesbian" To="LesGroup" Cost = "50" />
+        <Entry From="Lesbian" To="Orgy" Cost = "150" />
+        <Entry From="Lesbian" To="Other" Cost = "25" />
+        <Entry From="Lesbian" To="Any" Cost = "40" />
+
+        <Entry From="Hetero" To="Solo" Cost = "50" />
+        <Entry From="Hetero" To="Lesbian" Cost = "200" />
+        <Entry From="Hetero" To="FFM" Cost = "200" />
+        <Entry From="Hetero" To="MMF" Cost = "100" />
+        <Entry From="Hetero" To="Gangbang" Cost = "110" />
+        <Entry From="Hetero" To="LesGroup" Cost = "200" />
+        <Entry From="Hetero" To="Orgy" Cost = "110" />
+        <Entry From="Hetero" To="Other" Cost = "25" />
+        <Entry From="Hetero" To="Any" Cost = "40" />
+
+        <Entry From="FFM" To="Solo" Cost = "200" />
+        <Entry From="FFM" To="Hetero" Cost = "100" />
+        <Entry From="FFM" To="Lesbian" Cost = "100" />
+        <Entry From="FFM" To="MMF" Cost = "190" />
+        <Entry From="FFM" To="Gangbang" Cost = "200" />
+        <Entry From="FFM" To="LesGroup" Cost = "100" />
+        <Entry From="FFM" To="Orgy" Cost = "100" />
+        <Entry From="FFM" To="Other" Cost = "100" />
+        <Entry From="FFM" To="Any" Cost = "40" />
+
+        <Entry From="MMF" To="Solo" Cost = "200" />
+        <Entry From="MMF" To="Lesbian" Cost = "200" />
+        <Entry From="MMF" To="Hetero" Cost = "100" />
+        <Entry From="MMF" To="FFM" Cost = "150" />
+        <Entry From="MMF" To="Gangbang" Cost = "100" />
+        <Entry From="MMF" To="Orgy" Cost = "100" />
+        <Entry From="MMF" To="LesGroup" Cost = "190" />
+        <Entry From="MMF" To="Other" Cost = "100" />
+        <Entry From="MMF" To="Any" Cost = "40" />
+
+        <Entry From="Gangbang" To="Solo" Cost = "200" />
+        <Entry From="Gangbang" To="Hetero" Cost = "100" />
+        <Entry From="Gangbang" To="Lesbian" Cost = "200" />
+        <Entry From="Gangbang" To="FFM" Cost = "100" />
+        <Entry From="Gangbang" To="MMF" Cost = "50" />
+        <Entry From="Gangbang" To="Orgy" Cost = "100" />
+        <Entry From="Gangbang" To="LesGroup" Cost = "110" />
+        <Entry From="Gangbang" To="Other" Cost = "150" />
+        <Entry From="Gangbang" To="Any" Cost = "40" />
+
+        <Entry From="LesGroup" To="Solo" Cost = "150" />
+        <Entry From="LesGroup" To="Lesbian" Cost = "50" />
+        <Entry From="LesGroup" To="Hetero" Cost = "200" />
+        <Entry From="LesGroup" To="FFM" Cost = "100" />
+        <Entry From="LesGroup" To="MMF" Cost = "190" />
+        <Entry From="LesGroup" To="Gangbang" Cost = "200" />
+        <Entry From="LesGroup" To="Orgy" Cost = "100" />
+        <Entry From="LesGroup" To="Other" Cost = "150" />
+        <Entry From="LesGroup" To="Any" Cost = "40" />
+
+        <Entry From="Orgy" To="Solo" Cost = "200" />
+        <Entry From="Orgy" To="Hetero" Cost = "190" />
+        <Entry From="Orgy" To="Lesbian" Cost = "190" />
+        <Entry From="Orgy" To="FFM" Cost = "60" />
+        <Entry From="Orgy" To="MMF" Cost = "60" />
+        <Entry From="Orgy" To="Gangbang" Cost = "50" />
+        <Entry From="Orgy" To="LesGroup" Cost = "50" />
+        <Entry From="Orgy" To="Other" Cost = "190" />
+        <Entry From="Orgy" To="Any" Cost = "40" />
+
+        <Entry From="Any" To="Solo" Cost = "1" />
+        <Entry From="Any" To="Lesbian" Cost = "1" />
+        <Entry From="Any" To="Hetero" Cost = "1" />
+        <Entry From="Any" To="FFM" Cost = "1" />
+        <Entry From="Any" To="MMF" Cost = "1" />
+        <Entry From="Any" To="Gangbang" Cost = "1" />
+        <Entry From="Any" To="LesGroup" Cost = "1" />
+        <Entry From="Any" To="Other" Cost = "1" />
+        <Entry From="Any" To="Orgy" Cost = "1" />
+    </Transition>
+
+    <Transition Name="Position" Default="50">
+        <Entry From="Girl-On-Top" To="Cowgirl" Cost="5" />
+        <Entry From="Girl-On-Top" To="Reverse-Cowgirl" Cost="5" />
+        <Entry From="Girl-On-Top" To="Amazon" Cost="5" />
+
+        <Entry From="Cowgirl" To="Girl-On-Top" Cost="10" />
+        <Entry From="Reverse-Cowgirl" To="Girl-On-Top" Cost="10" />
+        <Entry From="Amazon" To="Girl-On-Top" Cost="10" />
+
+        <Entry From="Cowgirl" To="Reverse-Cowgirl" Cost="10" />
+        <Entry From="Reverse-Cowgirl" To="Cowgirl" Cost="10" />
+        <Entry From="Cowgirl" To="Amazon" Cost="10" />
+        <Entry From="Amazon" To="Cowgirl" Cost="10" />
+
+        <Entry From="Cowgirl" To="Upright-Straddle" Cost="10" />
+        <Entry From="Upright-Straddle" To="Cowgirl" Cost="10" />
+        <Entry From="Reverse-Cowgirl" To="Reverse-Upright-Straddle" Cost="10" />
+        <Entry From="Reverse-Upright-Straddle" To="Reverse-Cowgirl" Cost="10" />
+
+        <Entry From="Reverse-Suspended-Congress" To="Suspended-Congress" Cost="10" />
+        <Entry From="Suspended-Congress" To="Reverse-Suspended-Congress" Cost="10" />
+
+        <Entry From="From-Behind" To="Doggy" Cost="5" />
+
+        <Entry From="Other" To="Sixty-Nine" Cost="0" />
+        <Entry From="Other" To="Doggy" Cost="0" />
+        <Entry From="Other" To="Cowgirl" Cost="0" />
+        <Entry From="Other" To="Reverse-Cowgirl" Cost="0" />
+        <Entry From="Other" To="Amazon" Cost="0" />
+        <Entry From="Other" To="Upright-Straddle" Cost="0" />
+        <Entry From="Other" To="Reverse-Upright-Straddle" Cost="0" />
+        <Entry From="Other" To="Suspended-Congress" Cost="0" />
+        <Entry From="Other" To="Reverse-Suspended-Congress" Cost="0" />
+        <Entry From="Other" To="From-Behind" Cost="0" />
+        <Entry From="Other" To="Girl-On-Top" Cost="0" />
+        <Entry From="Other" To="Boy-On-Top" Cost="0" />
+        <Entry From="Other" To="Missionary" Cost="0" />
+        <Entry From="Other" To="Standing" Cost="0" />
+        <Entry From="Other" To="Spitroast" Cost="0" />
+        <Entry From="Other" To="Spooning" Cost="0" />
+        <Entry From="Other" To="Piledriver" Cost="0" />
+        <Entry From="Other" To="Face-Sitting" Cost="0" />
+        <Entry From="Other" To="Scissor" Cost="0" />
+    </Transition>
+</Transitions>

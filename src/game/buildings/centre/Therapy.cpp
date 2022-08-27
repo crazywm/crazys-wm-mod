@@ -169,7 +169,7 @@ sWorkJobResult TherapyJob::DoWork(sGirl& girl, bool is_night) {
     }
 
     // Improve girl
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, msgtype);
     girl.upd_Enjoyment(actiontype, enjoy);
 
     return {false, 0, 0, 0};
@@ -184,7 +184,7 @@ bool TherapyJob::needs_therapy(const sGirl& girl) const {
 
 void TherapyJob::FightEvent(sGirl& girl, bool is_night) {
     ss << "${name} fought with her counselor and did not make any progress this week.";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+    girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
     girl.upd_Enjoyment(ACTION_WORKTHERAPY, -1);
     if (is_night) girl.m_WorkingDay--;
 }
@@ -204,7 +204,7 @@ IGenericJob::eCheckWorkResult TherapyJob::CheckWork(sGirl& girl, bool is_night) 
     {
         std::stringstream msg;
         msg << m_TherapyData.NoNeedMessage << " She was sent to the waiting room.";
-        if (!is_night)    girl.AddMessage(msg.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        if (!is_night)    girl.AddMessage(msg.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         girl.FullJobReset(JOB_RESTING);
         girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         return eCheckWorkResult::IMPOSSIBLE; // not refusing
@@ -212,7 +212,7 @@ IGenericJob::eCheckWorkResult TherapyJob::CheckWork(sGirl& girl, bool is_night) 
 
     if (!brothel->HasInteraction(CounselingInteractionId))
     {
-        girl.AddMessage(m_TherapyData.NoCounselorMessage, IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(m_TherapyData.NoCounselorMessage, EImageBaseType::PROFILE, EVENT_WARNING);
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
@@ -272,13 +272,13 @@ void AngerManagement::FightEvent(sGirl& girl, bool is_night) {
         std::stringstream ssc;
         ssc << "${name} had to defend herself from " << girl.FullName() << " who she was counseling.\n";
         if (runaway) ss << "${name} ran out of the Counceling Centre and has not been heard from since.";
-        counselor->AddMessage(ssc.str(), IMGTYPE_COMBAT, EVENT_WARNING);
+        counselor->AddMessage(ssc.str(), EImageBaseType::COMBAT, EVENT_WARNING);
     }
     else
     {
         ss << "${name} fought with her counselor and did not make any progress this week.";
     }
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
 }
 
 struct Rehab : public TherapyJob {

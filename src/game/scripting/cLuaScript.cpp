@@ -36,6 +36,7 @@
 #include "character/cPlayer.h"
 #include "character/sGirl.h"
 #include "buildings/cDungeon.h"
+#include "images/cImageLookup.h"
 
 #include "cLuaScript.h"
 #include "cLuaState.h"
@@ -88,6 +89,7 @@ static const luaL_Reg funx [] = {
         { "ChoiceBox",                   cLuaScript::ChoiceBox },
         { "Dialog",                      cLuaScript::Dialog },
         { "UpdateImage",                 cLuaScript::UpdateImage },
+        { "SelectImage",                 cLuaScript::SelectImage },
         { "SetPlayerSuspicion",          cify_int_arg([](int amount) { g_Game->player().suspicion(amount); })},
         { "GetPlayerSuspicion",          cify_no_arg([](){ return g_Game->player().suspicion(); })},
         { "SetPlayerDisposition",        cify_int_arg([](int amount) { g_Game->player().disposition(amount); })},
@@ -113,12 +115,23 @@ static const luaL_Reg funx [] = {
         { nullptr,                       nullptr }
 };
 
+namespace {
+    inline std::string normalize_table_key(std::string str) {
+        std::transform(begin(str), end(str), begin(str),
+                       [](char c)-> char {
+            if(c == ' ' || c == '-') return '_';
+            return std::toupper(c);
+        });
+        return std::move(str);
+    }
+}
+
 template<std::size_t N>
 void register_table(const char* table, cLuaInterpreter& state, std::array<const char*, N> names) {
     lua_pushstring(state.get_state(), table);
     lua_newtable(state.get_state());
     for(int i = 0; i < N; ++i) {
-        state.settable(-1, toupper(names[i]), i);
+        state.settable(-1, normalize_table_key(names[i]), i);
     }
     lua_settable(state.get_state(), -3);
 }
@@ -146,7 +159,20 @@ cLuaScript::cLuaScript()
     register_table("STATUS", m_State, get_status_names());
     register_table("ACTIONS", m_State, get_action_names());
     register_table("IMG", m_State, get_imgtype_names());
+    register_table("IMG_PART", m_State, get_participant_names());
     register_table("SPAWN", m_State, get_spawn_names());
+
+    // for the image type, concatenate base images and presets
+    lua_pushstring(m_State.get_state(), "IMG");
+    lua_newtable(m_State.get_state());
+    for(int i = 0; i < get_imgtype_names().size(); ++i) {
+        m_State.settable(-1, toupper(get_imgtype_names()[i]), i);
+    }
+    for(int i = 0; i < get_image_preset_names().size(); ++i) {
+        m_State.settable(-1, toupper(get_image_preset_names()[i]), i + (int)EImageBaseType::NUM_TYPES);
+    }
+    lua_settable(m_State.get_state(), -3);
+
     lua_setglobal(m_State.get_state(), "wm");
     sLuaGirl::init(m_State.get_state());
     sLuaCustomer::init(m_State.get_state());
@@ -289,16 +315,109 @@ int cLuaScript::RandomName(lua_State* state) {
     return 1;
 }
 
+namespace {
+    sImageSpec make_spec(lua_State* state, sGirl& girl, sImagePreset preset, int offset) {
+        auto spec = girl.MakeImageSpec(preset);
+
+        lua_getfield(state, offset, "participants");
+        if (!lua_isnil(state, offset+1)) {
+            long participant_type = luaL_checkinteger(state, offset+1);
+            spec.Participants = (ESexParticipants) participant_type;
+        }
+        lua_pop(state, 1);
+
+        lua_pushstring(state, "tied");
+        lua_gettable(state, offset);
+        if (!lua_isnil(state, offset+1)) {
+            long is_tied = lua_toboolean(state, offset+1);
+            spec.IsTied = is_tied ? ETriValue::Yes : ETriValue::No;
+        }
+        lua_pop(state, 1);
+
+        return spec;
+    }
+}
+
 
 int cLuaScript::UpdateImage(lua_State* state) {
+    if(!lua_isinteger(state, 1)) {
+        auto top_window = window_manager().GetWindow(false);
+        if(auto gw = dynamic_cast<cGameWindow*>(top_window)) {
+            gw->UpdateImage(luaL_checkstring(state, 1));
+            return 0;
+        }
+    }
     long image_type = luaL_checkinteger(state, 1);
     auto top_window = window_manager().GetWindow(false);
+
+    sImagePreset preset = [&]()-> sImagePreset {
+        if(image_type >= (int)EImageBaseType::NUM_TYPES) {
+            return (EImagePresets)(image_type  - (int)EImageBaseType::NUM_TYPES);
+        } else {
+            return (EImageBaseType)(image_type);
+        }
+    }();
+
     if(auto gw = dynamic_cast<cGameWindow*>(top_window)) {
-        gw->UpdateImage(image_type);
+        if(lua_gettop(state) == 2) {
+            auto girl = gw->get_image_girl();
+            if(girl) {
+                auto spec = make_spec(state, *girl, preset, 2);
+                gw->UpdateImage(spec, g_Dice % 8192);
+            }
+        } else {
+            gw->UpdateImage(preset, g_Dice % 8192);
+        }
     } else {
         g_LogFile.warning("scripting", "Script cannot set image on current screen");
     }
     return 0;
+}
+
+int cLuaScript::SelectImage(lua_State* state) {
+    auto& girl = sLuaGirl::check_type(state, 1);
+    long image_type = luaL_checkinteger(state, 2);
+
+    sImagePreset preset = [&]()-> sImagePreset {
+        if(image_type >= (int)EImageBaseType::NUM_TYPES) {
+            return (EImagePresets)(image_type  - (int)EImageBaseType::NUM_TYPES);
+        } else {
+            return (EImageBaseType)(image_type);
+        }
+    }();
+
+    auto spec = girl.MakeImageSpec(preset);
+
+    if(lua_gettop(state) == 3) {
+        spec = make_spec(state, girl, preset, 3);
+    }
+
+    // TODO I think this breaks when fallback images are involved
+    const DirPath& folder = girl.GetImageFolder();
+    std::string image = g_Game->image_lookup().find_image(folder.str(), spec, g_Dice % 8192);
+    std::string basename = image;
+    if(image.size() > folder.str().size() + 1) {
+        basename = image.substr(folder.str().size() + 1);
+    }
+    auto info = g_Game->image_lookup().get_image_info(folder.str(), basename);
+
+    // clear stack and start building the table
+    lua_settop(state, 0);
+
+    // create the table
+    lua_createtable(state, 0, 3);
+    lua_pushstring(state, image.c_str());
+    lua_setfield(state, 1, "path");
+    lua_pushboolean(state, info.Attributes.IsTied == ETriValue::Yes);
+    lua_setfield(state, 1, "tied");
+    lua_pushboolean(state, info.Attributes.IsPregnant == ETriValue::Yes);
+    lua_setfield(state, 1, "pregnant");
+    lua_pushboolean(state, info.Attributes.IsFuta == ETriValue::Yes);
+    lua_setfield(state, 1, "futa");
+    lua_pushstring(state, get_participant_name(info.Attributes.Participants));
+    lua_setfield(state, 1, "participants");
+
+    return 1;
 }
 
 
@@ -386,7 +505,7 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
             }
         }
         NGmsg1 << ".";
-        Daughter1->AddMessage(NGmsg1.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+        Daughter1->AddMessage(NGmsg1.str(), EImageBaseType::PROFILE, EVENT_DUNGEON);
     }
     if (num_daughters > 1)
     {
@@ -395,14 +514,14 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
         NGmsg2 << "her sister" << (num_daughters > 2 ? "s " : " ") << Daughter1->FullName();
         if (num_daughters > 2) NGmsg2 << " and " << Daughter3->FullName();
         NGmsg2 << ".";
-        Daughter2->AddMessage(NGmsg2.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+        Daughter2->AddMessage(NGmsg2.str(), EImageBaseType::PROFILE, EVENT_DUNGEON);
     }
     if (num_daughters > 2)
     {
         NGmsg3 << Daughter3->FullName() << " was " << kstring << " along with ";
         if (mother) NGmsg3 << "her mother " << Mother->FullName() << " and ";
         NGmsg3 << "her sisters " << Daughter1->FullName() << " and " << Daughter2->FullName() << ".";
-        Daughter3->AddMessage(NGmsg3.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+        Daughter3->AddMessage(NGmsg3.str(), EImageBaseType::PROFILE, EVENT_DUNGEON);
     }
     if (mother)
     {
@@ -416,7 +535,7 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
             if (num_daughters > 2)        NGmsgM << " and " << Daughter3->FullName();
         }
         NGmsgM << ".";
-        Mother->AddMessage(NGmsgM.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+        Mother->AddMessage(NGmsgM.str(), EImageBaseType::PROFILE, EVENT_DUNGEON);
     }
 
     if (Daughter1)    g_Game->dungeon().AddGirl(Daughter1, DUNGEON_GIRLKIDNAPPED);

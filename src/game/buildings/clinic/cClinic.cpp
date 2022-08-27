@@ -110,7 +110,7 @@ void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
                 }
             }
         }
-        doc->AddMessage(message.str(), IMGTYPE_NURSE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        doc->AddMessage(message.str(), EBaseImage::NURSE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         doc->m_Pay += earnings;
     }
 
@@ -125,12 +125,12 @@ void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
          // Summary Messages
          if (refused)
          {
-             girl.AddMessage("${name} refused to work so she made no money.", IMGTYPE_PROFILE, EVENT_SUMMARY);
+             girl.AddMessage("${name} refused to work so she made no money.", EBaseImage::PROFILE, EVENT_SUMMARY);
          }
          else
          {
              girl.AddMessage(g_Game->job_manager().GirlPaymentText(this, girl, totalTips, totalPay, totalTips + totalPay, is_night),
-                             IMGTYPE_PROFILE, EVENT_SUMMARY);
+                             EBaseImage::PROFILE, EVENT_SUMMARY);
          }
      });
 */
@@ -320,6 +320,6 @@ void sClinic::GirlBeginShift(sGirl& girl, bool is_night) {
     {
         girl.m_DayJob = girl.m_NightJob = JOB_RESTING;
         girl.AddMessage("Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.",
-                        IMGTYPE_PROFILE, EVENT_WARNING);
+                        EImageBaseType::PROFILE, EVENT_WARNING);
     }
 }

@@ -35,22 +35,20 @@ void IBuildingScreenManagement::update_image()
 {
     if (selected_girl)    // Draw a girls profile picture and description when selected
     {
-        bool Rand = false;
         if (m_LastSelection != selected_girl)
         {
             std::stringstream text;
             text << cGirls::GetGirlMood(*selected_girl) << "\n \n" << selected_girl->m_Desc;
             EditTextItem(text.str(), girldesc_id);
-            Rand = true;
             m_LastSelection = selected_girl;
         }
-        PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, Rand);
-        HideWidget(girlimage_id, false);
+        PrepareImage(m_MainImageId, *selected_girl, EImageBaseType::PORTRAIT);
+        HideWidget(m_MainImageId, false);
     }
     else
     {
         EditTextItem("No Girl Selected", girldesc_id);
-        HideWidget(girlimage_id, true);
+        HideWidget(m_MainImageId, true);
     }
 }
 
@@ -131,7 +129,7 @@ void IBuildingScreenManagement::on_select_girl(int selection)
 }
 
 void IBuildingScreenManagement::set_ids() {
-    girlimage_id = get_id("GirlImage");
+    m_MainImageId = get_id("GirlImage");
     girldesc_id  = get_id("GirlDescription");
     girllist_id  = get_id("GirlList");
 

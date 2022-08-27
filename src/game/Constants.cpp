@@ -252,37 +252,6 @@ Fetishs get_fetish_id(const std::string& name) {
     return lookup_with_error(get_fetish_lookup(), name, "Trying to get invalid FETISH");
 }
 
-const std::array<const char*, NUM_IMGTYPES>& get_imgtype_names() {
-    static std::array<const char*, NUM_IMGTYPES> names {
-            "anal", "bdsm", "sex", "beast", "group", "lesbian", "torture", "death",
-            "profile", "combat", "oral", "ecchi", "strip", "kiss", "maid", "sing", "wait",
-            "card", "bunny", "nude", "mast", "titty", "milk", "hand", "foot",
-            "bed", "farm", "herd", "cook", "craft", "swim", "bath", "nurse",
-            "formal", "shop", "magic", "sign", "presented", "dom", "deepthroat", "eatout",
-            "dildo", "sub", "strapon", "les69", "lick", "suckballs", "cowgirl", "revcowgirl",
-            "sexdoggy", "jail", "puppygirl", "ponygirl", "catgirl", "brand", "rape", "rapebeast",
-            "birthhuman", "birthhumanmultiple", "birthbeast", "impregsex", "impreggroup", "impegbdsm",
-            "impregbeast", "virginsex", "virgingroup", "virginbdsm", "virginbeast", "escort",
-            "sport", "study", "teacher", "massage",
-            "studiocrew", "cameramage", "director", "crystalpurifier", "stagehand",
-            "piano", "music", "refuse", "drinks", "dinner",
-            "pregnant", "preganal", "pregbdsm", "pregsex", "pregbeast", "preggroup",
-            "preglesbian", "pregtorture", "pregdeath", "pregprofile", "pregcombat", "pregoral",
-            "pregecchi", "pregstrip", "pregkiss", "pregmaid", "pregsing", "pregwait", "pregcard", "pregbunny",
-            "pregnude", "pregmast", "pregtitty", "pregmilk", "preghand", "pregfoot", "pregbed",
-            "pregfarm", "pregherd", "pregcook", "pregcraft", "pregswim", "pregbath", "pregnurse",
-            "pregformal", "pregshop", "pregmagic", "pregsign", "pregpresented", "pregdom",
-            "pregdeepthroat", "pregeatout", "pregdildo", "pregsub", "pregstrapon", "pregles69",
-            "preglick", "pregsuckballs", "pregcowgirl", "pregrevcowgirl", "pregdoggy", "pregjail",
-            "pregpuppy", "pregpony", "pregcat", "pregbrand", "pregrape", "pregrapebeast",
-            "", "", "", "", "", "", "", "", "", "", "", "pregescort", "pregsport", "pregstudy",
-            "pregteacher", "pregmassage",
-            "pregstudiocrew", "pregcameramage", "pregdirector", "pregcrystalpurifier", "pregstagehand",
-            "pregpiano", "pregmusic", "pregrefuse", "pregdrinks", "pregdinner"
-    };
-    return names;
-}
-
 const std::array<const char*, NUM_JOBS>& get_job_names() {
     static std::array<const char*, NUM_JOBS> names {
             "Free Time", "Cleaning", "Security",

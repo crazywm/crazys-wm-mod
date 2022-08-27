@@ -1,14 +1,21 @@
 <Screen>
 <Window     Name="Gallery"                                  XPos="18"       YPos="20"       Width="1883"    Height="1041"    Border="1"  />
 
-<Text       Name="ImageName"            Text="Image"        XPos="14"       YPos="3"        Width="1110"     Height="34" FontSize="14"  />
-<Image      Name="GirlImage"            File=""             XPos="14"       YPos="42"       Width="1546"     Height="984"    MinWidth="492"     MinHeight="492" />
-<Button     Name="PrevButton"           Image="Prev"        XPos="1614"     YPos="914"      Width="101"      Height="45"     Transparency="true" />
-<Button     Name="NextButton"           Image="Next"        XPos="1743"     YPos="914"      Width="101"      Height="45"     Transparency="true" />
-<Button     Name="BackButton"           Image="Back"        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true"  PushWindow="<back>"/>
+<Text       Name="ImageName"            Text="Image"        XPos="14"       YPos="3"        Width="1110"     Height="34"    FontSize="14"  />
+<Text       Name="ImageSource"          Text="Source"       XPos="14"       YPos="42"       Width="1110"     Height="34"    FontSize="14"  />
+<Text       Name="ImageData"            Text="Info"         XPos="14"       YPos="80"       Width="135"      Height="500"   FontSize="14"  />
+<Image      Name="GirlImage"            File=""             XPos="150"      YPos="80"       Width="1400"     Height="850"   MinWidth="492"     MinHeight="492" />
+<Button     Name="PrevButton"           Image="Prev"        XPos="1614"     YPos="914"      Width="101"      Height="45"    Transparency="true" />
+<Button     Name="NextButton"           Image="Next"        XPos="1743"     YPos="914"      Width="101"      Height="45"    Transparency="true" />
+<Button     Name="BackButton"           Image="Back"        XPos="1588"     YPos="970"      Width="281"      Height="56"    Transparency="true"  PushWindow="<back>"/>
 
 <ListBox    Name="ImageList"                                XPos="1588"     YPos="14"       Width="281"     Height="875" FontSize="13" RowHeight="24" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
 <Column     Name="Name"                 Header="Image Types"                Offset="0" />
 <Column     Name="All"                  Header="All"                        Offset="141" />
 </ListBox>
+
+<Checkbox   Name="Pregnant"             Text="Pregnant"           XPos="14"      YPos="970"      Width="22"      Height="22"     FontSize="17" LeftOrRight="false" />
+<Checkbox   Name="Futa"                 Text="Futa"               XPos="150"     YPos="970"      Width="22"      Height="22"     FontSize="17" LeftOrRight="false" />
+<Checkbox   Name="TiedUp"               Text="Tied Up"            XPos="300"     YPos="970"      Width="22"      Height="22"     FontSize="17" LeftOrRight="false" />
+<EditBox    Name="Participants"                                   XPos="500"     YPos="970"      Width="200"     Height="28"     FontSize="14" Border="1"  />
 </Screen>

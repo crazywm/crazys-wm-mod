@@ -49,9 +49,9 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 
     // `J` NOTE: one message to tell she is resting - use a separate one to tell the anything else she does
     ss << "${name} rested and recovered some energy.";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
-    int imagetype = IMGTYPE_PROFILE;
+    sImagePreset imagetype = EImageBaseType::PROFILE;
     auto messagetype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
     ss.str("");
     std::stringstream girldiedmsg;
@@ -282,7 +282,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #if 1
         {
             ss << "${name} took a bath.\n";
-            imagetype = IMGTYPE_BATH;
+            imagetype = EImageBaseType::BATH;
             U_Happiness += 5;
             U_Health += 5;
             if (HateLove >= 80 && rng.percent(10))//loves you
@@ -301,7 +301,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     ss << "her fingers.\n";
                 }
-                imagetype = IMGTYPE_MAST;
+                imagetype = EImagePresets::MASTURBATE;
                 U_Libido -= 15;
                 U_Happiness += 5;
             }
@@ -341,7 +341,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #if 1
         {
             ss << "${name}";
-            imagetype = IMGTYPE_BED;
+            imagetype = EImageBaseType::BED;
             if (girl.has_item("Chrono Bed"))
             {
                 ss << " took a nap in her Chrono Bed woke up feeling wonderful";
@@ -371,7 +371,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     {
                         ss << "her fingers";
                     }
-                    imagetype = IMGTYPE_MAST;
+                    imagetype = EImagePresets::MASTURBATE;
                     U_Libido -= 15;
                     U_Happiness += 5;
                 }
@@ -404,19 +404,19 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 switch (sex)
                 {
                 case 0:
-                    imagetype = IMGTYPE_LESBIAN;
+                    imagetype = EImagePresets::LESBIAN;
                     ss << "She paid the woman masseuse to intensely lick her clit until she got off.\n";
                     break;
                 case 1:
-                    imagetype = IMGTYPE_ANAL;
+                    imagetype = EImageBaseType::ANAL;
                     ss << "She had the masseuse oil up her ass and fuck her.\n";
                     break;
                 case 2:
-                    imagetype = IMGTYPE_SEX;
+                    imagetype = EImageBaseType::VAGINAL;
                     ss << "She told the masseuse to fuck her silly.\n";
                     break;
                 default:
-                    imagetype = IMGTYPE_MAST;
+                    imagetype = EImagePresets::MASTURBATE;
                     ss << "She told the masseuse to just focus on her pussy until she cums.\n";
                     break;
                 }
@@ -612,7 +612,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
         case FT_Pool:
 #if 1
         {
-            imagetype = IMGTYPE_SWIM;
+            imagetype = EImageBaseType::SWIM;
             U_Happiness += 5;
             ss << "${name} went to the local pool.\n";
 
@@ -655,7 +655,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                             girldiedmsg << girl.FullName() << " died from internal bleeding due to an incident at the pool.";
                         }
                         U_Health -= 500;
-                        imagetype = IMGTYPE_DEATH;
+                        imagetype = EImageBaseType::DEATH;
                         messagetype = EVENT_WARNING;
                     }
                 }
@@ -663,7 +663,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     ss << "how high up the board was and hit the water in a straight belly flop.\n";
                     U_Health -= 10;
-                    imagetype = IMGTYPE_SWIM;
+                    imagetype = EImageBaseType::SWIM;
                     messagetype = EVENT_WARNING;
                 }
             }
@@ -689,7 +689,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                         else if (girl.has_active_trait("Small boobs") || girl.has_active_trait("Petite Breasts")) { ss << "small tits."; }
                         else if (girl.has_active_trait("Flat Chest")) { ss << "rather Flat Chest."; }
                         else { ss << "breasts."; }
-                        imagetype = IMGTYPE_NUDE;
+                        imagetype = EImageBaseType::NUDE;
                         success = true;
                     }
                     else
@@ -723,7 +723,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
         case FT_Cook:
 #if 1
         {
-            imagetype = IMGTYPE_COOK;
+            imagetype = EImageBaseType::COOK;
             ss << "${name} decided to cook a meal.\nThe meal she cooked was ";
             if (girl.cooking() >= 85)//use service for now on how well she can cook.. if cooking skill ever gets added can be changed then
             {
@@ -789,7 +789,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
         case FT_WindowShopping:
 #if 1
         {
-            imagetype = IMGTYPE_SHOP;
+            imagetype = EImageBaseType::SHOP;
             int hap = rng % 10 - 4;
             U_Happiness += hap;
             ss << "${name} wandered around the shops trying things on that she knew she could not afford. Though she wasted the shop girl's time, ";
@@ -806,7 +806,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             int numberToBuy = rng % 10;    // try to buy up to 10 things
             int itemsBought = 0;
             std::string buyList;
-            imagetype = IMGTYPE_SHOP;
+            imagetype = EImageBaseType::SHOP;
 
             for (int i = 0; i < numberToBuy; i++)
             {
@@ -827,7 +827,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 U_Happiness += 5 + (itemsBought * 2);
                 ss << "She did some shopping, and bought: " << buyList << ".";
-                imagetype = IMGTYPE_SHOP;
+                imagetype = EImageBaseType::SHOP;
             }
             else
             {
@@ -856,7 +856,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     if (g_Game->has_building(BuildingType::CLINIC) && rng.percent(50))        // She tries stealing from your clinic
                     {
                         ss << "She got caught by the guards in your clinic and they brought her to your dungeon.\n";
-                        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+                        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
                         girl.m_DayJob = girl.m_NightJob = JOB_INDUNGEON;
                         assert(girl.m_Building);
                         g_Game->dungeon().AddGirl(girl.m_Building->remove_girl(&girl), DUNGEON_GIRLSTEAL);
@@ -871,7 +871,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     else if (rng.percent(50))
                     {
                         ss << "She got caught by the clinic guards and was unable to pay so they sent her to jail.\n";
-                        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+                        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
                         g_Game->GetPrison().AddGirl(girl.m_Building->remove_girl(&girl));
                         return {false, 0, 0, 0};
                     }
@@ -1014,7 +1014,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     if (girl.m_Money - cost < 0)
                     {
                         ss << " but she did not have enough money. The Doctor unzipped his pants and allowed her to work it off";
-                        imagetype = IMGTYPE_ORAL;
+                        imagetype = EImagePresets::BLOWJOB;
                         girl.oralsex(1);
                     }
                     else
@@ -1048,7 +1048,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             if (rng.percent(20) && girl.oralsex() >= 50)
             {
                 ss << " Instead of paying for her ticket she slides under the ticket booth and sucks off the guy selling the tickets to get in for free.";
-                imagetype = IMGTYPE_ORAL;
+                imagetype = EImagePresets::BLOWJOB;
                 girl.oralsex(1);
             }
             else
@@ -1128,24 +1128,24 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                             else if (HateLove >= 80 && girl.libido() > 99)
                             {
                                 ss << " Despite the fact that she is in love with you she couldn't help herself her lust is to great and she agrees. ";
-                                imagetype = IMGTYPE_SEX; U_Libido -= 15;
+                                imagetype = EImageBaseType::VAGINAL; U_Libido -= 15;
                                 girl.normalsex(1);
                             }
                             else if (HateLove >= 80 && girl.libido() <= 99)
                             {
                                 ss << " She tells him she is in love and that he can't compare to her love. She finishes herself off then leaves with a smile on her face.";
-                                imagetype = IMGTYPE_MAST; U_Libido -= 15;
+                                imagetype = EImagePresets::MASTURBATE; U_Libido -= 15;
                             }
                             else
                             {
                                 ss << " She takes him up on the offer as she prefers the real thing.";
-                                imagetype = IMGTYPE_SEX; U_Libido -= 15;
+                                imagetype = EImageBaseType::VAGINAL; U_Libido -= 15;
                                 girl.normalsex(1);
                             }
                         }
                         else
                         {
-                            imagetype = IMGTYPE_MAST; U_Libido -= 15;
+                            imagetype = EImagePresets::MASTURBATE; U_Libido -= 15;
                         }
                     }
                 }
@@ -1245,7 +1245,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             if (girl.has_active_trait("Exhibitionist") && rng.percent(30))
             {
                 ss << "Before the show was over ${name} had thrown all her clothes on stage and was now walking around naked.\n";
-                imagetype = IMGTYPE_NUDE; invite = true;
+                imagetype = EImageBaseType::NUDE; invite = true;
             }
             if (is_addict(girl, true) && rng.percent(20)) //may have to change this to the traits instead of the addict as only those 3 should trigger it.  zzzzz FIXME CRAZY
             {
@@ -1266,7 +1266,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 if (rng.percent(10) && girl.beauty() > 85 && !is_virgin(girl))
                 {
                     ss << "After noticing her great beauty and the fact that she is baked, a group of guys take her off alone somewhere and have their way with her.\n";
-                    imagetype = IMGTYPE_GROUP;
+                    imagetype = EImagePresets::GANGBANG;
                 }
             }
 
@@ -1304,7 +1304,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                         if (girl.libido() >= 50 && !girl.has_active_trait("Lesbian"))
                         {
                             ss << "As she was in the mood and loved the show, she agreed and spent many hours pleasing the band.\n";
-                            imagetype = IMGTYPE_GROUP; U_Libido -= 15;
+                            imagetype = EImagePresets::GANGBANG; U_Libido -= 15;
                             girl.group(1);
                         }
                         else
@@ -1337,7 +1337,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 if (girl.has_active_trait("Lesbian"))
                                 {
                                     ss << "only female member of the band.";
-                                    imagetype = IMGTYPE_LESBIAN;
+                                    imagetype = EImagePresets::LESBIAN;
                                     girl.lesbian(1);
                                 }
                                 /*This should work better then what I had before*/
@@ -1353,8 +1353,8 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                     case 4:        n = SKILL_NORMALSEX;     ss << "rythim guitarist.";        break;
                                     default:       n = SKILL_GROUP;         ss << "whole group.";            break;
                                     }
-                                    /* */if (n == SKILL_NORMALSEX)    imagetype = IMGTYPE_SEX;
-                                    else if (n == SKILL_GROUP)        imagetype = IMGTYPE_GROUP;
+                                    /* */if (n == SKILL_NORMALSEX)    imagetype = EImageBaseType::VAGINAL;
+                                    else if (n == SKILL_GROUP)        imagetype = EImagePresets::GANGBANG;
                                     girl.upd_skill(n, 1);
                                 }
                                 U_Libido -= 10;
@@ -1445,7 +1445,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "She had a few drinks and talked to some of the locals before going home.";
             }
-            imagetype = IMGTYPE_FORMAL;
+            imagetype = EImageBaseType::FORMAL;
         }
 #endif
         break;    // end FT_Club
@@ -1462,13 +1462,13 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     if (girl.has_active_trait("Lesbian") || girl.has_active_trait("Bisexual") && rng.percent(50))//find a woman /*FIXME not sure this will work CRAZY*/
                     {
                         ss << "She goes out and finds herself a woman that she likes enough. They go back to her place and have sex.";/*FIXME needs better text and more varations CRAZY*/
-                        imagetype = IMGTYPE_LESBIAN; U_Libido -= 10;
+                        imagetype = EImagePresets::LESBIAN; U_Libido -= 10;
                         girl.lesbian(1);
                     }
                     else//finds man
                     {
                         ss << "She goes out and finds herself a man that she likes enough. They go back to her place and have sex.";/*FIXME needs better text and more varations CRAZY*/
-                        imagetype = IMGTYPE_SEX; U_Libido -= 10;
+                        imagetype = EImageBaseType::VAGINAL; U_Libido -= 10;
                         girl.normalsex(1);
                     }
                 }
@@ -1486,7 +1486,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 else
                 {
                     ss << " stayed inside and read a book.\n";
-                    imagetype = IMGTYPE_STUDY;
+                    imagetype = EImageBaseType::STUDY;
                 }
             }
             else if (girl.is_fighter())
@@ -1494,7 +1494,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 if (rng.percent(75))
                 {
                     ss << " practiced her combat skills.";
-                    imagetype = IMGTYPE_COMBAT;
+                    imagetype = EImageBaseType::COMBAT;
                     girl.combat(1);
                 }
                 else
@@ -1848,7 +1848,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
             }
             if (workout < 0) workout = 0;
-            imagetype = IMGTYPE_SPORT;
+            imagetype = EImageBaseType::SPORT;
             girl.constitution(rng % workout);
             girl.agility(rng % workout);
             girl.beauty(rng % workout);
@@ -1923,7 +1923,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 else if (girl.has_active_trait("Nymphomaniac"))
                                 {
                                     ss << "She loves cock so she agrees and sucks him off.\n"; enjoy += 2;
-                                    imagetype = IMGTYPE_ORAL;
+                                    imagetype = EImagePresets::BLOWJOB;
                                     girl.oralsex(1);
                                 }
                                 else if (girl.is_fighter())
@@ -1967,7 +1967,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 else if (girl.has_active_trait("Nymphomaniac"))
                                 {
                                     ss << "She loves to have fun so she agrees and they enjoy each other.\n"; enjoy += 2;
-                                    imagetype = IMGTYPE_LESBIAN;
+                                    imagetype = EImagePresets::LESBIAN;
                                     girl.lesbian(1);
                                 }
                                 else if (girl.is_fighter())
@@ -2024,7 +2024,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 if (girl.has_active_trait("Meek"))
                                 {
                                     ss << "Scared of what he might do if she doesn't she went along with it and sucked him off.\n";
-                                    imagetype = IMGTYPE_ORAL;
+                                    imagetype = EImagePresets::BLOWJOB;
                                     girl.oralsex(1);
                                 }
                                 else if (girl.has_active_trait("Shy"))
@@ -2057,7 +2057,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 if (girl.has_active_trait("Meek"))
                                 {
                                     ss << "Scared of what she might do if she doesn't she went along with it.\n";
-                                    imagetype = IMGTYPE_LESBIAN;
+                                    imagetype = EImagePresets::LESBIAN;
                                     girl.lesbian(1);
                                 }
                                 else if (girl.has_active_trait("Shy"))

@@ -31,7 +31,7 @@ namespace settings {
 
 bool GenericCraftingJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     m_Wages = m_Data.BaseWages * (1.0 + (m_Performance - 70) / 100.0);
-    int imagetype = m_Image;
+    EImageBaseType imagetype = m_Image;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    Job Performance            //
@@ -124,7 +124,7 @@ IGenericJob::eCheckWorkResult GenericCraftingJob::CheckWork(sGirl& girl, bool is
     if (girl.disobey_check(m_Data.Action, job()))            // they refuse to work
     {
         ss << "${name} refused to work during the " << (is_night ? "night" : "day") << " shift.";
-        girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
         return eCheckWorkResult::REFUSES;
     }
     return eCheckWorkResult::ACCEPTS;
@@ -137,7 +137,7 @@ struct cBlacksmithJob : GenericCraftingJob {
 
 cBlacksmithJob::cBlacksmithJob() :
         GenericCraftingJob(JOB_BLACKSMITH, "Blacksmith.xml",
-                           ACTION_WORKMAKEITEMS, 40, IMGTYPE_CRAFT) {
+                           ACTION_WORKMAKEITEMS, 40, EImageBaseType::CRAFT) {
 
 }
 
@@ -212,7 +212,7 @@ struct cCobblerJob : GenericCraftingJob {
 
 cCobblerJob::cCobblerJob() :
     GenericCraftingJob(JOB_COBBLER, "Cobbler.xml",
-                       ACTION_WORKMAKEITEMS, 20, IMGTYPE_CRAFT) {
+                       ACTION_WORKMAKEITEMS, 20, EImageBaseType::CRAFT) {
 }
 
 void cCobblerJob::DoWorkEvents(sGirl& girl) {
@@ -274,7 +274,7 @@ struct cMakeItemJob : GenericCraftingJob {
 
 cMakeItemJob::cMakeItemJob() :
         GenericCraftingJob(JOB_MAKEITEM, "MakeItem.xml",
-                           ACTION_WORKMAKEITEMS, 20, IMGTYPE_CRAFT) {
+                           ACTION_WORKMAKEITEMS, 20, EImageBaseType::CRAFT) {
 }
 
 void cMakeItemJob::DoWorkEvents(sGirl& girl) {
@@ -335,7 +335,7 @@ struct cMakePotionsJob : GenericCraftingJob {
 
 cMakePotionsJob::cMakePotionsJob() :
         GenericCraftingJob(JOB_MAKEPOTIONS, "MakePotions.xml",
-                           ACTION_WORKMAKEPOTIONS, 20, IMGTYPE_CRAFT) {
+                           ACTION_WORKMAKEPOTIONS, 20, EImageBaseType::CRAFT) {
 }
 
 void cMakePotionsJob::DoWorkEvents(sGirl& girl) {
@@ -377,7 +377,7 @@ struct cTailorJob : GenericCraftingJob {
 
 cTailorJob::cTailorJob() :
         GenericCraftingJob(JOB_TAILOR, "Tailor.xml",
-                           ACTION_WORKMAKEITEMS, 20, IMGTYPE_CRAFT) {
+                           ACTION_WORKMAKEITEMS, 20, EImageBaseType::CRAFT) {
 }
 
 void cTailorJob::DoWorkEvents(sGirl& girl) {
@@ -437,7 +437,7 @@ struct cGardenerJob : GenericCraftingJob {
 
 cGardenerJob::cGardenerJob() :
         GenericCraftingJob(JOB_GARDENER, "Gardener.xml",
-                           ACTION_WORKFARM, 20, IMGTYPE_FARM) {
+                           ACTION_WORKFARM, 20, EImageBaseType::FARM) {
 }
 
 struct cJewelerJob : GenericCraftingJob {
@@ -447,7 +447,7 @@ struct cJewelerJob : GenericCraftingJob {
 
 cJewelerJob::cJewelerJob() :
         GenericCraftingJob(JOB_JEWELER, "Jeweler.xml",
-                           ACTION_WORKMAKEITEMS, 40, IMGTYPE_CRAFT) {
+                           ACTION_WORKMAKEITEMS, 40, EImageBaseType::CRAFT) {
 }
 
 void cJewelerJob::DoWorkEvents(sGirl& girl) {
@@ -516,11 +516,11 @@ void cJewelerJob::DoWorkEvents(sGirl& girl) {
 
 void RegisterCraftingJobs(cJobManager& mgr) {
     mgr.register_job(std::make_unique<GenericCraftingJob>(
-            JOB_BAKER, "Baker.xml", ACTION_WORKCOOKING, 20, IMGTYPE_COOK));
+            JOB_BAKER, "Baker.xml", ACTION_WORKCOOKING, 20, EImageBaseType::BAKE));
     mgr.register_job(std::make_unique<GenericCraftingJob>(
-            JOB_BREWER, "Brewer.xml", ACTION_WORKCOOKING, 20, IMGTYPE_COOK));
+            JOB_BREWER, "Brewer.xml", ACTION_WORKCOOKING, 20, EImageBaseType::COOK));
     mgr.register_job(std::make_unique<GenericCraftingJob>(
-            JOB_BUTCHER, "Butcher.xml", ACTION_WORKCOOKING, 20, IMGTYPE_COOK));
+            JOB_BUTCHER, "Butcher.xml", ACTION_WORKCOOKING, 20, EImageBaseType::COOK));
     mgr.register_job(std::make_unique<cBlacksmithJob>());
     mgr.register_job(std::make_unique<cCobblerJob>());
     mgr.register_job(std::make_unique<cGardenerJob>());

@@ -104,7 +104,7 @@ sWorkJobResult MatronJob::DoWork(sGirl& girl, bool is_night) {
 
     // Complications
     HandleMatronResult(girl, conf);
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve girl
     int wages = MatronGains(girl, is_night, conf);
@@ -202,13 +202,13 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
     if (girl.disobey_check(actiontype, JOB_MATRON))
     {
         ss << "refused to work during the " << (is_night ? "night" : "day") << " shift.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
         return {true, 0, 0, 0};
     }
 
     int conf = 0;
     int roll_b = d100();
-    int imagetype = IMGTYPE_PROFILE;
+    EImageBaseType imagetype = EImageBaseType::PROFILE;
 
     // Complications
     HandleMatronResult(girl, conf);
@@ -229,7 +229,7 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
             std::stringstream warning;
             warning << "Your security spotted ${name} trying to take " << steal << " gold from the Brothel for herself.\n";
             ss << "\n" << warning.str() << "\n";
-            girl.AddMessage(warning.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+            girl.AddMessage(warning.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         }
         else
         {
@@ -266,7 +266,7 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
         else method = uniform(3, 7);
 
         std::stringstream warning;
-        int warningimage = IMGTYPE_PROFILE;
+        sImagePreset warningimage = EImageBaseType::PROFILE;
         switch (method)
         {
             case 1:
@@ -287,7 +287,7 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
                 if (!chance(girl.agility()))    // you only get to know about it if she fails an agility check
                 {
                     warning << "${name} saw a customer with drugs and offered to fuck him for some. He accepted, so she took him out of sight of security and banged him.\n";
-                    warningimage = IMGTYPE_SEX;
+                    warningimage = EImageBaseType::VAGINAL;
                 }
                 girl.normalsex(1);
                 break;
@@ -295,7 +295,7 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
                 if (!chance(girl.agility()))    // you only get to know about it if she fails an agility check
                 {
                     warning << "${name} saw a customer with drugs and offered to give him a blowjob for some. He accepted, so she took him out of sight of security and sucked him off.\n";
-                    warningimage = IMGTYPE_ORAL;
+                    warningimage = EImagePresets::BLOWJOB;
                 }
                 girl.oralsex(1);
                 break;
@@ -365,7 +365,7 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
             ss << " Her piercings catch the eye of some customers.";
             brothel->m_Happiness += 5;
         }
-        imagetype = IMGTYPE_ECCHI;
+        imagetype = EImageBaseType::ECCHI;
     }
 
     if (girl.has_active_trait("Optimist") && roll_b < girl.happiness() / 2) // 50% chance at best

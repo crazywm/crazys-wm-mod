@@ -68,7 +68,7 @@ bool DoctorJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         ss << "Otherwise, the shift passed uneventfully.\n";
     }
 
-    girl.AddMessage(ss.str(), IMGTYPE_NURSE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::NURSE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     // TODO figure out external patients
 
     // Improve stats
@@ -80,21 +80,21 @@ IGenericJob::eCheckWorkResult DoctorJob::CheckWork(sGirl& girl, bool is_night) {
     if (girl.has_active_trait("AIDS"))
     {
         ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to get treated.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         girl.m_DayJob = girl.m_NightJob = JOB_CUREDISEASES;
         return eCheckWorkResult::IMPOSSIBLE;
     }
     if (girl.is_slave())
     {
         ss << "Slaves are not allowed to be Doctors so ${name} was reassigned to being a Nurse.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::NURSE, EVENT_WARNING);
         girl.m_DayJob = girl.m_NightJob = JOB_NURSE;
         return eCheckWorkResult::IMPOSSIBLE;
     }
     if (girl.medicine() < 50 || girl.intelligence() < 50)
     {
         ss << "${name} does not have enough training to work as a Doctor. She has been reassigned to Internship so she can learn what she needs.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::NURSE, EVENT_WARNING);
         girl.m_DayJob = girl.m_NightJob = JOB_INTERN;
         return eCheckWorkResult::IMPOSSIBLE;
     }
@@ -118,7 +118,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int fame = 0;
     bool hand = false, sex = false, les = false;
 
-    int imagetype = IMGTYPE_NURSE;
+    sImageSpec image_spec = girl.MakeImageSpec(EImageBaseType::NURSE);
 
     // this will be added to the clinic's code eventually - for now it is just used for her pay
     int patients = 0;            // `J` how many patients the Doctor can see in a shift
@@ -230,7 +230,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     {
         if (brothel.is_sex_type_allowed(SKILL_NORMALSEX) && (roll_b <= 50 || brothel.is_sex_type_allowed(SKILL_ANAL))) //Tweak to avoid an issue when roll > 50 && anal is restricted
         {
-            imagetype = IMGTYPE_SEX;
+            image_spec.BasicImage = EImageBaseType::VAGINAL;
             girl.normalsex(2);
             if (girl.lose_trait("Virgin"))
             {
@@ -243,7 +243,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         }
         else if (brothel.is_sex_type_allowed(SKILL_ANAL))
         {
-            imagetype = IMGTYPE_ANAL;
+            image_spec.BasicImage = EImageBaseType::ANAL;
             girl.anal(2);
         }
         brothel.m_Happiness += 100;
@@ -254,12 +254,13 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     {
         brothel.m_Happiness += uniform(60, 130);
         girl.handjob(2);
-        imagetype = IMGTYPE_HAND;
+        image_spec.BasicImage = EImageBaseType::HAND;
     }
     else if (les)
     {
         brothel.m_Happiness += uniform(30, 100);
-        imagetype = IMGTYPE_LESBIAN;
+        image_spec.BasicImage = EImageBaseType::VAGINAL;
+        image_spec.Participants = ESexParticipants::LESBIAN;
         girl.lesbian(2);
     }
 
@@ -275,7 +276,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         m_Wages += patients * 2;                // `J` pay her 2 for each patient you send to her
     }
 
-    girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), image_spec, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     /* `J` this will be a place holder until a better payment system gets done
     *  this does not take into account any of your girls in surgery
     */
@@ -286,7 +287,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     }
     brothel.m_Finance.clinic_income(m_Earnings);
     ss.str("");    ss << "${name} earned " << m_Earnings << " gold from taking care of " << patients << " patients.";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
     HandleGains(girl, fame);
@@ -298,7 +299,7 @@ IGenericJob::eCheckWorkResult NurseJob::CheckWork(sGirl& girl, bool is_night) {
     if (girl.has_active_trait("AIDS"))
     {
         ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         girl.FullJobReset(JOB_RESTING);
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;
     }
@@ -311,7 +312,7 @@ IGenericJob::eCheckWorkResult NurseJob::CheckWork(sGirl& girl, bool is_night) {
             ss << "\nShe was found sleeping " << rng().select_text({"in a supply closet.", "in an empty patient bed."});
             girl.tiredness(-uniform(0, 40));
         }
-        girl.AddMessage(ss.str(), IMGTYPE_REFUSE, EVENT_NOWORK);
+        girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
         return IGenericJob::eCheckWorkResult::REFUSES;
     }
     return IGenericJob::eCheckWorkResult::ACCEPTS;
@@ -481,7 +482,7 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
     else /*             */    { enjoy += uniform(0, 1);        ss << "Otherwise, the shift passed uneventfully."; }
     girl.upd_Enjoyment(actiontype, enjoy);
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     if (girl.is_unpaid()) { m_Wages = 0; }
     else { m_Wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
@@ -493,7 +494,7 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
         ss << "${name} has completed her Internship and has been promoted to ";
         if (girl.is_slave())    { ss << "Nurse.";    girl.m_DayJob = girl.m_NightJob = JOB_NURSE; }
         else /*            */    { ss << "Doctor.";    girl.m_DayJob = girl.m_NightJob = JOB_DOCTOR; }
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
     }
 
     return {false, 0, 0, m_Wages};
@@ -503,7 +504,7 @@ IGenericJob::eCheckWorkResult InternJob::CheckWork(sGirl& girl, bool is_night) {
     if (girl.has_active_trait("AIDS"))
     {
         ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         girl.FullJobReset(JOB_RESTING);
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;
     }
@@ -512,7 +513,7 @@ IGenericJob::eCheckWorkResult InternJob::CheckWork(sGirl& girl, bool is_night) {
         ss << "There is nothing more she can learn here so she is promoted to ";
         if (girl.is_slave())    { ss << "Nurse.";    girl.m_DayJob = girl.m_NightJob = JOB_NURSE; }
         else /*            */    { ss << "Doctor.";    girl.m_DayJob = girl.m_NightJob = JOB_DOCTOR; }
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+        girl.AddMessage(ss.str(), EImageBaseType::NURSE, EVENT_GOODNEWS);
         return IGenericJob::eCheckWorkResult::IMPOSSIBLE;
     }
 

@@ -37,7 +37,7 @@ bool WorkFarmPonyGirl(sGirl& girl, bool Day0Night1, cRng& rng)
 
     int enjoy = 0, training = 0, ob = 0;
 
-    int imagetype = IMGTYPE_PONYGIRL;
+    sImagePreset imagetype = EImageBaseType::PONYGIRL;
 
     const sGirl* headonduty = random_girl_on_job(*girl.m_Building, JOB_HEADGIRL, Day0Night1);
     std::string headname = (headonduty ? "Head Girl " + headonduty->FullName() + "" : "the Head girl");
@@ -162,14 +162,14 @@ bool WorkFarmPonyGirl(sGirl& girl, bool Day0Night1, cRng& rng)
                         ss << "test line 3 low oral skill\n";
                         training += 5;
                         girl.oralsex(2);
-                        imagetype = IMGTYPE_ORAL;
+                        imagetype = EImagePresets::BLOWJOB;
                     }
                     else
                     {
                         ss << "${name} test line 3 high oral skill.";
                         training += 5;
                         girl.oralsex(1);
-                        imagetype = IMGTYPE_ORAL;
+                        imagetype = EImagePresets::BLOWJOB;
                     }
             }
         }

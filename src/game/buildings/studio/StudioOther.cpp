@@ -99,7 +99,7 @@ namespace {
             g_Game->movie_manager().gain_market_research_point();
         }
 
-        girl.AddMessage(ss.str(), Image_Types::IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
         // Improve stats
         apply_gains(girl, m_Performance);
@@ -193,7 +193,7 @@ bool cJobMoviePromoter::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
         g_Game->movie_manager().gain_promo_point();
     }
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NIGHTSHIFT);
+    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NIGHTSHIFT);
 
 
     // Improve girl

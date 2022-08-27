@@ -506,7 +506,7 @@ void cGame::NextWeek()
         {
             auto girl = CreateRandomGirl(SpawnReason::KIDNAPPED, 18);
             ss << "A man cannot pay so he sells you his daughter " << girl->FullName() << " to clear his debt to you.\n";
-            girl->AddMessage("${name}'s father could not pay his debt to you so he gave her to you as payment.", IMGTYPE_PROFILE, EVENT_DUNGEON);
+            girl->AddMessage("${name}'s father could not pay his debt to you so he gave her to you as payment.", EImageBaseType::PROFILE, EVENT_DUNGEON);
             dungeon().AddGirl(std::move(girl), DUNGEON_NEWGIRL);
             gang_manager().NumBusinessExtorted(-1);
         }

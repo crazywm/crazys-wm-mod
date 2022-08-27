@@ -22,6 +22,7 @@
 
 #include "jobs/BasicJob.h"
 #include "data.h"
+#include "images/sImageSpec.h"
 
 struct sFilmPleasureData {
     int Factor = 0;                             // Determines the influence of libido
@@ -49,7 +50,7 @@ public:
         HUMAN,
         MONSTER
     };
-    cFilmSceneJob(JOBS job, const char* xml, Image_Types event_image, SceneType scene, SexAction sex = SexAction::NONE);
+    cFilmSceneJob(JOBS job, const char* xml, sImagePreset event_image, SceneType scene, SexAction sex = SexAction::NONE);
 
     SKILLS GetSexType() const;
     sFilmObedienceData CalcChanceToObey(const sGirl& girl) const;
@@ -71,7 +72,7 @@ private:
 
     SexAction m_SexAction = SexAction::NONE;
 
-    Image_Types m_EventImage;
+    sImagePreset m_EventImage;
     SceneType m_SceneType;
 
     // enjoyment
@@ -108,7 +109,7 @@ public:
     sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
     using cBasicJob::cBasicJob;
 protected:
-    Image_Types m_EventImage = IMGTYPE_STUDIO_CREW;
+    sImagePreset m_EventImage = EImageBaseType::STUDIO_CREW;
 private:
     virtual void HandleUpdate(sGirl& girl, float performance) = 0;
 };

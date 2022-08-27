@@ -3,6 +3,8 @@
 
 
 #include "cRng.h"
+#include <boost/optional.hpp>
+#include <random>
 
 extern cRng g_Dice;
 
@@ -42,6 +44,52 @@ public:
 private:
     float m_TotalWeight    = 0.0;
     T* m_CurrentSelection  = nullptr;
+};
+
+template<class T>
+class RandomSelectorV2 {
+public:
+    template<class Rng>
+    void process(Rng& rng, const T& element, int priority = 0, float weight = 1) {
+        // skip when using lower priority
+        if(priority < m_Priority) return;
+
+        // reset when reaching higher priority
+        if(priority > m_Priority) {
+            m_Priority = priority;
+            m_TotalWeight = 0.f;
+        }
+
+        // streaming uniform selection. n'th element has chance w[n]/sum(w[i]) for being selected.
+        m_TotalWeight += weight;
+        double p = weight / m_TotalWeight;
+        if (m_Dist(rng) < p) {
+            m_CurrentSelection = element;
+
+        }
+    }
+
+    const boost::optional<T>& selection() const {
+        return m_CurrentSelection;
+    }
+
+    int priority() const {
+        return m_Priority;
+    }
+
+    float weight() const {
+        return m_TotalWeight;
+    }
+
+    void reset() {
+        m_TotalWeight = 0;
+        m_CurrentSelection = boost::none;
+    }
+private:
+    float m_TotalWeight    = 0.0;
+    int m_Priority = std::numeric_limits<int>::min();
+    boost::optional<T> m_CurrentSelection = boost::none;
+    std::uniform_real_distribution<double> m_Dist = std::uniform_real_distribution<double>(0.0, 1.0);
 };
 
 #endif //CRAZYS_WM_MOD_STREAMING_RANDOM_SELECTION_HPP
