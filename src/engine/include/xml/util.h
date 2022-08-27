@@ -107,4 +107,8 @@ inline tinyxml2::XMLElement& PushNewElement(tinyxml2::XMLElement& root, const st
 void GetColorAttribute(tinyxml2::XMLElement& element, sColor& target);
 PiecewiseLinearFunction LoadLinearFunction(const tinyxml2::XMLElement& source, const char* x_attr, const char* y_attr);
 
+tinyxml2::XMLElement& GetOnlyChild(tinyxml2::XMLElement& element, const char* name);
+const tinyxml2::XMLElement& GetOnlyChild(const tinyxml2::XMLElement& element, const char* name);
+std::string GetOnlyChildText(const tinyxml2::XMLElement& element, const char* name);
+
 #endif //CRAZYS_WM_MOD_XML_UTIL_H

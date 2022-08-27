@@ -82,3 +82,33 @@ tChildrenIterator<XMLElement> xmlutil::begin(const sChildRange<XMLElement>& r) {
 tChildrenIterator<const XMLElement> xmlutil::begin(const sChildRange<const XMLElement>& r) {
     return tChildrenIterator<const XMLElement>{r.root->FirstChildElement(r.name), r.name};
 }
+
+tinyxml2::XMLElement& GetOnlyChild(tinyxml2::XMLElement& element, const char* name) {
+    auto first_child = element.FirstChildElement(name);
+    if(!first_child) {
+        throw std::runtime_error("XML is missing expected element <" + std::string(name) + ">");
+    }
+    auto next = sibling(&element, name);
+    if(next) {
+        throw std::runtime_error("XML expected unique element <" + std::string(name) + ">, got multiple.");
+    }
+
+    return *first_child;
+}
+
+const tinyxml2::XMLElement& GetOnlyChild(const tinyxml2::XMLElement& element, const char* name) {
+    auto first_child = element.FirstChildElement(name);
+    if(!first_child) {
+        throw std::runtime_error("XML is missing expected element <" + std::string(name) + ">");
+    }
+    auto next = sibling(&element, name);
+    if(next) {
+        throw std::runtime_error("XML expected unique element <" + std::string(name) + ">, got multiple.");
+    }
+
+    return *first_child;
+}
+
+std::string GetOnlyChildText(const tinyxml2::XMLElement& element, const char* name) {
+    return GetOnlyChild(element, name).GetText();
+}
