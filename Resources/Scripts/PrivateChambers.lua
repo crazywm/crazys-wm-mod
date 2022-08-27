@@ -61,11 +61,11 @@ function Drinks(girl, dinner_already)
                 "There can be no doubt that this girl is completely drunk.")
         local choice = ChoiceBox("", "Take Advantage of her intoxication.", "Lead her back to her room")
         if choice == 0 then
-            wm.UpdateImage(wm.IMG.STRIP)
+            wm.UpdateImage(wm.IMG.FONDLE, {participants=wm.IMG_PART.HETERO})
             Dialog("You sense an opportunity in her inebriated state.  You start rubbing her shoulders and back. " ..
                     "Soon your hands are roaming towards her breasts...")
             if wm.Percent(50 + girl:libido() / 2) or girl:pclove() > 66 then
-                wm.UpdateImage(wm.IMG.SEX)
+                wm.UpdateImage(wm.IMG.FINGER, {participants=wm.IMG_PART.HETERO})
                 Dialog("She lets out a soft moan as your fingers caress her nipples thru the fabric of her top. Your other hand sneaks along her inner thigh;  meeting no resistance your fingers slide easily under her panties and your stimulate her clitoris.")
                 Dialog("Before long you are both kissing and probing each other...having lost all sense of time you come to your senses panting and gasping on the floor by your couch.  You look down to see that she her breathing heavily and deeply in an exhausted sleep.")
                 SheJustCame(girl, 5)
@@ -112,7 +112,7 @@ function HerRoom(girl)
     if choice == 0 then
         Dialog("You politely bow slightly and bring her hand to your lips.  \"Good Night, My Dear. I hope you had a pleasant evening.\"")
         if girl:tiredness() > 70 then
-            wm.UpdateImage(wm.IMG.BED)
+            wm.UpdateImage(wm.IMG.REST)
             Dialog("Apparently, she was more tired then she let on and she begins to sway on her feet.  You catch her before she hits the ground.  You pick her up and carry her to her bed...")
             return SheIsAsleep(girl)
         elseif girl:libido() > 80 then
@@ -130,8 +130,9 @@ function HerRoom(girl)
         else
             Dialog("You decide to not try using your tongue and your lips come together in a kiss...")
             if girl:libido() >= 65 then
-                wm.UpdateImage(wm.IMG.KISS)
+                wm.UpdateImage(wm.IMG.KISS, {participants=wm.IMG_PART.HETERO})
                 Dialog("A moment later you find her tongue sliding past your lips and you reciprocate passionately...")
+                wm.UpdateImage(wm.IMG.FONDLE, {participants=wm.IMG_PART.HETERO})
                 Dialog("A trail of saliva hangs between you lips as you separate.  She kisses your neck unbuttoning your shirt; She kisses your chest and continues moving downward.  \"I'm still a little hungry.\" She whispers.")
                 wm.UpdateImage(wm.IMG.ORAL)
                 Dialog("You revel in the feeling as she kisses the head of your dick and begins to lick and suck you hungrily.  You finish quickly under her onslaught and she gulps down every last drop.")
@@ -140,7 +141,7 @@ function HerRoom(girl)
                 Dialog("You smile and dive into the task before you.  You awake the next morning holding her tightly in her bed.")
                 girl:oralsex(2)
             else
-                wm.UpdateImage(wm.IMG.BED)
+                wm.UpdateImage(wm.IMG.REST)
                 Dialog("You kiss her lips and say good night.")
             end
         end
@@ -148,7 +149,7 @@ function HerRoom(girl)
 end
 
 function FrenchKiss(girl)
-    wm.UpdateImage(wm.IMG.KISS)
+    wm.UpdateImage(wm.IMG.KISS, {participants=wm.IMG_PART.HETERO})
     Dialog("As your lips come together you slide your tongue into her mouth...")
     if girl:libido() >= 45 then
         Dialog("Her tongue meets yours and they begin a swirling dance back and forth. After several seconds the kiss ends with her gently biting your bottom lip as you separate.")
@@ -158,14 +159,14 @@ function FrenchKiss(girl)
         SheJustCame(girl, 5)
         Dialog("The sounds of your lovemaking can be heard throughout the neighborhood.  A perfect ending to a perfect evening.")
     else
-        wm.UpdateImage(wm.IMG.BED)
+        wm.UpdateImage(wm.IMG.REST)
         Dialog("She kisses you back passively.  After a few moments you separate and say your final good nights.")
     end
 end
 
 ---@param girl wm.Girl
 function SheIsAsleep(girl)
-    wm.UpdateImage(wm.IMG.BED)
+    wm.UpdateImage(wm.IMG.REST)
     local choice = ChoiceBox("", "Gently tuck her in", "Sleep Creep")
     if choice == 0 then
         Dialog("You spend a few moments watching her breath deeply and sleeping soundly.  You grab a nearby blanket and  gently tuck her in.  ")
@@ -173,9 +174,9 @@ function SheIsAsleep(girl)
     elseif choice == 1 then
         wm.SetPlayerDisposition(-2)
         Dialog("As you look at her sleeping soundly, an idea seeps into your brain.  You shake her slightly and call her name to see how deeply she is sleeping.  Satisfied, you begin to run your hands over her breasts.")
-        wm.UpdateImage(wm.IMG.STRIP)
+        wm.UpdateImage(wm.IMG.FONDLE)
         Dialog("Growing bolder, you begin to pull down her top to expose her breasts.  You give each nipple a little kiss.  Her breathing changes slightly and you freeze, but she is sleeping soundly. You stroke your cock as you move to slowly pull down her panties.")
-        wm.UpdateImage(wm.IMG.SEX)
+        wm.UpdateImage(wm.IMG.FINGER)
         Dialog("You pulse quickens as her panties slowly slide down.  Halfway down her ass....her upper thighs...her knees...calves...you stop and leave them at her ankles and begin to slide your fingers into her vagina as you stroke your cock.")
         AdjustLust(girl, 5)
         -- she does not wake up; chance increases with tiredness
@@ -193,9 +194,9 @@ function SheIsAsleep(girl)
                 SheJustCame(girl, 10)
                 wm.UpdateImage(wm.IMG.HAND)
                 Dialog("She starts stroking your cock, and it doesn't take her long to get you to spurt your load.")
-                wm.UpdateImage(wm.IMG.BED)
+                wm.UpdateImage(wm.IMG.REST)
                 Dialog("\"This was a nice surprise, but I really need to get some sleep now.\" She seems to be in a good mood despite your actions, so you decide to leave it at that.")
-            elseif true or (girl:is_slave() and girl:obey_check(wm.ACTIONS.SEX)) or wm.Percent(50 - 2*girl:spirit()) then
+            elseif true or (girl:is_slave() and girl:obey_check(wm.ACTION.SEX)) or wm.Percent(50 - 2*girl:spirit()) then
                 -- meekly accepts fate
                 Dialog("She awakes with a sudden start and stares wide-eyed at your fingers inside her and your erection moving closer. " ..
                         "After the initial moment of shock, her face takes on resigned look and she passively lets you continue your fondling.")
@@ -207,7 +208,7 @@ function SheIsAsleep(girl)
                         action = ChoiceBox("Let her cum?", "Yes", "No")
                         if action == 0 then
                             Dialog("You speed up your fingers and start sucking her nipples. Soon, you feel her tightening around your fingers and she arches her back.")
-                            wm.UpdateImage(wm.IMG.BED)
+                            wm.UpdateImage(wm.IMG.REST)
                             SheJustCame(girl, 10)
                             Dialog("\"Thank you, " .. PlayerTitleFor(girl) .. "\". She lets out a sigh, and falls back asleep immediately.")
                         else
@@ -228,7 +229,7 @@ function SheIsAsleep(girl)
                         girl:pcfear(2)
                     end
                 else
-                    wm.UpdateImage(wm.IMG.BED)
+                    wm.UpdateImage(wm.IMG.REST)
                     Dialog("Her being awake takes away the thrill for you, so there is no point in continuing. You leave her to get some rest.")
                     girl:libido(1)
                 end

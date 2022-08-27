@@ -283,3 +283,9 @@ function SheJustCame(girl, amount)
     end
     girl:happiness(amount // 2)
 end
+
+image_options = {
+    solo = {participants=wm.IMG_PART.SOLO},
+    hetero = {participants=wm.IMG_PART.HETERO},
+    lesbian = {participants=wm.IMG_PART.LESBIAN},
+}

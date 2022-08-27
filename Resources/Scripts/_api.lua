@@ -1,7 +1,6 @@
 ---@class WM
 ---@field IMG table<string, number>
 ---@field IMG_PART table<string, number>
----@field IMG_POS table<string, number>
 ---@field ACTIONS table<string, number>
 ---@field STATS table<string, number>
 ---@field SKILLS table<string, number>
@@ -35,7 +34,6 @@ function wm.RandName(mode) end
 function wm.GameOver() end
 
 function wm.AcquireGirl(girl) end
----@return wm.Girl
 function wm.CreateRandomGirl(reason, age) end
 function wm.ToDungeon(girl, reason) end
 function wm.ToJail(girl) end

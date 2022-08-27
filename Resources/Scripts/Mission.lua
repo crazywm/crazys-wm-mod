@@ -8,6 +8,7 @@ function GoOnMission(girl)
             "Accompany you into the catacombs",
             "Send her into the night to steal",
             "Send her on a Quest",
+            "Seduce another girl",
             "Go Back"
     )
     if action == 0 then
@@ -240,6 +241,20 @@ function GoOnMission(girl)
         end
     elseif action == 6 then
         return girl:trigger("girl:quest")
+    elseif action == 7 then
+        Dialog("I want you to go out and have some fun.")
+        if girl:obey_check() then
+            Dialog("\"She puts on her sexiest dress and heels, and makes her way into town.\"")
+            Dialog("\"She finds a girl drinking all alone and makes her move.\"")
+            if girl:has_trait("Straight") then
+                Dialog("\"She buys her a drink and the two spend the night talking.\"")
+            else
+                Dialog("\"After a few drinks, she has managed to talk her into spending the night together.\"")
+            end
+        else
+            Dialog("She refuses.")
+            return girl:trigger("girl:refuse")
+        end
     end
 end
 

@@ -59,11 +59,10 @@ will be assigned the associated image type -->
     </FileType>
     <FileType>
         <Pattern>scissor.*</Pattern>
-        <Type>sex</Type>
+        <Type>scissor</Type>
         <Pregnant>no</Pregnant>
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
-        <Position>scissor</Position>
         <Participants>lesbian</Participants>
     </FileType>
     <FileType>
@@ -181,40 +180,36 @@ will be assigned the associated image type -->
     </FileType>
     <FileType>
         <Pattern>cowgirl.*</Pattern>
-        <Type>sex</Type>
+        <Type>cowgirl</Type>
         <Pregnant>no</Pregnant>
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
-        <Position>cowgirl</Position>
         <Participants>hetero</Participants>
     </FileType>
     <FileType>
         <Pattern>revcowgirl.*</Pattern>
         <Pattern>reverse cowgirl.*</Pattern>
-        <Type>sex</Type>
+        <Type>revcowgirl</Type>
         <Pregnant>no</Pregnant>
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
-        <Position>reverse-cowgirl</Position>
         <Participants>hetero</Participants>
     </FileType>
     <FileType>
         <Pattern>sexdoggy.*</Pattern>
         <Pattern>doggy.*</Pattern>
-        <Type>sex</Type>
+        <Type>doggy</Type>
         <Pregnant>no</Pregnant>
-        <Position>doggy</Position>
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
         <Participants>hetero</Participants>
     </FileType>
     <FileType>
         <Pattern>missionary.*</Pattern>
-        <Type>sex</Type>
+        <Type>missionary</Type>
         <Pregnant>no</Pregnant>
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
-        <Position>missionary</Position>
         <Participants>hetero</Participants>
     </FileType>
     <FileType>

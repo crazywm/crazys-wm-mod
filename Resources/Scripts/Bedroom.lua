@@ -11,6 +11,7 @@ function VisitBedroom(girl)
                 "Watch her masturbate for you",
                 "Have someone join the two of you for some fun",
                 "Have her tease you",
+                "Pleasure her",
                 "Go Back")
     else
         choice = ChoiceBox("What do you want to do?",
@@ -23,12 +24,13 @@ function VisitBedroom(girl)
                 "Ask her to masturbate while you watch",
                 "Have group sex",
                 "Ask her to show you her skills on the stripper pole",
+                "Pleasure her",
                 "Go Back")
     end
     if choice == 0 then
         return NormalSex(girl)
     elseif choice == 1 then
-        return LesbianSex(girl)
+        return girl:trigger("girl:bedroom:lesbian")
     elseif choice == 2 then
         return BeastSex(girl)
     elseif choice == 3 then
@@ -67,7 +69,19 @@ function VisitBedroom(girl)
         end
     elseif choice == 8 then
         return Strip(girl)
-    elseif choice == 9 then
+     elseif choice == 9 then
+        choice = ChoiceBox("How?",
+                "Fingering",
+                "Licking",
+                "Go Back")
+        if choice == 0 then
+            return girl:trigger("girl:bedroom:finger")
+        elseif choice == 1 then
+            return girl:trigger("girl:bedroom:lick")
+        elseif choice == 2 then
+            return VisitBedroom(girl)
+        end
+    elseif choice == 10 then
         Dialog("Go Back")
         return girl:trigger("girl:interact:brothel")
     end
@@ -86,7 +100,7 @@ function NormalSex(girl)
             return girl:trigger("girl:refuse")
         else
             Dialog("After a short struggle with your goons, " .. girl:name() .. " is bound spread-eagle on the bed.")
-            wm.UpdateImage(wm.IMG.RAPE)
+            wm.UpdateImage(wm.IMG.SEX, {tied=1})
             Dialog("She cries out as you force yourself inside her. ")
             PlayerRapeGirl(girl)
         end
@@ -99,7 +113,23 @@ function HandleNormalSex(girl)
     girl:tiredness(3)
     if girl:skill_check(wm.SKILLS.NORMALSEX, 75) then
         Dialog("As the head of your penis passes her labia you feel her squeeze her muscles around your member.  She starts rocking her hips and pushing against you.")
-        Dialog("Without you realizing it she has switched positions and is now bouncing and grinding on top of you.")
+        local choice = ChoiceBox("", "Let her get on top", "Pick her up", "Dick her down", "Doggy Style")
+        if choice == 0 then
+            -- TODO {position=wm.IMG_POS.GIRL_ON_TOP}
+            wm.UpdateImage(wm.IMG.SEX)
+            Dialog("Without you realizing it she has switched positions and is now bouncing and grinding on top of you.")
+        elseif choice == 1 then
+            -- TODO {position=wm.IMG_POS.SUSPENDED_CONGRESS}
+            wm.UpdateImage(wm.IMG.SEX)
+            Dialog("She lets out an excited giggle as you lift her up, quickly turning into a moan once you place her on your dick.")
+        elseif choice == 2 then
+            -- TODO {position=wm.IMG_POS.PILEDRIVER}
+            wm.UpdateImage(wm.IMG.SEX)
+            Dialog("You lift up her hips, push back her legs, and start fucking in a piledriver position.")
+        elseif choice == 3 then
+            wm.UpdateImage(wm.IMG.DOGGY)
+            Dialog("You fuck her from behind, doggy style.")
+        end
         Dialog("Many positions and orgasms later you both lie next to each other completely exhausted and satisfied.")
         girl:happiness(1)
         girl:normalsex(1)
@@ -116,46 +146,15 @@ function HandleNormalSex(girl)
 end
 
 ---@param girl wm.Girl
-function LesbianSex(girl)
-    Dialog("She notices that you have not come alone.  Following her gaze you speak \"Ah I see you noticed.  I'd like you two girls to get to know each other better and...  :you wink slyly:  I'd like to watch.\"")
-    if girl:obey_check(wm.ACTIONS.SEX) then
-        wm.UpdateImage(wm.IMG.LESBIAN)
-        girl:experience(6)
-        girl:tiredness(3)
-        Dialog("You sit down on the bed and make yourself comfortable as the girls approach one another.")
-        if girl:skill_check(wm.SKILLS.LESBIAN, 75) then
-            Dialog("The girls lose themselves in passionate kisses.  They take turns removing each others clothes with their mouths; some of the intimate articles are playfully tossed your way.")
-            Dialog("They join you on the bed and slowly and expertly probe each other with fingers and tongues.   You alternate fondling their lithe bodies and stroking your member.")
-            Dialog("Their bodies quiver with each orgasm that overpowers them.")
-            Dialog("They lay beside each other on the bed looking into each others eyes.")
-            if girl:skill_check(wm.SKILLS.ORALSEX, 50) then
-                Dialog("You stand over them; your erect member inches from their faces. \"What about me, girls?\" They giggle and begin to lick and stroke your staff with skill. The sensation is amazing and you shoot a large stream of semen across those cute faces.")
-            end
-            girl:happiness(2)
-            girl:lesbian(1)
-        else
-            Dialog("The girls hesitantly move closer. A few awkward pecks on the cheek later you find the need to direct them.")
-            Dialog("You tell them to get undressed after which they begin to cautiously touch one another.  \"No, no, no!\" you exclaim, \"Lick her damn cunt!\"  They both immediately try to comply and bump heads.")
-            Dialog("You shake your head as the girls make faces after each time tongue meets pussy.")
-            Dialog("After all the time you spent directing you had no chance to enjoy the show; awkward as it was.  You sigh and pray to goddess of Yuri that they at least learned something from the experience.")
-            girl:lesbian(2)
-            girl:tiredness(3)
-        end
-    else
-        Dialog("She wrinkles her nose in disgust and refuses.")
-        return girl:trigger("girl:refuse")
-    end
-end
-
----@param girl wm.Girl
 function BeastSex(girl)
     Dialog("I wonder if you would cheer up my pet Malboro. He's been down lately and could really use a good fucking.")
     if girl:obey_check(wm.ACTIONS.SEX) then
-        wm.UpdateImage(wm.IMG.BEAST)
+
         girl:experience(6)
         girl:tiredness(5)
         Dialog("She smiles and nods. I've always liked that \"little\" guy.  Let's go cheer him up.")
         if girl:skill_check(wm.SKILLS.BEASTIALITY, 75) then
+            wm.UpdateImage(wm.IMG.TENTACLE)
             Dialog("She smartly removes her clothing before she enters the cage. Beasts don't really care about what their fuck toys look like anyway.")
             Dialog("She approaches the massive tentacled beast with skill of and professional handler.  She finds just the right spots to arouse the monster.")
             Dialog("The malboro immediately responds and several tentacles seize her arms and legs.  She squeals with delight as tentacles enter her pussy and anus.")
@@ -163,6 +162,7 @@ function BeastSex(girl)
             girl:happiness(1)
             girl:beastiality(1)
         else
+            wm.UpdateImage(wm.IMG.BEAST)
             Dialog("She enters the cage fully clothed, which turns out to be a mistake when she walks up behind the creature and startles it.")
             Dialog("The creature goes into a blind sexual fury and shreds her clothing and violently shoves multiple tentacles into her orifices.")
             Dialog("Her screams of terror are muffled by the tentacles in her mouth, but they are still audible enough for you to hear as a fifth tentacle approaches her ass.")
@@ -264,7 +264,7 @@ function MasturbateSex(girl)
         girl:tiredness(2)
         Dialog("She relaxes and grins devilishly.  \"Alright, I hope you will enjoy the show,\" she then adds \"but no touching.\"")
         if girl:skill_check(wm.SKILLS.STRIP, 75) then
-            wm.UpdateImage(wm.IMG.MAST)
+            wm.UpdateImage(wm.IMG.MASTURBATE)
             Dialog("She moves to her bed and makes herself comfortable and making sure you have a good view.  She begins rubbing her mound through her panties and before long a dark wet spot begins to grow;  you also start feeling some growth.")
             if girl:has_trait("Great Figure") then
                 Dialog("As she rubs, pulls, and teases her pussy; You admire her incredible figure as it undulates and gyrates from the stimulation.")
@@ -273,7 +273,17 @@ function MasturbateSex(girl)
                 Dialog("As you watch her sliding her fingers in and out you marvel at how beautiful everything about this girls is.  It occurs to you that she has one of the most fantastic vaginas you have ever seen.  A moan brings your attention back to the show.")
             end
             Dialog("She pulls her panties to the side and begins to work herself over with the precision of a practised expert.")
-            Dialog("You are impressed that she is able to keep up the stimulation as she bucks wildly.  You stroke you shaft in time with her probings.")
+            Dialog("You are impressed that she is able to keep up the stimulation as she bucks wildly. You stroke you shaft in time with her probings.")
+            local choice = ChoiceBox("Make a request?", "Keep going", "Dildo", "Play with your asshole.")
+            if choice == 0 then
+            elseif choice == 1 then
+                wm.UpdateImage(wm.IMG.MAST_DILDO)
+                Dialog("\"How about this?\" You hand her a large dildo.\n\"Thanks!\". " ..
+                        "She starts by sucking the dildo, then inserts it, all-the-while maintaining eye contact.")
+            elseif choice == 2 then
+                wm.UpdateImage(wm.IMG.ANAL, {participants=wm.IMG_PART.SOLO})
+                Dialog("TODO")
+            end
             Dialog("Her moans become screams of pleasure as she approaches another massive orgasm.  You both cum simultaneously and some of your orgasm lands across her stomach.")
         else
             Dialog("She moves to the bed to get comfortable but gives no consideration to your view.  She reaches inside her panties and begins massaging her clit.")
@@ -338,7 +348,7 @@ function FFMSex(girl)
         girl:tiredness(4)
 
         if girl:skill_check(wm.SKILLS.GROUP, 50) and girl:skill_check(wm.SKILLS.LESBIAN, 50) then
-            wm.UpdateImage(wm.IMG.GROUP)
+            wm.UpdateImage(wm.IMG.FFM)
             Dialog(other_name .. " and " .. girl:name() .. " start undressing and caressing each other, providing you with quite the show.\n" ..
                    "Once they are both naked, they beckon you to join them on the bed. " .. other_name .. " starts massaging your shaft while " .. girl:firstname() ..
                    " is making out with you. This is what heaven must be like!")
@@ -364,7 +374,7 @@ function FFMSex(girl)
                 wm.UpdateImage(wm.IMG.LICK)
                 Dialog("Not wanting to show favouritism, you ask " .. girl:firstname() .. " to lie down and spread her legs for you. " ..
                        " Again your nimble tongue starts doing its work.")
-                wm.UpdateImage(wm.IMG.GROUP)
+                wm.UpdateImage(wm.IMG.FFM)
                 Dialog("You spent the next hours with " .. girl:firstname() .. " and " .. other_name ..
                        " engaged in various positions. Why can't every evening be like this one?")
             end
@@ -394,7 +404,7 @@ function FFMSex(girl)
                            "Frustrated, you leave the room in search for better entertainment.")
                 end
             else
-                wm.UpdateImage(wm.IMG.GROUP)
+                wm.UpdateImage(wm.IMG.FFM)
                 Dialog(girl:name() .. " seemed unsure what to do, and mostly just watches as " .. other_name .. " takes your dick in her mouth." ..
                        "When you suggested that she help, she just managed to butt her head with " .. other_name .. "'s, and ended up not only " ..
                        "not participating herself, but also ruining an up-to-that-point perfectly fine blowjob. What a disastrous night!")
@@ -447,7 +457,7 @@ function MMFSex(girl)
         girl:tiredness(4)
 
         if girl:skill_check(wm.SKILLS.GROUP, 50) then
-            wm.UpdateImage(wm.IMG.GROUP)
+            wm.UpdateImage(wm.IMG.MMF)
             if girl:has_trait("Lesbian") then
                 Dialog("Even though her appetites go in another direction, " .. girl:name() .. " is undeniably skilled at " ..
                        "pleasing a man -- or two men, as it were. If you hadn't know, you would never have guessed that she is Lesbian.")
@@ -470,7 +480,7 @@ function MMFSex(girl)
             girl:group(1)
         else
             if girl:has_trait("Lesbian") then
-                wm.UpdateImage(wm.IMG.GROUP)
+                wm.UpdateImage(wm.IMG.MMF)
                 Dialog(girl:name() .. " doesn't know what to do with a single cock, let alone two.")
             else
                 wm.UpdateImage(wm.IMG.HAND)
@@ -505,7 +515,7 @@ function OrgySex(girl)
         if girl:has_trait("Nymphomaniac") then
             wm.UpdateImage(wm.IMG.NUDE)
             Dialog("You lead the men inside and you all stand at attention for the amazing sight before you.  She stands in the center of the room surrounded by pillows and cushions.  There isn't a stitch of clothing on her body, which shines from the coating of lubricant she has applied.  She waits for the door to close before she strikes a sexy pose and exclaims \"Lets see who can catch the greased courtesan first!\"")
-            wm.UpdateImage(wm.IMG.GROUP)
+            wm.UpdateImage(wm.IMG.ORGY)
             Dialog("She slips and slides among the group, escaping holds to be caught by others. Before long everyone is panting and slippery. " ..
                     "She arranges you all laying on the floor and slides her body along the group taking turns and stopping at each man to ride his throbbing erection. " ..
                     "She expertly times each individual session and doesn't leave anyone wanting. The Sun breaks through the window and you awake on her floor with her laying on top of the group.")
@@ -517,7 +527,7 @@ function OrgySex(girl)
             if girl:skill_check(wm.SKILLS.GROUP, 75) then
                 wm.UpdateImage(wm.IMG.ECCHI)
                 Dialog("The group enters the room and forms a circle around the kneeling and eager girl in her favorite black lingerie.")
-                wm.UpdateImage(wm.IMG.GROUP)
+                wm.UpdateImage(wm.IMG.ORGY)
                 Dialog("She reaches up and frees your cock from it's cloth prison.  As she begins to suck and lick the tip she reaches to her sides and liberates the other mens' dicks as well.")
                 Dialog("She continues to suck your cock and stroke the men next to you with her hands as another man climbs beneath her and inserts himself into her vagina.  Another man kneels down behind her and penetrates her ass.  This continues through the night with men taking turns with all her holes.  ")
                 Dialog("The men compliment you on an excellent evening and blow kisses to the completely exhausted and sleeping woman on the bed.")
@@ -527,7 +537,7 @@ function OrgySex(girl)
             else
                 wm.UpdateImage(wm.IMG.FORMAL)
                 Dialog("The room has been arranged with a table in the center circled by chairs.  She bows \"It will be my pleasure to serve you tonight, gentlemen.\"  You sigh to yourself as you realize she has gotten the wrong idea.  She realizes her error as the group removes erect penises from their pants and move toward her.")
-                wm.UpdateImage(wm.IMG.GROUP)
+                wm.UpdateImage(wm.IMG.ORGY)
                 Dialog("To her credit she recovers from the shock quickly and lays back with her feet on the table.  The men take turns passing and sliding her around the table.  She allows the group to enter her every orifice but does little to enhance the experience.")
                 Dialog("You see the men out; lost in your thoughts of the disastrous performance.  One older gentlemen attempts to cheer you up by saying \"It was an enjoyable enough night, Sir.  Any gangbang is a good gangbang\"")
                 girl:happiness(-2)

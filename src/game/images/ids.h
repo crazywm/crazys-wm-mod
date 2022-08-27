@@ -61,6 +61,13 @@ enum class EImageBaseType {
     RAPE_BEAST,
     CUMSHOT,
 
+    // special positions
+    COWGIRL,
+    REVCOWGIRL,
+    SEXDOGGY,
+    MISSIONARY,
+    SCISSOR,
+
     // NSFW
     STRIP,
     KISS,

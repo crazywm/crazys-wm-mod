@@ -30,6 +30,10 @@
     <Event Name="girl:mission" Script="Mission.lua" Function="GoOnMission" />
     <Event Name="girl:training" Script="Training.lua" Function="Training" />
 
+    <Event Name="girl:bedroom:finger" Script="Bedroom/PleasureHer.lua" Function="FingerHer" />
+    <Event Name="girl:bedroom:lick" Script="Bedroom/PleasureHer.lua" Function="EatHerOut" />
+    <Event Name="girl:bedroom:lesbian" Script="Bedroom/Lesbian.lua" Function="LesbianSex" />
+
     <Event Name="girl:quest" Script="Mission.lua" Function="Quest" />
     <Event Name="girl:quest:tavern" Script="Quests.lua" Function="TavernQuest" />
     <Event Name="girl:quest:church" Script="Quests.lua" Function="ChurchQuest" />

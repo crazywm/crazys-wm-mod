@@ -25,6 +25,7 @@ const std::array<const char*, (int)EImageBaseType::NUM_TYPES>& get_imgtype_names
             "anal", "bdsm", "spanking", "sex", "beast", "tentacle", "oral",
             "titty", "hand", "foot", "deepthroat", "dildo", "strapon",
             "sixtynine", "lick", "finger", "fisting", "suckballs", "rape", "rapebeast", "cumshot",
+            "cowgirl", "revcowgirl", "doggy", "missionary", "scissor",
             "strip", "kiss", "fondle", "chastity", "ecchi", "nude", "bunny", "escort", "massage", "milk", "dom", "sub",
             "maid", "sing", "wait", "card", "nurse", "piano", "music", "stagehand",
             "crystalpurifier", "director", "cameramage", "studiocrew", "security", "cook", "bake",
