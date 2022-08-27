@@ -109,6 +109,7 @@ static const luaL_Reg funx [] = {
         {"AcquireGirl",                  sLuaGirl::acquire_girl},
         {"CreateRandomGirl",             sLuaGirl::create_random_girl},
         {"ToDungeon",                    sLuaGirl::to_dungeon},
+        {"ToJail",                       sLuaGirl::to_jail},
         { nullptr,                       nullptr }
 };
 

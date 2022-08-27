@@ -42,6 +42,7 @@ void sLuaGirl::init(lua_State* L) {
             {"add_trait", sLuaGirl::add_trait},
             {"has_trait", sLuaGirl::has_trait},
             {"remove_trait", sLuaGirl::remove_trait},
+            {"breast_size", sLuaGirl::breast_size},
             {"has_item", sLuaGirl::has_item},
             {"check_virginity", sLuaGirl::check_virginity},
             {"lose_virginity", sLuaGirl::lose_virginity},
@@ -217,6 +218,11 @@ int sLuaGirl::remove_trait(lua_State *L) {
     return 0;
 }
 
+int sLuaGirl::breast_size(lua_State* L) {
+    auto& girl = check_type(L, 1);
+    lua_pushinteger(L, girl.breast_size());
+    return 1;
+}
 
 int sLuaGirl::get_name(lua_State *L) {
     auto& girl = check_type(L, 1);
@@ -349,6 +355,21 @@ int sLuaGirl::to_dungeon(lua_State *L) {
     // TODO this fails if the girl is in prison/runaway
 
     g_Game->dungeon().AddGirl(std::move(girl_owner), reason);
+    return 0;
+}
+
+int sLuaGirl::to_jail(lua_State *L) {
+    auto& girl = check_type(L, 1);
+
+    std::shared_ptr<sGirl> girl_owner = nullptr;
+    if(girl.m_Building) {
+        girl_owner = girl.m_Building->remove_girl(&girl);
+    } else {
+        girl_owner = g_Game->girl_pool().TakeGirl(&girl);
+    }
+    // TODO this fails if the girl is already in prison/runaway
+
+    g_Game->GetPrison().AddGirl(std::move(girl_owner));
     return 0;
 }
 

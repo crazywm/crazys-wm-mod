@@ -43,6 +43,8 @@ struct sLuaGirl : public sCharacter<sLuaGirl>{
     static int has_trait(lua_State* L);
     static int remove_trait(lua_State* L);
 
+    static int breast_size(lua_State* L);
+
     static int check_virginity(lua_State* L);
     static int lose_virginity(lua_State* L);
 
@@ -81,6 +83,7 @@ struct sLuaGirl : public sCharacter<sLuaGirl>{
     // global functions
     static int acquire_girl(lua_State* L);
     static int to_dungeon(lua_State* L);
+    static int to_jail(lua_State* L);
     static int torture(lua_State* L);
     /// TODO memory management
     static int create_random_girl(lua_State* L);

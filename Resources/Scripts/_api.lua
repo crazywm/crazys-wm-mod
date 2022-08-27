@@ -38,6 +38,7 @@ function wm.AcquireGirl(girl) end
 ---@return wm.Girl
 function wm.CreateRandomGirl(reason, age) end
 function wm.ToDungeon(girl, reason) end
+function wm.ToJail(girl) end
 
 ---@class wm.Girl
 local g = {}
@@ -60,6 +61,7 @@ function g:skill(skill, change) end
 function g:enjoyment(what, change) end
 function g:name() end
 function g:firstname() end
+function g:breast_size() end
 function g:torture() end
 function g:give_money() end
 function g:trigger(event) end
