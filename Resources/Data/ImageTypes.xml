@@ -39,6 +39,7 @@
     <Type Name="sex">
         <Display>Sex</Display>
         <Description>She is getting vaginally penetrated.</Description>
+        <Fallback Cost="25">scissor</Fallback>
         <Fallback Cost="50">anal</Fallback>
         <Fallback Cost="50">finger</Fallback>
         <Fallback Cost="50">lick</Fallback>
@@ -62,6 +63,39 @@
         <Fallback Cost="5" RequiredParticipants="lesbian">oral</Fallback>
         <Fallback Cost="1" RequiredParticipants="lesbian">anal</Fallback>
     </Type>
+
+    <Type Name="scissor">
+        <Display>Scissor</Display>
+        <Description>Scissoring sex.</Description>
+        <Fallback Cost="10">sex</Fallback>
+    </Type>
+
+    <Type Name="doggy">
+        <Display>Doggy Style</Display>
+        <Description>Doggy style sex.</Description>
+        <Fallback Cost="10">sex</Fallback>
+    </Type>
+
+    <Type Name="missionary">
+        <Display>Missionary</Display>
+        <Description>Sex in the Missionary position.</Description>
+        <Fallback Cost="10">sex</Fallback>
+    </Type>
+
+    <Type Name="cowgirl">
+        <Display>Cowgirl</Display>
+        <Description>Sex in the Cowgirl position.</Description>
+        <Fallback Cost="10">sex</Fallback>
+        <Fallback Cost="5">revcowgirl</Fallback>
+    </Type>
+
+    <Type Name="revcowgirl">
+        <Display>Rev. Cowgirl</Display>
+        <Description>Sex in the Reverse Cowgirl position.</Description>
+        <Fallback Cost="10">sex</Fallback>
+        <Fallback Cost="5">cowgirl</Fallback>
+    </Type>
+
     <Type Name="beast">
         <Description>Any sort of sex act with a non-human (for tentacles, use "tentacle" tag).</Description>
         <Display>Bestiality</Display>

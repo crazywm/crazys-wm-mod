@@ -8,7 +8,8 @@ will be assigned the associated image type -->
         <Type>anal</Type>
         <Pregnant>no</Pregnant>
         <Futa>no</Futa>
-        <TiedUp>no</TiedUp><Participants>hetero</Participants>
+        <TiedUp>no</TiedUp>
+        <Participants>hetero</Participants>
     </FileType>
     <FileType>
         <Pattern>bdsm.*</Pattern>
@@ -93,6 +94,14 @@ will be assigned the associated image type -->
     <FileType>
         <Pattern>hand.*</Pattern>
         <Type>hand</Type>
+        <Pregnant>no</Pregnant>
+        <Futa>no</Futa>
+        <TiedUp>no</TiedUp>
+        <Participants>hetero</Participants>
+    </FileType>
+    <FileType>
+        <Pattern>footjob.*</Pattern>
+        <Type>foot</Type>
         <Pregnant>no</Pregnant>
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
@@ -563,8 +572,8 @@ will be assigned the associated image type -->
     <FileType>
         <Pattern>portrait.*</Pattern>
         <Type>portrait</Type>
-        <Pregnant>no</Pregnant>
-        <Futa>no</Futa>
+        <Pregnant>maybe</Pregnant>
+        <Futa>maybe</Futa>
         <TiedUp>no</TiedUp>
     </FileType>
     <FileType>
@@ -603,7 +612,7 @@ will be assigned the associated image type -->
         <TiedUp>maybe</TiedUp>
     </FileType>
     <FileType>
-        <Pattern>puppygirl.*</Pattern>
+        <Pattern>puppy.*</Pattern>
         <Type>puppygirl</Type>
         <Pregnant>no</Pregnant>
         <Futa>no</Futa>
@@ -636,5 +645,21 @@ will be assigned the associated image type -->
         <Pregnant>no</Pregnant>
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
+    </FileType>
+    <FileType>
+        <Pattern>dinner.*</Pattern>
+        <Type>dinner</Type>
+        <Pregnant>no</Pregnant>
+        <Futa>no</Futa>
+        <TiedUp>no</TiedUp>
+        <Participants>any</Participants>
+    </FileType>
+    <FileType>
+        <Pattern>drink.*</Pattern>
+        <Type>drinks</Type>
+        <Pregnant>no</Pregnant>
+        <Futa>no</Futa>
+        <TiedUp>no</TiedUp>
+        <Participants>any</Participants>
     </FileType>
 </ImageFiles>

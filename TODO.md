@@ -14,8 +14,8 @@
   - [ ] cScreenSlaveMarket
   - [ ] cScreenGang 
   - [ ] cScreenDungeon
-* [ ] Replace image name based tags by an xml file
-* [ ] Improve image paths handling / image selection
+* [x] Replace image name based tags by an xml file
+* [x] Improve image paths handling / image selection
 * [ ] Improve performance of animations (upscale only when blitting?)
 * [ ] Pre-generate list of all images for each girl on game start
 * [ ] De-interlacing
