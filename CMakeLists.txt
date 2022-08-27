@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
-project(WM VERSION 7.1.2.4)
-set(PROJECT_VERSION_TYPE beta)
+project(WM VERSION 7.2.1.2)
+set(PROJECT_VERSION_TYPE alpha)
 
 # this needs to happen before the find_package calls, because they register the dlls
 # for install under windows
@@ -36,6 +36,7 @@ add_subdirectory(deps/doctest EXCLUDE_FROM_ALL)
 add_subdirectory(deps/lua EXCLUDE_FROM_ALL)
 add_subdirectory(src/engine EXCLUDE_FROM_ALL)
 add_subdirectory(src/game)
+add_subdirectory(Docs&Tools)
 
 install(DIRECTORY
         Resources/Themes
