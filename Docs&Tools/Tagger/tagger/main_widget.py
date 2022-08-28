@@ -6,6 +6,7 @@ from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QListWi
     QListWidgetItem, QGridLayout, QMenuBar, QCheckBox, QComboBox, QLineEdit, QFormLayout, QMessageBox, QDialog
 from PySide6.QtCore import Qt
 from PySide6.QtMultimediaWidgets import QVideoWidget
+from .utils import QHLine
 
 from . import resource
 from .resource import ImageResource, ResourcePack
@@ -19,7 +20,7 @@ def requires_open_pack(f):
         if self.pack_data is None:
             QMessageBox.critical(None, "No Image Pack", "This function is only available when there is an active pack")
         else:
-            f(self, *args, **kwargs)
+            return f(self, *args, **kwargs)
     return wrapped
 
 
@@ -145,9 +146,14 @@ class MainWidget(QWidget):
     def add_images(self, images: List[ImageResource]):
         old_count = len(self.pack_data.images)
         for image in images:
-            image.file = str(Path(image.file).relative_to(self.pack_data.path.parent))
+            image.file = str(self.rel_path(image.file))
             self.pack_data.images.append(image)
-        self.set_pack_data(self.pack_data, selected_image=old_count)
+        self.set_pack_data(self.pack_data, selected_image=old_count)\
+
+    @requires_open_pack
+    def filter_new_images(self, images: List[ImageResource]):
+        old_paths = set(image.file for image in self.pack_data.images)
+        return [image for image in images if str(self.rel_path(image.file)) not in old_paths]
 
     @requires_open_pack
     def duplicate_active_image(self):
@@ -167,6 +173,15 @@ class MainWidget(QWidget):
     def _update_source(self):
         active_image = self.pack_data.images[self.current_image]
         active_image.source = self.source_edit.text()
+
+    @requires_open_pack
+    def rel_path(self, path) -> Path:
+        """
+        Converts `path` into a path relative to the pack root.
+        :param path: A pathlike object to convert.
+        :return: The relative path as a `Path` object.
+        """
+        return Path(path).relative_to(self.pack_data.path.parent)
 
     @requires_open_pack
     def list_missing_images(self):
@@ -190,19 +205,24 @@ class MainWidget(QWidget):
         layout = QVBoxLayout()
 
         def part_stats(source):
-            sub_layout = QFormLayout()
-            sub_layout.addRow("Count", QLabel(str(source["count"])))
-            sub_layout.addRow("Avg. Size", QLabel(f'{round(source["total_kb"] / max(1, source["count"]))} kB'))
-            sub_layout.addRow("Smallest", QLabel(f'{source["smallest"]} kB'))
-            sub_layout.addRow("Largest", QLabel(f'{source["largest"]} kB'))
-            layout.addLayout(sub_layout)
+            if source["count"] > 0:
+                sub_layout = QFormLayout()
+                sub_layout.addRow("Count", QLabel(str(source["count"])))
+                sub_layout.addRow("Avg. Size", QLabel(f'{round(source["total_kb"] / max(1, source["count"]))} kB'))
+                sub_layout.addRow("Smallest", QLabel(f'{source["smallest"]} kB'))
+                sub_layout.addRow("Largest", QLabel(f'{source["largest"]} kB'))
+                layout.addLayout(sub_layout)
+            else:
+                layout.addWidget(QLabel("-"))
 
         layout.addWidget(QLabel("Images"))
         part_stats(data["images"])
+        layout.addWidget(QHLine())
 
         layout.addSpacing(1)
         layout.addWidget(QLabel("Videos"))
         part_stats(data["videos"])
+        layout.addWidget(QHLine())
         layout.addSpacing(1)
 
         layout.addWidget(QLabel("Types"))

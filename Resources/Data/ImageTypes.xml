@@ -5,10 +5,9 @@
     <Display> how to display the image name e.g. in the gallery
     <Description> Used in the tagger to display help.
     <Fallback> Fallback image type (its <Name>). Can be given multiple times. Fallbacks can have an optional Cost
-              attribute (default value: 10). Fallbacks are only considered if no fallback with lower const value can be
-              found. The cost of a Fallback has to be at least 1. Going from a pregnant to a non-pregnant version of
-              an image has a cost of 5. If multiple fallbacks have the same cost,
-              the game chooses randomly between them.
+               attribute (default value: 10). Fallbacks are only considered if no fallback with lower const value can be
+               found. The cost of a Fallback has to be at least 1. Going from a pregnant to a non-pregnant version of
+               an image has a cost of 5. A fallback can require the target image to be in `TiedUp` state.
     -->
     <Type Name="anal">
         <Display>Anal</Display>
@@ -40,6 +39,11 @@
         <Display>Sex</Display>
         <Description>She is getting vaginally penetrated.</Description>
         <Fallback Cost="25">scissor</Fallback>
+        <Fallback Cost="25">doggy</Fallback>
+        <Fallback Cost="25">missionary</Fallback>
+        <Fallback Cost="25">cowgirl</Fallback>
+        <Fallback Cost="25">revcowgirl</Fallback>
+
         <Fallback Cost="50">anal</Fallback>
         <Fallback Cost="50">finger</Fallback>
         <Fallback Cost="50">lick</Fallback>
@@ -467,7 +471,7 @@
     </Type>
     <Type Name="portrait">
         <Display>Portrait</Display>
-        <Fallback Cost="20">profile</Fallback>
+        <Fallback Cost="25">profile</Fallback>
     </Type>
     <Type Name="jail">
         <Display>Jail</Display>
@@ -485,6 +489,8 @@
     <Type Name="presented">
         <Display>Presented (Market)</Display>
         <Fallback Cost="150">profile</Fallback>
+        <Fallback Cost="100" TiedUp="yes">profile</Fallback>
+        <Fallback>jail</Fallback>
         <Fallback>sub</Fallback>
     </Type>
     <Type Name="brand">

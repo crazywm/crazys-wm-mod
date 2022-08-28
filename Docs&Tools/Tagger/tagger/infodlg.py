@@ -22,7 +22,7 @@ def generate_fallback_tree(start: str, participants: str, repo: Dict[str, TagSpe
     base_layout = {}
 
     while len(queue) > 0:
-        # find lowest cost item
+        # find the lowest cost item
         cheapest = 1e100
         index = -1
         for i, (e, p, c) in enumerate(queue):
@@ -31,7 +31,7 @@ def generate_fallback_tree(start: str, participants: str, repo: Dict[str, TagSpe
                 index = i
         node, parent, cost = queue[index]
         del queue[index]
-        if node in visited or cost > 40:
+        if node in visited or cost > 100:
             continue
         visited.add(node)
 
@@ -93,7 +93,6 @@ class VisualizeFallbackDlg(QDialog):
                                     "Orgy", "Any"])
         layout.addWidget(self.participants)
 
-
         self.setLayout(layout)
 
         self.pixmap = QPixmap()
@@ -115,3 +114,59 @@ class VisualizeFallbackDlg(QDialog):
         image = image.scaled(800, 600, aspectMode=Qt.KeepAspectRatio)
         self.pixmap = QPixmap.fromImage(image)
         self.label.setPixmap(self.pixmap)
+
+
+class ShowAllTags(QDialog):
+    def __init__(self, repo:  Dict[str, TagSpec]):
+        super().__init__()
+        self.setWindowTitle("Tag Info")
+        self.repo = repo
+        self.edit = QLineEdit()
+        self.edit.setToolTip("Start typing to see suggestions for tag names.")
+
+        layout = QVBoxLayout()
+        self.edit.editingFinished.connect(self._on_update_type)
+
+        model = QStringListModel()
+        options = set()
+        for s in self.repo.values():
+            options.add(s.tag)
+            options.add(s.display)
+
+        model.setStringList(options)
+        completer = QCompleter()
+        completer.setModel(model)
+        self.edit.setCompleter(completer)
+        layout.addWidget(self.edit)
+
+        self.setLayout(layout)
+
+        self.full_name = QLabel("Full Name")
+        self.full_name.setToolTip("The name of the tag as displayed to pack makers/players.")
+        layout.addWidget(self.full_name)
+
+        self.tag_name = QLabel("Tag")
+        self.tag_name.setToolTip("The name of the tag used by the game engine.")
+        layout.addWidget(self.tag_name)
+        layout.addWidget(QLabel("Description:"))
+        self.description = QLabel("<Description>")
+        layout.addWidget(self.description)
+
+        #self.pixmap = QPixmap()
+        #self.label = QLabel("<Description>")
+        #self.label.setMinimumWidth(800)
+        #self.label.setMinimumHeight(600)
+        #self.label.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+        #layout.addWidget(self.label)
+
+    def _on_update_type(self):
+        tag = get_canonical_name(self.edit.text(), self.repo)
+        if tag is None:
+            return
+
+        self.tag_name.setText(f"Tag: {tag}")
+        self.full_name.setText(f"Name: {self.repo[tag].display}")
+        self.description.setText(self.repo[tag].description)
+
+        #self.pixmap = QPixmap.fromImage(image)
+        #self.label.setPixmap(self.pixmap)

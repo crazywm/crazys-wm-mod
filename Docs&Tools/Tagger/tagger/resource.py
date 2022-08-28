@@ -16,7 +16,7 @@ IMAGE_SUFFIXES = [
 VIDEO_SUFFIXES = [
     ".mp4", ".webm", ".avi", ".mov"
 ]
-
+FILE_SUFFIXES = IMAGE_SUFFIXES + VIDEO_SUFFIXES
 
 @dataclass
 class ImageResource:
@@ -77,6 +77,9 @@ def read_tag_specs(source: FilePath) -> Dict[str, TagSpec]:
             elif child.tag == "Fallback":
                 spec.fallback.append(FallbackSpec(target=child.text, cost=int(child.attrib.get("Cost", 10)),
                                                   required=child.attrib.get("RequiredParticipants")))
+            elif child.tag == "Description":
+                spec.description = child.text
+
         specs[name] = spec
     return specs
 

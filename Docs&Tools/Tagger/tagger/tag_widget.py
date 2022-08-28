@@ -1,11 +1,12 @@
 from PySide6.QtCore import Qt, QStringListModel
 from PySide6.QtWidgets import QDialog, QComboBox, QVBoxLayout, QLineEdit, QWidget, QGroupBox, QCheckBox, QHBoxLayout, \
-    QGridLayout, QListWidget, QLabel, QPushButton, QTabWidget, QScrollArea, QCompleter
+    QGridLayout, QListWidget, QLabel, QPushButton, QTabWidget, QScrollArea, QCompleter, QMessageBox
+from .utils import QHLine, clear_layout
 from collections import defaultdict
 
-from typing import Set, List
+from typing import Set, List, Dict
 from . import resource
-from .resource import ImageResource, get_canonical_name
+from .resource import ImageResource, get_canonical_name, TagSpec
 
 
 def translate_check(source: str):
@@ -21,7 +22,7 @@ def check_to_string(state: Qt.CheckState):
 
 
 class TagViewWidget(QWidget):
-    def __init__(self, repo):
+    def __init__(self, repo: Dict[str, TagSpec]):
         super().__init__()
         self.repo = repo
         self.edit = QLineEdit()
@@ -48,7 +49,8 @@ class TagViewWidget(QWidget):
         main_tags_layout.addWidget(QLabel("Main Tags"), 0)
         main_tags_layout.addWidget(self.edit, 0)
         self.display_type = QLabel("")
-        self.display_type.setMinimumHeight(100)
+        self.display_type.setMinimumHeight(120)
+        self.display_type.setLayout(QVBoxLayout())
         main_tags_layout.addWidget(self.display_type, 1)
 
         self.clear_tags = QPushButton("Clear Tags")
@@ -57,10 +59,16 @@ class TagViewWidget(QWidget):
         layout.addLayout(main_tags_layout, 0)
 
         layout.addStretch(1)
+        layout.addWidget(QHLine())
+        layout.addStretch(1)
+
         layout.addWidget(QLabel("Participants"))
         self.participants = QComboBox()
         self.participants.addItems(resource.KNOW_PARTICIPANT_VALUES)
         layout.addWidget(self.participants)
+
+        layout.addStretch(1)
+        layout.addWidget(QHLine())
         layout.addStretch(1)
 
         # pregnant variation
@@ -100,7 +108,7 @@ class TagViewWidget(QWidget):
     def on_update_type(self):
         tag = get_canonical_name(self.edit.text(), self.repo)
         if tag is None:
-            self.display_type.setText("ERROR")
+            QMessageBox.critical(self, "Invalid Tag", f"Could not parse '{self.edit.text()}' into a valid image tag.")
             return
 
         self.active_tags_list.append(tag)
@@ -113,16 +121,25 @@ class TagViewWidget(QWidget):
         self._update_tag_display()
 
     def _update_tag_display(self):
+        clear_layout(self.display_type.layout())
+
         if len(self.active_tags_list) == 0:
             self.display_type.setText("<No Tags>")
             return
 
-        display = "\n".join(map(lambda x: self.repo[x].display, self.active_tags_list))
-        self.display_type.setText(display)
+        sorted_tag_list = sorted(map(lambda x: (self.repo[x].display, x), self.active_tags_list))
+
+        for display, tag in sorted_tag_list:
+            lbl = QLabel(display)
+            lbl.setToolTip(self.repo[tag].description)
+            self.display_type.layout().addWidget(lbl, 0)
+
+        self.display_type.layout().addStretch(1)
+        self.display_type.setText("")
 
     def update_resource(self, resource: ImageResource):
         self.active_tags_list = [x for x in set(resource.type.split(";")) if x in self.repo]
-        self.edit.setText(resource.type)
+        self.edit.setText("")
         self._update_tag_display()
 
         for key, val in self._check_boxes.items():
@@ -137,7 +154,6 @@ class TagViewWidget(QWidget):
             setattr(resource, key, check_to_string(val.checkState()))
 
         resource.fallback = self.fallback.checkState() == Qt.Checked
-        print(self.participants.currentText())
         resource.participants = self.participants.currentText().lower()
 
 

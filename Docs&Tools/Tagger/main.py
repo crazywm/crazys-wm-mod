@@ -5,8 +5,8 @@ from PySide6 import QtGui
 from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
 from tagger.main_widget import MainWidget
 from tagger.resource import read_tag_specs, read_file_translations, guess_type_by_file_name, ResourcePack, \
-    save_image_pack
-from tagger.selection import VisualizeFallbackDlg
+    save_image_pack, FILE_SUFFIXES
+from tagger.infodlg import VisualizeFallbackDlg, ShowAllTags
 
 app = QApplication([])
 
@@ -28,7 +28,7 @@ def requires_open_pack(f):
         if self.tagger.pack_data is None:
             QMessageBox.critical(None, "No Image Pack", "This function is only available when there is an active pack")
         else:
-            f(self, *args, **kwargs)
+            return f(self, *args, **kwargs)
     return wrapped
 
 
@@ -136,6 +136,11 @@ class MainWindow(QMainWindow):
         action.triggered.connect(self._show_fallbacks)
         info_menu.addAction(action)
 
+        action = QtGui.QAction('&Tags', self)
+        action.setStatusTip('Show all available image tags')
+        action.triggered.connect(self._show_all_tags)
+        info_menu.addAction(action)
+
     def _load_pack_dlg(self):
         pack_file, _ = QFileDialog.getOpenFileName(self, "Open Pack", ".", "Pack Files (images*.xml)")
         if pack_file:
@@ -177,10 +182,11 @@ class MainWindow(QMainWindow):
         from tagger.resource import ImageResource
         images = []
         for file in Path(directory).iterdir():
-            if file.suffix not in [".png", ".jpg", ".jpeg", ".webp", ".gif"]:
+            if file.suffix not in FILE_SUFFIXES:
                 continue
             image = ImageResource(file=file, **guess_type_by_file_name(file, self.translator))
             images.append(image)
+        images = self.tagger.filter_new_images(images)
         self.tagger.add_images(sorted(images, key=lambda x: x.file))
 
     def _import_dlg(self):
@@ -193,6 +199,10 @@ class MainWindow(QMainWindow):
 
     def _show_fallbacks(self):
         dlg = VisualizeFallbackDlg(self.repo)
+        dlg.exec_()
+
+    def _show_all_tags(self):
+        dlg = ShowAllTags(self.repo)
         dlg.exec_()
 
 
