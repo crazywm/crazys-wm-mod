@@ -33,6 +33,18 @@
     <Event Name="girl:bedroom:finger" Script="Bedroom/PleasureHer.lua" Function="FingerHer" />
     <Event Name="girl:bedroom:lick" Script="Bedroom/PleasureHer.lua" Function="EatHerOut" />
     <Event Name="girl:bedroom:lesbian" Script="Bedroom/Lesbian.lua" Function="LesbianSex" />
+    <Event Name="girl:bedroom:ffm" Script="Bedroom/Group.lua" Function="FFMSex" />
+    <Event Name="girl:bedroom:mmf" Script="Bedroom/Group.lua" Function="MMFSex" />
+    <Event Name="girl:bedroom:orgy" Script="Bedroom/Group.lua" Function="OrgySex" />
+    <Event Name="girl:bedroom:blowjob" Script="Bedroom.lua" Function="Blowjob" />
+    <Event Name="girl:bedroom:deepthroat" Script="Bedroom.lua" Function="Deepthroat" />
+    <Event Name="girl:bedroom:titty" Script="Bedroom.lua" Function="Tittyfuck" />
+    <Event Name="girl:bedroom:anal" Script="Bedroom.lua" Function="AnalSex" />
+    <Event Name="girl:bedroom:beast" Script="Bedroom.lua" Function="BeastSex" />
+    <Event Name="girl:bedroom:mast" Script="Bedroom.lua" Function="MasturbateSex" />
+    <Event Name="girl:bedroom:bdsm" Script="Bedroom.lua" Function="BDSMSex" />
+    <Event Name="girl:bedroom:sex" Script="Bedroom.lua" Function="NormalSex" />
+    <Event Name="girl:bedroom:strip" Script="Bedroom.lua" Function="Strip" />
 
     <Event Name="girl:quest" Script="Mission.lua" Function="Quest" />
     <Event Name="girl:quest:tavern" Script="Quests.lua" Function="TavernQuest" />
