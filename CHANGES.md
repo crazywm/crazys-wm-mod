@@ -7,9 +7,11 @@ but the basic functionality should be there.
 * More variety in `Cocktails` interactions
 
 ## Image Tags
-* Made `sex position` its own image attribute, making `doggy`, `cowgirl`, etc tags redundant
 * Made `participants` its own image attributes, making `les`, `group`, etc tags redundant
 * New `spanking`, `kiss`, `fondle`, `chastity`, `dinner`, `drinks` tags
+
+## Other
+* Made fraction of items replaced in the shop each week configurable. Default is the old value of 50%
 
 # Version 7.2.1alpha1
 Initial work on new image tagging system.
@@ -25,8 +27,6 @@ Initial work on new image tagging system.
 
 
 # Version 7.1.2beta4
-* Made fraction of items replaced in the shop each week configurable. Default is the old value of 50%
-
 
 ## Gameplay
 * Added two new temporary traits, "Recently Punished" and "Recently Scolded", 
