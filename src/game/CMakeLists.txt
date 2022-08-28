@@ -140,10 +140,10 @@ endif(UNIX)
 add_executable(WhoreMaster $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> main.cpp)
 target_link_libraries(WhoreMaster PUBLIC WmGameObjects)
 
-add_executable(WhoreMasterFuzz $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> fuzzmain.cpp)
+add_executable(WhoreMasterFuzz EXCLUDE_FROM_ALL $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> fuzzmain.cpp )
 target_link_libraries(WhoreMasterFuzz PUBLIC WmGameObjects)
 
-add_executable(WhoreMasterTest $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> unittest.cpp ../engine/text/conditions_tests.cpp
+add_executable(WhoreMasterTest EXCLUDE_FROM_ALL $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> unittest.cpp ../engine/text/conditions_tests.cpp
         cGirlsTests.cpp
         )
 target_link_libraries(WhoreMasterTest PUBLIC WmGameObjects)
