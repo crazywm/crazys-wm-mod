@@ -172,10 +172,11 @@ class MainWindow(QMainWindow):
 
     def _new_pack_dlg(self):
         target, _ = QFileDialog.getSaveFileName(self, "New Pack", ".", "Pack Files (images.xml)")
-        target = Path(target)
-        self.tagger.set_pack_data(ResourcePack(target))
-        self._add_from_directory(target.parent)
-        save_image_pack(target, self.tagger.pack_data)
+        if target:
+            target = Path(target)
+            self.tagger.set_pack_data(ResourcePack(target))
+            self._add_from_directory(target.parent)
+            save_image_pack(target, self.tagger.pack_data)
 
     @requires_open_pack
     def _add_from_directory(self, directory):

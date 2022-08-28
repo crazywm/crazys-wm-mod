@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QListWi
     QListWidgetItem, QGridLayout, QMenuBar, QCheckBox, QComboBox, QLineEdit, QFormLayout, QMessageBox, QDialog
 from PySide6.QtCore import Qt
 from PySide6.QtMultimediaWidgets import QVideoWidget
-from .utils import QHLine
+from .utils import QHLine, ImageDisplay
 
 from . import resource
 from .resource import ImageResource, ResourcePack
@@ -42,12 +42,7 @@ class MainWidget(QWidget):
 
         # the image display
         middle_column = QVBoxLayout()
-        self._player = QMediaPlayer()
-        self._video_widget = QVideoWidget()
-        self._video_widget.setMinimumWidth(self.image_width)
-        self._video_widget.setMinimumHeight(self.image_height)
-        self._player.setVideoOutput(self._video_widget)
-        self._player.setLoops(True)
+        self._video_widget = ImageDisplay(image_width, image_height)
         middle_column.addWidget(self._video_widget)
 
         layout.addLayout(middle_column, 0, 1, 2, 1)
@@ -105,13 +100,11 @@ class MainWidget(QWidget):
         image = reader.read()
         img_path = Path(image_data)
         self.image_info.setText(f"{img_path.name}: {image.width()}x{image.height()}; {img_path.stat().st_size // 1024}kB")
-        self._player.setSource(image_data)
-        self._player.play()
-        self._player.setLoops(True)
+        self._video_widget.set_image_data(image_data)
 
     def update_image(self, image):
         if self.pack_data is None:
-            self._player.setSource("")
+            self._video_widget.set_image_data(None)
             self.current_image = None
             return
         if self.current_image is not None:
