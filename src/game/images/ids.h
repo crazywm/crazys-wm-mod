@@ -35,6 +35,8 @@ enum class ETriValue {
 };
 
 ETriValue parse_tri_value(const std::string& source);
+std::string print_tri_flag( ETriValue v, const char* val);
+std::ostream& print_tri_flag(std::ostream& target, ETriValue v, const char* val);
 
 // This is the data the is submitted to an event when determining an image
 enum class EImageBaseType {

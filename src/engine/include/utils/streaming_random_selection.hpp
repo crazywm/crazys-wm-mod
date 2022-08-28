@@ -65,7 +65,6 @@ public:
         double p = weight / m_TotalWeight;
         if (m_Dist(rng) < p) {
             m_CurrentSelection = element;
-
         }
     }
 

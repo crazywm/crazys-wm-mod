@@ -79,7 +79,7 @@ namespace {
         split(split_types, image_types, [](char c ){ return c == ';'; });
         for(auto&& type : split_types) {
             sImageSpec spec{get_image_id(type), part, pregnant, futa, tied};
-            callback(sImageRecord{file, std::move(source), spec, parse_yesno(fallback)});
+            callback(sImageRecord{file, source, spec, parse_yesno(fallback)});
         }
     }
 }

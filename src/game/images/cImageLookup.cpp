@@ -184,7 +184,10 @@ void cImageLookup::find_image_internal_imp(const std::string& base_path, const s
         }
     }
     */
-    g_LogFile.info("image", "Looking for image: ", get_image_name(spec.BasicImage));
+    g_LogFile.info("image", "Looking for image: ", get_image_name(spec.BasicImage), " ",
+                   print_tri_flag(spec.IsTied, "tied"), " ",
+                   print_tri_flag(spec.IsFuta, "futa"), " ",
+                   print_tri_flag(spec.IsPregnant, "preg"));
     while(!queue.empty()) {
         auto it = queue.begin();
         g_LogFile.debug("image", "  Look up '", get_image_name(it->Node.BasicImage), "' with participants ",
@@ -205,7 +208,9 @@ void cImageLookup::find_image_internal_imp(const std::string& base_path, const s
                 add_cost += m_ParticipantTransition.from_to(it->Node.Participants, fbs.SourceParticipants);
             }
 
+            // std::cout << "CONSIDER FALLBACK: " << get_display_name(it->Node.BasicImage) << " -> " << get_display_name(fbs.NewImageType) << "\n";
             sImageSpec fb_node = apply_fallback(it->Node, fbs);
+            // std::cout << (int)fb_node.IsTied << " " << it->Cost + fbs.Cost + add_cost << "\n";
             if(visited.count(fb_node) > 0) continue;
             queue.insert({it->Cost + fbs.Cost + add_cost, fb_node});
         }
@@ -258,17 +263,34 @@ const sImageRecord* cImageLookup::find_image_internal(const std::string& base_pa
     if(candidates.empty()) return nullptr;
     int best_cost = candidates.front().second;
 
-    RandomSelectorV2<const sImageRecord*> selector;
+    // Select an image. We have to selection processes, the first acts within the tolerance, the second outside it
+    RandomSelectorV2<ScoredImageRef> fallback_selector;
+    RandomSelectorV2<ScoredImageRef> selector;
     for(auto& cnd : candidates) {
-        int offset = std::max(0, cnd.second - best_cost - IMAGE_SELECTION_TOLERANCE);
-        float weight = std::exp(-float(offset / 50));
-        selector.process(rng, cnd.first, 0, weight);
+        int offset = std::max(0, cnd.second - best_cost);
+        float weight = std::exp(-float(offset) / 100);
+        if(offset > IMAGE_SELECTION_TOLERANCE) {
+            fallback_selector.process(rng, cnd, 0, weight);
+        } else {
+            selector.process(rng, cnd, 0, weight);
+        }
     }
 
-    g_LogFile.info("image", "Selected image ", selector.selection().value(), " best score: ",
-                   candidates.front().second, " total weight: ", selector.weight());
+    // if we have a fallback, add this to the regular images
+    if(fallback_selector.selection()) {
+        auto cnd = fallback_selector.selection().value();
+        int offset = std::max(0, cnd.second - best_cost);
+        float weight = std::exp(-float(offset) / 100);
+        selector.process(rng, cnd, 0, weight);
+    }
 
-    return selector.selection().value();
+    auto selection = selector.selection().value();
+    g_LogFile.info("image", "Selected image ", selection.first->FileName, " of type ",
+                   get_display_name(selection.first->Attributes.BasicImage), " with score ", selection.second,
+                   ". chance: ", int(100 * std::exp(-float(std::max(0, selection.second - best_cost)) / 100) / selector.weight()),
+                   "%, best score: ", candidates.front().second, ", total weight: ", selector.weight());
+
+    return selection.first;
 }
 
 std::vector<cImageLookup::ScoredImageRef> cImageLookup::find_images(const std::string& base_path, sImageSpec spec, int cutoff) {
@@ -283,7 +305,7 @@ std::vector<cImageLookup::ScoredImageRef> cImageLookup::find_images(const std::s
             best_cost = cost;
         }
     };
-    auto stop = [&](int cost_bound){
+    auto stop = [&](int cost_bound) {
         if(cost_bound - IMAGE_SELECTION_TOLERANCE > cutoff) return true;
 
         if(candidates.size() < IMAGE_MINIMUM_VARIETY) return false;
@@ -311,7 +333,7 @@ std::vector<cImageLookup::ScoredImageRef> cImageLookup::find_images(const std::s
     } else {
         auto partitioner = begin(candidates) + IMAGE_MINIMUM_VARIETY;
         int threshold = std::max(best_cost + IMAGE_SELECTION_TOLERANCE, partitioner->second);
-        erase_if(candidates, [threshold](const ScoredImageRef& candidate){
+        erase_if(candidates, [threshold](const ScoredImageRef& candidate) {
             return candidate.second > threshold;
         });
         return candidates;

@@ -112,3 +112,22 @@ ETriValue parse_tri_value(const std::string& source) {
         throw std::invalid_argument("Expected  'yes', 'no', or 'maybe', got: " + source);
     }
 }
+
+std::ostream& print_tri_flag(std::ostream& target, ETriValue v, const char* val) {
+    switch (v) {
+        case ETriValue::Yes:
+            target << '[' << val << "] ";
+            return target;
+        case ETriValue::Maybe:
+            target << "[?" << val << "] ";
+            return target;
+        case ETriValue::No:
+            return target;
+    }
+}
+
+std::string print_tri_flag(ETriValue v, const char* val) {
+    std::stringstream target;
+    print_tri_flag(target, v, val);
+    return target.str();
+}
