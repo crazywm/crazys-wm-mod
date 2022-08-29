@@ -143,7 +143,10 @@ class TagViewWidget(QWidget):
         self._update_tag_display()
 
         for key, val in self._check_boxes.items():
-            val.setCheckState(translate_check(getattr(resource, key)))
+            try:
+                val.setCheckState(translate_check(getattr(resource, key)))
+            except Exception as error:
+                QMessageBox.critical(self, "Error", str(error))
 
         self.fallback.setCheckState(Qt.Checked if resource.fallback else Qt.Unchecked)
         self.participants.setCurrentText(_participants_to_display(resource.participants))

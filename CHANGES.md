@@ -1,3 +1,8 @@
+# Version 7.2.1alpha3
+
+## Tagging Tool
+* Added creator, comment, and date fields to image packs
+
 # Version 7.2.1alpha2
 Further work on new image tagging system. Many things are still experimental,
 but the basic functionality should be there.

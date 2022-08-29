@@ -3,9 +3,10 @@ from typing import Dict
 
 from PySide6.QtCore import QStringListModel
 from PySide6.QtGui import QPixmap, Qt, QImageReader
-from PySide6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QCompleter, QLabel, QComboBox
+from PySide6.QtWidgets import QDialog, QLineEdit, QVBoxLayout, QCompleter, QLabel, QComboBox, QGridLayout, \
+    QPlainTextEdit, QPushButton
 
-from .resource import TagSpec, read_tag_specs, get_canonical_name
+from .resource import TagSpec, read_tag_specs, get_canonical_name, ResourcePack
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
@@ -170,3 +171,32 @@ class ShowAllTags(QDialog):
 
         #self.pixmap = QPixmap.fromImage(image)
         #self.label.setPixmap(self.pixmap)
+
+
+class PackMetaDlg(QDialog):
+    def __init__(self, pack: ResourcePack):
+        super().__init__()
+        self.setWindowTitle("Pack Metadata")
+        self._pack = pack
+
+        self._creator = QLineEdit(self._pack.creator)
+        self._comment = QPlainTextEdit(self._pack.comment)
+
+        layout = QGridLayout()
+        layout.addWidget(QLabel("Creator"), 0, 0)
+        layout.addWidget(self._creator, 0, 1)
+        layout.addWidget(QLabel("Comment"), 1, 0)
+        layout.addWidget(self._comment, 1, 1, 1, 2)
+        layout.addWidget(QLabel("Date"), 3, 0)
+        layout.addWidget(QLabel(self._pack.date), 3, 1)
+
+        ok = QPushButton("OK")
+        ok.clicked.connect(self.accept)
+        layout.addWidget(ok, 4, 0, 1, 2)
+
+        self.setLayout(layout)
+        self.finished.connect(self._set_result)
+
+    def _set_result(self):
+        self._pack.creator = self._creator.text()
+        self._pack.comment = self._comment.toPlainText()

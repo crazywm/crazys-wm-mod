@@ -17,8 +17,21 @@ class VenusImporter(ImporterBase):
             except KeyError:
                 pass
 
+        if relative_path.stem.lower() == "portrait":
+            return {"type": "profile"}
+
+        if relative_path.stem.lower() == "portrait_small":
+            return {"type": "portrait", "futa": "maybe", "pregnant": "maybe"}
+
         print("Unclear: ", relative_path.parent)
         return None
+
+    def validate(self, path: Path):
+        has_vid = (path / "videos").exists()
+        has_img = (path / "images").exists()
+        has_data = (path / "JSON_data").exists()
+        has_text = (path / "texts").exists()
+        return has_vid and has_img and has_data and has_text
 
 
 _VENUS_TABLE = {

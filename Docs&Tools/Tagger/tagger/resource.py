@@ -35,7 +35,9 @@ class ImageResource:
 @dataclass
 class ResourcePack:
     path: Path
+    creator: str = ''
     comment: str = ''
+    date: str = ''
     images: List[ImageResource] = field(default_factory=list)
 
 
@@ -121,13 +123,24 @@ def load_image(node) -> ImageResource:
     )
 
 
+def _get_optional_text(doc, element, default=""):
+    elem = doc.find(element)
+    if elem is None:
+        return default
+    else:
+        return elem.text
+
+
 def load_image_pack(path) -> ResourcePack:
     doc = ET.parse(path).getroot()
     images = []
     for image in doc.findall('Image'):
         images.append(load_image(image))
 
-    return ResourcePack(path=Path(path), images=images)
+    creator = _get_optional_text(doc, "Creator")
+    comment = _get_optional_text(doc, "Comment")
+    date = _get_optional_text(doc, "Date")
+    return ResourcePack(path=Path(path), creator=creator, comment=comment, date=date, images=images)
 
 
 def guess_type_by_file_name(file_name: str, translation: List[FileNamePattern]) -> dict:
@@ -167,7 +180,11 @@ def _image_resource_dict(image: ImageResource):
 
 
 def save_image_pack(path, pack: ResourcePack):
+    import datetime
     root = ET.Element("Images")
+    ET.SubElement(root, "Creator").text = pack.creator
+    ET.SubElement(root, "Comment").text = pack.comment
+    ET.SubElement(root, "Date").text = datetime.date.today().isoformat()
     for image in pack.images:  # type: ImageResource
         im_el = ET.SubElement(root, "Image", _image_resource_dict(image))
 

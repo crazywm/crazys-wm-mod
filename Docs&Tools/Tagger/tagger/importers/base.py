@@ -5,7 +5,8 @@ from ..resource import ImageResource, IMAGE_SUFFIXES, VIDEO_SUFFIXES
 from PySide6.QtWidgets import QDialog, QVBoxLayout, QComboBox, QLabel, QLineEdit, QHBoxLayout, QPushButton, QMessageBox
 
 _REGISTERED_IMPORTERS = {}
-_BASE_DICT = {"type": "", "pregnant": False, "participants": "any", "outfit": "none", 'fallback': False}
+_BASE_DICT = {"type": "", "pregnant": "no", "participants": "any", "outfit": "none", 'fallback': False, "futa": "no",
+              "tied": "no"}
 
 
 class ImporterBase:
@@ -16,8 +17,12 @@ class ImporterBase:
         self.error_count = 0
 
     def produce_guesses(self, directory: Path):
+        directory = Path(directory)
+        if not self.validate(directory):
+            raise RuntimeError("The given directory does not appear to be compatible with the importer.")
+
         self.error_count = 0
-        for file_name in Path(directory).rglob("*"):      # type: Path
+        for file_name in directory.rglob("*"):      # type: Path
             if (file_name.suffix not in IMAGE_SUFFIXES) and (file_name.suffix not in VIDEO_SUFFIXES):
                 continue
             else:
@@ -30,6 +35,12 @@ class ImporterBase:
                     yield file_name, {}
 
     def guess_for_image(self, relative: Path):
+        raise NotImplementedError()
+
+    def validate(self, path: Path):
+        """
+        This function checks if the given directory really seems to contain a pack compatible with the importer.
+        """
         raise NotImplementedError()
 
 
@@ -71,7 +82,7 @@ class SetupImportDialog(QDialog):
         self.setLayout(layout)
 
         self.importer = None  # type: ImporterBase
-        self.source = None
+        self.source = ""
         self.finished.connect(self._set_result)
 
     def _set_result(self, code):
@@ -92,6 +103,13 @@ def handle_import(directory):
 
     for file, guess in importer.produce_guesses(directory):
         merged = {**_BASE_DICT, **guess}
+
+        # currently, we don't have outfit support
+        if "outfit" in merged:
+            del merged["outfit"]
+        if "position" in merged:
+            del merged["position"]
+
         images.append(ImageResource(file=file, **merged, source=default_source, comment="Automatically Labelled"))
 
     if importer.error_count != 0:
