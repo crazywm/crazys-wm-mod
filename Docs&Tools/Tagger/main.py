@@ -1,3 +1,6 @@
+# This import should help with setting up environment variables needed to successfully pick the right QT version.
+import tagger.qtimport
+
 from pathlib import Path
 import sys
 import os
@@ -6,7 +9,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBo
 from tagger.main_widget import MainWidget
 from tagger.resource import read_tag_specs, read_file_translations, guess_type_by_file_name, ResourcePack, \
     save_image_pack, FILE_SUFFIXES
-from tagger.infodlg import VisualizeFallbackDlg, ShowAllTags
+from tagger.dialogs import VisualizeFallbackDlg, ShowAllTags, PackMetaDlg
 
 app = QApplication([])
 
@@ -83,7 +86,7 @@ class MainWindow(QMainWindow):
         exit_action.triggered.connect(self.close)
         file_menu.addAction(exit_action)
 
-        pack_menu = self.menuBar().addMenu("&Pack")
+        pack_menu = self.menuBar().addMenu("&Images")
         action = QtGui.QAction('&Add Image', self)
         action.setShortcut('Ctrl+A')
         action.setStatusTip('Add image')
@@ -120,14 +123,18 @@ class MainWindow(QMainWindow):
         action.triggered.connect(self.tagger.prev_image)
         pack_menu.addAction(action)
 
-        stats_menu = self.menuBar().addMenu("&Stats")
-        action = QtGui.QAction('&Missing', self)
+        stats_menu = self.menuBar().addMenu("&Pack")
+        action = QtGui.QAction('&List Missing', self)
         action.setStatusTip('Display the list of all image types without at least a single image')
         action.triggered.connect(self.tagger.list_missing_images)
         stats_menu.addAction(action)
         action = QtGui.QAction('&File Stats', self)
         action.setStatusTip('Display an overview of the files used in this pack')
         action.triggered.connect(self.tagger.show_file_stats)
+        stats_menu.addAction(action)
+        action = QtGui.QAction('&Meta Data', self)
+        action.setStatusTip('Display the packs metadata')
+        action.triggered.connect(self._meta_dlg)
         stats_menu.addAction(action)
 
         info_menu = self.menuBar().addMenu("&Info")
@@ -197,6 +204,11 @@ class MainWindow(QMainWindow):
             if self.tagger.pack_data is None:
                 self.tagger.set_pack_data(ResourcePack(Path(directory)))
             self.tagger.add_images(sorted(handle_import(directory), key=lambda x: x.file))
+
+    @requires_open_pack
+    def _meta_dlg(self):
+        dlg = PackMetaDlg(self.tagger.pack_data)
+        dlg.exec_()
 
     def _show_fallbacks(self):
         dlg = VisualizeFallbackDlg(self.repo)
