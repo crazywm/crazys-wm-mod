@@ -284,8 +284,31 @@ function SheJustCame(girl, amount)
     girl:happiness(amount // 2)
 end
 
-image_options = {
-    solo = {participants=wm.IMG_PART.SOLO},
-    hetero = {participants=wm.IMG_PART.HETERO},
-    lesbian = {participants=wm.IMG_PART.LESBIAN},
+
+local function make_union_add(tab)
+    -- https://stackoverflow.com/a/1283399
+    local function union ( a, b )
+        local result = {}
+        for k,v in pairs(a) do result[k] = v end
+        for k,v in pairs(b) do result[k] = v end
+        return result
+    end
+
+    local function table_to_string(tb)
+        local result = ""
+        for i,v in ipairs(tb) do
+            result = result .. i .. "=" .. v .. " "
+        end
+    end
+
+    local meta= {__add = union, __tostring=table_to_string}
+    setmetatable(tab, meta)
+end
+
+ImageOptions = {
+    SOLO = make_union_add({participants=wm.IMG_PART.SOLO}),
+    HETERO = make_union_add({participants=wm.IMG_PART.HETERO}),
+    LESBIAN = make_union_add({participants=wm.IMG_PART.LESBIAN}),
+    FFM = make_union_add({participants=wm.IMG_PART.FFM}),
+    TIED_UP = make_union_add({tied=true}),
 }

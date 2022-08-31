@@ -13,10 +13,10 @@ function LesbianSex(girl)
             return
         elseif what == 1 then
             -- TODO!!!
-            wm.UpdateImage(wm.IMG.ANAL, image_options.lesbian)
-        elseif what == 1 then
+            wm.UpdateImage(wm.IMG.ANAL, ImageOptions.LESBIAN)
+        elseif what == 2 then
             -- TODO!!!
-            wm.UpdateImage(wm.IMG.DILDO, image_options.lesbian)
+            wm.UpdateImage(wm.IMG.DILDO, ImageOptions.LESBIAN)
         end
         HandleLesbianSex(girl, other_girl)
     else
@@ -31,7 +31,7 @@ function HandleLesBDSM(girl, other_name)
     if (girl:skill_check(wm.SKILLS.LESBIAN, 25) and girl:skill_check(wm.SKILLS.BDSM, 40)) then
         girl:experience(6)
         girl:tiredness(2)
-        wm.UpdateImage(wm.IMG.SUB, image_options.lesbian)
+        wm.UpdateImage(wm.IMG.SUB, ImageOptions.LESBIAN)
         local suggest = "."
         if girl:bdsm() > 60 then
             suggest = ", with " .. girl:firstname() .. " occasionally making suggestions for her bondage."
@@ -41,7 +41,7 @@ function HandleLesBDSM(girl, other_name)
         if girl:libido() > 85 then
             Dialog("A dark spot appears on " .. girl:firstname() .. "'s panties. \"Wow, you are already soaking wet\", " ..
             other_name .. " comments. \"Today, you have to earn your orgasms, though!\"")
-            wm.UpdateImage(wm.IMG.SPANKING, image_options.lesbian)
+            wm.UpdateImage(wm.IMG.SPANKING, ImageOptions.LESBIAN)
             Dialog("And with that she pulls " .. girl:firstname()..  "'s panties down and starts thoroughly spanking her ass.")
             if girl:has_trait("Masochist") and wm.Percent(50) then
                 AdjustLust(girl, 10)
@@ -56,7 +56,7 @@ function HandleLesBDSM(girl, other_name)
                     Dialog("\"I think that's enough for today,\" you tell " .. other_name ..
                             ". \"This fine ass has to make me money, I can't have it all bruised and battered for that.\"")
                     wm.SetPlayerDisposition(1)
-                    wm.UpdateImage(wm.IMG.CHASTITY, image_options.lesbian)
+                    wm.UpdateImage(wm.IMG.CHASTITY, ImageOptions.LESBIAN)
                     Dialog("\"You came without my permission\", " .. other_name .. " chides " .. girl:firstname() .. " \"As a punishment, I'm making sure "  ..
                             " that you won't come again any time soon.\" With that, " .. other_name .. " locks her into a chastity belt. \"Have fun!\"")
                     return
@@ -74,32 +74,32 @@ function HandleLesBDSM(girl, other_name)
                 local choice = ChoiceBox("Reward her?", "Let her cum", "Deny her", "Fuck her yourself")
                 if choice == 0 then
                     Dialog("\"I think she's earned her reward, don't you?\" You turn to " .. other_name .. " \"And besides, I want to see you fuck her brains out!\"")
-                    wm.UpdateImage(wm.IMG.FINGER, {participants=wm.IMG_PART.LESBIAN, tied=true})
+                    wm.UpdateImage(wm.IMG.FINGER, ImageOptions.LESBIAN + ImageOptions.TIED_UP)
                     Dialog("Dutifully, " .. other_name .. " starts working on " .. girl:firstname() .. " with her fingers. She is so horny, it doesn't even take her a " ..
                         "minute to get her to climax for the first time. ")
                     SheJustCame(girl, 10)
-                    wm.UpdateImage(wm.IMG.LICK, {participants=wm.IMG_PART.LESBIAN, tied=true})
+                    wm.UpdateImage(wm.IMG.LICK, ImageOptions.LESBIAN + ImageOptions.TIED_UP)
                     Dialog("After the second orgasm, " .. other_name .. " switches to licking " .. girl:firstname() .. "'s pussy. As her next orgasm builds, " ..
                             "she begins to struggle in her bounds, but to no avail. She cums, arching her back as far as her bindings allow. You sit in your chair, casually " ..
                             "stroking your cock as you drink in the sight of her.")
                     SheJustCame(girl, 10)
-                    wm.UpdateImage(wm.IMG.DILDO, {participants=wm.IMG_PART.LESBIAN, tied=true})
+                    wm.UpdateImage(wm.IMG.DILDO, ImageOptions.LESBIAN + ImageOptions.TIED_UP)
                     Dialog("After the fourth climax, " .. other_name .. " goes to you bag o' goodies and takes out the largest dildo she can find. " ..
                             "\"It's time we fill you up\", she proclaims. " .. girl:firstname() .. " is so wet that despite its girth, the dildo slides in easily.")
                     if girl:has_trait("Nymphomaniac") and girl:tiredness() < 70 then
-                        wm.UpdateImage(wm.IMG.CUMSHOT, {participants=wm.IMG_PART.LESBIAN, tied=true})
+                        wm.UpdateImage(wm.IMG.CUMSHOT, ImageOptions.LESBIAN + ImageOptions.TIED_UP)
                         Dialog(other_name .. " brings " .. girl:firstname() .. " to orgasm over and over again, but she seems to have unlimited energy. " ..
                                 "You feel yourself approaching the point of climax, so you get up and stand next to her. Just as she starts bucking under her next orgasm, " ..
                                 "you spurt your load all over her writhing body. Feeling satisfied, you motion to " .. other_name .. " that the session is done.")
                     else
-                        wm.UpdateImage(wm.IMG.REST, {tied=true})
+                        wm.UpdateImage(wm.IMG.REST, ImageOptions.TIED_UP)
                         Dialog(other_name .. " manages to coax two more orgasms out of " .. girl:firstname() .. ", but it appears that she is completely spent now." ..
                                 "She falls asleep even before she has been untied. You look down at your throbbing erection, then at " .. other_name .. ": \"I guess this task falls to you, then ...\"")
                     end
                     return
                 elseif choice == 1 then
                     Dialog("\"I don't think " .. girl:firstname() .. "was giving her all today. Maybe we should motivate her a bit more\". ")
-                    wm.UpdateImage(wm.IMG.CHASTITY, image_options.lesbian)
+                    wm.UpdateImage(wm.IMG.CHASTITY, ImageOptions.LESBIAN)
                     Dialog(girl:firstname() .. " is placed in a chastity belt. \"If you want to cum, you'd better step up your game next time.\"")
                     -- If her performance truely wasn't good
                     if girl:oralsex() + girl:lesbian() < 50 then
@@ -112,7 +112,7 @@ function HandleLesBDSM(girl, other_name)
                     end
                     return
                 elseif choice == 2 then
-                    wm.UpdateImage(wm.IMG.SEX, {participants=wm.IMG_PART.FFM, tied=true})
+                    wm.UpdateImage(wm.IMG.SEX, ImageOptions.FFM + ImageOptions.TIED_UP)
                     Dialog("\"You did well\", you tell " .. girl:firstname() .. ". \"So here's your reward!\"\n" ..
                             "And with that, you plunge your dick into her slick pussy. She lets out a load moan. " ..
                             "\"Please, fuck me, " .. PlayerTitleFor(girl) .. "\", she pleads.")
@@ -124,7 +124,7 @@ function HandleLesBDSM(girl, other_name)
                         Dialog("With a few more deep thrusts, you spurt your load into her.")
                         PlayerFucksGirlUpdate(girl)
                     else
-                        wm.UpdateImage(wm.IMG.CUMSHOT, {participants=wm.IMG_PART.HETERO, tied=true})
+                        wm.UpdateImage(wm.IMG.CUMSHOT, ImageOptions.HETERO + ImageOptions.TIED_UP)
                         Dialog("You pull your cock out of her, and then proceed to scatter your load all over her face. She tries to gather as much as she can with her tongue.")
                         if girl:has_trait("Cum Addict") then
                             Dialog("After you've untied her, Cum Addict " .. girl:firstname() .. " uses her fingers to gather all the cum from her face, licking it up with a satisfied sigh.")
@@ -135,7 +135,7 @@ function HandleLesBDSM(girl, other_name)
             end -- all branches returned
         elseif girl:libido() > 33 then
             -- at least a little horny
-            wm.UpdateImage(wm.IMG.BED, {participants=wm.IMG_PART.LESBIAN, tied=true})
+            wm.UpdateImage(wm.IMG.BED, ImageOptions.LESBIAN + ImageOptions.TIED_UP)
             local breast_text = ""
             if girl:breast_size() > 4 and girl:beauty() > 33 then
                 breast_text = girl:firstname() .. " has no choice but to arch her back, giving you a wonderful view of her large boobs."
@@ -149,7 +149,7 @@ function HandleLesBDSM(girl, other_name)
                 AdjustLust(girl, 10)
                 maso_text = " Clearly, " .. girl:firstname() .. " is getting off on this."
             end
-            wm.UpdateImage(wm.IMG.BDSM, {participants=wm.IMG_PART.LESBIAN, tied=true})
+            wm.UpdateImage(wm.IMG.BDSM, ImageOptions.LESBIAN + ImageOptions.TIED_UP)
             Dialog(other_name .. " fetches a flogger. \"Let's see if we can make your squirm.\"\n" ..
                     "She proceeds to flog " .. girl:firstname() .. "'s stomach, chest, and inner thighs. " ..
                     "First lightly, but then increasing the intensity." .. maso_text)
@@ -161,7 +161,7 @@ function HandleLesBDSM(girl, other_name)
                 end
                 Dialog("\"".. other_name ..", I think this is about as much as " .. girl:firstname() .. " can take\"." ..
                         "Then a grin spreads across your face. \"It's time for you to give her her reward.\"")
-                wm.UpdateImage(wm.IMG.FINGER, {participants=wm.IMG_PART.LESBIAN, tied=true})
+                wm.UpdateImage(wm.IMG.FINGER, ImageOptions.LESBIAN + ImageOptions.TIED_UP)
                 Dialog(other_name .. " nods and puts away the flogger. She stars caressing " .. girl:firstname() .. "'s " ..
                         "lower lips, then inserts a finger, positioning herself in such a way that she doesn't block your view of the action." )
                 if girl:libido() > 66 and wm.Percent(50) then
@@ -172,7 +172,7 @@ function HandleLesBDSM(girl, other_name)
                             "manages to bring " .. girl:firstname() .. " to orgasm.")
                     SheJustCame(girl, 3)
                 end
-                wm.UpdateImage(wm.IMG.BED, {participants=wm.IMG_PART.LESBIAN, tied=true})
+                wm.UpdateImage(wm.IMG.BED, ImageOptions.LESBIAN + ImageOptions.TIED_UP)
                 Dialog("You would have liked to stay longer and also collect your *reward*, " ..
                         "but your other duties are calling. You leave the two girls to clean up.")
             elseif what == 1 then
@@ -216,11 +216,11 @@ function HandleLesBDSM(girl, other_name)
                             "You give it a few good pumps, making sure it is large enough to obstruct the airflow through her mouth.")
                     if girl:has_trait("Strong Gag Reflex") or (wm.Percent(50) and girl:has_trait("Gag Reflex") ) then
                         Dialog(girl:firstname() .. " makes a retching sound, and some fluid comes out of her nose. Apparently, you've triggered her Gag Reflex.")
-                        wm.UpdateImage(wm.IMG.DEATH, {tied=true})
+                        wm.UpdateImage(wm.IMG.DEATH, ImageOptions.TIED_UP)
                         Dialog("It appears she is unable to breathe, some of her stomach's contents must have gotten into her trachea. " ..
                                 "You quickly take out her gag and untie her hands so you can set her upright and perform a Heimlich maneuver. " ..
                                 "By the time you manage to dislodge the bits of undigested food that have gotten stuck, her face has turned blue.")
-                        wm.UpdateImage(wm.IMG.KISS, {participants=wm.IMG_PART.LESBIAN, tied=true})
+                        wm.UpdateImage(wm.IMG.KISS, ImageOptions.TIED_UP + ImageOptions.LESBIAN)
                         Dialog("You turn to " .. other_name .. "\"We need to take things a bit more slowly. " ..
                                 girl:firstname() .. " seems to have difficulty breathing. Maybe you could provide some assistance, mouth-to-mouth.\" You wink.")
                         girl:pcfear(50)
@@ -262,17 +262,17 @@ function HandleLesBDSM(girl, other_name)
     else
         girl:experience(6)
         girl:tiredness(4)
-        wm.UpdateImage(wm.IMG.SUB, image_options.lesbian)
+        wm.UpdateImage(wm.IMG.SUB, ImageOptions.LESBIAN)
         Dialog(other_name .. " starts to tie up " .. girl:firstname() .. ". From her panicked expression it becomes apparent that "
                 .. girl:firstname() .. " lacks the necessary experience for this.")
         if wm.GetPlayerDisposition() > -33 then
             Dialog("\"OK, " .. other_name .. ", I think that's enough for now. Poor " .. girl:firstname() .. " is already shaking.\"\n" ..
             "Then you add: \"Maybe there is another way you can get her to shake.\"")
-            wm.UpdateImage(wm.IMG.LICK, image_options.lesbian)
+            wm.UpdateImage(wm.IMG.LICK, ImageOptions.LESBIAN)
             Dialog("The ropes undone, " .. girl:firstname() .. " lies down on your bed and " .. other_name .. " buries her head in her crotch. ")
             Dialog("After the first orgasm shudders through her body, you tell " .. other_name .. " to intensify her efforts, while you " ..
             "start binding " .. girl:firstname() .. " in a spread-eagle position, fixing her hands and feet to the bedposts.")
-            wm.UpdateImage(wm.IMG.BDSM, image_options.lesbian)
+            wm.UpdateImage(wm.IMG.BDSM, ImageOptions.LESBIAN)
             Dialog("This time, she is too distracted to really notice. It's only when she bucks under her next orgasm that the ropes " ..
             " become apparent, constraining her movements. ")
             if girl:libido() > 33 then
@@ -292,7 +292,7 @@ function HandleLesBDSM(girl, other_name)
                     "\"Maybe " .. other_name .. " wants to have a go?\"\n" ..
                     "Even though you really wanted to see " .. girl:firstname() .. " in bondage, you suppose " ..
                     "this is better than nothing. ")
-                    wm.UpdateImage(wm.IMG.DOM, image_options.lesbian)
+                    wm.UpdateImage(wm.IMG.DOM, ImageOptions.LESBIAN)
                     girl:happiness(1)
                     girl:bdsm(1)
                     girl:lesbian(1)
@@ -315,7 +315,7 @@ function HandleLesBDSM(girl, other_name)
                 end
             end
         else
-            wm.UpdateImage(wm.IMG.BDSM, image_options.lesbian)
+            wm.UpdateImage(wm.IMG.BDSM, ImageOptions.LESBIAN)
             Dialog("This just turns you on more. \"No mercy\", you instruct " .. other_name .. ".\n" ..
                     girl:firstname() .. " will hate you for this, but a lion does not concern himself with " ..
                     "the opinion of a sheep -- or a bitch, in this case. You certainly enjoy her panicked sobs and " ..
@@ -331,7 +331,7 @@ end
 ---@param girl wm.Girl
 function BdsmFaceSitting(girl, other_name)
     -- TODO position=wm.IMG_POS.FACE_SITTING
-    wm.UpdateImage(wm.IMG.ORAL, {participants=wm.IMG_PART.LESBIAN, tied=true})
+    wm.UpdateImage(wm.IMG.ORAL, ImageOptions.LESBIAN + ImageOptions.TIED_UP)
     Dialog("With that, " .. other_name .. " lowers herself on " .. girl:firstname() .. "'s face. " ..
             girl:firstname() .. "'s tongue eagerly starts licking the offered pussy. Soon, " .. other_name ..
             " is moaning loudly. She presses her hips further into " .. girl:firstname() .. "'s face, cutting off her air supply at times.")

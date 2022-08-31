@@ -1,5 +1,5 @@
 function RepayFinger(girl)
-    wm.UpdateImage(wm.IMG.HAND, image_options.hetero)
+    wm.UpdateImage(wm.IMG.HAND, ImageOptions.HETERO)
     if girl:skill_check(wm.SKILLS.HANDJOB, 40) then
         Dialog("She uses the juices between her thighs to lubricate her hand, and then starts stroking your member. " ..
                 "If only everybody could appreciate your hard work the way " .. girl:firstname() .. " does.")
@@ -14,16 +14,16 @@ end
 
 function RepayLick(girl)
     if girl:skill_check(wm.SKILLS.ORAL, 40) then
-        wm.UpdateImage(wm.IMG.SUCKBALLS, image_options.hetero)
+        wm.UpdateImage(wm.IMG.SUCKBALLS, ImageOptions.HETERO)
         Dialog("She begins by gently licking and kissing the tip of your cock. Her tongue then traces down the length of your shaft and draws circles around your balls.")
         Dialog("She gently sucks each ball into her mouth in turn. She turns her head and slides her lips back forth on your shaft. She kisses the tip again and slowly slides you into her mouth.")
-        wm.UpdateImage(wm.IMG.ORAL, image_options.hetero)
+        wm.UpdateImage(wm.IMG.ORAL, ImageOptions.HETERO)
         Dialog("You're not sure how long this pleasure lasted, but soon you feel the volcano about to erupt. She senses it too and pulls your cock from her mouth and gently strokes it with her hands until you explode all over her face.")
-        wm.UpdateImage(wm.IMG.CUMSHOT, image_options.hetero)
+        wm.UpdateImage(wm.IMG.CUMSHOT, ImageOptions.HETERO)
         Dialog("What a fantastic way to end your evening.")
         girl:oral(1)
     else
-        wm.UpdateImage(wm.IMG.ORAL, image_options.hetero)
+        wm.UpdateImage(wm.IMG.ORAL, ImageOptions.HETERO)
         Dialog("Despite her enthusiasm, the blowjob you receive is more uncomfortable than enjoyable. However, " .. girl:firstname() ..
                 " insists that she provide you the 'perfect' experience, so you use this opportunity to impart some wisdom. By the end, her " ..
                 "technique has markedly improved.")
@@ -162,7 +162,7 @@ function PleaseHer_Horny(girl, kind)
     wm.UpdateImage(wm.IMG.STRIP)
     Dialog("You haven't even finished stating your intentions when " .. girl:firstname() .. " starts to undress " ..
             "and presents you her already glistening-wet pussy. " .. thanks_text)
-    wm.UpdateImage(PleaseData.image[kind], image_options.hetero)
+    wm.UpdateImage(PleaseData.image[kind], ImageOptions.HETERO)
     girl:pcfear(-1)
     Dialog(girl:format(PleaseData.horny_love_action[kind]))
     if wm.Percent(50) then
@@ -191,10 +191,10 @@ function PleaseHer_Neutral(girl, kind)
         horny_text = "She doesn't seem overly " ..
                 " excited, so you start by placing soft kisses on her stomach, then on her breasts and inner thighs."
     end
-    wm.UpdateImage(wm.IMG.FONDLE, image_options.hetero)
+    wm.UpdateImage(wm.IMG.FONDLE, ImageOptions.HETERO)
     Dialog("You ask " .. girl:firstname() .. " to undress and lie on her back. " .. horny_text)
     AdjustLust(girl, 3)
-    wm.UpdateImage(PleaseData.image[kind], image_options.hetero)
+    wm.UpdateImage(PleaseData.image[kind], ImageOptions.HETERO)
     Dialog(girl:format(PleaseData.neural_action_first[kind]))
     Dialog(girl:format(PleaseData.neural_action_second[kind]))
     if girl:pclove() > 60 then
@@ -220,13 +220,13 @@ function PleaseHer_HornyHate(girl, kind)
     Dialog(" Despite her obvious discomfort at your presence, her juices start flowing almost immediately. " ..
             "\"It's nice to see you are as excited as I am,\" you mock her, earning yourself a murderous glare. Its effect is somewhat diminished " ..
             " as she can't help but let out a soft moan, her face turning red with embarrassment. " .. add_text)
-    wm.UpdateImage(PleaseData.image[kind], image_options.hetero)
+    wm.UpdateImage(PleaseData.image[kind], ImageOptions.HETERO)
     PleaseData.horny_hate_action_handler[kind](girl)
 
     if wm.GetPlayerDisposition() < -65 then
         Dialog("Her attempts to resist your stimulation are futile, and before long she is moaning loudly and you can feel her " ..
                 "spasming as she reaches her first climax. Now that she is properly warmed up, you can start taking things to the next level.")
-        wm.UpdateImage(wm.IMG.FISTING, image_options.hetero)
+        wm.UpdateImage(wm.IMG.FISTING, ImageOptions.HETERO)
         Dialog(PleaseData.horny_hate_fisting_start[kind] ..
                 "That alone brings her over the edge again, her muscles clamping down so hard on your hand that you couldn't take it out even if you wanted to. " ..
                 "But of course, that wasn't your intention anyway.")
@@ -236,7 +236,7 @@ function PleaseHer_HornyHate(girl, kind)
             Dialog("You wait till you can feel her approaching climax again, then you locate her other nipple and start pulling while pressing" ..
                     " your nails in, as strongly as you dare without causing permanent injury. This at least gets a reaction. Her cry of pain gets swept "..
                     " away as she explodes in moans of pleasure.")
-            wm.UpdateImage(wm.IMG.FINGER, image_options.hetero)
+            wm.UpdateImage(wm.IMG.FINGER, ImageOptions.HETERO)
             Dialog("By now, you cock is almost painfully hard and throbbing, so you decide to take care of yourself. While you masturbate, you continue " ..
                     " to massage her pussy and manage to elicit two more orgasms. Finally, you deposit your load across her stomach. At this point, " .. girl:firstname() ..
                     " is in an almost catatonic state, so you decide that she's had enough. ")
@@ -272,7 +272,7 @@ end
 
 function PleaseHer_HornyNeutral(girl, kind)
     -- she is very horny, and she doesn't like you, but also doesn't hate you too much
-    wm.UpdateImage(PleaseData.image[kind], image_options.hetero)
+    wm.UpdateImage(PleaseData.image[kind], ImageOptions.HETERO)
     Dialog(girl:format(PleaseData.horny_neutral_action[kind]))
     -- if she really needed it, and doesn't hate you too much, the effect is positive
     if girl:pclove() > -33 and girl:libido() > 80 then
@@ -306,7 +306,7 @@ function PleaseHer_NoHornyEvil(girl, kind)
         girl:pclove(-1)
     else
         -- you are evil
-        wm.UpdateImage(PleaseData.image[kind], image_options.hetero)
+        wm.UpdateImage(PleaseData.image[kind], ImageOptions.HETERO)
         Dialog(girl:format(PleaseData.nohorny_evil_action[kind]))
         wm.UpdateImage(wm.IMG.BED)
         Dialog("When you are done, " .. girl:name() .. " is a sobbing mess on her bed, and you imagine her pussy will feel sore for the next days. " ..
@@ -333,7 +333,7 @@ function PleaseHer(girl, action)
             PleaseHer_Neutral(girl, action)
         else
             -- she isn't fond of you,
-            wm.UpdateImage(wm.IMG.FONDLE, image_options.hetero)
+            wm.UpdateImage(wm.IMG.FONDLE, ImageOptions.HETERO)
             local pclove_text = ""
             if girl:pclove() < - 33 or girl:dignity() > 50 then
                 pclove_text = "She seems disgusted by the idea, but wisely holds her tongue. "
@@ -353,7 +353,7 @@ function PleaseHer(girl, action)
             else
                 -- she isn't very horny, and she doesn't like you
                 Dialog(girl:format(PleaseData.neural_neutral_action[action]))
-                wm.UpdateImage(PleaseData.image[kind], image_options.hetero)
+                wm.UpdateImage(PleaseData.image[kind], ImageOptions.HETERO)
                 girl:happiness(-1)
                 girl:pclove(-1)
                 Dialog(girl:format(PleaseData.neural_neutral_orgasm[action]))
