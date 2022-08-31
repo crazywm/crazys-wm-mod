@@ -55,7 +55,7 @@ const char* get_image_name(EImageBaseType image) {
 const std::array<const char*, (int)ESexParticipants::COUNT>& get_participant_names() {
     static std::array<const char*, (int)ESexParticipants::COUNT> names {
             "solo", "lesbian", "hetero", "ffm", "mmf", "gangbang", "lesgroup",
-            "orgy", "other", "any"
+            "orgy", "other", "any", "anygroup"
     };
     return names;
 }

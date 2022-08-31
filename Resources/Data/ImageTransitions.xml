@@ -90,6 +90,17 @@
         <Entry From="Any" To="LesGroup" Cost = "1" />
         <Entry From="Any" To="Other" Cost = "1" />
         <Entry From="Any" To="Orgy" Cost = "1" />
+
+        <Entry From="AnyGroup" To="FFM" Cost = "1" />
+        <Entry From="AnyGroup" To="MMF" Cost = "1" />
+        <Entry From="AnyGroup" To="Gangbang" Cost = "1" />
+        <Entry From="AnyGroup" To="Orgy" Cost = "1" />
+        <Entry From="AnyGroup" To="LesGroup" Cost = "1" />
+        <Entry From="AnyGroup" To="Solo" Cost = "200" />
+        <Entry From="AnyGroup" To="Hetero" Cost = "190" />
+        <Entry From="AnyGroup" To="Lesbian" Cost = "190" />
+        <Entry From="AnyGroup" To="Other" Cost = "190" />
+        <Entry From="AnyGroup" To="Any" Cost = "40" />
     </Transition>
 
     <Transition Name="Position" Default="50">

@@ -191,7 +191,8 @@ void cImageLookup::find_image_internal_imp(const std::string& base_path, const s
     while(!queue.empty()) {
         auto it = queue.begin();
         g_LogFile.debug("image", "  Look up '", get_image_name(it->Node.BasicImage), "' with participants ",
-                get_participant_name(it->Node.Participants), " at cost ", it->Cost);
+                get_participant_name(it->Node.Participants), " ", print_tri_flag(it->Node.IsPregnant, "preg"), " ",
+                print_tri_flag(it->Node.IsTied, "tied"), " ", print_tri_flag(it->Node.IsFuta, "futa"), " at cost ", it->Cost);
         visited.insert(it->Node);
 
         for(const sImageRecord& image: haystack.iterate(it->Node.BasicImage)) {

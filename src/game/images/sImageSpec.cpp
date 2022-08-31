@@ -26,7 +26,7 @@ namespace {
     ESexParticipants get_participant_for_preset(EImagePresets type) {
         switch(type) {
             case EImagePresets::GROUP:
-                return ESexParticipants::GANGBANG;
+                return ESexParticipants::ANY_GROUP;
             case EImagePresets::ORGY:
                 return ESexParticipants::ORGY;
             case EImagePresets::LESBIAN:

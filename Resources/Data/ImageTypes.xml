@@ -116,7 +116,9 @@
 
     <Type Name="oral">
         <Display>Oral</Display>
-        <Description>She is pleasuring her partner orally.</Description>
+        <Description>She is pleasuring her partner orally.
+        Note that 'Deepthroat' and sucking/licking balls have their own tags!
+        </Description>
         <Fallback Cost="50">deepthroat</Fallback>
         <Fallback Cost="50">suckballs</Fallback>
         <Fallback Cost="100">hand</Fallback>
@@ -175,7 +177,9 @@
         <Fallback>sex</Fallback>
     </Type>
     <Type Name="lick">
-        <Description>She is getting her pussy (or balls/penis for Futas) licked.</Description>
+        <Description>She is getting her pussy (or balls/penis for Futas) licked.
+        If she is the one licking another girl's pussy, use 'Oral' in combination with 'Lesbian'.
+        </Description>
         <Display>Lick</Display>
         <Fallback>finger</Fallback>
         <Fallback Cost="200">oral</Fallback>

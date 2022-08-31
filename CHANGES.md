@@ -1,7 +1,9 @@
 # Version 7.2.1alpha3
 
-## Tagging Tool
+## Tagging
 * Added creator, comment, and date fields to image packs
+* Added an "AnyGroup" participant, not for use in image tags. If the game request an image with this,
+it will accept any other group participant as a cheap fallback.
 
 ## Bugfixes
 * Fixed error in image selection algorithm that allowed it to choose the same image as part of the candidate set twice.

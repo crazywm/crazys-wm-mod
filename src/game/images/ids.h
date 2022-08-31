@@ -155,6 +155,8 @@ enum class ESexParticipants {
     ORGY,                       ///< Multiple; mixed gender
     OTHER,                      ///< With a single other person that is not identifiable as man/woman
     ANY,                        ///< The value to be used for non-sex images. It means match everything.
+    ANY_GROUP,                  ///< This value is used to indicate that any of FFM, MMF, GANG, ORGY, LES_GROUP is accepted.
+                                ///< It should not be used to tag an image, only for forming lookups.
     COUNT,
 };
 
