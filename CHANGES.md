@@ -3,6 +3,9 @@
 ## Tagging Tool
 * Added creator, comment, and date fields to image packs
 
+## Bugfixes
+* Fixed error in image selection algorithm that allowed it to choose the same image as part of the candidate set twice.
+
 # Version 7.2.1alpha2
 Further work on new image tagging system. Many things are still experimental,
 but the basic functionality should be there.

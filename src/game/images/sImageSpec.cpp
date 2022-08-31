@@ -181,11 +181,12 @@ sImageSpec::sImageSpec(EImageBaseType type, ESexParticipants parts, ETriValue pr
 
 }
 
+namespace {
+    auto to_tuple(const sImageSpec& spec) {
+        return std::tie(spec.BasicImage, spec.Participants, spec.IsPregnant, spec.IsFuta, spec.IsTied);
+    }
+}
+
 bool operator<(const sImageSpec& first, const sImageSpec& second) {
-    if((int)first.BasicImage < (int)second.BasicImage) return true;
-    if((int)first.Participants < (int)second.Participants) return true;
-    if((int)first.IsPregnant < (int)second.IsPregnant) return true;
-    if((int)first.IsFuta < (int)second.IsFuta) return true;
-    if((int)first.IsTied < (int)second.IsTied) return true;
-    return false;
+    return to_tuple(first) < to_tuple(second);
 }
