@@ -107,9 +107,8 @@ class MainWidget(QWidget):
             self._video_widget.set_image_data(None)
             self.current_image = None
             return
-        if self.current_image is not None:
-            active_image = self.pack_data.images[self.current_image]
-            self.tag_view.write_changes(active_image)
+
+        self.save_active_image()
 
         if len(self.pack_data.images) == 0:
             self.current_image = None
@@ -120,6 +119,14 @@ class MainWidget(QWidget):
         self.set_image_data(str(self.pack_data.path.parent / image_data.file))
         self.current_image = image
         self.pack_list.setCurrentRow(image)
+
+    def save_active_image(self):
+        """
+        Writes the current status of the active image back to the image pack data.
+        """
+        if self.current_image is not None:
+            active_image = self.pack_data.images[self.current_image]
+            self.tag_view.write_changes(active_image)
 
     @requires_open_pack
     def next_image(self):

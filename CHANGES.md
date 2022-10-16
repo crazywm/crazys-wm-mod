@@ -4,6 +4,7 @@
 * Added creator, comment, and date fields to image packs
 * Added an "AnyGroup" participant, not for use in image tags. If the game request an image with this,
 it will accept any other group participant as a cheap fallback.
+* Saving the pack will pick up the changes made to the current image
 
 ## Bugfixes
 * Fixed error in image selection algorithm that allowed it to choose the same image as part of the candidate set twice.

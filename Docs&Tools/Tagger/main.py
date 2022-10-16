@@ -175,6 +175,8 @@ class MainWindow(QMainWindow):
             target, _ = QFileDialog.getSaveFileName(self, "Save Pack", str(self.tagger.pack_data.path), "Pack Files (images.xml)")
         else:
             target = self.tagger.pack_data.path
+
+        self.tagger.save_active_image()
         save_image_pack(target, self.tagger.pack_data)
 
     def _new_pack_dlg(self):
