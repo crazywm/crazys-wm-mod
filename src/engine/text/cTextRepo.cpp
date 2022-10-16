@@ -151,7 +151,7 @@ namespace {
             std::vector<std::unique_ptr<IAction> > result;
             result.reserve(conditions.size());
             std::transform(begin(conditions), end(conditions), std::back_inserter(result),
-                           [](const std::string& a){ return sAssignmentAction::from_string(a); });
+                           [](const std::string& a){ return IAssignmentAction::from_string(a); });
             if(result.size() > 1) {
                 return std::make_unique<sSequenceAction>(std::move(result));
             } else if (result.size() == 1) {
@@ -306,6 +306,7 @@ namespace {
         // actions
         void TriggerEvent(const std::string& name) const override { throw std::logic_error("not implemented"); }
         void SetVariable(const std::string& name, int value) const override {}
+        void SetVariable(const std::string& name, std::string value) const override {}
 
         bool A = false;
         bool B = false;

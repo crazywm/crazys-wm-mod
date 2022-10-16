@@ -52,6 +52,9 @@ namespace {
         void SetVariable(const std::string& name, int value) const final {
             throw std::logic_error("N/A");
         }
+        void SetVariable(const std::string& name, std::string value) const final {
+            throw std::logic_error("N/A");
+        }
     };
 
 }

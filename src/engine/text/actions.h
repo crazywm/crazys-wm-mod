@@ -23,18 +23,21 @@
 #include "text/repo.h"
 #include <vector>
 
-struct sAssignmentAction : public IAction {
+class IAssignmentAction : public IAction {
+public:
     enum EAssign {
         SET, ADD, SUB
-    } Mode;
+    };
+
+    explicit IAssignmentAction(std::string tgt) : Target(std::move(tgt)) {}
+
+    const std::string& getTarget() const { return Target; }
+
+    static std::unique_ptr<IAssignmentAction> from_string(const std::string& source);
+protected:
     std::string Target;
-    int Value;
-
-    sAssignmentAction(EAssign mode, std::string tgt, int value);
-    void apply(const IInteractionInterface& target) const override;
-
-    static std::unique_ptr<sAssignmentAction> from_string(const std::string& source);
 };
+
 
 struct sSequenceAction : public IAction {
     explicit sSequenceAction(std::vector<std::unique_ptr<IAction>> a) : Actions(std::move(a)) {}

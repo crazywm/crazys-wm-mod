@@ -24,7 +24,101 @@
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/lexical_cast.hpp>
 
-void sAssignmentAction::apply(const IInteractionInterface& lookup) const {
+struct cIntAssignmentAction : public IAssignmentAction {
+    EAssign Mode;
+    int Value;
+
+    cIntAssignmentAction(EAssign mode, std::string tgt, int value);
+    void apply(const IInteractionInterface& lookup) const override;
+};
+
+struct cStringAssignmentAction : public IAssignmentAction {
+    std::string Value;
+
+    cStringAssignmentAction(std::string tgt, std::string value);
+    void apply(const IInteractionInterface& lookup) const override;
+};
+
+namespace {
+    cIntAssignmentAction::EAssign read_mode(char c) {
+        switch (c) {
+            case '+':
+                return cIntAssignmentAction::ADD;
+            case '-':
+                return cIntAssignmentAction::SUB;
+            case '*':
+            case '/':
+                throw std::runtime_error("Multiplication currently not supported");
+            default:
+                return cIntAssignmentAction::SET;
+        }
+    }
+}
+
+std::unique_ptr<IAssignmentAction> IAssignmentAction::from_string(const std::string& content) {
+    auto cmp = std::find_if(begin(content), end(content), [](char c){ return c == '='; });
+    if(cmp == end(content)) {
+        g_LogFile.error("text", "Trying to parse invalid assignment action '", content, "'");
+        throw std::runtime_error("invalid assignment: missing '='");
+    }
+    if(cmp == begin(content)) {
+        g_LogFile.error("text", "Trying to parse invalid assignment action '", content, "'");
+        throw std::runtime_error("invalid assignment: starts with '='");
+    }
+
+    // at this point, we can safely decrement cmp.
+    // assignment type action
+    cIntAssignmentAction::EAssign mode = read_mode(*(cmp-1));
+    auto left = cmp;
+    if(mode != cIntAssignmentAction::SET)
+        --left;
+
+    auto lhs = std::string(begin(content), left);
+    boost::trim(lhs);
+    if(lhs.empty()) {
+        g_LogFile.error("text", "Trying to parse invalid action '", content, "'");
+        throw std::runtime_error("invalid action: lhs of assignment is empty");
+    }
+
+    auto rhs = std::string(cmp + 1, end(content));
+    boost::trim(rhs);
+    if(rhs.empty()) {
+        g_LogFile.error("text", "Trying to parse invalid action '", content, "'");
+        throw std::runtime_error("invalid action: rhs of assignment is empty");
+    }
+
+    if(rhs.front() == '\'') {
+        if(mode != SET) {
+            g_LogFile.error("text", "Trying to parse invalid string assignment action. Strings only support direct assignment. Input was '", content, "'");
+            throw std::runtime_error("String type variables only support assignment using '='");
+        }
+        auto end_str = rhs.find('\'', 1);
+        if(end_str == std::string::npos) {
+            throw std::runtime_error("Could not find matching ' in string assignment");
+        }
+        return std::make_unique<cStringAssignmentAction>(std::move(lhs), rhs.substr(1, end_str - 1));
+    } else {
+        int rhs_val = boost::lexical_cast<int>(rhs.data());
+        return std::make_unique<cIntAssignmentAction>(mode, std::move(lhs), rhs_val);
+    }
+}
+
+cIntAssignmentAction::cIntAssignmentAction(cIntAssignmentAction::EAssign mode, std::string tgt, int value) :
+    IAssignmentAction(std::move(tgt)),
+    Mode(mode), Value(value) {
+
+}
+
+cStringAssignmentAction::cStringAssignmentAction(std::string tgt, std::string value) :
+        IAssignmentAction(std::move(tgt)), Value(std::move(value)) {
+
+}
+
+void cStringAssignmentAction::apply(const IInteractionInterface& lookup) const {
+    lookup.SetVariable(Target, Value);
+}
+
+void cIntAssignmentAction::apply(const IInteractionInterface& lookup) const {
     int value = lookup.LookupNumber(Target);
     switch (Mode) {
         case SET:
@@ -42,59 +136,6 @@ void sAssignmentAction::apply(const IInteractionInterface& lookup) const {
     lookup.SetVariable(Target, value);
 }
 
-namespace {
-    sAssignmentAction::EAssign read_mode(char c) {
-        switch (c) {
-            case '+':
-                return sAssignmentAction::ADD;
-            case '-':
-                return sAssignmentAction::SUB;
-            default:
-                return sAssignmentAction::SET;
-        }
-    }
-}
-
-std::unique_ptr<sAssignmentAction> sAssignmentAction::from_string(const std::string& content) {
-    auto cmp = std::find_if(begin(content), end(content), [](char c){ return c == '='; });
-    if(cmp == end(content)) {
-        g_LogFile.error("text", "Trying to parse invalid assignment action '", content, "'");
-        throw std::runtime_error("invalid assignment: missing '='");
-    }
-    if(cmp == begin(content)) {
-        g_LogFile.error("text", "Trying to parse invalid assignment action '", content, "'");
-        throw std::runtime_error("invalid assignment: starts with '='");
-    }
-
-    // at this point, we can safely decrement cmp.
-    // assignment type action
-    sAssignmentAction::EAssign mode = read_mode(*(cmp-1));
-    auto left = cmp;
-    if(mode != sAssignmentAction::SET)
-        --left;
-
-    auto lhs = std::string(begin(content), left);
-    boost::trim(lhs);
-    if(lhs.empty()) {
-        g_LogFile.error("text", "Trying to parse invalid action '", content, "'");
-        throw std::runtime_error("invalid action: lhs of assignment is empty");
-    }
-
-    auto rhs = std::string(cmp + 1, end(content));
-    boost::trim(rhs);
-    if(rhs.empty()) {
-        g_LogFile.error("text", "Trying to parse invalid action '", content, "'");
-        throw std::runtime_error("invalid action: rhs of assignment is empty");
-    }
-    int rhs_val = boost::lexical_cast<int>(rhs.data());
-
-    return std::make_unique<sAssignmentAction>(mode, std::move(lhs), rhs_val);
-}
-
-sAssignmentAction::sAssignmentAction(sAssignmentAction::EAssign mode, std::string tgt, int value) :
-    Mode(mode), Target(std::move(tgt)), Value(value){
-
-}
 
 void sSequenceAction::apply(const IInteractionInterface& target) const {
     for(auto& action : Actions) {
@@ -102,37 +143,56 @@ void sSequenceAction::apply(const IInteractionInterface& target) const {
     }
 }
 
+
 #include "doctest.h"
 
 TEST_CASE("parse assignment validation") {
-    CHECK_THROWS(sAssignmentAction::from_string("=5"));
-    CHECK_THROWS(sAssignmentAction::from_string("20-45"));
-    CHECK_THROWS(sAssignmentAction::from_string("a=b"));    // currently not supported, maybe later
-    CHECK_THROWS(sAssignmentAction::from_string("a*=2"));   // currently not supported, maybe later
-    CHECK_THROWS(sAssignmentAction::from_string("b/=2"));   // currently not supported, maybe later
-    CHECK_THROWS(sAssignmentAction::from_string("b=c=2"));
-    CHECK_THROWS(sAssignmentAction::from_string("a?b=2"));  // invalid identifier
-    CHECK_THROWS(sAssignmentAction::from_string("a=\t"));
-    CHECK_THROWS(sAssignmentAction::from_string(" =5"));
+    CHECK_THROWS(IAssignmentAction::from_string("=5"));
+    CHECK_THROWS(IAssignmentAction::from_string("20-45"));
+    CHECK_THROWS(IAssignmentAction::from_string("a=b"));    // currently not supported, maybe later
+    CHECK_THROWS(IAssignmentAction::from_string("a*=2"));   // currently not supported, maybe later
+    CHECK_THROWS(IAssignmentAction::from_string("b/=2"));   // currently not supported, maybe later
+    CHECK_THROWS(IAssignmentAction::from_string("b=c=2"));
+    CHECK_THROWS(IAssignmentAction::from_string("a?b=2"));  // invalid identifier
+    CHECK_THROWS(IAssignmentAction::from_string("a=\t"));
+    CHECK_THROWS(IAssignmentAction::from_string(" =5"));
+
+    CHECK_THROWS(IAssignmentAction::from_string("a += 'test'"));
+    CHECK_THROWS(IAssignmentAction::from_string("a -= 'test'"));
+    CHECK_THROWS(IAssignmentAction::from_string("a = 'test"));
 }
 
-TEST_CASE("parse assignment") {
-    std::unique_ptr<sAssignmentAction> assign;
+TEST_CASE("parse assignment to int") {
+    std::unique_ptr<cIntAssignmentAction> assign;
+    auto create = [](const char* source) {
+        return std::unique_ptr<cIntAssignmentAction>{dynamic_cast<cIntAssignmentAction*>(IAssignmentAction::from_string(source).release())};
+    };
     SUBCASE("set") {
-        assign = sAssignmentAction::from_string("a=5");
-        CHECK(assign->Mode == sAssignmentAction::SET);
+        assign = create("a=5");
+        CHECK(assign->Mode == cIntAssignmentAction::SET);
     }
     SUBCASE("add") {
-        assign = sAssignmentAction::from_string("a += 5");
-        CHECK(assign->Mode == sAssignmentAction::ADD);
+        assign = create("a += 5");
+        CHECK(assign->Mode == cIntAssignmentAction::ADD);
     }
     SUBCASE("sub") {
-        assign = sAssignmentAction::from_string("\ta -= 5 ");
-        CHECK(assign->Mode == sAssignmentAction::SUB);
+        assign = create("\ta -= 5 ");
+        CHECK(assign->Mode == cIntAssignmentAction::SUB);
     }
     CHECK(assign->Value == 5);
-    CHECK(assign->Target == "a");
+    CHECK(assign->getTarget() == "a");
 }
+
+TEST_CASE("parse assignment to string") {
+    std::unique_ptr<cStringAssignmentAction> assign;
+    auto create = [](const char* source) {
+        return std::unique_ptr<cStringAssignmentAction>{dynamic_cast<cStringAssignmentAction*>(IAssignmentAction::from_string(source).release())};
+    };
+    assign = create(" a =\t'test' ");
+    CHECK(assign->Value == "test");
+    CHECK(assign->getTarget() == "a");
+}
+
 
 TEST_CASE("apply assignment") {
     struct Mock : public IInteractionInterface {
@@ -153,17 +213,28 @@ TEST_CASE("apply assignment") {
             const_cast<int&>(a) = value;
         }
 
+        void SetVariable(const std::string& name, std::string value) const final {
+            if(name != "s") {
+                FAIL("wrong name");
+            }
+            const_cast<std::string&>(b) = value;
+        }
+
         int a = 0;
+        std::string b;
     };
 
     Mock mock;
 
-    sAssignmentAction::from_string("a = 5")->apply(mock);
+    cIntAssignmentAction::from_string("a = 5")->apply(mock);
     CHECK(mock.a == 5);
 
-    sAssignmentAction::from_string("a += 5")->apply(mock);
+    cIntAssignmentAction::from_string("a += 5")->apply(mock);
     CHECK(mock.a == 10);
 
-    sAssignmentAction::from_string("a -= 8")->apply(mock);
+    cIntAssignmentAction::from_string("a -= 8")->apply(mock);
     CHECK(mock.a == 2);
+
+    cIntAssignmentAction::from_string("s = 'test'")->apply(mock);
+    CHECK(mock.b == "test");
 }

@@ -39,6 +39,7 @@ public:
     // actions
     virtual void TriggerEvent(const std::string& name) const = 0;
     virtual void SetVariable(const std::string& name, int value) const = 0;
+    virtual void SetVariable(const std::string& name, std::string value) const = 0;
 };
 
 ///! \brief Base class for all actions that may be triggered.

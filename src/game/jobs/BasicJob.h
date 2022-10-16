@@ -40,6 +40,7 @@ public:
 
     void TriggerEvent(const std::string& name) const final;
     void SetVariable(const std::string& name, int value) const final;
+    void SetVariable(const std::string& name, std::string value) const final;
 
     void RegisterVariable(std::string name, int& value);
 private:

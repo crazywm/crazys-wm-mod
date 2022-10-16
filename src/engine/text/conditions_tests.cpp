@@ -94,6 +94,7 @@ TEST_CASE("evaluate conditions") {
         // actions
         void TriggerEvent(const std::string& name) const final {}
         void SetVariable(const std::string& name, int value) const final {}
+        void SetVariable(const std::string& name, std::string value) const final {}
     };
 
     Mock mock;

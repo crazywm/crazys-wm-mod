@@ -156,6 +156,10 @@ void cBasicJobTextInterface::SetVariable(const std::string& name, int value) con
     *looked_up = value;
 }
 
+void cBasicJobTextInterface::SetVariable(const std::string& name, std::string value) const {
+    throw std::logic_error("String variables are not implemented yet");
+}
+
 void cBasicJobTextInterface::TriggerEvent(const std::string& name) const {
     throw std::logic_error("Event triggers are not implemented yet");
 }
