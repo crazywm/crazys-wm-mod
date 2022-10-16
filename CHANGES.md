@@ -7,6 +7,8 @@ it will accept any other group participant as a cheap fallback.
 * Saving the pack will pick up the changes made to the current image
 * `CityGuard` job now uses `Security` tag
 * Added `Creampie` image tag. Not yet used by the game.
+* `Bath` images now default to `Solo`, but in the "Bath interaction"
+script the game may look for the `Hetero` variation if the player decides to join
 
 
 ## Bugfixes
@@ -15,6 +17,7 @@ it will accept any other group participant as a cheap fallback.
 
 ## Other
 * Some internal job code work
+* Added "Ask her to take a bath" action in her bedroom. 
 
 # Version 7.2.1alpha2
 Further work on new image tagging system. Many things are still experimental,

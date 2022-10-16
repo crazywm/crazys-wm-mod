@@ -79,7 +79,16 @@ function InteractOffice(girl)
         if girl:obey_check(wm.ACTIONS.WORKSTRIP) then
             girl:strip(2)
             wm.UpdateImage(wm.IMG.STRIP)
-            Dialog("She removes her clothing and stands nervously before you.")
+            if girl:has_trait("Exhibitionist", "Nymphomaniac") and girl:pclove() > 0 then
+                Dialog("She eagerly removes her clothing and stands before you.")
+                girl:happiness(1)
+                AdjustLust(girl, 1)
+            elseif girl:strip() < 40 or girl:has_trait("Chaste") then
+                Dialog("She removes her clothing and stands nervously before you.")
+            else
+                Dialog("She removes her clothing and stands before you.")
+            end
+
             if girl:has_trait("Futanari") then
                 Dialog("Oh! Hmm...I didn't realize you were a dick girl...")
             end
@@ -87,7 +96,7 @@ function InteractOffice(girl)
             if girl:beauty() >= 50 then
                 Dialog("I see you put a lot of effort into you appearance....Yes, quite beautiful.")
             else
-                Dialog("You're not much to look at are you.")
+                Dialog("You're not much to look at, are you.")
             end
 
             Dialog("You stand up and begin to slowly circle her.")

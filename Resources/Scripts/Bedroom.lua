@@ -11,6 +11,7 @@ function SelectActionChoice(girl)
                 "Have someone join the two of you for some fun",
                 "Have her tease you",
                 "Pleasure her",
+                "Ask her to take a bath",
                 "Go Back")
     else
         return ChoiceBox("What do you want to do?",
@@ -24,6 +25,7 @@ function SelectActionChoice(girl)
                 "Have group sex",
                 "Ask her to show you her skills on the stripper pole",
                 "Pleasure her",
+                "Ask her to take a bath",
                 "Go Back")
     end
 end
@@ -86,6 +88,8 @@ function VisitBedroom(girl)
             return VisitBedroom(girl)
         end
     elseif choice == 10 then
+        return girl:trigger("girl:bedroom:bathing")
+    elseif choice == 11 then
         Dialog("Go Back")
         return girl:trigger("girl:interact:brothel")
     end
@@ -296,7 +300,7 @@ function MasturbateSex(girl)
         end
         girl:service(2)
     else
-        if girl:has_trait("Meek") then
+        if girl:has_trait("Meek", "Chaste") then
             Dialog("She blushes to a deep red and pushes you out of the room without ever making eye contact.")
         else
             wm.UpdateImage(wm.IMG.REFUSE)

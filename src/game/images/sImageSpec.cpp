@@ -103,6 +103,7 @@ namespace {
                 return ESexParticipants::HETERO;
             case EImageBaseType::DILDO:
             case EImageBaseType::TENTACLE:
+            case EImageBaseType::BATH:
                 return ESexParticipants::SOLO;
             default:
                 return ESexParticipants::ANY;

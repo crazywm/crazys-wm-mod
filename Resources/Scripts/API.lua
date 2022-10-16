@@ -299,10 +299,12 @@ local function make_union_add(tab)
         for i,v in ipairs(tb) do
             result = result .. i .. "=" .. v .. " "
         end
+        return result
     end
 
     local meta= {__add = union, __tostring=table_to_string}
     setmetatable(tab, meta)
+    return tab
 end
 
 ImageOptions = {
