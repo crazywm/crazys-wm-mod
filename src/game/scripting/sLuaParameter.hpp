@@ -37,10 +37,12 @@ namespace scripting {
         explicit sLuaParameter(sCustomer& cust);
 
         void push(cLuaState& target) const;
+        enum Type {
+            GIRL, CUSTOMER
+        };
+        Type get_type() const { return type; }
     private:
-    enum Type {
-        GIRL, CUSTOMER
-    } type;
+    Type type;
     union {
         sGirl* girl;
         sCustomer* customer;

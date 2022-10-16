@@ -189,6 +189,16 @@ sLuaThread* cLuaScript::RunAsync(const std::string& event_name, std::initializer
         throw std::runtime_error("Could not find lua function");
     }
 
+    // If the first parameter is a girl, we generate a girl context.
+    if(params.size() > 0) {
+
+        if (params.begin()->get_type() == sLuaParameter::GIRL) {
+            lua_pushstring(ts.get_state(), "_active_girl");
+            params.begin()->push(ts);
+            lua_settable(ts.get_state(), LUA_REGISTRYINDEX);
+        }
+    }
+
     for(auto& arg : params) {
         arg.push(ts);
     }
@@ -254,7 +264,21 @@ int cLuaScript::ChoiceBox(lua_State* state)
 int cLuaScript::Dialog(lua_State* state)
 {
     std::string text = luaL_checkstring(state, -1);
-    window_manager().PushMessage(text, 0, [state](){
+
+    // check if we have an active girl context. In that case, interpolate into the text.
+    lua_pushstring(state, "_active_girl");
+    int result_type = lua_gettable(state, LUA_REGISTRYINDEX);
+    if(result_type == LUA_TUSERDATA) {
+        auto& girl = sLuaGirl::check_type(state, -1);
+        text = interpolate_string(text, [&](const std::string& var) -> std::string {
+            if (var == "name") {
+                return girl.FullName();
+            }
+            assert(false);
+        }, g_Dice);
+    }
+
+    window_manager().PushMessage(text, 0, [state]() {
         sLuaThread* thread = sLuaThread::get_active_thread(state);
         thread->resume(0);
     });

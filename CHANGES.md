@@ -18,6 +18,7 @@ script the game may look for the `Hetero` variation if the player decides to joi
 ## Other
 * Some internal job code work
 * Added "Ask her to take a bath" action in her bedroom. 
+* Allow `${name}` also in lua script dialogs.
 
 # Version 7.2.1alpha2
 Further work on new image tagging system. Many things are still experimental,
