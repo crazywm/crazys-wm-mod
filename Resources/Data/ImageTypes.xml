@@ -132,6 +132,12 @@
         <Description>Someone is cumming on her</Description>
         <Fallback>oral</Fallback>
         <Fallback>hand</Fallback>
+        <Fallback>creampie</Fallback>
+    </Type>
+    <Type Name="creampie">
+        <Display>Creampie</Display>
+        <Description>She is getting creampied</Description>
+        <Fallback Cost="50">cumshot</Fallback>
     </Type>
     <Type Name="titty">
         <Description>She is pleasuring her partner using her tits.</Description>

@@ -24,7 +24,7 @@ const std::array<const char*, (int)EImageBaseType::NUM_TYPES>& get_imgtype_names
     static std::array<const char*, (int)EImageBaseType::NUM_TYPES> names {
             "anal", "bdsm", "spanking", "sex", "beast", "tentacle", "oral",
             "titty", "hand", "foot", "deepthroat", "dildo", "strapon",
-            "sixtynine", "lick", "finger", "fisting", "suckballs", "rape", "rapebeast", "cumshot",
+            "sixtynine", "lick", "finger", "fisting", "suckballs", "rape", "rapebeast", "cumshot", "creampie",
             "cowgirl", "revcowgirl", "doggy", "missionary", "scissor",
             "strip", "kiss", "fondle", "chastity", "ecchi", "nude", "bunny", "escort", "massage", "milk", "dom", "sub",
             "maid", "sing", "wait", "card", "nurse", "piano", "music", "stagehand",

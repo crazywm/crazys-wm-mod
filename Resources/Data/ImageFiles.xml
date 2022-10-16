@@ -76,6 +76,22 @@ will be assigned the associated image type -->
         <Participants>hetero</Participants>
     </FileType>
     <FileType>
+        <Pattern>cumshot.*</Pattern>
+        <Type>cumshot</Type>
+        <Pregnant>no</Pregnant>
+        <Futa>no</Futa>
+        <TiedUp>no</TiedUp>
+        <Participants>hetero</Participants>
+    </FileType>
+    <FileType>
+        <Pattern>creampie.*</Pattern>
+        <Type>creampie</Type>
+        <Pregnant>no</Pregnant>
+        <Futa>no</Futa>
+        <TiedUp>no</TiedUp>
+        <Participants>hetero</Participants>
+    </FileType>
+    <FileType>
         <Pattern>mast.*</Pattern>
         <Type>finger</Type>
         <Pregnant>no</Pregnant>

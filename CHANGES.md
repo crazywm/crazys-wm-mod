@@ -6,6 +6,7 @@
 it will accept any other group participant as a cheap fallback.
 * Saving the pack will pick up the changes made to the current image
 * `CityGuard` job now uses `Security` tag
+* Added `Creampie` image tag. Not yet used by the game.
 
 
 ## Bugfixes

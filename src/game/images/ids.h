@@ -62,6 +62,7 @@ enum class EImageBaseType {
     RAPE,
     RAPE_BEAST,
     CUMSHOT,
+    CREAMPIE,
 
     // special positions
     COWGIRL,
