@@ -456,6 +456,19 @@ namespace
         }
         using result_type = int;
     };
+
+    struct GetBaseVisitor {
+        const ICharacter* target;
+        int operator()(SKILLS skill) const {
+            return target->get_base_skill(skill);
+        }
+
+        int operator()(STATS stat) const {
+            return target->get_base_stat(stat);
+        }
+        using result_type = int;
+    };
+
 }
 
 
@@ -467,6 +480,18 @@ int ICharacter::get_attribute(StatSkill id) const {
 int ICharacter::update_attribute(StatSkill id, int amount) {
     UpdateVisitor visitor{this, amount};
     return id.apply_visitor(visitor);
+}
+
+int ICharacter::gain_attribute(StatSkill id, int min, int max, int target) {
+    GetBaseVisitor gv{this};
+    int base_value = id.apply_visitor(gv);
+    // determine mode
+    if(base_value > target) {
+        min = min / 2;
+        max = (max + 1) / 2;
+    }
+    int change = g_Dice.closed_uniform(min, max);
+    update_attribute(id, change);
 }
 
 bool ICharacter::IsUnique() const {

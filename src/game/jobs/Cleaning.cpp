@@ -122,12 +122,8 @@ bool Cleaning::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night){
     if (girl.is_unpaid())
     {
         CleanAmt *= 0.9;
-        m_Wages = 0;
     }
-    else
-    {
-        m_Wages = std::min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
-    }
+    m_Wages = std::min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
 
     // `J` if she can clean more than is needed, she has a little free time after her shift
     if (brothel.m_Filthiness < CleanAmt / 2) playtime = true;

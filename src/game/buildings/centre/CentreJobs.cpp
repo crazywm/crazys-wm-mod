@@ -55,7 +55,6 @@ CommunityService::CommunityService() : cSimpleJob(JOB_COMUNITYSERVICE, "Communit
 bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     bool blow = false, sex = false;
     int fame = 0;
-    sImagePreset imagetype = EImageBaseType::PROFILE;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //Adding cust here for use in scripts...
@@ -90,7 +89,7 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         if (brothel.is_sex_type_allowed(SKILL_NORMALSEX) && (roll_b <= 50 || brothel.is_sex_type_allowed(SKILL_ANAL))) //Tweak to avoid an issue when roll > 50 && anal is restricted
         {
             girl.normalsex(2);
-            imagetype = EImageBaseType::VAGINAL;
+            m_ImageType = EImageBaseType::VAGINAL;
             if (girl.lose_trait("Virgin"))
             {
                 ss << "\nShe is no longer a virgin.\n";
@@ -103,7 +102,7 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         else if (brothel.is_sex_type_allowed(SKILL_ANAL))
         {
             girl.anal(2);
-            imagetype = EImageBaseType::ANAL;
+            m_ImageType = EImageBaseType::ANAL;
         }
         brothel.m_Happiness += 100;
         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
@@ -117,7 +116,7 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         dispo += 4;
         girl.oralsex(2);
         fame += 1;
-        imagetype = EImagePresets::BLOWJOB;
+        m_ImageType = EImagePresets::BLOWJOB;
     }
 
     if (girl.is_slave())
@@ -133,7 +132,7 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     }
 
     g_Game->player().disposition(dispo);
-    girl.AddMessage(ss.str(), imagetype, msgtype);
+    girl.AddMessage(ss.str(), m_ImageType, msgtype);
 
     int help = m_Performance / 10;        //  1 helped per 10 point of performance
 
@@ -147,7 +146,7 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     return false;
 }
 
-FeedPoor::FeedPoor() : cSimpleJob(JOB_FEEDPOOR, "FeedPoor.xml", {ACTION_WORKCENTRE, 20}) {
+FeedPoor::FeedPoor() : cSimpleJob(JOB_FEEDPOOR, "FeedPoor.xml", {ACTION_WORKCENTRE, 20, EImageBaseType::PROFILE}) {
 
 }
 
@@ -156,7 +155,6 @@ bool FeedPoor::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int feed = 0, fame = 0;
     int roll_b = d100();
 
-    EImageBaseType imagetype = EImageBaseType::PROFILE;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //Adding cust here for use in scripts...
@@ -167,7 +165,7 @@ bool FeedPoor::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int dispo = changes[get_performance_class(m_Performance)];
 
     //try and add randomness here
-    if (girl.intelligence() < 55 && chance(30))//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
+    if (girl.intelligence() < 55 && chance(30))//didn't put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
     {
         blow = true;    ss << "An elderly fellow managed to convince ${name} that he was full and didn't need anymore food but that she did. He told her his cock gave a special treat if she would suck on it long enough. Which she did man she isn't very smart.\n \n";
     }
@@ -244,7 +242,7 @@ bool FeedPoor::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     brothel.m_Finance.centre_costs(cost);
     ss.str("");
     ss << "${name} feed " << feed << " costing you " << cost << " gold.";
-    girl.AddMessage(ss.str(), imagetype, msgtype);
+    girl.AddMessage(ss.str(), m_ImageType, msgtype);
 
     HandleGains(girl, fame);
 

@@ -31,7 +31,6 @@ namespace settings {
 
 bool GenericCraftingJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     m_Wages = m_Data.BaseWages * (1.0 + (m_Performance - 70) / 100.0);
-    EImageBaseType imagetype = m_Image;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    Job Performance            //
@@ -68,7 +67,7 @@ bool GenericCraftingJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_
     }
 
     // Push out the turn report
-    girl.AddMessage(ss.str(), imagetype, msgtype);
+    girl.AddMessage(ss.str(), m_ImageType, msgtype);
 
     apply_gains(girl, m_Performance);
 
@@ -161,7 +160,7 @@ void cBlacksmithJob::DoWorkEvents(sGirl& girl) {
             else if (fire < 10)    ss << " that destroyed most of the equipment she had made.";
             else /*          */    ss << " destroying everything she had made.";
 
-            if (fire > 5) g_Game->push_message(girl.FullName() + " accidently started a large fire while working as a Blacksmith at the Arena.", COLOR_RED);
+            if (fire > 5) g_Game->push_message(girl.FullName() + " accidentally started a large fire while working as a Blacksmith at the Arena.", COLOR_RED);
         }
         else if (roll_b < 30)    // injury
         {

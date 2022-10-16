@@ -50,7 +50,6 @@ namespace {
         // slave girls not being paid for a job that normally you would pay directly for do less work
         if (girl.is_unpaid()) {
             m_Performance *= 0.9;
-            m_Wages = 0;
         } else    // work out the pay between the house and the girl
         {
             // `J` zzzzzz - need to change pay so it better reflects how well she filmed the films

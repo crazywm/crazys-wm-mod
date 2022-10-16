@@ -49,13 +49,12 @@ public:
 };
 
 cFarmJobFarmer::cFarmJobFarmer() : cFarmJob(
-        JOB_FARMER, "Farmer.xml", {ACTION_WORKFARM, 20}) {
+        JOB_FARMER, "Farmer.xml", {ACTION_WORKFARM, 20, EImageBaseType::FARM}) {
 }
 
 bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100(), roll_c = d100();
 
-    EImageBaseType imagetype = EImageBaseType::FARM;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    Job Performance            //
@@ -166,12 +165,8 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     if (girl.is_unpaid())
     {
         foodproduced *= 0.9;
-        m_Wages = 0;
     }
-    else
-    {
-        m_Wages += (int)foodproduced / 100; // `J` Pay her based on how much she brought in
-    }
+    m_Wages += (int)foodproduced / 100; // `J` Pay her based on how much she brought in
 
     //    Finish the shift            //
 
@@ -191,7 +186,7 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     if (tired > 0) girl.tiredness(tired);
 
     // Push out the turn report
-    girl.AddMessage(ss.str(), imagetype, msgtype);
+    girl.AddMessage(ss.str(), m_ImageType, msgtype);
 
     return false;
 }
@@ -204,7 +199,7 @@ public:
 };
 
 cFarmJobMarketer::cFarmJobMarketer() : cFarmJob(JOB_MARKETER, "Marketer.xml",
-    {ACTION_WORKCUSTSERV, 20}) {
+    {ACTION_WORKCUSTSERV, 20, EImageBaseType::PROFILE}) {
 }
 
 double cFarmJobMarketer::GetPerformance(const sGirl& girl, bool estimate) const {
@@ -216,7 +211,6 @@ double cFarmJobMarketer::GetPerformance(const sGirl& girl, bool estimate) const 
 
 bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100();
-    EImageBaseType imagetype = EImageBaseType::PROFILE;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    Create Items                //
@@ -369,7 +363,7 @@ bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     HandleGains(girl);
 
     // Push out the turn report
-    girl.AddMessage(ss.str(), imagetype, msgtype);
+    girl.AddMessage(ss.str(), m_ImageType, msgtype);
 
     return false;
 }
@@ -429,12 +423,11 @@ public:
 };
 
 cFarmJobShepherd::cFarmJobShepherd() : cFarmJob(
-        JOB_SHEPHERD, "Shepherd.xml", {ACTION_WORKFARM, 20}) {
+        JOB_SHEPHERD, "Shepherd.xml", {ACTION_WORKFARM, 20, EImageBaseType::HERD}) {
 }
 
 bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
-    EImageBaseType imagetype = EImageBaseType::HERD;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
 #pragma region //    Job Performance            //
@@ -508,13 +501,10 @@ bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     {
         beasts *= 0.9;
         food *= 0.9;
-        m_Wages = 0;
     }
-    else    // `J` Pay her based on how much she brought in
-    {
-        if (food > 0)        m_Wages += (int)food / 100;
-        if (beasts > 0)        m_Wages += (int)beasts;
-    }
+     // `J` Pay her based on how much she brought in
+    if (food > 0)        m_Wages += (int)food / 100;
+    if (beasts > 0)        m_Wages += (int)beasts;
 
     //    Finish the shift            //
 
@@ -539,7 +529,7 @@ bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     }
     ss << ".";
     
-    girl.AddMessage(ss.str(), imagetype, msgtype);
+    girl.AddMessage(ss.str(), m_ImageType, msgtype);
     
     HandleGains(girl);
 
@@ -553,13 +543,11 @@ public:
 };
 
 cFarmJobRancher::cFarmJobRancher() : cFarmJob(
-        JOB_RANCHER, "Rancher.xml", {ACTION_WORKFARM, 20}) {
+        JOB_RANCHER, "Rancher.xml", {ACTION_WORKFARM, 20, EImageBaseType::FARM}) {
 }
 
 bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
-
-    EImageBaseType imagetype = EImageBaseType::FARM;
 
     //    Job Performance            //
 
@@ -631,13 +619,11 @@ bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     {
         beasts *= 0.9;
         food *= 0.9;
-        m_Wages = 0;
     }
-    else    // `J` Pay her based on how much she brought in
-    {
-        if (food > 0)        m_Wages += (int)food / 100;
-        if (beasts > 0)        m_Wages += (int)beasts;
-    }
+    // `J` Pay her based on how much she brought in
+    if (food > 0)        m_Wages += (int)food / 100;
+    if (beasts > 0)        m_Wages += (int)beasts;
+
 
     //    Finish the shift            //
 
@@ -662,7 +648,7 @@ bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     }
     ss << ".";
 
-    girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), m_ImageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
     HandleGains(girl);
@@ -677,12 +663,11 @@ public:
 };
 
 cFarmJobMilker::cFarmJobMilker() : cFarmJob(
-        JOB_MILKER, "Milker.xml", {ACTION_WORKFARM, 20}) {
+        JOB_MILKER, "Milker.xml", {ACTION_WORKFARM, 20, EImageBaseType::FARM}) {
 }
 
 bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
-    EImageBaseType imagetype = EImageBaseType::FARM;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    Job Performance            //
@@ -755,12 +740,8 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     if (girl.is_unpaid())
     {
         drinks *= 0.9;
-        m_Wages = 0;
     }
-    else
-    {
-        m_Wages += (int)drinks / 100; // `J` Pay her based on how much she brought in
-    }
+    m_Wages += (int)drinks / 100; // `J` Pay her based on how much she brought in
 
     //    Create Items                //
 
@@ -829,7 +810,7 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     }
     else { ss << " was unable to collect any milk."; }
 
-    girl.AddMessage(ss.str(), imagetype, msgtype);
+    girl.AddMessage(ss.str(), m_ImageType, msgtype);
 
     HandleGains(girl);
     return false;
@@ -843,15 +824,10 @@ public:
 };
 
 cFarmJobBeastCapture::cFarmJobBeastCapture() : cFarmJob(
-        JOB_BEASTCAPTURE, "BeastCapture.xml", {ACTION_COMBAT, 40}) {
+        JOB_BEASTCAPTURE, "BeastCapture.xml", {ACTION_COMBAT, 40, EImageBaseType::COMBAT, true}) {
 }
 
 bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
-
-    // TODO this is contrary to simplejob from which all the farm jobs derive
-    cGirls::EquipCombat(girl);    // ready armor and weapons!
-
-    EImageBaseType imagetype = EImageBaseType::COMBAT;
     int msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     //    The Fight to get the Beasts        //
@@ -869,7 +845,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
             if (gain <= 2)    gain = 2;
             if (gain >= gainmax)    gain = gainmax;
             ss << "She had fun hunting today and came back with " << gain << " new beasts.";;
-            imagetype = EImageBaseType::COMBAT;
+            m_ImageType = EImageBaseType::COMBAT;
             tired = uniform(0, 3*gain);
             m_Enjoyment += uniform(2, 5);
         }
@@ -889,7 +865,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
                 if (gain > 1)    ss << gain;
                 ss << " captured beast" << (gain > 1 ? "s" : "") << " behind her.";
             }
-            imagetype = EImageBaseType::COMBAT;
+            m_ImageType = EImageBaseType::COMBAT;
             m_Enjoyment -= uniform(1, 3);
             tired = uniform(20, 20 + 10 * gain);
         }
@@ -1028,15 +1004,8 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
 
     //    Money                    //
 
-    // slave girls not being paid for a job that normally you would pay directly for do less work
-    if (girl.is_unpaid())
-    {
-        m_Wages = 0;
-    }
-    else
-    {
-        m_Wages += gain * 10; // `J` Pay her based on how much she brings back
-    }
+
+    m_Wages += gain * 10; // `J` Pay her based on how much she brings back
 
     //    Finish the shift            //
 
@@ -1052,7 +1021,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
         cGirls::PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", is_night);
     }
 
-    girl.AddMessage(ss.str(), imagetype, msgtype ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), m_ImageType, msgtype ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     return false;
 }
@@ -1883,9 +1852,7 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     }
 
     //    Money                    //
-
-    if (girl.is_unpaid()) { m_Wages = 0; }
-    else { m_Wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
+    m_Wages += (skill * 5); // `J` Pay her more if she learns more
 
     //    Finish the shift            //
 

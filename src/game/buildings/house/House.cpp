@@ -43,7 +43,6 @@ namespace {
     struct Recruiter: public cSimpleJob {
         Recruiter();
         bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-        eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     };
 
     struct PersonalTraining: public cBasicJob {
@@ -54,7 +53,7 @@ namespace {
     };
 }
 
-HouseCook::HouseCook() : cSimpleJob(JOB_HOUSECOOK, "HouseCook.xml", {ACTION_WORKCOOKING, 20}) {
+HouseCook::HouseCook() : cSimpleJob(JOB_HOUSECOOK, "HouseCook.xml", {ACTION_WORKCOOKING, 20, EImageBaseType::COOK}) {
 
 }
 
@@ -66,14 +65,8 @@ bool HouseCook::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     // enjoyed the work or not
     shift_enjoyment();
 
-    // slave girls not being paid for a job that normally you would pay directly for do less work
-    if (girl.is_unpaid())
-    {
-        m_Wages = 0;
-    }
-
     // do all the output
-    girl.AddMessage(ss.str(), EImageBaseType::COOK, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), m_ImageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     HandleGains(girl, 0);
 
@@ -672,19 +665,13 @@ double PersonalTraining::GetPerformance(const sGirl& girl, bool estimate) const 
     return 0;
 }
 
-Recruiter::Recruiter() : cSimpleJob(JOB_RECRUITER, "Recruiter.xml", {ACTION_WORKRECRUIT, 100}) {
+Recruiter::Recruiter() : cSimpleJob(JOB_RECRUITER, "Recruiter.xml", {ACTION_WORKRECRUIT, 100, EImageBaseType::PROFILE}) {
     m_Info.FullTime = true;
     m_Info.FreeOnly = true;
 }
 
-IGenericJob::eCheckWorkResult Recruiter::CheckWork(sGirl& girl, bool is_night) {
-    return SimpleRefusalCheck(girl, ACTION_WORKRECRUIT);
-}
-
 bool Recruiter::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int fame = 0;
-
-    EImageBaseType imagetype = EImageBaseType::PROFILE;
 
     int HateLove = girl.pclove();
 
@@ -782,7 +769,7 @@ bool Recruiter::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
                 newgirl->house(60);
                 std::stringstream NGmsg;
                 NGmsg << "${name} was recruited by " << girl.FullName() << " to work for you.";
-                newgirl->AddMessage(NGmsg.str(), imagetype, EVENT_GANG);
+                newgirl->AddMessage(NGmsg.str(), m_ImageType, EVENT_GANG);
 
                 g_Game->dungeon().AddGirl(std::move(newgirl), DUNGEON_RECRUITED);
             }
@@ -801,7 +788,7 @@ bool Recruiter::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
 
     shift_enjoyment();
 
-    girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), m_ImageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     int roll_max = (girl.charisma() + girl.service()) / 4;
     m_Wages += 10 + uniform(0, roll_max);
 

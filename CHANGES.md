@@ -5,9 +5,15 @@
 * Added an "AnyGroup" participant, not for use in image tags. If the game request an image with this,
 it will accept any other group participant as a cheap fallback.
 * Saving the pack will pick up the changes made to the current image
+* `CityGuard` job now uses `Security` tag
+
 
 ## Bugfixes
 * Fixed error in image selection algorithm that allowed it to choose the same image as part of the candidate set twice.
+* Fixed paying wages to unpaid slaves
+
+## Other
+* Some internal job code work
 
 # Version 7.2.1alpha2
 Further work on new image tagging system. Many things are still experimental,

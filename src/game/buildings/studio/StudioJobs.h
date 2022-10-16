@@ -20,7 +20,7 @@
 #ifndef WM_STUDIOJOBS_H
 #define WM_STUDIOJOBS_H
 
-#include "jobs/BasicJob.h"
+#include "jobs/SimpleJob.h"
 #include "data.h"
 #include "images/sImageSpec.h"
 
@@ -103,13 +103,11 @@ protected:
     void produce_debug_message(sGirl& girl) const;
 };
 
-class cCrewJob : public cBasicJob {
+class cCrewJob : public cSimpleJob {
 public:
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
-    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
-    using cBasicJob::cBasicJob;
-protected:
-    sImagePreset m_EventImage = EImageBaseType::STUDIO_CREW;
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+    using cSimpleJob::cSimpleJob;
 private:
     virtual void HandleUpdate(sGirl& girl, float performance) = 0;
 };

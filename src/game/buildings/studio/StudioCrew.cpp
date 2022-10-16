@@ -78,19 +78,16 @@ cCrewJob::eCheckWorkResult cCrewJob::CheckWork(sGirl& girl, bool is_night) {
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
-    return SimpleRefusalCheck(girl, ACTION_MOVIECREW);
+    return cSimpleJob::CheckWork(girl, is_night);
 }
 
-sWorkJobResult cCrewJob::DoWork(sGirl& girl, bool is_night) {
-    add_text("work") << "\n";
-    cGirls::UnequipCombat(girl);    // not for studio crew
+bool cCrewJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     m_Wages = 50;
 
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
     {
         m_Performance *= 0.9;
-        m_Wages = 0;
     }
     else    // work out the pay between the house and the girl
     {
@@ -125,39 +122,35 @@ sWorkJobResult cCrewJob::DoWork(sGirl& girl, bool is_night) {
         add_text("work.worst");
     }
 
-    girl.AddMessage(ss.str(), m_EventImage, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), m_ImageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     HandleUpdate(girl, m_Performance);
 
     // Improve stats
     apply_gains(girl, m_Performance);
 
-    return {false, 0, 0, m_Wages};
+    return false;
 }
 
 
-cJobCameraMage::cJobCameraMage() : cCrewJob(JOB_CAMERAMAGE, "CameraMage.xml") {
+cJobCameraMage::cJobCameraMage() : cCrewJob(JOB_CAMERAMAGE, "CameraMage.xml", {ACTION_MOVIECREW, 50, EImageBaseType::CAMERA_MAGE}) {
     m_Info.Provides.emplace_back(CamMageInteractionId);
-    m_EventImage = EImageBaseType::CAMERA_MAGE;
 }
 
-cJobCrystalPurifier::cJobCrystalPurifier() : cCrewJob(JOB_CRYSTALPURIFIER, "CrystalPurifier.xml") {
-    m_EventImage = EImageBaseType::PURIFIER;
+cJobCrystalPurifier::cJobCrystalPurifier() : cCrewJob(JOB_CRYSTALPURIFIER, "CrystalPurifier.xml", {ACTION_MOVIECREW, 50, EImageBaseType::PURIFIER}) {
     m_Info.Provides.emplace_back(CrystalPurifierInteractionId);
 }
 
-cJobFluffer::cJobFluffer() : cCrewJob(JOB_FLUFFER, "Fluffer.xml") {
+cJobFluffer::cJobFluffer() : cCrewJob(JOB_FLUFFER, "Fluffer.xml", {ACTION_MOVIECREW, 50, EImagePresets::BLOWJOB}) {
     m_Info.Provides.emplace_back(FluffPointsId);
-    m_EventImage = EImagePresets::BLOWJOB;
 }
 
 void cJobFluffer::HandleUpdate(sGirl& girl, float performance) {
     ProvideResource(FluffPointsId, (int)performance);
 }
 
-cJobDirector::cJobDirector() : cCrewJob(JOB_DIRECTOR, "Director.xml") {
+cJobDirector::cJobDirector() : cCrewJob(JOB_DIRECTOR, "Director.xml", {ACTION_MOVIECREW, 50, EImageBaseType::DIRECTOR}) {
     m_Info.Provides.emplace_back(DirectorInteractionId);
-    m_EventImage = EImageBaseType::DIRECTOR;
 }
 
 class cJobStageHand : public cBasicJob {

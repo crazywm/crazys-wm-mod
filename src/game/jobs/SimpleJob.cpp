@@ -33,7 +33,11 @@ sWorkJobResult cSimpleJob::DoWork(sGirl& girl, bool is_night)
         add_text("work") << "\n\n";
     }
 
-    cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
+    if(m_Data.IsCombatJob) {
+        cGirls::EquipCombat(girl);
+    } else {
+        cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
+    }
 
     return {JobProcessing(girl, *brothel, is_night), m_Tips, m_Earnings, m_Wages};
 }

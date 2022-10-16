@@ -33,7 +33,40 @@
             <Text>${name} helps guard the city.</Text>
         </Message>
         <Message Name="refuse">
-            <Text>${name} refused to work during the ${shift} shift.</Text>
+            <Text>${name} refused to guard the city during the ${shift}.</Text>
+        </Message>
+
+        <Message Name="event.calm">
+            <Text>
+                ${name} didn't find any trouble today.
+            </Text>
+        </Message>
+
+        <Message Name="event.caught-thief">
+            <Text Condition="CatchThief>90">
+                ${name} spotted a thief and was on them before they could blink. Putting a stop to the theft.
+            </Text>
+            <Text Condition="CatchThief>75^CatchThief<95">
+                ${name} spotted a thief and was on them before they could get away. She is quick.
+            </Text>
+            <Text Condition="CatchThief>50^CatchThief<80">
+                ${name} spotted a thief. She was able to keep up, and managed to catch them.
+            </Text>
+            <Text Condition="CatchThief<60">
+                ${name} spotted a thief. Luckily, they weren't a good runner, so even someone as slow as ${name} could
+                keep up, managing to catch them.
+            </Text>
+        </Message>
+
+        <Message Name="event.lost-thief">
+            <Text Condition="CatchThief>50">
+                ${name} spotted a thief. As so as they saw here, they took of running.
+                ${name} was able to chase them for a few minutes, but they ended up giving her the slip in the end.
+            </Text>
+            <Text Condition="CatchThief<60">
+                ${name} spotted a thief. "Stop, you're under arrest", she calls out. The thief takes off, and after a
+                rather short chase ${name} is left wheezing, having lost sight of her quarry.
+            </Text>
         </Message>
     </Messages>
 </Job>

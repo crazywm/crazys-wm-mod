@@ -29,6 +29,7 @@ struct sSimpleJobData {
     Action_Types Action;
     int BaseWages = 0;
     sImagePreset DefaultImage = EImageBaseType::PROFILE;
+    bool IsCombatJob = false;
 };
 
 
@@ -36,6 +37,7 @@ class cSimpleJob : public cBasicJob {
 public:
     cSimpleJob(JOBS job, const char* xml, sSimpleJobData data);
     sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
+    /// Run the job processing, and return whether the girl refused.
     virtual bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) = 0;
 
 protected:

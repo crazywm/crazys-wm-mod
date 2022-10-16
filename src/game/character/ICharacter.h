@@ -132,6 +132,10 @@ public:
     // -----------------------------------------------------------------------------------------------------------------
     int get_attribute(StatSkill id) const;
     int update_attribute(StatSkill id, int amount);
+    /// Updates the attribute with an amount between min and max, if its current value is less than target.
+    /// If the current value exceeds target, the update amount is decreased.
+    /// In the future, this is the function that should be used for most stat/skill gains
+    int gain_attribute(StatSkill id, int min, int max, int target);
 
     virtual int get_stat(STATS stat_id) const;
     /// gets the stat without any modifiers

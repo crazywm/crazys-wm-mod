@@ -35,7 +35,7 @@ struct DoctorJob : public cSimpleJob {
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 };
 
-DoctorJob::DoctorJob() : cSimpleJob(JOB_DOCTOR, "Doctor.xml", {ACTION_WORKDOCTOR, 100}) {
+DoctorJob::DoctorJob() : cSimpleJob(JOB_DOCTOR, "Doctor.xml", {ACTION_WORKDOCTOR, 100, EImageBaseType::NURSE}) {
     m_Info.FullTime = true;
     m_Info.FreeOnly = true;
     m_Info.Provides.emplace_back(DoctorInteractionId);
@@ -68,7 +68,7 @@ bool DoctorJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         ss << "Otherwise, the shift passed uneventfully.\n";
     }
 
-    girl.AddMessage(ss.str(), EImageBaseType::NURSE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), m_ImageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     // TODO figure out external patients
 
     // Improve stats
@@ -107,7 +107,7 @@ struct NurseJob : public cSimpleJob {
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 };
 
-NurseJob::NurseJob() : cSimpleJob(JOB_NURSE, "Nurse.xml", {ACTION_WORKNURSE}) {
+NurseJob::NurseJob() : cSimpleJob(JOB_NURSE, "Nurse.xml", {ACTION_WORKNURSE, 0, EImageBaseType::NURSE}) {
     m_Info.FullTime = true;
     m_Info.Provides.emplace_back(CarePointsBasicId);
     m_Info.Provides.emplace_back(CarePointsGoodId);
@@ -117,8 +117,6 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     int roll_a = d100(), roll_b = d100();
     int fame = 0;
     bool hand = false, sex = false, les = false;
-
-    sImageSpec image_spec = girl.MakeImageSpec(EImageBaseType::NURSE);
 
     // this will be added to the clinic's code eventually - for now it is just used for her pay
     int patients = 0;            // `J` how many patients the Doctor can see in a shift
@@ -230,7 +228,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     {
         if (brothel.is_sex_type_allowed(SKILL_NORMALSEX) && (roll_b <= 50 || brothel.is_sex_type_allowed(SKILL_ANAL))) //Tweak to avoid an issue when roll > 50 && anal is restricted
         {
-            image_spec.BasicImage = EImageBaseType::VAGINAL;
+            m_ImageType = EImageBaseType::VAGINAL;
             girl.normalsex(2);
             if (girl.lose_trait("Virgin"))
             {
@@ -243,7 +241,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         }
         else if (brothel.is_sex_type_allowed(SKILL_ANAL))
         {
-            image_spec.BasicImage = EImageBaseType::ANAL;
+            m_ImageType = EImageBaseType::ANAL;
             girl.anal(2);
         }
         brothel.m_Happiness += 100;
@@ -254,13 +252,12 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     {
         brothel.m_Happiness += uniform(60, 130);
         girl.handjob(2);
-        image_spec.BasicImage = EImageBaseType::HAND;
+        m_ImageType = EImageBaseType::HAND;
     }
     else if (les)
     {
         brothel.m_Happiness += uniform(30, 100);
-        image_spec.BasicImage = EImageBaseType::VAGINAL;
-        image_spec.Participants = ESexParticipants::LESBIAN;
+        m_ImageType = EImagePresets::LESBIAN;
         girl.lesbian(2);
     }
 
@@ -268,7 +265,6 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     {
         m_Performance *= 0.9;
         patients += (int)(m_Performance / 5);        // `J` 1 patient per 5 point of performance
-        m_Wages = 0;
     }
     else
     {
@@ -276,8 +272,8 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         m_Wages += patients * 2;                // `J` pay her 2 for each patient you send to her
     }
 
-    girl.AddMessage(ss.str(), image_spec, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-    /* `J` this will be a place holder until a better payment system gets done
+    girl.AddMessage(ss.str(), m_ImageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    /* `J` this will be a placeholder until a better payment system gets done
     *  this does not take into account any of your girls in surgery
     */
     m_Earnings = 0;
@@ -484,8 +480,7 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
 
     girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
-    if (girl.is_unpaid()) { m_Wages = 0; }
-    else { m_Wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
+    m_Wages = 25 + (skill * 5); // `J` Pay her more if she learns more
 
     if (girl.medicine() + girl.intelligence() + girl.charisma() >= 300) promote = true;
     if (promote)

@@ -39,6 +39,9 @@
         <Message Name="refuse">
             <Text>${name} refused to fight during the ${shift} shift.</Text>
         </Message>
+        <Message Name="work">
+            <Text>${name} was assigned to fight other girls in the arena.</Text>
+        </Message>
 
         <Message Name="victory">
             <Text Condition="Exhibitionist">
