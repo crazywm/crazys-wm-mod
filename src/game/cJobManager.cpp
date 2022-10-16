@@ -1367,6 +1367,10 @@ sPaymentData cJobManager::CalculatePay(sGirl& girl, sWorkJobResult result)
     // no pay or tips, no need to continue
     if(result.Wages == 0 && result.Tips == 0 && result.Earnings == 0) return retval;
 
+    if(girl.is_unpaid()) {
+        result.Wages = 0;
+    }
+
     retval.Wages = result.Wages;
     retval.Earnings = result.Earnings;
     retval.Tips = result.Tips;
@@ -1389,6 +1393,7 @@ sPaymentData cJobManager::CalculatePay(sGirl& girl, sWorkJobResult result)
         // TODO check where we are handling the money processing for girl's payment
         girl.m_Building->m_Finance.girl_support(result.Wages);
     }
+
     retval.PlayerGets -= result.Wages;
     girl.m_Money += result.Wages;    // she gets it all
     retval.GirlGets += result.Wages;
@@ -1447,7 +1452,12 @@ void cJobManager::handle_simple_job(sGirl& girl, bool is_night)
         brothel->m_Fame += girl.fame();
         std::stringstream ss;
         auto money_data = CalculatePay(girl, result);
-        ss << "${name} made " << money_data.Earnings << " and " << money_data.Tips << " in tips. ";
+        ss << "${name} made " << money_data.Earnings;
+        if(money_data.Tips != 0) {
+            ss << " and " << money_data.Tips << " in tips. ";
+        } else {
+            ss << " gold. ";
+        }
         if (money_data.Wages > 0) ss << "You paid her a salary of " << money_data.Wages << ". ";
         ss << "In total, she got " << money_data.GirlGets << " gold and you ";
         if(money_data.PlayerGets > 0) {
