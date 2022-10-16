@@ -26,17 +26,22 @@
 sWorkJobResult cSimpleJob::DoWork(sGirl& girl, bool is_night)
 {
     m_Wages = m_Data.BaseWages;
+    m_ImageType = m_Data.DefaultImage;
+
     auto brothel = girl.m_Building;
     if(has_text("work")) {
         add_text("work") << "\n\n";
     }
+
     cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
 
     return {JobProcessing(girl, *brothel, is_night), m_Tips, m_Earnings, m_Wages};
 }
 
-cSimpleJob::cSimpleJob(JOBS job, const char* xml, sSimpleJobData data) : cBasicJob(job, xml), m_Data(data) {
+cSimpleJob::cSimpleJob(JOBS job, const char* xml, sSimpleJobData data) : cBasicJob(job, xml), m_Data(data),
+        m_ImageType(data.DefaultImage) {
     RegisterVariable("Enjoyment", m_Enjoyment);
+    RegisterVariable("Image", m_ImageType);
 }
 
 void cSimpleJob::HandleGains(sGirl& girl, int fame) {

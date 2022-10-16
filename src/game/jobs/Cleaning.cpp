@@ -31,8 +31,6 @@ namespace {
         void CleaningUpdateGirl(sGirl& girl, bool is_night, int enjoy, int clean_amount);
 
         virtual void DoneEarly(sGirl& girl) = 0;
-
-        sImagePreset ImageType = EImageBaseType::MAID;
     };
 
     struct CleanArena : public Cleaning {
@@ -50,6 +48,7 @@ namespace {
     struct CleanBrothel : public Cleaning {
         CleanBrothel();
         void DoneEarly(sGirl& girl) override;
+        void BJEvent(sGirl& girl);
     };
     struct CleanClinic : public Cleaning {
         CleanClinic();
@@ -61,7 +60,7 @@ namespace {
     };
 }
 
-Cleaning::Cleaning(JOBS job, const char* xml) : cSimpleJob(job, xml, {ACTION_WORKCLEANING}) {
+Cleaning::Cleaning(JOBS job, const char* xml) : cSimpleJob(job, xml, {ACTION_WORKCLEANING, 0, EImageBaseType::MAID}) {
 }
 
 void Cleaning::CleaningUpdateGirl(sGirl& girl, bool is_night, int enjoy, int clean_amount) {
@@ -94,7 +93,6 @@ void Cleaning::CleaningUpdateGirl(sGirl& girl, bool is_night, int enjoy, int cle
 }
 
 bool Cleaning::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night){
-    ImageType = EImageBaseType::MAID;
     double CleanAmt = m_Performance;
     int enjoy = 0;
     bool playtime = false;
@@ -118,7 +116,7 @@ bool Cleaning::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night){
         enjoy += uniform(0, 1);
         add_text("shift.neutral");
     }
-    ss << "\n \n";
+    ss << "\n\n";
 
     // slave girls not being paid for a job that normally you would pay directly for do less work
     if (girl.is_unpaid())
@@ -133,14 +131,15 @@ bool Cleaning::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night){
 
     // `J` if she can clean more than is needed, she has a little free time after her shift
     if (brothel.m_Filthiness < CleanAmt / 2) playtime = true;
-    ss << "\n \nCleanliness rating improved by " << (int)CleanAmt;
+    ss << "\n\nCleanliness rating improved by " << (int)CleanAmt << ".\n";
     if (playtime)    // `J` needs more variation
     {
+        ss << "\n";
         DoneEarly(girl);
     }
 
     // do all the output
-    girl.AddMessage(ss.str(), ImageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
+    girl.AddMessage(ss.str(), m_ImageType, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     CleaningUpdateGirl(girl, is_night, enjoy, CleanAmt);
     return false;
@@ -151,7 +150,7 @@ CleanArena::CleanArena() : Cleaning(JOB_CLEANARENA, "CleanArena.xml") {
 }
 
 void CleanArena::DoneEarly(sGirl& girl) {
-    ss << "\n \n${name} finished her cleaning early so she played around with some of the equipment.";
+    add_text("event.early");
     girl.combat(uniform(0, 2));
     girl.agility(uniform(0, 1));
     girl.constitution(uniform(0, 1));
@@ -165,20 +164,19 @@ CleanCentre::CleanCentre() : Cleaning(JOB_CLEANCENTRE, "CleanCentre.xml") {
 
 void CleanCentre::DoneEarly(sGirl& girl) {
     if(chance(girl.tiredness())) {
-        ss << "\n \n${name} finished her cleaning early so she took nap.";
+        add_text("event.nap");
         girl.happiness(uniform(0, 2));
         girl.tiredness(-uniform(1, 10));
         girl.morality(-uniform(0, 1));
     } else if (chance(50))
     {
-        ss << "\n \n${name} finished her cleaning early so took a long bath to clean herself off.";
+        add_text("event.bath");
         girl.happiness(uniform(1, 3));
         girl.tiredness(-uniform(0, 2));
-        ImageType = EImageBaseType::BATH;
     }
     else
     {
-        ss << "\n \n${name} finished her cleaning early so she played with the children a bit.";
+        add_text("event.play");
         girl.happiness(uniform(3, 7));
         girl.tiredness(uniform(0, 2));
         girl.morality(uniform(0, 1));
@@ -191,9 +189,16 @@ CleanHouse::CleanHouse() : Cleaning(JOB_CLEANHOUSE, "CleanHouse.xml") {
 }
 
 void CleanHouse::DoneEarly(sGirl& girl) {
-    ss << "\n \n${name} finished her cleaning early so she just sat around the house.";
-    girl.tiredness(-uniform(2, 6));
-    girl.happiness(uniform(2, 6));
+    if(chance(girl.tiredness())) {
+        add_text("event.nap");
+        girl.happiness(uniform(0, 2));
+        girl.tiredness(-uniform(1, 10));
+        girl.morality(-uniform(0, 1));
+    } else {
+        add_text("event.sit");
+        girl.tiredness(-uniform(2, 6));
+        girl.happiness(uniform(2, 6));
+    }
 }
 
 CleanFarm::CleanFarm() : Cleaning(JOB_FARMHAND, "FarmHand.xml") {
@@ -201,7 +206,7 @@ CleanFarm::CleanFarm() : Cleaning(JOB_FARMHAND, "FarmHand.xml") {
 }
 
 void CleanFarm::DoneEarly(sGirl& girl) {
-    ss << "\n \n${name} finished her cleaning early so she ";
+    ss << "${name} finished her cleaning early, so she ";
     int roll_c = d100();
     if (!is_night_shift() && chance(33))    // 33% chance she will watch the sunset when working day shift
     {
@@ -233,30 +238,30 @@ CleanClinic::CleanClinic() : Cleaning(JOB_JANITOR, "Janitor.xml") {
 
 void CleanClinic::DoneEarly(sGirl& girl) {
     auto brothel = girl.m_Building;
-    ss << "\n \n${name} finished her cleaning early so she ";
     if (girl.is_pregnant() && girl.health() < 90)
     {
-        ss << "got a quick checkup and made sure her unborn baby was doing OK.";
+        add_text("event.checkup-unborn");
         girl.health(10);
         girl.happiness(uniform(2, 5));
     }
     else if (girl.health() < 80)
     {
-        ss << "got a quick checkup.";
+        add_text("event.checkup");
         girl.health(10);
     }
     else if (girl.is_pregnant() || chance(40))
     {
-        ss << "hung out in the maternity ward watching the babies.";
+        add_text("event.maternity-ward");
         girl.happiness(uniform(-2, 3));
     }
     else if (girl.tiredness() > 50 && brothel->free_rooms() > 10)
     {
-        ss << "found an empty room and took a nap.";
+        add_text("event.nap");
         girl.tiredness(-uniform(5, 15));
     }
     else
     {
+        ss << "${name} finished her cleaning early, so she ";
         int d = brothel->num_girls_on_job(JOB_DOCTOR, is_night_shift());
         int n = brothel->num_girls_on_job(JOB_NURSE, is_night_shift());
         ss << "watched the ";
@@ -284,7 +289,7 @@ CleanBrothel::CleanBrothel() : Cleaning(JOB_CLEANING, "CleanBrothel.xml") {
 
 void CleanBrothel::DoneEarly(sGirl& girl) {
     auto brothel = girl.m_Building;
-    ss << "\n \n${name} finished her cleaning early so ";
+
     int choice = uniform(0, 5);
     if (choice == 1 && (!brothel->is_sex_type_allowed(SKILL_ORALSEX) || girl.has_active_trait("Lesbian"))) choice = 0;
     if (choice != 2 && girl.tiredness() >= 80) choice = 2;
@@ -293,41 +298,25 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
     switch (choice)
     {
         case 1:
-        {
-            ss << "she hung out at the brothel, offering to \"clean off\" finished customers with her mouth.\n";//Made it actually use quote marks CRAZY
-            int tips = uniform(-1, 4); //how many 'tips' she clean? <6 for now, considered adjusting to amount playtime - didn't seem worth complexity
-            if (tips > 0)
-            {
-                brothel->m_Happiness += (tips);
-                girl.oralsex(tips / 2);
-                // TODO Tips
-                //tips *= 5; //customers tip 5 gold each
-                //ss << "She got " << tips << " in tips for this extra service.\n";
-                ImageType = EImagePresets::BLOWJOB;
-                girl.m_NumCusts += tips;
-            }
-            else
-            {
-                ss << "No one was interested.";
-            }
-        }break;
+            BJEvent(girl);
+        break;
 
         case 2:
         {
-            ss << "she had a rest.";
+            add_text("event.nap");
             girl.tiredness(-uniform(1, 10));
         }break;
 
         case 3:
         {
-            ss << "she hung out around the brothel chatting with staff and patrons.\n";
+            add_text("event.chat");
             girl.charisma(uniform(1, 3));
             girl.confidence(uniform(1, 2));
         }break;
 
         case 4:
         {
-            ss << "she spent some time training and getting herself fitter.\n";
+            add_text("event.sports");
             girl.constitution(uniform(0, 1));
             girl.agility(uniform(0, 1));
             girl.beauty(uniform(0, 1));
@@ -337,6 +326,7 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
 
         case 5:
         {
+            ss << "${name} finished her cleaning early so ";
             if (girl.has_active_trait("Your Wife") || chance(30) && !girl.has_active_trait("Your Daughter") && !girl.has_active_trait(
                     "Lesbian")) //Flipped to fix the daughter issue
 
@@ -344,7 +334,7 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
                 // TODO adjust tips
                 //tips = 20; // you tip her for cleaning you
                 ss << "she came to your room and cleaned you.\n \n${name} ran you a hot bath and bathed naked with you.";/* Need a check here so your daughters won't do this zzzzz FIXME*/
-                ImageType = EImageBaseType::BATH;
+                m_ImageType = EImageBaseType::BATH;
 
                 if (brothel->is_sex_type_allowed(SKILL_TITTYSEX))
                 {
@@ -369,7 +359,7 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
                         girl.spirit(-uniform(0, 1));
                         // tips += (rng % 20);  // tip her for hotness
                     }
-                    ImageType = EImagePresets::BLOWJOB;
+                    m_ImageType = EImagePresets::BLOWJOB;
                 }
                 girl.service(uniform(0, 4));
                 girl.medicine(uniform(0, 1));
@@ -388,10 +378,31 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
         }break;
 
         default:
+            ss << "${name} finished her cleaning early so ";
             ss << "she hung out around the brothel a bit.";
             girl.upd_temp_stat(STAT_LIBIDO, uniform(1, 3), true);
             girl.happiness(uniform(1, 3));
             break;
+    }
+}
+
+void CleanBrothel::BJEvent(sGirl& girl) {
+    auto brothel = girl.m_Building;
+    ss << "${name} finished her cleaning early, so she hung out at the brothel, offering to \"clean off\" finished customers with her mouth.\n";//Made it actually use quote marks CRAZY
+    int tips = uniform(-1, 4); //how many 'tips' she clean? <5 for now, considered adjusting to amount playtime - didn't seem worth complexity
+    if (tips > 0)
+    {
+        brothel->m_Happiness += tips;
+        girl.oralsex(tips / 2);
+        // TODO Tips
+        //tips *= 5; //customers tip 5 gold each
+        //ss << "She got " << tips << " in tips for this extra service.\n";
+        m_ImageType = EImagePresets::BLOWJOB;
+        girl.m_NumCusts += tips;
+    }
+    else
+    {
+        ss << "No one was interested.";
     }
 }
 

@@ -28,6 +28,7 @@
 
 
 class cBasicJob;
+class sImagePreset;
 
 class cBasicJobTextInterface : public IInteractionInterface {
 public:
@@ -43,8 +44,10 @@ public:
     void SetVariable(const std::string& name, std::string value) const final;
 
     void RegisterVariable(std::string name, int& value);
+    void RegisterVariable(std::string name, sImagePreset& value);
 private:
-    std::unordered_map<std::string, int*> m_MappedValues;
+    std::unordered_map<std::string, int*> m_MappedIntValues;
+    std::unordered_map<std::string, std::function<void(std::string)>> m_MappedStringValues;
     cBasicJob* m_Job;
 };
 
@@ -66,6 +69,7 @@ protected:
     // processing variables
     void InitWork() override;
     void RegisterVariable(std::string name, int& value);
+    void RegisterVariable(std::string name, sImagePreset& preset);
 
     void SetSubstitution(std::string key, std::string replace);
 

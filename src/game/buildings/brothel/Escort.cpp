@@ -661,7 +661,7 @@ auto cEscortJob::choose_sex(const std::string& prefix, const sGirl& girl, const 
     return type;
 }
 
-cEscortJob::cEscortJob() : cSimpleJob(JOB_ESCORT, "Escort.xml", {ACTION_WORKESCORT}) {
+cEscortJob::cEscortJob() : cSimpleJob(JOB_ESCORT, "Escort.xml", {ACTION_WORKESCORT, 0, EImageBaseType::ESCORT}) {
     RegisterVariable("Escort", m_Escort);
     RegisterVariable("Prepare", m_Prepare);
 }

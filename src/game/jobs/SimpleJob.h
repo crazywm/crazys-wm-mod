@@ -23,10 +23,12 @@
 
 #include "BasicJob.h"
 #include "utils/piecewise_linear.h"
+#include "images/sImageSpec.h"
 
 struct sSimpleJobData {
     Action_Types Action;
     int BaseWages = 0;
+    sImagePreset DefaultImage = EImageBaseType::PROFILE;
 };
 
 
@@ -64,6 +66,7 @@ protected:
     }
 
     int m_Enjoyment;
+    sImagePreset m_ImageType;
 };
 
 

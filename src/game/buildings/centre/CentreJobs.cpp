@@ -48,7 +48,7 @@ namespace {
     };
 }
 
-CommunityService::CommunityService() : cSimpleJob(JOB_COMUNITYSERVICE, "CommunityService.xml", {ACTION_WORKCENTRE, 100}) {
+CommunityService::CommunityService() : cSimpleJob(JOB_COMUNITYSERVICE, "CommunityService.xml", {ACTION_WORKCENTRE, 100, EImageBaseType::PROFILE}) {
 
 }
 

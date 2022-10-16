@@ -28,5 +28,20 @@
         <Message Name="shift.neutral">
             <Text>The shift passed uneventfully.</Text>
         </Message>
+
+        <Message Name="event.checkup-unborn">
+            <Text>
+                ${name} finished her cleaning early, so she got a quick checkup and made sure her unborn baby was doing OK.
+            </Text>
+        </Message>
+        <Message Name="event.checkup">
+            <Text>${name} finished her work early, got a quick checkup.</Text>
+        </Message>
+        <Message Name="event.maternity-ward">
+            <Text>${name} finished her cleaning early, so she hung out in the maternity ward watching the babies.</Text>
+        </Message>
+        <Message Name="event.nap">
+            <Text Updates="Image='REST'">${name} finished her cleaning early, so she had a rest.</Text>
+        </Message>
     </Messages>
 </Job>

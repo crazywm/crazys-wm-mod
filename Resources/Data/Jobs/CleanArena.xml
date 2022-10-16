@@ -31,5 +31,9 @@
         <Message Name="shift.neutral">
             <Text>The shift passed uneventfully.</Text>
         </Message>
+
+        <Message Name="event.early">
+            <Text>${name} finished her cleaning early, so she played around with some of the equipment.</Text>
+        </Message>
     </Messages>
 </Job>

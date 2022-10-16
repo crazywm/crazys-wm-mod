@@ -31,5 +31,14 @@
         <Message Name="shift.neutral">
             <Text>The shift passed uneventfully.</Text>
         </Message>
+
+        <Message Name="event.sit">
+            <Text>${name} finished her cleaning early, so she just sat around the house.</Text>
+        </Message>
+        <Message Name="event.nap">
+            <Text Updates="Image='REST'">
+                ${name} managed to clean the house before the end of her shift, so she took a nap.
+            </Text>
+        </Message>
     </Messages>
 </Job>

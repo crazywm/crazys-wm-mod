@@ -127,6 +127,10 @@ void cBasicJob::RegisterVariable(std::string name, int& value) {
     m_Interface.RegisterVariable(std::move(name), value);
 }
 
+void cBasicJob::RegisterVariable(std::string name, sImagePreset& value) {
+    m_Interface.RegisterVariable(std::move(name), value);
+}
+
 bool cBasicJobTextInterface::LookupBoolean(const std::string& name) const {
     return m_Job->active_girl().has_active_trait(name.c_str());
 }
@@ -140,7 +144,7 @@ int cBasicJobTextInterface::LookupNumber(const std::string& name) const {
         return m_Job->active_girl().get_skill(get_skill_id(name.substr(split_point+1)));
     } else if (type.size() == name.size()) {
         try {
-            return *m_MappedValues.at(name);
+            return *m_MappedIntValues.at(name);
         } catch (const std::out_of_range& oor) {
             g_LogFile.error("job", "Unknown job variable '", name, '\'');
             BOOST_THROW_EXCEPTION(std::runtime_error("Unknown job variable: " + name));
@@ -152,12 +156,12 @@ int cBasicJobTextInterface::LookupNumber(const std::string& name) const {
 }
 
 void cBasicJobTextInterface::SetVariable(const std::string& name, int value) const {
-    int* looked_up = m_MappedValues.at(name);
+    int* looked_up = m_MappedIntValues.at(name);
     *looked_up = value;
 }
 
 void cBasicJobTextInterface::SetVariable(const std::string& name, std::string value) const {
-    throw std::logic_error("String variables are not implemented yet");
+    m_MappedStringValues.at(name)(value);
 }
 
 void cBasicJobTextInterface::TriggerEvent(const std::string& name) const {
@@ -165,7 +169,13 @@ void cBasicJobTextInterface::TriggerEvent(const std::string& name) const {
 }
 
 void cBasicJobTextInterface::RegisterVariable(std::string name, int& value) {
-    m_MappedValues[std::move(name)] = &value;
+    m_MappedIntValues[std::move(name)] = &value;
+}
+
+void cBasicJobTextInterface::RegisterVariable(std::string name, sImagePreset& value) {
+    m_MappedStringValues[std::move(name)] = [&value](std::string new_value) {
+        value = get_image_id(new_value);
+    };
 }
 
 IGenericJob::eCheckWorkResult cBasicJob::SimpleRefusalCheck(sGirl& girl, Action_Types action) {
