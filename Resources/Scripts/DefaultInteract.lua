@@ -80,7 +80,7 @@ function DungeonInteractChoice(girl)
                 wm.UpdateImage(wm.IMG.BDSM)
                 Dialog("She allows you to tie her up and spank her while you both cum hard.")
                 local preg = girl:calc_player_pregnancy(false, 1.0);
-                if preg then Dialog(girl:name() .. " has gotten pregnant") end
+                if preg then Dialog("${firstname} has gotten pregnant") end
             else
                 Dialog("She refused to do this.")
             end
@@ -201,14 +201,14 @@ end
 
 function BrothelInteractChoice(girl)
     wm.UpdateImage(wm.IMG.PROFILE)
-    local choice = ChoiceBox("What would you like to do?", "Reward " .. girl:name(),
-            "Chat with " .. girl:name(), "Visit " .. girl:name() .. "'s Bedroom",
-            "Call " .. girl:name() .. " to your office", "Invite " .. girl:name() .. " to your private chambers",
-            "Train " .. girl:name(), "Scold " .. girl:name(), "Punish " .. girl:name()
+    local choice = ChoiceBox("What would you like to do?", "Reward ${firstname}" ,
+            "Chat with ${firstname}", "Visit ${firstname}'s Bedroom",
+            "Call ${firstname} to your office", "Invite ${firstname} to your private chambers",
+            "Train ${firstname}", "Scold ${firstname}", "Punish ${firstname}"
     )
 
     if choice == 0 then
-        Dialog("You give " .. girl:name() .. " some spending money to cheer her up.")
+        Dialog("You give ${firstname} some spending money to cheer her up.")
         girl:give_money(100)
         girl:happiness(2)
         girl:pclove(2)

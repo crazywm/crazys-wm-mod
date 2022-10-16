@@ -107,7 +107,7 @@ function NormalSex(girl)
         if choice == 0 then
             return girl:trigger("girl:refuse")
         else
-            Dialog("After a short struggle with your goons, " .. girl:name() .. " is bound spread-eagle on the bed.")
+            Dialog("After a short struggle with your goons, ${firstname} is bound spread-eagle on the bed.")
             wm.UpdateImage(wm.IMG.SEX, {tied=1})
             Dialog("She cries out as you force yourself inside her. ")
             PlayerRapeGirl(girl)

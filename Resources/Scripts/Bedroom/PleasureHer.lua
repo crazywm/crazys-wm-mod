@@ -2,10 +2,10 @@ function RepayFinger(girl)
     wm.UpdateImage(wm.IMG.HAND, ImageOptions.HETERO)
     if girl:skill_check(wm.SKILLS.HANDJOB, 40) then
         Dialog("She uses the juices between her thighs to lubricate her hand, and then starts stroking your member. " ..
-                "If only everybody could appreciate your hard work the way " .. girl:firstname() .. " does.")
+                "If only everybody could appreciate your hard work the way ${firstname} does.")
         girl:handjob(1)
     else
-        Dialog("Despite her enthusiasm, the handjob you receive is more uncomfortable than enjoyable. However, " .. girl:firstname() ..
+        Dialog("Despite her enthusiasm, the handjob you receive is more uncomfortable than enjoyable. However, ${firstname}" ..
                 " insists that she provide you the 'perfect' experience, so you use this opportunity to impart some wisdom. By the end, her " ..
                 "technique has markedly improved.")
         girl:handjob(5)
@@ -24,7 +24,7 @@ function RepayLick(girl)
         girl:oral(1)
     else
         wm.UpdateImage(wm.IMG.ORAL, ImageOptions.HETERO)
-        Dialog("Despite her enthusiasm, the blowjob you receive is more uncomfortable than enjoyable. However, " .. girl:firstname() ..
+        Dialog("Despite her enthusiasm, the blowjob you receive is more uncomfortable than enjoyable. However, ${firstname}" ..
                 " insists that she provide you the 'perfect' experience, so you use this opportunity to impart some wisdom. By the end, her " ..
                 "technique has markedly improved.")
         girl:oral(5)
@@ -160,14 +160,14 @@ function PleaseHer_Horny(girl, kind)
         thanks_text = "\"You sure know how to take care of your employees.\""
     end
     wm.UpdateImage(wm.IMG.STRIP)
-    Dialog("You haven't even finished stating your intentions when " .. girl:firstname() .. " starts to undress " ..
+    Dialog("You haven't even finished stating your intentions when ${firstname} starts to undress " ..
             "and presents you her already glistening-wet pussy. " .. thanks_text)
     wm.UpdateImage(PleaseData.image[kind], ImageOptions.HETERO)
     girl:pcfear(-1)
     Dialog(girl:format(PleaseData.horny_love_action[kind]))
     if wm.Percent(50) then
         wm.UpdateImage(wm.IMG.REST)
-        Dialog("At the end of your session, " .. girl:firstname() .. " seems barely coherent. She mumbles something that appears to " ..
+        Dialog("At the end of your session, ${firstname} seems barely coherent. She mumbles something that appears to " ..
                 "contain the words 'amazing' and 'thank you', rests her head on her pillow and is asleep before you even have a chance respond. " ..
                 "You leave the room with a self-satisfied smile.")
         girl:pclove(3)
@@ -192,7 +192,7 @@ function PleaseHer_Neutral(girl, kind)
                 " excited, so you start by placing soft kisses on her stomach, then on her breasts and inner thighs."
     end
     wm.UpdateImage(wm.IMG.FONDLE, ImageOptions.HETERO)
-    Dialog("You ask " .. girl:firstname() .. " to undress and lie on her back. " .. horny_text)
+    Dialog("You ask ${firstname} to undress and lie on her back. " .. horny_text)
     AdjustLust(girl, 3)
     wm.UpdateImage(PleaseData.image[kind], ImageOptions.HETERO)
     Dialog(girl:format(PleaseData.neural_action_first[kind]))
@@ -238,7 +238,7 @@ function PleaseHer_HornyHate(girl, kind)
                     " away as she explodes in moans of pleasure.")
             wm.UpdateImage(wm.IMG.FINGER, ImageOptions.HETERO)
             Dialog("By now, you cock is almost painfully hard and throbbing, so you decide to take care of yourself. While you masturbate, you continue " ..
-                    " to massage her pussy and manage to elicit two more orgasms. Finally, you deposit your load across her stomach. At this point, " .. girl:firstname() ..
+                    " to massage her pussy and manage to elicit two more orgasms. Finally, you deposit your load across her stomach. At this point, ${firstname}" ..
                     " is in an almost catatonic state, so you decide that she's had enough. ")
             wm.UpdateImage(wm.IMG.BED)
             Dialog("You clean yourself up, pull up your pants, and leave her room, making a mental note to send of of your other girls to check on her later.")
@@ -299,7 +299,7 @@ function PleaseHer_NoHornyEvil(girl, kind)
         if wm.GetPlayerDisposition() < 0 then
             aphro = "Or maybe you just have to give her an aphrodisiac next time."
         end
-        Dialog("The only thing that earns you is " .. stare .. " from " .. girl:firstname() .. ". " ..
+        Dialog("The only thing that earns you is " .. stare .. " from ${firstname}. " ..
                 "If she liked you more, you may have had more success easing her into it. " .. aphro)
         girl:happiness(-1)
         girl:libido(1)
@@ -309,7 +309,7 @@ function PleaseHer_NoHornyEvil(girl, kind)
         wm.UpdateImage(PleaseData.image[kind], ImageOptions.HETERO)
         Dialog(girl:format(PleaseData.nohorny_evil_action[kind]))
         wm.UpdateImage(wm.IMG.BED)
-        Dialog("When you are done, " .. girl:name() .. " is a sobbing mess on her bed, and you imagine her pussy will feel sore for the next days. " ..
+        Dialog("When you are done, ${name} is a sobbing mess on her bed, and you imagine her pussy will feel sore for the next days. " ..
                 " She really is going to hate you!")
         girl:pclove(-20)
         girl:happiness(-20)
@@ -339,7 +339,7 @@ function PleaseHer(girl, action)
                 pclove_text = "She seems disgusted by the idea, but wisely holds her tongue. "
                 wm.SetPlayerDisposition(-1)
             end
-            Dialog("You order " .. girl:firstname() .. " to undress and lie on her back. " .. pclove_text ..
+            Dialog("You order ${firstname} to undress and lie on her back. " .. pclove_text ..
                     "\"Let's get you in the mood, shall we,\" you proclaim as you start suckling on her breasts. At the same time, you move your hands between her " ..
                     "legs and start caressing her lower lips.")
             if girl:libido() > 50 and ((girl:pclove() < -33 and wm.GetPlayerDisposition() < -33) or girl:pclove() < - 66)  then

@@ -3,7 +3,7 @@ function Bathing(girl)
     if girl:pclove() > 80 then
         Dialog("\"My dear, why don't you take a relaxing bath?\"")
     else
-        Dialog("You look " .. girl:name() .. " over: \"I think you need a bath, you look dirty!\" :wink:")
+        Dialog("You look ${name} over: \"I think you need a bath, you look dirty!\" :wink:")
     end
 
     if girl:obey_check(wm.ACTIONS.WORKSTRIP) then

@@ -26,12 +26,12 @@ function Drinks(girl, dinner_already)
     elseif mix == 1 then
         what = what + 33
         if girl:has_trait("Alcoholic") then
-            Dialog("You hand " .. girl:firstname() .. " her " .. cocktail .. ". She takes one sip and her face lights up. \"That's the stuff.\"")
+            Dialog("You hand ${firstname} her " .. cocktail .. ". She takes one sip and her face lights up. \"That's the stuff.\"")
         else
             Dialog("As you are mixing her " .. cocktail .. " you liberally add a large amount of alcohol.")
         end
     elseif mix == 2 then
-        Dialog("When " .. girl:firstname() .. " is momentarily distracted, you add a few large drops of an aphrodisiac to her drink. " ..
+        Dialog("When ${firstname} is momentarily distracted, you add a few large drops of an aphrodisiac to her drink. " ..
         "She'll enjoy her " .. cocktail .. ", and then she'll want to enjoy you.")
         if DetectSpikedCocktail(girl, cocktail) then
             return
@@ -40,7 +40,7 @@ function Drinks(girl, dinner_already)
         girl:tiredness(5)
         AdjustLust(girl, 25)
     elseif mix == 3 then
-        Dialog("When " .. girl:firstname() .. " is momentarily distracted, you add a few drops of a strong sedative to her " .. cocktail)
+        Dialog("When ${firstname} is momentarily distracted, you add a few drops of a strong sedative to her " .. cocktail)
         girl:stat(wm.STATS.TIREDNESS, 10, true)
         if DetectSpikedCocktail(girl, cocktail) then
             return

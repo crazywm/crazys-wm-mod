@@ -145,7 +145,7 @@ function Training(girl)
             wm.TakePlayerGold(300)
             girl:experience(wm.Range(5, 10))
             if girl:performance() < 33 then
-                Dialog(girl:name() .. " takes part in some basic acting, singing, and dancing lessons. Pretty easy stuff, " ..
+                Dialog("${firstname} takes part in some basic acting, singing, and dancing lessons. Pretty easy stuff, " ..
                         "but she still needs to learn this.")
                 girl:performance(wm.Range(2, 5))
                 girl:tiredness(wm.Range(5, 15))
@@ -153,7 +153,7 @@ function Training(girl)
                     girl:charisma(wm.Range(0, 3))
                 end
             elseif girl:performance() < 66 then
-                Dialog(girl:name() .. " knows some basic dances, can sing some simple songs, and knows how to read lines from a script. " ..
+                Dialog("${firstname} knows some basic dances, can sing some simple songs, and knows how to read lines from a script. " ..
                         " Now she has to learn how to convey emotion with her body and voice, and gets taught some tricks for memorizing her lines."
                 )
                 girl:performance(wm.Range(1, 3))
@@ -162,7 +162,7 @@ function Training(girl)
                     girl:charisma(wm.Range(0, 3))
                 end
             else
-                Dialog(girl:name() .. " already is a rather skilled thespian, but there are still some things she can learn from the masters. "..
+                Dialog("${firstname} already is a rather skilled thespian, but there are still some things she can learn from the masters. "..
                         "She works on her comedic timing, and practice nuanced facial expressions.")
                 girl:performance(wm.Range(0, 2))
                 girl:tiredness(wm.Range(5, 15))

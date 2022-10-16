@@ -165,13 +165,13 @@ function ManageTattoos(girl)
     end
 
     if girl:has_trait("Heavily Tattooed") then
-        Dialog(girl:name() .. "'s entire body is covered in tattoos.")
+        Dialog("${firstname}'s entire body is covered in tattoos.")
     elseif girl:has_trait("Tattooed") then
-        Dialog(girl:name() .. " has a large tattoo")
+        Dialog("${firstname} has a large tattoo")
     elseif girl:has_trait("Small Tattoos") then
-        Dialog(girl:name() .. " has a few small tattoos.")
+        Dialog("${firstname} has a few small tattoos.")
     else
-        Dialog(girl:name() .. "doesn't have any tattoos.")
+        Dialog("${firstname}doesn't have any tattoos.")
     end
 
     local choice = ChoiceBox("What do you want her to get?",
@@ -185,7 +185,7 @@ function ManageTattoos(girl)
 
     if choice < 4 then
         if not girl:obey_check() then
-            Dialog(girl:name() .. " refuses to get tattooed.")
+            Dialog("${firstname} refuses to get tattooed.")
             girl:trigger("girl:refuse")
             return true
         end
@@ -197,13 +197,13 @@ function ManageTattoos(girl)
             return false
         end
 
-        Dialog("Sometimes you just can't afford to have it professionally done. You send " .. girl:name() ..
+        Dialog("Sometimes you just can't afford to have it professionally done. You send ${firstname}" ..
                 " to the cheapest a back-alley tattoo artist you could find.")
         girl:tiredness(10)
         girl:health(-20)
 
         if girl:has_trait("Heavily Tattooed", "Tattooed") then
-            Dialog(girl:name() .. "'s body is already covered in tattoos.")
+            Dialog("${firstname}'s body is already covered in tattoos.")
             return false
         else
             if wm.Percent(20)and girl:has_trait("Small Tattoos") then
@@ -222,11 +222,11 @@ function ManageTattoos(girl)
                 Dialog("The cheap ink became infected, and the surrounding skin is now Scarred.")
                 girl:add_trait("Small Scars")
             else
-                Dialog("Maybe you should have invested a bit more to find a tattoo artist who uses clean needles. It appears that " .. girl:name() .. " has contracted AIDS.")
+                Dialog("Maybe you should have invested a bit more to find a tattoo artist who uses clean needles. It appears that ${firstname} has contracted AIDS.")
                 girl:add_trait("AIDS")
             end
         else
-            Dialog("Everything went well, and after a short recovery period ".. girl:name() .. " can show off her new Tattoo.")
+            Dialog("Everything went well, and after a short recovery period ${firstname} can show off her new Tattoo.")
         end
     elseif choice == 1 then
         if not wm.TakePlayerGold(200) then
@@ -234,11 +234,11 @@ function ManageTattoos(girl)
             return false
         end
         if girl:has_trait("Heavily Tattooed") then
-            Dialog(girl:name() .. "'s entire body is already covered in tattoos.")
+            Dialog("${firstname}'s entire body is already covered in tattoos.")
             return false
         end
 
-        Dialog("You send " .. girl:name() .. " to a professional tattoo artist to get a small tattoo.")
+        Dialog("You send ${firstname} to a professional tattoo artist to get a small tattoo.")
         girl:tiredness(5)
         girl:health(-5)
 
@@ -265,11 +265,11 @@ function ManageTattoos(girl)
             return false
         end
         if girl:has_trait("Heavily Tattooed") then
-            Dialog(girl:name() .. "'s entire body is already covered in tattoos.")
+            Dialog("${firstname}'s entire body is already covered in tattoos.")
             return false
         end
 
-        Dialog("You send " .. girl:name() .. " to a professional tattoo artist to get a large tattoo.")
+        Dialog("You send ${firstname} to a professional tattoo artist to get a large tattoo.")
         girl:tiredness(10)
         girl:health(-10)
 
@@ -290,16 +290,16 @@ function ManageTattoos(girl)
         end
 
         if girl:has_trait("Heavily Tattooed") then
-            Dialog(girl:name() .. "'s entire body is already covered in tattoos.")
+            Dialog("${firstname}'s entire body is already covered in tattoos.")
             return false
         end
 
-        Dialog("You send " .. girl:name() .. " to a professional tattoo artist to get her entire body tattooed.")
+        Dialog("You send ${firstname} to a professional tattoo artist to get her entire body tattooed.")
 
         if girl:has_trait("Tattooed", "Small Tattoos", "Tough") then
             girl:tiredness(10)
             girl:health(-10)
-            Dialog("Getting her body covered in tattoos is a long and arduous process, but " .. girl:name() .. " handled it like a champ.")
+            Dialog("Getting her body covered in tattoos is a long and arduous process, but ${firstname} handled it like a champ.")
         else
             Dialog("She has no previous experience of getting tattoos. These long extended sessions take a heavy toll on her body.")
             girl:tiredness(20)
@@ -316,7 +316,7 @@ function ManageTattoos(girl)
         end
 
         if not girl:has_trait("Heavily Tattooed", "Tattooed", "Small Tattoos") then
-            Dialog(girl:name() .. " has no tattoos that could be removed.")
+            Dialog("${firstname} has no tattoos that could be removed.")
             return false
         end
 
@@ -325,25 +325,25 @@ function ManageTattoos(girl)
         local where = RandomChoice("back", "calf", "arm", "belly", "chest", "ass")
         if girl:has_trait("Heavily Tattooed") then
             if wm.Percent(50) then
-                Dialog(girl:name() .. " gets a large tattoo removed from her " .. where .. ". Given her amount of ink, this hardly makes a difference though.")
+                Dialog("${firstname} gets a large tattoo removed from her " .. where .. ". Given her amount of ink, this hardly makes a difference though.")
             else
-                Dialog(girl:name() .. " gets a large tattoo removed from her " .. where .. ".")
+                Dialog("${firstname} gets a large tattoo removed from her " .. where .. ".")
                 girl:remove_trait("Heavily Tattooed")
                 girl:add_trait("Tattooed")
             end
         elseif girl:has_trait("Tattooed") then
             if wm.Percent(50) then
-                Dialog(girl:name() .. " gets a tattoo removed from her " .. where .. ". She still has quite a few remaining.")
+                Dialog("${firstname} gets a tattoo removed from her " .. where .. ". She still has quite a few remaining.")
             else
-                Dialog(girl:name() .. " gets a tattoo removed from her " .. where .. ".")
+                Dialog("${firstname} gets a tattoo removed from her " .. where .. ".")
                 girl:remove_trait("Tattooed")
                 girl:add_trait("Small Tattoos")
             end
         elseif girl:has_trait("Small Tattoos") then
             if wm.Percent(50) then
-                Dialog(girl:name() .. " gets a small tattoo removed from her " .. where .. ". She still has some tattoos remaining.")
+                Dialog("${firstname} gets a small tattoo removed from her " .. where .. ". She still has some tattoos remaining.")
             else
-                Dialog(girl:name() .. " gets a small tattoo removed from her " .. where .. ".")
+                Dialog("${firstname} gets a small tattoo removed from her " .. where .. ".")
                 girl:remove_trait("Small Tattoos")
             end
         end
@@ -426,12 +426,12 @@ function HandleGetPiercing(girl, cost, where)
     end
 
     if not girl:obey_check() then
-        Dialog(girl:name() .. " refuses to get her " .. where .. " pierced.")
+        Dialog("${firstname} refuses to get her " .. where .. " pierced.")
         girl:trigger("girl:refuse")
         return true
     end
 
-    Dialog("You send " .. girl:name() .. " to a piercing parlour and let her get her " .. where .. " pierced.")
+    Dialog("You send ${firstname} to a piercing parlour and let her get her " .. where .. " pierced.")
     girl:health(-10)
     girl:tiredness(10)
     girl:add_trait("Pierced " .. where)

@@ -88,6 +88,7 @@ auto cify_no_arg(F&& f) {
 static const luaL_Reg funx [] = {
         { "ChoiceBox",                   cLuaScript::ChoiceBox },
         { "Dialog",                      cLuaScript::Dialog },
+        { "InterpolateString",           cLuaScript::Interpolate },
         { "UpdateImage",                 cLuaScript::UpdateImage },
         { "SelectImage",                 cLuaScript::SelectImage },
         { "SetPlayerSuspicion",          cify_int_arg([](int amount) { g_Game->player().suspicion(amount); })},
@@ -270,12 +271,7 @@ int cLuaScript::Dialog(lua_State* state)
     int result_type = lua_gettable(state, LUA_REGISTRYINDEX);
     if(result_type == LUA_TUSERDATA) {
         auto& girl = sLuaGirl::check_type(state, -1);
-        text = interpolate_string(text, [&](const std::string& var) -> std::string {
-            if (var == "name") {
-                return girl.FullName();
-            }
-            assert(false);
-        }, g_Dice);
+        text = girl.Interpolate(text);
     }
 
     window_manager().PushMessage(text, 0, [state]() {
@@ -581,5 +577,20 @@ void cLuaScript::PushParameter(sLuaParameter param)
 
 bool cLuaScript::CheckFunction(const std::string& function) const {
     return m_State.has_function(function);
+}
+
+int cLuaScript::Interpolate(lua_State* state) {
+    std::string text = luaL_checkstring(state, -1);
+
+    // Interpolates a string
+    // check if we have an active girl context. In that case, interpolate into the text.
+    lua_pushstring(state, "_active_girl");
+    int result_type = lua_gettable(state, LUA_REGISTRYINDEX);
+    if(result_type == LUA_TUSERDATA) {
+        auto& girl = sLuaGirl::check_type(state, -1);
+        text = girl.Interpolate(text);
+    }
+    lua_pushstring(state, text.c_str());
+    return 1;
 }
 

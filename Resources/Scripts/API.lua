@@ -1,10 +1,14 @@
 function ChoiceBox(question, ...)
-    wm.ChoiceBox(question, ...)
+    local options = {...}
+    for i, v in ipairs(options) do
+        options[i] = wm.InterpolateString(v)
+    end
+    wm.ChoiceBox(wm.InterpolateString(question), table.unpack(options))
     return coroutine.yield()
 end
 
 function Dialog(text)
-    wm.Dialog(text)
+    wm.Dialog(wm.InterpolateString(text))
     coroutine.yield()
 end
 
