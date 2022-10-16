@@ -35,10 +35,20 @@ class MainWidget(QWidget):
         layout = QGridLayout()
 
         # pack image list
+        pack_list_layout = QVBoxLayout()
+        layout.addLayout(pack_list_layout, 0, 0, 1, 1)
+
+        self.pack_filter = QLineEdit()
+        pack_list_layout.addWidget(self.pack_filter)
+        self.pack_filter.editingFinished.connect(self._filter_pack)
+        self.pack_filter.setToolTip("Filter filenames.\n" +
+                                    "Only files whose name contains the given character sequence will be displayed.\n" +
+                                    "File list is updated after pressing <Enter>.")
+
         self.pack_list = QListWidget()
         self.pack_list.setMinimumWidth(256)
         self.pack_list.currentRowChanged.connect(self._select_image)
-        layout.addWidget(self.pack_list, 0, 0, 1, 1)
+        pack_list_layout.addWidget(self.pack_list)
 
         # the image display
         middle_column = QVBoxLayout()
@@ -93,6 +103,27 @@ class MainWidget(QWidget):
         finally:
             self._bulk_update_is_active = False
         self.update_image(selected_image)
+
+    def _filter_pack(self):
+        selected_image = self.pack_list.item(self.current_image).data(Qt.UserRole)
+        self.current_image = None
+        self._bulk_update_is_active = True
+        check = self.pack_filter.text().lower()
+        translate = {}
+        try:
+            self.pack_list.clear()
+            row = 0
+            for i, image in enumerate(self.pack_data.images):
+                if check in image.file.lower():
+                    new_item = QListWidgetItem(image.file)
+                    new_item.setData(Qt.UserRole, i)
+                    self.pack_list.addItem(new_item)
+                    translate[i] = row
+                    row += 1
+        finally:
+            self._bulk_update_is_active = False
+        if selected_image in translate:
+            self.pack_list.setCurrentRow(translate[selected_image])
 
     def set_image_data(self, image_data):
         reader = QImageReader(image_data)

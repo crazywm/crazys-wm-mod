@@ -4,7 +4,7 @@
 * Added creator, comment, and date fields to image packs
 * Added an "AnyGroup" participant, not for use in image tags. If the game request an image with this,
 it will accept any other group participant as a cheap fallback.
-* Saving the pack will pick up the changes made to the current image
+* Added a filter function to the tagger tool.
 * `CityGuard` job now uses `Security` tag
 * Added `Creampie` image tag. Not yet used by the game.
 * `Bath` images now default to `Solo`, but in the "Bath interaction"
@@ -14,6 +14,7 @@ script the game may look for the `Hetero` variation if the player decides to joi
 ## Bugfixes
 * Fixed error in image selection algorithm that allowed it to choose the same image as part of the candidate set twice.
 * Fixed paying wages to unpaid slaves
+* Saving the pack will pick up the changes made to the current image
 
 ## Other
 * Some internal job code work
