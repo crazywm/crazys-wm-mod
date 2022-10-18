@@ -10,6 +10,7 @@ it will accept any other group participant as a cheap fallback.
 * `Bath` images now default to `Solo`, but in the "Bath interaction"
 script the game may look for the `Hetero` variation if the player decides to join
 * Tagger will autocomplete if there is only a single matching option left
+* Tagger can autocomplete some presets, e.g. `lesbian` sets tag to `sex` and participants to `lesbian`
 
 
 ## Bugfixes

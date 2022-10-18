@@ -43,12 +43,12 @@ class MainWindow(QMainWindow):
 
         try:
             self.repo = read_tag_specs(resource_path("ImageTypes.xml"))
-            self.translator = read_file_translations(resource_path("ImageFiles.xml"))
+            self.translator, presets = read_file_translations(resource_path("ImageFiles.xml"))
         except FileNotFoundError:
             QMessageBox.critical(self, "Missing Files", "Could not find 'ImageTypes.xml' and 'ImageFiles.xml'!")
             exit(1)
 
-        self.tagger = MainWidget(768, 768, self.repo)
+        self.tagger = MainWidget(768, 768, self.repo, presets)
         self.setup_menu_bar()
 
         # Set the central widget of the Window.

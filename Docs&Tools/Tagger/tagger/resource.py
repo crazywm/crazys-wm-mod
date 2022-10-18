@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Optional, Union, Dict
+from typing import List, Optional, Union, Dict, Tuple
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from collections import defaultdict
@@ -17,6 +17,7 @@ VIDEO_SUFFIXES = [
     ".mp4", ".webm", ".avi", ".mov"
 ]
 FILE_SUFFIXES = IMAGE_SUFFIXES + VIDEO_SUFFIXES
+
 
 @dataclass
 class ImageResource:
@@ -66,6 +67,12 @@ class FileNamePattern:
     patterns: List[str] = field(default_factory=list)
 
 
+def make_dict_from_pattern(pattern: FileNamePattern):
+    return {"type": pattern.type, "pregnant": pattern.pregnant,
+            "futa": pattern.futa, "participants": pattern.participants,
+            "tied": pattern.tied}
+
+
 def read_tag_specs(source: FilePath) -> Dict[str, TagSpec]:
     doc = ET.parse(source).getroot()
 
@@ -86,7 +93,7 @@ def read_tag_specs(source: FilePath) -> Dict[str, TagSpec]:
     return specs
 
 
-def read_file_translations(source: FilePath) -> List[FileNamePattern]:
+def read_file_translations(source: FilePath) -> Tuple[List[FileNamePattern], Dict]:
     doc = ET.parse(source).getroot()
 
     def optional(source, default):
@@ -95,6 +102,7 @@ def read_file_translations(source: FilePath) -> List[FileNamePattern]:
         return source.text.lower()
 
     file_patterns = []
+    presets = {}
     for image_type in doc.findall('FileType'):
         img_type = image_type.find('Type').text.lower()
         preg_val = optional(image_type.find('Pregnant'), "no")
@@ -106,9 +114,14 @@ def read_file_translations(source: FilePath) -> List[FileNamePattern]:
         patterns = []
         for p in image_type.findall('Pattern'):
             patterns.append(p.text)
-        file_patterns.append(FileNamePattern(type=img_type, pregnant=preg_val, futa=futa_val,
-                                             tied=tied_val, participants=parts, patterns=patterns))
-    return file_patterns
+        new_pattern = FileNamePattern(type=img_type, pregnant=preg_val, futa=futa_val,
+                                      tied=tied_val, participants=parts, patterns=patterns)
+        file_patterns.append(new_pattern)
+        for preset in image_type.findall("Preset"):
+            assert preset.text not in presets
+            presets[preset.text] = new_pattern
+
+    return file_patterns, presets
 
 
 def load_image(node) -> ImageResource:
@@ -150,11 +163,7 @@ def guess_type_by_file_name(file_name: str, translation: List[FileNamePattern]) 
         for pattern in translate.patterns:
             p = re.compile(pattern)
             if p.match(file_name):
-                if "les" in file_name:
-                    print(translate)
-                return {"type": translate.type, "pregnant": translate.pregnant,
-                        "futa": translate.futa, "participants": translate.participants,
-                        "tied": translate.tied}
+                return make_dict_from_pattern(translate)
 
     if file_name.startswith("preg"):
         base = guess_type_by_file_name(file_name[4:], translation)

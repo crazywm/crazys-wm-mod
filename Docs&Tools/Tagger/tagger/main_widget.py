@@ -25,7 +25,7 @@ def requires_open_pack(f):
 
 
 class MainWidget(QWidget):
-    def __init__(self, image_width, image_height, repo: dict):
+    def __init__(self, image_width, image_height, repo: dict, presets: dict):
         super().__init__()
 
         self.image_width = image_width
@@ -76,7 +76,7 @@ class MainWidget(QWidget):
         self.style.setToolTip("Define what sort of art style this image is, to enable players to filter by style.")
         image_meta.addRow("Style", self.style)
 
-        self.tag_view = TagViewWidget(repo=repo)
+        self.tag_view = TagViewWidget(repo=repo, presets=presets)
         layout.addWidget(self.tag_view, 0, 2, 2, 1)
 
         self.setLayout(layout)

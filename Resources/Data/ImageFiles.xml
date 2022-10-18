@@ -44,11 +44,40 @@ will be assigned the associated image type -->
     </FileType>
     <FileType>
         <Pattern>group.*</Pattern>
+        <Pattern>gangbang.*</Pattern>
         <Type>sex</Type>
         <Pregnant>no</Pregnant>
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
         <Participants>gangbang</Participants>
+        <Preset>gangbang</Preset>
+    </FileType>
+    <FileType>
+        <Pattern>ffm.*</Pattern>
+        <Type>sex</Type>
+        <Pregnant>no</Pregnant>
+        <Futa>no</Futa>
+        <TiedUp>no</TiedUp>
+        <Participants>ffm</Participants>
+        <Preset>ffm</Preset>
+    </FileType>
+    <FileType>
+        <Pattern>mmf.*</Pattern>
+        <Type>sex</Type>
+        <Pregnant>no</Pregnant>
+        <Futa>no</Futa>
+        <TiedUp>no</TiedUp>
+        <Participants>mmf</Participants>
+        <Preset>mmf</Preset>
+    </FileType>
+    <FileType>
+        <Pattern>orgy.*</Pattern>
+        <Type>sex</Type>
+        <Pregnant>no</Pregnant>
+        <Futa>no</Futa>
+        <TiedUp>no</TiedUp>
+        <Participants>orgy</Participants>
+        <Preset>orgy</Preset>
     </FileType>
     <FileType>
         <Pattern>les.*</Pattern>
@@ -57,6 +86,7 @@ will be assigned the associated image type -->
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
         <Participants>lesbian</Participants>
+        <Preset>lesbian</Preset>
     </FileType>
     <FileType>
         <Pattern>scissor.*</Pattern>
@@ -74,6 +104,7 @@ will be assigned the associated image type -->
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
         <Participants>hetero</Participants>
+        <Preset>blowjob</Preset>
     </FileType>
     <FileType>
         <Pattern>cumshot.*</Pattern>
@@ -98,6 +129,7 @@ will be assigned the associated image type -->
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
         <Participants>solo</Participants>
+        <Preset>masturbate</Preset>
     </FileType>
     <FileType>
         <Pattern>titty.*</Pattern>
@@ -138,6 +170,7 @@ will be assigned the associated image type -->
         <Pregnant>no</Pregnant>
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
+        <Preset>eatout</Preset>
     </FileType>
     <FileType>
         <Pattern>dildo.*</Pattern>
@@ -162,6 +195,7 @@ will be assigned the associated image type -->
         <Futa>no</Futa>
         <TiedUp>no</TiedUp>
         <Participants>lesbian</Participants>
+        <Preset>les69ing</Preset>
     </FileType>
     <FileType>
         <Pattern>69.*</Pattern>

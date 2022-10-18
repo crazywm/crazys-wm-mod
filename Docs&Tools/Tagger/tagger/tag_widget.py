@@ -6,7 +6,7 @@ from collections import defaultdict
 
 from typing import Set, List, Dict
 from . import resource
-from .resource import ImageResource, get_canonical_name, TagSpec
+from .resource import ImageResource, get_canonical_name, TagSpec, FileNamePattern
 
 
 def translate_check(source: str):
@@ -22,9 +22,10 @@ def check_to_string(state: Qt.CheckState):
 
 
 class TagViewWidget(QWidget):
-    def __init__(self, repo: Dict[str, TagSpec]):
+    def __init__(self, repo: Dict[str, TagSpec], presets: Dict[str, FileNamePattern]):
         super().__init__()
         self.repo = repo
+        self.presets = presets
         self.edit = QLineEdit()
 
         layout = QVBoxLayout()
@@ -35,6 +36,8 @@ class TagViewWidget(QWidget):
         for s in self.repo.values():
             options.add(s.tag)
             options.add(s.display)
+        for ps in self.presets.keys():
+            options.add(ps)
 
         model.setStringList(options)
         completer = QCompleter()
@@ -106,6 +109,8 @@ class TagViewWidget(QWidget):
         return box
 
     def on_update_type(self):
+        tag_text = self.edit.text()
+
         tag = get_canonical_name(self.edit.text(), self.repo)
 
         # still nothing? If there is only one possible completion, apply that
