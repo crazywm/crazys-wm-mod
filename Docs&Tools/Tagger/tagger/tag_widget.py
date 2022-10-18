@@ -107,6 +107,14 @@ class TagViewWidget(QWidget):
 
     def on_update_type(self):
         tag = get_canonical_name(self.edit.text(), self.repo)
+
+        # still nothing? If there is only one possible completion, apply that
+        if tag is None and self.tag_completer.completionCount() == 1:
+            self.edit.setText(self.tag_completer.currentCompletion())
+            # try again
+            self.on_update_type()
+            return
+
         if tag is None:
             QMessageBox.critical(self, "Invalid Tag", f"Could not parse '{self.edit.text()}' into a valid image tag.")
             return

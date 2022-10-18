@@ -9,6 +9,7 @@ it will accept any other group participant as a cheap fallback.
 * Added `Creampie` image tag. Not yet used by the game.
 * `Bath` images now default to `Solo`, but in the "Bath interaction"
 script the game may look for the `Hetero` variation if the player decides to join
+* Tagger will autocomplete if there is only a single matching option left
 
 
 ## Bugfixes
