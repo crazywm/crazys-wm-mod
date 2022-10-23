@@ -97,6 +97,8 @@ public:
     // -----------------------------------------------------------------------------------------------------------------
     int get_trait_modifier(const char* type) const;
 
+    int get_trait_skill_cap_modifier(SKILLS) const;
+
     // normal way of character trait changes
     /// Adds a new trait to the list of permanent traits.
     /// Returns true if the trait was added, False if not (because it already existed)

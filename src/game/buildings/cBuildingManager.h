@@ -83,10 +83,6 @@ public:
     // building info functions
     bool has_building(BuildingType type) const;
 
-    /// name checks
-    bool NameExists(std::string name) const;
-    bool SurnameExists(const std::string& name) const;
-
     const std::vector<std::unique_ptr<IBuilding>>& buildings() const {
         return m_Buildings;
     }

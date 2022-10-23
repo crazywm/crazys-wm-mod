@@ -35,7 +35,7 @@
     <Trait Name="Muggle">
     <description>This girl can barely use magic, if at all.</description>
     <Modifiers>
-        <Modifier Name="skill:Magic" Value="-30" />
+        <Modifier Name="skill-cap:Magic" Value="-30" />
         <Modifier Name="stat:Mana" Value="-30" />
         <Modifier Name="fetish:Dangerous" Value="-5" />
         <Modifier Name="fetish:Nerd" Value="5" />
@@ -46,7 +46,7 @@
     <Trait Name="Weak Magic">
     <description>This girl has very little magical power within her.</description>
     <Modifiers>
-        <Modifier Name="skill:Magic" Value="-20" />
+        <Modifier Name="skill-cap:Magic" Value="-20" />
         <Modifier Name="stat:Mana" Value="-20" />
         <Modifier Name="fetish:Dangerous" Value="5" />
         <Modifier Name="fetish:Freak" Value="5" />
@@ -57,7 +57,8 @@
     <Trait Name="Strong Magic">
     <description>This girl has strong power within her. Be careful you don't give her too much trouble.</description>
     <Modifiers>
-        <Modifier Name="skill:Magic" Value="20" />
+        <Modifier Name="skill:Magic" Value="10" />
+        <Modifier Name="skill-cap:Magic" Value="20" />
         <Modifier Name="stat:Mana" Value="20" />
         <Modifier Name="fetish:Dangerous" Value="20" />
         <Modifier Name="fetish:Nerd" Value="5" />
@@ -70,7 +71,8 @@
     <Trait Name="Powerful Magic">
     <description>This girl has great power within her. She may become too powerful for you to handle.</description>
     <Modifiers>
-        <Modifier Name="skill:Magic" Value="30" />
+        <Modifier Name="skill:Magic" Value="15" />
+        <Modifier Name="skill-cap:Magic" Value="30" />
         <Modifier Name="stat:Mana" Value="30" />
         <Modifier Name="fetish:Dangerous" Value="25" />
         <Modifier Name="fetish:Nerd" Value="15" />
@@ -82,6 +84,7 @@
     <Trait Name="Psychic">
         <description>This girl always seems to know what a guy wants. (+magic skills/stats)</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Magic" Value="4" />
             <Modifier Name="fetish:Nerd" Value="10" />
             <Modifier Name="fetish:Dangerous" Value="10" />
             <Modifier Name="fetish:NonHuman" Value="10" />

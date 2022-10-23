@@ -22,6 +22,7 @@ script the game may look for the `Hetero` variation if the player decides to joi
 * Some internal job code work
 * Added "Ask her to take a bath" action in her bedroom. 
 * Allow `${name}` also in lua script dialogs.
+* SkillCaps can now be influenced by traits
 
 # Version 7.2.1alpha2
 Further work on new image tagging system. Many things are still experimental,

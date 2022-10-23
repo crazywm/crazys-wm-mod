@@ -33,6 +33,7 @@ public:
     /// gets the fetish rating that the active traits produce
     const std::array<int, NUM_STATS>& stat_effects() const override { return m_StatEffect; }
     const std::array<int, NUM_SKILLS>& skill_effects() const override { return m_SkillEffect; }
+    const std::array<int, NUM_SKILLS>& skill_cap_effects() const override { return m_SkillCapEffect; }
 
     int get_modifier(const char* name) const override;
 
@@ -98,6 +99,7 @@ private:
     /// Cache for the fetish effects of the traits
     std::array<int, NUM_STATS> m_StatEffect;
     std::array<int, NUM_SKILLS> m_SkillEffect;
+    std::array<int, NUM_SKILLS> m_SkillCapEffect;
     std::unordered_map<std::string, int> m_Modifiers;
 
     bool _remove_trait_from_list(sTraitID trait, std::vector<PermanentTrait>& tl, bool deactivate);

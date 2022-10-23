@@ -240,6 +240,13 @@ void ICharacter::LoadXML(const tinyxml2::XMLElement& elRoot)
     if(inv)
         m_Inventory->load_from_xml(*inv, this);
 
+    // ensure consistent skill caps.
+    for(auto skill : SkillsRange) {
+        int target = get_base_skill(skill);
+        int cap = g_Game->get_skill_cap(skill, *this);
+        if(target > cap) set_skill_direct(skill, cap);
+    }
+
     save_statistics();
 }
 
@@ -427,6 +434,10 @@ std::vector<sTraitInfo> ICharacter::get_trait_info() const {
 
 int ICharacter::get_trait_modifier(const char* type) const {
     return m_Traits->get_modifier(type);
+}
+
+int ICharacter::get_trait_skill_cap_modifier(SKILLS skill) const {
+    return m_Traits->skill_cap_effects().at(skill);
 }
 
 

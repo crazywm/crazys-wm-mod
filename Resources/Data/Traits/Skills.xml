@@ -4,6 +4,7 @@
         <description>This girl is quick on her feet and swift with her hands. She has natural gift of dexterity.</description>
         <Modifiers>
             <Modifier Name="stat:Agility" Value="20" />
+            <Modifier Name="skill-cap:Combat" Value="5" />
             <Modifier Name="fetish:Dangerous" Value="20" />
             <Modifier Name="fetish:Sexy" Value="5" />
             <Modifier Name="fetish:Freak" Value="10" />
@@ -14,6 +15,7 @@
         <description>This girl knows how to whoop asses when necessary.</description>
         <Modifiers>
             <Modifier Name="skill:Combat" Value="10" />
+            <Modifier Name="skill-cap:Combat" Value="10" />
             <Modifier Name="stat:Constitution" Value="5" />
             <Modifier Name="enjoy:COMBAT" Value="10" />
             <Modifier Name="fetish:Dangerous" Value="30" />
@@ -25,6 +27,7 @@
         <description>This girl is quick on her feet. She can usually outrun her enemies if she can't beat them.</description>
         <Modifiers>
             <Modifier Name="stat:Agility" Value="50" />
+            <Modifier Name="skill-cap:Combat" Value="5" />
             <Modifier Name="fetish:Dangerous" Value="10" />
             <Modifier Name="fetish:Sexy" Value="20" />
         </Modifiers>
@@ -34,6 +37,7 @@
         <description>This girl can fight well and is tough. (+combat skills/stats)</description>
         <Modifiers>
             <Modifier Name="skill:Combat" Value="10" />
+            <Modifier Name="skill-cap:Combat" Value="10" />
             <Modifier Name="stat:Confidence" Value="10" />
             <Modifier Name="stat:Strength" Value="10" />
             <Modifier Name="fetish:Dangerous" Value="20" />

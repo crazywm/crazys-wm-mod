@@ -98,7 +98,8 @@
             <Modifier Name="stat:Beauty" Value="10" />
             <Modifier Name="stat:Constitution" Value="10" />
             <Modifier Name="stat:Agility" Value="-10" />
-            <Modifier Name="skill:TittySex" Value="20" />
+            <Modifier Name="skill:TittySex" Value="10" />
+            <Modifier Name="skill-cap:TittySex" Value="10" />
 
             <Modifier Name="fetish:BigBoobs" Value="100" />
             <Modifier Name="fetish:SmallBoobs" Value="-100" />
@@ -128,7 +129,8 @@
             <Modifier Name="stat:Constitution" Value="5" />
             <Modifier Name="stat:Agility" Value="-5" />
             <Modifier Name="stat:Charisma" Value="2" />
-            <Modifier Name="skill:TittySex" Value="15" />
+            <Modifier Name="skill:TittySex" Value="7" />
+            <Modifier Name="skill-cap:TittySex" Value="8" />
 
             <Modifier Name="fetish:BigBoobs" Value="40" />
             <Modifier Name="fetish:SmallBoobs" Value="-40" />
@@ -155,7 +157,8 @@
             <Modifier Name="stat:Constitution" Value="5" />
             <Modifier Name="stat:Agility" Value="-5" />
             <Modifier Name="stat:Charisma" Value="2" />
-            <Modifier Name="skill:TittySex" Value="10" />
+            <Modifier Name="skill:TittySex" Value="5" />
+            <Modifier Name="skill-cap:TittySex" Value="5" />
 
             <Modifier Name="fetish:BigBoobs" Value="20" />
             <Modifier Name="fetish:SmallBoobs" Value="-20" />
@@ -180,7 +183,8 @@
         <Modifiers>
             <Modifier Name="stat:Agility" Value="5" />
             <Modifier Name="stat:Charisma" Value="5" />
-            <Modifier Name="skill:TittySex" Value="-50" />
+            <Modifier Name="skill:TittySex" Value="-25" />
+            <Modifier Name="skill-cap:TittySex" Value="-33" />
 
             <Modifier Name="fetish:BigBoobs" Value="-120" />
             <Modifier Name="fetish:SmallBoobs" Value="80" />
@@ -207,7 +211,8 @@
             <Modifier Name="stat:Constitution" Value="8" />
             <Modifier Name="stat:Agility" Value="-5" />
             <Modifier Name="stat:Charisma" Value="2" />
-            <Modifier Name="skill:TittySex" Value="15" />
+            <Modifier Name="skill:TittySex" Value="7" />
+            <Modifier Name="skill-cap:TittySex" Value="8" />
 
             <Modifier Name="fetish:BigBoobs" Value="60" />
             <Modifier Name="fetish:SmallBoobs" Value="-60" />
@@ -233,7 +238,8 @@
             <Modifier Name="stat:Beauty" Value="10" />
             <Modifier Name="stat:Constitution" Value="10" />
             <Modifier Name="stat:Agility" Value="-10" />
-            <Modifier Name="skill:TittySex" Value="18" />
+            <Modifier Name="skill:TittySex" Value="8" />
+            <Modifier Name="skill-cap:TittySex" Value="10" />
 
             <Modifier Name="fetish:BigBoobs" Value="80" />
             <Modifier Name="fetish:SmallBoobs" Value="-80" />
@@ -259,6 +265,7 @@
             <Modifier Name="stat:Agility" Value="5" />
             <Modifier Name="stat:Charisma" Value="5" />
             <Modifier Name="skill:TittySex" Value="-20" />
+            <Modifier Name="skill-cap:TittySex" Value="-12" />
             <Modifier Name="fetish:BigBoobs" Value="-80" />
             <Modifier Name="fetish:BigBoobs" Value="-80" />
             <Modifier Name="fetish:SmallBoobs" Value="100" />
@@ -284,6 +291,7 @@
             <Modifier Name="stat:Agility" Value="5" />
             <Modifier Name="stat:Charisma" Value="5" />
             <Modifier Name="skill:TittySex" Value="-15" />
+            <Modifier Name="skill-cap:TittySex" Value="-8" />
 
             <Modifier Name="fetish:BigBoobs" Value="-40" />
             <Modifier Name="fetish:SmallBoobs" Value="50" />
@@ -308,7 +316,8 @@
             <Modifier Name="stat:Beauty" Value="10" />
             <Modifier Name="stat:Constitution" Value="10" />
             <Modifier Name="stat:Agility" Value="-15" />
-            <Modifier Name="skill:TittySex" Value="25" />
+            <Modifier Name="skill:TittySex" Value="12" />
+            <Modifier Name="skill-cap:TittySex" Value="12" />
 
             <Modifier Name="fetish:BigBoobs" Value="120" />
             <Modifier Name="fetish:SmallBoobs" Value="-120" />
@@ -607,6 +616,7 @@
             <Modifier Name="fetish:Nerd" Value="5" />
             <Modifier Name="fetish:Freak" Value="10" />
             <Modifier Name="fetish:Lolita" Value="10" />
+            <Modifier Name="skill-cap:Combat" Value="-33" />
         </Modifiers>
         <Excludes>Tough</Excludes>
     </Trait>
@@ -616,6 +626,7 @@
         <Modifiers>
             <Modifier Name="fetish:CuteGirl" Value="-5" />
             <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="skill-cap:Combat" Value="12" />
             <Modifier Name="fetish:Cool" Value="10" />
             <Modifier Name="fetish:Nerd" Value="-5" />
             <Modifier Name="fetish:Elegant" Value="-5" />
@@ -658,6 +669,7 @@
             <Modifier Name="fetish:Nerd" Value="5" />
             <Modifier Name="fetish:Freak" Value="5" />
             <Modifier Name="fetish:Lolita" Value="10" />
+            <Modifier Name="skill-cap:Combat" Value="-8" />
         </Modifiers>
     </Trait>
 

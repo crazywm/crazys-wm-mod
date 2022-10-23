@@ -53,8 +53,8 @@
     <Trait Name="Country Gal">
         <description>This girl spent a lot of time in the country and knows plants and animals.</description>
         <Modifiers>
-            <Modifier Name="skill:Farming" Value="10" />
-            <Modifier Name="skill:AnimalHandling" Value="5" />
+            <Modifier Name="skill-cap:Farming" Value="10" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="5" />
             <Modifier Name="fetish:Sexy" Value="10" />
             <Modifier Name="fetish:Cool" Value="-10" />
         </Modifiers>
@@ -83,6 +83,7 @@
         <Modifiers>
             <Modifier Name="stat:Intelligence" Value="15" />
             <Modifier Name="skill:Medicine" Value="10" />
+            <Modifier Name="skill-cap:Medicine" Value="10" />
             <Modifier Name="enjoy:WORKDOCTOR" Value="20" />
             <Modifier Name="enjoy:WORKNURSE" Value="10" />
             <Modifier Name="enjoy:WORKTRAINING" Value="10" />
@@ -97,9 +98,12 @@
     <Trait Name="Farmers Daughter">
         <description>She grew up on the family farm.</description>
         <Modifiers>
-            <Modifier Name="skill:Farming" Value="15" />
-            <Modifier Name="skill:AnimalHandling" Value="10" />
-            <Modifier Name="skill:Beastiality" Value="5" />
+            <Modifier Name="skill:Farming" Value="5" />
+            <Modifier Name="skill-cap:Farming" Value="15" />
+            <Modifier Name="skill:AnimalHandling" Value="5" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="10" />
+            <Modifier Name="skill:Beastiality" Value="2" />
+            <Modifier Name="skill-cap:Beastiality" Value="5" />
             <Modifier Name="stat:Constitution" Value="5" />
             <Modifier Name="stat:Refinement" Value="-10" />
             <Modifier Name="enjoy:WORKFARM" Value="20" />
@@ -115,11 +119,15 @@
     <Trait Name="City Girl">
         <description>This girl has lived in big cities most of her life.</description>
         <Modifiers>
-            <Modifier Name="skill:Farming" Value="-30" />
-            <Modifier Name="skill:Herbalism" Value="-20" />
-            <Modifier Name="skill:AnimalHandling" Value="-10" />
+            <Modifier Name="skill:Farming" Value="-10" />
+            <Modifier Name="skill-cap:Farming" Value="-10" />
+            <Modifier Name="skill:Herbalism" Value="-10" />
+            <Modifier Name="skill-cap:Herbalism" Value="-5" />
+            <Modifier Name="skill:AnimalHandling" Value="-5" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="-2" />
             <Modifier Name="skill:Cooking" Value="-10" />
-            <Modifier Name="skill:Beastiality" Value="-10" />
+            <Modifier Name="skill:Beastiality" Value="-5" />
+            <Modifier Name="skill-cap:Beastiality" Value="-2" />
             <Modifier Name="stat:Refinement" Value="10" />
             <Modifier Name="stat:Constitution" Value="-5" />
             <Modifier Name="enjoy:WORKFARM" Value="-20" />
@@ -135,13 +143,15 @@
     <Trait Name="Farmer">
         <description>This girl has worked on a farm most of her life, and is great with plants and animals.</description>
         <Modifiers>
-            <Modifier Name="skill:Farming" Value="40" />
-            <Modifier Name="skill:Herbalism" Value="20" />
-            <Modifier Name="skill:AnimalHandling" Value="20" />
-            <Modifier Name="skill:Crafting" Value="10" />
-            <Modifier Name="skill:Cooking" Value="10" />
-            <Modifier Name="skill:Beastiality" Value="10" />
-            <Modifier Name="skill:Medicine" Value="5" />
+            <Modifier Name="skill:Farming" Value="20" />
+            <Modifier Name="skill-cap:Farming" Value="25" />
+            <Modifier Name="skill:Herbalism" Value="10" />
+            <Modifier Name="skill-cap:Herbalism" Value="15" />
+            <Modifier Name="skill:AnimalHandling" Value="10" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="15" />
+            <Modifier Name="skill-cap:Crafting" Value="10" />
+            <Modifier Name="skill-cap:Cooking" Value="10" />
+            <Modifier Name="skill-cap:Beastiality" Value="5" />
             <Modifier Name="stat:Refinement" Value="-20" />
             <Modifier Name="stat:Constitution" Value="20" />
             <Modifier Name="enjoy:WORKFARM" Value="50" />
@@ -158,9 +168,11 @@
     <Trait Name="Hunter">
         <description>This girl is well trained in tracking and capturing or killing wild animals.</description>
         <Modifiers>
-            <Modifier Name="skill:AnimalHandling" Value="30" />
-            <Modifier Name="skill:Beastiality" Value="20" />
-            <Modifier Name="skill:Combat" Value="20" />
+            <Modifier Name="skill:AnimalHandling" Value="15" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="30" />
+            <Modifier Name="skill-cap:Beastiality" Value="15" />
+            <Modifier Name="skill:Combat" Value="5" />
+            <Modifier Name="skill-cap:Combat" Value="15" />
             <Modifier Name="skill:Cooking" Value="10" />
             <Modifier Name="stat:Constitution" Value="5" />
             <Modifier Name="stat:Refinement" Value="-5" />
@@ -215,7 +227,7 @@
     <Trait Name="Heroine">
         <description>This girl was a vigilante out for justice or revenge.</description>
         <Modifiers>
-            <Modifier Name="skill:Combat" Value="10" />
+            <Modifier Name="skill-cap:Combat" Value="15" />
             <Modifier Name="stat:Constitution" Value="10" />
             <Modifier Name="stat:Strength" Value="10" />
             <Modifier Name="stat:Confidence" Value="5" />
@@ -251,7 +263,8 @@
     <Trait Name="Maid">
         <description>This girl has either worked or has been trained as a maid.</description>
         <Modifiers>
-            <Modifier Name="skill:Service" Value="20" />
+            <Modifier Name="skill:Service" Value="10" />
+            <Modifier Name="skill-cap:Service" Value="10" />
             <Modifier Name="skill:Cooking" Value="5" />
             <Modifier Name="stat:Refinement" Value="10" />
             <Modifier Name="enjoy:WORKCLEANING" Value="20" />
@@ -272,7 +285,9 @@
         <description>This girl knows how to blend drinks to her customer's taste.</description>
         <Modifiers>
             <Modifier Name="skill:Service" Value="5" />
-            <Modifier Name="skill:Brewing" Value="15" />
+            <Modifier Name="skill:Brewing" Value="10" />
+            <Modifier Name="skill-cap:Brewing" Value="10" />
+            <Modifier Name="skill-cap:Medicine" Value="3" />
             <Modifier Name="enjoy:WORKBAR" Value="25" />
             <Modifier Name="fetish:Nerd" Value="5" />
             <Modifier Name="fetish:Cool" Value="5" />
@@ -287,6 +302,7 @@
     <Trait Name="Priestess">
         <description>She used to live a life of simple purity and devotion.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Magic" Value="15" />
             <Modifier Name="stat:Refinement" Value="20" />
             <Modifier Name="stat:Charisma" Value="10" />
             <Modifier Name="enjoy:WORKCOUNSELOR" Value="10" />
@@ -305,7 +321,8 @@
     <Trait Name="Singer">
         <description>She can sing really well and move customers with just her voice.</description>
         <Modifiers>
-            <Modifier Name="skill:Performance" Value="30" />
+            <Modifier Name="skill:Performance" Value="15" />
+            <Modifier Name="skill-cap:Performance" Value="15" />
             <Modifier Name="stat:Confidence" Value="30" />
             <Modifier Name="stat:Constitution" Value="5" />
             <Modifier Name="fetish:Elegant" Value="10" />
@@ -339,8 +356,10 @@
     <Trait Name="Waitress">
         <description>This girl has worked in the service industry in the past.</description>
         <Modifiers>
-            <Modifier Name="skill:Service" Value="30" />
-            <Modifier Name="skill:Cooking" Value="10" />
+            <Modifier Name="skill:Service" Value="15" />
+            <Modifier Name="skill-cap:Service" Value="15" />
+            <Modifier Name="skill:Cooking" Value="5" />
+            <Modifier Name="skill-cap:Cooking" Value="10" />
             <Modifier Name="enjoy:WORKBAR" Value="10" />
             <Modifier Name="enjoy:WORKHALL" Value="10" />
             <Modifier Name="enjoy:COOKING" Value="5" />
@@ -355,6 +374,8 @@
         <description>This girl loves adventure. (+combat skills/stats)</description>
         <Modifiers>
             <Modifier Name="skill:Combat" Value="10" />
+            <Modifier Name="skill-cap:Combat" Value="10" />
+            <Modifier Name="skill-cap:Beastiality" Value="5" />
             <Modifier Name="enjoy:COMBAT" Value="10" />
             <Modifier Name="fetish:Dangerous" Value="20" />
             <Modifier Name="fetish:Cool" Value="10" />
@@ -371,7 +392,8 @@
         <description>This girl has has been trained to kill, if the price is right. (+combat skills/stats)</description>
         <Modifiers>
             <Modifier Name="stat:Morality" Value="-20" />
-            <Modifier Name="skill:Combat" Value="15" />
+            <Modifier Name="skill:Combat" Value="5" />
+            <Modifier Name="skill-cap:Combat" Value="15" />
             <Modifier Name="enjoy:COMBAT" Value="15" />
             <Modifier Name="enjoy:WORKSECURITY" Value="20" />
             <Modifier Name="fetish:Dangerous" Value="25" />
@@ -391,18 +413,30 @@
             <Modifier Name="stat:Constitution" Value="-5" />
             <Modifier Name="stat:Beauty" Value="-10" />
             <Modifier Name="stat:Charisma" Value="-10" />
-            <Modifier Name="skill:Anal" Value="20" />
-            <Modifier Name="skill:BDSM" Value="10" />
-            <Modifier Name="skill:NormalSex" Value="30" />
-            <Modifier Name="skill:Beastiality" Value="10" />
-            <Modifier Name="skill:Group" Value="30" />
+            <Modifier Name="skill:Anal" Value="10" />
+            <Modifier Name="skill-cap:Anal" Value="10" />
+            <Modifier Name="skill:BDSM" Value="5" />
+            <Modifier Name="skill-cap:BDSM" Value="10" />
+            <Modifier Name="skill:NormalSex" Value="15" />
+            <Modifier Name="skill-cap:NormalSex" Value="15" />
+            <Modifier Name="skill:Beastiality" Value="5" />
+            <Modifier Name="skill-cap:Beastiality" Value="10" />
+            <Modifier Name="skill:Group" Value="10" />
+            <Modifier Name="skill-cap:Group" Value="30" />
             <Modifier Name="skill:Lesbian" Value="5" />
+            <Modifier Name="skill-cap:Lesbian" Value="10" />
             <Modifier Name="skill:Strip" Value="5" />
-            <Modifier Name="skill:OralSex" Value="20" />
-            <Modifier Name="skill:TittySex" Value="10" />
-            <Modifier Name="skill:Handjob" Value="30" />
+            <Modifier Name="skill-cap:Strip" Value="10" />
+            <Modifier Name="skill:OralSex" Value="10" />
+            <Modifier Name="skill-cap:OralSex" Value="20" />
+            <Modifier Name="skill:TittySex" Value="5" />
+            <Modifier Name="skill-cap:TittySex" Value="10" />
+            <Modifier Name="skill:Handjob" Value="15" />
+            <Modifier Name="skill-cap:Handjob" Value="30" />
             <Modifier Name="skill:AnimalHandling" Value="5" />
+            <Modifier Name="skill-cap:Performance" Value="10" />
             <Modifier Name="skill:Footjob" Value="5" />
+            <Modifier Name="skill-cap:Footjob" Value="5" />
             <Modifier Name="enjoy:SEX" Value="30" />
             <Modifier Name="fetish:Lolita" Value="-50" />
             <Modifier Name="fetish:CuteGirl" Value="-40" />

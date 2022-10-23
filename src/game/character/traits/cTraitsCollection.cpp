@@ -238,6 +238,7 @@ void cTraitsCollection::update() {
     // ok, at this point we have a list of traits that are actually active
     m_StatEffect.fill(0);
     m_SkillEffect.fill(0);
+    m_SkillCapEffect.fill(0);
     m_Modifiers.clear();
     for(auto& spec : m_ActiveTraits) {
         for(auto& effect : dynamic_cast<const cTraitSpec*>(spec)->effects()) {
@@ -384,6 +385,7 @@ void cTraitsCollection::_remove_dynamic_trait(std::uint64_t h) {
 cTraitsCollection::cTraitsCollection(const ITraitsManager* mgr) : m_TraitsManager(mgr) {
     m_StatEffect.fill(0);
     m_SkillEffect.fill(0);
+    m_SkillCapEffect.fill(0);
 }
 
 void cTraitsCollection::apply_effect(const TraitEffect& effect) {
@@ -406,6 +408,9 @@ void cTraitsCollection::apply_effect(const TraitEffect& effect) {
             break;
         case TraitEffect::SKILL:
             m_SkillEffect[effect.target] += effect.value;
+            break;
+        case TraitEffect::SKILL_CAP:
+            m_SkillCapEffect[effect.target] += effect.value;
             break;
         case TraitEffect::MODIFIER:
             m_Modifiers[effect.modifier] += effect.value;

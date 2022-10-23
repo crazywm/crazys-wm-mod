@@ -84,9 +84,12 @@
             <Modifier Name="stat:Charisma" Value="-30" />
             <Modifier Name="stat:Beauty" Value="-30" />
             <Modifier Name="skill:Handjob" Value="-100" />
+            <Modifier Name="skill-cap:Handjob" Value="-100" />
             <Modifier Name="skill:Combat" Value="-50" />
+            <Modifier Name="skill-cap:Combat" Value="-50" />
             <Modifier Name="skill:Group" Value="-20" />
-            <Modifier Name="skill:Footjob" Value="30" />
+            <Modifier Name="skill-cap:Group" Value="-10" />
+            <Modifier Name="skill:Footjob" Value="15" />
             <Modifier Name="fetish:Freak" Value="60" />
             <Modifier Name="fetish:Dangerous" Value="-30" />
         </Modifiers>
@@ -109,7 +112,9 @@
             <Modifier Name="stat:Charisma" Value="-10" />
             <Modifier Name="stat:Beauty" Value="-10" />
             <Modifier Name="skill:Footjob" Value="-100" />
+            <Modifier Name="skill-cap:Footjob" Value="-100" />
             <Modifier Name="skill:Combat" Value="-50" />
+            <Modifier Name="skill-cap:Combat" Value="-50" />
             <Modifier Name="skill:Group" Value="-20" />
             <Modifier Name="stat:Agility" Value="-30" />
             <Modifier Name="fetish:Freak" Value="40" />
@@ -124,9 +129,12 @@
             <Modifier Name="stat:Charisma" Value="-10" />
             <Modifier Name="stat:Beauty" Value="-10" />
             <Modifier Name="skill:Handjob" Value="-100" />
+            <Modifier Name="skill-cap:Handjob" Value="-100" />
             <Modifier Name="skill:Combat" Value="-20" />
+            <Modifier Name="skill-cap:Combat" Value="-20" />
             <Modifier Name="skill:Group" Value="-10" />
-            <Modifier Name="skill:Footjob" Value="20" />
+            <Modifier Name="skill-cap:Group" Value="-10" />
+            <Modifier Name="skill:Footjob" Value="10" />
             <Modifier Name="fetish:Freak" Value="40" />
             <Modifier Name="fetish:Dangerous" Value="-20" />
         </Modifiers>
@@ -139,8 +147,11 @@
             <Modifier Name="stat:Charisma" Value="-40" />
             <Modifier Name="stat:Beauty" Value="-40" />
             <Modifier Name="skill:Footjob" Value="-100" />
+            <Modifier Name="skill-cap:Footjob" Value="-100" />
             <Modifier Name="skill:Combat" Value="-75" />
+            <Modifier Name="skill-cap:Combat" Value="-50" />
             <Modifier Name="skill:Group" Value="-20" />
+            <Modifier Name="skill-cap:Group" Value="-10" />
             <Modifier Name="stat:Agility" Value="-70" />
             <Modifier Name="enjoy:WORKFARM" Value="-10" />
             <Modifier Name="fetish:Freak" Value="60" />
@@ -153,6 +164,8 @@
     <Trait Name="Clipped Tendons">
         <description>???</description>
         <Modifiers>
+            <Modifier Name="skill:Combat" Value="-25" />
+            <Modifier Name="skill-cap:Combat" Value="-10" />
             <Modifier Name="fetish:Freak" Value="40" />
             <Modifier Name="fetish:Dangerous" Value="-20" />
             <Modifier Name="fetish:CuteGirl" Value="-10" />
@@ -188,6 +201,7 @@
             <Modifier Name="stat:Charisma" Value="-10" />
             <Modifier Name="stat:Beauty" Value="-10" />
             <Modifier Name="skill:OralSex" Value="10" />
+            <Modifier Name="skill-cap:OralSex" Value="5" />
             <Modifier Name="fetish:Freak" Value="40" />
             <Modifier Name="fetish:Elegant" Value="-40" />
             <Modifier Name="fetish:Dangerous" Value="-5" />
@@ -200,6 +214,8 @@
     <Trait Name="One Arm">
         <description>This girl has only one arm.</description>
         <Modifiers>
+            <Modifier Name="skill:Combat" Value="-15" />
+            <Modifier Name="skill-cap:Combat" Value="-5" />
             <Modifier Name="stat:Charisma" Value="-15" />
             <Modifier Name="stat:Beauty" Value="-15" />
             <Modifier Name="fetish:Freak" Value="40" />
@@ -215,6 +231,7 @@
             <Modifier Name="stat:Charisma" Value="-5" />
             <Modifier Name="stat:Constitution" Value="5" />
             <Modifier Name="stat:Spirit" Value="-10" />
+            <Modifier Name="skill:Combat" Value="-5" />
             <Modifier Name="fetish:CuteGirl" Value="-20" />
             <Modifier Name="fetish:Cool" Value="5" />
             <Modifier Name="fetish:Dangerous" Value="10" />
@@ -231,6 +248,8 @@
     <Trait Name="One Foot">
         <description>This girl has legs but one is missing the foot.</description>
         <Modifiers>
+            <Modifier Name="skill:Combat" Value="-15" />
+            <Modifier Name="skill-cap:Combat" Value="-5" />
             <Modifier Name="stat:Charisma" Value="-10" />
             <Modifier Name="stat:Beauty" Value="-10" />
             <Modifier Name="skill:Footjob" Value="-15" />
@@ -243,6 +262,8 @@
     <Trait Name="One Hand">
         <description>This girl has arms but one is missing the hand.</description>
         <Modifiers>
+            <Modifier Name="skill:Combat" Value="-15" />
+            <Modifier Name="skill-cap:Combat" Value="-5" />
             <Modifier Name="stat:Charisma" Value="-10" />
             <Modifier Name="stat:Beauty" Value="-10" />
             <Modifier Name="fetish:Freak" Value="20" />
@@ -254,6 +275,8 @@
     <Trait Name="One Leg">
         <description>This girl has only one leg.</description>
         <Modifiers>
+            <Modifier Name="skill:Combat" Value="-25" />
+            <Modifier Name="skill-cap:Combat" Value="-10" />
             <Modifier Name="stat:Charisma" Value="-15" />
             <Modifier Name="stat:Beauty" Value="-15" />
             <Modifier Name="skill:Footjob" Value="-20" />
@@ -266,6 +289,7 @@
         <description>This girl has no tongue.</description>
         <Modifiers>
             <Modifier Name="skill:OralSex" Value="-5" />
+            <Modifier Name="skill-cap:OralSex" Value="-5" />
             <Modifier Name="skill:Magic" Value="-10" />
             <Modifier Name="skill:Performance" Value="-10" />
             <Modifier Name="skill:AnimalHandling" Value="-5" />
@@ -278,6 +302,8 @@
     <Trait Name="Blind" RandomChance="5">
         <description>This girl is blind and cannot see.</description>
         <Modifiers>
+            <Modifier Name="skill:Combat" Value="-33" />
+            <Modifier Name="skill-cap:Combat" Value="-10" />
             <Modifier Name="fetish:Freak" Value="10" />
             <Modifier Name="fetish:Dangerous" Value="-15" />
         </Modifiers>
@@ -293,7 +319,9 @@
         <description>This girl needs glasses to see; without them, she is almost blind.</description>
         <Modifiers>
             <Modifier Name="skill:Crafting" Value="-5" />
+            <Modifier Name="skill:Medicine" Value="-5" />
             <Modifier Name="skill:Combat" Value="-5" />
+            <Modifier Name="skill-cap:Combat" Value="-5" />
         </Modifiers>
 
         <Properties>
@@ -348,6 +376,8 @@
     <Trait InheritChance="1" Name="Retarded" RandomChance="5" Type="Mental">
         <description>This girl is mentaly retarded.</description>
         <Modifiers>
+            <Modifier Name="skill:Magic" Value="-25" />
+            <Modifier Name="skill-cap:Magic" Value="-25" />
             <Modifier Name="stat:Spirit" Value="-20" />
             <Modifier Name="stat:Intelligence" Value="-50" />
             <Modifier Name="stat:Confidence" Value="-60" />

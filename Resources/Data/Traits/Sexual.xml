@@ -10,16 +10,18 @@
     <Trait InheritChance="1" Name="Lesbian" RandomChance="20" Type="Sexual">
         <description>This girl considers herself a lesbian. (+Lesbian)</description>
         <Modifiers>
-            <Modifier Name="skill:Lesbian" Value="40" />
-            <Modifier Name="skill:NormalSex" Value="-10" />
+            <Modifier Name="skill:Lesbian" Value="10" />
+            <Modifier Name="skill-cap:Lesbian" Value="40" />
+            <Modifier Name="skill:NormalSex" Value="-5" />
+            <Modifier Name="skill-cap:NormalSex" Value="-10" />
         </Modifiers>
     </Trait>
 
     <Trait InheritChance="1" Name="Straight" RandomChance="50" Type="Sexual">
         <description>She prefers to have sex with members of the opposite sex.</description>
         <Modifiers>
-            <Modifier Name="skill:NormalSex" Value="10" />
-            <Modifier Name="skill:Lesbian" Value="-15" />
+            <Modifier Name="skill:Lesbian" Value="-5" />
+            <Modifier Name="skill-cap:Lesbian" Value="-15" />
         </Modifiers>
     </Trait>
 
@@ -27,7 +29,7 @@
         <description>If the guy isn't satisfying her she can make him think he is. Not as good as the real thing, but most guys can't notice. Negates slow orgasms. (+sex ability)</description>
         <Modifiers>
             <Modifier Name="stat:Confidence" Value="10" />
-            <Modifier Name="skill:Performance" Value="20" />
+            <Modifier Name="skill:Performance" Value="15" />
             <Modifier Name="skill:Anal" Value="2" />
             <Modifier Name="skill:BDSM" Value="2" />
             <Modifier Name="skill:NormalSex" Value="2" />
@@ -46,13 +48,18 @@
         <description>This girl cums faster then a dragon in heat. She always leaves men feeling good about themselves and enjoys herself to boot. (+sex skills)</description>
         <Modifiers>
             <Modifier Name="stat:Libido" Value="10" />
-            <Modifier Name="skill:Anal" Value="10" />
-            <Modifier Name="skill:BDSM" Value="10" />
-            <Modifier Name="skill:NormalSex" Value="10" />
-            <Modifier Name="skill:OralSex" Value="10" />
-            <Modifier Name="skill:Beastiality" Value="10" />
-            <Modifier Name="skill:Group" Value="10" />
-            <Modifier Name="skill:Lesbian" Value="10" />
+            <Modifier Name="skill:Anal" Value="5" />
+            <Modifier Name="skill-cap:Anal" Value="10" />
+            <Modifier Name="skill:BDSM" Value="5" />
+            <Modifier Name="skill-cap:BDSM" Value="10" />
+            <Modifier Name="skill:NormalSex" Value="5" />
+            <Modifier Name="skill-cap:NormalSex" Value="10" />
+            <Modifier Name="skill:Beastiality" Value="5" />
+            <Modifier Name="skill-cap:Beastiality" Value="10" />
+            <Modifier Name="skill:Group" Value="5" />
+            <Modifier Name="skill-cap:Group" Value="10" />
+            <Modifier Name="skill:Lesbian" Value="5" />
+            <Modifier Name="skill-cap:Lesbian" Value="10" />
             <Modifier Name="stat:Confidence" Value="10" />
             <Modifier Name="enjoy:SEX" Value="10" />
             <Modifier Name="fetish:Cool" Value="10" />
@@ -67,12 +74,17 @@
         <description>The poor girl just can't get herself off. Guys feel like they are just doing the rounds with her. (negated by the fast orgasms trait) (-sex skills)</description>
         <Modifiers>
             <Modifier Name="skill:Anal" Value="-2" />
+            <Modifier Name="skill-cap:Anal" Value="-8" />
             <Modifier Name="skill:BDSM" Value="-2" />
+            <Modifier Name="skill-cap:BDSM" Value="-5" />
             <Modifier Name="skill:NormalSex" Value="-2" />
+            <Modifier Name="skill-cap:NormalSex" Value="-8" />
             <Modifier Name="skill:Beastiality" Value="-2" />
-            <Modifier Name="skill:OralSex" Value="-2" />
+            <Modifier Name="skill-cap:Beastiality" Value="-8" />
             <Modifier Name="skill:Group" Value="-2" />
+            <Modifier Name="skill-cap:Group" Value="-5" />
             <Modifier Name="skill:Lesbian" Value="-2" />
+            <Modifier Name="skill-cap:Lesbian" Value="-5" />
             <Modifier Name="stat:Confidence" Value="-2" />
             <Modifier Name="enjoy:SEX" Value="-10" />
             <Modifier Name="fetish:CuteGirl" Value="-5" />
@@ -96,6 +108,16 @@
     <Trait InheritChance="1" Name="Nymphomaniac" RandomChance="10" Type="Sexual">
         <description>This girl loves the sex, but will have to learn to let the guy have his moment. (+libedo)</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Anal" Value="8" />
+            <Modifier Name="skill-cap:BDSM" Value="8" />
+            <Modifier Name="skill-cap:NormalSex" Value="8" />
+            <Modifier Name="skill-cap:Beastiality" Value="8" />
+            <Modifier Name="skill-cap:Group" Value="12" />
+            <Modifier Name="skill-cap:Lesbian" Value="8" />
+            <Modifier Name="skill-cap:OralSex" Value="3" />
+            <Modifier Name="skill-cap:Footjob" Value="3" />
+            <Modifier Name="skill-cap:TittySex" Value="3" />
+            <Modifier Name="skill-cap:Strip" Value="10" />
             <Modifier Name="stat:Libido" Value="20" />
             <Modifier Name="stat:Confidence" Value="5" />
             <Modifier Name="stat:Charisma" Value="5" />
@@ -120,16 +142,27 @@
             <Modifier Name="stat:Spirit" Value="5" />
             <Modifier Name="stat:Confidence" Value="5" />
             <Modifier Name="skill:Anal" Value="-10" />
+            <Modifier Name="skill-cap:Anal" Value="-10" />
             <Modifier Name="skill:BDSM" Value="-10" />
+            <Modifier Name="skill-cap:BDSM" Value="-10" />
             <Modifier Name="skill:NormalSex" Value="-10" />
+            <Modifier Name="skill-cap:NormalSex" Value="-10" />
             <Modifier Name="skill:Beastiality" Value="-10" />
+            <Modifier Name="skill-cap:Beastiality" Value="-10" />
             <Modifier Name="skill:Group" Value="-10" />
+            <Modifier Name="skill-cap:Group" Value="-10" />
             <Modifier Name="skill:Lesbian" Value="-10" />
+            <Modifier Name="skill-cap:Lesbian" Value="-10" />
             <Modifier Name="skill:Strip" Value="-10" />
+            <Modifier Name="skill-cap:Strip" Value="-10" />
             <Modifier Name="skill:OralSex" Value="-10" />
+            <Modifier Name="skill-cap:OralSex" Value="-10" />
             <Modifier Name="skill:TittySex" Value="-10" />
+            <Modifier Name="skill-cap:TittySex" Value="-10" />
             <Modifier Name="skill:Handjob" Value="-10" />
+            <Modifier Name="skill-cap:Handjob" Value="-10" />
             <Modifier Name="skill:Footjob" Value="-10" />
+            <Modifier Name="skill-cap:Footjob" Value="-10" />
             <Modifier Name="enjoy:SEX" Value="-20" />
             <Modifier Name="enjoy:WORKHOUSEPET" Value="-20" />
             <Modifier Name="enjoy:WORKHAREM" Value="-20" />
@@ -168,7 +201,8 @@
     <Trait InheritChance="10" Name="No Gag Reflex" RandomChance="2" Type="Sexual">
         <description>Putting things down her mouth is no big deal for her. Just not too much and not too fast.</description>
         <Modifiers>
-            <Modifier Name="skill:OralSex" Value="25" />
+            <Modifier Name="skill:OralSex" Value="5" />
+            <Modifier Name="skill-cap:OralSex" Value="25" />
             <Modifier Name="fetish:Elegant" Value="-10" />
             <Modifier Name="fetish:Sexy" Value="10" />
             <Modifier Name="fetish:Freak" Value="15" />
@@ -179,6 +213,7 @@
     <Trait InheritChance="10" Name="Strong Gag Reflex" RandomChance="5" Type="Sexual">
         <description>This girl just isn't used to sticking things down her throat.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:OralSex" Value="-25" />
             <Modifier Name="skill:OralSex" Value="-50" />
             <Modifier Name="fetish:Elegant" Value="20" />
             <Modifier Name="fetish:Sexy" Value="-20" />
@@ -191,6 +226,7 @@
         <description>She can't handle dicks in her mouth.</description>
         <Modifiers>
             <Modifier Name="skill:OralSex" Value="-30" />
+            <Modifier Name="skill-cap:OralSex" Value="-15" />
             <Modifier Name="fetish:Elegant" Value="10" />
             <Modifier Name="fetish:Sexy" Value="-10" />
             <Modifier Name="fetish:Freak" Value="0" />
@@ -201,7 +237,8 @@
     <Trait InheritChance="1" Name="Deep Throat" RandomChance="10" Type="Sexual">
         <description>She can really handle big dicks in her mouth.</description>
         <Modifiers>
-            <Modifier Name="skill:OralSex" Value="50" />
+            <Modifier Name="skill:OralSex" Value="25" />
+            <Modifier Name="skill-cap:OralSex" Value="50" />
             <Modifier Name="fetish:Elegant" Value="-20" />
             <Modifier Name="fetish:Sexy" Value="20" />
             <Modifier Name="fetish:Freak" Value="30" />
@@ -238,6 +275,9 @@
         <description>She has no problems trying different things sexually and will accept anything as-is.</description>
         <Modifiers>
             <Modifier Name="stat:Confidence" Value="15" />
+            <Modifier Name="skill-cap:BDSM" Value="8" />
+            <Modifier Name="skill-cap:Group" Value="8" />
+            <Modifier Name="skill-cap:Beastiality" Value="8" />
             <Modifier Name="enjoy:SEX" Value="10" />
             <Modifier Name="fetish:Sexy" Value="30" />
             <Modifier Name="fetish:Cool" Value="20" />
@@ -250,6 +290,7 @@
         <Modifiers>
             <Modifier Name="stat:Beauty" Value="5" />
             <Modifier Name="skill:OralSex" Value="5" />
+            <Modifier Name="skill-cap:OralSex" Value="5" />
             <Modifier Name="fetish:Sexy" Value="20" />
             <Modifier Name="fetish:CuteGirl" Value="20" />
         </Modifiers>

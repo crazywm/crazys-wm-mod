@@ -52,7 +52,9 @@ void cSkillCap::load_from_xml(const tinyxml2::XMLElement& element) {
 }
 
 int cSkillCapManager::get_cap(SKILLS target, const ICharacter& character) const {
-    return m_SkillCaps[target](character);
+    int base_cap = m_SkillCaps[target](character);
+    int trait_mod = character.get_trait_skill_cap_modifier(target);
+    return std::max(0, base_cap + trait_mod);
 }
 
 void cSkillCapManager::load_from_xml(const tinyxml2::XMLElement& element) {

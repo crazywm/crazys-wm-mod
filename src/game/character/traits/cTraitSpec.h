@@ -12,7 +12,7 @@ namespace tinyxml2 {
 struct TraitEffect
 {
     enum Type {
-        STAT, SKILL, MODIFIER
+        STAT, SKILL, SKILL_CAP, MODIFIER
     } type;
 
     unsigned target;

@@ -368,7 +368,9 @@ function Blowjob(girl)
             if wm.Percent(50) then
                 wm.UpdateImage(wm.IMG.ORAL)
             end
-            Dialog("You're not sure how long this pleasure lasted but soon you feel the volcano about to erupt. She senses it too and pulls your cock from her mouth and gently strokes it with her hands until you explode all over her face.")
+            Dialog("You're not sure how long this pleasure lasted but soon you feel the volcano about to erupt.")
+            wm.UpdateImage(wm.IMG.CUMSHOT)
+            Dialog("She senses it too and pulls your cock from her mouth and gently strokes it with her hands until you explode all over her face.")
             girl:oralsex(1)
             girl:happiness(2)
         else

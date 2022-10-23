@@ -25,8 +25,10 @@
     <Trait Name="Cum Addict">
         <description>This girl is addicted to the taste of semen and will even trick her customers to taste their delicious cum.</description>
         <Modifiers>
-            <Modifier Name="skill:OralSex" Value="30" />
-            <Modifier Name="skill:Group" Value="10" />
+            <Modifier Name="skill:OralSex" Value="15" />
+            <Modifier Name="skill-cap:OralSex" Value="15" />
+            <Modifier Name="skill:Group" Value="5" />
+            <Modifier Name="skill-cap:Group" Value="10" />
             <Modifier Name="stat:Obedience" Value="20" />
             <Modifier Name="stat:Spirit" Value="-10" />
             <Modifier Name="enjoy:SEX" Value="10" />

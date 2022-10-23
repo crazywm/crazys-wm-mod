@@ -37,26 +37,39 @@
             <Modifier Name="stat:Refinement" Value="-50" />
             <Modifier Name="stat:Lactation" Value="-1000" />
             <Modifier Name="stat:Strength" Value="20" />
-            <Modifier Name="skill:Beastiality" Value="-50" />
+            <Modifier Name="skill:Beastiality" Value="-15" />
+            <Modifier Name="skill-cap:Beastiality" Value="-15" />
             <!--animals are afraid of her-->
-            <Modifier Name="skill:AnimalHandling" Value="-50" />
+            <Modifier Name="skill:AnimalHandling" Value="-25" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="-50" />
             <!--animals are afraid of her-->
             <Modifier Name="skill:Service" Value="-20" />
-            <Modifier Name="skill:Strip" Value="-50" />
+            <Modifier Name="skill-cap:Service" Value="-20" />
+            <Modifier Name="skill:Strip" Value="-25" />
+            <Modifier Name="skill-cap:Strip" Value="-25" />
             <!--zombies don't care about clothes-->
             <Modifier Name="skill:OralSex" Value="-50" />
+            <Modifier Name="skill-cap:OralSex" Value="-50" />
             <!--You want to put what where?-->
             <Modifier Name="skill:Medicine" Value="-50" />
+            <Modifier Name="skill-cap:Medicine" Value="-50" />
             <Modifier Name="skill:Performance" Value="-50" />
+            <Modifier Name="skill-cap:Performance" Value="-50" />
             <Modifier Name="skill:Handjob" Value="-50" />
+            <Modifier Name="skill-cap:Handjob" Value="-50" />
             <!--less control over hands and feet-->
-            <Modifier Name="skill:Crafting" Value="-50" />
-            <Modifier Name="skill:Herbalism" Value="-50" />
+            <Modifier Name="skill:Crafting" Value="-25" />
+            <Modifier Name="skill-cap:Crafting" Value="-25" />
+            <Modifier Name="skill:Herbalism" Value="-25" />
+            <Modifier Name="skill-cap:Herbalism" Value="-25" />
             <Modifier Name="skill:Farming" Value="-10" />
-            <Modifier Name="skill:Brewing" Value="-50" />
+            <Modifier Name="skill:Brewing" Value="-25" />
+            <Modifier Name="skill-cap:Brewing" Value="-25" />
             <Modifier Name="skill:Footjob" Value="-50" />
+            <Modifier Name="skill-cap:Footjob" Value="-50" />
             <!--less control over hands and feet-->
             <Modifier Name="skill:Cooking" Value="-50" />
+            <Modifier Name="skill-cap:Cooking" Value="-50" />
             <Modifier Name="fetish:NonHuman" Value="100" />
             <Modifier Name="fetish:Freak" Value="100" />
             <Modifier Name="fetish:CuteGirl" Value="-50" />
@@ -81,23 +94,35 @@
             <Modifier Name="stat:Tiredness" Value="-100" />
             <!--skeletons don't get tired-->
             <Modifier Name="stat:Lactation" Value="-1000" />
-            <Modifier Name="skill:Beastiality" Value="-50" />
+            <Modifier Name="skill:Beastiality" Value="-33" />
+            <Modifier Name="skill-cap:Beastiality" Value="-33" />
             <!--animals are afraid of her-->
-            <Modifier Name="skill:AnimalHandling" Value="-50" />
+            <Modifier Name="skill:AnimalHandling" Value="-25" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="-25" />
             <!--animals are afraid of her-->
             <Modifier Name="skill:Service" Value="-10" />
+            <Modifier Name="skill-cap:Service" Value="-10" />
             <Modifier Name="skill:Anal" Value="-1000" />
-            <Modifier Name="skill:BDSM" Value="-1000" />
+            <Modifier Name="skill-cap:Anal" Value="-1000" />
+            <Modifier Name="skill:BDSM" Value="-66" />
+            <Modifier Name="skill-cap:BDSM" Value="-66" />
             <Modifier Name="skill:NormalSex" Value="-1000" />
-            <Modifier Name="skill:Beastiality" Value="-1000" />
-            <Modifier Name="skill:Group" Value="-1000" />
-            <Modifier Name="skill:Lesbian" Value="-1000" />
-            <Modifier Name="skill:Strip" Value="-1000" />
+            <Modifier Name="skill-cap:NormalSex" Value="-1000" />
+            <Modifier Name="skill:Group" Value="-66" />
+            <Modifier Name="skill-cap:Group" Value="-66" />
+            <Modifier Name="skill:Lesbian" Value="-66" />
+            <Modifier Name="skill-cap:Lesbian" Value="-66" />
+            <Modifier Name="skill:Strip" Value="-75" />
+            <Modifier Name="skill-cap:Strip" Value="-75" />
             <!--what exactly is she covering up?-->
             <Modifier Name="skill:OralSex" Value="-1000" />
+            <Modifier Name="skill-cap:OralSex" Value="-1000" />
             <Modifier Name="skill:TittySex" Value="-1000" />
-            <Modifier Name="skill:Handjob" Value="-1000" />
-            <Modifier Name="skill:Footjob" Value="-1000" />
+            <Modifier Name="skill-cap:TittySex" Value="-1000" />
+            <Modifier Name="skill:Handjob" Value="-50" />
+            <Modifier Name="skill-cap:Handjob" Value="-50" />
+            <Modifier Name="skill:Footjob" Value="-50" />
+            <Modifier Name="skill-cap:Footjob" Value="-50" />
             <Modifier Name="fetish:BigBoobs" Value="-1000" />
             <Modifier Name="fetish:SmallBoobs" Value="-1000" />
             <Modifier Name="fetish:CuteGirl" Value="-1000" />
@@ -121,6 +146,7 @@
             <Modifier Name="stat:Confidence" Value="10" />
             <Modifier Name="stat:Obedience" Value="-5" />
             <Modifier Name="stat:Charisma" Value="10" />
+            <Modifier Name="skill-cap:Medicine" Value="-15" />
             <Modifier Name="fetish:CuteGirl" Value="10" />
             <Modifier Name="fetish:Dangerous" Value="10" />
             <Modifier Name="fetish:Cool" Value="10" />
@@ -135,6 +161,8 @@
     <Trait Name="Angel">
         <description>She is an angel from above.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Medicine" Value="6" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="8" />
             <Modifier Name="stat:Morality" Value="20" />
             <Modifier Name="stat:Refinement" Value="10" />
             <Modifier Name="stat:Dignity" Value="10" />
@@ -163,6 +191,7 @@
     <Trait Name="Canine">
         <description>This girl is a dog, literally.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Beastiality" Value="10" />
             <Modifier Name="fetish:NonHuman" Value="60" />
             <Modifier Name="fetish:CuteGirl" Value="10" />
             <Modifier Name="fetish:Freak" Value="15" />
@@ -173,6 +202,7 @@
     <Trait Name="Cat Girl">
         <description>This girl is part feline.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Beastiality" Value="10" />
             <Modifier Name="stat:Agility" Value="10" />
             <Modifier Name="fetish:CuteGirl" Value="20" />
             <Modifier Name="fetish:NonHuman" Value="60" />
@@ -184,6 +214,7 @@
     <Trait Name="Construct">
         <description>This girl is not alive or real - she's a machine or has been created with magic. Her health doesn't go down or up quickly. (hard to hurt)</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Beastiality" Value="-8" />
             <Modifier Name="fetish:Dangerous" Value="10" />
             <Modifier Name="fetish:NonHuman" Value="60" />
             <Modifier Name="fetish:Freak" Value="20" />
@@ -201,6 +232,7 @@
     <Trait Name="Cow Girl">
         <description>This girl is part cow.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Beastiality" Value="10" />
             <Modifier Name="stat:Refinement" Value="-5" />
             <Modifier Name="stat:Spirit" Value="-10" />
             <Modifier Name="stat:Constitution" Value="5" />
@@ -229,6 +261,8 @@
     <Trait Name="Dryad">
         <description>This girl has a plant-like body.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Farming" Value="33" />
+            <Modifier Name="skill-cap:Herbalism" Value="33" />
             <Modifier Name="enjoy:WORKFARM" Value="10" />
             <Modifier Name="fetish:NonHuman" Value="50" />
             <Modifier Name="fetish:CuteGirl" Value="-10" />
@@ -250,6 +284,9 @@
     <Trait Name="Elf">
         <description>This girl grew up in the woodlands and has pointy ears.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Magic" Value="5" />
+            <Modifier Name="skill-cap:Farming" Value="8" />
+            <Modifier Name="skill-cap:Herbalism" Value="8" />
             <Modifier Name="stat:Agility" Value="10" />
             <Modifier Name="stat:Intelligence" Value="10" />
             <Modifier Name="stat:Constitution" Value="-5" />
@@ -265,6 +302,7 @@
     <Trait Name="Equine">
         <description>This girl has the body of a horse.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Beastiality" Value="10" />
             <Modifier Name="stat:Strength" Value="20" />
             <Modifier Name="stat:Constitution" Value="10" />
             <Modifier Name="enjoy:WORKFARM" Value="10" />
@@ -293,6 +331,7 @@
     <Trait Name="Furry">
         <description>This girl has short soft fur covering most of her body.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Beastiality" Value="12" />
             <Modifier Name="fetish:NonHuman" Value="40" />
             <Modifier Name="fetish:Elegant" Value="-5" />
             <Modifier Name="fetish:Sexy" Value="15" />
@@ -378,6 +417,7 @@
     <Trait Name="Reptilian">
         <description>This girl has a Reptilian body.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Beastiality" Value="10" />
             <Modifier Name="fetish:NonHuman" Value="50" />
             <Modifier Name="fetish:Freak" Value="20" />
             <Modifier Name="fetish:Dangerous" Value="10" />
@@ -389,6 +429,7 @@
     <Trait Name="Shape Shifter">
         <description>This girl can change her shape to anything.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Beastiality" Value="12" />
             <Modifier Name="stat:Charisma" Value="20" />
             <Modifier Name="stat:Beauty" Value="20" />
             <Modifier Name="stat:Strength" Value="10" />
@@ -434,6 +475,15 @@
     <Trait Name="Succubus">
         <description>She is a demon who feeds on sexual energies.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:NormalSex" Value="10" />
+            <Modifier Name="skill-cap:OralSex" Value="3" />
+            <Modifier Name="skill-cap:Footjob" Value="3" />
+            <Modifier Name="skill-cap:TittySex" Value="3" />
+            <Modifier Name="skill-cap:Anal" Value="8" />
+            <Modifier Name="skill-cap:BDSM" Value="3" />
+            <Modifier Name="skill-cap:Beastiality" Value="3" />
+            <Modifier Name="skill-cap:Strip" Value="3" />
+            <Modifier Name="skill-cap:Group" Value="10" />
             <Modifier Name="stat:Libido" Value="35" />
             <Modifier Name="enjoy:SEX" Value="40" />
             <Modifier Name="fetish:NonHuman" Value="40" />

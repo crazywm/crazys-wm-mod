@@ -70,6 +70,7 @@
         <description>This girl has an athletic, well-toned body with visible muscles. She definitely works out.</description>
         <Modifiers>
             <Modifier Name="skill:Combat" Value="5" />
+            <Modifier Name="skill-cap:Combat" Value="5" />
             <Modifier Name="stat:Agility" Value="10" />
             <Modifier Name="stat:Constitution" Value="10" />
             <Modifier Name="stat:Strength" Value="10" />

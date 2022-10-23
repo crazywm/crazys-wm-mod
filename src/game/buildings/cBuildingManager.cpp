@@ -35,28 +35,6 @@
 #include "character/predicates.h"
 #include "character/cGirlPool.h"
 
-
-bool cBuildingManager::NameExists(std::string name) const
-{
-    return has_any_girl_with(HasName(std::move(name)));
-}
-
-bool cBuildingManager::SurnameExists(const std::string& name) const
-{
-    // convert to std::function before the loop
-    girl_pred_fn check_name = [&](const sGirl& girl){
-        return name == girl.Surname();
-    };
-
-    for(auto& current : m_Buildings)
-    {
-        if(current->girls().has_any(check_name)) {
-            return true;
-        }
-    }
-    return false;
-}
-
 tinyxml2::XMLElement * cBuildingManager::SaveXML(tinyxml2::XMLElement& root) const
 {
     auto& elBrothels = PushNewElement(root, "Buildings");

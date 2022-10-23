@@ -6,6 +6,7 @@
         <Modifiers>
             <Modifier Name="stat:Charisma" Value="50" />
             <Modifier Name="stat:Beauty" Value="10" />
+            <Modifier Name="skill-cap:Performance" Value="10" />
             <Modifier Name="enjoy:WORKBAR" Value="20" />
             <Modifier Name="enjoy:WORKHALL" Value="20" />
             <Modifier Name="fetish:Elegant" Value="30" />
@@ -20,6 +21,7 @@
     <Modifiers>
         <Modifier Name="stat:Charisma" Value="30" />
         <Modifier Name="stat:Beauty" Value="15" />
+        <Modifier Name="skill-cap:Performance" Value="10" />
         <Modifier Name="enjoy:WORKBAR" Value="10" />
         <Modifier Name="enjoy:WORKHALL" Value="10" />
         <Modifier Name="fetish:Elegant" Value="20" />
@@ -36,6 +38,7 @@
         <Modifier Name="stat:Confidence" Value="5" />
         <Modifier Name="stat:Refinement" Value="10" />
         <Modifier Name="skill:Performance" Value="5" />
+        <Modifier Name="skill-cap:Performance" Value="3" />
         <Modifier Name="enjoy:SEX" Value="-20" />
         <Modifier Name="enjoy:WORKMATRON" Value="20" />
         <Modifier Name="fetish:Dangerous" Value="-30" />
@@ -50,8 +53,10 @@
     <Trait InheritChance="1" Name="Exhibitionist" RandomChance="5" Type="Social">
     <description>She loves to show her body.</description>
     <Modifiers>
-        <Modifier Name="skill:Strip" Value="20" />
-        <Modifier Name="skill:Performance" Value="10" />
+        <Modifier Name="skill:Strip" Value="5" />
+        <Modifier Name="skill-cap:Strip" Value="20" />
+        <Modifier Name="skill:Performance" Value="8" />
+        <Modifier Name="skill-cap:Performance" Value="12" />
         <Modifier Name="stat:Confidence" Value="20" />
         <Modifier Name="stat:Charisma" Value="10" />
         <Modifier Name="stat:Morality" Value="-10" />
@@ -73,7 +78,9 @@
     <Trait InheritChance="1" Name="Shy" RandomChance="5" Type="Social">
         <description>This girl has trouble interacting with people she does not know.</description>
         <Modifiers>
-            <Modifier Name="skill:Performance" Value="-20" />
+            <Modifier Name="skill:Performance" Value="-10" />
+            <Modifier Name="skill-cap:Performance" Value="-10" />
+            <Modifier Name="skill-cap:Strip" Value="-15" />
             <Modifier Name="stat:Confidence" Value="-20" />
             <Modifier Name="enjoy:WORKADVERTISING" Value="-20" />
             <Modifier Name="enjoy:WORKRECRUIT" Value="-20" />
@@ -108,6 +115,9 @@
         <Modifier Name="stat:Obedience" Value="-5" />
         <Modifier Name="stat:Refinement" Value="10" />
         <Modifier Name="stat:Dignity" Value="10" />
+        <Modifier Name="skill-cap:BDSM" Value="-3" />
+        <Modifier Name="skill-cap:Beastiality" Value="-3" />
+        <Modifier Name="skill-cap:Group" Value="-3" />
         <Modifier Name="stat:Fame" Value="5" />
         <Modifier Name="enjoy:SEX" Value="-10" />
         <Modifier Name="enjoy:WORKCLEANING" Value="-20" />
@@ -124,6 +134,9 @@
     <Trait InheritChance="0" Name="Princess" RandomChance="2" Type="Social">
     <description>She is a princess.</description>
     <Modifiers>
+        <Modifier Name="skill-cap:BDSM" Value="-8" />
+        <Modifier Name="skill-cap:Beastiality" Value="-8" />
+        <Modifier Name="skill-cap:Group" Value="-8" />
         <Modifier Name="stat:Charisma" Value="10" />
         <Modifier Name="stat:Beauty" Value="10" />
         <Modifier Name="stat:Confidence" Value="10" />
@@ -146,6 +159,9 @@
     <Trait InheritChance="0" Name="Queen" RandomChance="1" Type="Social">
     <description>She is a queen.</description>
     <Modifiers>
+        <Modifier Name="skill-cap:BDSM" Value="-10" />
+        <Modifier Name="skill-cap:Beastiality" Value="-10" />
+        <Modifier Name="skill-cap:Group" Value="-10" />
         <Modifier Name="stat:Charisma" Value="20" />
         <Modifier Name="stat:Beauty" Value="20" />
         <Modifier Name="stat:Confidence" Value="10" />
@@ -168,6 +184,7 @@
     <Trait InheritChance="10" Name="Sexy Air" RandomChance="10" Type="Social">
     <description>Something about this girl is just so sexy, everything she does is hot. (+customer attraction)</description>
     <Modifiers>
+        <Modifier Name="skill-cap:Performance" Value="3" />
         <Modifier Name="stat:Charisma" Value="5" />
         <Modifier Name="stat:Beauty" Value="10" />
         <Modifier Name="stat:Confidence" Value="2" />
@@ -181,6 +198,16 @@
     <Trait InheritChance="1" Name="Slut" RandomChance="5" Type="Social">
     <description>She definitely wouldn't make a good wife. A good whore on the other hand...</description>
     <Modifiers>
+        <Modifier Name="skill-cap:Anal" Value="5" />
+        <Modifier Name="skill-cap:BDSM" Value="5" />
+        <Modifier Name="skill-cap:NormalSex" Value="5" />
+        <Modifier Name="skill-cap:Beastiality" Value="5" />
+        <Modifier Name="skill-cap:Group" Value="8" />
+        <Modifier Name="skill-cap:Lesbian" Value="5" />
+        <Modifier Name="skill-cap:OralSex" Value="5" />
+        <Modifier Name="skill-cap:Footjob" Value="3" />
+        <Modifier Name="skill-cap:TittySex" Value="3" />
+        <Modifier Name="skill-cap:Strip" Value="8" />
         <Modifier Name="stat:Charisma" Value="-10" />
         <Modifier Name="stat:Dignity" Value="-5" />
         <Modifier Name="enjoy:SEX" Value="10" />
@@ -194,6 +221,7 @@
     <Trait InheritChance="30" Name="Social Drinker" RandomChance="10" Type="Social">
     <description>This girl knows how to handle her alcohol.</description>
     <Modifiers>
+        <Modifier Name="skill-cap:Brewing" Value="-3" />
         <Modifier Name="fetish:Elegant" Value="-5" />
         <Modifier Name="fetish:Cool" Value="15" />
         <Modifier Name="fetish:Sexy" Value="10" />
@@ -203,6 +231,7 @@
     <Trait InheritChance="1" Name="Cool Person" RandomChance="20" Type="Perception">
         <description>This person is just cool to be with. (+looks)</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Performance" Value="3" />
             <Modifier Name="stat:Charisma" Value="5" />
             <Modifier Name="stat:Spirit" Value="10" />
             <Modifier Name="stat:Confidence" Value="10" />
@@ -225,6 +254,7 @@
     <Trait InheritChance="70" Name="Cute" RandomChance="20" Type="Perception">
         <description>This girl is just very cute.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Performance" Value="3" />
             <Modifier Name="stat:Charisma" Value="10" />
             <Modifier Name="stat:Beauty" Value="5" />
             <Modifier Name="enjoy:WORKCLUB" Value="10" />
@@ -240,6 +270,11 @@
     <Trait InheritChance="1" Name="Dojikko" RandomChance="5" Type="Perception">
         <description>This girl is a klutz, but somehow, that just makes her more attractive.</description>
         <Modifiers>
+            <Modifier Name="skill-cap:Medicine" Value="-15" />
+            <Modifier Name="skill-cap:Crafting" Value="-10" />
+            <Modifier Name="skill-cap:Brewing" Value="-10" />
+            <Modifier Name="skill-cap:Cooking" Value="-3" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="-3" />
             <Modifier Name="stat:Charisma" Value="5" />
             <Modifier Name="stat:Agility" Value="-5" />
             <Modifier Name="fetish:CuteGirl" Value="20" />
@@ -255,8 +290,9 @@
         <Modifiers>
             <Modifier Name="stat:Confidence" Value="-10" />
             <Modifier Name="stat:Intelligence" Value="10" />
-            <Modifier Name="skill:Combat" Value="-10" />
-            <Modifier Name="skill:Medicine" Value="10" />
+            <Modifier Name="skill-cap:Combat" Value="-10" />
+            <Modifier Name="skill:Medicine" Value="5" />
+            <Modifier Name="skill-cap:Medicine" Value="12" />
             <Modifier Name="enjoy:WORKTRAINING" Value="10" />
             <Modifier Name="enjoy:MAKEITEMS" Value="10" />
             <Modifier Name="enjoy:COMBAT" Value="-10" />
