@@ -15,6 +15,14 @@
             <Modifier Name="fetish:Cool" Value="5" />
             <Modifier Name="fetish:Dangerous" Value="5" />
             <Modifier Name="tag:addiction" Value="1" />
+
+            <Modifier Name="skill-cap:Combat" Value="-3" />
+            <Modifier Name="skill-cap:Magic" Value="-5" />
+            <Modifier Name="skill-cap:Medicine" Value="-5" />
+            <Modifier Name="skill-cap:Crafting" Value="-3" />
+            <Modifier Name="skill-cap:Herbalism" Value="-3" />
+            <Modifier Name="skill-cap:Brewing" Value="-5" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="-3" />
         </Modifiers>
         <Properties>
             <Setting Name="random:chance" Value="5" />
@@ -25,7 +33,7 @@
     <Trait Name="Cum Addict">
         <description>This girl is addicted to the taste of semen and will even trick her customers to taste their delicious cum.</description>
         <Modifiers>
-            <Modifier Name="skill:OralSex" Value="15" />
+            <Modifier Name="skill:OralSex" Value="5" />
             <Modifier Name="skill-cap:OralSex" Value="15" />
             <Modifier Name="skill:Group" Value="5" />
             <Modifier Name="skill-cap:Group" Value="10" />
@@ -57,6 +65,16 @@
             <Modifier Name="fetish:Freak" Value="15" />
             <Modifier Name="tag:addiction" Value="1" />
             <Modifier Name="tag:hard-addiction" Value="1" />
+
+            <Modifier Name="skill-cap:Combat" Value="-8" />
+            <Modifier Name="skill-cap:Magic" Value="-12" />
+            <Modifier Name="skill-cap:Medicine" Value="-12" />
+            <Modifier Name="skill-cap:Crafting" Value="-5" />
+            <Modifier Name="skill-cap:Herbalism" Value="-5" />
+            <Modifier Name="skill-cap:Performance" Value="-3" />
+            <Modifier Name="skill-cap:Strip" Value="-3" />
+            <Modifier Name="skill-cap:Brewing" Value="-8" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="-5" />
         </Modifiers>
 
         <Properties>
@@ -78,6 +96,16 @@
             <Modifier Name="fetish:Freak" Value="10" />
             <Modifier Name="tag:addiction" Value="1" />
             <Modifier Name="tag:hard-addiction" Value="1" />
+
+            <Modifier Name="skill-cap:Combat" Value="-8" />
+            <Modifier Name="skill-cap:Magic" Value="-12" />
+            <Modifier Name="skill-cap:Medicine" Value="-12" />
+            <Modifier Name="skill-cap:Crafting" Value="-5" />
+            <Modifier Name="skill-cap:Herbalism" Value="-5" />
+            <Modifier Name="skill-cap:Performance" Value="-3" />
+            <Modifier Name="skill-cap:Strip" Value="-3" />
+            <Modifier Name="skill-cap:Brewing" Value="-8" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="-5" />
         </Modifiers>
 
         <Properties>
@@ -96,6 +124,13 @@
             <Modifier Name="fetish:Elegant" Value="-5" />
             <Modifier Name="fetish:Cool" Value="5" />
             <Modifier Name="tag:addiction" Value="1" />
+
+            <Modifier Name="skill-cap:Combat" Value="-5" />
+            <Modifier Name="skill-cap:Magic" Value="-5" />
+            <Modifier Name="skill-cap:Medicine" Value="-5" />
+            <Modifier Name="skill-cap:Farming" Value="-3" />
+            <Modifier Name="skill-cap:Brewing" Value="-3" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="-3" />
         </Modifiers>
 
         <Properties>
@@ -105,7 +140,7 @@
 
 
     <Trait Name="Viras Blood Addict">
-        <description>This girl is additced to the blood of the sex crazed plant Viras. (drug) (+happiness) (-looks)</description>
+        <description>This girl is addicted to the blood of the sex crazed plant Viras. (drug) (+happiness) (-looks)</description>
         <Modifiers>
             <Modifier Name="stat:Confidence" Value="-15" />
             <Modifier Name="stat:Obedience" Value="20" />
@@ -118,6 +153,15 @@
             <Modifier Name="fetish:Freak" Value="20" />
             <Modifier Name="tag:addiction" Value="1" />
             <Modifier Name="tag:hard-addiction" Value="1" />
+
+            <Modifier Name="skill-cap:Combat" Value="-8" />
+            <Modifier Name="skill-cap:Magic" Value="-12" />
+            <Modifier Name="skill-cap:Medicine" Value="-12" />
+            <Modifier Name="skill-cap:Crafting" Value="-5" />
+            <Modifier Name="skill-cap:Performance" Value="-3" />
+            <Modifier Name="skill-cap:Strip" Value="-3" />
+            <Modifier Name="skill-cap:Brewing" Value="-8" />
+            <Modifier Name="skill-cap:AnimalHandling" Value="-5" />
         </Modifiers>
 
         <Properties>
