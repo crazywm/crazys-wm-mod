@@ -1,5 +1,5 @@
 <Screen Extends="girl_management_base.xml">
-<ListBox    Name="GirlList"                                         XPos="7"       YPos="35"       Width="765"     Height="548"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<ListBox    Name="GirlList"                                         XPos="7"       YPos="35"       Width="765"     Height="548"    FontSize="11"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column     Name="Name"                 Header="Girl Name"                  Offset="0" />
 <Column     Name="Health"               Header="Health"                     Offset="150" />
 <Column     Name="Happiness"            Header="Happy"                      Offset="187" />

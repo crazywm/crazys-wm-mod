@@ -158,6 +158,15 @@ void IBuildingScreenManagement::set_ids() {
         g_Game->NextWeek();
     });
 
+    SetButtonCallback(get_id("PrevButton"), [this]() {
+        cycle_building(-1);
+        replace_window("Girl Management");
+    });
+    SetButtonCallback(get_id("NextButton"), [this]() {
+        cycle_building(1);
+        replace_window("Girl Management");
+    });
+
     // setting up button callbacks
     SetButtonCallback(viewdetails_id, [this](){
         ViewSelectedGirl();
@@ -626,16 +635,6 @@ cScreenGirlManagement::cScreenGirlManagement() :
         add_job_filter((JOBFILTER)i);
 }
 
-
-void cScreenGirlManagement::set_ids()
-{
-    IBuildingScreenManagement::set_ids();
-    int prev_id = get_id("PrevButton","Prev","*Unused*");
-    int next_id = get_id("NextButton","Next","*Unused*");
-
-    SetButtonCallback(prev_id, [this](){ cycle_building(-1); });
-    SetButtonCallback(next_id, [this](){ cycle_building(1); });
-}
 
 cScreenHouseManagement::cScreenHouseManagement() :
         IBuildingScreenManagement(BuildingType::HOUSE, "house_management_screen.xml")

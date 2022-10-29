@@ -137,9 +137,6 @@ public:
 
 class cScreenGirlManagement : public IBuildingScreenManagement
 {
-private:
-    void set_ids() override;
-
 public:
     cScreenGirlManagement();
 };

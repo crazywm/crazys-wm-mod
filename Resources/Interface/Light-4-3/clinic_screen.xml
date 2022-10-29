@@ -4,7 +4,7 @@
 <Image      Name="Background"           File="Clinic.jpg"   XPos="7"       YPos="35"       Width="765"    Height="660"     Dir="Backdrops"/>
 
 <Button     Name="Next Week"            Image="NextWeek"    XPos="825"     YPos="10"       Width="120"     Height="32"     Transparency="true"/>
-<Text       Name="BuildingDetails"      Text="Details"      XPos="772"     YPos="50"       Width="232"     Height="300"    FontSize="7"  />
+<Text       Name="BuildingDetails"      Text="Details"      XPos="772"     YPos="50"       Width="232"     Height="300"    FontSize="10"  />
 <Button     Name="PrevButton"           Image="Prev"        XPos="823"     YPos="350"      Width="54"      Height="32"     Transparency="true"/>
 <Button     Name="NextButton"           Image="Next"        XPos="892"     YPos="350"      Width="54"      Height="32"     Transparency="true"/>
 <Button     Name="Girl Management"      Image="Girls"       XPos="825"     YPos="400"      Width="120"     Height="32"     Transparency="true" PushWindow="Girl Management"/>

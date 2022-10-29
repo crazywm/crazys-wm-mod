@@ -46,8 +46,8 @@ void IBuildingScreen::set_ids()
 
     girlimage_id     = get_id("GirlImage");
 
-    prevbrothel_id   = get_id("PrevButton", "Prev", "*Unused*");
-    nextbrothel_id   = get_id("NextButton", "Next", "*Unused*");
+    prevbrothel_id   = get_id("PrevButton", "Prev");
+    nextbrothel_id   = get_id("NextButton", "Next");
 
     details_id       = get_id("BuildingDetails", "Details");
     save_id          = get_id("Save");

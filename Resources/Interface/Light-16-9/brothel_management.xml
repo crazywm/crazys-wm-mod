@@ -14,8 +14,8 @@
 <Button     Name="Visit Town"           Image="VisitTown"       XPos="1546"     YPos="914"      Width="225"     Height="45"     Transparency="true" PushWindow="Town"/>
 <Button     Name="Quit"                 Image="Quit"            XPos="14"       YPos="982"      Width="225"     Height="45"     Transparency="true"/>
 <Button     Name="Save"                 Image="Save"            XPos="351"      YPos="982"      Width="225"     Height="45"     Transparency="true"/>
-<Button     Name="PrevButton"           Image="Prev"            XPos="1543"     YPos="492"      Width="101"      Height="45"     Transparency="true"/>
-<Button     Name="NextButton"           Image="Next"            XPos="1673"     YPos="492"      Width="101"      Height="45"     Transparency="true"/>
+<Button     Name="PrevButton"           Image="Prev"            XPos="1543"     YPos="492"      Width="101"     Height="45"     Transparency="true"/>
+<Button     Name="NextButton"           Image="Next"            XPos="1673"     YPos="492"      Width="101"     Height="45"     Transparency="true"/>
 
 <Image      Name="GirlImage"            File=""                 XPos="214"      YPos="21"       Width="281"     Height="281"    Hidden="true"  />
 </Screen>

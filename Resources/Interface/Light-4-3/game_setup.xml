@@ -5,10 +5,10 @@
     <Button     Name="RevertButton"             Image="Revert"                  XPos="497"      YPos="698"      Width="54"      Height="32"     Transparency="true" />
     <Button     Name="BackButton"               Image="Back"                    XPos="600"      YPos="692"      Width="142"     Height="38"     Transparency="true"  PushWindow="<back>" />
 
-    <ListBox    Name="SettingsList"                                                 XPos="15"       YPos="80"       Width="795"     Height="548"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="false"   >
+    <ListBox    Name="SettingsList"                                                 XPos="15"       YPos="80"       Width="795"     Height="548"    FontSize="10"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="false"   >
         <Column     Name="Name"               Header="Name"                  Offset="0" />
         <Column     Name="Desc"               Header="Description"           Offset="150" />
-        <Column     Name="VAlue"              Header="Value"                 Offset="600" />
+        <Column     Name="Value"              Header="Value"                 Offset="600" />
     </ListBox>
 
 </Screen>

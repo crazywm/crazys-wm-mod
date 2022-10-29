@@ -50,7 +50,9 @@ void cGameWindow::set_active_building(IBuilding* building)
 IBuilding& cGameWindow::cycle_building(int direction)
 {
     auto& buildings = g_Game->buildings();
-    auto next = (buildings.find(&active_building()) + direction) % buildings.num_buildings();
+    int current = buildings.find(&active_building());
+    int next = (current + direction) % buildings.num_buildings();
+    if(next < 0) next = buildings.num_buildings() - 1;
     auto& active = buildings.get_building(next);
     set_active_building(&active);
     return active;

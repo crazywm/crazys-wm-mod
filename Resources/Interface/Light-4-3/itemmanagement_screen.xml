@@ -1,23 +1,23 @@
 <Screen>
 <Window     Name="Item Management Window"                                   XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
 <Text       Name="OwnersLeftHeader"     Text="Owner"                        XPos="226"      YPos="0"        Width="90"     Height="32"  FontSize="13"  />
-<ListBox    Name="OwnersLeftList"                                           XPos="165"       YPos="24"       Width="225"     Height="282" FontSize="9" RowHeight="19" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
+<ListBox    Name="OwnersLeftList"                                           XPos="165"       YPos="24"       Width="225"     Height="282" FontSize="10" RowHeight="19" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
 <Column     Name="Name"                 Header="Name"                       Offset="0"  />
 <Column     Name="Number"               Header="Items"                      Offset="135"  />
 <Column     Name="CatNum"               Header="Cat."                       Offset="172"  />
 </ListBox>                                                                                                                  
 <Text       Name="ItemsLeftHeader"      Text="Inventory"                    XPos="214"       YPos="302"      Width="90"     Height="32"  FontSize="13"  />
-<ListBox    Name="ItemsLeftList"                                            XPos="165"       YPos="328"      Width="225"     Height="402" FontSize="9" RowHeight="19" Border="1"       Events="true" Multi="true"  />
+<ListBox    Name="ItemsLeftList"                                            XPos="165"       YPos="328"      Width="225"     Height="402" FontSize="10" RowHeight="19" Border="1"       Events="true" Multi="true"  />
 <Text       Name="OwnersRightHeader"    Text="Owner"                        XPos="677"      YPos="0"        Width="90"     Height="32"  FontSize="13"  />
-<ListBox    Name="OwnersRightList"                                          XPos="607"      YPos="24"       Width="225"     Height="282" FontSize="9" RowHeight="19" Border="1"      Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
+<ListBox    Name="OwnersRightList"                                          XPos="607"      YPos="24"       Width="225"     Height="282" FontSize="10" RowHeight="19" Border="1"      Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
 <Column     Name="Name"                 Header="Name"                       Offset="0"  />
 <Column     Name="Number"               Header="Items"                      Offset="135"  />
 <Column     Name="CatNum"               Header="Cat."                       Offset="172"  />
 </ListBox>                                                                                                                  
-<Text       Name="ItemsRightHeader"     Text="Inventory"                    XPos="666"      YPos="302"      Width="90"     Height="32"     FontSize="13"  />
-<ListBox    Name="ItemsRightList"                                           XPos="607"      YPos="328"      Width="225"     Height="402"    FontSize="9" RowHeight="19" Border="1"          Events="true" Multi="true"  />
-<Text       Name="CurrentBrothel"       Text=""                             XPos="394"      YPos="0"        Width="375"     Height="32"     FontSize="9"  />
-<ListBox    Name="FilterList"                                               XPos="450"      YPos="20"       Width="97"     Height="242"    FontSize="9" RowHeight="19" Border="1"          Events="true" Multi="false"  />
+<Text       Name="ItemsRightHeader"     Text="Inventory"                    XPos="666"      YPos="302"      Width="90"      Height="32"     FontSize="13"  />
+<ListBox    Name="ItemsRightList"                                           XPos="607"      YPos="328"      Width="225"     Height="402"    FontSize="10" RowHeight="19" Border="1"          Events="true" Multi="true"  />
+<Text       Name="CurrentBrothel"       Text=""                             XPos="394"      YPos="0"        Width="375"     Height="32"     FontSize="10"  />
+<ListBox    Name="FilterList"                                               XPos="450"      YPos="20"       Width="97"      Height="242"    FontSize="10" RowHeight="19" Border="1"          Events="true" Multi="false"  />
 <Button     Name="Sell10LeftButton"     Image="Sell10"                      XPos="402"      YPos="30"       Width="36"      Height="22"     Transparency="true"/>
 <Button     Name="Sell10RightButton"    Image="Sell10"                      XPos="559"      YPos="30"       Width="36"      Height="22"     Transparency="true"/>
 <Button     Name="SellAllLeftButton"    Image="SellAll"                     XPos="402"      YPos="55"       Width="36"      Height="22"     Transparency="true"/>
@@ -28,15 +28,15 @@
 <Button     Name="ShiftRightButton"     Image="ShiftRight"                  XPos="559"      YPos="250"      Width="36"      Height="48"     Transparency="true"/>
 <Text       Name="ShiftHeader"          Text="Transfer Item(s)"             XPos="450"      YPos="262"      Width="112"     Height="25"     FontSize="12"  />
 <Text       Name="PlayerGold"           Text="Your Gold"                    XPos="412"      YPos="305"      Width="187"     Height="32"     FontSize="12"  />
-<Text       Name="ItemDesc"             Text=""                             XPos="394"      YPos="350"      Width="210"     Height="250"    FontSize="7"  />
+<Text       Name="ItemDesc"             Text=""                             XPos="394"      YPos="350"      Width="210"     Height="250"    FontSize="9"  />
 <Image      Name="IndicateLeft"         File="imgArrowLeft.png"             XPos="391"      YPos="622"      Width="33"      Height="60"     Dir="Widgets" />
 <Button     Name="EquipLeftButton"      Image="Equip"                       XPos="403"      YPos="620"      Width="60"      Height="32"     Transparency="true" />
 <Button     Name="UnequipLeftButton"    Image="Unequip"                     XPos="403"      YPos="652"      Width="60"      Height="32"     Transparency="true" />
 <Image      Name="IndicateRight"        File="imgArrowRight.png"            XPos="573"      YPos="622"      Width="33"      Height="60"     Dir="Widgets" />
 <Button     Name="EquipRightButton"     Image="Equip"                       XPos="534"      YPos="620"      Width="60"      Height="32"     Transparency="true" />
 <Button     Name="UnequipRightButton"   Image="Unequip"                     XPos="534"      YPos="652"      Width="60"      Height="32"     Transparency="true" />
-<Checkbox   Name="AutoUseItems"         Text="Autouse Consumables"          XPos="443"      YPos="700"      Width="12"      Height="16"     FontSize="9" />
-<Text       Name="OwnersLeftDetails"    Text=" "                            XPos="7"       YPos="10"       Width="150"     Height="720"    FontSize="7" />
-<Text       Name="OwnersRightDetails"   Text=" "                            XPos="840"     YPos="10"       Width="150"     Height="720"    FontSize="7" />
+<Checkbox   Name="AutoUseItems"         Text="Autouse Consumables"          XPos="443"      YPos="700"      Width="12"      Height="16"     FontSize="10" />
+<Text       Name="OwnersLeftDetails"    Text=" "                            XPos="7"       YPos="10"       Width="150"     Height="720"    FontSize="9" />
+<Text       Name="OwnersRightDetails"   Text=" "                            XPos="840"     YPos="10"       Width="150"     Height="720"    FontSize="9" />
 <Button     Name="BackButton"           Image="Back"                        XPos="847"     YPos="690"      Width="150"     Height="40"     Transparency="true"  PushWindow="<back>"/>
 </Screen>

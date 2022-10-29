@@ -9,10 +9,10 @@
     <Text       Name="SavesLabel"               Text="Saves"                    XPos="7"       YPos="102"      Width="75"     Height="20"     FontSize="11"  />
     <Text       Name="DefaultImagesLabel"       Text="DefaultImages"            XPos="7"       YPos="122"      Width="75"     Height="20"     FontSize="11"  />
     <Text       Name="ItemsLabel"               Text="Items"                    XPos="7"       YPos="142"      Width="75"     Height="20"     FontSize="11"  />
-    <EditBox    Name="Characters"                                               XPos="82"      YPos="80"       Width="225"     Height="20"     FontSize="9"                  Border="1"  />
-    <EditBox    Name="Saves"                                                    XPos="82"      YPos="100"      Width="225"     Height="20"     FontSize="9"                  Border="1"  />
-    <EditBox    Name="DefaultImages"                                            XPos="82"      YPos="120"      Width="225"     Height="20"     FontSize="9"                  Border="1"  />
-    <EditBox    Name="Items"                                                    XPos="82"      YPos="140"      Width="225"     Height="20"     FontSize="9"                  Border="1"  />
+    <EditBox    Name="Characters"                                               XPos="82"      YPos="80"       Width="225"     Height="20"     FontSize="11"                  Border="1"  />
+    <EditBox    Name="Saves"                                                    XPos="82"      YPos="100"      Width="225"     Height="20"     FontSize="11"                  Border="1"  />
+    <EditBox    Name="DefaultImages"                                            XPos="82"      YPos="120"      Width="225"     Height="20"     FontSize="11"                  Border="1"  />
+    <EditBox    Name="Items"                                                    XPos="82"      YPos="140"      Width="225"     Height="20"     FontSize="11"                  Border="1"  />
     <Checkbox   Name="PreferDefault"            Text="Prefer Default"           XPos="195"      YPos="170"      Width="12"      Height="16"     FontSize="11" LeftOrRight="false" />
 
     <Text       Name="ThemeLabel"               Text="Theme"                    XPos="7"       YPos="220"      Width="75"     Height="20"     FontSize="11"  />
@@ -21,6 +21,6 @@
 
     <Text       Name="WidthLabel"               Text="Window Width"         XPos="7"        YPos="450"      Width="141"     Height="28"     FontSize="11"  />
     <Text       Name="HeightLabel"              Text="Window Height"        XPos="7"        YPos="480"      Width="141"     Height="28"     FontSize="11"  />
-    <EditBox    Name="WindowWidth"                                          XPos="82"       YPos="450"      Width="422"     Height="28"     FontSize="9"  Border="1"  />
-    <EditBox    Name="WindowHeight"                                         XPos="82"       YPos="480"      Width="422"     Height="28"     FontSize="9"  Border="1"  />
+    <EditBox    Name="WindowWidth"                                          XPos="82"       YPos="450"      Width="422"     Height="28"     FontSize="10"  Border="1"  />
+    <EditBox    Name="WindowHeight"                                         XPos="82"       YPos="480"      Width="422"     Height="28"     FontSize="10"  Border="1"  />
 </Screen>

@@ -1,3 +1,13 @@
+# Version 7.2.1alpha4
+
+## UI 
+* Added previous/next building buttons to girl management screens
+* Adjusted (increased) font size in 4:3 mode
+
+## Bugfixes
+* Correctly cycle through buildings when selecting previous of first building
+* Fixed 4:3 gallery screen
+
 # Version 7.2.1alpha3
 
 ## Tagging

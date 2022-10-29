@@ -2,7 +2,7 @@
 <Window     Name="Movie Maker Window"                                       XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
 
 <Text       Name="Scenes"               Text="Available Scenes"             XPos="7"       YPos="12"       Width="412"     Height="20"           FontSize="12"            />
-<ListBox    Name="ScenesList"                                               XPos="7"       YPos="35"       Width="412"     Height="337"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<ListBox    Name="ScenesList"                                               XPos="7"       YPos="35"       Width="412"     Height="337"    FontSize="10"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column     Name="Type"                 Header="Scene Type"                 Offset="0"  />
 <Column     Name="Actress"              Header="Actress"                    Offset="75"  />
 <Column     Name="Director"             Header="Director"                   Offset="169"  />
@@ -12,7 +12,7 @@
 
 
 <Text       Name="Movie"                Text="Current Movie"                XPos="7"       YPos="370"       Width="412"     Height="20"     FontSize="12"            />
-<ListBox    Name="MakeThisMovie"                                            XPos="7"       YPos="393"       Width="412"     Height="280"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<ListBox    Name="MakeThisMovie"                                            XPos="7"       YPos="393"       Width="412"     Height="280"    FontSize="10"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
     <Column     Name="Type"                 Header="Scene Type"                 Offset="0"  />
     <Column     Name="Actress"              Header="Actress"                    Offset="75"  />
     <Column     Name="Director"             Header="Director"                   Offset="169"  />
@@ -21,7 +21,7 @@
 </ListBox>
 
 <Text       Name="Prediction"               Text="Predicted Audience"           XPos="600"      YPos="370"       Width="326"     Height="20"     FontSize="12"            />
-<ListBox    Name="PredictedAudience"                                            XPos="600"      YPos="393"       Width="326"     Height="280"    FontSize="9"       RowHeight="21"      Border="1"          Events="false"      Multi="false"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<ListBox    Name="PredictedAudience"                                            XPos="600"      YPos="393"       Width="326"     Height="280"    FontSize="10"       RowHeight="21"      Border="1"          Events="false"      Multi="false"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
     <Column     Name="TargetGroup"          Header="Target Group"               Offset="0"  />
     <Column     Name="Rating"               Header="Rating"                     Offset="150"  />
     <Column     Name="Views"                Header="Views"                      Offset="206"  />
@@ -35,11 +35,11 @@
 <Text       Name="MovieName_txt"            Text="Name:"                    XPos="525"      YPos="35"       Width="75"     Height="32"    FontSize="12"  />
 <EditBox    Name="MovieName"                                                XPos="600"      YPos="35"       Width="251"     Height="32"  Border="1"  />
 <Text       Name="MovieDetail_txt"            Text="Details:"               XPos="525"      YPos="70"       Width="75"     Height="32"    FontSize="12"  />
-<Text       Name="MovieDetails"         Text=""                             XPos="600"      YPos="70"       Width="412"     Height="200"    FontSize="7"  />
+<Text       Name="MovieDetails"         Text=""                             XPos="600"      YPos="70"       Width="412"     Height="200"    FontSize="9"  />
 
-<Checkbox   Name="AutoCreateMovies"     Text="Auto Create Movies"           XPos="750"      YPos="310"       Width="12"      Height="16"     FontSize="9"                  LeftOrRight="false" />
+<Checkbox   Name="AutoCreateMovies"     Text="Auto Create Movies"           XPos="750"      YPos="310"      Width="12"      Height="16"     FontSize="10"                  LeftOrRight="false" />
 <Button     Name="ReleaseMovieButton"   Image="ReleaseMovie"                XPos="750"      YPos="270"      Width="120"     Height="32"     Transparency="true" />
-<Button     Name="BackButton"           Image="Back"                        XPos="847"     YPos="690"      Width="150"     Height="40"     Transparency="true" PushWindow="<back>"/>
-<Button     Name="MarketResearch"       Image="MarketResearch"              XPos="600"     YPos="270"      Width="120"     Height="32"     Transparency="true" PushWindow="Market Research"/>
+<Button     Name="BackButton"           Image="Back"                        XPos="847"      YPos="690"      Width="150"     Height="40"     Transparency="true" PushWindow="<back>"/>
+<Button     Name="MarketResearch"       Image="MarketResearch"              XPos="600"      YPos="270"      Width="120"     Height="32"     Transparency="true" PushWindow="Market Research"/>
 
 </Screen>

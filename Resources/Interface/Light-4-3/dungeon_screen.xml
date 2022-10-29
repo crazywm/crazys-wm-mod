@@ -18,7 +18,7 @@
 <Button     Name="ReleaseAllButton"     Image="ReleaseAllGirls"             XPos="7"       YPos="706"      Width="90"     Height="24"     Transparency="true" />
 <Button     Name="BackButton"           Image="Back"                        XPos="847"     YPos="690"      Width="150"     Height="40"     Transparency="true" PushWindow="<back>"/>
 
-<ListBox    Name="GirlList"                                                 XPos="7"       YPos="35"       Width="765"     Height="632"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<ListBox    Name="GirlList"                                                 XPos="7"       YPos="35"       Width="765"     Height="632"    FontSize="11"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column     Name="Name"           Header="Girl Name"                  Offset="0"  />
 <Column     Name="Health"         Header="Health"                     Offset="150"  />
 <Column     Name="Happiness"      Header="Happy"                      Offset="187"  />

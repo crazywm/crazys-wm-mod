@@ -2,7 +2,7 @@
 <Window     Name="Market Research"                                       XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
 
 <Text       Name="Target_Groups"        Text="Target Groups"             XPos="7"       YPos="12"       Width="412"     Height="20"           FontSize="12"            />
-<ListBox    Name="GroupsList"                                            XPos="7"       YPos="35"       Width="562"     Height="275"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<ListBox    Name="GroupsList"                                            XPos="7"       YPos="35"       Width="562"     Height="275"    FontSize="10"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column     Name="Group"                Header="Group"                   Offset="0"  />
 <Column     Name="Size"                 Header="Size"                    Offset="131"  />
 <Column     Name="Saturation"           Header="Sat"                     Offset="187"  />
@@ -18,7 +18,7 @@
 
 <Text       Name="Movie_txt"        Text="Movies"                     XPos="7"       YPos="325"       Width="412"     Height="20"           FontSize="12"            />
 
-<ListBox    Name="MoviesList"                                               XPos="7"       YPos="350"       Width="562"     Height="337"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="false"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<ListBox    Name="MoviesList"                                               XPos="7"       YPos="350"       Width="562"     Height="337"    FontSize="10"       RowHeight="21"      Border="1"          Events="true"      Multi="false"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
     <Column     Name="Name"                 Header="Name"                   Offset="0"  />
     <Column     Name="Price"                Header="Ticket"                 Offset="131"  />
     <Column     Name="Age"                  Header="Running"                Offset="187"  />
@@ -38,7 +38,7 @@
     <Button     Name="Survey"                   Image="Survey"                XPos="825"      YPos="380"      Width="120"      Height="32"     Transparency="true"/>
 
     <Text       Name="Prediction"               Text="Predicted Audience"           XPos="600"      YPos="12"       Width="326"     Height="20"     FontSize="12"            />
-    <ListBox    Name="PredictionList"                                               XPos="600"      YPos="35"       Width="326"     Height="280"    FontSize="9"       RowHeight="21"      Border="1"          Events="false"      Multi="false"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+    <ListBox    Name="PredictionList"                                               XPos="600"      YPos="35"       Width="326"     Height="280"    FontSize="10"       RowHeight="21"      Border="1"          Events="false"      Multi="false"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
         <Column     Name="TargetGroup"          Header="Target Group"               Offset="0"  />
         <Column     Name="Rating"               Header="Rating"                     Offset="150"  />
         <Column     Name="Views"                Header="Views"                      Offset="206"  />
