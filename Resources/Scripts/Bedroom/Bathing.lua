@@ -9,7 +9,7 @@ function Bathing(girl)
     if girl:obey_check(wm.ACTIONS.WORKSTRIP) then
         Dialog("You lead ${name} to you private chambers, and into your personal bathroom. One of your personal slaves " ..
                 "has already drawn a steaming hot bath.")
-        local wants_to_please = girl:pclove() > 80 or girl:has_trait("Exhibitionist") or girl:libido() > 75
+        local wants_to_please = girl:pclove() > 80 or girl:has_trait(wm.TRAITS.EXHIBITIONIST) or girl:libido() > 75
         if wants_to_please and girl:skill_check(wm.SKILLS.STRIP, 50) then
             wm.UpdateImage(wm.IMG.STRIP)
             Dialog("${name} begins to undress, slowly and sensually, making sure you get a good view.")
@@ -103,7 +103,7 @@ function Bathing(girl)
             if choice == 0 then
                 Dialog("Seeing her naked form, you decide to join her. She looks up in surprise when you enter the tub. Apparently, she did not notice you undressing.")
                 wm.UpdateImage(wm.IMG.BATH, ImageOptions.HETERO)
-                if girl:handjob() < 33 or girl:pclove() < 0 or girl:libido() < 25 or girl:has_trait("Chaste") then
+                if girl:handjob() < 33 or girl:pclove() < 0 or girl:libido() < 25 or girl:has_trait(wm.TRAITS.CHASTE) then
                     Dialog("You instruct ${name} to wash you. She start diligently, lathering up your hair, back and chest, then continues to scrub your legs. ")
                     Dialog("\"Haven't you forgotten something\", you ask, pointing to your erect member.")
                     wm.UpdateImage(wm.IMG.HAND)
@@ -131,13 +131,13 @@ function Bathing(girl)
                             Dialog("Just as you are about to cum, you pull out, then proceed to spurt your load over her face.\n" ..
                                     "You get dressed, ignoring her whimpers. Back in your office, you instruct one of your servants to \"Let the bitch stew for one hour, then escort her to her quarters.\"")
                             girl:obedience(5)
-                            girl:add_trait("Recently Punished", 4)
+                            girl:add_trait(wm.TRAITS.RECENTLY_PUNISHED, 4)
                             return
                         else
                             Dialog("As you both are getting dressed after to bath, you address ${name} sternly. "..
                                     "\"I'm sure you know that this was not a satisfying performance. I'm not the kind of person you should disappoint. " ..
                                     "Do better next time, or you'll regret the consequences.\" She whimpers in agreement.")
-                            girl:add_trait("Recently Scolded", 3)
+                            girl:add_trait(wm.TRAITS.RECENTLY_SCOLDED, 3)
                             girl:spirit(-2)
                             girl:pclove(-2)
                             girl:pcfear(5)

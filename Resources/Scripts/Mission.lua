@@ -19,15 +19,15 @@ function GoOnMission(girl)
             Dialog("Mission text")
             Dialog("Expenses/Cost   ")
             wm.AddPlayerGold(-750)
-            if girl:has_trait("Incorporeal") then
+            if girl:has_trait(wm.TRAITS.INCORPOREAL) then
                 Dialog("Incorporeal mission success")
-            elseif girl:has_trait("Fleet of Foot") then
+            elseif girl:has_trait(wm.TRAITS.FLEET_OF_FOOT) then
                 Dialog("Fleet of Foot")
-            elseif girl:has_trait("Strong Magic") then
+            elseif girl:has_trait(wm.TRAITS.STRONG_MAGIC) then
                 Dialog("magic success")
-            elseif girl:has_trait("Assassin") then
+            elseif girl:has_trait(wm.TRAITS.ASSASSIN) then
                 Dialog("assassin")
-            elseif girl:has_trait("Adventurer") then
+            elseif girl:has_trait(wm.TRAITS.ADVENTURER) then
                 Dialog("Adventurer success")
             elseif girl:combat() > 60 then
                 if wm.Percent(girl:combat()) then
@@ -131,7 +131,7 @@ function GoOnMission(girl)
             girl:tiredness(-10)
         elseif girl:obey_check() then -- TODO select action
             Dialog("Catacombs accept")
-            if girl:has_trait("Adventurer") then
+            if girl:has_trait(wm.TRAITS.ADVENTURER) then
                 Dialog("Adventurer start")
                 local success = wm.Range(1, 100)
                 if success >= 95 then
@@ -203,20 +203,20 @@ function GoOnMission(girl)
             Dialog("Stealing accept")
             local success = wm.Range(1, 100)
             if success >= 95 then
-                if girl:has_trait("Nymphomaniac") then
+                if girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
                     Dialog("Nympho stealing critical success")
                     -- TODO group sex
-                elseif girl:has_trait("Aggressive") then
+                elseif girl:has_trait(wm.TRAITS.AGGRESSIVE) then
                     Dialog("Aggressive stealing critical success.  beat up young couple and take girl")
                     -- TODO AddRandomGirlToDungeon Kidnapped 17 21 false false false false
-                elseif girl:has_trait("Fleet of Foot") then
+                elseif girl:has_trait(wm.TRAITS.FLEET_OF_FOOT) then
                     Dialog("Fleet of Foot critical success")
                 end
                 Dialog("normal Stealing Critical Success")
                 wm.AddPlayerGold(wm.Range(500, 1500))
                 -- GivePlayerRandomSpecialItem
             elseif success > 55 then
-                if girl:has_trait("Fleet of Foot") then
+                if girl:has_trait(wm.TRAITS.FLEET_OF_FOOT) then
                     Dialog("Fleet of foot stealing success")
                 end
                 Dialog("Stealing success")
@@ -227,7 +227,7 @@ function GoOnMission(girl)
             else
                 Dialog("Regular Combat Critical Failure")
                 -- TODO Bondage Sex
-                if girl:has_trait("Nymphomaniac") then
+                if girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
                     AdjustLust(girl, 15)
                 end
                 Dialog("Stealing Critical fail")
@@ -246,7 +246,7 @@ function GoOnMission(girl)
         if girl:obey_check() then
             Dialog("\"She puts on her sexiest dress and heels, and makes her way into town.\"")
             Dialog("\"She finds a girl drinking all alone and makes her move.\"")
-            if girl:has_trait("Straight") then
+            if girl:has_trait(wm.TRAITS.STRAIGHT) then
                 Dialog("\"She buys her a drink and the two spend the night talking.\"")
             else
                 Dialog("\"After a few drinks, she has managed to talk her into spending the night together.\"")
@@ -264,13 +264,13 @@ function AssassinatePolitician(girl)
         Dialog("\"A particular political figure has been starting a crusade to outlaw brothels within the city limits.\"  *You hand her the dossier*  \"Of course this is just a smoke screen for his true goal of raising the taxes on brothels everywhere.\"")
         Dialog("\"What's worse is he is using evidence gathered about me as his leverage to push this all through.\"  *You give her a hard look* \"I don't want him to wake up tomorrow.\"")
         wm.SetPlayerDisposition(-20)
-        if girl:has_trait("Sadistic") then
+        if girl:has_trait(wm.TRAITS.SADISTIC) then
             Dialog("I will enjoy using his entrails for lingerie...")
         end
 
         Dialog("Before she moves to leave your office you hand her a bag of gold to cover expenses.")
         wm.AddPlayerGold(-1000)
-        if girl:has_trait("Assassin") then
+        if girl:has_trait(wm.TRAITS.ASSASSIN) then
             Dialog("She vanishes from view before she even makes it to the door.")
             Dialog("Moving silently amongst the shadows of the city, She stalks her prey.  Patience is her tool and she waits for her moment.")
             Dialog("Her prey turns down a crowded street, choked with the evenings drunken revellers. She moves to strike. Effortlessly she slithers through the crowd and falls in step with the mark.")
@@ -279,7 +279,7 @@ function AssassinatePolitician(girl)
             Dialog("The bodyguards who had been busy deflecting drunks turn back around to find their client lying dead in a large pool of blood.  They search the area for the killer, but find nothing.")
             Dialog("She returns to your office several hours later and places the evidence against you and the politician's signet ring on your desk.")
             wm.SetPlayerSuspicion(-40)
-        elseif girl:has_trait("Sadistic") then
+        elseif girl:has_trait(wm.TRAITS.SADISTIC) then
             Dialog("The politician, carrying his latest bribe, enters his home from the servant's entrance to avoid prying eyes.  As the lamps illuminate the room he notices the droplets of blood.  Following the trail to the sitting room  he doesn't notice the bodies at first as his attention was on the floor and the now massive pool of blood.  He looks up.")
             Dialog("He sees them now.  His wife, children, and servants are arranged around the room in a macabre tea party.  The bodies are so broken and bloody he almost can't recognize them.  Terror grips his heart and he turns to run.")
             wm.UpdateImage(wm.IMG.DOM)
@@ -289,7 +289,7 @@ function AssassinatePolitician(girl)
             Dialog("You walk into your office the next morning to find your obsessive little killer still naked, bloody and balled up on your couch sleeping soundly.  You find the bag of gold, the politicians head, and the evidence on your desk.")
             wm.SetPlayerSuspicion(-25)
             wm.AddPlayerGold(wm.Range(200, 800))
-        elseif girl:has_trait("Nymphomaniac") then
+        elseif girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
             Dialog("She finds the Politician sitting at the bar of an upscale establishment.  She sits down next to him and strikes up a conversation.")
             if wm.Percent(girl:charisma()) then
                 wm.UpdateImage(wm.IMG.ORAL)
@@ -304,13 +304,13 @@ function AssassinatePolitician(girl)
                 Dialog("The guardsmen tell you her story.  \"It appears that the gentlemen in question tried to skip out on paying your whore and she chased him attempting to get her money.  It appears to be an accident but he took a bad fall and died.  You should keep your eye on this girl she has a temper.\"  As they turn to leave they add \"Oh, and  you will be fined 200 gold for tonight's disturbance.\"")
                 wm.AddPlayerGold(-200)
             end
-        elseif girl:has_trait("Strong Magic") then
+        elseif girl:has_trait(wm.TRAITS.STRONG_MAGIC) then
             wm.UpdateImage(wm.IMG.MAGIC)
             Dialog("She whispers a few incantations and disappears from your office.")
             Dialog("She reappears on a rooftop overlooking the Politician's residence.  She begins preparing her components as she waits for him to return home.")
             Dialog("She watches as he walks into his home and greets his family.  She waits until he is alone in his study and teleports into the room.")
             Dialog("He jumps as the mage appears before him.  He tries to scream as she begins casting another spell but he is paralysed.  She walks over to him and removes his signet ring and takes the evidence from his desk.")
-            if girl:has_trait("Aggressive") then
+            if girl:has_trait(wm.TRAITS.AGGRESSIVE) then
                 Dialog("She teleports back to her vantage point and begins casting the Inferno spell.  She can still see the man paralysed in place as the flames begin to consume the room and his flesh.")
                 Dialog("The man's family and servants can be see fleeing the home as the inferno quickly devours the building.  They call back at the house for the master of the house, but he will never answer...")
             else

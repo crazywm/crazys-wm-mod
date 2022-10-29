@@ -138,14 +138,17 @@ target_include_directories(WmGameObjects PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 find_package(Python3)
 set(SCRIPT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../codegen/traits.py)
-set(TRAITS_DIR ${CMAKE_SOURCE_DIR}/Resources/Data/Traits)
+set(TRAITS_DIR ${RESOURCE_DIR}/Data/Traits)
 set(TRAITS_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/traits.h)
+set(LUA_DOC_FILE ${RESOURCE_DIR}/Scripts/_traits.lua)
 file(GLOB TRAIT_XML_FILES ${TRAITS_DIR}/*.xml)
 
+
 add_custom_command(
-        COMMAND Python3::Interpreter ${SCRIPT_FILE} ${TRAITS_DIR} ${TRAITS_HEADER}
+        COMMAND Python3::Interpreter ${SCRIPT_FILE} ${TRAITS_DIR} ${TRAITS_HEADER} ${LUA_DOC_FILE}
         DEPENDS ${SCRIPT_FILE} ${TRAIT_XML_FILES}
         OUTPUT ${TRAITS_HEADER}
+        BYPRODUCTS ${LUA_DOC_FILE}
         COMMENT "Generating traits header ${TRAITS_HEADER}."
 )
 target_sources(WmGameObjects PUBLIC ${TRAITS_HEADER})

@@ -241,7 +241,7 @@ function Refuse(girl)
         "Force Sex")
     if choice == 0 then
         Dialog("You say nothing and go about your other business.")
-        if girl:has_trait("Recently Scolded") then
+        if girl:has_trait(wm.TRAITS.RECENTLY_SCOLDED) then
             girl:pcfear(-3)
             girl:obedience(-1)
         end
@@ -259,7 +259,7 @@ function Refuse(girl)
         girl:health(-1)
         girl:obedience(3)
         girl:pcfear(5)
-        girl:add_trait("Recently Punished", 3)
+        girl:add_trait(wm.TRAITS.RECENTLY_PUNISHED, 3)
     elseif choice == 3 then
         Dialog("\"Oh I see.  You feel you have no need to obey me?\"  You ask calmly.  \"Perhaps then you also have no need for the things I have given you?\" ")
         Dialog("\"I'll just be taking a few things back then.\"  You order your guards to strip her naked and make her stand in front of the brothel all day and night.")
@@ -269,7 +269,7 @@ function Refuse(girl)
         girl:happiness(-3)
         girl:pclove(-10)
         girl:obedience(5)
-        girl:add_trait("Recently Punished", 1)
+        girl:add_trait(wm.TRAITS.RECENTLY_PUNISHED, 1)
     elseif choice == 4 then
         Dialog("Your eyes flash with rage. \"You dare refuse? I'll show you what happens to whores that refuse to do their master's bidding\"")
         Dialog("You knock her down and begin to tear away her clothing.  She cries out as you force yourself inside her.")
@@ -280,7 +280,7 @@ function Refuse(girl)
         girl:pclove(-20)
         girl:pcfear(10)
         wm.SetPlayerDisposition(-3)
-        girl:add_trait("Recently Punished", 4)
+        girl:add_trait(wm.TRAITS.RECENTLY_PUNISHED, 4)
     end
 end
 

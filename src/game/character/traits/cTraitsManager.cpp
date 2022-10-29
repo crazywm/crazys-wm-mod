@@ -108,6 +108,15 @@ void cTraitsManager::add_trait(std::unique_ptr<cTraitSpec> spec) {
     m_Traits.emplace(spec->name(), std::move(spec));
 }
 
+std::vector<std::string> cTraitsManager::get_all_traits() const {
+    std::vector<std::string> result;
+    result.reserve(m_Traits.size());
+    for(const auto& trait : m_Traits) {
+        result.push_back(trait.first);
+    }
+    return result;
+}
+
 cTraitsManager::cTraitsManager() = default;
 cTraitsManager::~cTraitsManager() noexcept = default;
 cTraitsManager::cTraitsManager(cTraitsManager&&) noexcept = default;

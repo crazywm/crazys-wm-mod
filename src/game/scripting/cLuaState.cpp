@@ -68,6 +68,11 @@ void cLuaState::settable(int index, const char *key, int value) {
     lua_settable(m_State, index - 2);
 }
 
+void cLuaState::settable(int index, const char* key, const std::string& value) {
+    lua_pushstring(m_State, key);
+    lua_pushstring(m_State, value.c_str());
+    lua_settable(m_State, index - 2);
+}
 
 
 sScriptValue scripting::get_value(lua_State* interpreter, int index) {

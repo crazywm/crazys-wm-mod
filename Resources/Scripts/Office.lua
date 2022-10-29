@@ -1,3 +1,4 @@
+---@param girl wm.Girl
 function InteractOffice(girl)
     local choice = ChoiceBox("", "Instruct her to tidy up your office", "Review her performance",
             "Send her on a mission", "Personal instruction", "Inspect her", "Manage Tattoos", "Manage Piercings", "Go Back")
@@ -66,7 +67,7 @@ function InteractOffice(girl)
             return girl:trigger("girl:refuse")
         end
     elseif choice == 4 then
-        if girl:has_trait("Lolita") then
+        if girl:has_trait(wm.TRAITS.LOLITA) then
             Dialog("You look up at her, \"Are you sure this parchment is correct?  You barely look of legal age.\"")
         elseif girl:age() > 30 then
             Dialog("Looking down the parchment:  \"Hmm, a little older than most perhaps...\"")
@@ -79,17 +80,17 @@ function InteractOffice(girl)
         if girl:obey_check(wm.ACTIONS.WORKSTRIP) then
             girl:strip(2)
             wm.UpdateImage(wm.IMG.STRIP)
-            if girl:has_trait("Exhibitionist", "Nymphomaniac") and girl:pclove() > 0 then
+            if girl:has_trait(wm.TRAITS.EXHIBITIONIST, wm.TRAITS.NYMPHOMANIAC) and girl:pclove() > 0 then
                 Dialog("She eagerly removes her clothing and stands before you.")
                 girl:happiness(1)
                 AdjustLust(girl, 1)
-            elseif girl:strip() < 40 or girl:has_trait("Chaste") then
+            elseif girl:strip() < 40 or girl:has_trait(wm.TRAITS.CHASTE) then
                 Dialog("She removes her clothing and stands nervously before you.")
             else
                 Dialog("She removes her clothing and stands before you.")
             end
 
-            if girl:has_trait("Futanari") then
+            if girl:has_trait(wm.TRAITS.FUTANARI) then
                 Dialog("Oh! Hmm...I didn't realize you were a dick girl...")
             end
 
@@ -100,35 +101,35 @@ function InteractOffice(girl)
             end
 
             Dialog("You stand up and begin to slowly circle her.")
-            if girl:has_trait("Great Figure") then
+            if girl:has_trait(wm.TRAITS.GREAT_FIGURE) then
                 Dialog("Ahh, you do have a nice figure don't you.  Very nicely proportioned.")
             end
-            if girl:has_trait("Long Legs") then
+            if girl:has_trait(wm.TRAITS.LONG_LEGS) then
                 Dialog("Wow, those legs certainly do go all the way up, don't they.")
             end
-            if girl:has_trait("Great Arse") then
+            if girl:has_trait(wm.TRAITS.GREAT_ARSE) then
                 Dialog("You stop circling directly behind her and gently pressing between her shoulder blades until she is bent over with her hands on your desk.  Your eyes are glued to her ass.  Now, that is truly a magnificent ass.")
             end
 
-            if girl:has_trait("Abnormally Large Boobs") then
+            if girl:breast_size() >= 8 then
                 Dialog("Oh My Goddess!  Those are some gigantic breasts.  How do you even stand up straight?")
-            elseif girl:has_trait("Big Boobs") then
+            elseif girl:breast_size() >= 6  then
                 Dialog("You stare a moment at her tits.  You have truly been blessed with some healthy breasts.")
-            elseif girl:has_trait("Small Boobs") then
+            elseif girl:breast_size() <= 3  then
                 Dialog("You reach out to her chest and try to cup one of her breasts in your hand.  \"Well, a little less than a handful, but on you my dear they seem right.\"")
             end
 
-            if girl:has_trait("Perky Nipples") then
+            if girl:has_trait(wm.TRAITS.PERKY_NIPPLES) then
                 Dialog("You run your palms across her perky nipples.  You give them a little pinch.")
-            elseif girl:has_trait("Puffy Nipples") then
+            elseif girl:has_trait(wm.TRAITS.PUFFY_NIPPLES) then
                 Dialog("Running your hands over her breasts you take a moment to admire her soft, puffy nipples.")
             end
 
-            if girl:has_trait("Strong") then
+            if girl:has_trait(wm.TRAITS.STRONG) then
                 Dialog("You examine her finely toned muscles.  Squeezing her biceps you feel the strength there.  \"You are strong. That is good.\"")
             end
 
-            if girl:has_trait("Horrific Scars") then
+            if girl:has_trait(wm.TRAITS.HORRIFIC_SCARS) then
                 Dialog("You have noticed them the entire time, but you debate whether or not to comment on the awful scars covering large portions of her body.")
             end
 
@@ -164,11 +165,11 @@ function ManageTattoos(girl)
         return false
     end
 
-    if girl:has_trait("Heavily Tattooed") then
+    if girl:has_trait(wm.TRAITS.HEAVILY_TATTOOED) then
         Dialog("${firstname}'s entire body is covered in tattoos.")
-    elseif girl:has_trait("Tattooed") then
+    elseif girl:has_trait(wm.TRAITS.TATTOOED) then
         Dialog("${firstname} has a large tattoo")
-    elseif girl:has_trait("Small Tattoos") then
+    elseif girl:has_trait(wm.TRAITS.SMALL_TATTOOS) then
         Dialog("${firstname} has a few small tattoos.")
     else
         Dialog("${firstname}doesn't have any tattoos.")
@@ -202,15 +203,15 @@ function ManageTattoos(girl)
         girl:tiredness(10)
         girl:health(-20)
 
-        if girl:has_trait("Heavily Tattooed", "Tattooed") then
+        if girl:has_trait(wm.TRAITS.HEAVILY_TATTOOED, wm.TRAITS.TATTOOED) then
             Dialog("${firstname}'s body is already covered in tattoos.")
             return false
         else
-            if wm.Percent(20)and girl:has_trait("Small Tattoos") then
-                girl:remove_trait("Small Tattoos")
-                girl:add_trait("Tattooed")
+            if wm.Percent(20)and girl:has_trait(wm.TRAITS.SMALL_TATTOOS) then
+                girl:remove_trait(wm.TRAITS.SMALL_TATTOOS)
+                girl:add_trait(wm.TRAITS.TATTOOED)
             else
-                girl:add_trait( "Small Tattoos")
+                girl:add_trait( wm.TRAITS.SMALL_TATTOOS)
             end
         end
 
@@ -220,10 +221,10 @@ function ManageTattoos(girl)
                     girl:health(-10)
                 end
                 Dialog("The cheap ink became infected, and the surrounding skin is now Scarred.")
-                girl:add_trait("Small Scars")
+                girl:add_trait(wm.TRAITS.SMALL_SCARS)
             else
                 Dialog("Maybe you should have invested a bit more to find a tattoo artist who uses clean needles. It appears that ${firstname} has contracted AIDS.")
-                girl:add_trait("AIDS")
+                girl:add_trait(wm.TRAITS.AIDS)
             end
         else
             Dialog("Everything went well, and after a short recovery period ${firstname} can show off her new Tattoo.")
@@ -233,7 +234,7 @@ function ManageTattoos(girl)
             Dialog("You don't have enough money")
             return false
         end
-        if girl:has_trait("Heavily Tattooed") then
+        if girl:has_trait(wm.TRAITS.HEAVILY_TATTOOED) then
             Dialog("${firstname}'s entire body is already covered in tattoos.")
             return false
         end
@@ -242,29 +243,29 @@ function ManageTattoos(girl)
         girl:tiredness(5)
         girl:health(-5)
 
-        if girl:has_trait("Small Tattoos") then
+        if girl:has_trait(wm.TRAITS.SMALL_TATTOOS) then
             if wm.Percent(33) then
                 Dialog("By now she has accumulated enough tattoos to be considered Tattooed.")
-                girl:remove_trait("Small Tattoos")
-                girl:add_trait("Tattooed")
+                girl:remove_trait(wm.TRAITS.SMALL_TATTOOS)
+                girl:add_trait(wm.TRAITS.TATTOOED)
             end
-        elseif girl:has_trait("Tattooed") then
+        elseif girl:has_trait(wm.TRAITS.TATTOOED) then
             if wm.Percent(10) then
                 Dialog("By now she has accumulated enough tattoos to be considered Heavily Tattooed.")
-                girl:remove_trait("Tattooed")
-                girl:add_trait("Heavily Tattooed")
+                girl:remove_trait(wm.TRAITS.TATTOOED)
+                girl:add_trait(wm.TRAITS.HEAVILY_TATTOOED)
             else
                 Dialog("She now has one more small tattoo on her already Tattooed body.")
             end
         else
-            girl:add_trait( "Small Tattoos")
+            girl:add_trait( wm.TRAITS.SMALL_TATTOOS)
         end
     elseif choice == 2 then
         if not wm.TakePlayerGold(400) then
             Dialog("You don't have enough money")
             return false
         end
-        if girl:has_trait("Heavily Tattooed") then
+        if girl:has_trait(wm.TRAITS.HEAVILY_TATTOOED) then
             Dialog("${firstname}'s entire body is already covered in tattoos.")
             return false
         end
@@ -273,15 +274,15 @@ function ManageTattoos(girl)
         girl:tiredness(10)
         girl:health(-10)
 
-        if girl:has_trait("Tattooed") then
+        if girl:has_trait(wm.TRAITS.TATTOOED) then
             if wm.Percent(33) then
                 Dialog("With this new tattoo, her entire body appears to be covered in tattoos")
-                girl:remove_trait("Tattooed")
-                girl:add_trait("Heavily Tattooed")
+                girl:remove_trait(wm.TRAITS.TATTOOED)
+                girl:add_trait(wm.TRAITS.HEAVILY_TATTOOED)
             end
         else
-            girl:remove_trait("Small Tattoos")
-            girl:add_trait( "Tattooed")
+            girl:remove_trait(wm.TRAITS.SMALL_TATTOOS)
+            girl:add_trait( wm.TRAITS.TATTOOED)
         end
     elseif choice == 3 then
         if not wm.TakePlayerGold(750) then
@@ -289,14 +290,14 @@ function ManageTattoos(girl)
             return false
         end
 
-        if girl:has_trait("Heavily Tattooed") then
+        if girl:has_trait(wm.TRAITS.HEAVILY_TATTOOED) then
             Dialog("${firstname}'s entire body is already covered in tattoos.")
             return false
         end
 
         Dialog("You send ${firstname} to a professional tattoo artist to get her entire body tattooed.")
 
-        if girl:has_trait("Tattooed", "Small Tattoos", "Tough") then
+        if girl:has_trait(wm.TRAITS.TATTOOED, wm.TRAITS.SMALL_TATTOOS, wm.TRAITS.TOUGH) then
             girl:tiredness(10)
             girl:health(-10)
             Dialog("Getting her body covered in tattoos is a long and arduous process, but ${firstname} handled it like a champ.")
@@ -306,16 +307,16 @@ function ManageTattoos(girl)
             girl:health(-20)
             girl:happiness(-20)
         end
-        girl:remove_trait("Small Tattoos")
-        girl:remove_trait("Tattooed")
-        girl:add_trait("Heavily Tattooed")
+        girl:remove_trait(wm.TRAITS.SMALL_TATTOOS)
+        girl:remove_trait(wm.TRAITS.TATTOOED)
+        girl:add_trait(wm.TRAITS.HEAVILY_TATTOOED)
     elseif choice == 4 then
         if not wm.TakePlayerGold(300) then
             Dialog("You don't have enough money")
             return false
         end
 
-        if not girl:has_trait("Heavily Tattooed", "Tattooed", "Small Tattoos") then
+        if not girl:has_trait(wm.TRAITS.HEAVILY_TATTOOED, wm.TRAITS.TATTOOED, wm.TRAITS.SMALL_TATTOOS) then
             Dialog("${firstname} has no tattoos that could be removed.")
             return false
         end
@@ -323,28 +324,28 @@ function ManageTattoos(girl)
         girl:tiredness(10)
         girl:health(-10)
         local where = RandomChoice("back", "calf", "arm", "belly", "chest", "ass")
-        if girl:has_trait("Heavily Tattooed") then
+        if girl:has_trait(wm.TRAITS.HEAVILY_TATTOOED) then
             if wm.Percent(50) then
                 Dialog("${firstname} gets a large tattoo removed from her " .. where .. ". Given her amount of ink, this hardly makes a difference though.")
             else
                 Dialog("${firstname} gets a large tattoo removed from her " .. where .. ".")
-                girl:remove_trait("Heavily Tattooed")
-                girl:add_trait("Tattooed")
+                girl:remove_trait(wm.TRAITS.HEAVILY_TATTOOED)
+                girl:add_trait(wm.TRAITS.TATTOOED)
             end
-        elseif girl:has_trait("Tattooed") then
+        elseif girl:has_trait(wm.TRAITS.TATTOOED) then
             if wm.Percent(50) then
                 Dialog("${firstname} gets a tattoo removed from her " .. where .. ". She still has quite a few remaining.")
             else
                 Dialog("${firstname} gets a tattoo removed from her " .. where .. ".")
-                girl:remove_trait("Tattooed")
-                girl:add_trait("Small Tattoos")
+                girl:remove_trait(wm.TRAITS.TATTOOED)
+                girl:add_trait(wm.TRAITS.SMALL_TATTOOS)
             end
-        elseif girl:has_trait("Small Tattoos") then
+        elseif girl:has_trait(wm.TRAITS.SMALL_TATTOOS) then
             if wm.Percent(50) then
                 Dialog("${firstname} gets a small tattoo removed from her " .. where .. ". She still has some tattoos remaining.")
             else
                 Dialog("${firstname} gets a small tattoo removed from her " .. where .. ".")
-                girl:remove_trait("Small Tattoos")
+                girl:remove_trait(wm.TRAITS.SMALL_TATTOOS)
             end
         end
     elseif choice == 5 then
@@ -366,23 +367,23 @@ function ManagePiercings(girl)
 
     local piercings = ""
     local any = false
-    if girl:has_trait("Pierced Tongue") then
+    if girl:has_trait(wm.TRAITS.PIERCED_TONGUE) then
         piercings = "She has a pierced tongue.\n"
         any = true
     end
-    if girl:has_trait("Pierced Nose") then
+    if girl:has_trait(wm.TRAITS.PIERCED_NOSE) then
         piercings = piercings .. "She has her nose pierced.\n"
         any = true
     end
-    if girl:has_trait("Pierced Navel") then
+    if girl:has_trait(wm.TRAITS.PIERCED_NAVEL) then
         piercings = piercings .. "She has a piercing in her navel.\n"
         any = true
     end
-    if girl:has_trait("Pierced Nipples") then
+    if girl:has_trait(wm.TRAITS.PIERCED_NIPPLES) then
         piercings = piercings .. "Her nipples are pierced.\n"
         any = true
     end
-    if girl:has_trait("Pierced Clit") then
+    if girl:has_trait(wm.TRAITS.PIERCED_CLIT) then
         piercings = piercings .. "She has a clit piercing.\n"
         any = true
     end

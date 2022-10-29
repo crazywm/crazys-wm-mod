@@ -126,11 +126,11 @@ end
 function DecentCitizen(girl)
     Dialog("You notice an attractive woman walking the same way as you. She looks over her shoulder and smiles to herself.")
     GirlDescription(girl)
-    if girl:has_trait("Fleet of Foot") then
+    if girl:has_trait(wm.TRAITS.FLEET_OF_FOOT) then
         Dialog("She is moving faster than you, but she slows down to let you catch up.")
-    elseif girl:has_trait("Flight") then
+    elseif girl:has_trait(wm.TRAITS.FLIGHT) then
         Dialog("She almost doesn\'t touch the ground, she is moving so fast. You hustle to catch up.")
-    elseif girl:has_trait("Agile") then
+    elseif girl:has_trait(wm.TRAITS.AGILE) then
         Dialog("You admire the way she moves, and how fast she goes. You lengthen your stride to catch her.")  
     else
         Dialog("You catch up to her, and adjust your pace to match hers.")
@@ -187,9 +187,9 @@ function DefendBrothel(girl)
             Dialog("She looks comely enough. You are going to have fun training her.")
             wm.AcquireGirl(girl)
             girl:health(-20)
-            girl:add_trait("Powerful Magic")
-            girl:remove_trait("Weak Magic")
-            girl:remove_trait("Muggle")
+            girl:add_trait(wm.TRAITS.POWERFUL_MAGIC)
+            girl:remove_trait(wm.TRAITS.WEAK_MAGIC)
+            girl:remove_trait(wm.TRAITS.MUGGLE)
             return
         else
             Dialog("Your blow hits, but a little low. She\'s staggered, but still on her feet. Scared she will get a spell off, you hastily swing at her overhand.")
@@ -200,9 +200,9 @@ function DefendBrothel(girl)
             Dialog("Checking her pulse, you discover that she is still alive, but just barely. The sap did brutal damage to her skull. She might not make it.")
             wm.AcquireGirl(girl)
             girl:health(-90)
-            girl:add_trait("Powerful Magic")
-            girl:remove_trait("Weak Magic")
-            girl:remove_trait("Muggle")
+            girl:add_trait(wm.TRAITS.POWERFUL_MAGIC)
+            girl:remove_trait(wm.TRAITS.WEAK_MAGIC)
+            girl:remove_trait(wm.TRAITS.MUGGLE)
             Dialog("The mage secured, you check the rest of the battle. The enemy gang has been routed, but your guards and your brothel have suffered greatly.")
             Dialog("It is going to take a lot of gold to fix this up. Hope you have a spare five grand laying around.")
             wm.TakePlayerGold(5000)
@@ -281,7 +281,7 @@ function DinnerAndADrink(girl)
         if kiss == 0 then
             Dialog("Girl: \"Oh, please. Dinner was lovely. Don\'t ruin it now.\"")
             Dialog("You: \"Dinner was lovely, indeed, but you will be the one ruining things if you leave me with a case of blue balls.\"")
-            local handy = girl:has_trait("Meek") or girl:has_trait("Mind Fucked") or not wm.Percent(girl:intelligence())
+            local handy = girl:has_trait(wm.TRAITS.MEEK, wm.TRAITS.MIND_FUCKED) or not wm.Percent(girl:intelligence())
             if handy == 0 then
                 Dialog("She snarls at you. \"There is a really easy cure for blue balls. I\'m sure you are intimately familiar with it.\"")
                 Dialog("\"You bought dinner, not a ticket into my pants. Jerk off, jerk.\" The door slams in your face, and it seems your date is over.")
@@ -347,7 +347,7 @@ function GirlAudition(girl)
         girl:charisma(100)
         girl:tittysex(-100)
         girl:anal(100)
-        girl:add_trait("Virgin")
+        girl:add_trait(wm.TRAITS.VIRGIN)
     end
     
     Dialog("You take her to a fancy hotel nearby. It costs 100 gold but you think she might be worth it.")
@@ -364,7 +364,7 @@ function GirlAudition(girl)
         Dialog("You grimace. She might not be smart enough to be good at this. But you look again, and realize she is pretty enough that her brains don\'t matter.")
         Dialog("You: \"Babe, that was a test. Always get the money up front!\" You proceed to pay her.")
         wm.TakePlayerGold(200)
-    elseif girl:has_trait("Charismatic") or girl:has_trait("Charming") or girl:has_trait("Cool Person") or wm.Percent(girl:charisma()) then
+    elseif girl:has_trait(wm.TRAITS.CHARISMATIC, wm.TRAITS.CHARMING, wm.TRAITS.COOL_PERSON) or wm.Percent(girl:charisma()) then
         Dialog("That\'s a shame. You shake your head. \"Girl, you gotta get the money up front or you will get stiffed!\"")
         Dialog("Girl: \"Oh, please, sir! I usually get better tips if I bring up payment afterwards.\"")
         Dialog("Her fingers trace the length of your obvious erection. \"You wouldn\'t fail me over a simple matter of technique, would you?\"")
@@ -448,7 +448,7 @@ function GirlAudition(girl)
         end
     end
     if score < 100 then
-        if girl:has_trait("Virgin") then
+        if girl:has_trait(wm.TRAITS.VIRGIN) then
             if debug == 1 then Dialog ("trying presented") end
             wm.UpdateImage(wm.IMG.PRESENTED)
             Dialog("You are disappointed when she doesn\'t let you get near her pussy. \"That\'s never been used, sugar. But my ass is more than willing.\"")
@@ -512,40 +512,31 @@ end
 function GirlDescription(girl)
     local desc = ""
     local debug = 2
-    if debug == 1 then Dialog("checking undead") end
-    if girl:has_trait("Undead") or girl:has_trait("Skeleton") or girl:has_trait("Zombie") then
+    if girl:has_trait(wm.TRAITS.UNDEAD, wm.TRAITS.SKELETON, wm.TRAITS.ZOMBIE) then
         desc = desc .. RandomChoice("This girl is clearly not alive. ",
                                     "She is magically animated. ")
     end
-    if debug == 1 then Dialog("checking demon") end
-    if girl:has_trait("Demon") or girl:has_trait("Succubus") or girl:has_trait("Vampire") then
+    if girl:has_trait(wm.TRAITS.DEMON, wm.TRAITS.SUCCUBUS, wm.TRAITS.VAMPIRE) then
         desc = desc .. "There is an air of brooding, almost supernatural danger about her. "
     end
-    if debug == 1 then Dialog("checking angel") end
-    if girl:has_trait("Angel") then
+    if girl:has_trait(wm.TRAITS.ANGEL) then
         desc = desc .. "Just looking at this girl calms you. You feel serene in her presence. " 
     end
-    if debug == 1 then Dialog("checking nonhuman") end
-    if girl:has_trait("Canine") or girl:has_trait("Cat Girl") or girl:has_trait("Cow Girl") or girl:has_trait("Dryad") or
-       girl:has_trait("Elf") or girl:has_trait("Equine") or girl:has_trait("Furry") or girl:has_trait("Half-Breed") or 
-       girl:has_trait("Not Human") or girl:has_trait("Reptilian") or girl:has_trait("Slitherer") or girl:has_trait("Cyclops") or
-       girl:has_trait("Playful Tail") or girl:has_trait("Prehensile Tail") then 
+    if girl:has_trait(wm.TRAITS.CANINE, wm.TRAITS.CAT_GIRL, wm.TRAITS.COW_GIRL, wm.TRAITS.DRYAD, wm.TRAITS.ELF, wm.TRAITS.EQUINE,
+            wm.TRAITS.FURRY, wm.TRAITS.HALF_BREED, wm.TRAITS.NOT_HUMAN, wm.TRAITS.REPTILIAN, wm.TRAITS.SLITHERER, wm.TRAITS.CYCLOPS,
+            wm.TRAITS.PLAYFUL_TAIL, wm.TRAITS.PREHENSILE_TAIL, wm.TRAITS.WINGS) then
         desc = desc .. RandomChoice("She obviously has non-human DNA. ", 
                                     "She is not completely human. ")
     end
-    if debug == 1 then Dialog("checking solar") end
-    if girl:has_trait("Solar Powered") then
+    if girl:has_trait(wm.TRAITS.SOLAR_POWERED) then
         desc = desc .. "You see her stretch lazily in the sun, with a big smile on her face. "
     end
-    if debug == 1 then Dialog("checking construct") end
-    if girl:has_trait("Construct") or girl:has_trait("Battery Operated") or girl:has_trait("Half-Construct") then
+    if girl:has_trait(wm.TRAITS.CONSTRUCT, wm.TRAITS.BATTERY_OPERATED, wm.TRAITS.HALF_CONSTRUCT) then
         desc = desc .. "She is partially or fully mechanical. "
     end
-    if debug == 1 then Dialog("checking futa") end
-    if girl:has_trait("Futanari") or girl:has_trait("Shape Shifter") then
+    if girl:has_trait(wm.TRAITS.FUTANARI, wm.TRAITS.SHAPE_SHIFTER) then
         desc = desc .. "Her face and manner promises you many fun surprises. "
     end
-    if debug == 1 then Dialog("beauty=" .. girl:beauty()) end
     if (girl:beauty() > 90) then
         desc = desc .. RandomChoice("She is stunning beautiful. People openly stare at her. ", 
                                     "You have never seen anyone as beautiful as her. ")
@@ -561,201 +552,183 @@ function GirlDescription(girl)
                                     "You think you can help her be prettier. ",
                                     "She is fairly attractive. ")
     end
-    if debug == 1 then Dialog("checking charm") end
-    if girl:has_trait("Charismatic") or girl:has_trait("Charming") or girl:has_trait("Cool Person") then
+
+    if girl:has_trait(wm.TRAITS.CHARISMATIC, wm.TRAITS.CHARMING, wm.TRAITS.COOL_PERSON) then
         desc = desc .. RandomChoice("When she smiles, you instantly feel a connection to her. ",
                                     "She makes you smile just by looking at you. ")
     end
-    if debug == 1 then Dialog("checking elegant") end
-    if girl:has_trait("Elegant") or girl:has_trait("Noble") or girl:has_trait("Princess") or girl:has_trait("Queen") or
-       girl:has_trait("Fallen Goddess") or girl:has_trait("Goddess") or girl:has_trait("Angel") then
+    if girl:has_trait(wm.TRAITS.ELEGANT, wm.TRAITS.NOBLE, wm.TRAITS.PRINCESS, wm.TRAITS.QUEEN, wm.TRAITS.FALLEN_GODDESS,
+            wm.TRAITS.GODDESS, wm.TRAITS.ANGEL) then
         desc = desc .. RandomChoice("Everything about this girl says she is above your social standing. ",
                                     "Women rarely make you uncomfortable, but this one seems out of your league. ")
     end
-    if debug == 1 then Dialog("checking exotic") end
-    if girl:has_trait("Beauty Mark") or girl:has_trait("Exotic") or girl:has_trait("Cute") then
+    if girl:has_trait(wm.TRAITS.BEAUTY_MARK, wm.TRAITS.EXOTIC, wm.TRAITS.CUTE) then
         desc = desc .. "There is something about her look that makes her very attractive. "
     end
-    if debug == 1 then Dialog("checking incorporeal") end
-    if girl:has_trait("Incorporeal") then
+    if girl:has_trait(wm.TRAITS.INCORPOREAL) then
         desc = desc .. RandomChoice("From certain angles, you swear you can see right through her. ",
                                     "She is just a wisp of a thing, but you get the feeling she can endure a lot.")
     end
-    if debug == 1 then Dialog("checking sexy air") end
-    if girl:has_trait("Dick-Sucking Lips") or girl:has_trait("Sexy Air") then
+    if girl:has_trait(wm.TRAITS.DICK_SUCKING_LIPS, wm.TRAITS.SEXY_AIR) then
         desc = desc .. RandomChoice("Her lips look full and inviting. ",
                                     "Your dick stiffens as she purses her lips at you. ")
     end
-    if debug == 1 then Dialog("checking lolita age=" .. girl:age()) end
-    if (girl:has_trait("Lolita") or girl:age() < 21) then
+    if (girl:has_trait(wm.TRAITS.LOLITA) or girl:age() < 21) then
         desc = desc .. RandomChoice("She looks very young. ",
                                     "Your jailbait alarm is going off. ")
     end
-    if debug == 1 then Dialog("checking big boobs") end
-    if girl:has_trait("Busty Boobs") or girl:has_trait("Big Boobs") or girl:has_trait("Giant Juggs") or girl:has_trait("Massive Melons") or 
-       girl:has_trait("Abnormally Large Boobs") or girl:has_trait("Titanic Tits") then
+
+    if girl:breast_size() >= 6 then
         desc = desc .. RandomChoice("Given her rack, you hope she has a strong back. ", 
                                     "Her sweater puppies look like a pair of St. Bernards. ",
                                     "She has great tracts of land. ") 
     end
-    if debug == 1 then Dialog("checking flat") end
-    if girl:has_trait("Flat Chest") then
+
+    if girl:breast_size() < 3 then
         desc = desc .. "She has almost no breasts. "
     end
-    if debug == 1 then Dialog("checking small boobs") end
-    if girl:has_trait("Petite Breasts") or girl:has_trait("Small Boobs") then
+
+    if girl:breast_size() >= 3 and girl:breast_size() < 5 then
         desc = desc .. "Her sweater puppies look to be chihuahuas. "
     end
-    if debug == 1 then Dialog("checking phat ass") end
-    if girl:has_trait("Great Arse") or girl:has_trait("Phat Booty") or girl:has_trait("Plump Tush") or girl:has_trait("Deluxe Derriere") then
+
+    if girl:has_trait(wm.TRAITS.GREAT_ARSE, wm.TRAITS.PHAT_BOOTY, wm.TRAITS.PLUMP_TUSH, wm.TRAITS.DELUXE_DERRIERE) then
         desc = desc .. RandomChoice("Her ass rolls and sways suggestively. You have trouble keeping your eyes off it. ",
                                     "She has a perfect cushion for the pushin\'. ")
     end
-    if debug == 1 then Dialog("checking flat ass") end
-    if girl:has_trait("Flat Ass") then
+
+    if girl:has_trait(wm.TRAITS.FLAT_ASS) then
         desc = desc .. RandomChoice("Her butt could use more curves. ",
                                     "She has the slim butt of a very young girl. ")
     end
-    if debug == 1 then Dialog("checking tight butt") end
-    if girl:has_trait("Tight Butt") then
+
+    if girl:has_trait(wm.TRAITS.TIGHT_BUTT) then
         desc = desc .. RandomChoice("Her butt is finely-sculpted. She must work out. ",
                                     "Those ass cheeks are works of art. ")
     end
-    if debug == 1 then Dialog("checking figure") end
-    if girl:has_trait("Great Figure") or girl:has_trait("Hourglass Figure") then
+
+    if girl:has_trait(wm.TRAITS.GREAT_FIGURE, wm.TRAITS.HOURGLASS_FIGURE) then
         desc = desc .. RandomChoice("Her figure is wonderful. ", 
                                     "You want to run your hands over her curves. ",
                                     "She has curves in all the right places. ")
     end
-    if debug == 1 then Dialog("checking fat") end
-    if girl:has_trait("Fat") or girl:has_trait("Plump") then
+
+    if girl:has_trait(wm.TRAITS.FAT, wm.TRAITS.PLUMP) then
         desc = desc .. RandomChoice("She looks like she hasn\'t missed many meals lately. ", 
                                     "She is a little heavy. You wonder how much she would increase your food budget. ", 
                                     "She is a little soft looking. ", 
                                     "She doesn\'t any possibility of a thigh gap. ")
     end
-    if debug == 1 then Dialog("checking strong") end
-    if girl:has_trait("Muscular") or girl:has_trait("Strong") then
+
+    if girl:has_trait(wm.TRAITS.MUSCULAR, wm.TRAITS.STRONG) then
         desc = desc .. RandomChoice("She is very obviously fit and athletic. ", 
                                     "Her muscles ripple as she moves. ",
                                     "She wears skin tight clothes that show off her ripped body. ")
     end
-    if debug == 1 then Dialog("checking height") end
-    if girl:has_trait("Giant") or girl:has_trait("Tall") then
+
+    if girl:has_trait(wm.TRAITS.GIANT, wm.TRAITS.TALL) then
         desc = desc .. "She is quite tall. " .. RandomChoice("You wonder how the weather is up there. ", 
                                                              "She may give you an under-boob fetish. ")
-    elseif girl:has_trait("Short") or girl:has_trait("Dwarf") then
+    elseif girl:has_trait(wm.TRAITS.SHORT, wm.TRAITS.DWARF) then
         desc = desc .. "She is very short. " .. RandomChoice("She has to look up to meet your eyes. ",
                                     "You can easily see the top of her head. ")
     end
 
-    if debug == 1 then Dialog("checking legs") end
-    if girl:has_trait("Long Legs") then
-        if debug == 1 then Dialog("has long legs") end
+    if girl:has_trait(wm.TRAITS.LONG_LEGS) then
         desc = desc .. RandomChoice ("Her legs seem to go on forever. ",
                                      "She has beautiful legs. ")
-    else
-        if debug == 1 then Dialog("no long legs") end
     end
 
-    if debug == 1 then Dialog("checking hips") end
-    if girl:has_trait("Large Hips") or girl:has_trait("Wide Bottom") then
-        if debug == 1 then Dialog("girl is thicc") end
+    if girl:has_trait(wm.TRAITS.LARGE_HIPS, wm.TRAITS.WIDE_BOTTOM) then
         desc = desc .. RandomChoice ("She is broad across the beam. ",
                                      "She is delightfully thicc. ")
-    else
-        if debug == 1 then Dialog("not thicc") end
     end
-    if debug == 1 then Dialog("checking milf") end
-    if (girl:has_trait("Mature Body") or girl:has_trait("MILF") or girl:has_trait("Middle Aged") or (girl:age() > 30 and girl:age() < 61)) then
+
+    if (girl:has_trait(wm.TRAITS.MATURE_BODY, wm.TRAITS.MILF, wm.TRAITS.MIDDLE_AGED) or (girl:age() > 30 and girl:age() < 61)) then
         desc = desc .. RandomChoice ("You wonder if she has kids. ",
                                      "You think she possibly has children. ",
                                      "She might be a mom. ")
     end
-    if debug == 1 then Dialog("checking old") end
-    if (girl:has_trait("Old") or girl:age() > 61) then
+
+    if (girl:has_trait(wm.TRAITS.OLD) or girl:age() > 61) then
         desc = desc .. RandomChoice ("She is well past the bloom of youth. ",
                                      "She clearly knows her way around. ")
     end
-    if debug == 1 then Dialog("checking addiction") end
-    if girl:has_trait("Alcoholic") or girl:has_trait("Fairy Dust Addict") or girl:has_trait("Shroud Addict") or girl:has_trait("Viras Blood Addict") then
+
+    if girl:has_trait(wm.TRAITS.ALCOHOLIC, wm.TRAITS.FAIRY_DUST_ADDICT, wm.TRAITS.SHROUD_ADDICT, wm.TRAITS.VIRAS_BLOOD_ADDICT) then
         desc = desc .. RandomChoice ("You wonder if she is on something. ",
                                      "She seems just a touch desperate. ")
     end
-    if debug == 1 then Dialog("checking eyes") end
-    if girl:has_trait("Different Colored Eyes") or girl:has_trait("Strange Eyes") then
+
+    if girl:has_trait(wm.TRAITS.DIFFERENT_COLORED_EYES, wm.TRAITS.STRANGE_EYES) then
         desc = desc .. "There is something weird about her eyes. "
     end
-    if debug == 1 then Dialog("checking missing parts") end
-    if girl:has_trait("Missing Finger") or girl:has_trait("Missing Fingers") or girl:has_trait("Missing Teeth") or 
-       girl:has_trait("Malformed") or girl:has_trait("No Arms") or girl:has_trait("No Feet") or girl:has_trait("No Hands") or 
-       girl:has_trait("No Legs") or girl:has_trait("No Teeth") or girl:has_trait("One Arm") or girl:has_trait("One Eye") or 
-       girl:has_trait("One Foot") or girl:has_trait("One Hand") or girl:has_trait("One Leg") or girl:has_trait("Blind") or 
-       girl:has_trait("Eye Patch") then
+
+    if girl:has_trait(wm.TRAITS.MISSING_FINGER, wm.TRAITS.MISSING_FINGERS, wm.TRAITS.MISSING_TEETH, wm.TRAITS.MALFORMED,
+            wm.TRAITS.NO_ARMS, wm.TRAITS.NO_FEET, wm.TRAITS.NO_HANDS, wm.TRAITS.NO_LEGS, wm.TRAITS.NO_TEETH, wm.TRAITS.ONE_ARM,
+            wm.TRAITS.ONE_EYE, wm.TRAITS.ONE_FOOT, wm.TRAITS.ONE_HAND, wm.TRAITS.ONE_LEG, wm.TRAITS.BLIND, wm.TRAITS.EYE_PATCH) then
         desc = desc .. "You notice that she has a physical handicap. "
     end
-    if debug == 1 then Dialog("checking adventure") end
-    if girl:has_trait("Adventurer") or girl:has_trait("Assassin") then
+
+    if girl:has_trait(wm.TRAITS.ADVENTURER, wm.TRAITS.ASSASSIN) then
         desc = desc .. "She looks like she could handle herself in any situation. "
     end
-    if debug == 1 then Dialog("checking whore") end
-    if girl:has_trait("Whore") or girl:has_trait("Porn Star") then
+
+    if girl:has_trait(wm.TRAITS.WHORE, wm.TRAITS.PORN_STAR) then
         desc = desc .. RandomChoice("She has that hard look associated with being with too many men. ",
                                     "You feel she has traded her body for money more than once. ") 
     end
-    if debug == 1 then Dialog("checking fit") end
-    if girl:has_trait("Agile") or girl:has_trait("Flight") or girl:has_trait("Flexible") or girl:has_trait("Fleet of Foot") or girl:has_trait("Wings") then
+
+    if girl:has_trait(wm.TRAITS.AGILE, wm.TRAITS.FLIGHT, wm.TRAITS.FLEXIBLE, wm.TRAITS.FLEET_OF_FOOT, wm.TRAITS.WINGS) then
         desc = desc .. RandomChoice("She seems very light on her feet. ",
                                     "She moves as if she is about to launch into the sky. ")
-        if girl:has_trait("Wings") then
+        if girl:has_trait(wm.TRAITS.WINGS) then
             desc = desc .. "Her visible wings make you think this woman can fly. "
         end
     end
-    if debug == 1 then Dialog("checking aroma") end
-    if girl:has_trait("Natural Pheromones") then
+
+    if girl:has_trait(wm.TRAITS.NATURAL_PHEROMONES) then
         desc = desc .. RandomChoice("Her scent is intoxicating. ",
                                     "You resist an urge to sniff her hair. ")
     end
-    if debug == 1 then Dialog("checking magic") end
-    if girl:has_trait("Strong Magic") or girl:has_trait("Powerful Magic") then
+
+    if girl:has_trait(wm.TRAITS.STRONG_MAGIC, wm.TRAITS.POWERFUL_MAGIC) then
         desc = desc .. RandomChoice("The very air about her seems charged with energy. ",
                                     "Her eyes almost look like they could bore a hole through a wall. ")
     end
-    if debug == 1 then Dialog("checking psychic") end
-    if girl:has_trait("Psychic") then
+
+    if girl:has_trait(wm.TRAITS.PSYCHIC) then
         desc = desc .. RandomChoice("She looks at you as if she knows exactly what you are thinking. ",
                                     "Her glance seems to read your very soul. ")
     end
-    if debug == 1 then Dialog("checking slave") end
-    if girl:has_trait("Branded on the Ass") or girl:has_trait("Branded on the Forehead") then
+
+    if girl:has_trait(wm.TRAITS.BRANDED_ON_THE_ASS) or girl:has_trait(wm.TRAITS.BRANDED_ON_THE_FOREHEAD) then
         desc = desc .. RandomChoice("You can see a prominent slave tattoo. ",
                                     "She seems resigned to the look on your face when you notice her slave brand. ")
     end
-    if debug == 1 then Dialog("checking tattoos") end
-    if girl:has_trait("Tattooed") or girl:has_trait("Small Tattoos") or girl:has_trait("Heavily Tattooed") then
+
+    if girl:has_trait(wm.TRAITS.TATTOOED, wm.TRAITS.SMALL_TATTOOS, wm.TRAITS.HEAVILY_TATTOOED) then
         desc = desc .. "You see that she is a tattoo fan. "
     end
-    if debug == 1 then Dialog("checking piercings") end
-    if girl:has_trait("Pierced Tongue") or girl:has_trait("Pierced Nose") or girl:has_trait("Pierced Navel") or girl:has_trait("Pierced Nipples") then
+
+    if girl:has_trait(wm.TRAITS.PIERCED_TONGUE, wm.TRAITS.PIERCED_NOSE, wm.TRAITS.PIERCED_NAVEL, wm.TRAITS.PIERCED_NIPPLES) then
         desc = desc .. "She wears clothes designed to show off her piercings. "
     end
-    if debug == 1 then Dialog("checking scars") end
-    if girl:has_trait("Small Scars") or girl:has_trait("Cool Scars") or girl:has_trait("Horrific Scars") then
+
+    if girl:has_trait(wm.TRAITS.SMALL_SCARS, wm.TRAITS.COOL_SCARS, wm.TRAITS.HORRIFIC_SCARS) then
         desc = desc .. "You notice she has been scarred. "
-        if girl:has_trait("Cool Scars") then
+        if girl:has_trait(wm.TRAITS.COOL_SCARS) then
             desc = desc .. "On her, though, the scars add a feeling of mystery and adventure. "
         end 
     end
-    if debug == 1 then Dialog("checking bruises") end
-    if girl:has_trait("Bruises") then
+
+    if girl:has_trait(wm.TRAITS.BRUISES) then
         desc = desc .. RandomChoice("She may have been abused lately, as you can see fresh bruises. ",
                                     "She has a patchwork of fresh and fading bruises on her body. ",
                                     "She has fading but still colorful bruises on her arms and legs.")
     end
 
-    if debug == 1 then Dialog("output description") end
     Dialog (desc)
-    if debug == 1 then Dialog("returning") end
 end
 
 ---@param girl wm.Girl
@@ -987,7 +960,7 @@ function GroupStreets(girl, dangerLev)
         Dialog("You: \"Maybe not me, but my customers certainly will.\"")
         Dialog("She grins. \"Good! I am not only hungry, I am horny as hell. Hard for a beggar girl to get dates, you know! You got a new hire, guv'nor!\"")
         wm.AcquireGirl(girl)
-        girl:add_trait("Optimist")
+        girl:add_trait(wm.TRAITS.OPTIMIST)
         girl:libido(75)
     elseif beggar == 2 then
         Dialog("You throw her a 50 gold piece. \"Don\'t spend it all in one place!\"")
@@ -1117,7 +1090,7 @@ end
 
 ---@param girl wm.Girl
 function LadyOfNegotiableAffection(girl)
-    if girl:has_trait("Cum Addict") then
+    if girl:has_trait(wm.TRAITS.CUM_ADDICT) then
         Dialog("A girl is standing on the street corner. She eyes you hungrily. \"Hey, good-looking...  Wanna party?\"")
         GirlDescription(girl)
         local cumaddict = ChoiceBox("Do you want to give this hungry girl something to eat?",
@@ -1140,48 +1113,48 @@ function LadyOfNegotiableAffection(girl)
         else
             GirlAudition(girl)
         end
-    elseif girl:has_trait("Homeless") then
+    elseif girl:has_trait(wm.TRAITS.HOMELESS) then
         Dialog("A desperate looking girl is sitting on the sidewalk as you go by, a small bundle of possessions at her feet. \"Hey, mister. Can you help a girl out?\"")
-    elseif girl:has_trait("Aggressive") or girl:has_trait("Yandere") or girl:has_trait("Brawler") then
+    elseif girl:has_trait(wm.TRAITS.AGGRESSIVE, wm.TRAITS.YANDERE, wm.TRAITS.BRAWLER) then
         Dialog("A girl walks up to you, pushes you against a wall, and says, \"Wanna try to satisfy me, dude?\"")
-    elseif girl:has_trait("Audacity") or girl:has_trait("Tomboy") then
+    elseif girl:has_trait(wm.TRAITS.AUDACITY, wm.TRAITS.TOMBOY) then
         Dialog("A girl walks by you, slaps your ass, and wolf whistles at you. \"You might be worth skipping work for, honey.\"")
-    elseif girl:has_trait("Fairy Dust Addict") then
+    elseif girl:has_trait(wm.TRAITS.FAIRY_DUST_ADDICT) then
         Dialog("A desperate looking girl is hugging herself on the corner. \"You look like you need something as much as I do, buddy.\"")
-    elseif girl:has_trait("Shroud Addict") then
+    elseif girl:has_trait(wm.TRAITS.SHROUD_ADDICT) then
         Dialog("A girl in scruffy clothes is scratching at herself. \"Dude, let\'s party, OK?\"")
-    elseif girl:has_trait("Viras Blood Addict") then
+    elseif girl:has_trait(wm.TRAITS.VIRAS_BLOOD_ADDICT) then
         Dialog("You feel a hand on your shoulder, and turn to see a girl with crazy dilated eyes right in your face. \"Hey there, friend! Wanna get your freak on?\"")
-    elseif girl:has_trait("Bimbo") then
+    elseif girl:has_trait(wm.TRAITS.BIMBO) then
         Dialog("You walk by an outdoor cafe. A girl sitting alone at a table flips her hair at you. \"Hey cutie, I\'m bored and you look like fun.\"")
-    elseif girl:has_trait("Dojikko") then
+    elseif girl:has_trait(wm.TRAITS.DOJIKKO) then
         Dialog("A streetwalker approaches, but before she can even give you a come-on, she trips and falls into you.")
         Dialog("She must have been a linebacker in another life, as she neatly cuts your legs from beneath you.")
         Dialog("You both fly into the air and land in a heap. You have landed on top of her with your face between her breasts and one of your hands up her skirt.")
         Dialog("She smiles brightly. \"Well, now that we\'ve been introduced, want to continue this party a little more privately?\"")
-    elseif girl:has_trait("Dominatrix") or girl:has_trait("Sadistic") then
+    elseif girl:has_trait(wm.TRAITS.DOMINATRIX, wm.TRAITS.SADISTIC) then
         Dialog("A woman wearing a black leather skirt sneers at you. \"A worm like you doesn\'t deserve the pleasure I could give you.\"")
         Dialog("She looks you up and down, and apparently discovers some hidden worth anyway. \"Still... would you like to party, little boy?\"")
-    elseif girl:has_trait("Nymphomaniac") then
+    elseif girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
         Dialog("A seemingly desperate woman looks you in the eye, rubs her hand up her crotch and shivers delicately. \"Buddy, I need it bad. Party with me, please?\"")
-    elseif girl:has_trait("Exhibitionist") then
+    elseif girl:has_trait(wm.TRAITS.EXHIBITIONIST) then
         Dialog("As you walk by, a woman lifts her top to show you her breasts. \"Now that you\'ve seen \'em, do you want to play with \'em?\"")
-    elseif girl:has_trait("Slut") then
+    elseif girl:has_trait(wm.TRAITS.SLUT) then
         Dialog("A woman on the corner is sucking a lollipop. She sticks her tongue out at you. \"There's going to be a party in my mouth, soon. Wanna come?\"")
-    elseif girl:has_trait("Succubus") or girl:has_trait("Twisted") then
+    elseif girl:has_trait(wm.TRAITS.SUCCUBUS, wm.TRAITS.TWISTED) then
         Dialog("A woman walks by you, swaying a little more than strictly necessary. \"You look like a horny little devil. Wanna party?\"")
-    elseif girl:has_trait("Demon Possessed") or girl:has_trait("Demon") then
+    elseif girl:has_trait(wm.TRAITS.DEMON_POSSESSED, wm.TRAITS.DEMON) then
         Dialog("A woman accosts you in a deep, gravelly voice. \"My mother sucks cocks in hell. I suck cocks on earth. Want me to do yours?\"")
-    elseif girl:has_trait("Angel") then
+    elseif girl:has_trait(wm.TRAITS.ANGEL) then
         Dialog("A woman with soft, bright features says sweetly, \"Fornication is actually blessed by heaven. Shall we pray?\"")
-    elseif girl:has_trait("Spirit Possessed") then
+    elseif girl:has_trait(wm.TRAITS.SPIRIT_POSSESSED) then
         Dialog("A woman approaches weirdly, almost as if she is still learning how to walk. \"Would you like to use this body?\"")
-    elseif girl:has_trait("Porn Star") or girl:has_trait("Actress") or girl:has_trait("Idol") then
+    elseif girl:has_trait(wm.TRAITS.PORN_STAR, wm.TRAITS.ACTRESS, wm.TRAITS.IDOL) then
         Dialog("As you pass by a woman in the street, you do a double take. You are certain you have seen her on a movie or TV screen.")
         Dialog("She notices your attention and approaches you. \"You recognize me, I think. Wanna party with someone famous?\"")
-    elseif girl:has_trait("Meek") or girl:has_trait("Shy") or girl:has_trait("Nervous") or girl:has_trait("Pessimist") then
+    elseif girl:has_trait(wm.TRAITS.MEEK, wm.TRAITS.SHY, wm.TRAITS.NERVOUS, wm.TRAITS.PESSIMIST) then
         Dialog("A girl timidly approaches you. She looks ready to bolt, but manages to ask, \"Excuse me sir, but... maybe you would like to party with me?\"")
-    elseif girl:has_trait("Optimist") then
+    elseif girl:has_trait(wm.TRAITS.OPTIMIST) then
         Dialog("A girl smiles brightly when she sees you. \"Oooooh, I just knew someone like you would come along. Ready to party, sweetie?\"")
     elseif wm.Percent(60) then
         Dialog("You find yourself catching up to an woman going the same direction. She looks over her shoulder, smiling. \"Don\'t run. I'll wait for you. Wanna get together for a party?\"")
@@ -1209,7 +1182,7 @@ end
 function RapeGirl(girl)
     Dialog("She is obviously asking for it. You resolve to give it to her.")
     Dialog("You time it perfectly. You draw even with her just as you pass the mouth of a dark alleyway.")
-    if wm.Percent(5) or girl:has_trait("Assassin") or girl:has_trait("Heroine") then
+    if wm.Percent(5) or girl:has_trait(wm.TRAITS.ASSASSIN, wm.TRAITS.HEROINE) then
         Dialog("You grab her, muffling her cries, and pull her into the alley.")
         Dialog("Unfortunately for you, she is no shrinking violet, and bites your hand. She draws blood, even through your gloves.")
         Dialog("You can't help but let her go... and are dismayed to find she has pulled a knife on you!")
@@ -1217,14 +1190,14 @@ function RapeGirl(girl)
         Dialog("She carves you into a jigsaw puzzle, with a couple of pieces gone.")
         wm.GameOver()
         return       
-    elseif girl:has_trait("Demon") or girl:has_trait("Vampire") or girl:has_trait("Undead") or girl:has_trait("Skeleton") or girl:has_trait("Zombie") then
+    elseif girl:has_trait(wm.TRAITS.DEMON, wm.TRAITS.VAMPIRE, wm.TRAITS.UNDEAD, wm.TRAITS.SKELETON, wm.TRAITS.ZOMBIE) then
         Dialog("Clapping a hand over her mouth, you hustle her down the alley, out of sight of the street.")
         Dialog("You threaten her with your knife, but she just starts laughing at you.")
         Dialog("\"Silly human! You thought you were hunting me, but I am actually the hunter, and you are my prey.\"")
         Dialog("Your last thought, as she tears you limb from limb, is that you picked on the wrong supernatural being.")
         wm.GameOver()
         return
-    elseif girl:has_trait("Succubus") then 
+    elseif girl:has_trait(wm.TRAITS.SUCCUBUS) then
         Dialog("Clapping a hand over her mouth, you hustle her down the alley, out of sight of the street.")
         Dialog("You threaten her with your knife, but she just starts laughing at you.")
         Dialog("Her eyes start glowing, and you do not resist as she tears your clothes off.")
@@ -1234,7 +1207,7 @@ function RapeGirl(girl)
         Dialog("Your heart fails as she rips one last orgasm from you. The last sound you hear is her mocking laughter, as she feeds on your life force.")
         wm.GameOver()
         return
-    elseif girl:has_trait("Agile") or girl:has_trait("Brawler") then
+    elseif girl:has_trait(wm.TRAITS.AGILE, wm.TRAITS.BRAWLER) then
         Dialog("Clapping a hand over her mouth, you hustle her down the alley, out of sight of the street.")
         Dialog("Initially too startled to resist, she twists easily and slips out of your grasp.")
         Dialog("As you try to follow her move, you run right into a knee to the crotch. She runs away while you tend to your boys.")
@@ -1243,7 +1216,7 @@ function RapeGirl(girl)
         wm.SetPlayerSuspicion(100)
         wm.SetPlayerDisposition(-25)
         return
-    elseif girl:has_trait("Flight") then
+    elseif girl:has_trait(wm.TRAITS.FLIGHT) then
         Dialog("Clapping a hand over her mouth, you hustle her down the alley, out of sight of the street.")
         Dialog("She twists in your grasp and hugs you tightly. Suddenly you realize your feet aren't touching the ground. The girl is flying you upwards!")
         Dialog("She gets about twenty feet up, moves like a bull shaking off an inept rider, and you fall onto your back.")
@@ -1259,7 +1232,7 @@ function RapeGirl(girl)
             wm.GameOver()
             return
         end
-    elseif girl:has_trait("Fleet of Foot") then
+    elseif girl:has_trait(wm.TRAITS.FLEET_OF_FOOT) then
         Dialog("You are huffing and puffing with the effort of keeping up with her. Amused, she turns around, then gasps as she sees the look in your eye.")
         Dialog("She starts running before you make your move. She\'s GOTTA GO FAST, and you realize you won\'t catch her.")
         Dialog("The only good thing is that her story won\'t be that convincing. After all, you really didn\'t do anything.")
@@ -1334,7 +1307,7 @@ end
 ---@param girl wm.Girl
 function ShakeDown(girl)
     Dialog("A pretty girl approaches you. \"C\'mon, mister, let\'s have some fun!\"")
-    girl:add_trait("Bruises")
+    girl:add_trait(wm.TRAITS.BRUISES)
     GirlDescription(girl)
     Dialog("She takes you to a local motel. It's a fairly sleezy little place, but as long as the mattress springs don't squeak, you won't be choosy.")
     Dialog("She leads you to the bed and tugs your pants down immediately. When she sees your penis, she exclaims loudly, \"Wow, that's a big one!\"")
@@ -1452,28 +1425,27 @@ end
 ---@param girl wm.Girl
 function StraightAsk(girl)
     Dialog("You: \"My dear, my brothel is looking for beautiful young women like yourself. You could make a mint at my establishment. Are you interested in a job?\"")
-    if girl:has_trait("Nymphomaniac") or girl:has_trait("Demon Possessed") or girl:has_trait("Succubus") then
+    if girl:has_trait(wm.TRAITS.NYMPHOMANIAC, wm.TRAITS.DEMON_POSSESSED, wm.TRAITS.SUCCUBUS) then
         Dialog("Girl: \"Oh, that sounds great! I can turn my hobby into my career!\"")
         Dialog("You smile. Enthusiasm makes for happy customers.")
         wm.AcquireGirl(girl)
         return
-    elseif girl:has_trait("Cum Addict") then
+    elseif girl:has_trait(wm.TRAITS.CUM_ADDICT) then
         Dialog("Girl: \"I will do it, but only if I get to suck lots and lots of dicks. Cum is so delicious!\"")
         Dialog("You: \"If you are good at blowjobs, you are going to get all the cum you can handle!\"")
         wm.AcquireGirl(girl)
         return
-    elseif girl:has_trait("Mind Fucked") or girl:has_trait("Broken Will") or girl:has_trait("Spirit Possessed") then
+    elseif girl:has_trait(wm.TRAITS.MIND_FUCKED, wm.TRAITS.BROKEN_WILL, wm.TRAITS.SPIRIT_POSSESSED) then
         Dialog("Girl: \"Sure. Whatever you want is good with me.\"")
         Dialog("You grimace a little at her lack of enthusiasm, but she looks like all the necessary holes work and you have a bed with her name on it.")
         wm.AcquireGirl(girl)
         return
-    elseif girl:has_trait("Alcoholic") or girl:has_trait("Fairy Dust Addict") or 
-           girl:has_trait("Shroud Addict") or girl:has_trait("Viras Blood Addict") then
+    elseif girl:has_trait(wm.TRAITS.ALCOHOLIC, wm.TRAITS.VIRAS_BLOOD_ADDICT, wm.TRAITS.SHROUD_ADDICT, wm.TRAITS.FAIRY_DUST_ADDICT) then
         Dialog("Girl: \"That sounds like a good way to keep the party going all the time. I\'m in!\"")
         Dialog("You resolve to keep an eye on her. \"Honey, you can have fun in this career, but remember: business first, and party second.\"")
         wm.AcquireGirl(girl)
         return
-    elseif girl:has_trait("AIDS") or girl:has_trait("Syphilis") or girl:has_trait("Herpes") or girl:has_trait("Whore") then
+    elseif girl:has_trait(wm.TRAITS.AIDS, wm.TRAITS.SYPHILIS, wm.TRAITS.HERPES, wm.TRAITS.CHLAMYDIA, wm.TRAITS.WHORE) then
         Dialog("She thinks for a moment, then asks: \"Does this job have health benefits?\"")
         Dialog("You: \"I have a vested interest in keeping you in bed with clients, not in bed with a disease.\"")
         Dialog("Girl: \"That doesn\'t sound like a guarantee. But I\'ve spread my legs for less than this promise. I will take the job!\"")
@@ -1650,16 +1622,16 @@ function StripperOrWaitress(girl, dangerLev)
                     Dialog("She eyes your wad of money again. \"Well, more money is hard to refuse. What club do you own, sweetie?\"")
                     Dialog("You give her your card. \"Stop by tomorrow, I think I have a position for you!\"")
                     Dialog("You enjoy the show and attentive service all night.")
-                    girl:add_trait("Shroud Addict")
+                    girl:add_trait(wm.TRAITS.SHROUD_ADDICT)
                     Dialog("She stops by in the morning at your office, and just like that, you have a new employee!")
                     wm.AcquireGirl(girl)
-                    if girl:has_trait("Nymphomaniac") then
+                    if girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
                         Dialog("She is a little mystified. \"That\'s it? When you said you had a position for me, I was hoping for a demonstration.\"")
                         wm.UpdateImage(wm.IMG.SEX)
                         Dialog("You smile and undo your belt buckle. \"The things I do for my business!\"")
                         return
                     end
-                    if girl:has_trait("Cum Addict") then
+                    if girl:has_trait(wm.TRAITS.CUM_ADDICT) then
                         Dialog("Girl: \"I think I need a drink to celebrate! Do you have anything on tap?\" She bats her eyes at you, making her meaning very clear.")
                         wm.UpdateImage(wm.IMG.ORAL)
                         Dialog("She pulls you out of your pants, and sucks at your \'tap\' greedily.")

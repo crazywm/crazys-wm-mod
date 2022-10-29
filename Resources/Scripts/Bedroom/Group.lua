@@ -6,7 +6,7 @@ function FFMSex(girl)
     Dialog("You find her relaxing on her bed looking through some of her lingerie. She looks up as you speak. " ..
             "\"I wonder if you could help me, my dear. ".. other_name .. " and I would like you to join us in some fun\"")
     if girl:obey_check(wm.ACTIONS.SEX) then
-        if girl:has_trait("Lesbian") and girl:pclove() < 50 then
+        if girl:has_trait(wm.TRAITS.LESBIAN) and girl:pclove() < 50 then
             if wm.Percent(50) or girl:is_slave() then
                 Dialog("She looks at you skeptically, but starts to smile as soon as " .. other_name .. " enters the room. \"Sure, should be fun!\"")
             else
@@ -24,7 +24,7 @@ function FFMSex(girl)
                     return
                 end
             end
-        elseif girl:has_trait("Straight") and girl:pclove() > 75 and wm.Percent(50) then
+        elseif girl:has_trait(wm.TRAITS.STRAIGHT) and girl:pclove() > 75 and wm.Percent(50) then
             Dialog("\"I'd much rather have you all to myself\"")
             local choice = ChoiceBox("", "Sorry, but I already promised " .. other_name, "OK, it'll be just us two")
             if choice == 0 then
@@ -48,7 +48,7 @@ function FFMSex(girl)
             Dialog(other_name .. " and ${name} start undressing and caressing each other, providing you with quite the show.\n" ..
                     "Once they are both naked, they beckon you to join them on the bed. " .. other_name .. " starts massaging your shaft while ${firstname}" ..
                     " is making out with you. This is what heaven must be like!")
-            if girl:has_trait("Lesbian") and wm.Percent(50) then
+            if girl:has_trait(wm.TRAITS.LESBIAN) and wm.Percent(50) then
                 girl:lesbian(1)
                 Dialog("You notice that ${firstname} appears to be more interested in " .. other_name .. " than in you. " ..
                         "You decide to let her have her fun, and let the two girls have at it while you stroke your cock.")
@@ -79,13 +79,13 @@ function FFMSex(girl)
             girl:group(1)
             girl:lesbian(1)
         else
-            if girl:has_trait("Straight") and wm.Percent(50) then
+            if girl:has_trait(wm.TRAITS.STRAIGHT) and wm.Percent(50) then
                 wm.UpdateImage(wm.IMG.ORAL)
                 Dialog("${firstname} doesn't really know what to do with another woman, and is not interacting with " ..
                         other_name .. " at all. In the end, you end up receiving a blowjob while " .. other_name .. " just watches." ..
                         "Not really what you had hoped for.")
                 girl:oralsex(1)
-            elseif girl:has_trait("Lesbian") and wm.Percent(50) then
+            elseif girl:has_trait(wm.TRAITS.LESBIAN) and wm.Percent(50) then
                 wm.UpdateImage(wm.IMG.LESBIAN)
                 Dialog("${firstname} seems to be only interested in " .. other_name .. ", giving you basically zero attention. " ..
                         "In the end, you decide to just let the two girls enjoy each other and lean back to indulge in the spectacle.")
@@ -113,7 +113,7 @@ function FFMSex(girl)
         end
     else
         wm.UpdateImage(wm.IMG.REFUSE)
-        if girl:has_trait("Straight") and girl:dignity() < 33 then
+        if girl:has_trait(wm.TRAITS.STRAIGHT) and girl:dignity() < 33 then
             Dialog("She refuses. \"I'm not having sex with another girl!\"")
         else
             Dialog("She refuses to be have sex with you and the other girl.")
@@ -130,7 +130,7 @@ function MMFSex(girl)
     Dialog("You find her relaxing on her bed looking through some of her lingerie. She looks up as you speak." ..
             "\"" .. other_name .. " and I are looking for some entertainment for the evening. A threesome would be nice, don't you think my dear...\"")
     if girl:obey_check(wm.ACTIONS.SEX) then
-        if girl:has_trait("Lesbian") and wm.Percent(33) then
+        if girl:has_trait(wm.TRAITS.LESBIAN) and wm.Percent(33) then
             Dialog("Her face looks disgusted for a second, but she catches herself and beckons \"Come in.\"")
             girl:happiness(-3)
         elseif girl:pclove() > 80 and wm.Percent(33) then
@@ -154,7 +154,7 @@ function MMFSex(girl)
 
         if girl:skill_check(wm.SKILLS.GROUP, 50) then
             wm.UpdateImage(wm.IMG.MMF)
-            if girl:has_trait("Lesbian") then
+            if girl:has_trait(wm.TRAITS.LESBIAN) then
                 Dialog("Even though her appetites go in another direction, ${firstname} is undeniably skilled at " ..
                         "pleasing a man -- or two men, as it were. If you hadn't know, you would never have guessed that she is Lesbian.")
             else
@@ -175,7 +175,7 @@ function MMFSex(girl)
             girl:libido(2)
             girl:group(1)
         else
-            if girl:has_trait("Lesbian") then
+            if girl:has_trait(wm.TRAITS.LESBIAN) then
                 wm.UpdateImage(wm.IMG.MMF)
                 Dialog("${firstname} doesn't know what to do with a single cock, let alone two.")
             else
@@ -208,7 +208,7 @@ function OrgySex(girl)
         girl:experience(6)
         girl:tiredness(5)
         Dialog("She nods in agreement, but asks for a few minutes to get ready.  As the door closes behind you, many rumbling and rustling sounds can be heard.  A minute or so later she declares that she is ready.")
-        if girl:has_trait("Nymphomaniac") then
+        if girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
             wm.UpdateImage(wm.IMG.NUDE)
             Dialog("You lead the men inside and you all stand at attention for the amazing sight before you.  She stands in the center of the room surrounded by pillows and cushions.  There isn't a stitch of clothing on her body, which shines from the coating of lubricant she has applied.  She waits for the door to close before she strikes a sexy pose and exclaims \"Lets see who can catch the greased courtesan first!\"")
             wm.UpdateImage(wm.IMG.ORGY)

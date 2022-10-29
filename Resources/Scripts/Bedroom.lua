@@ -43,7 +43,7 @@ function VisitBedroom(girl)
         return girl:trigger("girl:bedroom:bdsm")
     elseif choice == 4 then
         Dialog("You almost trip over her as you enter the room. \"My Dear, what are you doing kneeling on the floor?\"  Seeing her kneeling before you gives you an idea...")
-        local choice = ChoiceBox("", "Blowjob", "Deep Throat", "Titty Fuck", "Go Back")
+        local choice = ChoiceBox("", "Blowjob", wm.TRAITS.DEEP_THROAT, "Titty Fuck", "Go Back")
         Dialog("\"Well never mind the previous reason you're down there.  I shall give you a new one.\"  You pull your member from you pants and  bring it within inches of her face.")
         if choice == 0 then
             return girl:trigger("girl:bedroom:blowjob")
@@ -201,7 +201,7 @@ function AnalSex(girl)
         if girl:skill_check(wm.SKILLS.ANAL, 75) then
             Dialog("You move toward her and slide the panties down to the floor.  She reaches back and grips your rod, rubbing it against her wet pussy for lubrication and finally presses the now slick tip against her anus.")
             Dialog("A shiver of anticipation washes over you before you thrust deep into her ass.  A gasp of delight escapes her lips and she begins to rock back against you")
-            if girl:has_trait("Great Arse") then
+            if girl:has_trait(wm.TRAITS.GREAT_ARSE) then
                 Dialog("You can't help but be amazed by the sight of your cock penetrating her truly fine ass.  The enjoyment overwhelms you and you explode deep inside her ass.")
             else
                 Dialog("She expertly moves and teases you with her ass and you both collapse in ecstasy.")
@@ -274,7 +274,7 @@ function MasturbateSex(girl)
         if girl:skill_check(wm.SKILLS.STRIP, 75) then
             wm.UpdateImage(wm.IMG.MASTURBATE)
             Dialog("She moves to her bed and makes herself comfortable and making sure you have a good view.  She begins rubbing her mound through her panties and before long a dark wet spot begins to grow;  you also start feeling some growth.")
-            if girl:has_trait("Great Figure") then
+            if girl:has_trait(wm.TRAITS.GREAT_FIGURE) then
                 Dialog("As she rubs, pulls, and teases her pussy; You admire her incredible figure as it undulates and gyrates from the stimulation.")
             end
             if girl:beauty() > 75 then
@@ -300,7 +300,7 @@ function MasturbateSex(girl)
         end
         girl:service(2)
     else
-        if girl:has_trait("Meek", "Chaste") then
+        if girl:has_trait(wm.TRAITS.MEEK, wm.TRAITS.CHASTE) then
             Dialog("She blushes to a deep red and pushes you out of the room without ever making eye contact.")
         else
             wm.UpdateImage(wm.IMG.REFUSE)
@@ -313,7 +313,7 @@ end
 ---@param girl wm.Girl
 function Strip(girl)
     Dialog("\"Good evening, my dear.  I stopped by because I wanted to see how well you've learned to work the pole.\"")
-    if girl:has_trait("Slow Learner") then
+    if girl:has_trait(wm.TRAITS.SLOW_LEARNER) then
         wm.UpdateImage(wm.IMG.ORAL)
         Dialog("She immediately drops to her knees and takes you into her mouth.  Well, It's not exactly what you had in mind, but there's no point to stopping her now.  She swallows every drop as you unload in her mouth.")
     else
@@ -324,10 +324,10 @@ function Strip(girl)
             Dialog("She leads you to a comfortable chair next to a small stage with a tall, metal pole in the center.")
             if girl:skill_check(wm.SKILLS.STRIP, 75) then
                 -- TODO other traits?
-                if girl:has_trait("Big Boobs") then
+                if girl:has_trait(wm.TRAITS.BIG_BOOBS) then
                     Dialog("You glue your eyes to her wonderfully large breasts.  They sway and bounce as she begins her dance.")
                 end
-                if girl:has_trait("Great Figure") then
+                if girl:has_trait(wm.TRAITS.GREAT_FIGURE) then
                     Dialog("As she strips away each layer of clothing you admire her perfectly proportioned body.  You become lost in her curves as they undulate before you.")
                 end
 
@@ -430,19 +430,19 @@ function Tittyfuck(girl)
         -- TODO TRAITS
         girl:experience(6)
         girl:tiredness(2)
-        if girl:has_trait("Abnormally Large Boobs") then
+        if girl:breast_size() >= 8 then
             Dialog("As she frees her massive jugs from her, top you marvel at their size.  Your dick becomes lost in the undulating sea of soft pillowy flesh.")
             Dialog("Occasionally, you feel her tongue reach into the sea of breasts and lick the end of your shaft.")
             Dialog("Your mind becomes lost in a fog and you soon feel your volcano about to erupt, but like a volcano under the sea your hot sticky magma is lost under the tide of those gigantic breasts.")
             AdjustLust(girl, 5)
             girl:tittysex(3)
-        elseif girl:has_trait("Big Boobs") then
+        elseif girl:breast_size() >= 6 then
             Dialog("She giggles a bit as her breasts envelop your member.  She uses her wonderfully large breasts to stroke your shaft as her mouth and tongue work magic on the tip.")
             Dialog("Faster and faster her breasts move up and down your length.  She begins to alternate the motion of each breast and the stimulation begins to overwhelm you..")
             Dialog("You release a massive load of cum covering her breasts and mouth.  She licks your cum from her nipples and then cleans your member with her mouth.  You stagger from her room in ecstacy.")
             AdjustLust(girl, 4)
             girl:tittysex(3)
-        elseif girl:has_trait("Small Boobs") then
+        elseif girl:breast_size() < 4 then
             Dialog("You catch her gaze as she looks down at her mostly flat chest and then you see a glint of determination in her eyes.  She begins to rub the tip of your dick around her hardening nipples.")
             Dialog("You enjoy the feeling of her smooth skin against your cock.  She tries valiantly to force her breasts together, but ultimately fails.")
             Dialog("She relies heavily on her expert tongue and her rock hard nipples brushing the tip of your shaft.  You explode suddenly across her chest and she coats her fingers with your cum and licks them like a lollipop, giving you a spritely wink.")

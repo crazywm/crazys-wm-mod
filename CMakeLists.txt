@@ -31,6 +31,8 @@ find_package(FFMPEG REQUIRED)
 
 include(Doxygen)
 
+set(RESOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
+
 add_subdirectory(deps/tinyxml EXCLUDE_FROM_ALL)
 add_subdirectory(deps/doctest EXCLUDE_FROM_ALL)
 add_subdirectory(deps/lua EXCLUDE_FROM_ALL)

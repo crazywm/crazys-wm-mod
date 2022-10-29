@@ -3,7 +3,7 @@ function TavernQuest(girl)
     local what = wm.Range(1, 4)
     if what == 1 then
         Dialog("Tavern Owner quest gangster issues")
-        if girl:has_trait("Adventurer") then
+        if girl:has_trait(wm.TRAITS.ADVENTURER) then
             Dialog("Tavern Owner Adventurer Attempt to defeat entire gang.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -16,7 +16,7 @@ function TavernQuest(girl)
                 Dialog("Tavern Owner. adventurer. critical failure. it was a trap. girl gets fucked.")
                 -- TODO group sex
             end
-        elseif girl:has_trait("Assassin") then
+        elseif girl:has_trait(wm.TRAITS.ASSASSIN) then
             Dialog("Tavern Owner Assassin Attempt to kill gang boss.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -29,7 +29,7 @@ function TavernQuest(girl)
                 Dialog("tavern owner. assassin. critical failure.")
                 -- TODO group sex
             end
-        elseif girl:has_trait("Charismatic") then
+        elseif girl:has_trait(wm.TRAITS.CHARISMATIC) then
             Dialog("Tavern Owner Charismatic Attempt to convince gang boss to ease off.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -59,7 +59,7 @@ function TavernQuest(girl)
     elseif what == 2 then
         Dialog("Tavern Barmaid quest domestic trouble")
 
-        if girl:has_trait("Nymphomaniac") then
+        if girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
             Dialog("Barmaid Domestic Troubles Nymphomaniac attempt to spice up the couples marriage.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -71,7 +71,7 @@ function TavernQuest(girl)
             else
                 Dialog("tavern barmaid. nympho. critical failure.  husband divorces wife and swears to never marry again.")
             end
-        elseif girl:has_trait("Adventurer") then
+        elseif girl:has_trait(wm.TRAITS.ADVENTURER) then
             Dialog("Barmaid Domestic troubles Adventurer attempt to recover the lost important item.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -83,7 +83,7 @@ function TavernQuest(girl)
             else
                 Dialog("Tavern barmaid. adventurer. critical failure")
             end
-        elseif girl:has_trait("Assassin") then
+        elseif girl:has_trait(wm.TRAITS.ASSASSIN) then
             Dialog("Barmaid domestic troubles Assassin attempt to kill abusive husband")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -112,7 +112,7 @@ function TavernQuest(girl)
     elseif what == 3 then
         Dialog("Tavern wizard quest broken wand")
 
-        if girl:has_trait("Nymphomaniac") then
+        if girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
             Dialog("Broken wand Nympho attempt to fix his limp \"wand\"")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -126,7 +126,7 @@ function TavernQuest(girl)
                 Dialog("tavern wizard. nympho critical failure.  Wand is penis.  she realizes that the wand is his penis. she manages to excite him but rides him too hard and severely injures the wizards manhood.")
                 -- TODO normal sex
             end
-        elseif girl:has_trait("Adventurer") then
+        elseif girl:has_trait(wm.TRAITS.ADVENTURER) then
             Dialog("Broken wand Adventurer attempt to find a new wand")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -141,7 +141,7 @@ function TavernQuest(girl)
                 Dialog("tavern wizard. adventurer critical failure. wizard set a trap. fucks girls ass.")
                 -- TODO anal sex
             end
-        elseif girl:has_trait("Strong Magic") then
+        elseif girl:has_trait(wm.TRAITS.STRONG_MAGIC) then
             Dialog("Tavern. Wizard's Wand. Strong Magic attempt to repair wand.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -172,7 +172,7 @@ function TavernQuest(girl)
         end
     elseif what == 4 then
         Dialog("Tavern Group of Adventurers needs another")
-        if girl:has_trait("Construct") then
+        if girl:has_trait(wm.TRAITS.CONSTRUCT) then
             Dialog("Group of Adventurers. Construct attempt.  group needs a non organic to cross a magical barrier.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -188,7 +188,7 @@ function TavernQuest(girl)
                 Dialog("tavern group. construct. critical failure.  gateway immobilizes her and group gang bangs her.")
                 -- TODO group sex
             end
-        elseif girl:has_trait("Adventurer") then
+        elseif girl:has_trait(wm.TRAITS.ADVENTURER) then
             Dialog("Group of Adventurers. Adventurer Attempt. Joins the \"raid\" on a mighty monster.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -203,7 +203,7 @@ function TavernQuest(girl)
                 Dialog("tavern group. adventurer. critical failure. She stood in bad and wiped the raid. pays for equipment repairs and must suck the healers cock to apologize.")
                 -- TODO oral sex
             end
-        elseif girl:has_trait("Fleet of Foot") then
+        elseif girl:has_trait(wm.TRAITS.FLEET_OF_FOOT) then
             Dialog("Group of Adventurers. Fleet of Foot attempt. a group of 12 dwarves needs a thief to burgle something. \"we always give our thieves a nickname in alphabetical order.  we will call you Bimbo.\"")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -219,7 +219,7 @@ function TavernQuest(girl)
                 Dialog("tavern group. thief.  critical failure.  talks to dragon while attempting to steal. dragon burns down the dwarves camp and eats the wizard.  dwarves gang bang her as punishment. \"it's in her contract, after all\"")
                 -- TODO group sex
             end
-        elseif girl:has_trait("Assassin") then
+        elseif girl:has_trait(wm.TRAITS.ASSASSIN) then
             Dialog("Tavern Group. Assassin attempt. adventuring guild needs a rogue for an upcoming battle against a rival guild.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -233,7 +233,7 @@ function TavernQuest(girl)
                 Dialog("tavern group. assassin. critical failure.")
                 -- TODO group sex
             end
-        elseif girl:has_trait("Strong Magic") then
+        elseif girl:has_trait(wm.TRAITS.STRONG_MAGIC) then
             Dialog("Tavern Group. Strong Magic attempt.  group needs a mage to teleport them, keep them supplied with magical food and drink, and do most of the damage to monsters.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -272,7 +272,7 @@ function ChurchQuest(girl)
     local what = wm.Range(1, 4)
     if what == 1 then
         Dialog("Church. Priest sends her to fight demon")
-        if girl:has_trait("Adventurer") then
+        if girl:has_trait(wm.TRAITS.ADVENTURER) then
             Dialog("Church. Fight Demon. Adventurer attempt.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -286,7 +286,7 @@ function ChurchQuest(girl)
             else
                 Dialog("Church Priest. Demon. Adventurer. Critical Failure.")
             end
-        elseif girl:has_trait("Assassin") then
+        elseif girl:has_trait(wm.TRAITS.ASSASSIN) then
             Dialog("Church. Fight Demon. Assassin Attempt.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -301,7 +301,7 @@ function ChurchQuest(girl)
                 Dialog("Church Priest. Demon. Assassin. Critical failure.")
                 -- TODO Beast Sex
             end
-        elseif girl:has_trait("Nymphomaniac") then
+        elseif girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
             Dialog("Church. Fight Demon. Nympho attempt. Priest is possessed by demon. must be fucked into submission.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -318,7 +318,7 @@ function ChurchQuest(girl)
                 Dialog("Church Priest. Demon. Nympho. Critical Failure.")
                 -- TODO Beast Sex
             end
-        elseif girl:has_trait("Construct") then
+        elseif girl:has_trait(wm.TRAITS.CONSTRUCT) then
             Dialog("Church. Fight Demon. Construct Attempt.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -330,7 +330,7 @@ function ChurchQuest(girl)
             else
                 Dialog("Church. Priest. Demon. Constuct. Critical failure.")
             end
-        elseif girl:has_trait("Strong Magic") then
+        elseif girl:has_trait(wm.TRAITS.STRONG_MAGIC) then
             Dialog("Church. Fight Demon. Strong Magic attempt to enslave the demon.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -350,7 +350,7 @@ function ChurchQuest(girl)
                 -- TODO Beast Sex
                 girl:age(5)
             end
-        elseif girl:has_trait("Demon") then
+        elseif girl:has_trait(wm.TRAITS.DEMON) then
             Dialog("Church. Fight Demon. Demon attempt.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -382,7 +382,7 @@ function ChurchQuest(girl)
         end
     elseif what == 2 then
         Dialog("Church. Young Inexperienced Paladin of the Phallic Order requests aid.")
-        if girl:has_trait("Adventurer") then
+        if girl:has_trait(wm.TRAITS.ADVENTURER) then
             Dialog("Church. Young Paladin. Adventurer attempt to teach combat.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -398,7 +398,7 @@ function ChurchQuest(girl)
                 Dialog("Church Young Paladin. adventurer.  Critical failure. boy tricks her and leads her to a secluded training ground where he defeats her in combat and takes her ass as a prize.")
                 -- TODO Anal sex
             end
-        elseif girl:has_trait("Nymphomaniac") then
+        elseif girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
             Dialog("Church. Young Paladin.  Nympho attempt. he is good with sword but not with women.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -419,7 +419,7 @@ function ChurchQuest(girl)
                 AdjustLust(girl, -60)
                 girl:health(-20)
             end
-        elseif girl:has_trait("Lesbian") then
+        elseif girl:has_trait(wm.TRAITS.LESBIAN) then
             Dialog("Church. Young Paladin. Lesbian attempt.  Paladin is actually a girl.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -436,7 +436,7 @@ function ChurchQuest(girl)
             end
         else
             Dialog("Church. Young Paladin. Generic Attempt. he has lost his sword in the marketplace.")
-            if girl:has_trait("Slow Learner") then
+            if girl:has_trait(wm.TRAITS.SLOW_LEARNER) then
                 Dialog("Church. young paladin. generic.  Upon hearing the words \"lost sword\" she immediately drops to her knees and removes his quickly hardening cock from his pants.  she exclaims with a giggle. \"I found it!\" and begins to suck his member in the middle of the chapel.  you are forced to come down to the chapel later to collect her and give a sizeable \"donation\" to the church for the disruption.  You see the young paladin with a huge smile on his face, whistling a tune as he goes about his chores.")
                 wm.TakePlayerGold(500)
             else
@@ -455,7 +455,7 @@ function ChurchQuest(girl)
     elseif what == 3 then
         -- Church. Naughty Nun : About middle of the old script
         Dialog("Church. Naughty Nun.")
-        if girl:has_trait("Nymphomaniac") then
+        if girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
             Dialog("Church. Naughty Nun. Nympho attempt. church forbids same sex intercourse.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -472,7 +472,7 @@ function ChurchQuest(girl)
                 -- TODO Lesbian Sex
                 wm.TakePlayerGold(500)
             end
-        elseif girl:has_trait("Futanari") then
+        elseif girl:has_trait(wm.TRAITS.FUTANARI) then
             Dialog("Church. Naughty Nun. Futanari attempt. Nun desperately craves cock but the convent forbids sex with men and won't allow them inside.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -521,7 +521,7 @@ function ChurchQuest(girl)
         end
     elseif what == 4 then
         Dialog("Church. beggar needs help.")
-        if girl:has_trait("Charismatic") then
+        if girl:has_trait(wm.TRAITS.CHARISMATIC) then
             Dialog("Church. Beggar. Charismatic attempt.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -561,7 +561,7 @@ function StreetsQuest(girl)
     local what = wm.Range(1, 4)
     if what == 1 then
         Dialog("Streets.  Gang clean up")
-        if girl:has_trait("Adventurer") then
+        if girl:has_trait(wm.TRAITS.ADVENTURER) then
             Dialog("Streets. Gang Clean up. Adventurer attempt. defeat the gang.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -574,7 +574,7 @@ function StreetsQuest(girl)
             else
                 Dialog("Streets. Gang Clean up. Adventurer. Combat Failure.  She is defeated and gang holds on to territory.")
             end
-        elseif girl:has_trait("Charismatic") then
+        elseif girl:has_trait(wm.TRAITS.CHARISMATIC) then
             Dialog("Streets. Gang Clean up. Charismatic attempt. convince the gangs to leave the neighborhood.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -586,7 +586,7 @@ function StreetsQuest(girl)
             else
                 Dialog("Streets. Gang. Charisma fail. they refuse to leave.")
             end
-        elseif girl:has_trait("Nymphomaniac") then
+        elseif girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
             Dialog("Streets. Gang Clean up. Nympho attempt. Fuck them all at once and arrest them when they are passed out.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -603,7 +603,7 @@ function StreetsQuest(girl)
                 -- TODO bondage sex
                 wm.TakePlayerGold(500)
             end
-        elseif girl:has_trait("Strong Magic") then
+        elseif girl:has_trait(wm.TRAITS.STRONG_MAGIC) then
             Dialog("Streets. Gang Cleanup. Strong Magic attempt.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -616,7 +616,7 @@ function StreetsQuest(girl)
             else
                 Dialog("Streets. Gang. Magic. Lose.  They defeat her summoned monsters and she flees.")
             end
-        elseif girl:has_trait("Assassin") then
+        elseif girl:has_trait(wm.TRAITS.ASSASSIN) then
             Dialog("Streets. Gang Clean up. Assassin Attempt. Kill the gang leader.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -646,7 +646,7 @@ function StreetsQuest(girl)
         end
     elseif what == 2 then
         Dialog("Streets. Orphans need help")
-        if girl:has_trait("Adventurer") then
+        if girl:has_trait(wm.TRAITS.ADVENTURER) then
             Dialog("Streets. Orphans. Adventurer attempt. reclaim the orphans home from monsters.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -659,7 +659,7 @@ function StreetsQuest(girl)
             else
                 Dialog("Streets. Orphans. Adventurer. Combat lose.  she is forced to retreat.")
             end
-        elseif girl:has_trait("Charismatic") then
+        elseif girl:has_trait(wm.TRAITS.CHARISMATIC) then
             Dialog("Street. Orphans. Charismatic attempt. convince city officials to build a new nicer orphanage.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -701,7 +701,7 @@ function StreetsQuest(girl)
         end
     elseif what == 3 then
         Dialog("Streets. Hookers need protection.")
-        if girl:has_trait("Adventurer") then
+        if girl:has_trait(wm.TRAITS.ADVENTURER) then
             Dialog("Streets. Hooker. Adventurer attempt. defeat the abusive john.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -710,13 +710,13 @@ function StreetsQuest(girl)
                 Dialog("Street. Hooker. Adventurer. Crit Fail.  Man kills street hooker. ties up your girl. fucks her in a nearby cellar.")
             elseif wm.Percent(girl:combat()) then
                 Dialog("Street. Hooker.  Adventurer. Combat win.  defeat man and scare him off.")
-                if girl:has_trait("Sadistic") then
+                if girl:has_trait(wm.TRAITS.SADISTIC) then
                     Dialog("before he leaves she cuts off his penis as a trophy.")
                 end
             else
                 Dialog("Street. Hooker.  Adventurer. combat fail.  man kidnaps the hooker.")
             end
-        elseif girl:beauty() > 80 or girl:has_trait("Great Figure") or girl:has_trait("Great Arse") or girl:has_trait("Long Legs") then
+        elseif girl:beauty() > 80 or girl:has_trait(wm.TRAITS.GREAT_FIGURE, wm.TRAITS.GREAT_ARSE, wm.TRAITS.LONG_LEGS) then
             Dialog("Street. Hooker. Amazing beauty seduce jack the ripper type. attempt.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -733,7 +733,7 @@ function StreetsQuest(girl)
                 girl:beauty(-70)
                 girl:health(-40)
             end
-        elseif girl:has_trait("Charismatic") then
+        elseif girl:has_trait(wm.TRAITS.CHARISMATIC) then
             Dialog("Street. Hooker. Charismatic attempt. Clean her up and get her a job in a brothel")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -763,7 +763,7 @@ function StreetsQuest(girl)
         end
     elseif what == 4 then
         Dialog("Streets. Passage to underground lair.")
-        if girl:has_trait("Adventurer") then
+        if girl:has_trait(wm.TRAITS.ADVENTURER) then
             Dialog("Streets. Underground Lair. Adventurer attempt. defeat the rival gangs secret stockpile guards.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -780,7 +780,7 @@ function StreetsQuest(girl)
                 Dialog("Streets. Underground. Adventurer. Combat lose.  Forced to retreat injured.")
                 girl:health(-10)
             end
-        elseif girl:has_trait("Nymphomaniac") then
+        elseif girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
             Dialog("Streets. Underground Lair. Nympho attempt. find a ancient sex pleasure dungeon.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -811,7 +811,7 @@ function StreetsQuest(girl)
                 AdjustLust(girl, -30)
                 -- TODO anal sex
             end
-        elseif girl:has_trait("Construct") then
+        elseif girl:has_trait(wm.TRAITS.CONSTRUCT) then
             Dialog("Streets. Underground Lair. Construct attempt.  Finds alchemy lab.")
             local result = wm.Range(1, 100)
             if result >= 95 then
@@ -827,7 +827,7 @@ function StreetsQuest(girl)
             else
                 Dialog("Street. UNderground. Construct. Fail. She finds nothing of value.")
             end
-        elseif girl:has_trait("Strong Magic") then
+        elseif girl:has_trait(wm.TRAITS.STRONG_MAGIC) then
             Dialog("Streets. Underground lair. Strong Magic attempt. Ancient wizards secret lair.")
             local result = wm.Range(1, 100)
             if result >= 95 then

@@ -30,7 +30,7 @@ function PlayerRapeGirl(girl)
     girl:pclove(-5);
 
     if wm.Percent(2) then
-        girl:add_trait("Broken Will")
+        girl:add_trait(wm.TRAITS.BROKEN_WILL)
     end
     if girl:check_virginity() then
         girl:lose_virginity()
@@ -102,13 +102,13 @@ end
 function ScoldGirl(girl)
     local spirit = girl:spirit()
     -- if she has been scolded recently, the effect is diminished
-    if girl:has_trait("Recently Scolded") then
+    if girl:has_trait(wm.TRAITS.RECENTLY_SCOLDED) then
         spirit = spirit + 10
         girl:pclove(-1)
         girl:happiness(-1)
     end
     -- if she has been punished recently, the effect is increased
-    if girl:has_trait("Recently Punished") then
+    if girl:has_trait(wm.TRAITS.RECENTLY_PUNISHED) then
         spirit = spirit - 10
         girl:pcfear(1)
         girl:spirit(-1)
@@ -155,7 +155,7 @@ function ScoldGirl(girl)
         girl:pclove(-9)
     end
 
-    girl:add_trait("Recently Scolded", 3)
+    girl:add_trait(wm.TRAITS.RECENTLY_SCOLDED, 3)
 end
 
 ---@param girl wm.Girl
@@ -179,13 +179,13 @@ function PunishGirl(girl)
             girl:happiness(-50)
             girl:pcfear(30)
         end
-        girl:add_trait("Recently Punished", 4)
+        girl:add_trait(wm.TRAITS.RECENTLY_PUNISHED, 4)
     elseif choice == 1 then
         PlayerFucksGirl_Group(girl)
         wm.SetPlayerDisposition(-40)
         Dialog("You and your men spend a few hours passing her around the room.")
         Dialog("For the grand finale you all stand around her and spray her with load after load of cum.")
-        if girl:has_trait("Nymphomaniac") then
+        if girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
             Dialog("She lies on the floor breathing heavily from the marathon of orgasms; both the group's and her's.")
             AdjustLust(girl, 5)
             girl:libido(1)
@@ -197,7 +197,7 @@ function PunishGirl(girl)
             girl:tiredness(20)
             girl:pcfear(5)
         end
-        girl:add_trait("Recently Punished", 4)
+        girl:add_trait(wm.TRAITS.RECENTLY_PUNISHED, 4)
     elseif choice == 2 then
         -- Flavour text doesn't mention penis-in-vagina penetration,
         -- so don't call PlayerFucksGirl_BDSM()
@@ -220,7 +220,7 @@ function PunishGirl(girl)
             girl:health(-40)
             girl:pcfear(30)
         end
-        girl:add_trait("Recently Punished", 4)
+        girl:add_trait(wm.TRAITS.RECENTLY_PUNISHED, 4)
     elseif choice == 3 then
         wm.UpdateImage(wm.IMG.BEAST)
         Dialog("Player: \"Let's see if a night with Cthulu's cousin improves her mood?\"")
@@ -229,7 +229,7 @@ function PunishGirl(girl)
         girl:happiness(-20)
         girl:tiredness(20)
         girl:pcfear(10)
-        girl:add_trait("Recently Punished", 4)
+        girl:add_trait(wm.TRAITS.RECENTLY_PUNISHED, 4)
     elseif choice == 4 then
         if girl:obey_check(wm.ACTIONS.WORKSTRIP) then
             wm.UpdateImage(wm.IMG.NUDE)
@@ -279,7 +279,7 @@ end
 ---@param girl wm.Girl
 --- This function temporarily decreases the libido stat, unless the girl is multi-orgasmic. It also adjusts happiness and tiredness.
 function SheJustCame(girl, amount)
-    if not girl:has_trait("Nymphomaniac") then
+    if not girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
         girl:stat(wm.STATS.LIBIDO, -amount, true)
         girl:tiredness(amount // 2)
     else

@@ -31,6 +31,8 @@ public:
 
     std::unique_ptr<ITraitsCollection> create_collection() const override;
     const ITraitSpec* lookup(const char* name) const override;
+
+    std::vector<std::string> get_all_traits() const override;
 private:
     // helper functions
     void add_trait(std::unique_ptr<cTraitSpec> spec);

@@ -2,6 +2,7 @@
 #define WM_ITRAITSMANAGER_H
 
 #include <memory>
+#include <vector>
 
 namespace tinyxml2 {
     class XMLElement;
@@ -22,6 +23,8 @@ public:
 
     virtual std::unique_ptr<ITraitsCollection> create_collection() const = 0;
     virtual const ITraitSpec* lookup(const char* name) const = 0;
+
+    virtual std::vector<std::string> get_all_traits() const = 0;
 };
 
 #endif //WM_ITRAITSMANAGER_H

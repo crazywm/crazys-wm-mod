@@ -18,14 +18,14 @@ function Drinks(girl, dinner_already)
     local what = wm.Range(0, 50)
     what = what + (girl:tiredness() - girl:constitution()) / 3
     if mix == 0 then
-        if girl:has_trait("Alcoholic") then
+        if girl:has_trait(wm.TRAITS.ALCOHOLIC) then
             Dialog(girl:firstname() .. " sees you're pouring just a bit of alcohol into the " .. cocktail .. " you're mixing. \"I though you wanted to drink cocktails? This is a drink for kids.\"")
         else
             Dialog("You add just a bit of alcohol to the " .. cocktail .. ".")
         end
     elseif mix == 1 then
         what = what + 33
-        if girl:has_trait("Alcoholic") then
+        if girl:has_trait(wm.TRAITS.ALCOHOLIC) then
             Dialog("You hand ${firstname} her " .. cocktail .. ". She takes one sip and her face lights up. \"That's the stuff.\"")
         else
             Dialog("As you are mixing her " .. cocktail .. " you liberally add a large amount of alcohol.")
@@ -289,7 +289,7 @@ function Dinner(girl, drinks_already)
             girl:oralsex(2)
             girl:happiness(3)
             girl:pclove(4)
-        elseif girl:has_trait("Nymphomaniac") or (girl:libido() > 90 and wm.Percent(50)) then
+        elseif girl:has_trait(wm.TRAITS.NYMPHOMANIAC) or (girl:libido() > 90 and wm.Percent(50)) then
             Dialog("\"Wait\" She says \"I want to make you a dessert myself.\"  She excuses herself to the kitchen for a few moments.")
             Dialog("You nearly fall out of your chair when she returns wearing nothing but whipped cream lingerie with cherries over her nipples. \"I wanted to make you a banana split, but I couldn't find a good banana in the kitchen.\" she smiles coyly \"Do you know where I can find a banana?\"")
             Dialog("\"I think I can help you out with that\" you reply as you approach her.  You spend the rest of the evening applying and removing whipped cream from each others bodies.")

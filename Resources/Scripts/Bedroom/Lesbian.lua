@@ -43,7 +43,7 @@ function HandleLesBDSM(girl, other_name)
             other_name .. " comments. \"Today, you have to earn your orgasms, though!\"")
             wm.UpdateImage(wm.IMG.SPANKING, ImageOptions.LESBIAN)
             Dialog("And with that she pulls ${firstname}'s panties down and starts thoroughly spanking her ass.")
-            if girl:has_trait("Masochist") and wm.Percent(50) then
+            if girl:has_trait(wm.TRAITS.MASOCHIST) and wm.Percent(50) then
                 AdjustLust(girl, 10)
                 SheJustCame(girl, 10)
                 Dialog("Being such a pain slut, this is enough to make ${firstname} cum. " .. other_name ..
@@ -62,7 +62,7 @@ function HandleLesBDSM(girl, other_name)
                     return
                 else
                     Dialog(other_name .. " continues for several minutes, until ${firstname}'s ass has tuned into one big bruise.")
-                    girl:add_trait("Bruises", 2)
+                    girl:add_trait(wm.TRAITS.BRUISES, 2)
                     girl:health(-5)
                     wm.SetPlayerDisposition(2)
                     return
@@ -86,7 +86,7 @@ function HandleLesBDSM(girl, other_name)
                     wm.UpdateImage(wm.IMG.DILDO, ImageOptions.LESBIAN + ImageOptions.TIED_UP)
                     Dialog("After the fourth climax, " .. other_name .. " goes to you bag o' goodies and takes out the largest dildo she can find. " ..
                             "\"It's time we fill you up\", she proclaims. ${firstname} is so wet that despite its girth, the dildo slides in easily.")
-                    if girl:has_trait("Nymphomaniac") and girl:tiredness() < 70 then
+                    if girl:has_trait(wm.TRAITS.NYMPHOMANIAC) and girl:tiredness() < 70 then
                         wm.UpdateImage(wm.IMG.CUMSHOT, ImageOptions.LESBIAN + ImageOptions.TIED_UP)
                         Dialog(other_name .. " brings ${firstname} to orgasm over and over again, but she seems to have unlimited energy. " ..
                                 "You feel yourself approaching the point of climax, so you get up and stand next to her. Just as she starts bucking under her next orgasm, " ..
@@ -126,7 +126,7 @@ function HandleLesBDSM(girl, other_name)
                     else
                         wm.UpdateImage(wm.IMG.CUMSHOT, ImageOptions.HETERO + ImageOptions.TIED_UP)
                         Dialog("You pull your cock out of her, and then proceed to scatter your load all over her face. She tries to gather as much as she can with her tongue.")
-                        if girl:has_trait("Cum Addict") then
+                        if girl:has_trait(wm.TRAITS.CUM_ADDICT) then
                             Dialog("After you've untied her, Cum Addict ${firstname} uses her fingers to gather all the cum from her face, licking it up with a satisfied sigh.")
                         end
                     end
@@ -145,7 +145,7 @@ function HandleLesBDSM(girl, other_name)
                     "She puts them on ${firstname} and starts pulling on the connecting chain. " .. breast_text
             )
             local maso_text = ""
-            if girl:has_trait("Masochist") and wm.Percent(50) then
+            if girl:has_trait(wm.TRAITS.MASOCHIST) and wm.Percent(50) then
                 AdjustLust(girl, 10)
                 maso_text = " Clearly, ${firstname} is getting off on this."
             end
@@ -180,7 +180,7 @@ function HandleLesBDSM(girl, other_name)
                     girl:health(-5)
                 end
 
-                if girl:has_trait("Masochist") and wm.Percent(50) then
+                if girl:has_trait(wm.TRAITS.MASOCHIST) and wm.Percent(50) then
                     AdjustLust(girl, 5)
                 end
 
@@ -205,7 +205,7 @@ function HandleLesBDSM(girl, other_name)
                     girl:pcfear(3)
                 end
                 Dialog("\"As you wish!\" " .. other_name .. " shrugs, then picks up a whip from your crate.")
-                if girl:has_trait("Masochist") and wm.Percent(50) then
+                if girl:has_trait(wm.TRAITS.MASOCHIST) and wm.Percent(50) then
                     AdjustLust(girl, 10)
                 end
                 Dialog("Each loud crack announces another welt appearing on ${firstname}'s skin. She is " ..
@@ -214,7 +214,7 @@ function HandleLesBDSM(girl, other_name)
                 if gag == 1 then
                     Dialog("While " .. other_name .. " continues ${firstname}'s whipping, you insert an inflatable gag into her mouth." ..
                             "You give it a few good pumps, making sure it is large enough to obstruct the airflow through her mouth.")
-                    if girl:has_trait("Strong Gag Reflex") or (wm.Percent(50) and girl:has_trait("Gag Reflex") ) then
+                    if girl:has_trait(wm.TRAITS.STRONG_GAG_REFLEX) or (wm.Percent(50) and girl:has_trait(wm.TRAITS.GAG_REFLEX) ) then
                         Dialog(girl:firstname() .. " makes a retching sound, and some fluid comes out of her nose. Apparently, you've triggered her Gag Reflex.")
                         wm.UpdateImage(wm.IMG.DEATH, ImageOptions.TIED_UP)
                         Dialog("It appears she is unable to breathe, some of her stomach's contents must have gotten into her trachea. " ..
@@ -239,7 +239,7 @@ function HandleLesBDSM(girl, other_name)
                         Dialog("You get a bit carried away in your sadistic enjoyment of this torture, and when you next actually " ..
                                 "check on her twitching body, it is covered in bloody welts. It will take some time for these marks to fade, and " ..
                                 "you've decided you've damaged your merchandise enough.")
-                        girl:add_trait("Bruises", 3)
+                        girl:add_trait(wm.TRAITS.BRUISES, 3)
                     end
                     girl:health(-5)
                     girl:tiredness(5)
@@ -247,7 +247,7 @@ function HandleLesBDSM(girl, other_name)
                     Dialog("Her pleas fall on deaf ears on your part. By the time you motion " .. other_name .. " to stop, " ..
                             girl:firstname() .. "'s body is covered in red welts. \"I think she can make better use of that tongue than this whimpering\", " ..
                             other_name .. " proclaims")
-                    girl:add_trait("Bruises", 1)
+                    girl:add_trait(wm.TRAITS.BRUISES, 1)
                     BdsmFaceSitting(girl, other_name)
                     Dialog("You would have liked to stay longer and let ${firstname} service you too, " ..
                             "but your other duties are calling. You leave the two girls to clean up.")
@@ -374,7 +374,7 @@ function HandleLesbianSex(girl, other_name)
         end
 
         Dialog("They lay beside each other on the bed looking into each others eyes.")
-        if girl:skill_check(wm.SKILLS.ORALSEX, 50) and not girl:has_trait("Lesbian") then
+        if girl:skill_check(wm.SKILLS.ORALSEX, 50) and not girl:has_trait(wm.TRAITS.LESBIAN) then
             wm.UpdateImage(wm.IMG.ORAL)
             Dialog("You stand over them; your erect member inches from their faces. \"What about me, girls?\" They giggle and begin to lick and stroke your staff with skill. The sensation is amazing and you shoot a large stream of semen across those cute faces.")
         end

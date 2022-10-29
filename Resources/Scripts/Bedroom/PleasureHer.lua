@@ -175,7 +175,7 @@ function PleaseHer_Horny(girl, kind)
     else
         girl:pclove(1)
         SheJustCame(girl, 10)
-        if girl:pclove() > 60 and wm.Percent(50) and not girl:has_trait("Lesbian") then
+        if girl:pclove() > 60 and wm.Percent(50) and not girl:has_trait(wm.TRAITS.LESBIAN) then
             Dialog(girl:format(PleaseData.horny_love_repay[kind]))
             PleaseData.horny_love_repay_handler[kind](girl)
         else

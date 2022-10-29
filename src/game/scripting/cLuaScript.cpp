@@ -35,6 +35,7 @@
 
 #include "character/cPlayer.h"
 #include "character/sGirl.h"
+#include "character/traits/ITraitsManager.h"
 #include "buildings/cDungeon.h"
 #include "images/cImageLookup.h"
 
@@ -128,7 +129,7 @@ namespace {
 }
 
 template<std::size_t N>
-void register_table(const char* table, cLuaInterpreter& state, std::array<const char*, N> names) {
+void register_int_table(const char* table, cLuaInterpreter& state, std::array<const char*, N> names) {
     lua_pushstring(state.get_state(), table);
     lua_newtable(state.get_state());
     for(int i = 0; i < N; ++i) {
@@ -156,12 +157,20 @@ cLuaScript::cLuaScript()
     }
     lua_settable(L, -3);
 
-    register_table("FETISH", m_State, get_fetish_names());
-    register_table("STATUS", m_State, get_status_names());
-    register_table("ACTIONS", m_State, get_action_names());
-    register_table("IMG", m_State, get_imgtype_names());
-    register_table("IMG_PART", m_State, get_participant_names());
-    register_table("SPAWN", m_State, get_spawn_names());
+    lua_pushstring(L, "TRAITS");
+    lua_newtable(L);
+    auto all_traits = g_Game->traits().get_all_traits();
+    for(auto& trait : all_traits) {
+        m_State.settable(-1, normalize_table_key(trait), trait);
+    }
+    lua_settable(L, -3);
+
+    register_int_table("FETISH", m_State, get_fetish_names());
+    register_int_table("STATUS", m_State, get_status_names());
+    register_int_table("ACTIONS", m_State, get_action_names());
+    register_int_table("IMG", m_State, get_imgtype_names());
+    register_int_table("IMG_PART", m_State, get_participant_names());
+    register_int_table("SPAWN", m_State, get_spawn_names());
 
     // for the image type, concatenate base images and presets
     lua_pushstring(m_State.get_state(), "IMG");

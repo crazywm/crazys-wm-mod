@@ -4,6 +4,7 @@
 ---@field ACTIONS table<string, number>
 ---@field STATS table<string, number>
 ---@field SKILLS table<string, number>
+---@field TRAITS table<string, string>
 wm = {}
 
 ---@class wm.Customer
