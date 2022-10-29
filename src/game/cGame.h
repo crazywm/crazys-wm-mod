@@ -67,6 +67,8 @@ private:
     void LoadItemFiles(DirPath location);
     void LoadTraitFiles(DirPath location);
 
+    void LoadCommon(const std::function<void(std::string)>& callback);
+
     // Game Processing
     void HandleTaxes();
     void UpdateRunaways();

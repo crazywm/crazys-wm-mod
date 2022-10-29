@@ -66,15 +66,6 @@ struct cGame::sScriptEventStack {
 
 cGame::cGame() :
         m_EventStack( std::make_unique<sScriptEventStack>() ) {
-    // load the default event mapping
-    auto path = DirPath() << "Resources" << "Scripts" << "DefaultEvents.xml";
-    script_manager().LoadEventMapping(*script_manager().GetGlobalEventMapping(), path.str());
-
-    // and default girl events
-    path = DirPath() << "Resources" << "Scripts" << "DefaultGirl.xml";
-    auto ge = script_manager().CreateEventMapping("DefaultGirl", "");
-    script_manager().LoadEventMapping(*ge, path.str());
-    script_manager().RegisterEventMapping(std::move(ge));
 }
 
 std::unique_ptr<IGame> IGame::CreateGame() {
@@ -84,19 +75,10 @@ std::unique_ptr<IGame> IGame::CreateGame() {
 // ---------------------------------------------------------------------------------------------------------------------
 //                                              Saving and Loading
 // ---------------------------------------------------------------------------------------------------------------------
-void cGame::NewGame(const std::function<void(std::string)>& callback) {
-    g_LogFile.info("prepare", "Loading Game Data");
-    // setup gold
-    gold().reset();
-
+void cGame::LoadCommon(const std::function<void(std::string)>& callback) {
     // jobs
     g_LogFile.info("prepare", "Setup Jobs");
     job_manager().Setup();
-
-    g_LogFile.info("prepare", "Resetting Player");
-    for(auto stat: StatsRange) player().set_stat(stat, 60);
-    for(auto skill : SkillsRange) player().set_skill_direct(skill, 10);
-    player().SetToZero();
 
     // traits
     callback("Loading Traits");
@@ -111,9 +93,37 @@ void cGame::NewGame(const std::function<void(std::string)>& callback) {
     m_SkillCaps->load_from_xml(*LoadXMLDocument(caps.c_str())->RootElement());
 
     callback("Loading Items");
+    auto start_time_items = std::chrono::steady_clock::now();
     g_LogFile.info("prepare", "Loading Items");
     for(const auto& path : DirPath::split_search_path(cfg.items()))
         LoadItemFiles(DirPath::expand_path(path).c_str());
+    long duration = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::steady_clock::now() - start_time_items ).count();
+    g_LogFile.info("prepare", "Loaded items in ", duration, "ms");
+    callback("Loaded items in " + std::to_string(duration) + "ms");
+
+    // load the default event mapping
+    auto path = DirPath() << "Resources" << "Scripts" << "DefaultEvents.xml";
+    script_manager().LoadEventMapping(*script_manager().GetGlobalEventMapping(), path.str());
+
+    // and default girl events
+    path = DirPath() << "Resources" << "Scripts" << "DefaultGirl.xml";
+    auto ge = script_manager().CreateEventMapping("DefaultGirl", "");
+    script_manager().LoadEventMapping(*ge, path.str());
+    script_manager().RegisterEventMapping(std::move(ge));
+}
+
+
+void cGame::NewGame(const std::function<void(std::string)>& callback) {
+    g_LogFile.info("prepare", "Loading Game Data");
+    // setup gold
+    gold().reset();
+
+    g_LogFile.info("prepare", "Resetting Player");
+    for(auto stat: StatsRange) player().set_stat(stat, 60);
+    for(auto skill : SkillsRange) player().set_skill_direct(skill, 10);
+    player().SetToZero();
+
+    LoadCommon(callback);
 
     callback("Loading Girls");
     g_LogFile.info("prepare", "Loading Girl Files");
@@ -134,32 +144,10 @@ void cGame::NewGame(const std::function<void(std::string)>& callback) {
 void cGame::LoadGame(const tinyxml2::XMLElement& source, const std::function<void(std::string)>& callback) {
     g_LogFile.info("prepare", "Loading Game Data");
 
-    // jobs
-    g_LogFile.info("prepare", "Setup Jobs");
-    job_manager().Setup();
-
-    // traits
-    callback("Loading Traits");
-    g_LogFile.info("prepare", "Loading Traits");
-    LoadTraitFiles(DirPath() << "Resources" << "Data" << "Traits");
-
-    // load skills
-    callback("Loading Skills");
-    g_LogFile.info("prepare", "Loading Skills");
-    DirPath caps;
-    caps << "Resources" << "Data" << "Skills.xml";
-    m_SkillCaps->load_from_xml(*LoadXMLDocument(caps.c_str())->RootElement());
+    // load common
+    LoadCommon(callback);
 
     ReadGameAttributesXML(source);
-
-    callback("Loading Items");
-    auto start_time_items = std::chrono::steady_clock::now();
-    g_LogFile.info("prepare", "Loading Items");
-    for(const auto& path : DirPath::split_search_path(cfg.items()))
-        LoadItemFiles(DirPath::expand_path(path).c_str());
-    int duration = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::steady_clock::now() - start_time_items ).count();
-    g_LogFile.info("prepare", "Loaded items in ", duration, "ms");
-    callback("Loaded items in " + std::to_string(duration) + "ms");
 
     // girl file list
     auto start_time_girls = std::chrono::steady_clock::now();
@@ -176,7 +164,7 @@ void cGame::LoadGame(const tinyxml2::XMLElement& source, const std::function<voi
     for(const auto& path : DirPath::split_search_path(cfg.characters()))
         LoadGirlFiles(DirPath::expand_path(path).c_str(), callback);
 
-    duration = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::steady_clock::now() - start_time_girls ).count();
+    long duration = std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::steady_clock::now() - start_time_girls ).count();
     g_LogFile.info("prepare", "Loaded girls in ", duration, "ms");
     callback("Loaded girls in " + std::to_string(duration) + "ms");
 

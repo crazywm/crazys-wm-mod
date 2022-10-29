@@ -289,14 +289,14 @@ bool Combatant::has_trait(const char* trait) const {
 double Combatant::physical_hurt_multiplier() const {
     if(!character_src)  return 1.0;
 
-    int trait_influence = character_src->get_trait_modifier(ct::PHYS_DMG_MOD);
+    int trait_influence = character_src->get_trait_modifier(traits::modifiers::COMBAT_HURT_PHYSICAL);
     return std::pow(0.95, trait_influence);
 }
 
 double Combatant::magical_hurt_multiplier() const {
     if(!character_src)  return 1.0;
 
-    int trait_influence = character_src->get_trait_modifier(ct::MAGIC_DMG_MOD);
+    int trait_influence = character_src->get_trait_modifier(traits::modifiers::COMBAT_HURT_MAGICAL);
     return std::pow(0.95, trait_influence);
 }
 

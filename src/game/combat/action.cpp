@@ -306,7 +306,7 @@ void PhysicalAttack::do_act(Combatant& self, Combatant& target) const {
             damage *= 0.5;
 
         // critical hit chance -- increases if target is sluggish
-        double crit_chance = 5 + self.get_trait_modifier(ct::PHYS_CRIT_MOD);
+        double crit_chance = 5 + self.get_trait_modifier(traits::modifiers::COMBAT_MELEE_CRIT);
         if(target.get_vitality() < 100)
             crit_chance += (100 - target.get_vitality()) / 10.0;
 
@@ -478,7 +478,7 @@ ActionResult Rest::calc_score(Combatant& self, Combatant& target) const {
         goal -= 5;
     }
 
-    goal += self.get_trait_modifier(ct::REST_MOD);
+    goal += self.get_trait_modifier(traits::modifiers::COMBAT_REST);
 
     return ActionResult{0, 0.0, goal, 0,0};
 }
@@ -592,7 +592,7 @@ ActionResult Flee::calc_score(Combatant& self, Combatant& target) const {
     if(self.is_fleeing())
         goal *= 1.2;
 
-    goal += self.get_trait_modifier(ct::RETREAT_MOD);
+    goal += self.get_trait_modifier(traits::modifiers::COMBAT_RETREAT);
 
     return ActionResult{0, 1.0, goal, 10,0};
 }
