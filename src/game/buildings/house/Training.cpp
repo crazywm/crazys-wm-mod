@@ -463,7 +463,7 @@ void SoStraight::HandleTraining(sGirl& girl, bool is_night) {
     }
     if (girl.has_active_trait(traits::BISEXUAL)) girl.m_WorkingDay -= girl.lesbian() / 20;    // it is hard to change something you are good at
 
-    int trait = girl.get_trait_modifier("so.straight");
+    int trait = girl.get_trait_modifier(traits::modifiers::SO_STRAIGHT);
     girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
     if (girl.has_active_trait(traits::BROKEN_WILL))        { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 
@@ -527,7 +527,7 @@ void SoLesbian::HandleTraining(sGirl& girl, bool is_night) {
     }
     if (girl.has_active_trait(traits::BISEXUAL)) girl.m_WorkingDay -= girl.normalsex() / 20;                    // it is hard to change something you are good at
 
-    int trait = girl.get_trait_modifier("so.lesbian");
+    int trait = girl.get_trait_modifier(traits::modifiers::SO_LESBIAN);
     girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
 
     if (girl.has_active_trait(traits::BROKEN_WILL))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
@@ -608,7 +608,7 @@ void SoBi::HandleTraining(sGirl& girl, bool is_night) {
     }
     update_progress(girl);
 
-    int trait = girl.get_trait_modifier("so.bi");
+    int trait = girl.get_trait_modifier(traits::modifiers::SO_BI);
     girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
     if (girl.has_active_trait(traits::BROKEN_WILL))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 
@@ -665,7 +665,7 @@ void FakeOrg::HandleTraining(sGirl& girl, bool is_night) {
     girl.m_WorkingDay += girl.lesbian() / 20;
 
     update_progress(girl);
-    int trait = girl.get_trait_modifier("fake-orgasm");
+    int trait = girl.get_trait_modifier(traits::modifiers::FAKE_ORGASM);
     girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
     if (girl.has_active_trait(traits::BROKEN_WILL))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 

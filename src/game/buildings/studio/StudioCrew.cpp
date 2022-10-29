@@ -189,8 +189,8 @@ sWorkJobResult cJobStageHand::DoWork(sGirl& girl, bool is_night) {
     // `J` - jobperformance and CleanAmt need to be worked out specially for this job.
     double jobperformance = 0;
     double CleanAmt = ((girl.service() / 10.0) + 5) * 5;
-    CleanAmt += girl.get_trait_modifier("work.stagehand.clean-amount");
-    jobperformance += girl.get_trait_modifier("work.stagehand.performance");
+    CleanAmt += girl.get_trait_modifier(traits::modifiers::WORK_STAGEHAND_CLEAN_AMOUNT);
+    jobperformance += girl.get_trait_modifier(traits::modifiers::WORK_STAGEHAND_PERFORMANCE);
 
     if (brothel->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 ||
         brothel->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0 ||
@@ -307,7 +307,7 @@ double cJobStageHand::GetPerformance(const sGirl& girl, bool estimate) const {
             jobperformance -= (t + 2) * (t / 3);
     }
 
-    jobperformance += girl.get_trait_modifier("work.cleaning");
+    jobperformance += girl.get_trait_modifier(traits::modifiers::WORK_CLEANING);
 
     return jobperformance;
 }

@@ -3163,7 +3163,7 @@ double SecurityJob::GetPerformance(const sGirl& girl, bool estimate) const {
                  /*  */ + g_Dice % (girl.agility() / 4);
     }
 
-    SecLev += girl.get_trait_modifier("work.security");
+    SecLev += girl.get_trait_modifier(traits::modifiers::WORK_SECURITY);
 
     if (!estimate)
     {

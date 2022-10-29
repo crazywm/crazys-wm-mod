@@ -1274,7 +1274,7 @@ void cGirls::UnequipCombat(sGirl& girl)
 {  // girl unequips armor and weapons, ready for brothel work or other non-aggressive jobs
     if (!g_Game->settings().get_bool(settings::USER_ITEMS_AUTO_EQUIP_COMBAT)) return; // is this feature disabled in config?
     // if she's a really rough or crazy bitch, she might just keep combat gear equipped
-    int refusal = girl.get_trait_modifier("refuse-unequip-combat");
+    int refusal = girl.get_trait_modifier(traits::modifiers::REFUSE_UNEQUIP_COMBAT);
     if (g_Dice.percent(refusal))            return;
 
     for(auto& entry : girl.inventory().all_items()) {
@@ -1926,7 +1926,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         if (!customer->m_IsWoman && girl->has_active_trait(traits::CUM_ADDICT)) intro += 4;
         if (customer->m_IsWoman && likes_women(*girl)) intro += 3;
         if (customer->m_IsWoman && !likes_women(*girl)) intro -= 3;
-        intro += girl->get_trait_modifier("sex.eagerness");
+        intro += girl->get_trait_modifier(traits::modifiers::SEX_EAGERNESS);
 
         //SIN: Fix ordering and wording - delete old if this okay
         /* */if (intro < 2)        introtext += " reluctantly leads";
@@ -3611,7 +3611,7 @@ int cGirls::PreferredAccom(const sGirl& girl)
     preferredaccom += girl.level() * (girl.is_slave() ? 0.1 : 0.3);
     if (girl.is_pregnant()) preferredaccom += 1.5;
 
-    preferredaccom += girl.get_trait_modifier("pref-accommodation");
+    preferredaccom += girl.get_trait_modifier(traits::modifiers::PREF_ACCOMMODATION);
 
     // TODO I think iteration would be more efficient here!
     if (!girl.inventory().all_items().empty())    // only bother checking items if the girl has at least 1
@@ -3676,7 +3676,7 @@ bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl& girl, sCusto
     detectdisease -= girl.libido() / 2.0;                                    // -50 libido
 
     if (has_disease(girl))                        detectdisease += 20;    // has it so know what to look for
-    detectdisease += girl.get_trait_modifier("detect-disease");
+    detectdisease += girl.get_trait_modifier(traits::modifiers::DETECT_DISEASE);
 
     const char* found_disease = nullptr;
     // these need better texts

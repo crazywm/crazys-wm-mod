@@ -388,7 +388,7 @@ bool sGirl::fights_back()
 
     // TODO not sure what this check does
     if (disobey_check(ACTION_COMBAT))/*            */    return true;
-    int chance = get_trait_modifier("fight-back-chance");
+    int chance = get_trait_modifier(traits::modifiers::FIGHT_BACK_CHANCE);
     return g_Dice.percent(chance);
 }
 
@@ -902,7 +902,7 @@ void sGirl::clear_pregnancy()
 
 int sGirl::breast_size() const// `J` Breast size number, normal is 4, 1 is flat, max is 10
 {
-    return 4 + get_trait_modifier("breast-size");
+    return 4 + get_trait_modifier(traits::modifiers::BREAST_SIZE);
 }
 
 bool sGirl::is_dead() const

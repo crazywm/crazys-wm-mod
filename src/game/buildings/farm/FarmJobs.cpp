@@ -1896,7 +1896,7 @@ double cFarmJobResearch::GetPerformance(const sGirl& girl, bool estimate) const 
         }
     }
 
-    jobperformance += girl.get_trait_modifier("work.research");
+    jobperformance += girl.get_trait_modifier(traits::modifiers::WORK_RESEARCH);
 
     return jobperformance;
 }

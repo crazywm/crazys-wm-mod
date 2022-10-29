@@ -23,9 +23,9 @@
 bool is_addict(const ICharacter& character, bool onlyhard) {
     if (onlyhard)
     {
-        return character.get_trait_modifier("tag:hard-addiction") > 0;
+        return character.get_trait_modifier(traits::modifiers::TAG_HARD_ADDICTION) > 0;
     }
-    return character.get_trait_modifier("tag:addiction") > 0;
+    return character.get_trait_modifier(traits::modifiers::TAG_ADDICTION) > 0;
 }
 
 bool has_disease(const ICharacter& character) {
@@ -33,7 +33,7 @@ bool has_disease(const ICharacter& character) {
 }
 
 int num_diseases(const ICharacter& character) {
-    return character.get_trait_modifier("tag:disease");
+    return character.get_trait_modifier(traits::modifiers::TAG_DISEASE);
 }
 
 bool is_virgin(const ICharacter& character) {
@@ -53,7 +53,7 @@ bool is_futa(const ICharacter& character) {
 }
 
 int get_sex_openness(const ICharacter& character) {
-    int trait = character.get_trait_modifier("sex.openness");
+    int trait = character.get_trait_modifier(traits::modifiers::SEX_OPENNESS);
     int open = trait + character.libido() / 2 - std::max(0, character.dignity() / 3);
     // specific modifiers
     // very high dignity or very low confidence

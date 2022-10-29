@@ -98,7 +98,7 @@ bool UseAntiPreg(const sGirl& girl)
 
 
 int fertility(const sGirl& girl) {
-    if (girl.get_trait_modifier("tag:sterile") > 0) {
+    if (girl.get_trait_modifier(traits::modifiers::TAG_STERILE) > 0) {
         g_LogFile.debug("pregnancy", girl.FullName(), " is sterile.");
         return 0;
     }
@@ -116,7 +116,7 @@ int fertility(const sGirl& girl) {
     }
 
     int chance = 100.f * g_Game->settings().get_percent(settings::PREG_CHANCE_GIRL);
-    chance += girl.get_trait_modifier("fertility");
+    chance += girl.get_trait_modifier(traits::modifiers::FERTILITY);
     g_LogFile.debug("pregnancy", girl.FullName(), "'s fertility: ", chance);
     return chance;
 }

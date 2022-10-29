@@ -193,7 +193,7 @@ double JP_Torturer(const sGirl& girl, bool estimate)        // not used
         else                                            jobperformance -= 30;
     }
 
-    jobperformance += girl.get_trait_modifier("work.torturer");
+    jobperformance += girl.get_trait_modifier(traits::modifiers::WORK_TORTURER);
 
     return jobperformance;
 }

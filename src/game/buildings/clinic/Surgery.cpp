@@ -633,7 +633,7 @@ void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
         girl.m_WorkingDay += doc_pts + nurse_pts;
     }
 
-    girl.m_WorkingDay += girl.constitution() / 10 + girl.get_trait_modifier("disease.recovery");
+    girl.m_WorkingDay += girl.constitution() / 10 + girl.get_trait_modifier(traits::modifiers::DISEASE_RECOVERY);
 
     if (is_night && girl.m_WorkingDay >= 100)
     {
@@ -797,8 +797,9 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
             ss << "She is sad and has lost some health during the operation.\n";
         }
 
-        happy += girl.get_trait_modifier("preg.abort.happy");
-        love += girl.get_trait_modifier("preg.abort.love");
+        happy += girl.get_trait_modifier(traits::modifiers::PREG_ABORT_HAPPY);
+        love += girl.get_trait_modifier(traits::modifiers::PREG_ABORT_LOVE);
+        spirit += girl.get_trait_modifier(traits::modifiers::PREG_ABORT_SPIRIT);
 
         // `J` next, check traits
         if (girl.has_active_trait(traits::FRAGILE))        // natural adj
@@ -845,8 +846,8 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
         else if (girl.has_status(STATUS_INSEMINATED))
         {
             // `J` Some traits would react differently to non-human pregnancies.
-            happy += girl.get_trait_modifier("inseminated.abort.happy");
-            love += girl.get_trait_modifier("inseminated.abort.love");
+            happy += girl.get_trait_modifier(traits::modifiers::INSEMINATED_ABORT_HAPPY);
+            love += girl.get_trait_modifier(traits::modifiers::INSEMINATED_ABORT_LOVE);
 
             if (girl.has_active_trait(traits::ANGEL))        // "DEAR GOD, WHAT WAS THAT THING?"
             {

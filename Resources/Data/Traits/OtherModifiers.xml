@@ -439,15 +439,6 @@
         <Trait Name="Princess" Value="4" />
         <Trait Name="Noble" Value="4" />
     </Modifier>
-
-    <Modifier Name="inseminated.abort.hate">
-        <!-- How hate changes with an abortion - compounds with preg -->
-        <Trait Name="Angel" Value="5" />
-        <Trait Name="Demon" Value="2" />
-        <Trait Name="Queen" Value="-4" />
-        <Trait Name="Princess" Value="-2" />
-        <Trait Name="Noble" Value="-2" />
-    </Modifier>
     
     <!-- Bonus / Malus to recovery in HealDisease job -->
     <Modifier Name="disease.recovery">

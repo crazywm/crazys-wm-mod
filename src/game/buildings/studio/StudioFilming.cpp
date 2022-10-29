@@ -275,7 +275,7 @@ sWorkJobResult cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
     m_Dbg_Msg << "Performance: " << m_Performance << "\n";
 
     int quality = m_Performance * 85 / 300;
-    quality += girl.get_trait_modifier("movie.quality");
+    quality += girl.get_trait_modifier(traits::modifiers::MOVIE_QUALITY);
 
     // post-work text
     PostFilmCallback(girl);

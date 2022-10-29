@@ -853,4 +853,62 @@ namespace traits {
 
 
     // OtherModifiers.xml
+    namespace modifiers {
+        constexpr const char* BREAST_SIZE = "breast-size";
+        constexpr const char* COMBAT_HURT_MAGICAL = "combat.hurt.magical";
+        constexpr const char* COMBAT_HURT_PHYSICAL = "combat.hurt.physical";
+        constexpr const char* COMBAT_MELEE_CRIT = "combat.melee.crit";
+        constexpr const char* COMBAT_REST = "combat.rest";
+        constexpr const char* COMBAT_RETREAT = "combat.retreat";
+        constexpr const char* DETECT_DISEASE = "detect-disease";
+        constexpr const char* DISEASE_RECOVERY = "disease.recovery";
+        constexpr const char* FAKE_ORGASM = "fake-orgasm";
+        constexpr const char* FERTILITY = "fertility";
+        constexpr const char* FIGHT_BACK_CHANCE = "fight-back-chance";
+        constexpr const char* INSEMINATED_ABORT_HAPPY = "inseminated.abort.happy";
+        constexpr const char* INSEMINATED_ABORT_LOVE = "inseminated.abort.love";
+        constexpr const char* MOVIE_QUALITY = "movie.quality";
+        constexpr const char* PREF_ACCOMMODATION = "pref-accommodation";
+        constexpr const char* PREG_ABORT_HAPPY = "preg.abort.happy";
+        constexpr const char* PREG_ABORT_LOVE = "preg.abort.love";
+        constexpr const char* PREG_ABORT_SPIRIT = "preg.abort.spirit";
+        constexpr const char* REFUSE_UNEQUIP_COMBAT = "refuse-unequip-combat";
+        constexpr const char* SEX_EAGERNESS = "sex.eagerness";
+        constexpr const char* SEX_OPENNESS = "sex.openness";
+        constexpr const char* SO_BI = "so.bi";
+        constexpr const char* SO_LESBIAN = "so.lesbian";
+        constexpr const char* SO_STRAIGHT = "so.straight";
+        constexpr const char* TAG_ADDICTION = "tag:addiction";
+        constexpr const char* TAG_DISEASE = "tag:disease";
+        constexpr const char* TAG_HARD_ADDICTION = "tag:hard-addiction";
+        constexpr const char* TAG_STERILE = "tag:sterile";
+        constexpr const char* WORK_ACTRESS = "work.actress";
+        constexpr const char* WORK_ADVERTISING = "work.advertising";
+        constexpr const char* WORK_BARMAID = "work.barmaid";
+        constexpr const char* WORK_BEASTCARE = "work.beastcare";
+        constexpr const char* WORK_CLEANING = "work.cleaning";
+        constexpr const char* WORK_COMMUNITYSERVICE = "work.communityservice";
+        constexpr const char* WORK_COOKING = "work.cooking";
+        constexpr const char* WORK_COUNSELOR = "work.counselor";
+        constexpr const char* WORK_CUSTOMERSERVICE = "work.customerservice";
+        constexpr const char* WORK_ESCORT = "work.escort";
+        constexpr const char* WORK_EXPLORECATACOMBS = "work.explorecatacombs";
+        constexpr const char* WORK_FIGHTARENA = "work.fightarena";
+        constexpr const char* WORK_HALLDEALER = "work.halldealer";
+        constexpr const char* WORK_HALLENTERTAINER = "work.hallentertainer";
+        constexpr const char* WORK_HALLXXX = "work.hallxxx";
+        constexpr const char* WORK_HOUSECOOK = "work.housecook";
+        constexpr const char* WORK_JOUSTING = "work.jousting";
+        constexpr const char* WORK_MASSEUSE = "work.masseuse";
+        constexpr const char* WORK_PEEPSHOW = "work.peepshow";
+        constexpr const char* WORK_PORNSTAR = "work.pornstar";
+        constexpr const char* WORK_RECRUITER = "work.recruiter";
+        constexpr const char* WORK_RESEARCH = "work.research";
+        constexpr const char* WORK_SECURITY = "work.security";
+        constexpr const char* WORK_SLEAZYWAITRESS = "work.sleazywaitress";
+        constexpr const char* WORK_STAGEHAND_CLEAN_AMOUNT = "work.stagehand.clean-amount";
+        constexpr const char* WORK_STAGEHAND_PERFORMANCE = "work.stagehand.performance";
+        constexpr const char* WORK_STRIPPER = "work.stripper";
+        constexpr const char* WORK_TORTURER = "work.torturer";
+    }
 }
