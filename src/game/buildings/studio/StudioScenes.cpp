@@ -34,7 +34,7 @@ namespace {
 
         void PreFilmCallback(sGirl& girl) override {
             cFilmSceneJob::PreFilmCallback(girl);
-            if (girl.has_active_trait("Cum Addict")) m_Enjoyment += 2;
+            if (girl.has_active_trait(traits::CUM_ADDICT)) m_Enjoyment += 2;
         }
 
         void PostFilmCallback(sGirl& girl) override {
@@ -52,14 +52,14 @@ namespace {
 
         void PreFilmCallback(sGirl& girl) override {
             cFilmSceneJob::PreFilmCallback(girl);
-            if (girl.has_active_trait("Cum Addict")) m_Enjoyment += 2;
+            if (girl.has_active_trait(traits::CUM_ADDICT)) m_Enjoyment += 2;
         }
 
         void PostFilmCallback(sGirl& girl) override {
             cFilmSceneJob::PostFilmCallback(girl);
 
             int impact = uniform(0, 10);
-            if (girl.has_active_trait("Strong Gag Reflex"))
+            if (girl.has_active_trait(traits::STRONG_GAG_REFLEX))
             {
                 ss << "She was gagging and retching the whole scene, and was violently sick. She was exhausted and felt awful afterward.\n \n";
                 girl.health((10 + impact));
@@ -67,7 +67,7 @@ namespace {
                 girl.pclove(-2);
                 girl.pcfear(1);
             }
-            else if (girl.has_active_trait("Gag Reflex"))
+            else if (girl.has_active_trait(traits::GAG_REFLEX))
             {
                 ss << "She gagged and retched a lot. It was exhausting and left her feeling sick.\n \n";
                 girl.health(2 + impact);

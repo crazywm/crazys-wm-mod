@@ -66,8 +66,8 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     int dispo = changes[get_performance_class(m_Performance)];
 
     //try and add randomness here
-    if (girl.has_active_trait("Nymphomaniac") && chance(30) && !is_virgin(girl)
-        && !girl.has_active_trait("Lesbian") && girl.libido() > 75
+    if (girl.has_active_trait(traits::NYMPHOMANIAC) && chance(30) && !is_virgin(girl)
+        && !girl.has_active_trait(traits::LESBIAN) && girl.libido() > 75
         && (brothel.is_sex_type_allowed(SKILL_NORMALSEX) || brothel.is_sex_type_allowed(SKILL_ANAL)))
     {
         sex = true;
@@ -90,7 +90,7 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         {
             girl.normalsex(2);
             m_ImageType = EImageBaseType::VAGINAL;
-            if (girl.lose_trait("Virgin"))
+            if (girl.lose_trait(traits::VIRGIN))
             {
                 ss << "\nShe is no longer a virgin.\n";
             }
@@ -170,8 +170,8 @@ bool FeedPoor::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         blow = true;    ss << "An elderly fellow managed to convince ${name} that he was full and didn't need anymore food but that she did. He told her his cock gave a special treat if she would suck on it long enough. Which she did man she isn't very smart.\n \n";
     }
 
-    if (girl.has_active_trait("Nymphomaniac") && chance(30) && girl.libido() > 75
-        && !girl.has_active_trait("Lesbian") && !is_virgin(girl)
+    if (girl.has_active_trait(traits::NYMPHOMANIAC) && chance(30) && girl.libido() > 75
+        && !girl.has_active_trait(traits::LESBIAN) && !is_virgin(girl)
         && (brothel.is_sex_type_allowed(SKILL_NORMALSEX) || brothel.is_sex_type_allowed(SKILL_ANAL)))
     {
         sex = true;
@@ -199,7 +199,7 @@ bool FeedPoor::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         {
             girl.AddMessage(ss.str(), EImageBaseType::VAGINAL, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             girl.normalsex(2);
-            if (girl.lose_trait("Virgin"))
+            if (girl.lose_trait(traits::VIRGIN))
             {
                 ss << "She is no longer a virgin.\n";
             }

@@ -435,10 +435,10 @@ bool cScreenSlaveMarket::buy_slaves()
             if (has_disease(*girl))
             {
                 std::vector<std::string> diseases;
-                if (girl->has_active_trait("AIDS"))        diseases.emplace_back("AIDS");
-                if (girl->has_active_trait("Chlamydia"))    diseases.emplace_back("Chlamydia");
-                if (girl->has_active_trait("Herpes"))        diseases.emplace_back("Herpes");
-                if (girl->has_active_trait("Syphilis"))    diseases.emplace_back("Syphilis");
+                if (girl->has_active_trait(traits::AIDS))        diseases.emplace_back(traits::AIDS);
+                if (girl->has_active_trait(traits::CHLAMYDIA))    diseases.emplace_back(traits::CHLAMYDIA);
+                if (girl->has_active_trait(traits::HERPES))        diseases.emplace_back(traits::HERPES);
+                if (girl->has_active_trait(traits::SYPHILIS))    diseases.emplace_back(traits::SYPHILIS);
                 ss << girl->FullName() << " has been diagnosed with ";
                 if (diseases.empty())    ss << "an unknown disease.";
                 if (!diseases.empty())    ss << diseases[0];
@@ -458,15 +458,15 @@ bool cScreenSlaveMarket::buy_slaves()
         {
             for (auto& girl : girls_bought)
             {
-                /* */if (girl->has_active_trait("Porn Star"))
+                /* */if (girl->has_active_trait(traits::PORN_STAR))
                 {
                     ss << girl->FullName() << ": \"Script? I don't need a script, just tell me who to fuck and where the camera is and I'll get it done.\"\n";
                 }
-                else if (girl->has_active_trait("Actress"))
+                else if (girl->has_active_trait(traits::ACTRESS))
                 {
                     ss << girl->FullName() << ": \"This is a rather short script, I'm used to long dialogues. I don't seem to get a lot of lines here, how much camera time do I get?\"\nGuard: \"Don't worry sweetheart, your mouth will get a lot to do.\"\n";
                 }
-                else if (girl->has_active_trait("Shy"))
+                else if (girl->has_active_trait(traits::SHY))
                 {
                     ss << girl->FullName() << ": \"I can't act, I can barely talk to other people. I get tongue tied whenever I'm around people.\"\nGuard: \"Tongued? Tied? That shouldn't be a problem sweetheart, they can work with anything where you are going.\"\n";
                     girl->happiness(-10);
@@ -487,9 +487,9 @@ bool cScreenSlaveMarket::buy_slaves()
 
             for (auto& girl : girls_bought)
             {
-                /* */if (girl->has_active_trait("Porn Star"))    { pornstarnum++; pornstarname = girl->FullName(); }
-                else if (girl->has_active_trait("Actress"))    { actressnum++; actressname = girl->FullName(); }
-                else if (girl->has_active_trait("Shy"))        { shygirlnum++; shygirlname = girl->FullName(); }
+                /* */if (girl->has_active_trait(traits::PORN_STAR))    { pornstarnum++; pornstarname = girl->FullName(); }
+                else if (girl->has_active_trait(traits::ACTRESS))    { actressnum++; actressname = girl->FullName(); }
+                else if (girl->has_active_trait(traits::SHY))        { shygirlnum++; shygirlname = girl->FullName(); }
                 girl->lesbian(g_Dice % numgirls);
                 girl->performance(g_Dice % numgirls);
             }
@@ -829,7 +829,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
 
     } else if (g_Game->player().disposition() >= 10)            //Pleasant
     {
-        bool mas = girl.has_active_trait("Masochist");
+        bool mas = girl.has_active_trait(traits::MASOCHIST);
         girl.m_AccLevel = 0;
         girl.pcfear(g_Dice % 5 + (mas ? 0 : 3));
         girl.pclove(-(g_Dice % 9) + (mas ? 2 : -2));
@@ -838,7 +838,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         girl.obedience(g_Dice % 3 - 1);
     } else if (g_Game->player().disposition() >= -10)            // neutral
     {
-        bool mas = girl.has_active_trait("Masochist");
+        bool mas = girl.has_active_trait(traits::MASOCHIST);
         girl.m_AccLevel = 0;
         girl.pcfear(g_Dice % 5 + (mas ? 0 : 3));
         girl.pclove(-(g_Dice % 9) + (mas ? 2 : -2));
@@ -847,7 +847,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         girl.obedience(g_Dice % 3 - 1);
     } else if (g_Game->player().disposition() >= -50)            // not nice
     {
-        bool mas = girl.has_active_trait("Masochist");
+        bool mas = girl.has_active_trait(traits::MASOCHIST);
         girl.m_AccLevel = 0;
         girl.pcfear(g_Dice % 10 + (mas ? 0 : 5));
         girl.pclove(-(g_Dice % 17 - (mas ? 3 : -3)));
@@ -858,7 +858,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
     } else if (g_Game->player().disposition() >= -80)            //Mean
     {
 
-        bool mas = girl.has_active_trait("Masochist");
+        bool mas = girl.has_active_trait(traits::MASOCHIST);
         girl.m_AccLevel = 0;
         girl.pcfear(g_Dice % 20 + (mas ? 0 : 10));
         girl.pclove(-(g_Dice % 35 - (mas ? 5 : -5)));
@@ -868,7 +868,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
 
     } else/*                                        */    //Evil
     {
-        bool mas = girl.has_active_trait("Masochist");
+        bool mas = girl.has_active_trait(traits::MASOCHIST);
         girl.m_AccLevel = 0;
         girl.pcfear(g_Dice % 40 + (mas ? 0 : 20));
         girl.pclove(-(g_Dice % 70 - (mas ? 10 : 10)));

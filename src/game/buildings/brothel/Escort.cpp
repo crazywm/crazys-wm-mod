@@ -137,9 +137,7 @@ bool cEscortJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
 
     auto traits_check_fn = [&]() {
         // boob event
-        if (girl.has_active_trait("Massive Melons") || girl.has_active_trait("Abnormally Large Boobs")
-        || girl.has_active_trait("Titanic Tits") || girl.has_active_trait("Big Boobs")
-        || girl.has_active_trait("Busty Boobs") || girl.has_active_trait("Giant Juggs"))
+        if (girl.breast_size() > BreastSize::BIG_BOOBS)
         {
             add_text("client.large-boobs") << "\n";
             client.TittyLover = true;
@@ -159,21 +157,20 @@ bool cEscortJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         }
 
         // ass
-        if ((girl.has_active_trait("Great Arse") || girl.has_active_trait("Deluxe Derriere") ||
-        girl.has_active_trait("Phat Booty")) && !client.TittyLover)
+        if (girl.any_active_trait({traits::GREAT_ARSE, traits::DELUXE_DERRIERE, traits::PHAT_BOOTY}) && !client.TittyLover)
         {
             m_Escort += 1;
             client.AssLover = true;
             add_text("client.great-ass") << "\n";
         }
 
-        if (girl.has_active_trait("Sexy Air") || girl.has_active_trait("Great Figure") || girl.has_active_trait("Hourglass Figure"))
+        if (girl.any_active_trait({traits::SEXY_AIR, traits::GREAT_FIGURE, traits::HOURGLASS_FIGURE}))
         {
             add_text("client.sexy");
             m_Escort += 1;
         }
 
-        if (girl.has_active_trait("Bruises"))
+        if (girl.has_active_trait(traits::BRUISES))
         {
             add_text("client.bruises");
         }
@@ -200,9 +197,7 @@ bool cEscortJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
             m_Escort += skill_to_mod(girl.beauty());
 
             //boob event
-            if ((girl.has_active_trait("Massive Melons") || girl.has_active_trait("Abnormally Large Boobs")
-                 || girl.has_active_trait("Titanic Tits") || girl.has_active_trait("Big Boobs")
-                 || girl.has_active_trait("Busty Boobs") || girl.has_active_trait("Giant Juggs")) && chance(75))
+            if (girl.breast_size() > BreastSize::BIG_BOOBS && chance(75))
             {
                 m_Escort += 1;
                 add_text("regular.boobs");
@@ -372,16 +367,16 @@ bool cEscortJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
             //CONVERSATION PHASE (REFINEMENT  CHECK)
             add_text("commoner.refinement") << "\n";
             m_Escort += skill_to_mod(girl.refinement());
-            if (girl.has_active_trait("Elegant"))
+            if (girl.has_active_trait(traits::ELEGANT))
             {
                 add_text("commoner.refinement.elegant") << "\n";
                 m_Escort += 1;
-            } else if (girl.has_active_trait("Dominatrix"))
+            } else if (girl.has_active_trait(traits::DOMINATRIX))
             {
                 add_text("commoner.refinement.dominant") << "\n";
                 m_Escort += (2 * skill_to_mod(girl.refinement()) - 1) / 2;
             }
-            if (girl.has_active_trait("Social Drinker"))
+            if (girl.has_active_trait(traits::SOCIAL_DRINKER))
             {
                 add_text("commoner.refinement.social-drinker") << "\n";
                 m_Escort -= 1;
@@ -453,7 +448,7 @@ bool cEscortJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
             //CONVERSATION PHASE (CHARISMA CHECK)
             add_text("deadbeat.charisma") << "\n";
             m_Escort += skill_to_mod(girl.charisma());
-            if (girl.has_active_trait("Alcoholic") && chance(50))
+            if (girl.has_active_trait(traits::ALCOHOLIC) && chance(50))
             {
                 add_text("deadbeat.alcoholic") << "\n";
                 girl.upd_temp_stat(STAT_LIBIDO, +20, true);
@@ -532,14 +527,14 @@ IGenericJob::eCheckWorkResult cEscortJob::CheckWork(sGirl& girl, bool is_night) 
         return eCheckWorkResult::REFUSES;
     }
 
-    if (girl.has_active_trait("Deaf") && chance(50))
+    if (girl.has_active_trait(traits::DEAF) && chance(50))
     {
         ss << "${name} is deaf, meaning she would be unable to hear the conversation that is so critical to being successful as an escort. "
               "As there is practically no chance that a client will want to have an entire date in sign language, assuming he even knows it, "
               "${name} is particularly unsuited to work as an escort. You should consider alternate employment for her. Nobody chooses her this week.\n";
         return eCheckWorkResult::IMPOSSIBLE;
     }
-    else if (girl.has_active_trait("Mute") && chance(50))
+    else if (girl.has_active_trait(traits::MUTE) && chance(50))
     {
         ss << "${name} is mute, and while some men enjoy a woman who stays silent, these men are not paying escorts to engage them in conversation. "
               "As it is severely unlikely that a client will want to spend the entire date deciphering sign language, even if they do know it,"
@@ -595,7 +590,7 @@ sImagePreset cEscortJob::handle_sex(const std::string& prefix, int& fame, sGirl&
         return EImageBaseType::TITTY;
     break;
     case SexType::ORAL:
-        if (girl.has_active_trait("Strong Gag Reflex") || girl.has_active_trait("Gag Reflex"))
+        if (girl.any_active_trait({traits::STRONG_GAG_REFLEX, traits::GAG_REFLEX}))
         {
             add_text("client.oral-sex-gag") << "\n";
             fame -= 1;

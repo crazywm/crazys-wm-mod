@@ -28,7 +28,7 @@ namespace settings {
 }
 
 bool is_warrior(const sGirl& girl) {
-    return girl.has_active_trait("Adventurer") || girl.has_active_trait("Assassin") ||
+    return girl.has_active_trait(traits::ADVENTURER) || girl.has_active_trait(traits::ASSASSIN) ||
         girl.combat() >= 50 || girl.magic() >= 50;
 }
 

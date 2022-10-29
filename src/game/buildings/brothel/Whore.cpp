@@ -217,8 +217,8 @@ bool cWhoreJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
 
     //gain
     //SIN: use a few of the new traits
-    if (chance(1) && chance(girl.oralsex()) && (girl.has_active_trait("Nymphomaniac")))
-        cGirls::PossiblyGainNewTrait(girl, "Cum Addict", 90, ACTION_SEX, "${name} has tasted so much cum she now craves it at all times.", is_night);
+    if (chance(1) && chance(girl.oralsex()) && (girl.has_active_trait(traits::NYMPHOMANIAC)))
+        cGirls::PossiblyGainNewTrait(girl, traits::CUM_ADDICT, 90, ACTION_SEX, "${name} has tasted so much cum she now craves it at all times.", is_night);
 
     if (girl.oralsex() > 30 && chance(m_OralCount))
         cGirls::AdjustTraitGroupGagReflex(girl, +1, true);
@@ -299,7 +299,7 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
     }
 
     // test for specific girls
-    if (girl.has_active_trait("Skeleton"))
+    if (girl.has_active_trait(traits::SKELETON))
     {
         m_FuckMessage << "The customer sees that you are offering up a Skeleton for sex and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n \n";
         brothel.m_Fame -= 5;
@@ -314,7 +314,7 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
             acceptsGirl = true;
         }
     }
-    else if (girl.has_active_trait("Zombie") && Cust.m_Fetish == FETISH_FREAKYGIRLS && chance(10))
+    else if (girl.has_active_trait(traits::ZOMBIE) && Cust.m_Fetish == FETISH_FREAKYGIRLS && chance(10))
     {
         m_FuckMessage << "This customer is intrigued to fuck a Zombie girl.\n \n";
         acceptsGirl = true;
@@ -335,25 +335,25 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
     // Other ways the customer will accept the girl
     if (!acceptsGirl)
     {
-        if (girl.has_active_trait("Zombie"))
+        if (girl.has_active_trait(traits::ZOMBIE))
         {
             m_FuckMessage << "The customer sees that you are offering up a Zombie girl and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n \n";
             brothel.m_Fame -= 10;
             g_Game->player().customerfear(5);
             acceptsGirl = false;
         }
-        else if (girl.has_active_trait("Lesbian") && Cust.m_IsWoman && chance(50))
+        else if (girl.has_active_trait(traits::LESBIAN) && Cust.m_IsWoman && chance(50))
         {
             m_FuckMessage << "The female customer chooses her because she is a Lesbian.\n \n";
             acceptsGirl = true;
         }
-        else if (girl.has_active_trait("Straight") && Cust.m_IsWoman && chance(10))
+        else if (girl.has_active_trait(traits::STRAIGHT) && Cust.m_IsWoman && chance(10))
         {
             m_FuckMessage << "${name} refuses to accept a female customer because she is Straight.\n \n";
             brothel.m_Fame -= 2;
             acceptsGirl = false;
         }
-        else if (girl.has_active_trait("Lesbian") && !Cust.m_IsWoman && chance(10))
+        else if (girl.has_active_trait(traits::LESBIAN) && !Cust.m_IsWoman && chance(10))
         {
             m_FuckMessage << "${name} refuses to accept a male customer because she is a Lesbian.\n \n";
             brothel.m_Fame -= 5;
@@ -365,7 +365,7 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
             brothel.m_Fame -= 5;
             acceptsGirl = false;
         }
-        else if ((girl.has_active_trait("Queen") || girl.has_active_trait("Princess")) && Cust.m_SexPref == SKILL_BEASTIALITY && chance(20))
+        else if ((girl.any_active_trait({traits::QUEEN, traits::PRINCESS})) && Cust.m_SexPref == SKILL_BEASTIALITY && chance(20))
         {
             m_FuckMessage << "${name} refuses to sleep with a beast because one of Royal blood is above that.\n \n";
             brothel.m_Fame -= 5;
@@ -383,62 +383,62 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
             brothel.m_Fame -= 10;
             acceptsGirl = false;
         }
-        else if (girl.has_active_trait("Your Daughter") && chance(20))
+        else if (girl.has_active_trait(traits::YOUR_DAUGHTER) && chance(20))
         {
             m_FuckMessage << "The customer chooses her because " << (Cust.m_IsWoman ? "she" : "he") << " wants to fuck your daughter.\n \n";
             knowdaughter = true;
             acceptsGirl = true;
         }
-        else if (girl.has_active_trait("Your Wife") && chance(20))
+        else if (girl.has_active_trait(traits::YOUR_WIFE) && chance(20))
         {
             m_FuckMessage << "The customer chooses her because " << (Cust.m_IsWoman ? "she" : "he") << " wants to fuck your wife.\n \n";
             knowwife = true;
             acceptsGirl = true;
         }
-        else if (girl.has_active_trait("Porn Star") && chance(15))
+        else if (girl.has_active_trait(traits::PORN_STAR) && chance(15))
         {
             m_FuckMessage << "The customer chooses her because " << (Cust.m_IsWoman ? "she" : "he") << " has seen her in porn.\n \n";
             acceptsGirl = true;
         }
-        else if ((girl.has_active_trait("Queen") || girl.has_active_trait("Princess")) && chance(10))
+        else if ((girl.any_active_trait({traits::QUEEN, traits::PRINCESS})) && chance(10))
         {
             m_FuckMessage << "The customer chooses her because she is former royalty.\n \n";
             acceptsGirl = true;
         }
-        else if (girl.has_active_trait("Teacher") && chance(10))
+        else if (girl.has_active_trait(traits::TEACHER) && chance(10))
         {
             m_FuckMessage << "The customer chooses her because " << (Cust.m_IsWoman ? "she" : "he") << " used to daydream about this back when "
                         << (Cust.m_IsWoman ? "she" : "he") << " was in ${name}'s class.\n \n";
             acceptsGirl = true;
         }
-        else if (girl.has_active_trait("Old") && chance(20))
+        else if (girl.has_active_trait(traits::OLD) && chance(20))
         {
             m_FuckMessage << "The customer chooses her because " << (Cust.m_IsWoman ? "she" : "he") << " likes mature women.\n \n";
             acceptsGirl = true;
         }
-        else if (girl.has_active_trait("Natural Pheromones") && chance(20))
+        else if (girl.has_active_trait(traits::NATURAL_PHEROMONES) && chance(20))
         {
             m_FuckMessage << "The customer chooses her for reasons " << (Cust.m_IsWoman ? "she" : "he") << " can't explain. There's something about her.\n \n";
             acceptsGirl = true;
         }
-        else if (chance(10) && girl.has_active_trait("Lolita"))
+        else if (chance(10) && girl.has_active_trait(traits::LOLITA))
         {
             m_FuckMessage << "The customer chooses her because "
                         << (Cust.m_IsWoman ? "she wants a young woman, uncorrupted by men.\n" : "he's hoping for a virgin, and she looks like one.\n") << "\n";
             acceptsGirl = true;
         }
-        else if (chance(20) && girl.has_active_trait("Social Drinker"))
+        else if (chance(20) && girl.has_active_trait(traits::SOCIAL_DRINKER))
         {
             m_FuckMessage << "The customer chooses her because she's fun, flirty and half-cut.\n \n";
             acceptsGirl = true;
         }
-        else if (chance(40) && girl.has_active_trait("Exhibitionist") && girl.beauty() >= 50)
+        else if (chance(40) && girl.has_active_trait(traits::EXHIBITIONIST) && girl.beauty() >= 50)
         {
             m_FuckMessage << "The customer chooses her because she walks into the waiting room naked and the customer likes what "
                         << (Cust.m_IsWoman ? "she sees.\n" : "he sees.\n") << "\n";
             acceptsGirl = true;
         }
-        else if (chance(5) && (girl.has_active_trait("Slut") || girl.dignity() >= 70))
+        else if (chance(5) && (girl.has_active_trait(traits::SLUT) || girl.dignity() >= 70))
         {
             m_FuckMessage << "${name} gets bored of waiting for someone to step up and starts " << (Cust.m_IsWoman ? "fingering this lady" : "giving this guy a handjob")
                         << " right there in the waiting room. The customer quickly chooses her.\n \n";
@@ -622,7 +622,7 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
     else  // Customer has enough money
     {
         Cust.m_Money -= (unsigned)pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ??? // Yes this is necessary for TIP calculation.
-        if (girl.has_active_trait("Your Daughter") && knowdaughter && Cust.m_Money >= 20 && chance(50))
+        if (girl.has_active_trait(traits::YOUR_DAUGHTER) && knowdaughter && Cust.m_Money >= 20 && chance(50))
         {
             m_FuckMessage << "The customer tosses your daughter a bag of gold";
             switch (uniform(0, 2))
@@ -634,7 +634,7 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
             Cust.m_Money -= 20;
             tip += 20;
         }
-        else if (girl.has_active_trait("Your Wife") && knowwife && Cust.m_Money >= 20 && chance(50))
+        else if (girl.has_active_trait(traits::YOUR_WIFE) && knowwife && Cust.m_Money >= 20 && chance(50))
         {
             m_FuckMessage << "The customer tosses your wife a bag of gold";
             switch (uniform(0, 2))
@@ -646,7 +646,7 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
             Cust.m_Money -= 20;
             tip += 20;
         }
-        else if (girl.has_active_trait("Your Daughter") && Cust.m_Money >= 20 && chance(15))
+        else if (girl.has_active_trait(traits::YOUR_DAUGHTER) && Cust.m_Money >= 20 && chance(15))
         {
             if (chance(50))
             {
@@ -659,7 +659,7 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
             Cust.m_Money -= 20;
             tip += 20;
         }
-        else if (girl.has_active_trait("Your Wife") && Cust.m_Money >= 20 && chance(15))
+        else if (girl.has_active_trait(traits::YOUR_WIFE) && Cust.m_Money >= 20 && chance(15))
         {
             if (chance(50))
             {

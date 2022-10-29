@@ -209,7 +209,7 @@ int sGirl::upd_base_stat(STATS stat_id, int amount, bool usetraits) {
     case STAT_TIREDNESS:
         if (!usetraits) break;
 
-        if (has_active_trait("Fragile"))    // 20% health and 10% tired penalties
+        if (has_active_trait(traits::FRAGILE))    // 20% health and 10% tired penalties
         {
             if (stat == STAT_HEALTH) {
                 if (amount > 0)            // gain health - a little less than normal
@@ -245,7 +245,7 @@ int sGirl::upd_base_stat(STATS stat_id, int amount, bool usetraits) {
                 }
             }
         }
-        if (has_active_trait("Delicate"))    // 20% tired and 10% health penalties
+        if (has_active_trait(traits::DELICATE))    // 20% tired and 10% health penalties
         {
             if (stat == STAT_HEALTH) {
                 if (amount > 0)            // gain health - a little less than normal
@@ -282,7 +282,7 @@ int sGirl::upd_base_stat(STATS stat_id, int amount, bool usetraits) {
                 }
             }
         }
-        if (has_active_trait("Tough"))    // 20% health and 10% tired bonuses
+        if (has_active_trait(traits::TOUGH))    // 20% health and 10% tired bonuses
         {
             if (stat == STAT_HEALTH) {
                 if (amount > 0)            // gain health
@@ -319,13 +319,13 @@ int sGirl::upd_base_stat(STATS stat_id, int amount, bool usetraits) {
                 }
             }
         }
-        if (has_active_trait("Construct") && ((stat == STAT_HEALTH && amount < 0) || (stat == STAT_TIREDNESS && amount > 0)))
+        if (has_active_trait(traits::CONSTRUCT) && ((stat == STAT_HEALTH && amount < 0) || (stat == STAT_TIREDNESS && amount > 0)))
             amount = (int) ceil((float) amount * 0.1); // constructs take 10% damage
         break;
 
     case STAT_HAPPINESS:
-        if (has_active_trait("Pessimist") && g_Dice % 5 == 1 && usetraits) amount -= 1; // `J` added
-        if (has_active_trait("Optimist") && g_Dice % 5 == 1 && usetraits) amount += 1; // `J` added
+        if (has_active_trait(traits::PESSIMIST) && g_Dice % 5 == 1 && usetraits) amount -= 1; // `J` added
+        if (has_active_trait(traits::OPTIMIST) && g_Dice % 5 == 1 && usetraits) amount += 1; // `J` added
         break;
     }
 
@@ -364,9 +364,7 @@ bool sGirl::calc_pregnancy(int chance, int type, const ICharacter& father)
 
 void sGirl::add_tiredness()
 {
-    if (has_active_trait("Incorporeal") || // Sanity check
-                                     has_active_trait("Skeleton") ||
-        has_active_trait("Zombie"))
+    if (any_active_trait({traits::INCORPOREAL, traits::SKELETON, traits::ZOMBIE}))
     {
         set_stat(STAT_TIREDNESS, 0);    return;
     }
@@ -397,11 +395,9 @@ bool sGirl::fights_back()
 int sGirl::get_stat(STATS stat_id) const
 {
     if (stat_id < 0) return 0;
-    if (stat_id == STAT_HEALTH && has_active_trait("Incorporeal"))    return 100;
+    if (stat_id == STAT_HEALTH && has_active_trait(traits::INCORPOREAL))    return 100;
     else if (stat_id == STAT_TIREDNESS &&
-             (has_active_trait("Incorporeal") ||
-              has_active_trait("Skeleton") ||
-              has_active_trait("Zombie")))
+             any_active_trait({traits::INCORPOREAL, traits::SKELETON, traits::ZOMBIE}))
         return 0;
     // Generic calculation
     return ICharacter::get_stat(stat_id);
@@ -709,7 +705,7 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
             std::string trait_name = child.Attribute("Name");
             /// TODO (traits) allow inherent / permanent / inactive
             if(trait_name == "Dependant") {
-                trait_name = "Dependent";
+                trait_name = traits::DEPENDENT;
                 g_LogFile.warning("traits", "Found misspelled trait `Dependant` for girl ", girl->m_Name);
             }
             girl->raw_traits().add_inherent_trait(trait_name.c_str());
@@ -918,15 +914,10 @@ bool sGirl::is_fighter(bool canbehelped) const
 {
     if (canbehelped)
     {
-        return has_active_trait("Aggressive") ||
-               has_active_trait("Yandere") ||
-               has_active_trait("Tsundere");
+        return any_active_trait({traits::AGGRESSIVE, traits::YANDERE, traits::TSUNDERE});
     }
-    return has_active_trait("Aggressive") ||
-           has_active_trait("Assassin") ||
-           has_active_trait("Yandere") ||
-           has_active_trait("Brawler") ||
-           has_active_trait("Tsundere");
+    return any_active_trait({traits::AGGRESSIVE, traits::ASSASSIN, traits::YANDERE,
+                             traits::BRAWLER, traits::TSUNDERE});
 }
 
 bool sGirl::is_resting() const
@@ -1110,18 +1101,18 @@ FormattedCellData sGirl::GetDetail(const std::string& detailName) const
             std::ostringstream ss;
 
             ss << "No";
-            if (has_active_trait("Sterile") || has_active_trait("Zombie") || has_active_trait("Skeleton"))
+            if (has_active_trait(traits::STERILE) || has_active_trait(traits::ZOMBIE) || has_active_trait(traits::SKELETON))
                 ss << "!" << m_PregCooldown << "!";
             else
                 ss << "(" << m_PregCooldown << ")";
 
             return mk_text(ss.str());
         }
-        else if (has_active_trait("Zombie") || has_active_trait("Skeleton"))
+        else if (has_active_trait(traits::ZOMBIE) || has_active_trait(traits::SKELETON))
            return mk_text("Ud.");
-        else if (has_active_trait("Sterile"))      return mk_text("St.");
-        else if (has_active_trait("Fertile"))      return mk_text("No+");
-        else if (has_active_trait("Broodmother"))  return mk_text("No++");
+        else if (has_active_trait(traits::STERILE))      return mk_text("St.");
+        else if (has_active_trait(traits::FERTILE))      return mk_text("No+");
+        else if (has_active_trait(traits::BROODMOTHER))  return mk_text("No++");
         else                                       return mk_text("No");
     }
     else if (detailName == "is_slave")       return mk_yesno(is_slave());
@@ -1138,9 +1129,9 @@ FormattedCellData sGirl::GetDetail(const std::string& detailName) const
     }
     else if (detailName == "SO")
     {
-       /* */if (has_active_trait("Lesbian"))    return mk_text("L");
-       else if (has_active_trait("Straight"))   return mk_text("S");
-       else if (has_active_trait("Bisexual"))   return mk_text("B");
+       /* */if (has_active_trait(traits::LESBIAN))    return mk_text("L");
+       else if (has_active_trait(traits::STRAIGHT))   return mk_text("S");
+       else if (has_active_trait(traits::BISEXUAL))   return mk_text("B");
        else/*                       */          return mk_text("-");
     }
     else if (detailName == "SexAverage")
@@ -1300,8 +1291,8 @@ void sGirl::upd_temp_stat(STATS stat_id, int amount, bool usetraits)
     {
         if (stat_id == STAT_LIBIDO)
         {
-            if (has_active_trait("Nymphomaniac"))    { amount = int((double)amount * (amount > 0 ? 1.5 : 0.5));    if (amount == 0) amount = 1; }
-            else if (has_active_trait("Chaste"))        { amount = int((double)amount * (amount > 0 ? 0.5 : 1.5));    if (amount == 0) amount = -1; }
+            if (has_active_trait(traits::NYMPHOMANIAC))    { amount = int((double)amount * (amount > 0 ? 1.5 : 0.5));    if (amount == 0) amount = 1; }
+            else if (has_active_trait(traits::CHASTE))        { amount = int((double)amount * (amount > 0 ? 0.5 : 1.5));    if (amount == 0) amount = -1; }
         }
     }
 
@@ -1344,15 +1335,14 @@ void sGirl::set_stat(STATS stat, int amount)
         else if (age() > 80) amount = 80;
         break;
     case STAT_HEALTH:
-        if (has_active_trait("Incorporeal"))    // Health and tiredness need the incorporeal sanity check
+        if (has_active_trait(traits::INCORPOREAL))    // Health and tiredness need the incorporeal sanity check
         {
             amount = 100;
         }
         break;
     case STAT_TIREDNESS:
-        if (has_active_trait("Incorporeal") ||    // Health and tiredness need the incorporeal sanity check
-                                           has_active_trait("Skeleton") ||
-            has_active_trait("Zombie")) {
+        // Health and tiredness need the incorporeal sanity check
+        if (any_active_trait({traits::INCORPOREAL, traits::SKELETON, traits::ZOMBIE})) {
             amount = 0;
             return;
         }

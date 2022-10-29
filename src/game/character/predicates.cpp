@@ -29,21 +29,25 @@ bool is_addict(const ICharacter& character, bool onlyhard) {
 }
 
 bool has_disease(const ICharacter& character) {
-    return character.get_trait_modifier("tag:disease") > 0;
+    return num_diseases(character) > 0;
+}
+
+int num_diseases(const ICharacter& character) {
+    return character.get_trait_modifier("tag:disease");
 }
 
 bool is_virgin(const ICharacter& character) {
-    return character.has_active_trait("Virgin");
+    return character.has_active_trait(traits::VIRGIN);
 }
 
 bool is_nonhuman(const ICharacter& character) {
-    return character.has_active_trait("Not Human");
+    return character.has_active_trait(traits::NOT_HUMAN);
 }
 
 bool is_your_daughter(const ICharacter& character) {
-    return character.has_active_trait("Your Daughter");
+    return character.has_active_trait(traits::YOUR_DAUGHTER);
 }
 
 bool is_futa(const ICharacter& character) {
-    return character.has_active_trait("Futanari");
+    return character.has_active_trait(traits::FUTANARI);
 }

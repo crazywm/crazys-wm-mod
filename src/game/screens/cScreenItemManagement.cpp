@@ -634,7 +634,7 @@ std::string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, const
         else if (HateLove < -60)    message = "She takes your gift in hand, looks at it, looks at you, than walks away without a word.";
         else if (HateLove < -40)
         {
-            if (girl.has_active_trait("Your Daughter"))
+            if (girl.has_active_trait(traits::YOUR_DAUGHTER))
             {
                 message = "Are you trying to make up for being an ass dad?"; //hopefully this works.. will add more
             }
@@ -642,7 +642,7 @@ std::string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, const
         }
         else if (HateLove < -20)
         {
-            if (girl.has_active_trait("Your Daughter"))
+            if (girl.has_active_trait(traits::YOUR_DAUGHTER))
             {
                 message = "You still have a long way to go if you want me to like you dad."; //hopefully this works.. will add more CRAZY
             }
@@ -655,8 +655,8 @@ std::string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, const
         else if (HateLove < 80)        message = "She is happy with the gift and gives you a big hug and a kiss on the cheek.";
         else
         {
-            if (girl.has_active_trait("Your Daughter")) message = "She is happy with the gift and gives you a big hug and a kiss on the cheek saying she loves her daddy."; //hopefully this works.. will add more
-            else if (girl.has_active_trait("Lesbian")) message = "She is happy with the gift and gives you a big hug and a kiss on the cheek and says that if you weren't a \"man\" she might have to show you how much she loved that gift.";
+            if (girl.has_active_trait(traits::YOUR_DAUGHTER)) message = "She is happy with the gift and gives you a big hug and a kiss on the cheek saying she loves her daddy."; //hopefully this works.. will add more
+            else if (girl.has_active_trait(traits::LESBIAN)) message = "She is happy with the gift and gives you a big hug and a kiss on the cheek and says that if you weren't a \"man\" she might have to show you how much she loved that gift.";
             else /*                                   */    message = "She is happy with the gift and gives you a big hug and kisses you hard.  After the kiss she whispers to you to see her later so she can thank you \"properly\".";
         }
     }
@@ -673,7 +673,7 @@ std::string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, const
         else if (HateLove < 80)        message = "She doesn't seem happy with the gift and tears can be seen in her eyes.";
         else
         {
-            if (girl.has_active_trait("Your Daughter")) message = "She looks at you and says \"Why would you give me such a thing daddy?\"."; //hopefully this works.. will add more
+            if (girl.has_active_trait(traits::YOUR_DAUGHTER)) message = "She looks at you and says \"Why would you give me such a thing daddy?\"."; //hopefully this works.. will add more
             else /*                                   */    message = "She can't belive you would give her such a gift and runs off crying.";
         }
     }

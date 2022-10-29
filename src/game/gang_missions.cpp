@@ -224,7 +224,7 @@ bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, std::shared_ptr<
         switch(AttemptCapture(gang, *girl)) {
             case EAttemptCaptureResult::SUBMITS:
                 dungeonreason = DUNGEON_GIRLKIDNAPPED;
-                girl->add_temporary_trait("Kidnapped", 3 + g_Dice % 8);
+                girl->add_temporary_trait(traits::KIDNAPPED, 3 + g_Dice % 8);
                 ss << "kidnap her successfully without a fuss.  She is in your dungeon now.";
                 NGmsg << girl->FullName() << " was surrounded by " << gang.name() << " and gave up without a fight.";
                 captured = true;
@@ -234,7 +234,7 @@ bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, std::shared_ptr<
                 girlimagetype = EImageBaseType::DEATH;
                 dungeonreason = DUNGEON_GIRLKIDNAPPED;
                 girl->set_stat(STAT_OBEDIENCE, 0);
-                girl->add_temporary_trait("Kidnapped", 10 + g_Dice % 11);
+                girl->add_temporary_trait(traits::KIDNAPPED, 10 + g_Dice % 11);
                 ss << "She fights back but your men succeed in kidnapping her.\n";
                 NGmsg << girl->FullName() << " fought with " << gang.name() << " but lost. She was dragged back to the dungeon.";
                 gang.BoostSkill(SKILL_COMBAT, 1);
@@ -726,7 +726,7 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
     else if (g_Dice.percent(0))        // `J` added for .06.02.41
     {
         auto girl = g_Game->GetRandomGirl();
-        if (girl->has_active_trait("Incorporeal")) girl = g_Game->GetRandomGirl();        // try not to get an incorporeal girl but only 1 check
+        if (girl->has_active_trait(traits::INCORPOREAL)) girl = g_Game->GetRandomGirl();        // try not to get an incorporeal girl but only 1 check
         if (girl)
         {
             std::string girlName = girl->FullName();
@@ -772,7 +772,7 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
                 else                           ss << "your men but they take her down with only " << (numlost == 1 ? "one casualty" : "a few casualties");
                 ss << ".\nThey unmask " << girlName << ", take all her gold (" << gold << ") from her and drag her to the dungeon.\n \n";
                 girl->set_stat(STAT_OBEDIENCE, 0);
-                girl->add_temporary_trait("Kidnapped", 5 + g_Dice % 11);
+                girl->add_temporary_trait(traits::KIDNAPPED, 5 + g_Dice % 11);
 
                 NGmsg << girl->FullName() << " tried to stop " << gang.name() << " from committing petty theft but lost. She was dragged back to the dungeon.";
                 gang.BoostSkill(SKILL_COMBAT, 1);
@@ -999,7 +999,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
                     ss << "   " << girl->FullName() << "   (u)\n";
                     girl->remove_status(STATUS_CATACOMBS);
                     std::stringstream NGmsg;
-                    girl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
+                    girl->add_temporary_trait(traits::KIDNAPPED, 2 + g_Dice % 10);
                     NGmsg << girl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
                     girl->AddMessage(NGmsg.str(), EImageBaseType::PROFILE, EVENT_GANG);
                     g_Game->dungeon().AddGirl(girl, DUNGEON_GIRLCAPTURED);
@@ -1008,7 +1008,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
                 {
                     ss << "   " << girl->FullName() << "\n";
                     std::stringstream NGmsg;
-                    girl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
+                    girl->add_temporary_trait(traits::KIDNAPPED, 2 + g_Dice % 10);
                     NGmsg << girl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
                     girl->AddMessage(NGmsg.str(), EImageBaseType::PROFILE, EVENT_GANG);
                     g_Game->dungeon().AddGirl(girl, DUNGEON_GIRLCAPTURED);

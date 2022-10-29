@@ -197,7 +197,7 @@ sWorkJobResult HousePet::DoWork(sGirl& girl, bool is_night) {
                         add_text("train.skilled.virgin.nice");
                         training += 4;
                         ob += 4;
-                        girl.lose_trait("Virgin");
+                        girl.lose_trait(traits::VIRGIN);
                         image_spec.BasicImage = EImageBaseType::VAGINAL;
                     }
                     else
@@ -205,7 +205,7 @@ sWorkJobResult HousePet::DoWork(sGirl& girl, bool is_night) {
                         add_text("train.virgin.evil");
                         training += 4;
                         ob += 4;
-                        girl.lose_trait("Virgin");
+                        girl.lose_trait(traits::VIRGIN);
                         image_spec.BasicImage = EImageBaseType::BEAST;
                     }
                 }
@@ -265,7 +265,7 @@ sWorkJobResult HousePet::DoWork(sGirl& girl, bool is_night) {
                 add_text("train.medium.preg");
             }
             else if (roll_b >= 85 && headonduty &&
-                !girl.has_active_trait("Your Daughter") && girl.has_active_trait("Kidnapped"))
+                !girl.has_active_trait(traits::YOUR_DAUGHTER) && girl.has_active_trait(traits::KIDNAPPED))
             {
                 add_text("train.medium.kidnapped");
             }
@@ -421,8 +421,8 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
     int Disp = g_Game->player().disposition();
 
     int xp = uniform(10, 20);
-    if (girl.has_active_trait("Quick Learner"))        { xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { xp -= 3; }
+    if (girl.has_active_trait(traits::QUICK_LEARNER))        { xp += 3; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { xp -= 3; }
 
     int skill = 0;
     if (roll_a <= 1)          skill = 14;
@@ -439,8 +439,8 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
     else if (roll_a <= 83)    skill = 3;
     else /*             */    skill = 2;
 
-    if (girl.has_active_trait("Quick Learner"))     skill += 1;
-    else if (girl.has_active_trait("Slow Learner")) skill -= 1;
+    if (girl.has_active_trait(traits::QUICK_LEARNER))     skill += 1;
+    else if (girl.has_active_trait(traits::SLOW_LEARNER)) skill -= 1;
 
     // roll_b random from 1-100 then is modified by player disposition and if is less than:
     // 7 strip | 15 les | 30 tit | 50 oral | 70 normal | 80 anal | 90 group | 100 bdsm | +beast
@@ -571,7 +571,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
         girl.normalsex(skill);
         ss << "You decide to teach her how to ride a dick like a pro.\n \n";
         ss << "She managed to gain " << skill << " Normal Sex.\n \n";
-        if (girl.lose_trait("Virgin"))
+        if (girl.lose_trait(traits::VIRGIN))
         {
             ss << "She is no longer a virgin.\n";
         }
@@ -591,7 +591,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
         ss << "You decide to over see her skill in a gang bang.\n \n";
         ss << "She managed to gain " << skill << " Group Sex.\n \n";
         auto spec = girl.MakeImageSpec(EImagePresets::GANGBANG);
-        if (girl.lose_trait("Virgin"))
+        if (girl.lose_trait(traits::VIRGIN))
         {
             ss << "She is no longer a virgin.\n";
         }
@@ -605,7 +605,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
         girl.bdsm(skill);
         ss << "You decide to teach her the fine art of BDSM.\n \n";
         ss << "She managed to gain " << skill << " BDSM.\n \n";
-        if (girl.lose_trait("Virgin"))
+        if (girl.lose_trait(traits::VIRGIN))
         {
             ss << "She is no longer a virgin.\n";
         }
@@ -617,7 +617,7 @@ sWorkJobResult PersonalTraining::DoWork(sGirl& girl, bool is_night) {
         girl.beastiality(skill);
         ss << "You decide to have her get acquainted with some animals.\n \n";
         ss << "She managed to gain " << skill << " Beastiality.\n \n";
-        if (girl.lose_trait("Virgin"))
+        if (girl.lose_trait(traits::VIRGIN))
         {
             ss << "She is no longer a virgin.\n";
         }
@@ -734,13 +734,13 @@ bool Recruiter::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
                     }
                     if (dispmod == 3)
                     {
-                        if (chance(25))    newgirl->gain_trait("Optimist");
+                        if (chance(25))    newgirl->gain_trait(traits::OPTIMIST);
                     }
                     if (dispmod == -3)
                     {
                         int rollt = uniform(0, 3);
-                        if (rollt == 0)    newgirl->raw_traits().add_inherent_trait("Demon");
-                        if (rollt == 1)    newgirl->gain_trait("Fearless");
+                        if (rollt == 0)    newgirl->raw_traits().add_inherent_trait(traits::DEMON);
+                        if (rollt == 1)    newgirl->gain_trait(traits::FEARLESS);
                     }
                 }
                 else    // `J` ... and she was not recruited

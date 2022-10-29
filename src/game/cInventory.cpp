@@ -680,21 +680,21 @@ void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
                     //SIN: I know it's kinda player's fault anyway, but given cost of medicines and difficulty to
                     //source player should get some kindness rep for this. Prob cheaper and easier to let them die
                     //and replace, but if we get here, player is looking out for staff.
-                    if (trait == "AIDS" || trait == "Syphilis" || trait == "Herpes" || trait == "Chlamydia")
+                    if (trait == traits::AIDS || trait == traits::SYPHILIS || trait == traits::HERPES || trait == traits::CHLAMYDIA)
                     {
                         if (girl.is_slave())
                         {        //SIN: just protecting investment in property
-                            if (trait == "AIDS") g_Game->player().evil(-4);
-                            if (trait == "Syphilis") g_Game->player().evil(-3);
-                            if (trait == "Herpes") g_Game->player().evil(-2);
-                            if (trait == "Chlamydia") g_Game->player().evil(-1);
+                            if (trait == traits::AIDS) g_Game->player().evil(-4);
+                            if (trait == traits::SYPHILIS) g_Game->player().evil(-3);
+                            if (trait == traits::HERPES) g_Game->player().evil(-2);
+                            if (trait == traits::CHLAMYDIA) g_Game->player().evil(-1);
                         }
                         else   //SIN: a genuinely kind act to support staff
                         {
-                            if (trait == "AIDS") g_Game->player().evil(-8);
-                            if (trait == "Syphilis") g_Game->player().evil(-6);
-                            if (trait == "Herpes") g_Game->player().evil(-4);
-                            if (trait == "Chlamydia") g_Game->player().evil(-2);
+                            if (trait == traits::AIDS) g_Game->player().evil(-8);
+                            if (trait == traits::SYPHILIS) g_Game->player().evil(-6);
+                            if (trait == traits::HERPES) g_Game->player().evil(-4);
+                            if (trait == traits::CHLAMYDIA) g_Game->player().evil(-2);
                         }
                     }
                     girl.lose_trait(trait.c_str());

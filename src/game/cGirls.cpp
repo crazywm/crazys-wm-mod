@@ -167,24 +167,15 @@ void cGirls::LevelUp(sGirl& girl)
         int addedtrait = girl.level() + 5;
         while (addedtrait > 0)
         {
+            const char* possible_traits[] = {
+               traits::AGILE, traits::CHARISMATIC, traits::CHARMING,
+               traits::COOL_PERSON, traits::FAKE_ORGASM_EXPERT,
+               traits::FLEET_OF_FOOT, traits::GOOD_KISSER, traits::NIMBLE_TONGUE,
+               traits::NYMPHOMANIAC, traits::OPEN_MINDED, traits::SEXY_AIR
+            };
             int chance = g_Dice % 12;
-            string trait;
-            switch (chance)
-            {
-            case 1:        trait = "Agile";                break;
-            case 2:        trait = "Charismatic";            break;
-            case 3:        trait = "Charming";                break;
-            case 4:        trait = "Cool Person";            break;
-            case 5:        trait = "Fake Orgasm Expert";    break;
-            case 6:        trait = "Fleet of Foot";        break;
-            case 7:        trait = "Good Kisser";            break;
-            case 8:        trait = "Nimble Tongue";        break;
-            case 9:        trait = "Nymphomaniac";            break;
-            case 10:    trait = "Open Minded";            break;
-            case 11:    trait = "Sexy Air";                break;
-            default: break;
-            }
-            if (!trait.empty() && girl.gain_trait(trait.c_str()))
+            const char* trait = possible_traits[chance];
+            if (girl.gain_trait(trait))
             {
                 addedtrait = 0;
                 ss << " She has gained the " << trait << " trait.";
@@ -201,8 +192,8 @@ void cGirls::LevelUp(sGirl& girl)
 void cGirls::LevelUpStats(sGirl& girl)
 {
     int DiceSize = 3;
-    if (girl.has_active_trait("Quick Learner")) DiceSize = 4;
-    else if (girl.has_active_trait("Slow Learner")) DiceSize = 2;
+    if (girl.has_active_trait(traits::QUICK_LEARNER)) DiceSize = 4;
+    else if (girl.has_active_trait(traits::SLOW_LEARNER)) DiceSize = 2;
 
     // level up stats (only first 8 advance in levelups)
     for (int i = 0; i < 8; i++) girl.upd_base_stat((STATS)i, g_Dice % DiceSize);
@@ -233,15 +224,15 @@ void cGirls::EndDayGirls(IBuilding& brothel, sGirl& girl)
     else if (girl.m_NumCusts_old < 100 && girl.m_NumCusts >= 100)
     {
         goodnews << "${name} serviced her first hundred customers.";
-        if (girl.has_active_trait("Optimist") && girl.happiness() > 80) goodnews << " She seems pleased with her accomplishment and looks forward to reaching the next level.";
+        if (girl.has_active_trait(traits::OPTIMIST) && girl.happiness() > 80) goodnews << " She seems pleased with her accomplishment and looks forward to reaching the next level.";
         else goodnews << " You see great potential in this one.";
         girl.fame(1);
     }
     else if (girl.m_NumCusts_old < 500 && girl.m_NumCusts >= 500)
     {
         goodnews << "${name} serviced five hundred customers.";
-        if (girl.has_active_trait("Optimist") && girl.happiness() > 80) goodnews << " She seems pleased with her accomplishment and looks forward to reaching the next level.";
-        girl.gain_trait("Whore");
+        if (girl.has_active_trait(traits::OPTIMIST) && girl.happiness() > 80) goodnews << " She seems pleased with her accomplishment and looks forward to reaching the next level.";
+        girl.gain_trait(traits::WHORE);
         girl.fame(5);
     }
     else if (girl.m_NumCusts_old < 1000 && girl.m_NumCusts >= 1000)
@@ -257,10 +248,10 @@ void cGirls::EndDayGirls(IBuilding& brothel, sGirl& girl)
 
     int E_mana = 0, E_libido = 0, E_lactation = 0;
 
-    /* */if (girl.has_active_trait("Muggle")) E_mana = girl.magic() / 50;    // max 2 per day
-    else if (girl.has_active_trait("Weak Magic")) E_mana = girl.magic() / 20;    // max 5 per day
-    else if (girl.has_active_trait("Strong Magic")) E_mana = girl.magic() / 5;        // max 20 per day
-    else if (girl.has_active_trait("Powerful Magic")) E_mana = girl.magic() / 2;        // max 50 per day
+    /* */if (girl.has_active_trait(traits::MUGGLE)) E_mana = girl.magic() / 50;    // max 2 per day
+    else if (girl.has_active_trait(traits::WEAK_MAGIC)) E_mana = girl.magic() / 20;    // max 5 per day
+    else if (girl.has_active_trait(traits::STRONG_MAGIC)) E_mana = girl.magic() / 5;        // max 20 per day
+    else if (girl.has_active_trait(traits::POWERFUL_MAGIC)) E_mana = girl.magic() / 2;        // max 50 per day
     else /*                                 */    E_mana = girl.magic() / 10;    // max 10 per day
     girl.mana(E_mana);
 
@@ -281,12 +272,12 @@ void cGirls::EndDayGirls(IBuilding& brothel, sGirl& girl)
     *    pregnancy doubles lactation
     *    pregnant cow girl will alwasy be ready to milk
     //*/
-    if (!girl.has_active_trait("No Nipples"))    // no nipples = no lactation
+    if (!girl.has_active_trait(traits::NO_NIPPLES))    // no nipples = no lactation
     {
-        if      (girl.has_active_trait("Dry Milk")) E_lactation = 1;
-        else if (girl.has_active_trait("Scarce Lactation")) E_lactation = 5;
-        else if (girl.has_active_trait("Abundant Lactation")) E_lactation = 25;
-        else if (girl.has_active_trait("Cow Tits")) E_lactation = 50;
+        if      (girl.has_active_trait(traits::DRY_MILK)) E_lactation = 1;
+        else if (girl.has_active_trait(traits::SCARCE_LACTATION)) E_lactation = 5;
+        else if (girl.has_active_trait(traits::ABUNDANT_LACTATION)) E_lactation = 25;
+        else if (girl.has_active_trait(traits::COW_TITS)) E_lactation = 50;
         else E_lactation = 0;
 
         // *Add* (not set!) E_lactation
@@ -336,7 +327,7 @@ string cGirls::GetGirlMood(const sGirl& girl)
     int HateLove = girl.pclove();
     ss << " feels the player ";
 
-    if (girl.has_active_trait("Your Daughter"))
+    if (girl.has_active_trait(traits::YOUR_DAUGHTER))
     {
         /* */if (HateLove <= -80)    ss << "should die ";
         else if (HateLove <= -60)    ss << "is better off dead ";
@@ -349,7 +340,7 @@ string cGirls::GetGirlMood(const sGirl& girl)
         else if (HateLove <= 80)    ss << "is a great dad ";
         else                         ss << "is an awesome daddy ";
     }
-    else if (girl.has_active_trait("Lesbian"))//lesbian shouldn't fall in love with you
+    else if (girl.has_active_trait(traits::LESBIAN))//lesbian shouldn't fall in love with you
     {
         /* */if (HateLove <= -80)    ss << "should die ";
         else if (HateLove <= -60)    ss << "is better off dead ";
@@ -1020,7 +1011,7 @@ int cGirls::GetRebelValue(const sGirl& girl, JOBS job)
     *    refusal.
     */
 
-    if (girl.has_active_trait("Broken Will"))    return -100;
+    if (girl.has_active_trait(traits::BROKEN_WILL))    return -100;
     int chanceNo = 0;
     int houseStat = girl.house();
     int happyStat = girl.happiness();
@@ -1069,16 +1060,16 @@ int cGirls::GetRebelValue(const sGirl& girl, JOBS job)
     */
 
     // these are factoring in twice before and after mental trait modifiers
-    if (girl.has_active_trait("Kidnapped") || girl.has_active_trait("Emprisoned Customer")) chanceNo += 10;
+    if (girl.has_active_trait(traits::KIDNAPPED) || girl.has_active_trait(traits::EMPRISONED_CUSTOMER)) chanceNo += 10;
     /// TODO (traits) consider remaining time
-    //int kep = girl.has_temp_trait("Kidnapped") + girl.has_temp_trait("Emprisoned Customer");
+    //int kep = girl.has_temp_trait(traits::KIDNAPPED) + girl.has_temp_trait(traits::EMPRISONED_CUSTOMER);
     //if (kep > 20) kep += 20; else if (kep > 10) kep += 10;
 
     // guarantee certain rebelliousness values for specific traits
-    if (girl.has_active_trait("Retarded")) chanceNo -= 30;
-    if (girl.has_active_trait("Mind Fucked") && chanceNo > -50) chanceNo = -50;
-    if (girl.has_active_trait("Dependent") && chanceNo > -40) chanceNo = -40;
-    if (girl.has_active_trait("Meek") && chanceNo > 20) chanceNo = 20;
+    if (girl.has_active_trait(traits::RETARDED)) chanceNo -= 30;
+    if (girl.has_active_trait(traits::MIND_FUCKED) && chanceNo > -50) chanceNo = -50;
+    if (girl.has_active_trait(traits::DEPENDENT) && chanceNo > -40) chanceNo = -40;
+    if (girl.has_active_trait(traits::MEEK) && chanceNo > 20) chanceNo = 20;
 
     // chanceNo += kep;
 
@@ -1218,7 +1209,7 @@ void cGirls::EquipCombat(sGirl& girl)
     // girl makes sure best armor and weapons are equipped, ready for combat
     if (!g_Game->settings().get_bool(settings::USER_ITEMS_AUTO_EQUIP_COMBAT)) return;    // is this feature disabled in config?
     int refusal = 0;
-    if (girl.has_active_trait("Retarded")) refusal += 30;    // if she's retarded, she might refuse or forget
+    if (girl.has_active_trait(traits::RETARDED)) refusal += 30;    // if she's retarded, she might refuse or forget
     if (g_Dice.percent(refusal)) return;
     
     const sInventoryItem* Armor = nullptr, *Helm=nullptr, *Shield=nullptr, *Boot=nullptr, *Weap1=nullptr, *Weap2=nullptr;
@@ -1321,7 +1312,7 @@ bool HandleDrug(sGirl &girl, const char *drug_trait, const char* drug, std::init
             if (girl.m_Withdrawals >= withdrawal_duration)
             {
                 girl.lose_trait(drug_trait, true);
-                girl.gain_trait("Former Addict");
+                girl.gain_trait(traits::FORMER_ADDICT);
                 stringstream goodnews;
                 goodnews << "Good News, ${name} has overcome her addiction to " << drug << ".";
                 girl.AddMessage(goodnews.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
@@ -1352,15 +1343,15 @@ void cGirls::UseItems(sGirl& girl)
 {
     bool withdraw = false;
     // uses drugs first
-    HandleDrug(girl, "Viras Blood Addict", "Vira Blood", {"Vira Blood"}, 30, withdraw,
+    HandleDrug(girl, traits::VIRAS_BLOOD_ADDICT, "Vira Blood", {"Vira Blood"}, 30, withdraw,
             {{STAT_HAPPINESS, -30}, {STAT_OBEDIENCE, -30}, {STAT_HEALTH, -4}});
-    HandleDrug(girl, "Fairy Dust Addict", "Fairy Dust", {"Fairy Dust"}, 20, withdraw,
+    HandleDrug(girl, traits::FAIRY_DUST_ADDICT, "Fairy Dust", {"Fairy Dust"}, 20, withdraw,
             {{STAT_HAPPINESS, -30}, {STAT_OBEDIENCE, -30}, {STAT_HEALTH, -4}});
-    HandleDrug(girl, "Shroud Addict", "Shroud Mushrooms", {"Shroud Mushroom"}, 20, withdraw,
+    HandleDrug(girl, traits::SHROUD_ADDICT, "Shroud Mushrooms", {"Shroud Mushroom"}, 20, withdraw,
             {{STAT_HAPPINESS, -30}, {STAT_OBEDIENCE, -30}, {STAT_HEALTH, -4}});
-    HandleDrug(girl, "Alcoholic", "Alcohol", {"Alcohol"}, 15, withdraw,
+    HandleDrug(girl, traits::ALCOHOLIC, "Alcohol", {"Alcohol"}, 15, withdraw,
                 {{STAT_HAPPINESS, -10}, {STAT_OBEDIENCE, -10}, {STAT_HEALTH, -1}});
-    if (girl.has_active_trait("Smoker")) // `Gondra` added this since this seemed to be missing IMPORTANT: requires the item
+    if (girl.has_active_trait(traits::SMOKER)) // `Gondra` added this since this seemed to be missing IMPORTANT: requires the item
     {
         if (auto item = girl.has_item("Stop Smoking Now Patch"))
         {
@@ -1372,7 +1363,7 @@ void cGirls::UseItems(sGirl& girl)
             girl.equip(item, false);
             girl.m_Withdrawals = 0;
         } else {
-            if(HandleDrug(girl, "Smoker", "Nicotine",
+            if(HandleDrug(girl, traits::SMOKER, "Nicotine",
                        {"Magic Carton of Cigarettes", "Magic Pack of Cigarettes", "Carton of Cigarettes",
                         "Pack of Cigarettes", "Small pack of Cigarettes", "Cigarette"},
                        15, withdraw, {{STAT_HAPPINESS,    -10},
@@ -1664,7 +1655,7 @@ string cGirls::AdjustTraitGroupGagReflex(sGirl& girl, int adjustment, bool showm
 {
     if (adjustment == 0) return "";    // no girl or not changing anything so quit
     return AdjustTraitGroup(girl, adjustment,
-            {"Strong Gag Reflex", "Gag Reflex", nullptr, "No Gag Reflex", "Deep Throat"}, showmessage,
+            {traits::STRONG_GAG_REFLEX, traits::GAG_REFLEX, nullptr, traits::NO_GAG_REFLEX, traits::DEEP_THROAT}, showmessage,
             " has lost the trait", " has gained the trait");
 }
 
@@ -1672,8 +1663,8 @@ string cGirls::AdjustTraitGroupBreastSize(sGirl& girl, int adjustment, bool show
 {
     if (adjustment == 0) return "";    // no girl or not changing anything so quit
     return AdjustTraitGroup(girl, adjustment,
-                            {"Flat Chest", "Petite Breasts", "Small Boobs", nullptr, "Busty Boobs", "Big Boobs", "Giant Juggs",
-                             "Massive Melons", "Abnormally Large Boobs", "Titanic Tits"}, showmessage,
+                            {traits::FLAT_CHEST, traits::PETITE_BREASTS, traits::SMALL_BOOBS, nullptr, traits::BUSTY_BOOBS, traits::BIG_BOOBS, traits::GIANT_JUGGS,
+                             traits::MASSIVE_MELONS, traits::ABNORMALLY_LARGE_BOOBS, traits::TITANIC_TITS}, showmessage,
                             "'s breast size has changed from", " to", "Average");
 }
 
@@ -1681,7 +1672,7 @@ string cGirls::AdjustTraitGroupFertility(sGirl& girl, int steps, bool showmessag
 {
     if (steps == 0) return "";    // not changing anything so quit
     return AdjustTraitGroup(girl, steps,
-                            {"Sterile", nullptr, "Fertile", "Broodmother"}, showmessage,
+                            {traits::STERILE, nullptr, traits::FERTILE, traits::BROODMOTHER}, showmessage,
                             " has lost the trait", " has gained the trait");
 }
 
@@ -1689,9 +1680,9 @@ string cGirls::AdjustTraitGroupFertility(sGirl& girl, int steps, bool showmessag
 void cGirls::updateHappyTraits(sGirl& girl)
 {
     if (girl.is_dead()) return;    // Sanity check. Abort on dead girl
-    if (girl.has_active_trait("Optimist")) girl.happiness(5);
+    if (girl.has_active_trait(traits::OPTIMIST)) girl.happiness(5);
 
-    if (girl.has_active_trait("Pessimist"))
+    if (girl.has_active_trait(traits::PESSIMIST))
     {
         girl.happiness(-5);
         if (girl.happiness() <= 0 && g_Dice.percent(50))
@@ -1784,46 +1775,46 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         runawaymsg << " (When you find her, she may be... changed.)";
 
         //If she was a virgin, she won't be now...
-        girl->lose_trait("Virgin");
+        girl->lose_trait(traits::VIRGIN);
 
         //What damage?
         int harm = g_Dice.d100();
         if (harm > 95) //5% multi STDS
         {
             harm = g_Dice.d100();
-            if (harm == 100)    girl->gain_trait("AIDS"),     girl->gain_trait("Syphilis"), girl->gain_trait("Herpes"), girl->gain_trait("Chlamydia");
-            else if (harm > 95) girl->gain_trait("AIDS"),        girl->gain_trait("Syphilis");
-            else if (harm > 85) girl->gain_trait("AIDS"),        girl->gain_trait("Herpes");
-            else if (harm > 70) girl->gain_trait("Syphilis"),    girl->gain_trait("Herpes");
-            else if (harm > 50) girl->gain_trait("Syphilis"),    girl->gain_trait("Chlamydia");
-            else                girl->gain_trait("Herpes"),    girl->gain_trait("Chlamydia");
+            if (harm == 100)    girl->gain_trait(traits::AIDS),        girl->gain_trait(traits::SYPHILIS), girl->gain_trait(traits::HERPES), girl->gain_trait(traits::CHLAMYDIA);
+            else if (harm > 95) girl->gain_trait(traits::AIDS),        girl->gain_trait(traits::SYPHILIS);
+            else if (harm > 85) girl->gain_trait(traits::AIDS),        girl->gain_trait(traits::HERPES);
+            else if (harm > 70) girl->gain_trait(traits::SYPHILIS),    girl->gain_trait(traits::HERPES);
+            else if (harm > 50) girl->gain_trait(traits::SYPHILIS),    girl->gain_trait(traits::CHLAMYDIA);
+            else                girl->gain_trait(traits::HERPES),      girl->gain_trait(traits::CHLAMYDIA);
         }
         else if (harm > 90)  //5% an STD
         {
             harm = g_Dice.d100();
-            if (harm > 95)        girl->gain_trait("AIDS");
-            else if (harm > 80)    girl->gain_trait("Syphilis");
-            else if (harm > 50) girl->gain_trait("Herpes");
-            else                girl->gain_trait("Chlamydia");
+            if (harm > 95)      girl->gain_trait(traits::AIDS);
+            else if (harm > 80) girl->gain_trait(traits::SYPHILIS);
+            else if (harm > 50) girl->gain_trait(traits::HERPES);
+            else                girl->gain_trait(traits::CHLAMYDIA);
         }
         else if (harm > 85)  //10% scars
         {
-            if (!girl->has_active_trait("Small Scars") && !girl->has_active_trait("Cool Scars") && !girl->has_active_trait(
-                    "Horrific Scars")) girl->gain_trait("Small Scars");
-            else if (girl->has_active_trait("Small Scars")) girl->gain_trait("Cool Scars");
-            else if (girl->has_active_trait("Cool Scars")) girl->gain_trait("Horrific Scars");
+            if (!girl->has_active_trait(traits::SMALL_SCARS) && !girl->has_active_trait(traits::COOL_SCARS) && !girl->has_active_trait(
+                    traits::HORRIFIC_SCARS)) girl->gain_trait(traits::SMALL_SCARS);
+            else if (girl->has_active_trait(traits::SMALL_SCARS)) girl->gain_trait(traits::COOL_SCARS);
+            else if (girl->has_active_trait(traits::COOL_SCARS)) girl->gain_trait(traits::HORRIFIC_SCARS);
         }
         else if (harm > 75)  //10% traumatised
         {
-            girl->gain_trait("Mind Fucked");
+            girl->gain_trait(traits::MIND_FUCKED);
         }
         else if (harm > 50)  //25% chance
         {
             //overused face
-            girl->gain_trait("Missing Teeth");
+            girl->gain_trait(traits::MISSING_TEETH);
             AdjustTraitGroupGagReflex(*girl, +1);
 
-            girl->lose_trait("Optimist");
+            girl->lose_trait(traits::OPTIMIST);
             girl->upd_base_stat(STAT_DIGNITY, -10);
             girl->upd_base_stat(STAT_SPIRIT, -10);
             girl->upd_skill(SKILL_ORALSEX, 5);
@@ -1831,9 +1822,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         else if (harm > 25)  //25% chance
         {
             //overused behind
-            girl->gain_trait("Whore");
+            girl->gain_trait(traits::WHORE);
 
-            girl->lose_trait("Optimist");
+            girl->lose_trait(traits::OPTIMIST);
             girl->upd_base_stat(STAT_HEALTH, -5);
             girl->upd_base_stat(STAT_SPIRIT, -5);
             girl->upd_temp_stat(STAT_LIBIDO, -50, true);
@@ -1841,8 +1832,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         }
         else if (harm > 15)  //10% chance
         {
-            girl->gain_trait("Broken Will");
-            girl->gain_trait("Branded on the Ass");
+            girl->gain_trait(traits::BROKEN_WILL);
+            girl->gain_trait(traits::BRANDED_ON_THE_ASS);
         }
         else //15% no damage
         {
@@ -1869,7 +1860,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     double STDchance = 0.001;        // `J` added new percent that allows 3 decimal check so setting a 0.001% base chance
     int happymod = 0;    // Start the customers unhappiness/happiness bad sex decreases, good sex inceases
 
-    if (customer->m_Fetish == FETISH_FUTAGIRLS && !girl->has_active_trait("Futanari"))
+    if (customer->m_Fetish == FETISH_FUTAGIRLS && !girl->has_active_trait(traits::FUTANARI))
     {
         happymod -= 10;
     }
@@ -1924,7 +1915,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     intro += check / 20;
 
     bool z = false;
-    if (girl->has_active_trait("Zombie"))
+    if (girl->has_active_trait(traits::ZOMBIE))
     {
         z = true;
         introtext += " follows";
@@ -1932,9 +1923,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     else
     {
         // need to add more traits
-        if (!customer->m_IsWoman && girl->has_active_trait("Cum Addict")) intro += 4;
-        if (customer->m_IsWoman && girl->has_active_trait("Lesbian")) intro += 3;
-        if (customer->m_IsWoman && girl->has_active_trait("Straight")) intro -= 3;
+        if (!customer->m_IsWoman && girl->has_active_trait(traits::CUM_ADDICT)) intro += 4;
+        if (customer->m_IsWoman && girl->has_active_trait(traits::LESBIAN)) intro += 3;
+        if (customer->m_IsWoman && girl->has_active_trait(traits::STRAIGHT)) intro -= 3;
         intro += girl->get_trait_modifier("sex.eagerness");
 
         //SIN: Fix ordering and wording - delete old if this okay
@@ -2046,7 +2037,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     else
     {
         if (currentjob == JOB_PEEP){}
-        else if ((girl->has_active_trait("Nervous") && girl->m_Enjoyment[ACTION_SEX] < 10) ||
+        else if ((girl->has_active_trait(traits::NERVOUS) && girl->m_Enjoyment[ACTION_SEX] < 10) ||
             girl->m_Enjoyment[ACTION_SEX] < -20)
         {
             introtext += "She is clearly uncomfortable with the arrangement, and it makes the customer feel uncomfortable.\n";
@@ -2073,11 +2064,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     //First, a var to store her willfullness. Max (full spirit, no obed) = 50% refusal; Min (all obedience, no spirit) = 0%
     int willfullness = ((100 + (girl->spirit() - girl->obedience())) / 2);
     // next a couple of reasons why refuse
-    bool pigHeaded = girl->has_active_trait("Iron Will");
-    bool highStatus = (girl->has_active_trait("Princess") || girl->has_active_trait("Queen") || girl->has_active_trait("Noble"));
+    bool pigHeaded = girl->has_active_trait(traits::IRON_WILL);
+    bool highStatus = (girl->has_active_trait(traits::PRINCESS) || girl->has_active_trait(traits::QUEEN) || girl->has_active_trait(traits::NOBLE));
 
     // now the implementation...
-    if ((check < 40) && !z && !girl->has_active_trait("Mute"))  //if she's bad at this sex-type (and not a zombie or mute!), pride kicks in
+    if ((check < 40) && !z && !girl->has_active_trait(traits::MUTE))  //if she's bad at this sex-type (and not a zombie or mute!), pride kicks in
     {
         //if she's pigheaded, or thinks this is beneath her - she refuses
         if (g_Dice.percent(willfullness) && (pigHeaded || highStatus))
@@ -2270,7 +2261,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
                 else if (choice < 67)
                 {
                     sexMessage << "The customer suddenly puts his hand in " << girlName << "'s mouth, grabbing her by the jaw and pinching her lips.\n";
-                    if (girl->has_active_trait("Dick-Sucking Lips")) sexMessage << "\"Those lips!\" he says, shoving her head down. \"Made for dick-sucking.\"\n";
+                    if (girl->has_active_trait(traits::DICK_SUCKING_LIPS)) sexMessage << "\"Those lips!\" he says, shoving her head down. \"Made for dick-sucking.\"\n";
                     else sexMessage << "\"On your knees, whore,\" he says. \"And suck this.\"\n"
                         << refusesbecause
                         << "She shakes her head: \"Not if you wanna keep it.\"";
@@ -2359,8 +2350,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
                             sexMessage << ", adding with a smile. \"But if you want your dick sucked";
                             if (highStatus)
                             {
-                                if (girl->has_active_trait("Queen")) sexMessage << " by a Queen";
-                                else if (girl->has_active_trait("Princess")) sexMessage << " by a Princess";
+                                if (girl->has_active_trait(traits::QUEEN)) sexMessage << " by a Queen";
+                                else if (girl->has_active_trait(traits::PRINCESS)) sexMessage << " by a Princess";
                                 else sexMessage << " by Nobility";
                             }
                             else sexMessage << " by a girl who doesn't stop";
@@ -2445,7 +2436,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     girl->add_tiredness();
 
     // if the girl likes sex and the sex type then increase her happiness otherwise decrease it
-    if (girl->has_active_trait("Succubus"))
+    if (girl->has_active_trait(traits::SUCCUBUS))
     {
         message += "\nIt seems that she lives for this sort of thing.";//succubus does live for sex lol.. Idk if this will work like i want it to CRAZY
         girl->health(10);//Idk where I should put this really but succubus gain live force or whatever from sex
@@ -2509,7 +2500,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         {
             bool keep = false;
             message += ("\n \nAfterwards he stuffed a toy up " + girlName + "'s cum lubricated ass, telling her it was a 'gift.' ");
-            if (girl->has_active_trait("Nymphomaniac"))
+            if (girl->has_active_trait(traits::NYMPHOMANIAC))
             {
                 message += "She kept it in while she dressed and tidied up. She'll definitely keep ";
                 keep = true;
@@ -2563,7 +2554,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         {
             bool keep = false;
             message += "\n \nAs he untied " + girlName + ", he told her she could keep the collar. ";
-            if (girl->has_active_trait("Masochist") || girl->has_active_trait("Slut"))
+            if (girl->has_active_trait(traits::MASOCHIST) || girl->has_active_trait(traits::SLUT))
             {
                 message += "She agreed. It's exactly what she deserves: a ";
                 keep = true;
@@ -2602,13 +2593,13 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
                   girl->upd_base_stat(STAT_HEALTH, -3);
             //girl->upd_stat(STAT_SANITY, -2);
         }
-        if (girl->has_active_trait("Sterile"))
+        if (girl->has_active_trait(traits::STERILE))
         {
             contraception = false;                            // none needed
             STDchance += 16;                                // less chance than not using but more chance than using
         }
         //Trait modifications
-        else if (girl->has_active_trait("Cum Addict") && girl->m_UseAntiPreg &&
+        else if (girl->has_active_trait(traits::CUM_ADDICT) && girl->m_UseAntiPreg &&
                  g_Dice.percent(girl->libido()) && !g_Dice.percent(girl->intelligence()))
         {
             message += "\n \nShe got over-excited by her desire for cum, and failed to use her anti-preg. ";
@@ -2631,7 +2622,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         {
             bool keep = false;
             message += "\n \nAfterwards he squeezed a toy into " + girlName + "'s cummy cunt, leaving it there as a 'gift.' ";
-            if (girl->has_active_trait("Nymphomaniac"))
+            if (girl->has_active_trait(traits::NYMPHOMANIAC))
             {
                 message += "While he was getting dressed, she noisily tried out the new ";
                 keep = true;
@@ -2662,7 +2653,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         }
         if (girl->get_skill(SexType) <= 20)    // if unexperienced then will get hurt
         {
-            if (girl->has_active_trait("Gag Reflex") || girl->has_active_trait("Strong Gag Reflex"))
+            if (girl->any_active_trait({traits::GAG_REFLEX, traits::STRONG_GAG_REFLEX}))
             {
                 message += "\nHer throat is raw from gagging on the customer's cock. She was nearly sick.";
                           girl->upd_base_stat(STAT_HAPPINESS, -4);
@@ -2812,13 +2803,13 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
                   girl->upd_base_stat(STAT_HEALTH, -3);
             //girl->upd_stat(STAT_SANITY, -3);
         }
-        if (girl->has_active_trait("Sterile"))
+        if (girl->has_active_trait(traits::STERILE))
         {
             contraception = false;                            // none needed
             STDchance += ((4 + customer->m_Amount) * 4);    // less chance than not using but more chance than using
         }
         //trait variation
-        else if (girl->has_active_trait("Cum Addict") && girl->m_UseAntiPreg &&
+        else if (girl->has_active_trait(traits::CUM_ADDICT) && girl->m_UseAntiPreg &&
                  g_Dice.percent(girl->libido()) && !g_Dice.percent(girl->intelligence()))
         {
             message += "\n \nShe got over-excited by her desire for cum, and failed to use her anti-preg. ";
@@ -2841,7 +2832,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             if (g_Dice.percent(90))
             {
                 message += "\n \nAfter the group had left, " + girlName + " found they had filled her decorative goblet with their cum. ";
-                if (girl->has_active_trait("Cum Addict"))
+                if (girl->has_active_trait(traits::CUM_ADDICT))
                 {
                     message += "She immediately swallowed it all down.";
                 }
@@ -2894,7 +2885,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             if (g_Dice.percent(90))
             {
                 message += "\n \nAfterwards the woman let " + girlName + " keep the double-dildo they had shared.";
-                if (girl->has_active_trait("Straight"))
+                if (girl->has_active_trait(traits::STRAIGHT))
                 {
                     message += "\nBeing straight, she had no desire to keep it and threw it out later.";
                     keep = false;
@@ -2904,7 +2895,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             else
             {
                 message += "\n \nThe woman gave " + girlName + " an expensive, illustrated book on lesbian sex.";
-                if (girl->has_active_trait("Straight"))
+                if (girl->has_active_trait(traits::STRAIGHT))
                 {
                     message += "\nBeing straight, she found it kinda gross and threw it out.";
                     keep = false;
@@ -2987,7 +2978,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         }
         if (chappy > 0) customer->happiness(chappy);
         if (girl->is_pregnant()) virgincheck = true;
-        if (virgincheck) girl->lose_trait("Virgin");
+        if (virgincheck) girl->lose_trait(traits::VIRGIN);
     }
 
     //SIN - poor accomodation minus...
@@ -3008,8 +2999,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     if(first) {
         // more gains for first time per night, and  quick learner only has an effect once
         skillgain = 4;
-        if (girl->has_active_trait("Quick Learner"))        { skillgain += 1; exp += 1; }
-        else if (girl->has_active_trait("Slow Learner"))    { skillgain -= 1; exp -= 1; }
+        if (girl->has_active_trait(traits::QUICK_LEARNER))        { skillgain += 1; exp += 1; }
+        else if (girl->has_active_trait(traits::SLOW_LEARNER))    { skillgain -= 1; exp -= 1; }
     }
     if (SexType == SKILL_GROUP)
     {
@@ -3038,7 +3029,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     }
 
     int enjoy = 1;
-    if (girl->has_active_trait("Nymphomaniac"))
+    if (girl->has_active_trait(traits::NYMPHOMANIAC))
     {
         girl->upd_temp_stat(STAT_LIBIDO, 15);        // she just had sex and she wants more
         switch (SexType)
@@ -3059,7 +3050,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             break;
         }
     }
-    if (girl->has_active_trait("Lesbian"))
+    if (girl->has_active_trait(traits::LESBIAN))
     {
         switch (SexType)
         {
@@ -3077,7 +3068,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             break;
         }
     }
-    if (girl->has_active_trait("Straight"))
+    if (girl->has_active_trait(traits::STRAIGHT))
     {
         switch (SexType)
         {
@@ -3087,7 +3078,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             break;
         }
     }
-    if (girl->has_active_trait("Cum Addict"))
+    if (girl->has_active_trait(traits::CUM_ADDICT))
     {
         switch (SexType)
         {
@@ -3107,51 +3098,51 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     else /*if (health < 30)*/    { STDchance *= (35 - health) / 10; } //SIN: check not required
     if (STDchance < 0.1)    STDchance = 0.1;
 
-    if (girl->has_active_trait("AIDS") && customer->gain_trait("AIDS", STDchance))
+    if (girl->has_active_trait(traits::AIDS) && customer->gain_trait(traits::AIDS, STDchance))
     {
         girl->AddMessage("${name} gave the customer AIDS! They are not happy about this.", EImageBaseType::PROFILE, EVENT_DANGER);
         customer->happiness(-100);
         enjoy -= 3;
     }
-    else if (customer->has_active_trait("AIDS") && girl->gain_trait("AIDS", STDchance))
+    else if (customer->has_active_trait(traits::AIDS) && girl->gain_trait(traits::AIDS, STDchance))
     {
         girl->AddMessage("${name} has caught the disease AIDS! She will likely die, but a rare cure can sometimes be found in the shop.", EImageBaseType::PROFILE, EVENT_DANGER);
         girl->happiness(-50);
         enjoy -= 30;
     }
-    if (girl->has_active_trait("Chlamydia") && customer->gain_trait("Chlamydia", STDchance))
+    if (girl->has_active_trait(traits::CHLAMYDIA) && customer->gain_trait(traits::CHLAMYDIA, STDchance))
     {
         girl->AddMessage("${name} gave the customer Chlamydia! They are not happy about this.", EImageBaseType::PROFILE, EVENT_DANGER);
         customer->happiness(-40);
         enjoy -= 3;
     }
-    else if (customer->has_active_trait("Chlamydia") && girl->gain_trait("Chlamydia", STDchance))
+    else if (customer->has_active_trait(traits::CHLAMYDIA) && girl->gain_trait(traits::CHLAMYDIA, STDchance))
     {
         girl->AddMessage("${name} has caught the disease Chlamydia! A cure can sometimes be found in the shop.", EImageBaseType::PROFILE, EVENT_DANGER);
         girl->happiness(-30);
         enjoy -= 30;
     }
 
-    if (girl->has_active_trait("Syphilis") && customer->gain_trait("Syphilis", STDchance))
+    if (girl->has_active_trait(traits::SYPHILIS) && customer->gain_trait(traits::SYPHILIS, STDchance))
     {
         girl->AddMessage("${name} gave the customer Syphilis! They are not happy about this.", EImageBaseType::PROFILE, EVENT_DANGER);
         customer->happiness(-50);
         enjoy -= 3;
     }
-    else if (customer->has_active_trait("Syphilis") && girl->gain_trait("Syphilis", STDchance))
+    else if (customer->has_active_trait(traits::SYPHILIS) && girl->gain_trait(traits::SYPHILIS, STDchance))
     {
         girl->AddMessage("${name} has caught the disease Syphilis! This can be deadly, but a cure can sometimes be found in the shop.", EImageBaseType::PROFILE, EVENT_DANGER);
         girl->happiness(-30);
         enjoy -= 30;
     }
 
-    if (girl->has_active_trait("Herpes") && customer->gain_trait("Herpes", STDchance))
+    if (girl->has_active_trait(traits::HERPES) && customer->gain_trait(traits::HERPES, STDchance))
     {
         girl->AddMessage("${name} gave the customer Herpes! They are not happy about this.", EImageBaseType::PROFILE, EVENT_DANGER);
         customer->happiness(-30);
         enjoy -= 3;
     }
-    else if (customer->has_active_trait("Herpes") && girl->gain_trait("Herpes", STDchance))
+    else if (customer->has_active_trait(traits::HERPES) && girl->gain_trait(traits::HERPES, STDchance))
     {
         girl->AddMessage("${name} has caught the disease Herpes! A cure can sometimes be found in the shop.", EImageBaseType::PROFILE, EVENT_DANGER);
         girl->happiness(-30);
@@ -3187,9 +3178,9 @@ bool cGirls::GirlInjured(sGirl& girl, unsigned int unModifier, std::function<voi
     };
 
     // Sanity check, Can't get injured
-    if (girl.has_active_trait("Incorporeal")) return false;
-    if (girl.has_active_trait("Fragile")) nMod += nMod;
-    if (girl.has_active_trait("Tough")) nMod /= 2;
+    if (girl.has_active_trait(traits::INCORPOREAL)) return false;
+    if (girl.has_active_trait(traits::FRAGILE)) nMod += nMod;
+    if (girl.has_active_trait(traits::TOUGH)) nMod /= 2;
 
     // Did the girl get injured
     if (!g_Dice.percent(nMod))
@@ -3202,16 +3193,14 @@ bool cGirls::GirlInjured(sGirl& girl, unsigned int unModifier, std::function<voi
     // getting hurt badly could lead to scars
     if (
             g_Dice.percent(nMod * 2) &&
-            !girl.has_active_trait("Small Scars") &&
-            !girl.has_active_trait("Cool Scars") &&
-            !girl.has_active_trait("Horrific Scars")
+            !girl.any_active_trait({traits::SMALL_SCARS, traits::COOL_SCARS, traits::HORRIFIC_SCARS})
         )
     {
         //injured = true;
         int chance = g_Dice % 6;
         if (chance == 0)
         {
-            girl.gain_trait("Horrific Scars");
+            girl.gain_trait(traits::HORRIFIC_SCARS);
             if (g_Dice.percent(50))
             {
                 handler("She was horribly injured, and now is now covered with Horrific Scars.");
@@ -3223,12 +3212,12 @@ bool cGirls::GirlInjured(sGirl& girl, unsigned int unModifier, std::function<voi
         }
         else if (chance <= 2)
         {
-            girl.gain_trait("Small Scars");
+            girl.gain_trait(traits::SMALL_SCARS);
             handler("She was injured and now has a couple of Small Scars.");
         }
         else
         {
-            girl.gain_trait("Cool Scars");
+            girl.gain_trait(traits::COOL_SCARS);
             handler("She was injured and scarred. As scars go however, at least they are pretty Cool Scars.");
         }
     }
@@ -3236,33 +3225,33 @@ bool cGirls::GirlInjured(sGirl& girl, unsigned int unModifier, std::function<voi
     // in rare cases, she might even lose an eye
     if (
             g_Dice.percent((nMod / 2)) &&
-            !girl.has_active_trait("One Eye") &&
-            !girl.has_active_trait("Eye Patch")
+            !girl.has_active_trait(traits::ONE_EYE) &&
+            !girl.has_active_trait(traits::EYE_PATCH)
         )
     {
         //injured = true;
         int chance = g_Dice % 3;
         if (chance == 0)
         {
-            girl.gain_trait("One Eye");
+            girl.gain_trait(traits::ONE_EYE);
             handler("Oh, no! She was badly injured, and now only has One Eye!");
         }
         else
         {
-            girl.gain_trait("Eye Patch");
+            girl.gain_trait(traits::EYE_PATCH);
             handler("She was injured and lost an eye, but at least she has a cool Eye Patch to wear.");
         }
     }
 
-    if (girl.has_active_trait("Tough"))
+    if (girl.has_active_trait(traits::TOUGH))
     {
-        if (girl.gain_trait("Tough", nMod))
+        if (girl.gain_trait(traits::TOUGH, nMod))
         {
             handler("Due to ${name}'s injuries her body has become less Tough.\n");
         }
     } else
     // or become fragile
-    if (girl.gain_trait("Fragile", nMod / 2))
+    if (girl.gain_trait(traits::FRAGILE, nMod / 2))
     {
         handler("Due to ${name}'s injuries her body has become Fragile.\n");
     }
@@ -3337,7 +3326,7 @@ void cGirls::updateGirlAge(sGirl& girl, bool inc_inService)
     {
         girl.m_BDay = 0;
         girl.age(1);
-        if (girl.age() > 20) girl.lose_trait("Lolita");
+        if (girl.age() > 20) girl.lose_trait(traits::LOLITA);
         if (girl.age() >= 50)
         {
             girl.beauty(-(g_Dice % 3 + 1));
@@ -3354,7 +3343,7 @@ void cGirls::updateSTD(sGirl& girl)
     bool matron = girl_has_matron(girl, SHIFT_DAY);
 
     int Dhea = 0, Dhap = 0, Dtir = 0, Dint = 0, Dcha = 0;
-    if (girl.has_active_trait("AIDS"))
+    if (girl.has_active_trait(traits::AIDS))
     {
         const char* cureitem = "AIDS Cure";
         if (matron)
@@ -3370,7 +3359,7 @@ void cGirls::updateSTD(sGirl& girl)
             Dtir += g_Dice % 2 + 1;
         }
     }
-    if (girl.has_active_trait("Herpes"))
+    if (girl.has_active_trait(traits::HERPES))
     {
         const char* cureitem = "Herpes Cure";
         if (matron)
@@ -3386,7 +3375,7 @@ void cGirls::updateSTD(sGirl& girl)
             Dcha += max(0, g_Dice % 4 - 1);
         }
     }
-    if (girl.has_active_trait("Chlamydia"))
+    if (girl.has_active_trait(traits::CHLAMYDIA))
     {
         const char* cureitem = "Chlamydia Cure";
         if (matron)
@@ -3402,7 +3391,7 @@ void cGirls::updateSTD(sGirl& girl)
             Dtir += g_Dice % 2 + 1;
         }
     }
-    if (girl.has_active_trait("Syphilis"))
+    if (girl.has_active_trait(traits::SYPHILIS))
     {
         const char* cureitem = "Syphilis Cure";
         if (matron)
@@ -3691,16 +3680,16 @@ bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl& girl, sCusto
 
     const char* found_disease = nullptr;
     // these need better texts
-    if (Cust->has_active_trait("AIDS") && g_Dice.percent(min(90.0, detectdisease*0.5)))    // harder to detect
+    if (Cust->has_active_trait(traits::AIDS) && g_Dice.percent(min(90.0, detectdisease*0.5)))    // harder to detect
     {
-        found_disease = "AIDS";
-    } else if (Cust->has_active_trait("Syphilis") && g_Dice.percent(detectdisease*0.8))    // harder to detect
+        found_disease = traits::AIDS;
+    } else if (Cust->has_active_trait(traits::SYPHILIS) && g_Dice.percent(detectdisease*0.8))    // harder to detect
     {
-        found_disease = "Syphilis";
-    } else if (Cust->has_active_trait("Chlamydia") && g_Dice.percent(detectdisease)) {
-        found_disease = "Chlamydia";
-    } else if (Cust->has_active_trait("Herpes") && g_Dice.percent(detectdisease)) {
-        found_disease = "Herpes";
+        found_disease = traits::SYPHILIS;
+    } else if (Cust->has_active_trait(traits::CHLAMYDIA) && g_Dice.percent(detectdisease)) {
+        found_disease = traits::CHLAMYDIA;
+    } else if (Cust->has_active_trait(traits::HERPES) && g_Dice.percent(detectdisease)) {
+        found_disease = traits::HERPES;
     }
 
     if(found_disease) {
@@ -3811,10 +3800,10 @@ sCustomer cGirls::GetBeast()
 
     beast.m_SexPref = beast.m_SexPrefB = SKILL_BEASTIALITY;
 
-    beast.gain_trait("AIDS", 0.5);
-    beast.gain_trait("Chlamydia", 1.0);
-    beast.gain_trait("Syphilis", 1.5);
-    beast.gain_trait("Herpes", 2.5);
+    beast.gain_trait(traits::AIDS, 0.5);
+    beast.gain_trait(traits::CHLAMYDIA, 1.0);
+    beast.gain_trait(traits::SYPHILIS, 1.5);
+    beast.gain_trait(traits::HERPES, 2.5);
     beast.m_Money = 0;
 
     return beast;

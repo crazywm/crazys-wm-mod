@@ -161,14 +161,14 @@ std::shared_ptr<sGirl> cRandomGirls::create_from_template(const sRandomGirl& tem
     if (age >= 18)    newGirl->set_stat(STAT_AGE, age);
 
     if (newGirl->age() < 18)    newGirl->set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
-    if (g_Dice.percent(5))   newGirl->gain_trait("Former Addict");
+    if (g_Dice.percent(5))   newGirl->gain_trait(traits::FORMER_ADDICT);
     else
     {
-        newGirl->gain_trait("Smoker", 5);
-        newGirl->gain_trait("Alcoholic", 4);
-        newGirl->gain_trait("Fairy Dust Addict", 2);
-        newGirl->gain_trait("Shroud Addict", 1);
-        newGirl->gain_trait("Viras Blood Addict", 0.5);
+        newGirl->gain_trait(traits::SMOKER, 5);
+        newGirl->gain_trait(traits::ALCOHOLIC, 4);
+        newGirl->gain_trait(traits::FAIRY_DUST_ADDICT, 2);
+        newGirl->gain_trait(traits::SHROUD_ADDICT, 1);
+        newGirl->gain_trait(traits::VIRAS_BLOOD_ADDICT, 0.5);
     }
 
     newGirl->set_default_house_percent();
@@ -178,7 +178,7 @@ std::shared_ptr<sGirl> cRandomGirls::create_from_template(const sRandomGirl& tem
             newGirl->set_status(STATUS_ARENA);
         break;
         case SpawnReason::PLAYER_DAUGHTER:
-            newGirl->raw_traits().add_inherent_trait("Your Daughter");
+            newGirl->raw_traits().add_inherent_trait(traits::YOUR_DAUGHTER);
         break;
         case SpawnReason::SLAVE_MARKET:
             newGirl->set_status(STATUS_SLAVE);
@@ -186,7 +186,7 @@ std::shared_ptr<sGirl> cRandomGirls::create_from_template(const sRandomGirl& tem
         // this girl has been taken against her will so make her rebellious
         case SpawnReason::KIDNAPPED:
         {
-            newGirl->add_temporary_trait("Kidnapped", std::max(5, g_Dice.bell(0, 25)));        // 5-25 turn temp trait
+            newGirl->add_temporary_trait(traits::KIDNAPPED, std::max(5, g_Dice.bell(0, 25)));        // 5-25 turn temp trait
             int spirit = g_Dice.bell(50, 125);
             int conf = g_Dice.bell(50, 125);
             int obey = g_Dice.bell(-50, 50);
@@ -286,7 +286,7 @@ namespace {
     {
         std::string trait_name = GetStringAttribute(el, "Name");
         if(is_v0 && trait_name == "Dependant") {
-            trait_name = "Dependent";
+            trait_name = traits::DEPENDENT;
             g_LogFile.warning("traits", "Found misspelled trait `Dependant` for random girl ", target.Name);
         }
         target.TraitNames.emplace_back(trait_name);
@@ -386,7 +386,7 @@ namespace {
         set_from_attr("Your Daughter", target.SpawnWeights[static_cast<int>(SpawnReason::PLAYER_DAUGHTER)]);
 
         if(!get_yesno_attr("Human")) {
-            target.TraitNames.emplace_back("Not Human");
+            target.TraitNames.emplace_back(traits::NOT_HUMAN);
             target.TraitChance.push_back(100);
         }
 

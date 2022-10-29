@@ -23,6 +23,7 @@
 #include <string>
 #include <boost/variant.hpp>
 #include "utils/enum.h"
+#include "traits.h"
 
 class sAttribute;
 
@@ -30,6 +31,11 @@ enum {
     SHIFT_DAY    = 0,
     SHIFT_NIGHT  = 1
 };
+
+namespace BreastSize {
+    constexpr const int BIG_BOOBS = 6;
+    constexpr const int MASSIVE_MELONS = 8;
+}
 
 // `J` added for .06.01.18 - not used for much yet 
 

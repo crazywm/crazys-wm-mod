@@ -156,7 +156,7 @@ void sClinic::auto_assign_job(sGirl& target, std::stringstream& message, bool is
     std::stringstream& ss = message;
     // if they have no job at all, assign them a job
     ss << "The Chairman assigns " << target.FullName() << " to ";
-    if (target.has_active_trait("AIDS"))                                        // anyone with AIDS
+    if (target.has_active_trait(traits::AIDS))                                        // anyone with AIDS
     {
         target.m_DayJob = target.m_NightJob = JOB_CUREDISEASES;        //  needs to get it treated right away
         ss << "get her AIDS treated right away.";
@@ -178,10 +178,10 @@ void sClinic::auto_assign_job(sGirl& target, std::stringstream& message, bool is
     {
         target.m_DayJob = target.m_NightJob = JOB_CUREDISEASES;
         std::vector<const char*> diseases;
-        if (target.has_active_trait("Herpes"))          diseases.emplace_back("Herpes");
-        if (target.has_active_trait("Chlamydia"))       diseases.emplace_back("Chlamydia");
-        if (target.has_active_trait("Syphilis"))        diseases.emplace_back("Syphilis");
-        if (target.has_active_trait("AIDS"))            diseases.emplace_back("AIDS");
+        if (target.has_active_trait(traits::HERPES))          diseases.emplace_back(traits::HERPES);
+        if (target.has_active_trait(traits::CHLAMYDIA))       diseases.emplace_back(traits::CHLAMYDIA);
+        if (target.has_active_trait(traits::SYPHILIS))        diseases.emplace_back(traits::SYPHILIS);
+        if (target.has_active_trait(traits::AIDS))            diseases.emplace_back(traits::AIDS);
         int numdiseases = diseases.size();
         ss << "get her " << (numdiseases > 1 ? "diseases" : diseases[0]) << " treated.";
     }
@@ -218,7 +218,7 @@ bool sClinic::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_ni
     bool backtowork = false;
     if (psw == JOB_DOCTOR || psw == JOB_NURSE || psw == JOB_INTERN)
     {
-        if (girl.has_active_trait("AIDS"))
+        if (girl.has_active_trait(traits::AIDS))
         {
             girl.m_DayJob = girl.m_NightJob = JOB_RESTING;
             ss << girl.FullName() << " could not go back to work as a";
@@ -314,7 +314,7 @@ std::string sClinic::meet_no_luck() const {
 void sClinic::GirlBeginShift(sGirl& girl, bool is_night) {
     IBuilding::GirlBeginShift(girl, is_night);
 
-    if (girl.has_active_trait("AIDS") && (
+    if (girl.has_active_trait(traits::AIDS) && (
             is_in((JOBS)girl.m_DayJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE}) ||
             is_in((JOBS)girl.m_NightJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE})))
     {

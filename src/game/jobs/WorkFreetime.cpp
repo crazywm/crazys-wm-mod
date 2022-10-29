@@ -40,7 +40,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
     int U_Health = 10 + (girl.constitution() / 10);
     int U_Happiness = 10 + rng % 11;
     int U_Mana = 5 + girl.magic() / 5;
-    int U_Libido = (girl.has_active_trait("Nymphomaniac") ? 15 : 5);
+    int U_Libido = (girl.has_active_trait(traits::NYMPHOMANIAC) ? 15 : 5);
     int U_EXP = 1;    // Just because!
     int U_Beauty = 0;
     int U_Money = 0;
@@ -223,8 +223,8 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     // if she can not afford it, reroll.
                     break;
                 case FT_Counseling:
-                    if (is_addict(girl) || girl.is_fighter(true) || girl.has_active_trait("Shy") ||
-                        girl.has_active_trait("Pessimist"))
+                    if (is_addict(girl) || girl.is_fighter(true) || girl.has_active_trait(traits::SHY) ||
+                        girl.has_active_trait(traits::PESSIMIST))
                     {
                         choicemade = true;
                     }
@@ -238,13 +238,13 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     // if she can not afford it, reroll.
                     break;
 
-                    //case FT_GoOnDate:
-                    //    if (girl.has_trait( "Has Boy Friend") || girl.has_trait( "Has Girl Friend"))
-                    //    {
-                    //        choicemade = true;    // Doesn't need money
-                    //    }
-                    //    // if she dont have one, reroll.
-                    //    break;
+                case FT_GoOnDate:
+                    if (girl.any_active_trait({traits::HAS_BOY_FRIEND, traits::HAS_GIRL_FRIEND}))
+                    {
+                        choicemade = true;    // Doesn't need money
+                    }
+                    // if she doesn't have one, reroll.
+                    break;
 
 
                     // These are not ready so reroll.
@@ -257,7 +257,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 case FT_StrollInCity:
                 case FT_Casino:
                 case FT_CountrySide:
-                case FT_GoOnDate:
                 case FT_VisitKid:
                 case FT_MakeExtraMoney:
                     break;
@@ -289,7 +288,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "She invites you to join her in the tub.\n";//will get around to adding sex options later
             }
-            else if (girl.libido() > 70 || (girl.has_active_trait("Nymphomaniac") && girl.libido() > 30))
+            else if (girl.libido() > 70 || (girl.has_active_trait(traits::NYMPHOMANIAC) && girl.libido() > 30))
             {
                 ss << "While in the tub the mood hit her and she proceed to pleasure herself with ";
                 if (girl.has_item("Compelling Dildo"))
@@ -307,10 +306,8 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else if (girl.tiredness() > 80)
             {
-                if (rng.percent(3) && girl.tiredness() > 95 && !girl.has_active_trait("Incorporeal") && !girl.has_active_trait(
-                        "Undead") && !girl.has_active_trait(
-                        "Zombie") && !girl.has_active_trait(
-                        "Skeleton"))    // 'MUTE' this is meant to kill the girl
+                if (rng.percent(3) && girl.tiredness() > 95 && !girl.any_active_trait({
+                    traits::INCORPOREAL, traits::UNDEAD, traits::ZOMBIE, traits::SKELETON}))    // 'MUTE' this is meant to kill the girl
                 {
                     girldiedmsg << girl.FullName();
                     if (is_addict(girl, true))    girldiedmsg << " took an overdose of drugs and drowned in the tub.\n";
@@ -324,7 +321,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     U_Health -= 2;
                 }
             }
-            else if (rng.percent(5) && (girl.has_active_trait("Zombie") || girl.has_active_trait("Skeleton")))
+            else if (rng.percent(5) && (girl.any_active_trait({traits::ZOMBIE, traits::SKELETON})))
             {
                 ss << "Someone knocks on the door, \"Are you cooking in there? something smells good.\"   \"What? No, I'm taking a bath.\"   \"Oh, Sorry. Wait, What? EWwwwwwwwwwwwwwwwwwwwww.\"";
             }
@@ -359,7 +356,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 ss << " stayed in bed most of the day";
                 U_Health += 10;
                 U_Tiredness -= 10;
-                if (girl.libido() > 70 || (girl.has_active_trait("Nymphomaniac") && girl.libido() > 30))
+                if (girl.libido() > 70 || (girl.has_active_trait(traits::NYMPHOMANIAC) && girl.libido() > 30))
                 {
                     ss << "While in bed the mood hit her and she proceed to pleasure herself with ";
                     if (girl.has_item("Compelling Dildo"))
@@ -396,8 +393,8 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 ss << "and decide to get a \"special\" message.\n";
                 int sex = rng % 3;
 
-                if (brothel->is_sex_type_allowed(SKILL_LESBIAN) && girl.has_active_trait("Lesbian")) sex = 0;
-                if (sex == 0 && (!brothel->is_sex_type_allowed(SKILL_LESBIAN) || girl.has_active_trait("Straight"))) sex++;
+                if (brothel->is_sex_type_allowed(SKILL_LESBIAN) && girl.has_active_trait(traits::LESBIAN)) sex = 0;
+                if (sex == 0 && (!brothel->is_sex_type_allowed(SKILL_LESBIAN) || girl.has_active_trait(traits::STRAIGHT))) sex++;
                 if (sex == 1 && !brothel->is_sex_type_allowed(SKILL_ANAL))        sex++;
                 if (sex == 2 && !brothel->is_sex_type_allowed(SKILL_NORMALSEX))    sex++;
 
@@ -619,32 +616,32 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             if (girl.tiredness() > 70 && rng.percent(10))        // 'MUTE'
             {
                 ss << "Not realizing how tired she was, she tried to jump into to pool from the high dive but she didn't realize ";
-                if ((rng.percent(25) || girl.has_active_trait("Mind Fucked") || girl.has_active_trait("Retarded")))
+                if ((rng.percent(25) || girl.any_active_trait({traits::MIND_FUCKED, traits::RETARDED})))
                 {
                     ss << "the water had been drained out of the pool.";
-                    if (girl.has_active_trait("Incorporeal"))
+                    if (girl.has_active_trait(traits::INCORPOREAL))
                     {
                         ss << " Lucky for her, not haveing a totally physical body allowed her to survive the sudden stop at the bottom of the pool.\n";
                     }
-                    else if (girl.has_active_trait("Abnormally Large Boobs") && girl.health() > 50)
+                    else if (girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS) && girl.health() > 50)
                     {
                         ss << " Luckily her Abnormally Large Boobs cushioned her fall. She may need reconstructive surgery but at least she will live.\n";
                         U_Health -= 45;
                         cGirls::AdjustTraitGroupBreastSize(girl, -2);
                     }
-                    else if (girl.has_active_trait("Zombie") && girl.health() > 30)
+                    else if (girl.has_active_trait(traits::ZOMBIE) && girl.health() > 30)
                     {
                         U_Health -= 25;
                         ss << " She landed with a thud on the bottom of the pool. Several people around the pool screamed at the sight and then screamed even more as your zombie girl got up and shambled her way out of the pool.\n";
                     }
-                    else if (girl.has_active_trait("Skeleton") && girl.health() > 30)
+                    else if (girl.has_active_trait(traits::SKELETON) && girl.health() > 30)
                     {
                         U_Health -= 25;
                         ss << " She made an almost musical racket as her bare bones crashed onto the concrete pool bed. Several people around the pool looked on curiosly but then started screaming as your skeleton girl pulled herself together and made her way out of the dry pool.\n";
                     }
                     else        // 'MUTE' this is meant to kill the girl
                     {
-                        if (girl.has_active_trait("Skeleton"))
+                        if (girl.has_active_trait(traits::SKELETON))
                         {
                             ss << " She made an almost musical racket as her bare bones crashed onto the concrete pool bed.\n";
                             girldiedmsg <<"Your Skeleton girl ${name} shattered all her bones in a pool accident and was unable to recover.";
@@ -675,19 +672,19 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     bool success = false;
                     ss << "A rather brave young man saw her laying there and decide to try and remove her top.";
-                    if (girl.has_active_trait("Psychic"))
+                    if (girl.has_active_trait(traits::PSYCHIC))
                     {
                         ss << " But using her Psychic skills she stopped him before he could do it.";
                     }
                     else if (!rng.percent(girl.agility()) && rng.percent(40))
                     {
                         ss << " He succeed and was able to expose her ";
-                        if (girl.has_active_trait("Massive Melons") || girl.has_active_trait("Abnormally Large Boobs") ||
-                            girl.has_active_trait("Titanic Tits")) { ss << "gigantic boobs."; }
-                        else if (girl.has_active_trait("Big Boobs") || girl.has_active_trait("Busty Boobs") ||
-                                 girl.has_active_trait("Giant Juggs")) { ss << "large breasts."; }
-                        else if (girl.has_active_trait("Small boobs") || girl.has_active_trait("Petite Breasts")) { ss << "small tits."; }
-                        else if (girl.has_active_trait("Flat Chest")) { ss << "rather Flat Chest."; }
+                        if (girl.breast_size() >= BreastSize::MASSIVE_MELONS) {
+                            ss << "gigantic boobs."; }
+                        else if (girl.breast_size() >= BreastSize::BIG_BOOBS) {
+                            ss << "large breasts."; }
+                        else if (girl.any_active_trait({traits::SMALL_BOOBS, traits::PETITE_BREASTS})) { ss << "small tits."; }
+                        else if (girl.has_active_trait(traits::FLAT_CHEST)) { ss << "rather Flat Chest."; }
                         else { ss << "breasts."; }
                         imagetype = EImageBaseType::NUDE;
                         success = true;
@@ -696,17 +693,15 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     {
                         ss << " He missed his oppertunity and ran away with her towel.";
                     }
-                    if (girl.has_active_trait("Aggressive") || girl.has_active_trait("Assassin") ||
-                        girl.has_active_trait("Brawler") || girl.has_active_trait("Fearless") ||
-                        girl.has_active_trait("Merciless") || girl.has_active_trait("Tough") ||
-                        girl.has_active_trait("Tsundere") || girl.has_active_trait("Yandere"))
+                    if (girl.any_active_trait({traits::AGGRESSIVE, traits::ASSASSIN, traits::BRAWLER, traits::FEARLESS,
+                                               traits::MERCILESS, traits::TOUGH, traits::TSUNDERE, traits::YANDERE}))
                     {
                         ss << "\n ${name} chased him down and beat the crap out of him. She took back her ";
-                        if (girl.has_active_trait("Exhibitionist")) { ss << (success ? "top" : "towel") << " and"; }
+                        if (girl.has_active_trait(traits::EXHIBITIONIST)) { ss << (success ? "top" : "towel") << " and"; }
                         else { ss << (success ? "top, put it back on then " : "towel and "); }
                         ss << " kicked him in the balls.";
                     }
-                    if (success && girl.has_active_trait("Exhibitionist"))
+                    if (success && girl.has_active_trait(traits::EXHIBITIONIST))
                     {
                         ss << "\n ${name} continused with her day as if nothing had happened, topless.";
                     }
@@ -760,26 +755,26 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #if 1
         {
             // 1. if she is addicted she will first attempt to purchase drugs until she has no money
-            if (girl.has_active_trait("Viras Blood Addict") ||
+            if (girl.has_active_trait(traits::VIRAS_BLOOD_ADDICT) ||
                 (girl.happiness() < 20 && rng.percent(10)))    // 10% chance an unhappy girl will try this
             {
-                cJobManager::AddictBuysDrugs("Viras Blood Addict", "Viras Blood", girl, brothel, Day0Night1);
+                cJobManager::AddictBuysDrugs(traits::VIRAS_BLOOD_ADDICT, "Viras Blood", girl, brothel, Day0Night1);
                 break;
             }
-            if (girl.has_active_trait("Fairy Dust Addict") ||
+            if (girl.has_active_trait(traits::FAIRY_DUST_ADDICT) ||
                 (girl.happiness() < 20 && rng.percent(50)))    // 50% chance an unhappy girl will try this
             {
-                cJobManager::AddictBuysDrugs("Fairy Dust Addict", "Fairy Dust", girl, brothel, Day0Night1);
+                cJobManager::AddictBuysDrugs(traits::FAIRY_DUST_ADDICT, "Fairy Dust", girl, brothel, Day0Night1);
                 break;
             }
-            if (girl.has_active_trait("Shroud Addict") || (girl.happiness() < 20))
+            if (girl.has_active_trait(traits::SHROUD_ADDICT) || (girl.happiness() < 20))
             {
-                cJobManager::AddictBuysDrugs("Shroud Addict", "Shroud Mushroom", girl, brothel, Day0Night1);
+                cJobManager::AddictBuysDrugs(traits::SHROUD_ADDICT, "Shroud Mushroom", girl, brothel, Day0Night1);
                 break;
             }
-            if (girl.has_active_trait("Alcoholic") || (girl.happiness() < 30))
+            if (girl.has_active_trait(traits::ALCOHOLIC) || (girl.happiness() < 30))
             {
-                cJobManager::AddictBuysDrugs("Alcoholic", "Alcohol", girl, brothel, Day0Night1);
+                cJobManager::AddictBuysDrugs(traits::ALCOHOLIC, "Alcohol", girl, brothel, Day0Night1);
                 break;
             }
         }
@@ -887,9 +882,9 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     std::string itemname;
                     std::string itemprefix = "a";
-                    /* */if (girl.has_active_trait("Fairy Dust Addict"))    { itemprefix = "a vial of"; itemname = "Fairy Dust"; }
-                    else if (girl.has_active_trait("Shroud Addict"))        { itemprefix = "a"; itemname = "Shroud Mushroom"; }
-                    else if (girl.has_active_trait("Viras Blood Addict"))    { itemprefix = "a vial of"; itemname = "Vira Blood"; }
+                    /* */if (girl.has_active_trait(traits::FAIRY_DUST_ADDICT))    { itemprefix = "a vial of"; itemname = "Fairy Dust"; }
+                    else if (girl.has_active_trait(traits::SHROUD_ADDICT))        { itemprefix = "a"; itemname = "Shroud Mushroom"; }
+                    else if (girl.has_active_trait(traits::VIRAS_BLOOD_ADDICT))    { itemprefix = "a vial of"; itemname = "Vira Blood"; }
                     const sInventoryItem* item = g_Game->inventory_manager().GetItem(itemname);
                     while (!item)
                     {
@@ -963,8 +958,8 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             if ((playerclinic && (doctoronduty || nurseonduty)) || girl.m_Money >= 25)    // get a checkup
             {
                 ss << "${name} went to the Clinic for a checkup.\n";
-                if (girl.has_active_trait("AIDS") || girl.has_active_trait("Chlamydia") || girl.has_active_trait("Herpes") ||
-                    girl.has_active_trait("Syphilis"))
+                if (girl.has_active_trait(traits::AIDS) || girl.has_active_trait(traits::CHLAMYDIA) || girl.has_active_trait(traits::HERPES) ||
+                    girl.has_active_trait(traits::SYPHILIS))
                 {
                     if (!doctorname.empty()) ss << doctorname << " told her";
                     else if (!nursename.empty()) ss << nursename << " told her";
@@ -1059,7 +1054,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             ss << " They were playing " << mov_type_text << ".\n";
             if (roll_c <= 20) //romance
             {
-                if (girl.has_active_trait("Pessimist"))
+                if (girl.has_active_trait(traits::PESSIMIST))
                 {
                     if (HateLove >= 80) //loves you
                     {
@@ -1071,7 +1066,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     }
                     U_Happiness -= 5;  roll = 4;
                 }
-                else if (girl.has_active_trait("Optimist"))
+                else if (girl.has_active_trait(traits::OPTIMIST))
                 {
                     if (HateLove >= 80) //loves you
                     {
@@ -1086,7 +1081,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else if (roll_c <= 40) //comedy
             {
-                if (girl.has_active_trait("Aggressive"))
+                if (girl.has_active_trait(traits::AGGRESSIVE))
                 {
                     ss << "${name}'s aggressive nature makes her wish the movie would have been an action flick.\n";
                     U_Happiness -= 5;  roll = 4;
@@ -1094,7 +1089,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else if (roll_c <= 60) //scary
             {
-                if (girl.has_active_trait("Meek"))
+                if (girl.has_active_trait(traits::MEEK))
                 {
                     ss << "${name} Meekly ran from the theater crying. Seems she shouldn't have watched this kind of movie.\n";
                     U_Happiness -= 5; roll = 4;
@@ -1102,12 +1097,12 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else if (roll_c <= 80) //porno
             {
-                if (girl.has_active_trait("Shy"))
+                if (girl.has_active_trait(traits::SHY))
                 {
                     ss << "${name} face turned blood red when the movie got going. She snuck out of the movie and ran home.\n";
                     U_Happiness -= 5; roll = 4;
                 }
-                else if (girl.has_active_trait("Nymphomaniac"))
+                else if (girl.has_active_trait(traits::NYMPHOMANIAC))
                 {
                     ss << "${name} loves everything to do with sex so this is her type of movie.\n";
                     U_Libido += 5; roll = 96;
@@ -1121,7 +1116,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                             {
                                 ss << " She informs him she is a Virgin and that she won't be having sex with him.";
                             }
-                            else if (girl.has_active_trait("Lesbian"))
+                            else if (girl.has_active_trait(traits::LESBIAN))
                             {
                                 ss << " She informs him she is a Lesbian and that she doesn't have sex with guys.";
                             }
@@ -1152,7 +1147,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else //action
             {
-                if (girl.has_active_trait("Aggressive"))
+                if (girl.has_active_trait(traits::AGGRESSIVE))
                 {
                     ss << "${name}'s loves this type of movie with all the action it gets her blood pumping.\n";
                     U_Happiness += 5;  roll = 96;
@@ -1195,7 +1190,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else if (roll_c <= 28) //classical
             {
-                if (girl.has_active_trait("Elegant"))
+                if (girl.has_active_trait(traits::ELEGANT))
                 {
                     ss << "${name} seems to really enjoy this type of music.\n";
                     U_Happiness += 5;  roll = 96;
@@ -1209,7 +1204,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else if (roll_c <= 70) //country
             {
-                if (girl.has_active_trait("Farmers Daughter") || girl.has_active_trait("Country Gal"))
+                if (girl.has_active_trait(traits::FARMERS_DAUGHTER) || girl.has_active_trait(traits::COUNTRY_GAL))
                 {
                     ss << "${name} loves this type of music as she grew up listen to it.\n";
                     U_Happiness += 5;  roll = 96;
@@ -1217,7 +1212,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else if (roll_c <= 87) //death metal
             {
-                if (girl.has_active_trait("Aggressive"))
+                if (girl.has_active_trait(traits::AGGRESSIVE))
                 {
                     ss << "${name} loves this type of music it gets her blood pumping.\n";
                     U_Happiness += 5;  roll = 96;
@@ -1225,7 +1220,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else //pop
             {
-                if (girl.has_active_trait("Idol"))
+                if (girl.has_active_trait(traits::IDOL))
                 {
                     ss << "The crowd keep chanting ${name} wanting her to take the stage and sing for them.\n";
                     U_Happiness += 5;  roll = 96; /*could add a way for her to make gold off this, and need to add if she takes the stage or not*/
@@ -1242,7 +1237,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
 
             //random things that can happen at any show type
-            if (girl.has_active_trait("Exhibitionist") && rng.percent(30))
+            if (girl.has_active_trait(traits::EXHIBITIONIST) && rng.percent(30))
             {
                 ss << "Before the show was over ${name} had thrown all her clothes on stage and was now walking around naked.\n";
                 imagetype = EImageBaseType::NUDE; invite = true;
@@ -1250,15 +1245,15 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             if (is_addict(girl, true) && rng.percent(20)) //may have to change this to the traits instead of the addict as only those 3 should trigger it.  zzzzz FIXME CRAZY
             {
                 ss << "\nNoticing her addiction, someone offered her some drugs. She accepted, and got baked for the concert.\n";
-                if (girl.has_active_trait("Shroud Addict"))
+                if (girl.has_active_trait(traits::SHROUD_ADDICT))
                 {
                     girl.add_item(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
                 }
-                if (girl.has_active_trait("Fairy Dust Addict"))
+                if (girl.has_active_trait(traits::FAIRY_DUST_ADDICT))
                 {
                     girl.add_item(g_Game->inventory_manager().GetItem("Fairy Dust"));
                 }
-                if (girl.has_active_trait("Viras Blood Addict"))
+                if (girl.has_active_trait(traits::VIRAS_BLOOD_ADDICT))
                 {
                     girl.add_item(g_Game->inventory_manager().GetItem("Vira Blood"));
                 }
@@ -1301,7 +1296,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     if (rng.percent(30) && !is_virgin(girl))
                     {
                         ss << "After talking for awhile they asked if she wanted to have sex with them. ";
-                        if (girl.libido() >= 50 && !girl.has_active_trait("Lesbian"))
+                        if (girl.libido() >= 50 && !girl.has_active_trait(traits::LESBIAN))
                         {
                             ss << "As she was in the mood and loved the show, she agreed and spent many hours pleasing the band.\n";
                             imagetype = EImagePresets::GANGBANG; U_Libido -= 15;
@@ -1334,7 +1329,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                             if (girl.libido() >= 70)
                             {
                                 ss << "As she was in the mood and enjoyed the show, she agreed to have sex with the ";
-                                if (girl.has_active_trait("Lesbian"))
+                                if (girl.has_active_trait(traits::LESBIAN))
                                 {
                                     ss << "only female member of the band.";
                                     imagetype = EImagePresets::LESBIAN;
@@ -1390,7 +1385,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             sGirl* barmaidonduty = random_girl_on_job(g_Game->buildings(), JOB_BARMAID, Day0Night1);
             std::string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid");
             ss << "${name} decides to go to the bar.\n";
-            if (girl.has_active_trait("Alcoholic"))
+            if (girl.has_active_trait(traits::ALCOHOLIC))
             {
                 ss << "As an Alcoholic she loves coming to the bar.\n"; U_Happiness += 15;
             }
@@ -1429,7 +1424,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "${name} says hi to " << clubbarname << ".\n"; //
             }
-            if (girl.has_active_trait("Lesbian"))
+            if (girl.has_active_trait(traits::LESBIAN))
             {
                 ss << " She takes in some exotic dancing from some of the strippers there.";
                 if (roll <= 15 && stripperonduty)
@@ -1454,12 +1449,12 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #if 1
         {
             ss << "${name} decided to do something she really enjoys so she ";
-            if (girl.has_active_trait("Nymphomaniac") && girl.libido() > 80 && !is_virgin(girl))
+            if (girl.has_active_trait(traits::NYMPHOMANIAC) && girl.libido() > 80 && !is_virgin(girl))
             {
                 ss << " went out looking to get laid.\n";
                 if (rng.percent(35))//finds someone
                 {
-                    if (girl.has_active_trait("Lesbian") || girl.has_active_trait("Bisexual") && rng.percent(50))//find a woman /*FIXME not sure this will work CRAZY*/
+                    if (girl.has_active_trait(traits::LESBIAN) || girl.has_active_trait(traits::BISEXUAL) && rng.percent(50))//find a woman /*FIXME not sure this will work CRAZY*/
                     {
                         ss << "She goes out and finds herself a woman that she likes enough. They go back to her place and have sex.";/*FIXME needs better text and more varations CRAZY*/
                         imagetype = EImagePresets::LESBIAN; U_Libido -= 10;
@@ -1477,7 +1472,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     ss << " couldn't find anyone she wanted to have sex with.\n";
                 }
             }
-            else if (girl.has_active_trait("Nerd"))
+            else if (girl.has_active_trait(traits::NERD))
             {
                 if (rng.percent(50))
                 {
@@ -1502,20 +1497,20 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     ss << " decide to go out and look for a fight.\n";// need to add more to this
                 }
             }
-            else if (girl.has_active_trait("Actress"))
+            else if (girl.has_active_trait(traits::ACTRESS))
             {
                 ss << " practiced her acting skills.";
                 girl.performance(1);
             }
-            else if (girl.has_active_trait("Heroine"))
+            else if (girl.has_active_trait(traits::HEROINE))
             {
                 ss << ".";
             }
-            else if (girl.has_active_trait("Idol"))
+            else if (girl.has_active_trait(traits::IDOL))
             {
                 ss << ".";
             }
-            else if (girl.has_active_trait("Adventurer"))
+            else if (girl.has_active_trait(traits::ADVENTURER))
             {
                 ss << ".";
             }
@@ -1537,17 +1532,17 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 if (is_addict(girl, true) && rng.percent(20))//doesnt make it
                 {
                     ss << "But on her way their she ran into an old friend who invited her to do some ";
-                    if (girl.has_active_trait("Shroud Addict"))
+                    if (girl.has_active_trait(traits::SHROUD_ADDICT))
                     {
                         girl.add_item(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
                         ss << "Shroud Mushrooms.";
                     }
-                    if (girl.has_active_trait("Fairy Dust Addict"))
+                    if (girl.has_active_trait(traits::FAIRY_DUST_ADDICT))
                     {
                         girl.add_item(g_Game->inventory_manager().GetItem("Fairy Dust"));
                         ss << "Fairy Dust.";
                     }
-                    if (girl.has_active_trait("Viras Blood Addict"))
+                    if (girl.has_active_trait(traits::VIRAS_BLOOD_ADDICT))
                     {
                         girl.add_item(g_Game->inventory_manager().GetItem("Vira Blood"));
                         ss << "Vira Blood.";
@@ -1558,27 +1553,27 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     if (rng.percent(2))//helps 2% seems about right to me... dont want it to help to often or rehab would be worthless
                     {
                         ss << "She ended up having a major breakthru and ";
-                        if (girl.lose_trait("Fairy Dust Addict", true))
+                        if (girl.lose_trait(traits::FAIRY_DUST_ADDICT, true))
                         {
                             ss << "she is no longer a fairy dust addict.\n";
                         }
-                        else if (girl.lose_trait("Shroud Addict", true))
+                        else if (girl.lose_trait(traits::SHROUD_ADDICT, true))
                         {
                             ss << "she is no longer a shroud addict.\n";
                         }
-                        else if (girl.lose_trait("Viras Blood Addict", true))
+                        else if (girl.lose_trait(traits::VIRAS_BLOOD_ADDICT, true))
                         {
                             ss << "she is no longer a viras blood addict.\n";
                         }
-                        else if (girl.lose_trait( "Alcoholic", true))
+                        else if (girl.lose_trait( traits::ALCOHOLIC, true))
                         {
                             ss << "she is no longer an alcoholic.\n";
                         }
-                        else if (girl.lose_trait( "Smoker", true))
+                        else if (girl.lose_trait( traits::SMOKER, true))
                         {
                             ss << "she is no longer a smoker.\n";
                         }
-                        else if (girl.lose_trait( "Cum Addict", true))
+                        else if (girl.lose_trait( traits::CUM_ADDICT, true))
                         {
                             ss << "she is no longer a cum addict.\n";
                         }
@@ -1601,15 +1596,15 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     if (rng.percent(2))//helps
                     {
                         ss << "She ended up having a major breakthru and ";
-                        if (girl.lose_trait( "Aggressive"))
+                        if (girl.lose_trait( traits::AGGRESSIVE))
                         {
                             ss << "she is no longer Aggressive.\n";
                         }
-                        else if (girl.lose_trait( "Tsundere"))
+                        else if (girl.lose_trait( traits::TSUNDERE))
                         {
                             ss << "she is no longer a Tsundere.\n";
                         }
-                        else if (girl.lose_trait( "Yandere"))
+                        else if (girl.lose_trait( traits::YANDERE))
                         {
                             ss << "she is no longer a Yandere.\n";
                         }
@@ -1620,7 +1615,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     }
                 }
             }
-            else if (girl.has_active_trait("Shy"))
+            else if (girl.has_active_trait(traits::SHY))
             {
                 ss << "shyness.\n";
                 if (rng.percent(20))//doesnt make it
@@ -1629,7 +1624,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
                 else//does make it
                 {
-                    if (girl.lose_trait("Shy", true, 2))//helps
+                    if (girl.lose_trait(traits::SHY, true, 2))//helps
                     {
                         ss << "She ended up having a major breakthru and she is no longer shy.\n";
                     }
@@ -1639,7 +1634,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     }
                 }
             }
-            else if (girl.has_active_trait("Pessimist"))
+            else if (girl.has_active_trait(traits::PESSIMIST))
             {
                 ss << "pessimistic nature.\n";
                 if (rng.percent(20))//doesnt make it
@@ -1648,7 +1643,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
                 else//does make it
                 {
-                    if (girl.lose_trait("Pessimist", true,2))//helps
+                    if (girl.lose_trait(traits::PESSIMIST, true,2))//helps
                     {
                         ss << "She ended up having a major breakthru and she is no longer a Pessimist.\n";
                     }
@@ -1691,7 +1686,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "She felt she could have put on a better show.";
             }
-            else if (girl.has_active_trait("Meek"))
+            else if (girl.has_active_trait(traits::MEEK))
             {
                 ss << "The sight of blood made her feel faint. She really didn't care for this.";
             }
@@ -1811,7 +1806,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << " and with the help of her Free Weights she got a better workout.\n"; workout += 2;
             }
-            else if (girl.has_active_trait("Clumsy") && rng.percent(50))
+            else if (girl.has_active_trait(traits::CLUMSY) && rng.percent(50))
             {
                 ss << " but somehow she ended up hurting herself.\n"; workout -= 2;
                 roll = 4;
@@ -1830,11 +1825,11 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             if (workout >= 2)
             {
-                if (jog && girl.gain_trait( "Great Figure", 5))
+                if (jog && girl.gain_trait( traits::GREAT_FIGURE, 5))
                 {
                     ss << "With the help of her workouts she has got quite a Great Figure now.";
                 }
-                else if (ass && girl.gain_trait( "Great Arse", 5))
+                else if (ass && girl.gain_trait( traits::GREAT_ARSE, 5))
                 {
                     ss << "With the help of crunches her ass has become a sight to behold.";
                 }
@@ -1842,7 +1837,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     ss << "With the help of her work out she has become Strong.";
                 }
-                else if (flex && girl.gain_trait( "Flexible",15))
+                else if (flex && girl.gain_trait( traits::FLEXIBLE,15))
                 {
                     ss << "With the help of yoga she has become quite Flexible.";
                 }
@@ -1862,21 +1857,21 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             int enjoy = 0;
             bool breakup = false;
             ss << "${name} went on a date with her ";
-            if (girl.has_active_trait("Has Boy Friend"))
+            if (girl.has_active_trait(traits::HAS_BOY_FRIEND))
             {
                 ss << "boy friend.\n";
             }
-            else if (girl.has_active_trait("Has Girl Friend"))
+            else if (girl.has_active_trait(traits::HAS_GIRL_FRIEND))
             {
                 ss << "girl friend.\n";
             }
             if (rng.percent(10))//is she excited to go?
             {
-                if (girl.has_active_trait("Optimist"))
+                if (girl.has_active_trait(traits::OPTIMIST))
                 {
                     ss << "Excited to go on a date with someone she couldn't wait to get the date started.\n"; enjoy += 1;
                 }
-                else if (girl.has_active_trait("Pessimist"))
+                else if (girl.has_active_trait(traits::PESSIMIST))
                 {
                     ss << "Already thinking the date would go bad she dragged her feet and didn't really want to go.\n"; enjoy -= 1;
                 }
@@ -1892,15 +1887,15 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     if (girl.has_status(STATUS_DATING_PERV))//perv
                     {
                         ss << "During dinner her date told several dirty jokes and made many lewd comments which she ";
-                        if (girl.has_active_trait("Shy"))
+                        if (girl.has_active_trait(traits::SHY))
                         {
                             ss << "didn't like at all.\n"; enjoy -= 2;
                         }
-                        else if (girl.has_active_trait("Slut"))
+                        else if (girl.has_active_trait(traits::SLUT))
                         {
                             ss << "really liked.\n"; enjoy += 2;
                         }
-                        else if (girl.has_active_trait("Bimbo"))
+                        else if (girl.has_active_trait(traits::BIMBO))
                         {
                             ss << "which she didn't get at all.\n";
                         }
@@ -1909,18 +1904,18 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                             ss << "didn't care for much either way.\n";
                         }
                         ss << "After dinner ";
-                        if (girl.has_active_trait("Has Boy Friend"))
+                        if (girl.has_active_trait(traits::HAS_BOY_FRIEND))
                         {
                             ss << "he walks ${name} home, ";
                             if (rng.percent(50))//perv so higher chance of trying to get some
                             {
                                 ss << "but before getting her home he whips out his cock and asks for a blow job.\n";
-                                if (girl.has_active_trait("Shy"))
+                                if (girl.has_active_trait(traits::SHY))
                                 {
 
                                     ss << "She couldn't believe he would do that and ran off her face red from the thought.\n"; enjoy -= 2;
                                 }
-                                else if (girl.has_active_trait("Nymphomaniac"))
+                                else if (girl.has_active_trait(traits::NYMPHOMANIAC))
                                 {
                                     ss << "She loves cock so she agrees and sucks him off.\n"; enjoy += 2;
                                     imagetype = EImagePresets::BLOWJOB;
@@ -1954,17 +1949,17 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 ss << "and wishes her a good night.\n";
                             }
                         }
-                        else if (girl.has_active_trait("Has Girl Friend"))
+                        else if (girl.has_active_trait(traits::HAS_GIRL_FRIEND))
                         {
                             ss << "she walks ${name} home, ";
                             if (rng.percent(50))//perv so higher chance of trying to get some
                             {
                                 ss << "before getting her home she pulls her into an alley and whips out a didlo asking if she wants to have some fun.\n";
-                                if (girl.has_active_trait("Shy"))
+                                if (girl.has_active_trait(traits::SHY))
                                 {
                                     ss << "She couldn't believe she would do that and ran off her face red from the thought.\n"; enjoy -= 2;
                                 }
-                                else if (girl.has_active_trait("Nymphomaniac"))
+                                else if (girl.has_active_trait(traits::NYMPHOMANIAC))
                                 {
                                     ss << "She loves to have fun so she agrees and they enjoy each other.\n"; enjoy += 2;
                                     imagetype = EImagePresets::LESBIAN;
@@ -2002,11 +1997,11 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     else if (girl.has_status(STATUS_DATING_MEAN))//mean
                     {
                         ss << "During dinner her date was very aggressive and overly jealous of everyone which she ";
-                        if (girl.has_active_trait("Shy"))
+                        if (girl.has_active_trait(traits::SHY))
                         {
                             ss << "didn't like at all.\n"; enjoy -= 1;
                         }
-                        else if (girl.has_active_trait("Bimbo"))
+                        else if (girl.has_active_trait(traits::BIMBO))
                         {
                             ss << "didn't seem to notice.\n";
                         }
@@ -2015,19 +2010,19 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                             ss << "didn't care for much either way.\n";
                         }
                         ss << "After dinner ";
-                        if (girl.has_active_trait("Has Boy Friend"))
+                        if (girl.has_active_trait(traits::HAS_BOY_FRIEND))
                         {
                             ss << "he walks ${name} home, ";
                             if (rng.percent(20))//mean so decent chance of trying to get some
                             {
                                 ss << "but before getting her home he decides he deserves a blow job.\n";
-                                if (girl.has_active_trait("Meek"))
+                                if (girl.has_active_trait(traits::MEEK))
                                 {
                                     ss << "Scared of what he might do if she doesn't she went along with it and sucked him off.\n";
                                     imagetype = EImagePresets::BLOWJOB;
                                     girl.oralsex(1);
                                 }
-                                else if (girl.has_active_trait("Shy"))
+                                else if (girl.has_active_trait(traits::SHY))
                                 {
                                     ss << "She couldn't belive he would do that and ran off her face red from the thought.\n"; enjoy -= 2;
                                 }
@@ -2048,19 +2043,19 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 ss << "and wishes her a good night.\n";
                             }
                         }
-                        else if (girl.has_active_trait("Has Girl Friend"))
+                        else if (girl.has_active_trait(traits::HAS_GIRL_FRIEND))
                         {
                             ss << "she walks ${name} home, ";
                             if (rng.percent(30))//mean so decent chance of trying to get some
                             {
                                 ss << "but before getting her home she decides she deserves some pleasure.\n";
-                                if (girl.has_active_trait("Meek"))
+                                if (girl.has_active_trait(traits::MEEK))
                                 {
                                     ss << "Scared of what she might do if she doesn't she went along with it.\n";
                                     imagetype = EImagePresets::LESBIAN;
                                     girl.lesbian(1);
                                 }
-                                else if (girl.has_active_trait("Shy"))
+                                else if (girl.has_active_trait(traits::SHY))
                                 {
                                     ss << "She couldn't belive she would do that and ran off her face red from the thought.\n"; enjoy -= 2;
                                 }
@@ -2085,11 +2080,11 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     else if (girl.has_status(STATUS_DATING_NICE))// nice
                     {
                         ss << "During dinner her date was very nice and gave her many complamints which she ";
-                        if (girl.has_active_trait("Shy"))
+                        if (girl.has_active_trait(traits::SHY))
                         {
                             ss << "enjoyed, even if it did embarrass her.\n"; enjoy += 1;
                         }
-                        else if (girl.has_active_trait("Bimbo"))
+                        else if (girl.has_active_trait(traits::BIMBO))
                         {
                             ss << "didn't seem to notice.\n";
                         }
@@ -2102,7 +2097,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                             ss << "didn't care for much either way.\n";
                         }
                         ss << "After dinner ";
-                        if (girl.has_active_trait("Has Boy Friend"))
+                        if (girl.has_active_trait(traits::HAS_BOY_FRIEND))
                         {
                             ss << "he walks ${name} home, ";
                             if (rng.percent(10))// nice so lowest chance of trying to get some
@@ -2114,7 +2109,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 ss << "and wishes her a good night.\n";
                             }
                         }
-                        else if (girl.has_active_trait("Has Girl Friend"))
+                        else if (girl.has_active_trait(traits::HAS_GIRL_FRIEND))
                         {
                             ss << "she walks ${name} home, ";
                             if (rng.percent(10))// nice so lowest chance of trying to get some
@@ -2150,8 +2145,8 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "Not happy with how the date went she broke up with them.";
                 girl.clear_dating();
-                girl.lose_trait("Has Boy Friend", true);
-                girl.lose_trait("Has Girl Friend", true);
+                girl.lose_trait(traits::HAS_BOY_FRIEND, true);
+                girl.lose_trait(traits::HAS_GIRL_FRIEND, true);
             }
         }
 #endif

@@ -179,10 +179,10 @@ void sCustomer::Setup(int social_class, IBuilding& brothel)
 
     if (g_Dice.percent(4 + m_Amount))
     {
-        gain_trait("AIDS", 10);
-        gain_trait("Chlamydia", 25);
-        gain_trait("Syphilis", 40);
-        gain_trait("Herpes", 60);
+        gain_trait(traits::AIDS, 10);
+        gain_trait(traits::CHLAMYDIA, 25);
+        gain_trait(traits::SYPHILIS, 40);
+        gain_trait(traits::HERPES, 60);
     }
     m_Money *= m_Amount;
 }

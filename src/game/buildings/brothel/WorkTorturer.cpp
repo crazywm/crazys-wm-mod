@@ -50,7 +50,7 @@ sWorkJobResult WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
     if (rng.percent(10))
     {
         girl.upd_Enjoyment(actiontype, -3);
-        if (girl.has_active_trait("Sadistic") || girl.has_active_trait("Merciless") || girl.morality() < 30)
+        if (girl.any_active_trait({traits::SADISTIC, traits::MERCILESS}) || girl.morality() < 30)
             ss << ("${name} hurt herself while torturing someone.\n");
         else
         {
@@ -104,7 +104,7 @@ sWorkJobResult WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
         }
 
         //And a little randomness
-        if ((girl.morality() < 20 || girl.has_active_trait("Sadistic")) && rng.percent(20))
+        if ((girl.morality() < 20 || girl.has_active_trait(traits::SADISTIC)) && rng.percent(20))
         {
             ss << ("${name} loved this so much she wouldn't accept any money, as long as you promise she can do it again soon.\n");
             girl.upd_Enjoyment(actiontype, +3);
@@ -146,8 +146,8 @@ sWorkJobResult WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
     // Improve girl
     int xp = 15, skill = 1;
 
-    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
+    if (girl.has_active_trait(traits::QUICK_LEARNER))        { skill += 1; xp += 3; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { skill -= 1; xp -= 3; }
 
     if (!forFree)
     {
@@ -164,8 +164,8 @@ sWorkJobResult WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
     g_Game->dungeon().SetTortureDone();
 
     // Check for new traits
-    cGirls::PossiblyGainNewTrait(girl, "Sadistic", 30, actiontype, "${name} has come to enjoy her job so much that she has become rather Sadistic.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(girl, "Merciless", 50, actiontype, "${name} extensive experience with torture has made her absolutely Merciless.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, traits::SADISTIC, 30, actiontype, "${name} has come to enjoy her job so much that she has become rather Sadistic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, traits::MERCILESS, 50, actiontype, "${name} extensive experience with torture has made her absolutely Merciless.", Day0Night1);
 
     return {false, 0, 0, std::max(0, wages)};
 }
@@ -187,9 +187,9 @@ double JP_Torturer(const sGirl& girl, bool estimate)        // not used
         girl.level();
 
     //either
-    if (girl.has_active_trait("Psychic"))                                                //I feel your pain... such suffering...
+    if (girl.has_active_trait(traits::PSYCHIC))                                                //I feel your pain... such suffering...
     {
-        if (girl.has_active_trait("Masochist")) jobperformance += 30;    //... [smiles] and I like it!
+        if (girl.has_active_trait(traits::MASOCHIST)) jobperformance += 30;    //... [smiles] and I like it!
         else                                            jobperformance -= 30;
     }
 

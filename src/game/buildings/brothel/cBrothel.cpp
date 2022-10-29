@@ -303,7 +303,7 @@ bool sBrothel::runaway_check(sGirl& girl)
     *    WD: added m_DaysUnhappy tracking
     */
 
-    bool flightrisk = (girl.has_active_trait("Kidnapped") || girl.has_active_trait("Emprisoned Customer"));
+    bool flightrisk = (girl.any_active_trait({traits::KIDNAPPED, traits::EMPRISONED_CUSTOMER}));
 
     if (flightrisk && girl.happiness() > 50)    // Girls here totally against their will are more likely to try to get away
     {
@@ -312,7 +312,7 @@ bool sBrothel::runaway_check(sGirl& girl)
             girl.m_DaysUnhappy = 0;            // until it gets to 0
         return false;
     }
-    else if ((girl.has_active_trait("Homeless") || girl.has_active_trait("Adventurer")) && girl.happiness() > 10)
+    else if ((girl.any_active_trait({traits::HOMELESS, traits::ADVENTURER})) && girl.happiness() > 10)
     {    // homeless girls and adventurers know they can survive on their own so are more likely to runaway
         if (girl.m_DaysUnhappy > 3)
             girl.m_DaysUnhappy /= 2;        // they don't reset days to 0 but instead divide day count in half
@@ -382,17 +382,17 @@ bool sBrothel::runaway_check(sGirl& girl)
     //Crazy changed it to this might not be the best // `J` made it better :p
     std::string drug;
     int i = 0;
-    if (girl.happiness() <= 20 && girl.has_active_trait( "Former Addict"))
+    if (girl.happiness() <= 20 && girl.has_active_trait( traits::FORMER_ADDICT))
     {
         while (!starts_drugs && i<10)        // `J` She will try to find a drug she used to be addicted to
         {                                    // and if she can't find it in 10 tries she will take what is available
             int d = g_Dice % 8;                // with a slight advantage to alcohol and fairy dust
             switch (d)
             {
-            case 1:            drug = "Shroud Addict";            break;    // 12.5%
-            case 2: case 3:    drug = "Fairy Dust Addict";        break;    // 25%
-            case 4:            drug = "Viras Blood Addict";    break;    // 12.5%
-            default:        drug = "Alcoholic";                break;    // 50%
+            case 1:            drug = traits::SHROUD_ADDICT;            break;    // 12.5%
+            case 2: case 3:    drug = traits::FAIRY_DUST_ADDICT;        break;    // 25%
+            case 4:            drug = traits::VIRAS_BLOOD_ADDICT;    break;    // 12.5%
+            default:           drug = traits::ALCOHOLIC;                break;    // 50%
             }
             if (girl.has_dormant_trait(drug.c_str()))
             {
@@ -401,21 +401,21 @@ bool sBrothel::runaway_check(sGirl& girl)
             i++;
         }
     }
-    else if (girl.happiness() <= 3 && g_Dice.percent(50) && !girl.has_active_trait( "Viras Blood Addict"))
+    else if (girl.happiness() <= 3 && g_Dice.percent(50) && !girl.has_active_trait( traits::VIRAS_BLOOD_ADDICT))
     {
-        drug = "Viras Blood Addict";
+        drug = traits::VIRAS_BLOOD_ADDICT;
     }
-    else if (girl.happiness() <= 5 && g_Dice.percent(50) && !girl.has_active_trait( "Shroud Addict"))
+    else if (girl.happiness() <= 5 && g_Dice.percent(50) && !girl.has_active_trait( traits::SHROUD_ADDICT))
     {
-        drug = "Shroud Addict";
+        drug = traits::SHROUD_ADDICT;
     }
-    else if (girl.happiness() <= 8 && g_Dice.percent(50) && !girl.has_active_trait( "Fairy Dust Addict"))
+    else if (girl.happiness() <= 8 && g_Dice.percent(50) && !girl.has_active_trait( traits::FAIRY_DUST_ADDICT))
     {
-        drug = "Fairy Dust Addict";
+        drug = traits::FAIRY_DUST_ADDICT;
     }
-    else if (girl.happiness() <= 10 && !girl.has_active_trait( "Alcoholic"))
+    else if (girl.happiness() <= 10 && !girl.has_active_trait( traits::ALCOHOLIC))
     {
-        drug = "Alcoholic";
+        drug = traits::ALCOHOLIC;
     }
 
     /*
@@ -427,13 +427,13 @@ bool sBrothel::runaway_check(sGirl& girl)
     }
 
     girl.gain_trait(drug.c_str());
-    girl.lose_trait("Former Addict");
+    girl.lose_trait(traits::FORMER_ADDICT);
 
     /*
     *    otherwise, report the sad occurrence
     */
     std::stringstream ss;
-    ss << "This girl's unhappiness has turned her into " << (drug == "Alcoholic" ? "an" : "a") << " " << drug << ".";
+    ss << "This girl's unhappiness has turned her into " << (drug == traits::ALCOHOLIC ? "an" : "a") << " " << drug << ".";
     girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
     return false;
 }
@@ -675,33 +675,33 @@ void do_food_and_digs(IBuilding& brothel, sGirl& girl)
     bool b_dignity = g_Dice.percent(girl.dignity());
 
     if (b_refinement && b_dignity && b_confidence &&
-        mod >= 0 && girl.m_AccLevel >= 5 && girl.lose_trait("Homeless", true, girl.m_AccLevel))
+        mod >= 0 && girl.m_AccLevel >= 5 && girl.lose_trait(traits::HOMELESS, true, girl.m_AccLevel))
     {
         ss << girl.FullName() << " has gotten used to better surroundings and has lost the \"Homeless\" trait.";
     }
     else if (b_intelligence && b_spirit && b_confidence && mod >= 2 &&
-        girl.lose_trait("Masochist", true, girl.m_AccLevel - 7))
+        girl.lose_trait(traits::MASOCHIST, true, girl.m_AccLevel - 7))
     {
         ss << girl.FullName() << " seems to be getting used to being treated well and has lost the \"Masochist\" trait.";
     }
-    else if (!b_dignity && !b_spirit && !b_confidence && mod <= -1 && girl.gain_trait("Masochist", 3 - mod))
+    else if (!b_dignity && !b_spirit && !b_confidence && mod <= -1 && girl.gain_trait(traits::MASOCHIST, 3 - mod))
     {
         ss << girl.FullName()
            << " seems to be getting used to being treated poorly and has become a \"Masochist\".";
     }
-    else if (mod < 0 && girl.lose_trait("Optimist", true, 3))
+    else if (mod < 0 && girl.lose_trait(traits::OPTIMIST, true, 3))
     {
         ss << girl.FullName() << " has lost her \"Optimistic\" outlook on life.";
     }
-    else if (mod > 0 && girl.gain_trait("Optimist", 3))
+    else if (mod > 0 && girl.gain_trait(traits::OPTIMIST, 3))
     {
         ss << girl.FullName() << " has started to view the world from a more \"Optimistic\" point of view.";
     }
-    else if (mod > 0 && g_Dice.percent(3) && girl.lose_trait("Pessimist", true, 3))
+    else if (mod > 0 && g_Dice.percent(3) && girl.lose_trait(traits::PESSIMIST, true, 3))
     {
         ss << girl.FullName() << " has lost her \"Pessimistic\" way of viewing the world around her.";
     }
-    else if (mod < 0 && girl.gain_trait("Pessimist", 3))
+    else if (mod < 0 && girl.gain_trait(traits::PESSIMIST, 3))
     {
         ss << girl.FullName() << " has started to view the world from a more \"Pessimistic\" point of view.";
     }

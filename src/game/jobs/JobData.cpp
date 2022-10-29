@@ -90,8 +90,8 @@ void cJobGains::apply(sGirl& girl, int performance) const {
         SLOW, NORMAL, QUICK
     } learner = NORMAL;
 
-    if (girl.has_active_trait("Quick Learner"))        { xp += 3; learner = QUICK; }
-    else if (girl.has_active_trait("Slow Learner"))    { xp -= 3; learner = SLOW; }
+    if (girl.has_active_trait(traits::QUICK_LEARNER))        { xp += 3; learner = QUICK; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { xp -= 3; learner = SLOW; }
 
     girl.exp(g_Dice.in_range(xp/2, xp));
 

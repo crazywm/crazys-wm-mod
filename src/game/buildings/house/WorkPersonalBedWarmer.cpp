@@ -75,20 +75,20 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 ss << " reminding ${name} that she is your property and must do as you command. ";
 
                 // If headgirl likes girls... Because this will be a rare combo this is at the top, so it has some chance of being seen
-                if (headGirl->has_active_trait("Lesbian") && girl.has_active_trait("Lesbian") && effectiveness > 10)
+                if (headGirl->has_active_trait(traits::LESBIAN) && girl.has_active_trait(traits::LESBIAN) && effectiveness > 10)
                 {
                     ss << "As ${name} continues to refuse " << headName << " suddenly kisses her, putting a hand under her underwear and pulling back to expose her ";
-                    if (girl.has_active_trait("Pierced Nipples")) ss << "pierced nipples";
-                    else if (girl.has_active_trait("Pierced Clit")) ss << "pierced clit";
-                    else if (girl.has_active_trait("Perky Nipples")) ss << "perky nipples";
-                    else if (girl.has_active_trait("Puffy Nipples")) ss << "puffy nipples";
-                    else if (girl.has_active_trait("Abundant Lactation") || girl.has_active_trait("Cow Tits")) ss << "moist, milky breasts";
-                    else if (girl.has_active_trait("Flat Chest") || girl.has_active_trait("Petite Breasts") ||
-                             girl.has_active_trait("Small Boobs")) ss << "small breasts";
-                    else if (girl.has_active_trait("Busty Boobs") || girl.has_active_trait("Big Boobs") ||
-                             girl.has_active_trait("Giant Juggs")) ss << "large breasts";
-                    else if (girl.has_active_trait("Massive Melons") || girl.has_active_trait("Abnormally Large Boobs") ||
-                             girl.has_active_trait("Titanic Tits")) ss << "extremely large breasts";
+                    if (girl.has_active_trait(traits::PIERCED_NIPPLES)) ss << "pierced nipples";
+                    else if (girl.has_active_trait(traits::PIERCED_CLIT)) ss << "pierced clit";
+                    else if (girl.has_active_trait(traits::PERKY_NIPPLES)) ss << "perky nipples";
+                    else if (girl.has_active_trait(traits::PUFFY_NIPPLES)) ss << "puffy nipples";
+                    else if (girl.has_active_trait(traits::ABUNDANT_LACTATION) || girl.has_active_trait(traits::COW_TITS)) ss << "moist, milky breasts";
+                    else if (girl.has_active_trait(traits::FLAT_CHEST) || girl.has_active_trait(traits::PETITE_BREASTS) ||
+                             girl.has_active_trait(traits::SMALL_BOOBS)) ss << "small breasts";
+                    else if (girl.has_active_trait(traits::BUSTY_BOOBS) || girl.has_active_trait(traits::BIG_BOOBS) ||
+                             girl.has_active_trait(traits::GIANT_JUGGS)) ss << "large breasts";
+                    else if (girl.has_active_trait(traits::MASSIVE_MELONS) || girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS) ||
+                             girl.has_active_trait(traits::TITANIC_TITS)) ss << "extremely large breasts";
                     else ss << "breasts";
                     ss << ", which she eagerly licks. ${name} is initially shocked, but is quickly aroused by "
                         << headName << "'s expert tongue.\nThey're soon putting on a hell of a show together. "
@@ -101,8 +101,8 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
 
                 //If headgirl has some charm and turns it on a little...
-                else if ((headGirl->has_active_trait("Cool Person") || headGirl->has_active_trait("Charismatic") ||
-                          headGirl->has_active_trait("Charming") || headGirl->charisma() > 70) && effectiveness > 20)
+                else if ((headGirl->any_active_trait({traits::COOL_PERSON, traits::CHARISMATIC, traits::CHARMING})
+                       || headGirl->charisma() > 70) && effectiveness > 20)
                 {
                     ss << "Because " << headName << " is so cool with her and makes it all seem exciting, ${name} soon agrees.";
                     girl.happiness(5);
@@ -127,7 +127,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
 
                 //if head is a bully
-                else if (headGirl->has_active_trait("Aggressive") && effectiveness > 20)
+                else if (headGirl->has_active_trait(traits::AGGRESSIVE) && effectiveness > 20)
                 {
                     ss << "When she still refuses, ";
                     if (effectiveness > 70)
@@ -168,20 +168,20 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             else // not slave
             {
                 // If headgirl likes girls. Again because rare combo, is at the top, so it has some chance of being seen - this time can fail
-                if (headGirl->has_active_trait("Lesbian") && girl.has_active_trait("Lesbian") && effectiveness > 10)
+                if (headGirl->has_active_trait(traits::LESBIAN) && girl.has_active_trait(traits::LESBIAN) && effectiveness > 10)
                 {
                     ss << " suddenly kissing ${name} and putting a hand under her underwear, pulling back to expose her ";
-                    if (girl.has_active_trait("Pierced Nipples")) ss << "pierced nipples";
-                    else if (girl.has_active_trait("Pierced Clit")) ss << "pierced clit";
-                    else if (girl.has_active_trait("Perky Nipples")) ss << "perky nipples";
-                    else if (girl.has_active_trait("Puffy Nipples")) ss << "puffy nipples";
-                    else if (girl.has_active_trait("Abundant Lactation") || girl.has_active_trait("Cow Tits")) ss << "moist, milky breasts";
-                    else if (girl.has_active_trait("Flat Chest") || girl.has_active_trait("Petite Breasts") ||
-                             girl.has_active_trait("Small Boobs")) ss << "small breasts";
-                    else if (girl.has_active_trait("Busty Boobs") || girl.has_active_trait("Big Boobs") ||
-                             girl.has_active_trait("Giant Juggs")) ss << "large breasts";
-                    else if (girl.has_active_trait("Massive Melons") || girl.has_active_trait("Abnormally Large Boobs") ||
-                             girl.has_active_trait("Titanic Tits")) ss << "extremely large breasts";
+                    if (girl.has_active_trait(traits::PIERCED_NIPPLES)) ss << "pierced nipples";
+                    else if (girl.has_active_trait(traits::PIERCED_CLIT)) ss << "pierced clit";
+                    else if (girl.has_active_trait(traits::PERKY_NIPPLES)) ss << "perky nipples";
+                    else if (girl.has_active_trait(traits::PUFFY_NIPPLES)) ss << "puffy nipples";
+                    else if (girl.has_active_trait(traits::ABUNDANT_LACTATION) || girl.has_active_trait(traits::COW_TITS)) ss << "moist, milky breasts";
+                    else if (girl.has_active_trait(traits::FLAT_CHEST) || girl.has_active_trait(traits::PETITE_BREASTS) ||
+                             girl.has_active_trait(traits::SMALL_BOOBS)) ss << "small breasts";
+                    else if (girl.has_active_trait(traits::BUSTY_BOOBS) || girl.has_active_trait(traits::BIG_BOOBS) ||
+                             girl.has_active_trait(traits::GIANT_JUGGS)) ss << "large breasts";
+                    else if (girl.has_active_trait(traits::MASSIVE_MELONS) || girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS) ||
+                             girl.has_active_trait(traits::TITANIC_TITS)) ss << "extremely large breasts";
                     else ss << "breasts";
                     ss << ", which she eagerly licks. ${name} is shocked, but is quickly aroused by "
                         << headName << "'s expert tongue.\n \nThey're soon putting on a hell of a show together";
@@ -208,8 +208,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
 
                 //if headgirl is VERY persuasive, or much smarter, or persuasive and charming...
                 else if (effectiveness >= 80 || headGirl->intelligence() >= girl.intelligence() + 20
-                    || (effectiveness > 30 && (headGirl->has_active_trait("Charismatic") ||
-                                               headGirl->has_active_trait("Charming") || girl.charisma() > 80)))
+                    || (effectiveness > 30 && (headGirl->any_active_trait({traits::CHARISMATIC, traits::CHARMING}) || girl.charisma() > 80)))
                 {
                     ss << " and talks her into taking part.\n";
                 }
@@ -222,12 +221,12 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
 
                 //if headgirl is a bully
-                else if (headGirl->has_active_trait("Aggressive") && effectiveness > 50)
+                else if (headGirl->has_active_trait(traits::AGGRESSIVE) && effectiveness > 50)
                 {
                     ss << " grabbing her hair and threatening her";
                     // IF she refuses to go along, and she's tough enough to physically resist
-                    if ((girl.spirit() > 60 || girl.has_active_trait("Aggressive") || girl.has_active_trait("Fearless") ||
-                         girl.has_active_trait("Iron Will"))
+                    if ((girl.spirit() > 60
+                        || girl.any_active_trait({traits::AGGRESSIVE, traits::FEARLESS, traits::IRON_WILL}))
                         && girl.combat() > (headGirl->combat() - 30))
                     {
                         ss << ". ${name} snaps, grabbing " << headName << " by the throat and telling her to go fuck herself.\n";
@@ -243,8 +242,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
 
                 //if she's worth more
-                else if (girl.beauty() > 95 || girl.has_active_trait("Princess") || girl.has_active_trait("Queen") ||
-                         girl.has_active_trait("Goddess"))
+                else if (girl.beauty() > 95 || girl.any_active_trait({traits::PRINCESS, traits::QUEEN, traits::GODDESS}))
                 {
                     ss << " stopping her. Because she's rather special you offer extra money. ";
                     //
@@ -291,14 +289,14 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                     ss << ". Thinking again, she agrees as you have been an excellent master.";
                 }
                 //do you have anything she wants?
-                else if (girl.has_active_trait("Cum Addict") && effectiveness > 30)
+                else if (girl.has_active_trait(traits::CUM_ADDICT) && effectiveness > 30)
                 {
                     ss << ". Blushing, she says she'll do it... as long as she gets to finish you off with her mouth."
                         << "\nYou do not have a problem with this.";
                     girl.happiness(5);
                     girl.upd_Enjoyment(ACTION_WORKHAREM, 2);
                 }
-                else if (girl.has_active_trait("Nymphomaniac") && effectiveness > 30)
+                else if (girl.has_active_trait(traits::NYMPHOMANIAC) && effectiveness > 30)
                 {
                     ss << ". She raises her eyebrows and drops her clothes to the floor.\n"
                         << "\"Then get on and fuck me already... 'Master.'\"";
@@ -392,14 +390,14 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                     ss << "However, you successfully talk her into taking part.\n";
                 }
                 //if you have anything she wants?
-                else if (girl.has_active_trait("Cum Addict") && effectiveness > 50)
+                else if (girl.has_active_trait(traits::CUM_ADDICT) && effectiveness > 50)
                 {
                     ss << "Blushing, she says she might do it... if you'll finish in her mouth."
                         << "\nYou agree to this.\n";
                     girl.happiness(5);
                     girl.upd_Enjoyment(ACTION_WORKHAREM, 2);
                 }
-                else if ((girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Slut")) && effectiveness > 40)
+                else if (girl.any_active_trait({traits::NYMPHOMANIAC, traits::SLUT}) && effectiveness > 40)
                 {
                     ss << "Aware of her love for sex, you quickly snake your hand between her legs and start to rub on her panties. "
                         << "She doesn't try to stop you, instead just moving her panties aside and guiding your hand.\nShe is quickly naked, panting and aroused and is now happy to stay.\n";
@@ -413,8 +411,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                     tips += (2 * effectiveness);
                 }
                 //if she's worth more
-                else if (girl.beauty() > 95 || girl.has_active_trait("Princess") || girl.has_active_trait("Queen") ||
-                         girl.has_active_trait("Goddess"))
+                else if (girl.beauty() > 95 || girl.any_active_trait({traits::PRINCESS, traits::QUEEN, traits::GODDESS}))
                 {
                     ss << "Because she's rather special you offer some extra money.\n";
                     //
@@ -660,7 +657,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         {
         case 0:
             ss << " share some impressively large sex toys. ";
-            if (girl.has_active_trait("Fast Orgasms"))
+            if (girl.has_active_trait(traits::FAST_ORGASMS))
             {
                 ss << "${name} orgasms loudly and repeatedly.\n \n";
                 girl.upd_Enjoyment(ACTION_WORKHAREM, 1);
@@ -676,12 +673,12 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             break;
         case 3:
             ss << " compete to whip each other across the bed. ";
-            if (girl.has_active_trait("Sadistic"))
+            if (girl.has_active_trait(traits::SADISTIC))
             {
                 ss << "${name} loves this and loves the squeal every time she manages to crack her whip right on another girl's clit or nipples.\n \n";
                 girl.upd_Enjoyment(ACTION_WORKTORTURER, 2);
             }
-            else if (girl.has_active_trait("Masochist"))
+            else if (girl.has_active_trait(traits::MASOCHIST))
             {
                 ss << "${name} is awful at this, with a stance like she wants to be hit. She seems to be enjoying it though.\n \n";
                 girl.upd_Enjoyment(ACTION_WORKHAREM, 1);
@@ -720,7 +717,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         girl.lesbian(+(harem.size() / 2));
         girl.performance(+(harem.size() / 4));
         girl.tiredness(+(harem.size() / 2));
-        int libido = (girl.has_active_trait("Nymphomaniac")) ? 4 : 2;
+        int libido = (girl.has_active_trait(traits::NYMPHOMANIAC)) ? 4 : 2;
         girl.upd_temp_stat(STAT_LIBIDO, libido);
         girl.upd_Enjoyment(ACTION_WORKHAREM, libido);
 
@@ -736,7 +733,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 girl.normalsex(1);
                 girl.pclove(1);
                 girl.upd_Enjoyment(ACTION_WORKHAREM, +1);
-                girl.lose_trait("Virgin");
+                girl.lose_trait(traits::VIRGIN);
                 ss << "She is no longer a virgin.\n";
                 imagetype = EImageBaseType::VAGINAL;
                 //girl.m_Events.AddMessage(ss.str(), EBaseImage::SEX, Day0Night1);
@@ -748,7 +745,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 ss << " with a tight pussy you can't resist. You break her in hard.\n";
                 girl.normalsex(2);
                 girl.pcfear(2);
-                girl.lose_trait("Virgin");
+                girl.lose_trait(traits::VIRGIN);
                 ss << "She is no longer a virgin.\n";
                 imagetype = EImageBaseType::VAGINAL;
                 //girl.m_Events.AddMessage(ss.str(), EBaseImage::SEX, Day0Night1);
@@ -758,7 +755,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             else
             {
                 ss << ". You decide to keep her virginity intact for now";
-                if (roll_c < 30 || girl.has_active_trait("Lesbian"))
+                if (roll_c < 30 || girl.has_active_trait(traits::LESBIAN))
                 {
                     ss << ", and instead have her play around with another girl in your harem.";
                     girl.lesbian(2);
@@ -783,7 +780,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         }
         else   // not virgin
         {
-            if ((roll_d <= 20) || (girl.has_active_trait("Cum Addict") && roll_d <= 50))
+            if ((roll_d <= 20) || (girl.has_active_trait(traits::CUM_ADDICT) && roll_d <= 50))
             {
                 ss << "While you enjoy another girl, ${name} grabs your cock and finishes you off with her mouth.\n";
                 girl.oralsex(2);
@@ -825,12 +822,12 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             }
         }
         //Some group action randomness...
-        if (rng.percent(20) && girl.has_active_trait("Shy"))
+        if (rng.percent(20) && girl.has_active_trait(traits::SHY))
         {
             ss << "\n${name} doesn't seem so shy tonight!\n";
             girl.charisma(1);
         }
-        if (rng.percent(20) && girl.has_active_trait("Cum Addict"))
+        if (rng.percent(20) && girl.has_active_trait(traits::CUM_ADDICT))
         {
             roll = rng % 6;
             switch (roll)
@@ -863,19 +860,19 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             girl.lesbian(2);
             girl.upd_Enjoyment(ACTION_WORKHAREM, 2);
         }
-        else if (rng.percent(30) && HateLove > 0 && girl.has_active_trait("Good Kisser"))
+        else if (rng.percent(30) && HateLove > 0 && girl.has_active_trait(traits::GOOD_KISSER))
         {
             ss << "\n${name} gives you a mindblowing kiss afterwards.\n";
             girl.charisma(1);
             girl.pclove(1);
         }
-        if (rng.percent(20) && (girl.has_active_trait("Masochist")))
+        if (rng.percent(20) && (girl.has_active_trait(traits::MASOCHIST)))
         {
             ss << "\n\"Next time spank me please";
             if (girl.is_slave()) ss << " master";
             ss << ",\" she whispers.\n";
         }
-        else if (rng.percent(5) && (girl.has_active_trait("Sadistic") || girl.has_active_trait("Aggressive")))
+        else if (rng.percent(5) && girl.any_active_trait({traits::SADISTIC, traits::AGGRESSIVE}))
         {
             ss << "\n\"If you made me Head Girl, I'd keep these bitches in line for you,";
             if (girl.is_slave()) ss << " master";
@@ -992,7 +989,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             girl.oralsex(2);
             ss << "decided to suck your cock.\n \n";
-            if (girl.has_active_trait("Herpes")) risky = true;
+            if (girl.has_active_trait(traits::HERPES)) risky = true;
             imagetype = EImagePresets::BLOWJOB;
             //girl.m_Events.AddMessage(ss.str(), EBaseImage::ORAL, Day0Night1);
 
@@ -1010,7 +1007,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             girl.bdsm(2);
             ss << "lets you tie her up.\n \n";
             risky = true;
-            if (girl.lose_trait("Virgin"))
+            if (girl.lose_trait(traits::VIRGIN))
             {
                 ss << "She is no longer a virgin.\n";
             }
@@ -1023,7 +1020,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             girl.normalsex(2);
             ss << "has sex with you.\n \n";
             risky = true;
-            if (girl.lose_trait("Virgin"))
+            if (girl.lose_trait(traits::VIRGIN))
             {
                 ss << "She is no longer a virgin.\n";
             }
@@ -1248,19 +1245,18 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         ss << "\nWhile you're not looking, she steals " << theft << " gold from your room to feed her addiction.\n";
         wages += theft;
     }
-    if (rng.percent(30) && girl.has_active_trait("Natural Pheromones"))
+    if (rng.percent(30) && girl.has_active_trait(traits::NATURAL_PHEROMONES))
     {
         int wowfactor = rng.in_range(5, 55);
         ss << "\nSomething about her drives you wild. You pay her " << wowfactor << " gold extra.\n";
         wages += wowfactor;
     }
-    if (rng.percent(30) && (girl.has_active_trait("Exotic") || girl.has_active_trait("Furry")))
+    if (rng.percent(30) && (girl.any_active_trait({traits::EXOTIC, traits::FURRY})))
     {
         ss << "\n${name} mentions that this reminds her of a 'coming of age' ritual back home.";
         girl.upd_Enjoyment(ACTION_WORKHAREM, 1);
     }
-    else if (rng.percent(20) && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Slut") ||
-                                 girl.has_active_trait("Open Minded")))
+    else if (rng.percent(20) && (girl.any_active_trait({traits::NYMPHOMANIAC, traits::SLUT, traits::OPEN_MINDED})))
     {
         ss << "\n${name} actually seems suited to this.\n\"Can I do this again";
         if (girl.is_slave()) ss << ", master?\"\n";
@@ -1271,14 +1267,14 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     //BSIN - disease risk, mostly a cost, but also an expensive way to cure a girl of serious disease
     if (diseased && risky && !girl.m_UseAntiPreg)
     {
-        if (girl.lose_trait("Chlamydia", 30))
+        if (girl.lose_trait(traits::CHLAMYDIA, 30))
         {
             g_Game->gold().misc_debit(500);
             const char* ssm = "${name} gave you Chlamydia.\nYou spend 500 gold getting your shit cleaned up.\nYou use the medicine to clear her up too.\n";
             ss << ssm;
             g_Game->push_message(ssm, 0);
         }
-        else if (girl.lose_trait("Herpes",30))
+        else if (girl.lose_trait(traits::HERPES,30))
         {
             g_Game->gold().misc_debit(1000);
             girl.pclove(2);
@@ -1286,7 +1282,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             ss << ssm;
             g_Game->push_message(ssm, 0);
         }
-        else if (girl.lose_trait("Syphilis", 30))
+        else if (girl.lose_trait(traits::SYPHILIS, 30))
         {
             g_Game->gold().misc_debit(3500);
             girl.pclove(6);
@@ -1294,7 +1290,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             ss << ssm;
             g_Game->push_message(ssm, 0);
         }
-        else if (girl.lose_trait("AIDS", 30))
+        else if (girl.lose_trait(traits::AIDS, 30))
         {
             g_Game->gold().misc_debit(8000);
             girl.pclove(12);
@@ -1311,10 +1307,10 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     // Improve stats
     int xp = 10;
 
-    if (girl.has_active_trait("Quick Learner"))        { xp += 3; }
-    else if (girl.has_active_trait("Idiot Savant"))    { xp += 5; }
-    else if (girl.has_active_trait("Slow Learner"))    { xp -= 3; }
-    else if (girl.has_active_trait("Retarded"))        { xp -= 5; }
+    if (girl.has_active_trait(traits::QUICK_LEARNER))        { xp += 3; }
+    else if (girl.has_active_trait(traits::IDIOT_SAVANT))    { xp += 5; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { xp -= 3; }
+    else if (girl.has_active_trait(traits::RETARDED))        { xp -= 5; }
 
     girl.exp(xp);
     girl.upd_temp_stat(STAT_LIBIDO, 2);

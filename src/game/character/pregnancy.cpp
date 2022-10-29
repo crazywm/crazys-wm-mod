@@ -126,7 +126,7 @@ void create_pregnancy(sGirl& girl, int num_children, int type, const ICharacter&
     girl.clear_pregnancy();
     girl.set_status((STATUS)type);
 
-    if (girl.has_active_trait("Broodmother"))
+    if (girl.has_active_trait(traits::BROODMOTHER))
     {
         if (g_Dice.percent(g_Game->settings().get_percent(settings::PREG_MULTI_CHANCE))) num_children++;
         if (g_Dice.percent(g_Game->settings().get_percent(settings::PREG_MULTI_CHANCE))) num_children++;
@@ -171,8 +171,8 @@ bool child_is_due(sGirl& girl, sChild& child, std::string& summary, bool PlayerC
     *    the human-baby case is marginally easier than the
     *    tentacle-beast-monstrosity one, so we do that first
     */
-    bool is_broodmother = girl.has_active_trait("Broodmother");
-    bool is_fertile = girl.has_active_trait("Fertile");
+    bool is_broodmother = girl.has_active_trait(traits::BROODMOTHER);
+    bool is_fertile = girl.has_active_trait(traits::FERTILE);
     if (girl.carrying_human())
     {
         /*
@@ -181,7 +181,7 @@ bool child_is_due(sGirl& girl, sChild& child, std::string& summary, bool PlayerC
         */
         girl.clear_pregnancy();
         girl.m_JustGaveBirth = true;
-        girl.gain_trait("MILF");
+        girl.gain_trait(traits::MILF);
 
         girl.tiredness(100);
         girl.happiness(10 + g_Dice % 91);
@@ -545,16 +545,16 @@ int calc_abnormal_pc(const sGirl& mom, sGirl& sprog, bool is_players)
 {
     if (!is_players)     // the non-pc-daughter case is simpler
     {
-        if (mom.has_active_trait("Your Daughter")) return 0;        // if the mom is your daughter then any customer is a safe dad - genetically speaking, anyway
+        if (mom.has_active_trait(traits::YOUR_DAUGHTER)) return 0;        // if the mom is your daughter then any customer is a safe dad - genetically speaking, anyway
         if (g_Dice.percent(98)) return 0;                    // so what are the odds that this customer fathered both mom and sprog. Let's say 2%
-        sprog.raw_traits().add_inherent_trait("Incest");                    // that's enough to give the sprog the incest trait
-        if (!mom.has_active_trait("Incest")) return 0;    // but there's only a risk of abnormality if mom is herself incestuous
+        sprog.raw_traits().add_inherent_trait(traits::INCEST);                    // that's enough to give the sprog the incest trait
+        if (!mom.has_active_trait(traits::INCEST)) return 0;    // but there's only a risk of abnormality if mom is herself incestuous
         return 5;                                            // If we get past all that lot, there's a 5% chance of abnormality
     }
-    sprog.raw_traits().add_inherent_trait("Your Daughter");                // OK. The sprog is the player's get
-    if (!mom.has_active_trait("Your Daughter")) return 0;    // if mom isn't the player's then there is no problem
-    sprog.raw_traits().add_inherent_trait("Incest");                        // she IS, so we add the incest trait
-    if (mom.has_active_trait("Incest")) return 10;                // if mom is also incestuous, that adds 5% to the odds
+    sprog.raw_traits().add_inherent_trait(traits::YOUR_DAUGHTER);                // OK. The sprog is the player's get
+    if (!mom.has_active_trait(traits::YOUR_DAUGHTER)) return 0;    // if mom isn't the player's then there is no problem
+    sprog.raw_traits().add_inherent_trait(traits::INCEST);                        // she IS, so we add the incest trait
+    if (mom.has_active_trait(traits::INCEST)) return 10;                // if mom is also incestuous, that adds 5% to the odds
     return 5;
 }
 
@@ -569,8 +569,8 @@ void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
     // check for incest, get the odds on abnormality
     int abnormal_pc = calc_abnormal_pc(mom, *sprog, child.m_IsPlayers);
     if (g_Dice.percent(abnormal_pc)) {
-        if (g_Dice.percent(50)) sprog->raw_traits().add_inherent_trait("Malformed");
-        else sprog->raw_traits().add_inherent_trait("Retarded");
+        if (g_Dice.percent(50)) sprog->raw_traits().add_inherent_trait(traits::MALFORMED);
+        else sprog->raw_traits().add_inherent_trait(traits::RETARDED);
     }
     // loop through the mom's traits, inheriting where appropriate
     auto moms_traits = mom.raw_traits().get_trait_info();
@@ -582,7 +582,7 @@ void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
         }
     }
     if (playerfather) {
-        sprog->raw_traits().add_inherent_trait("Your Daughter");
+        sprog->raw_traits().add_inherent_trait(traits::YOUR_DAUGHTER);
     }
 
     sprog->raw_traits().update();

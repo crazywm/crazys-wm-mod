@@ -318,7 +318,7 @@ FormattedCellData sDungeonGirl::GetDetail(const std::string& detailName) const
 #if 0
         std::ostringstream ss;
 
-        auto info = m_Girl->raw_traits().get_trait_info("Kidnapped");
+        auto info = m_Girl->raw_traits().get_trait_info(traits::KIDNAPPED);
         if (info.trait && info.remaining_time > 0) ss << info.remaining_time;
         else ss << "-";
 #else

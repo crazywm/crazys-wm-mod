@@ -609,7 +609,7 @@ void cPlayer::apply_items(sGirl& girl) {
 
     // Healing items are wasted on constructs as the max. 4% applies to both damage and
     // healing
-    bool is_constructed = girl.has_active_trait("Construct");
+    bool is_constructed = girl.has_active_trait(traits::CONSTRUCT);
     if (girl.health() <= 25 && !is_constructed)
         AutomaticFoodItemUse(girl, "Healing Salve (L)", "Used a large healing salve to stay healthy.");
 
@@ -781,7 +781,7 @@ void cPlayer::apply_items(sGirl& girl) {
         AutomaticItemUse(girl, "Minor Ring of the Schwarzenegger", "She put on a Minor Ring of the Schwarzenegger for the constitution boost.");
 
     // Necklace of Pain Reversal [25 pts net: +40 for masochist -15 on necklace] (Piece of equipment)
-    if (girl.constitution() <= 75 && !girl.has_active_trait("Masochist"))
+    if (girl.constitution() <= 75 && !girl.has_active_trait(traits::MASOCHIST))
         AutomaticItemUse(girl, "Necklace of Pain Reversal", "You had her put on a necklace of pain reversal for the constitution boost.");
 
     // Tiger Leotard [20 pts] (Piece of equipment)
@@ -833,11 +833,11 @@ void cPlayer::apply_items(sGirl& girl) {
     // Tough
 
     // Aoshima beef
-    if (!girl.has_active_trait("Tough"))
+    if (!girl.has_active_trait(traits::TOUGH))
         AutomaticFoodItemUse(girl, "Aoshima BEEF!!", "Bulked up on Aoshima Beef to get the tough trait.");
 
     // Oiran Dress (Piece of equipment)
-    if (!girl.has_active_trait("Tough"))
+    if (!girl.has_active_trait(traits::TOUGH))
         AutomaticItemUse(girl, "Oiran Dress", "Put on an Oiran Dress.");
 
     // Nymphomaniac
@@ -845,7 +845,7 @@ void cPlayer::apply_items(sGirl& girl) {
     // Do this before quick learner b/c taking the shroud cola gives the girl the slow learner trait
     /*has = m_Inventory.has_item("Shroud Cola");
     has2 = m_Inventory.has_item("Cure for Shroud Addiction");
-    if (!girl.has_trait("Nymphomaniac") && (has != -1 && has2 != -1))
+    if (!girl.has_trait(traits::NYMPHOMANIAC) && (has != -1 && has2 != -1))
     {
         // If one succeeds, the other should too
         // Note the order is important here: Shroud cola has to be first
@@ -857,115 +857,115 @@ void cPlayer::apply_items(sGirl& girl) {
     // Quick learner
 
     // Scroll of transcendance
-    if (!girl.has_active_trait("Quick Learner") && !girl.has_active_trait("Optimist"))
+    if (!girl.has_active_trait(traits::QUICK_LEARNER) && !girl.has_active_trait(traits::OPTIMIST))
         AutomaticFoodItemUse(girl, "Scrolls of Transcendance", "Read a Scroll of Transcendence to gain the quick learner and optimist traits.");
 
     // Book of enlightenment
-    if (!girl.has_active_trait("Quick Learner"))
+    if (!girl.has_active_trait(traits::QUICK_LEARNER))
         AutomaticFoodItemUse(girl, "Book of Enlightenment", "Read a book of enlightenment for the quick learner trait.");
 
     // Ring of Enlightenment
-    if (!girl.has_active_trait("Quick Learner"))
+    if (!girl.has_active_trait(traits::QUICK_LEARNER))
         AutomaticItemUse(girl, "Ring of Enlightenment", "Put on a ring of enlightenment for the quick learner trait.");
 
     // Amulet of the Cunning Linguist
-    if (!girl.has_active_trait("Quick Learner"))
+    if (!girl.has_active_trait(traits::QUICK_LEARNER))
         AutomaticItemUse(girl, "Amulet of the Cunning Linguist", "Put on an amulet of the cunning linguist for the quick learner trait.");
 
     // Optimist: Good fortune, leprechaun biscuit, chatty flowers, etc...
 
     // Good Fortune
-    if (!girl.has_active_trait("Optimist"))
+    if (!girl.has_active_trait(traits::OPTIMIST))
         AutomaticFoodItemUse(girl, "Good Fortune", "Read a good fortune and feels more optimistic for it.");
 
     // Leprechaun Biscuit
-    if (!girl.has_active_trait("Optimist"))
+    if (!girl.has_active_trait(traits::OPTIMIST))
         AutomaticFoodItemUse(girl, "Leprechaun Biscuit", "Had a leprechaun biscuit and feels more optimistic for it.");
 
     // Chatty Flowers
-    if (!girl.has_active_trait("Optimist"))
+    if (!girl.has_active_trait(traits::OPTIMIST))
         AutomaticFoodItemUse(girl, "Chatty Flowers", "Talked with the chatty flowers and feels more optimistic for it.");
 
     // Glass shoes (piece of equipment)
-    if (!girl.has_active_trait("Optimist") && !girl.has_item("Sandals of Mercury"))
+    if (!girl.has_active_trait(traits::OPTIMIST) && !girl.has_item("Sandals of Mercury"))
         AutomaticItemUse(girl, "Glass Shoes", "Slipped on glass shoes for the optimist trait.");
 
     // Elegant (Obsidian Choker, piece of equipment)
-    if (!girl.has_active_trait("Elegant"))
+    if (!girl.has_active_trait(traits::ELEGANT))
         AutomaticItemUse(girl, "Obsidian Choker", "Put on an obsidian choker for the elegant trait.");
 
     // Fleet of foot (Sandals of Mercury, piece of equipment)
-    if (!girl.has_active_trait("Fleet of Foot") && !girl.has_item("Glass Shoes"))
+    if (!girl.has_active_trait(traits::FLEET_OF_FOOT) && !girl.has_item("Glass Shoes"))
         AutomaticItemUse(girl, "Sandals of Mercury", "Put on Sandals of Mercury for the fleet of foot trait.");
 
     // Fast Orgasms & Nymphomaniac (Organic Lingerie, piece of equipment)
-    if (!girl.has_active_trait("Fast orgasms") && !girl.has_active_trait("Fast Orgasms") && !girl.has_active_trait("Nymphomaniac"))
+    if (!girl.has_active_trait(traits::FAST_ORGASMS) && !girl.has_active_trait(traits::FAST_ORGASMS) && !girl.has_active_trait(traits::NYMPHOMANIAC))
         AutomaticItemUse(girl, "Organic Lingerie", "You had her wear organic lingerie.");
 
     // Fast Orgasms (Ring of Pleasure, piece of equipment)
-    if (!girl.has_active_trait("Fast orgasms") && !girl.has_active_trait("Fast Orgasms"))
+    if (!girl.has_active_trait(traits::FAST_ORGASMS) && !girl.has_active_trait(traits::FAST_ORGASMS))
         AutomaticItemUse(girl, "Ring of Pleasure", "You had her put on a ring of pleasure for the fast orgasms trait.");
 
     // Lets try and cure mind fucked & retarted
     // The amulet of the sex elemental gives you the mind fucked trait. It can be "cured" until the amulet is taken off and put on again.
     // Regardless, we'll not try to cure the amulet case.
-    if (((girl.has_active_trait("Mind Fucked") && !girl.has_item("Amulet of the Sex Elemental"))
-         || girl.has_active_trait("Retarded")))
+    if (((girl.has_active_trait(traits::MIND_FUCKED) && !girl.has_item("Amulet of the Sex Elemental"))
+         || girl.has_active_trait(traits::RETARDED)))
         AutomaticFoodItemUse(girl, "Refined Mandragora Extract", "You had her use refined mandragora extract to remove mental damage.");
 
     // Malformed
 
 //    has = m_Inventory.has_item("Elixir of Ultimate Regeneration");
-//    if (girl.has_trait("Malformed") && has != -1)
+//    if (girl.has_trait(traits::MALFORMED) && has != -1)
 //        AutomaticFoodItemUse(girl, has, "Used an elixir of ultimate regeneration to cure her malformities.");
 
     // Tsundere & yandere
-    if ((girl.has_active_trait("Yandere") || girl.has_active_trait("Tsundere")))
+    if ((girl.has_active_trait(traits::YANDERE) || girl.has_active_trait(traits::TSUNDERE)))
         AutomaticFoodItemUse(girl, "Attitude Reajustor", "You had her take an attitude reajustor pill.");
 
     // Eyes
-    if ((girl.has_active_trait("One Eye") || girl.has_active_trait("Eye Patch")))
+    if ((girl.has_active_trait(traits::ONE_EYE) || girl.has_active_trait(traits::EYE_PATCH)))
         AutomaticFoodItemUse(girl, "Eye Replacement Candy", "Used an eye replacement candy to restore her eye.");
 
     // Last ditch eye check.  Use the big guns if you don't have anything else.
 //    has = m_Inventory.has_item("Elixir of Ultimate Regeneration");
-//    if ((girl.has_trait("One Eye") || girl.has_trait("Eye Patch")) && has != -1)
+//    if ((girl.has_trait(traits::ONE_EYE) || girl.has_trait(traits::EYE_PATCH)) && has != -1)
 //        AutomaticFoodItemUse(girl, has, "Used an elixir of ultimate regeneration to restore her eye.");
 
     // Scars - start with the least powerful cures and work up
-    if ((girl.has_active_trait("Small Scars") || girl.has_active_trait("Cool Scars")))
+    if ((girl.has_active_trait(traits::SMALL_SCARS) || girl.has_active_trait(traits::COOL_SCARS)))
         AutomaticFoodItemUse(girl, "Oil of Lesser Scar Removing", "Used an oil of lesser scar removal to remove work-related damage.");
 
-    if ((girl.has_active_trait("Small Scars") || girl.has_active_trait("Cool Scars") || girl.has_active_trait("Horrific Scars")))
+    if ((girl.has_active_trait(traits::SMALL_SCARS) || girl.has_active_trait(traits::COOL_SCARS) || girl.has_active_trait(traits::HORRIFIC_SCARS)))
         AutomaticFoodItemUse(girl, "Oil of Greater Scar Removing", "Used an oil of greater scar removal to remove her scars.");
 
 //    has = m_Inventory.has_item("Elixir of Ultimate Regeneration");
-//    if ((girl.has_trait("Small Scars") || girl.has_trait("Cool Scars") || girl.has_trait("Horrific Scars")) && has != -1)
+//    if ((girl.has_trait(traits::SMALL_SCARS) || girl.has_trait(traits::COOL_SCARS) || girl.has_trait(traits::HORRIFIC_SCARS)) && has != -1)
 //        AutomaticFoodItemUse(girl, has, "Used an elixir of ultimate regeneration to remove her scars.");
 
     // Big boobs
-    if (!girl.has_active_trait("Big Boobs") && !girl.has_active_trait("Abnormally Large Boobs"))
+    if (!girl.has_active_trait(traits::BIG_BOOBS) && !girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS))
         AutomaticFoodItemUse(girl, "Oil of Extreme Breast Growth", "She uses an oil of extreme breast growth to gain the abnormally large boobs trait.");
 
-    if (!girl.has_active_trait("Big Boobs") && !girl.has_active_trait("Abnormally Large Boobs"))
+    if (!girl.has_active_trait(traits::BIG_BOOBS) && !girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS))
         AutomaticFoodItemUse(girl, "Oil of Greater Breast Growth", "She uses an oil of greater breast growth to gain the big boobs trait.");
 
     // Nipple Rings of Pillowy Softness (piece of [ring slot] equipment)
-    if (!girl.has_active_trait("Big Boobs") && !girl.has_active_trait("Abnormally Large Boobs"))
+    if (!girl.has_active_trait(traits::BIG_BOOBS) && !girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS))
         AutomaticSlotlessItemUse(girl, "Nipple Rings of Pillowy Softness", "You had her put on a nipple rings of pillowy softness.");
 
     // Nipple Rings of Breast Expansion, (piece of [ring slot] equipment)
-    if (!girl.has_active_trait("Big Boobs") && !girl.has_active_trait("Abnormally Large Boobs"))
+    if (!girl.has_active_trait(traits::BIG_BOOBS) && !girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS))
         AutomaticItemUse(girl, "Nipple Rings of Breast Expansion", "You had her put on nipple rings of breast expansion for the big boobs trait.");
 
     // Polish
 // `J` zzzzzz - This should check stats not traits
     // If the girl doesn't have 4 of these 5 traits she will use polish
-    if (!girl.has_active_trait("Good Kisser"))            PolishCount++;
-    if (!girl.has_active_trait("Great Figure"))            PolishCount++;
-    if (!girl.has_active_trait("Great Arse"))            PolishCount++;
-    if (!girl.has_active_trait("Long Legs"))            PolishCount++;
-    if (!girl.has_active_trait("Puffy Nipples"))        PolishCount++;
+    if (!girl.has_active_trait(traits::GOOD_KISSER))            PolishCount++;
+    if (!girl.has_active_trait(traits::GREAT_FIGURE))            PolishCount++;
+    if (!girl.has_active_trait(traits::GREAT_ARSE))            PolishCount++;
+    if (!girl.has_active_trait(traits::LONG_LEGS))            PolishCount++;
+    if (!girl.has_active_trait(traits::PUFFY_NIPPLES))        PolishCount++;
 
     if (PolishCount >= 4)
         AutomaticFoodItemUse(girl, "Polish", "Used polish to make herself more attractive to clients.");
@@ -975,21 +975,21 @@ void cPlayer::apply_items(sGirl& girl) {
 
     // Put this at the bottom as there are better neck slot items that could be equipped above
     // Unlike the case of raising the constitution score in part one, we're only concerned with the trait here
-    if (!girl.has_active_trait("Masochist"))
+    if (!girl.has_active_trait(traits::MASOCHIST))
         AutomaticItemUse(girl, "Necklace of Pain Reversal", "You have this thing for masochism, so you had her put on a necklace of pain reversal.");
 
     // Iron Will
 
     // Disguised Slave band (piece of equipment)
     // (Statuses like 'controlled' on the Disguised Slave Band (amongst others) don't appear to do anything.)
-    if (girl.has_active_trait("Iron Will"))
+    if (girl.has_active_trait(traits::IRON_WILL))
         AutomaticItemUse(girl, "Disguised Slave Band", "Her iron will is a problem so you had her put on a disguised slave band, claiming it was something else.");
 
-    if (girl.has_active_trait("Iron Will"))
+    if (girl.has_active_trait(traits::IRON_WILL))
         AutomaticItemUse(girl, "Slave Band", "You dealt with her iron will by forcing her to wear a slave band.");
 
     // Necklace of Control (piece of equipment)
-    if (girl.has_active_trait("Iron Will"))
+    if (girl.has_active_trait(traits::IRON_WILL))
         AutomaticItemUse(girl, "Necklace of Control", "Her iron will is a problem so you had her put on a necklace of control.");
 
 # pragma endregion automation_traits

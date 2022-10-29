@@ -107,13 +107,13 @@ EAttemptCaptureResult AttemptCapture(sGang& gang, sGirl& girl) {
             girl.tiredness(20 + hurt);
             girl.constitution(-5 - hurt);
             girl.strength(-5 - hurt);
-            girl.add_temporary_trait("Fragile", 5);
-            girl.add_temporary_trait("Bruises", 5 + hurt);
+            girl.add_temporary_trait(traits::FRAGILE, 5);
+            girl.add_temporary_trait(traits::BRUISES, 5 + hurt);
             girl.AddMessage("She has been badly wounded in the fight. You gang has performed first-aid measures"
                             " to keep her alive, but her injuries will leave scars.", EImageBaseType::DEATH, EVENT_DANGER);
-            girl.gain_trait("Small Scars", 50);
+            girl.gain_trait(traits::SMALL_SCARS, 50);
         } else if(girl.health() < 33) {
-            girl.add_temporary_trait("Bruises", 2);
+            girl.add_temporary_trait(traits::BRUISES, 2);
         }
         return EAttemptCaptureResult::CAPTURED;
     }

@@ -77,7 +77,7 @@ bool DoctorJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
 }
 
 IGenericJob::eCheckWorkResult DoctorJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.has_active_trait("AIDS"))
+    if (girl.has_active_trait(traits::AIDS))
     {
         ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to get treated.";
         girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
@@ -139,13 +139,13 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         ss << "Stunned by her beauty a customer left her a great tip.\n";
     }
 
-    if (girl.has_active_trait("Clumsy") && chance(20))
+    if (girl.has_active_trait(traits::CLUMSY) && chance(20))
     {
         m_Wages -= 15;
         ss << "Her clumsy nature caused her to spill some medicine everywhere.\n";
     }
 
-    if (girl.has_active_trait("Pessimist") && chance(5))
+    if (girl.has_active_trait(traits::PESSIMIST) && chance(5))
     {
         if (m_Performance < 125)
         {
@@ -159,7 +159,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         }
     }
 
-    if (girl.has_active_trait("Optimist") && chance(20))
+    if (girl.has_active_trait(traits::OPTIMIST) && chance(20))
     {
         if (m_Performance < 125)
         {
@@ -179,9 +179,8 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         ss << "An elderly fellow managed to convince ${name} that her touch can heal! She ended up giving him a hand job!\n";
     }
 
-    if (chance(30) && !is_virgin(girl) && !girl.has_active_trait("Lesbian")
-        && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Slut") || girl.has_active_trait("Succubus") ||
-            girl.has_active_trait("Bimbo")))
+    if (chance(30) && !is_virgin(girl) && !girl.has_active_trait(traits::LESBIAN)
+        && (girl.any_active_trait({traits::NYMPHOMANIAC, traits::SLUT, traits::SUCCUBUS, traits::BIMBO})))
     {
         if (girl.libido() > 65 && (brothel.is_sex_type_allowed(SKILL_NORMALSEX) || brothel.is_sex_type_allowed(SKILL_ANAL)))
         {
@@ -196,7 +195,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         }
     }
 
-    if (girl.has_active_trait("Lesbian") && girl.has_active_trait("Aggressive") &&
+    if (girl.has_active_trait(traits::LESBIAN) && girl.has_active_trait(traits::AGGRESSIVE) &&
         girl.libido() > 65 && chance(10))
     {
         les = true;
@@ -230,7 +229,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         {
             m_ImageType = EImageBaseType::VAGINAL;
             girl.normalsex(2);
-            if (girl.lose_trait("Virgin"))
+            if (girl.lose_trait(traits::VIRGIN))
             {
                 ss << "She is no longer a virgin.\n";
             }
@@ -292,7 +291,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
 }
 
 IGenericJob::eCheckWorkResult NurseJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.has_active_trait("AIDS"))
+    if (girl.has_active_trait(traits::AIDS))
     {
         ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
         girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
@@ -334,8 +333,8 @@ double InternJob::GetPerformance(const sGirl& girl, bool estimate) const {
                 (100 - girl.charisma());
 
         // traits she could gain/lose
-        if (girl.has_active_trait("Nervous")) jobperformance += 20;
-        if (!girl.has_active_trait("Charismatic")) jobperformance += 20;
+        if (girl.has_active_trait(traits::NERVOUS)) jobperformance += 20;
+        if (!girl.has_active_trait(traits::CHARISMATIC)) jobperformance += 20;
         return jobperformance;
     }
     return 0.0;
@@ -372,8 +371,8 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
     else if (roll_a <= 30)    skill = 5;
     else if (roll_a <= 60)    skill = 4;
     else /*             */    skill = 3;
-    /* */if (girl.has_active_trait("Quick Learner"))    { skill += 1; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; }
+    /* */if (girl.has_active_trait(traits::QUICK_LEARNER))    { skill += 1; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { skill -= 1; }
     skill -= dirtyloss;
     ss << "The Clinic is ";
     if (dirtyloss <= 0) ss << "clean and tidy";
@@ -404,28 +403,28 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
         switch (uniform(0, 10))
         {
             case 0:
-                if (girl.lose_trait( "Nervous"))
+                if (girl.lose_trait( traits::NERVOUS))
                 {
                     ss << "She seems to be getting over her Nervousness with her training.";
                     gaintrait = false;
                 }
                 break;
             case 1:
-                if (girl.lose_trait( "Meek"))
+                if (girl.lose_trait( traits::MEEK))
                 {
                     ss << "She seems to be getting over her Meekness with her training.";
                     gaintrait = false;
                 }
                 break;
             case 2:
-                if (girl.lose_trait( "Dependent"))
+                if (girl.lose_trait( traits::DEPENDENT))
                 {
                     ss << "She seems to be getting over her Dependancy with her training.";
                     gaintrait = false;
                 }
                 break;
             case 3:
-                if (girl.gain_trait( "Charismatic"))
+                if (girl.gain_trait( traits::CHARISMATIC))
                 {
                     ss << "Dealing with patients and talking with them about their problems has made ${name} more Charismatic.";
                     gaintrait = false;
@@ -447,8 +446,8 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
     // Improve stats
     int xp = 5 + skill;
 
-    if (girl.has_active_trait("Quick Learner"))        { xp += 2; }
-    else if (girl.has_active_trait("Slow Learner"))    { xp -= 2; }
+    if (girl.has_active_trait(traits::QUICK_LEARNER))        { xp += 2; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { xp -= 2; }
 
     int exp_start = girl.exp();
     girl.exp(uniform(1, xp));
@@ -496,7 +495,7 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
 }
 
 IGenericJob::eCheckWorkResult InternJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.has_active_trait("AIDS"))
+    if (girl.has_active_trait(traits::AIDS))
     {
         ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
         girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);

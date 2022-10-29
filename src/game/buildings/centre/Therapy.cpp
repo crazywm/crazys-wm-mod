@@ -287,7 +287,7 @@ struct Rehab : public TherapyJob {
 };
 
 void Rehab::OnFinish(sGirl& girl) {
-    girl.add_temporary_trait("Former Addict", 40);
+    girl.add_temporary_trait(traits::FORMER_ADDICT, 40);
 }
 
 void RegisterTherapyJobs(cJobManager& mgr) {
@@ -302,9 +302,9 @@ void RegisterTherapyJobs(cJobManager& mgr) {
         "She has been released from therapy.",
         "therapy",
         3, 20, 10, 10,
-        {{"Aggressive", "She is no longer Aggressive."},
-         {"Tsundere", "She is no longer a Tsundere."},
-         {"Yandere", "She is no longer a Yandere."}}}));
+        {{traits::AGGRESSIVE, "She is no longer Aggressive."},
+         {traits::TSUNDERE, "She is no longer a Tsundere."},
+         {traits::YANDERE, "She is no longer a Yandere."}}}));
     mgr.register_job(std::make_unique<TherapyJob>(JOB_EXTHERAPY, "EThr", "She will go to extreme therapy to get over her hardcore mental problems. (Mind Fucked, Broken Will)",
                                                   sTherapyData{
         "${name} underwent therapy for extreme mental issues.",
@@ -315,8 +315,8 @@ void RegisterTherapyJobs(cJobManager& mgr) {
         "She has been released from therapy.",
         "therapy",
         3, 5, 5, 4,
-        {{"Mind Fucked", "She is no longer mind fucked."},
-        {"Broken Will", "She is no longer has a broken will."}}
+        {{traits::MIND_FUCKED, "She is no longer mind fucked."},
+        {traits::BROKEN_WILL, "She is no longer has a broken will."}}
     }));
     mgr.register_job(std::make_unique<TherapyJob>(JOB_THERAPY, "Thrp", "She will go to therapy to get over her mental problems. (Nervous, Dependant, Pessimist)",
                                                   sTherapyData{
@@ -328,9 +328,9 @@ void RegisterTherapyJobs(cJobManager& mgr) {
         "She has been released from therapy.",
         "therapy",
         3, 10, 5, 4,
-        {{"Nervous", "She is no longer nervous all the time."},
-         {"Dependent", "She is no longer Dependant on others."},
-         {"Pessimist", "She is no longer a Pessimist about everything."}}
+        {{traits::NERVOUS, "She is no longer nervous all the time."},
+         {traits::DEPENDENT, "She is no longer Dependant on others."},
+         {traits::PESSIMIST, "She is no longer a Pessimist about everything."}}
     }));
 
     mgr.register_job(std::make_unique<Rehab>(JOB_REHAB, "Rehb", "She will go to rehab to get over her addictions.",
@@ -343,12 +343,12 @@ void RegisterTherapyJobs(cJobManager& mgr) {
         "She has been released from rehab.",
         "rehab",
         3, 50, 10, 10,
-        {{"Smoker", "She is no longer a smoker."},
-         {"Cum Addict", "She is no longer a cum addict."},
-         {"Alcoholic", "She is no longer an alcoholic."},
-         {"Fairy Dust Addict", "She is no longer a fairy dust addict."},
-         {"Shroud Addict", "She is no longer a shroud addict."},
-         {"Viras Blood Addict", "She is no longer a viras blood addict."}
+        {{traits::SMOKER, "She is no longer a smoker."},
+         {traits::CUM_ADDICT, "She is no longer a cum addict."},
+         {traits::ALCOHOLIC, "She is no longer an alcoholic."},
+         {traits::FAIRY_DUST_ADDICT, "She is no longer a fairy dust addict."},
+         {traits::SHROUD_ADDICT, "She is no longer a shroud addict."},
+         {traits::VIRAS_BLOOD_ADDICT, "She is no longer a viras blood addict."}
         }
     }));
 }

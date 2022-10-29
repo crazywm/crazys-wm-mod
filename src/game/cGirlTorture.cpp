@@ -207,8 +207,8 @@ void cGirlTorture::DoTorture()
     UpdateTraits();
 
     // `J` wear down rebellion
-    m_Girl->raw_traits().decay_temporary_trait("Kidnapped", 1);
-    m_Girl->raw_traits().decay_temporary_trait("Emprisoned Customer", 1);
+    m_Girl->raw_traits().decay_temporary_trait(traits::KIDNAPPED, 1);
+    m_Girl->raw_traits().decay_temporary_trait(traits::EMPRISONED_CUSTOMER, 1);
 
     /*
     *    DANGER DEATH and low health warnings
@@ -299,7 +299,7 @@ void cGirlTorture::AddTextPlayer()
         {
             m_Message += " She is now pregnant.";
         }
-        m_Girl->lose_trait("Virgin");
+        m_Girl->lose_trait(traits::VIRGIN);
         break;
     }
 }
@@ -350,7 +350,7 @@ void cGirlTorture::UpdateStats()
 bool cGirlTorture::IsGirlInjured()
 {
     // Sanity check, Can't get injured
-    if (m_Girl->has_active_trait("Incorporeal")) return false;
+    if (m_Girl->has_active_trait(traits::INCORPOREAL)) return false;
 
 
     /*
@@ -364,8 +364,8 @@ bool cGirlTorture::IsGirlInjured()
     std::string    sGirlName = m_Girl->FullName();
     int nMod = int(100 * (float)g_Game->settings().get_percent(settings::TORTURE_INJURY_CHANCE));
 
-    if (m_Girl->has_active_trait("Fragile")) nMod += nMod;    // nMod *= 2;
-    if (m_Girl->has_active_trait("Tough")) nMod /= 2;
+    if (m_Girl->has_active_trait(traits::FRAGILE)) nMod += nMod;    // nMod *= 2;
+    if (m_Girl->has_active_trait(traits::TOUGH)) nMod /= 2;
     if (nMod < 1) nMod = 1;        // `J` always at least a 1% chance
 
     // Did the girl get injured
@@ -444,15 +444,15 @@ void cGirlTorture::UpdateTraits()
 
     if (g_Dice.percent(30) && m_Girl->spirit() < 20 && m_Girl->health() < 20)
     {
-        m_Girl->add_temporary_trait("Broken Will", int(5 + nWeekMod / 2));
+        m_Girl->add_temporary_trait(traits::BROKEN_WILL, int(5 + nWeekMod / 2));
     }
     if (g_Dice.percent(30) && m_Girl->bdsm() > 30)
     {
-        m_Girl->add_temporary_trait("Masochist", 10 + nWeekMod);
+        m_Girl->add_temporary_trait(traits::MASOCHIST, 10 + nWeekMod);
     }
     if (g_Dice.percent(30) && m_Girl->health() < 10)
     {
-        m_Girl->add_temporary_trait("Mind Fucked", 10 + nWeekMod);
+        m_Girl->add_temporary_trait(traits::MIND_FUCKED, 10 + nWeekMod);
     }
 }
 

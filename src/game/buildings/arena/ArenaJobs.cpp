@@ -392,12 +392,12 @@ bool FightGirls::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         girl.tiredness(10 - girl.strength() / 20 );
     }
 
-    if (girl.has_active_trait("Exhibitionist") && chance(15))
+    if (girl.has_active_trait(traits::EXHIBITIONIST) && chance(15))
     {
         ss << "A flamboyant fighter, ${name} fights with as little armor and clothing as possible, and sometimes takes something off in the middle of a match, to the enjoyment of many fans.\n";
     }
 
-    if (girl.has_active_trait("Idol") && chance(15))
+    if (girl.has_active_trait(traits::IDOL) && chance(15))
     {
         ss << "${name} has quite the following, and the Arena is almost always packed when she fights.  People just love to watch her in action.\n";
     }
@@ -424,11 +424,11 @@ bool FightGirls::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     //gain traits
     if (chance(25) && girl.strength() >= 65 && girl.combat() > girl.magic())
     {
-        cGirls::PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", is_night);
+        cGirls::PossiblyGainNewTrait(girl, traits::STRONG, 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", is_night);
     }
     if (chance(25) && girl.combat() >= 60 && girl.combat() > girl.magic())
     {
-        cGirls::PossiblyGainNewTrait(girl, "Brawler", 60, ACTION_COMBAT, "${name} has become pretty good at fighting.", is_night);
+        cGirls::PossiblyGainNewTrait(girl, traits::BRAWLER, 60, ACTION_COMBAT, "${name} has become pretty good at fighting.", is_night);
     }
 
 #pragma endregion
@@ -484,8 +484,8 @@ bool FightTraining::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
     else if (roll_a <= 30)    skill = 5;
     else if (roll_a <= 60)    skill = 4;
     else /*             */    skill = 3;
-    /* */if (girl.has_active_trait("Quick Learner"))    { skill += 1; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; }
+    /* */if (girl.has_active_trait(traits::QUICK_LEARNER))    { skill += 1; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { skill -= 1; }
     skill -= dirtyloss;
     ss << "The Arena is ";
     if (dirtyloss <= 0) ss << "clean and tidy";
@@ -529,38 +529,38 @@ bool FightTraining::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
         switch (uniform(0, 9))
         {
             case 0:
-                if (girl.lose_trait( "Fragile"))
+                if (girl.lose_trait( traits::FRAGILE))
                 {
                     ss << "She has had to heal from so many injuries you can't say she is fragile anymore.";
                     gaintrait = false;
                 }
-                else if (girl.gain_trait( "Tough"))
+                else if (girl.gain_trait( traits::TOUGH))
                 {
                     ss << "She has become pretty Tough from her training.";
                     gaintrait = false;
                 }
                 break;
             case 1:
-                if (girl.gain_trait( "Adventurer"))
+                if (girl.gain_trait( traits::ADVENTURER))
                 {
                     ss << "She has been in enough tough spots to consider herself an Adventurer.";
                     gaintrait = false;
                 }
                 break;
             case 2:
-                if (girl.has_active_trait("Nervous") || girl.has_active_trait("Meek") || girl.has_active_trait("Dependent"))
+                if (girl.any_active_trait({traits::NERVOUS, traits::MEEK, traits::DEPENDENT}))
                 {
-                    if (girl.lose_trait( "Nervous",  50))
+                    if (girl.lose_trait( traits::NERVOUS,  50))
                     {
                         ss << "She seems to be getting over her Nervousness with her training.";
                         gaintrait = false;
                     }
-                    else if (girl.lose_trait( "Meek", 50))
+                    else if (girl.lose_trait( traits::MEEK, 50))
                     {
                         ss << "She seems to be getting over her Meakness with her training.";
                         gaintrait = false;
                     }
-                    else if (girl.lose_trait( "Dependent", 50))
+                    else if (girl.lose_trait( traits::DEPENDENT, 50))
                     {
                         ss << "She seems to be getting over her Dependancy with her training.";
                         gaintrait = false;
@@ -568,12 +568,12 @@ bool FightTraining::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
                 }
                 else
                 {
-                    if (girl.gain_trait( "Aggressive", 50))
+                    if (girl.gain_trait( traits::AGGRESSIVE, 50))
                     {
                         ss << "She is getting rather Aggressive from her enjoyment of combat.";
                         gaintrait = false;
                     }
-                    else if (girl.gain_trait( "Fearless", 50))
+                    else if (girl.gain_trait( traits::FEARLESS, 50))
                     {
                         ss << "She is getting rather Fearless from her enjoyment of combat.";
                         gaintrait = false;
@@ -696,8 +696,8 @@ bool FightTraining::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
     // Improve stats
     int xp = 5 + skill;
 
-    if (girl.has_active_trait("Quick Learner"))        { xp += 2; }
-    else if (girl.has_active_trait("Slow Learner"))    { xp -= 2; }
+    if (girl.has_active_trait(traits::QUICK_LEARNER))        { xp += 2; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { xp -= 2; }
 
     girl.exp(uniform(1, xp));
     girl.upd_temp_stat(STAT_LIBIDO, int(skill / 2));

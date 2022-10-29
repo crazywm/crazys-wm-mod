@@ -439,22 +439,22 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     }
     else if (JobID == JOB_FAKEORGASM)
     {
-        if (Girl.has_active_trait("Fake Orgasm Expert"))    g_Game->push_message("She already has \"Fake Orgasm Expert\".", 0);
+        if (Girl.has_active_trait(traits::FAKE_ORGASM_EXPERT))    g_Game->push_message("She already has \"Fake Orgasm Expert\".", 0);
         else /*                                 */    Girl.m_DayJob = Girl.m_NightJob = JOB_FAKEORGASM;
     }
     else if (JobID == JOB_SO_BISEXUAL)
     {
-        if (Girl.has_active_trait("Bisexual"))/*      */    g_Game->push_message("She is already Bisexual.", 0);
+        if (Girl.has_active_trait(traits::BISEXUAL))/*      */    g_Game->push_message("She is already Bisexual.", 0);
         else /*                                 */    Girl.m_DayJob = Girl.m_NightJob = JOB_SO_BISEXUAL;
     }
     else if (JobID == JOB_SO_LESBIAN)
     {
-        if (Girl.has_active_trait("Lesbian"))/*       */    g_Game->push_message("She is already a Lesbian.", 0);
+        if (Girl.has_active_trait(traits::LESBIAN))/*       */    g_Game->push_message("She is already a Lesbian.", 0);
         else /*                                 */    Girl.m_DayJob = Girl.m_NightJob = JOB_SO_LESBIAN;
     }
     else if (JobID == JOB_SO_STRAIGHT)
     {
-        if (Girl.has_active_trait("Straight"))/*      */    g_Game->push_message("She is already Straight.", 0);
+        if (Girl.has_active_trait(traits::STRAIGHT))/*      */    g_Game->push_message("She is already Straight.", 0);
         else /*                                 */    Girl.m_DayJob = Girl.m_NightJob = JOB_SO_STRAIGHT;
     }
     else if (JobID == JOB_HOUSEPET)
@@ -513,7 +513,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
             Girl.m_NightJob = Girl.m_DayJob = JOB_CHAIRMAN;
     }
 
-    else if (Girl.has_active_trait("AIDS") && (JobID == JOB_DOCTOR || JobID == JOB_NURSE || JobID == JOB_INTERN))
+    else if (Girl.has_active_trait(traits::AIDS) && (JobID == JOB_DOCTOR || JobID == JOB_NURSE || JobID == JOB_INTERN))
     {
         g_Game->push_message("Health laws prohibit anyone with AIDS from working in the Medical profession", 0);
         if (Girl.m_DayJob == JOB_INTERN || Girl.m_DayJob == JOB_NURSE || Girl.m_DayJob == JOB_DOCTOR)
@@ -577,9 +577,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     {
         if (Girl.m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
             g_Game->push_message(("You must have a counselor for anger management."), 0);
-        else if (!Girl.has_active_trait("Aggressive")
-            && !Girl.has_active_trait("Tsundere")
-            && !Girl.has_active_trait("Yandere"))
+        else if (!Girl.any_active_trait({traits::AGGRESSIVE, traits::TSUNDERE, traits::YANDERE}))
             g_Game->push_message(("She has no anger issues."), 0);
         else
             Girl.m_DayJob = Girl.m_NightJob = JOB_ANGER;
@@ -588,8 +586,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     {
         if (Girl.m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
             g_Game->push_message(("You must have a counselor for extreme therapy."), 0);
-        else if (!Girl.has_active_trait("Mind Fucked")
-            && !Girl.has_active_trait("Broken Will"))
+        else if (!Girl.any_active_trait({traits::MIND_FUCKED, traits::BROKEN_WILL}))
             g_Game->push_message(("She has no extreme issues."), 0);
         else
             Girl.m_DayJob = Girl.m_NightJob = JOB_EXTHERAPY;
@@ -598,9 +595,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
     {
         if (Girl.m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
             g_Game->push_message(("You must have a counselor for therapy."), 0);
-        else if (!Girl.has_active_trait("Nervous")
-            && !Girl.has_active_trait("Dependent")
-            && !Girl.has_active_trait("Pessimist"))
+        else if (!Girl.any_active_trait({traits::NERVOUS, traits::DEPENDENT, traits::PESSIMIST}))
             g_Game->push_message(("She has no need of therapy."), 0);
         else
             Girl.m_DayJob = Girl.m_NightJob = JOB_THERAPY;
@@ -705,7 +700,7 @@ bool cJobManager::work_related_violence(sGirl& girl, bool Day0Night1, bool stree
      *
      *    But let's get what we have working first
      */
-    if ((girl.has_active_trait("Yandere") || girl.has_active_trait("Tsundere") || girl.has_active_trait("Aggressive")) && g_Dice.percent(30))
+    if (girl.any_active_trait({traits::YANDERE, traits::TSUNDERE, traits::AGGRESSIVE}) && g_Dice.percent(30))
     {
         switch (g_Dice % 5)
             {
@@ -800,8 +795,8 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
     // Earn xp for all kills, even if defeated
     int xp = 3;
 
-    if (SecGuard->has_active_trait("Quick Learner")) xp += 2;
-    else if (SecGuard->has_active_trait("Slow Learner")) xp -= 2;
+    if (SecGuard->has_active_trait(traits::QUICK_LEARNER)) xp += 2;
+    else if (SecGuard->has_active_trait(traits::SLOW_LEARNER)) xp -= 2;
 
     int num = OrgNumMem - enemy_gang->m_Num;
     SecGuard->exp(num * xp);
@@ -859,7 +854,7 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
                     custgirl->add_item(item_p);
                     custgirl->equip(item_p, true);
                     g_Game->player().inventory().remove_item(item_p);
-                    custgirl->add_temporary_trait("Emprisoned Customer", std::max(5, g_Dice.bell(0, 20)));
+                    custgirl->add_temporary_trait(traits::EMPRISONED_CUSTOMER, std::max(5, g_Dice.bell(0, 20)));
                     custgirl->pclove(-(g_Dice % 100 + 100));
                     custgirl->pcfear(g_Dice % 50 + 50);
                     custgirl->m_Enjoyment[ACTION_COMBAT] -= (g_Dice % 50 + 20);
@@ -1031,8 +1026,8 @@ bool cJobManager::girl_fights_rape(sGirl& girl, sGang *enemy_gang, int day_night
 
     // Earn xp for all kills, even if defeated
     int xp = 3;
-    if (girl.has_active_trait("Quick Learner")) xp += 2;
-    else if (girl.has_active_trait("Slow Learner")) xp -= 2;
+    if (girl.has_active_trait(traits::QUICK_LEARNER)) xp += 2;
+    else if (girl.has_active_trait(traits::SLOW_LEARNER)) xp -= 2;
 
     const int num = OrgNumMem - enemy_gang->m_Num;
 
@@ -1118,10 +1113,10 @@ void cJobManager::customer_rape(sGirl& girl, int numberofattackers)
         Cust.m_IsWoman = true;
     }
 
-    if (Cust.has_active_trait("AIDS"))      a = true;
-    if (Cust.has_active_trait("Chlamydia")) c = true;
-    if (Cust.has_active_trait("Syphilis"))  s = true;
-    if (Cust.has_active_trait("Herpes"))    h = true;
+    if (Cust.has_active_trait(traits::AIDS))      a = true;
+    if (Cust.has_active_trait(traits::CHLAMYDIA)) c = true;
+    if (Cust.has_active_trait(traits::SYPHILIS))  s = true;
+    if (Cust.has_active_trait(traits::HERPES))    h = true;
     std = a || c || s || h;
     if (!std && g_Dice.percent(5))
     {
@@ -1142,13 +1137,13 @@ void cJobManager::customer_rape(sGirl& girl, int numberofattackers)
         if (preg && std)    { ss << " and "; }
         else if (preg)        { ss << ".\n \n"; }
         if (a || c || s || h)    { bool _and = false;
-            if (a)    { girl.gain_trait("AIDS");        ss << "AIDS"; }
+            if (a)    { girl.gain_trait(traits::AIDS);        ss << "AIDS"; }
             if (a && (c || s || h))                            {    ss << " and ";        _and = true; }
-            if (c)    { girl.gain_trait("Chlamydia");    ss << "Chlamydia";    _and = false; }
+            if (c)    { girl.gain_trait(traits::CHLAMYDIA);    ss << "Chlamydia";    _and = false; }
             if (!_and && (a || c) && (s || h))                {    ss << " and ";        _and = true; }
-            if (s)    { girl.gain_trait("Syphilis");    ss << "Syphilis";    _and = false; }
+            if (s)    { girl.gain_trait(traits::SYPHILIS);    ss << "Syphilis";    _and = false; }
             if (!_and && (a || c || s) && h)                {    ss << " and "; }
-            if (h)    { girl.gain_trait("Herpes");        ss << "Herpes"; }
+            if (h)    { girl.gain_trait(traits::HERPES);        ss << "Herpes"; }
             ss << ".\n \n";
         }
         girl.AddMessage(ss.str(), EImageBaseType::DEATH, EVENT_DANGER);
@@ -1571,8 +1566,8 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
         // `J` do all the messages
         CGmsg << "${name} was caught trying to run out without paying for services provided by "
               << girl.FullName() << ".\n \n" << itemtext.str();
-        custgirl->add_temporary_trait("Emprisoned Customer", emprisontraittime);    // add temp trait
-        if (g_Dice.percent(75)) custgirl->lose_trait("Virgin");                // most of the time she will not be a virgin
+        custgirl->add_temporary_trait(traits::EMPRISONED_CUSTOMER, emprisontraittime);    // add temp trait
+        if (g_Dice.percent(75)) custgirl->lose_trait(traits::VIRGIN);                // most of the time she will not be a virgin
         g_Game->player().suspicion(g_Dice % 10);
         g_Game->player().disposition(-(g_Dice % 10));
         g_Game->player().customerfear(g_Dice % 10);

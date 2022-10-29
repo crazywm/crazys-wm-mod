@@ -28,6 +28,9 @@ bool is_addict(const ICharacter& character, bool onlyhard = false);
 /// returns whether the character has a disease.
 bool has_disease(const ICharacter& character);
 
+/// returns the number of diseases a character has
+int num_diseases(const ICharacter& character);
+
 /// returns whether the character is a futanari
 bool is_futa(const ICharacter& character);
 

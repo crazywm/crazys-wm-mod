@@ -41,7 +41,7 @@ namespace settings {
 }
 
 IGenericJob::eCheckWorkResult cBarJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.libido() >= 90 && girl.has_active_trait("Nymphomaniac") && chance(20))
+    if (girl.libido() >= 90 && girl.has_active_trait(traits::NYMPHOMANIAC) && chance(20))
     {
         add_text("event.nympho-nowork");
         girl.upd_temp_stat(STAT_LIBIDO, -20);
@@ -173,7 +173,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     }
 
     //a little pre-game randomness
-    if (girl.has_active_trait("Alcoholic"))
+    if (girl.has_active_trait(traits::ALCOHOLIC))
     {
         if (chance(10))
         {
@@ -219,12 +219,12 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     add_text("post-work-text");
 
     // `J` slightly lower percent compared to sleazy barmaid, I would think regular barmaid's uniform is less revealing
-    if ((chance(3) && girl.has_active_trait("Busty Boobs")) ||
-        (chance(6) && girl.has_active_trait("Big Boobs")) ||
-        (chance(9) && girl.has_active_trait("Giant Juggs")) ||
-        (chance(12) && girl.has_active_trait("Massive Melons")) ||
-        (chance(16) && girl.has_active_trait("Abnormally Large Boobs")) ||
-        (chance(20) && girl.has_active_trait("Titanic Tits")))
+    if ((chance(3) && girl.has_active_trait(traits::BUSTY_BOOBS)) ||
+        (chance(6) && girl.has_active_trait(traits::BIG_BOOBS)) ||
+        (chance(9) && girl.has_active_trait(traits::GIANT_JUGGS)) ||
+        (chance(12) && girl.has_active_trait(traits::MASSIVE_MELONS)) ||
+        (chance(16) && girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS)) ||
+        (chance(20) && girl.has_active_trait(traits::TITANIC_TITS)))
     {
         ss << "A patron was obviously staring at her large breasts. ";
         if (m_Performance < 150)
@@ -238,11 +238,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
         }
     }
 
-    if (girl.dignity() <= -20 && chance(20) && (girl.has_active_trait("Big Boobs") ||
-                                                     girl.has_active_trait("Abnormally Large Boobs") ||
-                                                     girl.has_active_trait("Titanic Tits") ||
-                                                     girl.has_active_trait("Massive Melons") ||
-                                                     girl.has_active_trait("Giant Juggs")))
+    if (girl.dignity() <= -20 && chance(20) && girl.breast_size() >= BreastSize::BIG_BOOBS)
     {
         m_Tips += 25;
         ss << "${name} got an odd request from a client to carry a small drink he ordered between her tits to his table. "
@@ -269,7 +265,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
         ss << "A customer tried to buy ${name} a drink, but she refused for the sake of her unborn child.";
     }
 
-    if ((girl.has_active_trait("Deep Throat") || girl.has_active_trait("No Gag Reflex")) && chance(5))
+    if (girl.any_active_trait({traits::DEEP_THROAT, traits::NO_GAG_REFLEX}) && chance(5))
     {
         ss << "Some customers were having a speed drinking contest and challenged ${name} to take part.\n";
         if (girl.is_pregnant()) ss << "She refused for the sake of her unborn child.";
@@ -283,9 +279,7 @@ bool cBarMaidJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     if (girl.has_item("Golden Pendant") && chance(10))//zzzzz FIXME need more CRAZY
     {
         ss << "A patron complimented her gold necklace, you're not sure if it was an actual compliment or ";
-        if (girl.has_active_trait("Massive Melons") || girl.has_active_trait("Abnormally Large Boobs")
-            || girl.has_active_trait("Titanic Tits") || girl.has_active_trait("Big Boobs")
-            || girl.has_active_trait("Busty Boobs") || girl.has_active_trait("Giant Juggs"))
+        if (girl.breast_size() >= BreastSize::BIG_BOOBS)
         {
             ss << "an excuse to stare at her ample cleavage.";
         }
@@ -463,8 +457,7 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     m_Tips += (int)(((10 + m_Performance / 22) * m_Earnings) / 100);
 
     //try and add randomness here
-    if (girl.libido() > 90 && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Succubus") ||
-                               girl.has_active_trait("Slut")))
+    if (girl.libido() > 90 && (girl.any_active_trait({traits::NYMPHOMANIAC, traits::SUCCUBUS, traits::SLUT})))
     {
         ss << "During her shift, ${name} couldn't help but instinctively and excessively rub her ass against the crotches of the clients whenever she got the chance. Her slutty behavior earned her some extra tips, as a couple of patrons noticed her intentional butt grinding.\n";
         m_Tips += 30;
@@ -511,7 +504,7 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
                     }
                     else//ORAL
                     {
-                        if (girl.oralsex() >= 50 && girl.has_active_trait("Deep Throat"))
+                        if (girl.oralsex() >= 50 && girl.has_active_trait(traits::DEEP_THROAT))
                         {
                             ss << "${name} does not even wait for a reply before she moves her hand to your cock, deftly opening your pants and working you to a raging hard-on. She smiles mischievously at you and then dives down, swallowing your whole cock with one quick motion. She stays there, locked with her tongue on your balls and your shaft buried in her throat, massaging your cock with swallowing motions while staring with watering eyes into yours, until she begins to lose oxygen. You cum buckets straight down her throat as she begins to choke herself on you, and when she has secured every drop in her stomach, she pulls back, takes a deep breath, and smiles. \"Happy birthday to me,\" she says.";
                         }
@@ -554,7 +547,7 @@ bool cBarWaitressJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     HandleGains(girl, fame);
     if (m_Performance > 150 && girl.constitution() > 65)
     {
-        cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 60, m_Data.Action, "${name} has been dodging between tables and avoiding running into customers for so long she has become Fleet of Foot.", is_night);
+        cGirls::PossiblyGainNewTrait(girl, traits::FLEET_OF_FOOT, 60, m_Data.Action, "${name} has been dodging between tables and avoiding running into customers for so long she has become Fleet of Foot.", is_night);
     }
 
     return false;
@@ -714,7 +707,7 @@ bool cBarSingerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
     HandleGains(girl, fame);
     if (girl.fame() >= 70 && chance(10))
     {
-        cGirls::PossiblyGainNewTrait(girl, "Idol", 50, m_Data.Action, "Her fame and singing skills has made ${name} an Idol in Crossgate.", is_night);
+        cGirls::PossiblyGainNewTrait(girl, traits::IDOL, 50, m_Data.Action, "Her fame and singing skills has made ${name} an Idol in Crossgate.", is_night);
     }
 
     return false;
@@ -749,12 +742,12 @@ bool cDealerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     //a little pre-game randomness
     if (chance(10))
     {
-        if (girl.has_active_trait("Strange Eyes"))
+        if (girl.has_active_trait(traits::STRANGE_EYES))
         {
             ss << " ${name}'s strange eyes were somehow hypnotic, giving her some advantage.";
             m_Performance += 15;
         }
-        if (girl.has_active_trait("Nymphomaniac") && girl.libido() > 75)
+        if (girl.has_active_trait(traits::NYMPHOMANIAC) && girl.libido() > 75)
         {
             ss << " ${name} had very high libido, making it hard for her to concentrate.";
             m_Performance -= 10;
@@ -768,15 +761,15 @@ bool cDealerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     if (is_addict(girl, true) && chance(20))
     {
         ss << "\nNoticing her addiction, a customer offered her drugs. She accepted, and had an awful day at the card table.\n";
-        if (girl.has_active_trait("Shroud Addict"))
+        if (girl.has_active_trait(traits::SHROUD_ADDICT))
         {
             girl.add_item(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
         }
-        if (girl.has_active_trait("Fairy Dust Addict"))
+        if (girl.has_active_trait(traits::FAIRY_DUST_ADDICT))
         {
             girl.add_item(g_Game->inventory_manager().GetItem("Fairy Dust"));
         }
-        if (girl.has_active_trait("Viras Blood Addict"))
+        if (girl.has_active_trait(traits::VIRAS_BLOOD_ADDICT))
         {
             girl.add_item(g_Game->inventory_manager().GetItem("Vira Blood"));
         }
@@ -856,7 +849,7 @@ bool cDealerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     {
         if (m_Performance < 125)
         {
-            if (!girl.has_active_trait("Straight"))
+            if (!girl.has_active_trait(traits::STRAIGHT))
             {
                 if (girl.libido() > 90)
                 {
@@ -891,7 +884,7 @@ bool cDealerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     m_Earnings += uniform(10, (girl.beauty() + girl.charisma()) / 4 + 10);
 
     // Improve girl
-    if (!girl.has_active_trait("Straight"))    { girl.upd_temp_stat(STAT_LIBIDO, std::min(3, brothel.num_girls_on_job(JOB_XXXENTERTAINMENT, false))); }
+    if (!girl.has_active_trait(traits::STRAIGHT))    { girl.upd_temp_stat(STAT_LIBIDO, std::min(3, brothel.num_girls_on_job(JOB_XXXENTERTAINMENT, false))); }
     HandleGains(girl, fame);
 
     return false;
@@ -944,7 +937,7 @@ bool cEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
             if (-girl.pclove() > girl.pcfear())
             {
                 ss << " ${name} opened with some rather rude jokes about you. While this annoys you a little, ";
-                if (girl.has_active_trait("Your Daughter"))
+                if (girl.has_active_trait(traits::YOUR_DAUGHTER))
                 {
                     ss << "she is your daughter, and ";
                 }
@@ -1021,8 +1014,8 @@ bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_
             m_Performance += 10;
         }
 
-        if (girl.has_active_trait("Demon") || girl.has_active_trait("Shape Shifter") || girl.has_active_trait("Construct") ||
-            girl.has_active_trait("Cat Girl") || girl.has_active_trait("Succubus") || girl.has_active_trait("Reptilian"))
+        if (girl.any_active_trait({traits::DEMON, traits::SHAPE_SHIFTER, traits::CONSTRUCT,
+                                   traits::CAT_GIRL, traits::SUCCUBUS, traits::REPTILIAN}))
         {
             ss << "Customers are surprised to see such an unusual girl giving sexual entertainment. ";
             ss << "Some are disgusted, some are turned on, but many can't help watching.\n";
@@ -1038,25 +1031,25 @@ bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_
             ss << "This makes it harder for her to work this shift. ";
             m_Performance -= 20;
         }
-        else if (girl.has_active_trait("Exotic"))
+        else if (girl.has_active_trait(traits::EXOTIC))
         {
             ss << "The customers were pleasantly surprised to see such an exotic girl giving sexual entertainment.";
             m_Earnings += 15;
             fame += 1;
         }
-        if ((girl.has_active_trait("Syphilis") || girl.has_active_trait("Herpes"))
+        if ((girl.any_active_trait({traits::SYPHILIS, traits::HERPES}))
             && chance(100 - girl.health()))
         {
             ss << "She's unwell. A man in the audience recognises ${name}'s symptoms and heckles her about her ";
-            if (girl.has_active_trait("Syphilis") && girl.has_active_trait("Herpes"))
+            if (girl.has_active_trait(traits::SYPHILIS) && girl.has_active_trait(traits::HERPES))
             {
                 ss << "diseases";
             }
-            else if (girl.has_active_trait("Herpes"))
+            else if (girl.has_active_trait(traits::HERPES))
             {
                 ss << "Herpes";
             }
-            else if (girl.has_active_trait("Syphilis"))
+            else if (girl.has_active_trait(traits::SYPHILIS))
             {
                 ss << "Syphilis";
             }
@@ -1085,7 +1078,7 @@ bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_
 
     //try and add randomness here
 
-    if (girl.has_active_trait("Your Daughter") && chance(20))
+    if (girl.has_active_trait(traits::YOUR_DAUGHTER) && chance(20))
     {
         ss << "Word got around that ${name} is your daughter, so more customers than normal came to watch her perform.\n";
         m_Earnings += (m_Earnings / 5);
@@ -1110,13 +1103,13 @@ bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_
 
     if (girl.libido() > 90)
     {
-        if (girl.has_active_trait("Futanari"))
+        if (girl.has_active_trait(traits::FUTANARI))
         {
             //Addiction bypasses confidence check
-            if (girl.has_active_trait("Cum Addict"))
+            if (girl.has_active_trait(traits::CUM_ADDICT))
             {
                 //Autofellatio, belly gets in the way if pregnant, requires extra flexibility
-                if (girl.has_active_trait("Flexible") && !girl.is_pregnant() && chance(50))
+                if (girl.has_active_trait(traits::FLEXIBLE) && !girl.is_pregnant() && chance(50))
                 {
                     ss << "During her shift ${name} couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
                     girl.oralsex(1);
@@ -1140,13 +1133,13 @@ bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_
                 imagetype = EImagePresets::MASTURBATE;
             }
                 //Let's see if she has what it takes to do it: Confidence > 65 or Exhibitionist trait, maybe shy girls should be excluded
-            else if (!girl.has_active_trait("Cum Addict") && girl.has_active_trait("Exhibitionist") || !girl.has_active_trait(
-                    "Cum Addict") && girl.confidence() > 65)
+            else if (!girl.has_active_trait(traits::CUM_ADDICT) && girl.has_active_trait(traits::EXHIBITIONIST) || !girl.has_active_trait(
+                    traits::CUM_ADDICT) && girl.confidence() > 65)
             {
                 //Some variety
                 //Autopaizuri, requires very big breasts
-                if (chance(25) && girl.has_active_trait("Abnormally Large Boobs") || chance(25) && (girl.has_active_trait(
-                        "Titanic Tits")))
+                if (chance(25) && girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS) || chance(25) && (girl.has_active_trait(
+                        traits::TITANIC_TITS)))
                 {
                     ss << "${name} was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
                     girl.tittysex(1);
@@ -1179,7 +1172,7 @@ bool cXXXEntertainerJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_
             }
         }
             //regular masturbation code by Crazy tweaked to exclude futas and keep the original Libido > 90 requirement
-        else if (!girl.has_active_trait("Futanari") && girl.libido() > 90)
+        else if (!girl.has_active_trait(traits::FUTANARI) && girl.libido() > 90)
         {
             ss << "She was horny and ended up masturbating for the customers making them very happy.";
             cJobManager::GetMiscCustomer(brothel);
@@ -1257,7 +1250,7 @@ bool cMasseuseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         else if (n == SKILL_NORMALSEX)    imageType = EImageBaseType::VAGINAL;
         if (n == SKILL_NORMALSEX)
         {
-            if (girl.lose_trait("Virgin"))
+            if (girl.lose_trait(traits::VIRGIN))
             {
                 ss << "\nShe is no longer a virgin.\n";
             }
@@ -1275,7 +1268,7 @@ bool cMasseuseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         girl.m_NumCusts++;
         //girl.m_Events.AddMessage(ss.str(), imageType, Day0Night1);
     } //SIN - bit more spice - roll_c doesn't seem to be used anywhere else so ok here
-    else if (girl.has_active_trait("Doctor") && chance(5))
+    else if (girl.has_active_trait(traits::DOCTOR) && chance(5))
     {
         ss << "Due to ${name}'s training as a Doctor, she was able to discover an undetected medical condition in her client during the massage. ";
         if (girl.charisma() < 50)
@@ -1328,7 +1321,8 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     //try and add randomness here
     if (girl.libido() > 80)
     {
-        if (girl.has_active_trait("Lesbian") && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Succubus")))
+        bool horny_trait = girl.any_active_trait({traits::NYMPHOMANIAC, traits::SUCCUBUS, traits::SLUT});
+        if (girl.has_active_trait(traits::LESBIAN) && horny_trait)
         {
             ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.\n";
             sextype = SKILL_LESBIAN;
@@ -1336,7 +1330,7 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
             girl.lesbian(1);
             //*/
         }
-        else if (girl.has_active_trait("Bisexual") && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Succubus")))
+        else if (girl.has_active_trait(traits::BISEXUAL) && horny_trait)
         {
             if (roll_c <= 50)
             {
@@ -1352,19 +1346,19 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
                 sextype = SKILL_NORMALSEX;
             }
         }
-        else if (girl.has_active_trait("Straight") && (girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Succubus")))
+        else if (girl.has_active_trait(traits::STRAIGHT) && horny_trait)
         {
             ss << "\nShe was horny and she loves sex so she brought in one of the customers and had sex with him while the others watched.\n";
             sextype = SKILL_NORMALSEX;
         }
             // new stuff
-        else if (girl.has_active_trait("Futanari"))
+        else if (girl.has_active_trait(traits::FUTANARI))
         {
             //Addiction bypasses confidence check
-            if (girl.has_active_trait("Cum Addict"))
+            if (girl.has_active_trait(traits::CUM_ADDICT))
             {
                 //Autofellatio, belly gets in the way if pregnant, requires extra flexibility
-                if (girl.has_active_trait("Flexible") && !(girl.is_pregnant()) && chance(50))
+                if (girl.has_active_trait(traits::FLEXIBLE) && !(girl.is_pregnant()) && chance(50))
                 {
                     ss << "\nDuring her shift ${name} couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
                     girl.oralsex(1);
@@ -1388,13 +1382,13 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
                 imagetype = EImagePresets::MASTURBATE;
             }
                 //Let's see if she has what it takes to do it: Confidence > 65 or Exhibitionist trait, maybe shy girls should be excluded
-            else if (!girl.has_active_trait("Cum Addict") && girl.has_active_trait("Exhibitionist") || !girl.has_active_trait(
-                    "Cum Addict") && girl.confidence() > 65)
+            else if (!girl.has_active_trait(traits::CUM_ADDICT) && girl.has_active_trait(traits::EXHIBITIONIST) || !girl.has_active_trait(
+                    traits::CUM_ADDICT) && girl.confidence() > 65)
             {
                 //Some variety
                 //Autopaizuri, requires very big breasts
-                if (chance(25) && girl.has_active_trait("Abnormally Large Boobs") || chance(25) && (girl.has_active_trait(
-                        "Titanic Tits")))
+                if (chance(25) && girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS) || chance(25) && (girl.has_active_trait(
+                        traits::TITANIC_TITS)))
                 {
                     ss << "\n${name} was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
                     girl.tittysex(1);
@@ -1444,40 +1438,39 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     {
         ss << "A man managed to cut a hole out from his booth and made himself a glory hole, ${name} saw his cock sticking out and ";
         {
-            if (girl.has_active_trait("Meek") || girl.has_active_trait("Shy"))
+            if (girl.any_active_trait({traits::MEEK, traits::SHY}))
             {
                 m_Enjoyment -= 5;
                 ss << "meekly ran away from it.\n";
             }
-            else if (girl.has_active_trait("Lesbian"))
+            else if (girl.has_active_trait(traits::LESBIAN))
             {
                 m_Enjoyment -= 2;
                 girl.upd_temp_stat(STAT_LIBIDO, -10, true);
                 ss << "she doesn't understand the appeal of them, which turned her off.\n";
             }
-            else if (brothel.is_sex_type_allowed(SKILL_NORMALSEX) && !is_virgin(girl) && (girl.has_active_trait(
-                    "Nymphomaniac") ||
-                                                                                           girl.has_active_trait("Succubus")) && girl.libido() >= 80) //sex
+            else if (brothel.is_sex_type_allowed(SKILL_NORMALSEX) && !is_virgin(girl) && (
+                    girl.any_active_trait({traits::NYMPHOMANIAC, traits::SUCCUBUS})) && girl.libido() >= 80) //sex
             {
                 sextype = SKILL_NORMALSEX;
                 ss << "decided she needed to use it for her own entertainment.\n";
             }
-            else if (brothel.is_sex_type_allowed(SKILL_ORALSEX) && (girl.has_active_trait("Nymphomaniac") ||
-                                                                     girl.has_active_trait("Succubus") ||
-                                                                     girl.has_active_trait("Cum Addict")) && girl.libido() >= 60) //oral
+            else if (brothel.is_sex_type_allowed(SKILL_ORALSEX) && (
+                    girl.any_active_trait({traits::NYMPHOMANIAC, traits::SUCCUBUS, traits::CUM_ADDICT})) &&
+                    girl.libido() >= 60) //oral
             {
                 sextype = SKILL_ORALSEX;
                 ss << "decided she needed to taste it.\n";
             }
-            else if (brothel.is_sex_type_allowed(SKILL_FOOTJOB) && (girl.has_active_trait("Nymphomaniac") ||
-                                                                     girl.has_active_trait("Succubus") || girl.dignity() < -30) && girl.libido() >= 40) //foot
+            else if (brothel.is_sex_type_allowed(SKILL_FOOTJOB) && (
+                    girl.any_active_trait({traits::NYMPHOMANIAC, traits::SUCCUBUS}) || girl.dignity() < -30) && girl.libido() >= 40) //foot
             {
                 sextype = SKILL_FOOTJOB;
                 imagetype = EImageBaseType::FOOT;
                 ss << "decided she would give him a foot job for being so brave.\n";
             }
-            else if (brothel.is_sex_type_allowed(SKILL_HANDJOB) && (girl.has_active_trait("Nymphomaniac") ||
-                                                                     girl.has_active_trait("Succubus") || girl.dignity() < -30))    //hand job
+            else if (brothel.is_sex_type_allowed(SKILL_HANDJOB) && (
+                    girl.any_active_trait({traits::NYMPHOMANIAC, traits::SUCCUBUS}) || girl.dignity() < -30))    //hand job
             {
                 sextype = SKILL_HANDJOB;
                 ss << "decided she would give him a hand job for being so brave.\n";
@@ -1488,7 +1481,7 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
             }
 
             /* `J` suggest adding bad stuff,
-            else if (girl.has_trait( "Merciless") && girl.has_item("Dagger") != -1 && chance(10))
+            else if (girl.has_trait( traits::MERCILESS) && girl.has_item("Dagger") != -1 && chance(10))
             {
             imagetype = EBaseImage::COMBAT;
             ss << "decided she would teach this guy a lesson and cut his dick off.\n";
@@ -1567,7 +1560,7 @@ bool cPeepShowJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     //gain traits
     if (sextype != SKILL_STRIP && girl.dignity() < 0 && chance(25))
     {
-        cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
+        cGirls::PossiblyGainNewTrait(girl, traits::SLUT, 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
     }
 
     return false;
@@ -1615,7 +1608,7 @@ bool cBrothelStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     sCustomer Cust = g_Game->GetCustomer(brothel);
 
     //A little more randomness
-    if (Cust.m_IsWoman && (girl.has_active_trait("Lesbian") || girl.lesbian() > 60))
+    if (Cust.m_IsWoman && (girl.has_active_trait(traits::LESBIAN) || girl.lesbian() > 60))
     {
         ss << "${name} was overjoyed to perform for a woman, and gave a much more sensual, personal performance.\n";
         m_Performance += 25;
@@ -1760,9 +1753,9 @@ bool cBrothelStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     {
         const char* warning = "Noticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
         ss << "\n" << warning << "\n";
-        if (girl.has_active_trait("Shroud Addict"))            girl.add_item(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
-        if (girl.has_active_trait("Fairy Dust Addict"))        girl.add_item(g_Game->inventory_manager().GetItem("Fairy Dust"));
-        if (girl.has_active_trait("Viras Blood Addict"))    girl.add_item(g_Game->inventory_manager().GetItem("Vira Blood"));
+        if (girl.has_active_trait(traits::SHROUD_ADDICT))         girl.add_item(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
+        if (girl.has_active_trait(traits::FAIRY_DUST_ADDICT))     girl.add_item(g_Game->inventory_manager().GetItem("Fairy Dust"));
+        if (girl.has_active_trait(traits::VIRAS_BLOOD_ADDICT))    girl.add_item(g_Game->inventory_manager().GetItem("Vira Blood"));
         girl.AddMessage(warning, EImagePresets::BLOWJOB, EVENT_WARNING);
     }
 
@@ -1799,7 +1792,7 @@ bool cBrothelStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
         else if (n == SKILL_NORMALSEX)    imagetype = EImageBaseType::VAGINAL;
         if (n == SKILL_NORMALSEX)
         {
-            if (girl.lose_trait("Virgin"))
+            if (girl.lose_trait(traits::VIRGIN))
             {
                 ss << "\nShe is no longer a virgin.\n";
             }
@@ -1857,7 +1850,7 @@ bool cBrothelStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
 
     //    Finish the shift            //
 
-    if (girl.has_active_trait("Exhibitionist"))
+    if (girl.has_active_trait(traits::EXHIBITIONIST))
     {
         m_Enjoyment += 1;
     }
@@ -1870,12 +1863,12 @@ bool cBrothelStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     //gained
     if (sex && girl.dignity() < 0 && chance(25))
     {
-        cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
+        cGirls::PossiblyGainNewTrait(girl, traits::SLUT, 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
     }
     //lose
     if (m_Performance > 150 && girl.confidence() > 65)
     {
-        cGirls::PossiblyLoseExistingTrait(girl, "Shy", 60, ACTION_WORKSTRIP, "${name} has been stripping for so long now that her confidence is super high and she is no longer Shy.", is_night);
+        cGirls::PossiblyLoseExistingTrait(girl, traits::SHY, 60, ACTION_WORKSTRIP, "${name} has been stripping for so long now that her confidence is super high and she is no longer Shy.", is_night);
     }
     return false;
 }
@@ -1904,18 +1897,18 @@ bool ClubBarmaid::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     //try and add randomness here
     add_text("event.post");
 
-    if (girl.has_active_trait("Clumsy") && chance(15))
+    if (girl.has_active_trait(traits::CLUMSY) && chance(15))
     {
         ss << "Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.\n"; m_Earnings -= 15;
     }
 
     // `J` slightly higher percent compared to regular barmaid, I would think sleazy barmaid's uniform is more revealing
-    if ((chance(5) && girl.has_active_trait("Busty Boobs")) ||
-        (chance(10) && girl.has_active_trait("Big Boobs")) ||
-        (chance(15) && girl.has_active_trait("Giant Juggs")) ||
-        (chance(20) && girl.has_active_trait("Massive Melons")) ||
-        (chance(25) && girl.has_active_trait("Abnormally Large Boobs")) ||
-        (chance(30) && girl.has_active_trait("Titanic Tits")))
+    if ((chance(5) && girl.has_active_trait(traits::BUSTY_BOOBS)) ||
+        (chance(10) && girl.has_active_trait(traits::BIG_BOOBS)) ||
+        (chance(15) && girl.has_active_trait(traits::GIANT_JUGGS)) ||
+        (chance(20) && girl.has_active_trait(traits::MASSIVE_MELONS)) ||
+        (chance(25) && girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS)) ||
+        (chance(30) && girl.has_active_trait(traits::TITANIC_TITS)))
     {
         if (m_Performance < 150)
         {
@@ -1927,7 +1920,7 @@ bool ClubBarmaid::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
         }
     }
 
-    if (girl.has_active_trait("Meek") && chance(5) && m_Performance < 125)
+    if (girl.has_active_trait(traits::MEEK) && chance(5) && m_Performance < 125)
     {
         ss << "${name} spilled a drink all over a man's lap. He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
         imagetype = EImagePresets::BLOWJOB;
@@ -1939,8 +1932,8 @@ bool ClubBarmaid::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
         add_text("event.grab-boob");
     }
 
-    if ((girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Succubus")) && girl.libido() > 80 && chance(20) && !is_virgin(girl) && !girl.has_active_trait(
-            "Lesbian"))
+    if ((girl.any_active_trait({traits::NYMPHOMANIAC, traits::SUCCUBUS})) && girl.libido() > 80 && chance(20) && !is_virgin(girl) && !girl.has_active_trait(
+            traits::LESBIAN))
     {
         add_text("event.nympho");
         imagetype = EImageBaseType::VAGINAL;
@@ -1966,10 +1959,10 @@ bool ClubBarmaid::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
     HandleGains(girl, fame);
 
     //gained
-    if (m_Performance < 100 && chance(2)) { cGirls::PossiblyGainNewTrait(girl, "Assassin", 10, ACTION_WORKCLUB, "${name}'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", is_night); }
+    if (m_Performance < 100 && chance(2)) { cGirls::PossiblyGainNewTrait(girl, traits::ASSASSIN, 10, ACTION_WORKCLUB, "${name}'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", is_night); }
     if (chance(25) && girl.dignity() < 0 && (imagetype == EImageBaseType::VAGINAL || imagetype == EImagePresets::BLOWJOB))
     {
-        cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
+        cGirls::PossiblyGainNewTrait(girl, traits::SLUT, 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
     }
     return false;
 }
@@ -2004,11 +1997,11 @@ bool ClubStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     else if (girl.has_item("Black Leather Underwear"))
     {
         ss << "${name} stripped down to reveal her Black Leather Underwear ";
-        if (girl.has_active_trait("Sadistic"))
+        if (girl.has_active_trait(traits::SADISTIC))
         {
             ss << "and broke out a whip asking who wanted to join her on stage for a spanking.\n \n";
         }
-        if (girl.has_active_trait("Masochist"))
+        if (girl.has_active_trait(traits::MASOCHIST))
         {
             ss << "and asked a patron to come on stage and give her a spanking.\n \n";
         }
@@ -2101,9 +2094,9 @@ bool ClubStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     {
         const char* warning = "Noticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
         ss << "\n" << warning << "\n";
-        if (girl.has_active_trait("Shroud Addict"))            girl.add_item(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
-        if (girl.has_active_trait("Fairy Dust Addict"))        girl.add_item(g_Game->inventory_manager().GetItem("Fairy Dust"));
-        if (girl.has_active_trait("Viras Blood Addict"))        girl.add_item(g_Game->inventory_manager().GetItem("Vira Blood"));
+        if (girl.has_active_trait(traits::SHROUD_ADDICT))            girl.add_item(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
+        if (girl.has_active_trait(traits::FAIRY_DUST_ADDICT))        girl.add_item(g_Game->inventory_manager().GetItem("Fairy Dust"));
+        if (girl.has_active_trait(traits::VIRAS_BLOOD_ADDICT))       girl.add_item(g_Game->inventory_manager().GetItem("Vira Blood"));
         girl.AddMessage(warning, EImagePresets::BLOWJOB, EVENT_WARNING);
     }
 
@@ -2120,7 +2113,7 @@ bool ClubStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         girl.tiredness(10 - girl.strength() / 20);
     }
 
-    if (girl.has_active_trait("Exhibitionist"))
+    if (girl.has_active_trait(traits::EXHIBITIONIST))
     {
         m_Enjoyment += 1;
     }
@@ -2136,7 +2129,7 @@ bool ClubStripper::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     //lose
     if (m_Performance > 150 && girl.confidence() > 65)
     {
-        cGirls::PossiblyLoseExistingTrait(girl, "Shy", 60, ACTION_WORKSTRIP, "${name} has been stripping for so long now that her confidence is super high and she is no longer Shy.", is_night);
+        cGirls::PossiblyLoseExistingTrait(girl, traits::SHY, 60, ACTION_WORKSTRIP, "${name} has been stripping for so long now that her confidence is super high and she is no longer Shy.", is_night);
     }
 
     return false;
@@ -2170,14 +2163,14 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     };
 
     //a little pre-game randomness
-    if (girl.has_active_trait("Cum Addict") && chance(30))
+    if (girl.has_active_trait(traits::CUM_ADDICT) && chance(30))
     {
         ss << "${name} is addicted to cum, and she cannot serve her shift without taking advantage of a room full of cocks. Since most of your patrons are already sexually primed with all this nubile flesh walking around in skimpy uniforms, she does not need to be very persuasive to convince various men to satisfy her addiction. You see her feet sticking out from under the tables from time to time as a satisfied customer smiles at the ceiling. Her service with the other tables suffers, but her tips are still quite high.\n";
         m_Performance -= 10;
         m_Tips += 40;
         imagetype = EImagePresets::BLOWJOB;
     }
-    else if ((girl.has_active_trait("Shy") || girl.has_active_trait("Nervous")) && chance(20))
+    else if ((girl.any_active_trait({traits::SHY, traits::NERVOUS})) && chance(20))
     {
         ss << "${name} has serious difficulty being around all these new people, and the fact that they are all so forward about her body does nothing to help. She spends a lot of time hiding in the kitchen, petrified of going back out and talking to all those people.";
         m_Performance -= 20;
@@ -2211,12 +2204,12 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     //try and add randomness here
     add_text("event.post");
 
-    if (girl.has_active_trait("Great Arse") && chance(15))
+    if (girl.has_active_trait(traits::GREAT_ARSE) && chance(15))
     {
         if (m_Performance >= 185) //great
         {
             ss << "A patron reached out to grab her ass. But she skillfully avoided it";
-            if (girl.libido() > 70 && !girl.has_active_trait("Lesbian"))
+            if (girl.libido() > 70 && !girl.has_active_trait(traits::LESBIAN))
             {
                 int roll_c = d100();
                 std::string dick_type_text = "normal sized";
@@ -2229,8 +2222,8 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
                 m_Earnings += girl.askprice() + 50;
                 imagetype = EImageBaseType::ANAL;
                 girl.upd_temp_stat(STAT_LIBIDO, -20, true);
-                bool fast_orgasm = girl.has_active_trait("Fast Orgasms");
-                bool slow_orgasm = girl.has_active_trait("Slow Orgasms");
+                bool fast_orgasm = girl.has_active_trait(traits::FAST_ORGASMS);
+                bool slow_orgasm = girl.has_active_trait(traits::SLOW_ORGASMS);
                 // this construct is used many times below, so we write it out here once.
                 auto OrgasmSelectText = [&](const char* fast, const char* slow, const char* def) {
                     if (fast_orgasm) { ss << fast; }
@@ -2361,15 +2354,15 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         }
     }
 
-    if ((girl.has_active_trait("Meek") || girl.has_active_trait("Shy")) && chance(5))
+    if (girl.any_active_trait({traits::MEEK, traits::SHY}) && chance(5))
     {
         ss << "${name} was taking an order from a rather rude patron when he decide to grope her. She isn't the kind of girl to resist this and had a bad day at work because of this.\n";
         m_Enjoyment -= 5;
     }
 
-    if (girl.libido() > 90 && chance(25) && !girl.has_active_trait("Lesbian") && (girl.has_active_trait(
-            "Nymphomaniac") || girl.has_active_trait("Succubus")) && (girl.oralsex() > 80 ||
-                                                                      girl.has_active_trait("Cum Addict")))
+    if (girl.libido() > 90 && chance(25) && !girl.has_active_trait(traits::LESBIAN) && (girl.has_active_trait(
+            traits::NYMPHOMANIAC) || girl.has_active_trait(traits::SUCCUBUS)) && (girl.oralsex() > 80 ||
+                                                                      girl.has_active_trait(traits::CUM_ADDICT)))
     {
         ss << "${name} thought she deserved a short break and disappeared under one of the tables when nobody was looking, in order to give one of the clients a blowjob. Kneeling under the table, she devoured his cock with ease and deepthroated him as he came to make sure she didn't make a mess. The client himself was wasted out of his mind and didn't catch as much as a glimpse of her, but he left the locale with a big tip on the table.\n";
         m_Tips += 50;
@@ -2378,9 +2371,9 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
     }
 
-    if (girl.libido() > 90 && chance(25) && !girl.has_active_trait("Lesbian") && (girl.has_active_trait(
-            "Nymphomaniac") || girl.has_active_trait("Succubus")) && (girl.oralsex() > 80 ||
-                                                                      girl.has_active_trait("Cum Addict")))
+    if (girl.libido() > 90 && chance(25) && !girl.has_active_trait(traits::LESBIAN) && (girl.has_active_trait(
+            traits::NYMPHOMANIAC) || girl.has_active_trait(traits::SUCCUBUS)) && (girl.oralsex() > 80 ||
+                                                                      girl.has_active_trait(traits::CUM_ADDICT)))
     {
         ss << "During her shift, ${name} unnoticeably dove under the table belonging to a lonely-looking fellow, quickly unzipped his pants and started jacking him off enthusiastically. She skillfully wiped herself when he came all over her face. The whole event took no longer than two minutes, but was well worth the time spent on it, since the patron left with a heavy tip.\n";
         m_Tips += 50;
@@ -2395,10 +2388,9 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         ss << "A drunk patron \"accidentally\" fell onto ${name} and buried his face between her breasts. To his joy and surprise, ${name} flirtatiously encouraged him to motorboat them for awhile, which he gladly did, before slipping some cash between the titties and staggering out on his way.\n"; m_Tips += 40;
     }
 
-    if (girl.has_active_trait("Futanari") && girl.libido() > 80 && chance(5))
+    if (girl.has_active_trait(traits::FUTANARI) && girl.libido() > 80 && chance(5))
     {
-        if (girl.has_active_trait("Open Minded") || girl.has_active_trait("Exhibitionist") || girl.has_active_trait("Slut") ||
-            girl.has_active_trait("Succubus") || (girl.confidence() > 35 && girl.dignity() < 35))
+        if (girl.any_active_trait({traits::OPEN_MINDED, traits::EXHIBITIONIST, traits::SLUT, traits::SUCCUBUS}) || (girl.confidence() > 35 && girl.dignity() < 35))
         {
             ss << "Noticing the bulge under her skirt one of the customers asked for a very special service: He wanted some \"cream\" in his drink. ${name} took her already hard cock out and sprinkled the drink with some of her jizz. The customer thanked her and slipped a good tip under her panties.\n";
             girl.upd_skill(SKILL_SERVICE, 2);
@@ -2413,27 +2405,22 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         }
     }
 
-    if ((girl.has_active_trait("Busty Boobs") && chance(5)) ||
-        (girl.has_active_trait("Big Boobs") && chance(10)) ||
-        (girl.has_active_trait("Giant Juggs") && chance(15)) ||
-        (girl.has_active_trait("Massive Melons") && chance(20)) ||
-        (girl.has_active_trait("Abnormally Large Boobs") && chance(25)) ||
-        (girl.has_active_trait("Titanic Tits") && chance(30)))
+    if (chance(5 * girl.breast_size() - 25))
     {
-        if (chance(30) && (girl.has_active_trait("Exhibitionist") || girl.has_active_trait("Bimbo")))
+        if (chance(30) && (girl.any_active_trait({traits::EXHIBITIONIST, traits::BIMBO})))
         {
             ss << "A patron was staring obviously at her large breasts, so she took off her top to show him her tits, which earned her a ";
             double t = 10.0;
-            if (girl.has_active_trait("Big Boobs")) { t *= 1.5; }
-            if (girl.has_active_trait("Giant Juggs")) { t *= 2; }
-            if (girl.has_active_trait("Massive Melons")) { t *= 3; }
-            if (girl.has_active_trait("Abnormally Large Boobs")) { t *= 4; }
-            if (girl.has_active_trait("Titanic Tits")) { t *= 5; }
-            if (girl.has_active_trait("No Nipples")) { t /= 3; }
-            if (girl.has_active_trait("Missing Nipple")) { t /= 2; }
-            if (girl.has_active_trait("Puffy Nipples")) { t += 1; }
-            if (girl.has_active_trait("Perky Nipples")) { t += 1; }
-            if (girl.has_active_trait("Pierced Nipples")) { t += 2; }
+            if (girl.has_active_trait(traits::BIG_BOOBS)) { t *= 1.5; }
+            if (girl.has_active_trait(traits::GIANT_JUGGS)) { t *= 2; }
+            if (girl.has_active_trait(traits::MASSIVE_MELONS)) { t *= 3; }
+            if (girl.has_active_trait(traits::ABNORMALLY_LARGE_BOOBS)) { t *= 4; }
+            if (girl.has_active_trait(traits::TITANIC_TITS)) { t *= 5; }
+            if (girl.has_active_trait(traits::NO_NIPPLES)) { t /= 3; }
+            if (girl.has_active_trait(traits::MISSING_NIPPLE)) { t /= 2; }
+            if (girl.has_active_trait(traits::PUFFY_NIPPLES)) { t += 1; }
+            if (girl.has_active_trait(traits::PERKY_NIPPLES)) { t += 1; }
+            if (girl.has_active_trait(traits::PIERCED_NIPPLES)) { t += 2; }
             if (girl.dignity() > 60)
             {
                 girl.dignity(-1);
@@ -2445,11 +2432,10 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
             else  ss << "gigantic";
             ss << " tip.\n";
         }
-        else if (chance(20) && girl.has_active_trait("Lesbian") && (girl.has_active_trait("Slut") ||
-                                                                    girl.has_active_trait("Succubus") || girl.libido() > 60))
+        else if (chance(20) && girl.has_active_trait(traits::LESBIAN) && (girl.any_active_trait({traits::SLUT, traits::SUCCUBUS}) || girl.libido() > 60))
         {
             ss << "A female patron was staring obviously at her large breasts, so she grabbed her hand, slipped it under her clothes and let her play with her boobs. ";
-            if (girl.has_active_trait("Pierced Nipples"))
+            if (girl.has_active_trait(traits::PIERCED_NIPPLES))
             {
                 m_Tips += 3;
                 girl.upd_temp_stat(STAT_LIBIDO, 1, true);
@@ -2464,10 +2450,10 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
                 girl.dignity(-1);
             }
         }
-        else if (!girl.has_active_trait("Lesbian") && (girl.has_active_trait("Slut") || girl.has_active_trait("Succubus")))
+        else if (!girl.has_active_trait(traits::LESBIAN) && (girl.any_active_trait({traits::SLUT, traits::SUCCUBUS})))
         {
             ss << "A patron was staring obviously at her large breasts, so she grabbed his hand, slipped it under her clothes and let him play with her boobs. ";
-            if (girl.has_active_trait("Pierced Nipples"))
+            if (girl.has_active_trait(traits::PIERCED_NIPPLES))
             {
                 m_Tips += 3;
                 girl.upd_temp_stat(STAT_LIBIDO, 1, true);
@@ -2487,8 +2473,7 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     if (girl.is_pregnant() && chance(15))
     {
         if (girl.lactation() > 50 &&
-            (girl.has_active_trait("Open Minded") || girl.has_active_trait("Exhibitionist") || girl.has_active_trait("Slut")
-             || girl.has_active_trait("Succubus") ||
+            (girl.any_active_trait({traits::OPEN_MINDED, traits::EXHIBITIONIST, traits::SLUT, traits::SUCCUBUS}) ||
 
              (girl.confidence() > 35 && girl.dignity() < 50)))
         {
@@ -2508,7 +2493,7 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         }
     }
 
-    if (girl.has_active_trait("Alcoholic") && chance(10) && girl.health() > 5)
+    if (girl.has_active_trait(traits::ALCOHOLIC) && chance(10) && girl.health() > 5)
     {
         ss << "${name} couldn't resist the offer of some patrons who invited her for a drink. And another one. And another one... When she came back to her senses she was lying on the floor half naked and covered in cum...\n";
         m_Tips -= 10;
@@ -2529,7 +2514,7 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         // TODO what is this doing?
         imagetype = EImagePresets::GROUP;
         girl.AddMessage(ss.str(), EImagePresets::GANGBANG, EVENT_DANGER);
-        if (girl.lose_trait("Virgin"))
+        if (girl.lose_trait(traits::VIRGIN))
         {
             ss << "\nShe is no longer a virgin.\n";
             girl.happiness(-10);
@@ -2545,20 +2530,19 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         }
     }
 
-    if (girl.has_active_trait("Fleet Of Foot") && chance(30))
+    if (girl.has_active_trait(traits::FLEET_OF_FOOT) && chance(30))
     {
         ss << "${name} is fast on her feet, and makes great time navigating from table to table. She is able to serve almost twice as many customers in her shift.\n";
         m_Tips += 50;
     }
 
-    if ((girl.has_active_trait("Long Legs") || girl.has_active_trait("Great Figure") ||
-         girl.has_active_trait("Hourglass Figure")) && chance(30))
+    if (girl.any_active_trait({traits::LONG_LEGS, traits::GREAT_FIGURE, traits::HOURGLASS_FIGURE}) && chance(30))
     {
         ss << "${name}'s body is incredible, and the customers fixate on her immediately. Her tips reflect their attention.";
         m_Tips += 20;
     }
 
-    if (girl.has_active_trait("Dojikko") && chance(35))
+    if (girl.has_active_trait(traits::DOJIKKO) && chance(35))
     {
         ss << "${name}  is clumsy in the most adorable way, and when she trips and falls face-first into a patron's lap, spilling a tray all over the floor, he just laughs and asks if there is anything he can do to help.\n";
         if (girl.dignity() >= 50 || girl.libido() <= 50)
@@ -2585,7 +2569,7 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         }
     }
 
-    if (girl.has_active_trait("Sexy Air") && chance(35))
+    if (girl.has_active_trait(traits::SEXY_AIR) && chance(35))
     {
         ss << "Customers enjoy watching ${name} work. Her sexy body and her indefinably attractive way of carrying herself draw attention, whether she likes it or not. It is uncanny how many drinks the customers accidentally spill on their laps, and they would all like her help drying themselves off.\n";
         if (girl.dignity() <= 0 || girl.libido() >= 60)
@@ -2608,13 +2592,13 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
         }
     }
 
-    if (girl.has_active_trait("Exhibitionist") && chance(50))
+    if (girl.has_active_trait(traits::EXHIBITIONIST) && chance(50))
     {
         ss << "${name} is a rampant exhibitionist, and this job gives her a lot of opportunities to flash her goods at select customers. She has cut her uniform top to be even shorter than usual, and her nipples constantly appear when she flashes her underboobs. ${name} does a great job of increasing the atmosphere of sexual tension in your restaurant.";
         brothel.m_Happiness += 15;
     }
 
-    if (chance(35) && (girl.breast_size() >= 5 || girl.has_active_trait("Sexy Air")))
+    if (chance(35) && (girl.breast_size() >= 5 || girl.has_active_trait(traits::SEXY_AIR)))
     {
         if (girl.dignity() >= 50)
         {
@@ -2673,15 +2657,15 @@ bool ClubWaitress::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
     // Improve stats
     HandleGains(girl, fame);
 
-    if (!girl.has_active_trait("Straight"))    {
+    if (!girl.has_active_trait(traits::STRAIGHT))    {
         girl.upd_temp_stat(STAT_LIBIDO, std::min(3, brothel.num_girls_on_job(JOB_BARSTRIPPER, false)));
     }
 
     //gained traits
-    if (m_Performance > 150 && girl.constitution() > 65) { cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKCLUB, "${name} has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", is_night); }
+    if (m_Performance > 150 && girl.constitution() > 65) { cGirls::PossiblyGainNewTrait(girl, traits::FLEET_OF_FOOT, 60, ACTION_WORKCLUB, "${name} has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", is_night); }
     if (chance(25) && girl.dignity() < 0 && (anal > 0 || oral > 0 || hand > 0))
     {
-        cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
+        cGirls::PossiblyGainNewTrait(girl, traits::SLUT, 80, ACTION_SEX, "${name} has turned into quite a slut.", is_night, EVENT_WARNING);
     }
 
     return false;
@@ -2810,7 +2794,7 @@ bool AdvertisingJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     HandleGains(girl, fame);
 
     if (girl.strip() > 50)
-        cGirls::PossiblyGainNewTrait(girl, "Exhibitionist", 50, ACTION_WORKADVERTISING, "${name} has become quite the Exhibitionist, she seems to prefer Advertising topless whenever she can.", is_night);
+        cGirls::PossiblyGainNewTrait(girl, traits::EXHIBITIONIST, 50, ACTION_WORKADVERTISING, "${name} has become quite the Exhibitionist, she seems to prefer Advertising topless whenever she can.", is_night);
 
     return false;
 }
@@ -2991,7 +2975,7 @@ bool BeastCareJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night)
                 girl.confidence(addbeasts);
             }
         }
-        else if (girl.combat() > 50 && (girl.has_active_trait("Adventurer") || girl.confidence() > 70))
+        else if (girl.combat() > 50 && (girl.has_active_trait(traits::ADVENTURER) || girl.confidence() > 70))
         {
             addbeasts = uniform(0, 1);
             ss << "${name} stood near the entrance to the catacombs, trying to lure out a beast by making noises of an injured animal.\n";
@@ -3135,8 +3119,8 @@ bool SecurityJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
         int choice = uniform(0, 1);
         ss << "Her libido caused her to get distracted while watching ";
         /*might could do more with this FIXME CRAZY*/
-        if (girl.has_active_trait("Lesbian")) choice = 0;
-        if (girl.has_active_trait("Straight")) choice = 1;
+        if (girl.has_active_trait(traits::LESBIAN)) choice = 0;
+        if (girl.has_active_trait(traits::STRAIGHT)) choice = 1;
         switch (choice)
         {
             case 0:
@@ -3152,7 +3136,7 @@ bool SecurityJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
 
     }
 
-    if ((girl.libido() > 50 && chance(girl.libido() / 5)) || (girl.has_active_trait("Nymphomaniac") && chance(20)))
+    if ((girl.libido() > 50 && chance(girl.libido() / 5)) || (girl.has_active_trait(traits::NYMPHOMANIAC) && chance(20)))
     {
         ss <<"\nGave some bonus service to the well behaved patrons, ";
         int l = 0;
@@ -3308,7 +3292,7 @@ bool CatacombJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
         ss << "${name} was defeated then" << ((NumMon <= 3) ? "" : " gang") << " raped and abused by " << NumMon << " monsters.";
         int health = -NumMon, happy = -NumMon * 5, spirit = -NumMon, sex = -NumMon * 2, combat = -NumMon * 2, injury = 9 + NumMon;
 
-        if (girl.lose_trait("Virgin"))
+        if (girl.lose_trait(traits::VIRGIN))
         {
             ss << " That's a hell of a way to lose your virginity; naturally, she's rather distressed by this fact.";
             health -= 1, happy -= 10, spirit -= 2, sex -= 2, combat -= 2, injury += 2;
@@ -3365,7 +3349,7 @@ bool CatacombJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) 
                 g_Game->get_objective()->m_SoFar++;
             }
             std::stringstream Umsg;
-            ugirl->add_temporary_trait("Kidnapped", uniform(2, 16));
+            ugirl->add_temporary_trait(traits::KIDNAPPED, uniform(2, 16));
             Umsg << ugirl->FullName() << " was captured in the catacombs by ${name}.\n";
             ugirl->AddMessage(Umsg.str(), EImageBaseType::PROFILE, EVENT_DUNGEON);
             g_Game->dungeon().AddGirl(ugirl, DUNGEON_GIRLCAPTURED);    // Either type of girl goes to the dungeon

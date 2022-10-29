@@ -272,8 +272,8 @@ sWorkJobResult cJobStageHand::DoWork(sGirl& girl, bool is_night) {
     // Improve girl
     int xp = filming ? 15 : 10, skill = 3;
     if (enjoyc + enjoym > 2)                            { xp += 1; skill += 1; }
-    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
+    if (girl.has_active_trait(traits::QUICK_LEARNER))        { skill += 1; xp += 3; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { skill -= 1; xp -= 3; }
 
     girl.exp(xp);
     girl.service(uniform(2, skill+1));
@@ -284,7 +284,7 @@ sWorkJobResult cJobStageHand::DoWork(sGirl& girl, bool is_night) {
     if (chance(girl.service()))
         cGirls::PossiblyGainNewTrait(girl, "Maid", 90, ACTION_WORKCLEANING, "${name} has cleaned enough that she could work professionally as a Maid anywhere.", is_night);
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", is_night);
+    cGirls::PossiblyLoseExistingTrait(girl, traits::CLUMSY, 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", is_night);
 
     return {false, 0, 0, m_Wages};
 }

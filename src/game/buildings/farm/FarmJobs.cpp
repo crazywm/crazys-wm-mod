@@ -896,7 +896,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
         switch (uniform(0, 9))
         {
             case 0:
-                if (girl.has_active_trait("Twisted") && girl.has_active_trait("Nymphomaniac") && (girl.libido() >= 80))
+                if (girl.has_active_trait(traits::TWISTED) && girl.has_active_trait(traits::NYMPHOMANIAC) && (girl.libido() >= 80))
                 {
                     ss << "Being a horny, twisted nymphomaniac, ${name} had some fun with the beasts before she handed them over.\n";
                     girl.beastiality(uniform(0, gain));
@@ -905,7 +905,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
                     break;
                 }
             case 1:
-                if (girl.has_active_trait("Psychic") && (girl.libido() >= 90) && chance(gain * 5))
+                if (girl.has_active_trait(traits::PSYCHIC) && (girl.libido() >= 90) && chance(gain * 5))
                 {
                     ss << "${name}'s Psychic sensitivity caused her mind be overwhelmed by the creatures' lusts";
                     if (is_virgin(girl))
@@ -926,7 +926,7 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
                     break;
                 }
             case 2:
-                if (girl.has_active_trait("Assassin") && chance(gain * 5))
+                if (girl.has_active_trait(traits::ASSASSIN) && chance(gain * 5))
                 {
                     ss << " One of the captured creatures tried to escape on the way back. Trained assassin, ${name}, instantly killed it as an example to the others.\n";
                     girl.combat(1);
@@ -1094,10 +1094,10 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     int breastsize = girl.breast_size();
 
     // Milk - a multiplier on base lactation
-    if (girl.has_active_trait("Dry Milk"))                        { lactation = (lactation * 4) / 10; }
-    if (girl.has_active_trait("Scarce Lactation"))                { lactation = (lactation * 6) / 10; }
-    if (girl.has_active_trait("Abundant Lactation"))            { lactation = (lactation * 14) / 10; }
-    if (girl.has_active_trait("Cow Tits"))                        { lactation = (lactation * 16) / 10; }
+    if (girl.has_active_trait(traits::DRY_MILK))                        { lactation = (lactation * 4) / 10; }
+    if (girl.has_active_trait(traits::SCARCE_LACTATION))                { lactation = (lactation * 6) / 10; }
+    if (girl.has_active_trait(traits::ABUNDANT_LACTATION))            { lactation = (lactation * 14) / 10; }
+    if (girl.has_active_trait(traits::COW_TITS))                        { lactation = (lactation * 16) / 10; }
 
 
 
@@ -1198,7 +1198,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
 
     //Testing and seems weird that virgins and never-pregs can produce so much, so halving this
     //This is every way I can find of asking if she's had a kid - MILF needed as this will register children prior to employment
-    if (is_virgin(girl) || (!isPregnant && !girl.has_active_trait("MILF") && girl.m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1))
+    if (is_virgin(girl) || (!isPregnant && !girl.has_active_trait(traits::MILF) && girl.m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1))
     {
         volume /= 2;                                            // never preg, so not producing much
         girl.lactation(uniform(0, 2));    //all this pumping etc induces lactation
@@ -1214,38 +1214,38 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     {
         ss << "She was milked by ";
         ss << milker->FullName();
-        if (milker->has_active_trait("No Hands") || milker->has_active_trait("No Arms"))
+        if (milker->has_active_trait(traits::NO_HANDS) || milker->has_active_trait(traits::NO_ARMS))
         {
             ss << ", who really struggled. Why would you pick someone with no hands to be a milker?";
             volume /= 2;
         }
-        else if (milker->has_active_trait("MILF") && chance(50))
+        else if (milker->has_active_trait(traits::MILF) && chance(50))
         {
             ss << ", a mother, who has experience extracting milk effectively.";
             volume += (volume / 5);
         }
-        else if (milker->has_active_trait("Sadistic") && chance(35))
+        else if (milker->has_active_trait(traits::SADISTIC) && chance(35))
         {
             ss << ", who seemed more interested in slapping ${name}'s breasts and twisting her nipples than in actually trying to get milk out.";
             volume -= (volume / 5);
         }
-        else if (milker->has_active_trait("Lesbian") && chance(40))
+        else if (milker->has_active_trait(traits::LESBIAN) && chance(40))
         {
             ss << ", who massaged ${name}'s breasts thoroughly and was careful to thoroughly arouse the nipple with her tongue before attaching the cup. This helped with milking.";
             volume += (volume / 10);
             girl.upd_temp_stat(STAT_LIBIDO, 5, true);
         }
-        else if (girl.has_active_trait("Clumsy") && chance(40))
+        else if (girl.has_active_trait(traits::CLUMSY) && chance(40))
         {
             ss << ", who did a great job milking ${name}'s breasts, but then tripped over the bucket, spilling quite a lot.";
             volume -= (volume / 4);
         }
-        else if (milker->has_active_trait("Straight") && chance(40))
+        else if (milker->has_active_trait(traits::STRAIGHT) && chance(40))
         {
             ss << ", who clearly didn't want to touch another woman's breasts. This made the milking akward and inefficient.";
             volume -= (volume / 10);
         }
-        else if (milker->has_active_trait("Cum Addict") && chance(45))
+        else if (milker->has_active_trait(traits::CUM_ADDICT) && chance(45))
         {
             ss << ", who kept compaining that she'd rather be 'milking' men.";
         }
@@ -1264,9 +1264,9 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     int ease = volume;
     //
     // Nipples affects ease which is used to adjust the girls enjoyment and damage
-    if (girl.has_active_trait("Inverted Nipples")) ease -= 20;
-    if (girl.has_active_trait("Puffy Nipples")) ease += 40;
-    if (girl.has_active_trait("Perky Nipples")) ease += 20;
+    if (girl.has_active_trait(traits::INVERTED_NIPPLES)) ease -= 20;
+    if (girl.has_active_trait(traits::PUFFY_NIPPLES)) ease += 40;
+    if (girl.has_active_trait(traits::PERKY_NIPPLES)) ease += 20;
 
 
     if (ease < 75)
@@ -1274,7 +1274,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
         m_Enjoyment -= 2 * (roll % 3 + 2);                                // -8 to -4
         girl.health(-(roll % 6));            // 0 to 5 damage
         ss << "She's barely lactating, so this was a slow, painful process that left her with raw, ";
-        if (girl.has_active_trait("Missing Nipple") || girl.has_active_trait("No Nipples")) ss << "aching breasts.";
+        if (girl.has_active_trait(traits::MISSING_NIPPLE) || girl.has_active_trait(traits::NO_NIPPLES)) ss << "aching breasts.";
         else ss << "bleeding nipples.";
     }
     else if (ease < 150)
@@ -1316,7 +1316,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     int milkValue = int(milkProduced * MILKWHOLESALE);        //Base value
     int traitBoost = milkValue;                                // now basing the boost on base value, not on inflated CG value.
 
-    if (girl.has_active_trait("Cat Girl"))
+    if (girl.has_active_trait(traits::CAT_GIRL))
     {
         ss << "Cat-Girl breast-milk has higher value.\n";
         milkValue *= CATGIRLBONUS;
@@ -1325,29 +1325,29 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     //finally a little randomness
     if (volume > 0)   // no point mentioning this if she doesn't produce anything
     {
-        if (chance(60) && (girl.has_active_trait("Fallen Goddess") || girl.has_active_trait("Goddess")))
+        if (chance(60) && (girl.has_active_trait(traits::FALLEN_GODDESS) || girl.has_active_trait(traits::GODDESS)))
         {
             ss << "Customers are willing to pay much more to sup from the breast of a Goddess.\n";
             milkValue += (2 * traitBoost);
         }
-        else if (chance(40) && girl.has_active_trait("Demon"))
+        else if (chance(40) && girl.has_active_trait(traits::DEMON))
         {
             ss << "Customers are thrilled at the chance to consume the milk of a Demon.\n";
             milkValue += (2 * traitBoost);
         }
-        else if (chance(50) && girl.has_active_trait("Queen"))
+        else if (chance(50) && girl.has_active_trait(traits::QUEEN))
         {
             ss << "Customers are willing to pay more to enjoy the breast-milk of a Queen.\n";
             traitBoost *= uniform(1, 2);
             milkValue += traitBoost;
         }
-        else if (chance(50) && girl.has_active_trait("Princess"))
+        else if (chance(50) && girl.has_active_trait(traits::PRINCESS))
         {
             ss << "Customers are willing to pay more to enjoy the breast-milk of a Princess.\n";
             traitBoost *= uniform(1, 2);
             milkValue += traitBoost;
         }
-        else if (chance(30) && (girl.has_active_trait("Priestess")))
+        else if (chance(30) && (girl.has_active_trait(traits::PRIESTESS)))
         {
             ss << "Customers pay more to drink the breast-milk of a religious holy-woman.\n";
             milkValue += traitBoost;
@@ -1357,20 +1357,20 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
             ss << "Your customers eagerly gulp down the breast-milk of such a famous and well-loved girl.\n";
             milkValue += traitBoost;
         }
-        else if (girl.has_active_trait("Vampire"))
+        else if (girl.has_active_trait(traits::VAMPIRE))
         {
             ss << "Customers pay more to try the breast-milk of a Vampire. Perhaps they hope for eternal life.\n";
             milkValue += uniform(5, 35);
         }
 
-        if (chance(30) && (girl.has_active_trait("Shroud Addict") || girl.has_active_trait("Fairy Dust Addict") ||
-                                girl.has_active_trait("Viras Blood Addict")))
+        if (chance(30) && (girl.has_active_trait(traits::SHROUD_ADDICT) || girl.has_active_trait(traits::FAIRY_DUST_ADDICT) ||
+                                girl.has_active_trait(traits::VIRAS_BLOOD_ADDICT)))
         {
             ss << "Her breast-milk has a strangely bitter flavour. However, customers find it quite addictive and end up paying extra for more.\n";
             milkValue += uniform(10, 40);
         }
 
-        if (chance(15) && (girl.has_active_trait("Strong Magic") || girl.has_active_trait("Powerful Magic")))
+        if (chance(15) && (girl.has_active_trait(traits::STRONG_MAGIC) || girl.has_active_trait(traits::POWERFUL_MAGIC)))
         {
             if ((girl.magic() > 75) && (girl.mana() > 50))
             {
@@ -1384,16 +1384,16 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
                 milkValue += uniform(10, 40);
             }
         }
-        if (girl.has_active_trait("Undead") || girl.has_active_trait("Zombie"))
+        if (girl.has_active_trait(traits::UNDEAD) || girl.has_active_trait(traits::ZOMBIE))
         {
             ss << "Customers are very reluctant to drink the milk of the undead. You can barely give the stuff away.\n";
             milkValue /= 10;
         }
     }
     //update to add options based on how good you are...
-    if (chance(3) && (girl.has_active_trait("Great Arse") || girl.has_active_trait("Tight Butt") ||
-                           girl.has_active_trait("Phat Booty") ||
-                           girl.has_active_trait("Deluxe Derriere")))
+    if (chance(3) && (girl.has_active_trait(traits::GREAT_ARSE) || girl.has_active_trait(traits::TIGHT_BUTT) ||
+                           girl.has_active_trait(traits::PHAT_BOOTY) ||
+                           girl.has_active_trait(traits::DELUXE_DERRIERE)))
     {
         extraEvent = true;
         ssextra << "\nAs you survey the milking area from the doorway, you can't help noticing ${name}'s butt rising into the air from a milking stall";
@@ -1488,8 +1488,8 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
             }
             if (is_virgin(girl)) ssextra << "Thanks to you, her virginity is intact so ";
             ssextra << "${name} comes to your office after her shift";
-            if ((HateLove <= 50) || girl.has_active_trait("Nymphomaniac") || girl.has_active_trait("Cum Addict") ||
-                girl.has_active_trait("Slut"))
+            if ((HateLove <= 50) || girl.has_active_trait(traits::NYMPHOMANIAC) || girl.has_active_trait(traits::CUM_ADDICT) ||
+                girl.has_active_trait(traits::SLUT))
             {
                 ssextra << ", pulls down your pants, and 'thanks'";
                 extraimage = EImagePresets::BLOWJOB;
@@ -1518,13 +1518,13 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
     else if ((int)milkProduced == 0)
     {
         ss << "a trickle of ";
-        if (girl.has_active_trait("Cat Girl"))    ss << "Cat-Girl ";
+        if (girl.has_active_trait(traits::CAT_GIRL))    ss << "Cat-Girl ";
         ss << "breast-milk, earning just " << m_Earnings << " gold.";
     }
     else
     {
         ss << "just over " << (int)milkProduced << " ounces. This fine, freshly-squeezed ";
-        if (girl.has_active_trait("Cat Girl"))    ss << "Cat-Girl ";
+        if (girl.has_active_trait(traits::CAT_GIRL))    ss << "Cat-Girl ";
         ss << "breast-milk earns " << m_Earnings << " gold.";
     }
 
@@ -1546,10 +1546,10 @@ double cFarmJobGetMilked::GetPerformance(const sGirl& girl, bool estimate) const
     jobperformance += girl.lactation();
     jobperformance += 5 * girl.breast_size();
 
-    if (girl.has_active_trait("Dry Milk")) jobperformance /= 5;
-    else if (girl.has_active_trait("Scarce Lactation")) jobperformance /= 2;
-    else if (girl.has_active_trait("Abundant Lactation")) jobperformance *= 1.5;
-    else if (girl.has_active_trait("Cow Tits")) jobperformance *= 2;
+    if (girl.has_active_trait(traits::DRY_MILK)) jobperformance /= 5;
+    else if (girl.has_active_trait(traits::SCARCE_LACTATION)) jobperformance /= 2;
+    else if (girl.has_active_trait(traits::ABUNDANT_LACTATION)) jobperformance *= 1.5;
+    else if (girl.has_active_trait(traits::COW_TITS)) jobperformance *= 2;
 
     if (girl.is_pregnant()) jobperformance *= 2;
 
@@ -1620,8 +1620,8 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     else if (roll_a <= 30)    skill = 5;
     else if (roll_a <= 60)    skill = 4;
     else /*             */    skill = 3;
-    /* */if (girl.has_active_trait("Quick Learner"))    { skill += 1; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; }
+    /* */if (girl.has_active_trait(traits::QUICK_LEARNER))    { skill += 1; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { skill -= 1; }
     skill -= dirtyloss;
     ss << "The Farm Lab is ";
     if (dirtyloss <= 0) ss << "clean and tidy";
@@ -1669,7 +1669,7 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
             case 1:
                 break;
             case 2:
-                if (girl.lose_trait( "Dependent"))
+                if (girl.lose_trait( traits::DEPENDENT))
                 {
                     ss << "She seems to be getting over her Dependancy with her training.";
                     gaintrait = false;
@@ -1762,9 +1762,9 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
                 {
                     if (girl.magic() < 80 && girl.mana() < 20) break;
                     int manacost = 60;
-                    /* */if (girl.has_active_trait("Sterile")) manacost = 80;
-                    else if (girl.has_active_trait("Fertile")) manacost = 40;
-                    else if (girl.has_active_trait("Broodmother")) manacost = 20;
+                    /* */if (girl.has_active_trait(traits::STERILE)) manacost = 80;
+                    else if (girl.has_active_trait(traits::FERTILE)) manacost = 40;
+                    else if (girl.has_active_trait(traits::BROODMOTHER)) manacost = 20;
                     if (girl.mana() >= manacost && chance(girl.magic() - manacost))
                     {
                         girl.mana(-manacost);
@@ -1776,7 +1776,7 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
                     // Noble, Princess and Queen needs 40 in all the
                     // three stats, everyone else needs 60 in one stat
                     // of the three to make this
-                    if (girl.has_active_trait("Noble") || girl.has_active_trait("Princess") || girl.has_active_trait("Queen"))
+                    if (girl.has_active_trait(traits::NOBLE) || girl.has_active_trait(traits::PRINCESS) || girl.has_active_trait(traits::QUEEN))
                     {
                         if (girl.refinement() < 40 || girl.service() < 40 || girl.intelligence() < 40)
                             break;
@@ -1791,7 +1791,7 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
                 {
                     int manacost = 70;
                     // Dominatrix, Masochist and Sadistic needs 50, everyone else needs 70 to make this
-                    if (girl.has_active_trait("Dominatrix") || girl.has_active_trait("Masochist") || girl.has_active_trait("Sadistic"))
+                    if (girl.has_active_trait(traits::DOMINATRIX) || girl.has_active_trait(traits::MASOCHIST) || girl.has_active_trait(traits::SADISTIC))
                     {
                         if (girl.bdsm() < 50 || girl.magic() < 50 || girl.mana() < 50)        break;
                         manacost = 50;
@@ -1863,8 +1863,8 @@ bool cFarmJobResearch::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     // Improve stats
     int xp = 5 + skill;
 
-    if (girl.has_active_trait("Quick Learner"))        { xp += 2; }
-    else if (girl.has_active_trait("Slow Learner"))    { xp -= 2; }
+    if (girl.has_active_trait(traits::QUICK_LEARNER))        { xp += 2; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { xp -= 2; }
 
     girl.exp(uniform(1, xp) );
     girl.upd_temp_stat(STAT_LIBIDO, skill / 2);

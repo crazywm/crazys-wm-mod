@@ -396,7 +396,7 @@ int sLuaGirl::check_virginity(lua_State *L) {
 
 int sLuaGirl::lose_virginity(lua_State *L) {
     auto& girl = check_type(L, 1);
-    bool result = girl.lose_trait("Virgin");
+    bool result = girl.lose_trait(traits::VIRGIN);
     lua_pushboolean(L, result);
     return 1;
 }

@@ -304,6 +304,16 @@
         </Modifiers>
     </Trait>
 
+    <Trait InheritChance="0" Name="Has Boy Friend" RandomChance="20">
+        <description>She has a boyfriend.</description>
+        <Excludes>Lesbian</Excludes>
+    </Trait>
+
+    <Trait InheritChance="0" Name="Has Girl Friend" RandomChance="20">
+        <description>She has a girlfriend.</description>
+        <Excludes>Straight</Excludes>
+    </Trait>
+
     <MutexGroup>
         <Trait>Queen</Trait>
         <Trait>Princess</Trait>

@@ -145,7 +145,7 @@ int get_total_player_monster_girls()
     for (int i = 0; i < g_Game->dungeon().GetNumGirls(); i++)
     {
         sDungeonGirl* dgirl = g_Game->dungeon().GetGirl(i);
-        if (dgirl->m_Girl->has_active_trait("Not Human"))
+        if (dgirl->m_Girl->has_active_trait(traits::NOT_HUMAN))
             total++;
     }
 

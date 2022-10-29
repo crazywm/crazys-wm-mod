@@ -205,8 +205,8 @@ bool WorkFarmPonyGirl(sGirl& girl, bool Day0Night1, cRng& rng)
     // Improve stats
     int xp = 10, skill = 3;
 
-    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
+    if (girl.has_active_trait(traits::QUICK_LEARNER))        { skill += 1; xp += 3; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { skill -= 1; xp -= 3; }
 
     girl.exp(xp);
     girl.upd_Enjoyment(actiontype, enjoy);

@@ -494,8 +494,8 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
     {
         Mother = g_Game->CreateRandomGirl(SpawnReason::KIDNAPPED, (g_Dice % (50 - (oldest + 18))) + oldest + 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
         Mother->SetSurname(surname);
-        if (!g_Dice.percent(Mother->age())) Mother->gain_trait("MILF");    // the younger the mother the more likely she will be a MILF
-        Mother->lose_trait("Virgin");
+        if (!g_Dice.percent(Mother->age())) Mother->gain_trait(traits::MILF);    // the younger the mother the more likely she will be a MILF
+        Mother->lose_trait(traits::VIRGIN);
 
         std::string biography = "Daughter of " + Mother->FullName() + " and a deadbeat brothel client.";
 

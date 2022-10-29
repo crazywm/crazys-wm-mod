@@ -68,8 +68,8 @@ void Cleaning::CleaningUpdateGirl(sGirl& girl, bool is_night, int enjoy, int cle
 
     // Base Improvement and trait modifiers
     int xp = 10, skill = 3;
-    /* */if (girl.has_active_trait("Quick Learner"))    { skill += 1; xp += 3; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
+    /* */if (girl.has_active_trait(traits::QUICK_LEARNER))    { skill += 1; xp += 3; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { skill -= 1; xp -= 3; }
     // EXP and Libido
     girl.exp(uniform(1, xp));
 
@@ -89,7 +89,7 @@ void Cleaning::CleaningUpdateGirl(sGirl& girl, bool is_night, int enjoy, int cle
         cGirls::PossiblyGainNewTrait(girl, "Maid", 70, ACTION_WORKCLEANING, "${name} has cleaned enough that she could work professionally as a Maid anywhere.", is_night);
     // Lose Traits
     if (chance(girl.service()))
-        cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", is_night);
+        cGirls::PossiblyLoseExistingTrait(girl, traits::CLUMSY, 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", is_night);
 }
 
 bool Cleaning::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night){
@@ -287,9 +287,9 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
     auto brothel = girl.m_Building;
 
     int choice = uniform(0, 5);
-    if (choice == 1 && (!brothel->is_sex_type_allowed(SKILL_ORALSEX) || girl.has_active_trait("Lesbian"))) choice = 0;
+    if (choice == 1 && (!brothel->is_sex_type_allowed(SKILL_ORALSEX) || girl.has_active_trait(traits::LESBIAN))) choice = 0;
     if (choice != 2 && girl.tiredness() >= 80) choice = 2;
-    if (choice != 1 && chance(30) && girl.has_active_trait("Cum Addict")) choice = 1;
+    if (choice != 1 && chance(30) && girl.has_active_trait(traits::CUM_ADDICT)) choice = 1;
 
     switch (choice)
     {
@@ -323,8 +323,8 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
         case 5:
         {
             ss << "${name} finished her cleaning early so ";
-            if (girl.has_active_trait("Your Wife") || chance(30) && !girl.has_active_trait("Your Daughter") && !girl.has_active_trait(
-                    "Lesbian")) //Flipped to fix the daughter issue
+            if (girl.has_active_trait(traits::YOUR_WIFE) || chance(30) && !girl.has_active_trait(traits::YOUR_DAUGHTER) && !girl.has_active_trait(
+                    traits::LESBIAN)) //Flipped to fix the daughter issue
 
             {
                 // TODO adjust tips
@@ -346,8 +346,8 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
                 }
                 if (brothel->is_sex_type_allowed(SKILL_ORALSEX))
                 {
-                    ss << "She finished by cleaning your cock with her " << (girl.has_active_trait("Dick-Sucking Lips") ? "amazing dick-sucking lips" : "mouth") << ". ";
-                    if (girl.has_active_trait("Cum Addict"))
+                    ss << "She finished by cleaning your cock with her " << (girl.has_active_trait(traits::DICK_SUCKING_LIPS) ? "amazing dick-sucking lips" : "mouth") << ". ";
+                    if (girl.has_active_trait(traits::CUM_ADDICT))
                     {
                         ss << "She didn't stop 'cleaning' until you came in her mouth.\nAfterward, you notice her carefully "
                            << "crawling around and licking up every stray drop of cum. She must really love cleaning.\n";

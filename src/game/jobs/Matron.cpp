@@ -68,21 +68,21 @@ double MatronJob::GetPerformance(const sGirl& girl, bool estimate) const {
         //traits, commented for now
 
         //good traits
-        //if (girl.has_trait("Charismatic")) jobperformance += 20;
-        //if (girl.has_trait("Cool Person")) jobperformance += 5;
-        //if (girl.has_trait("Psychic")) jobperformance += 10;
-        //if (girl.has_trait("Teacher")) jobperformance += 10;
+        //if (girl.has_trait(traits::CHARISMATIC)) jobperformance += 20;
+        //if (girl.has_trait(traits::COOL_PERSON)) jobperformance += 5;
+        //if (girl.has_trait(traits::PSYCHIC)) jobperformance += 10;
+        //if (girl.has_trait(traits::TEACHER)) jobperformance += 10;
 
         //bad traits
-        //if (girl.has_trait("Dependent")) jobperformance -= 50;
-        //if (girl.has_trait("Mind Fucked")) jobperformance -= 50;
-        //if (girl.has_trait("Retarded")) jobperformance -= 60;
-        //if (girl.has_trait("Bimbo")) jobperformance -= 10;
-        //if (girl.has_trait("Smoker")) jobperformance -= 10;
-        //if (girl.has_trait("Alcoholic")) jobperformance -= 25;
-        //if (girl.has_trait("Fairy Dust Addict")) jobperformance -= 50;
-        //if (girl.has_trait("Shroud Addict")) jobperformance -= 50;
-        //if (girl.has_trait("Viras Blood Addict")) jobperformance -= 50;
+        //if (girl.has_trait(traits::DEPENDENT)) jobperformance -= 50;
+        //if (girl.has_trait(traits::MIND_FUCKED)) jobperformance -= 50;
+        //if (girl.has_trait(traits::RETARDED)) jobperformance -= 60;
+        //if (girl.has_trait(traits::BIMBO)) jobperformance -= 10;
+        //if (girl.has_trait(traits::SMOKER)) jobperformance -= 10;
+        //if (girl.has_trait(traits::ALCOHOLIC)) jobperformance -= 25;
+        //if (girl.has_trait(traits::FAIRY_DUST_ADDICT)) jobperformance -= 50;
+        //if (girl.has_trait(traits::SHROUD_ADDICT)) jobperformance -= 50;
+        //if (girl.has_trait(traits::VIRAS_BLOOD_ADDICT)) jobperformance -= 50;
     }
     else            // for the actual check        // not used
     {
@@ -115,11 +115,11 @@ int MatronJob::MatronGains(sGirl& girl, bool Day0Night1,  int conf) {
     int numgirls = girl.m_Building->num_girls();
     int xp = numgirls / 10, libido = 0, skill = 3;
 
-    if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 5; }
-    else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 5; }
+    if (girl.has_active_trait(traits::QUICK_LEARNER))        { skill += 1; xp += 5; }
+    else if (girl.has_active_trait(traits::SLOW_LEARNER))    { skill -= 1; xp -= 5; }
     // TODO these constants should depend on where the girl is.
-    if (girl.has_active_trait("Lesbian")) libido += numgirls / 10;
-    else  if (!girl.has_active_trait("Straight")) libido += numgirls / 20;
+    if (girl.has_active_trait(traits::LESBIAN)) libido += numgirls / 10;
+    else  if (!girl.has_active_trait(traits::STRAIGHT)) libido += numgirls / 20;
     int stat_sum = girl.get_skill(SKILL_SERVICE) + girl.get_stat(STAT_CHARISMA) + girl.get_stat(STAT_INTELLIGENCE) +
                    girl.get_stat(STAT_CONFIDENCE) + girl.get_skill(SKILL_MEDICINE);
     int wages = int((100.f + (stat_sum / 50.f + 1) * numgirls));
@@ -132,8 +132,8 @@ int MatronJob::MatronGains(sGirl& girl, bool Day0Night1,  int conf) {
     girl.service(uniform(2, skill + 2));
     girl.upd_temp_stat(STAT_LIBIDO, uniform(0, libido));
 
-    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(girl, "Psychic", 60, ACTION_WORKMATRON, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, traits::CHARISMATIC, 30, ACTION_WORKMATRON, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, traits::PSYCHIC, 60, ACTION_WORKMATRON, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);
 
     return std::max(0, wages);
 }
@@ -245,9 +245,9 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
         // 'Mute' Added so if the cost of the item changes then the gold amout will be correct
         const sInventoryItem* item = nullptr;
         std::string itemName;
-        /* */if (girl.has_active_trait("Viras Blood Addict"))    { itemName = "Vira Blood"; }
-        else if (girl.has_active_trait("Shroud Addict"))        { itemName = "Shroud Mushroom"; }
-        else if (girl.has_active_trait("Fairy Dust Addict"))    { itemName = "Fairy Dust"; }
+        /* */if (girl.has_active_trait(traits::VIRAS_BLOOD_ADDICT))    { itemName = "Vira Blood"; }
+        else if (girl.has_active_trait(traits::SHROUD_ADDICT))        { itemName = "Shroud Mushroom"; }
+        else if (girl.has_active_trait(traits::FAIRY_DUST_ADDICT))    { itemName = "Fairy Dust"; }
         if (!itemName.empty())        item = g_Game->inventory_manager().GetItem(itemName);
         if (item)
         {
@@ -255,9 +255,9 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
             girl.add_item(item);
         }
         // 'Mute' End  Change
-        if (girl.has_active_trait("Cum Addict"))
+        if (girl.has_active_trait(traits::CUM_ADDICT))
             method = 4;
-        else if (girl.has_active_trait("Nymphomaniac") && girl.libido() > 50)
+        else if (girl.has_active_trait(traits::NYMPHOMANIAC) && girl.libido() > 50)
             method = 3;
         else if (cost < girl.m_Money && chance(girl.morality()))        // pay out of pocket
             method = 1;
@@ -307,60 +307,57 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
         }
     }
 
-    if (girl.has_active_trait("Exhibitionist"))
+    if (girl.has_active_trait(traits::EXHIBITIONIST))
     {
         ss << "\n \nShe hung out in the brothel wearing barely anything.";
-        if (chance(50) && girl.has_active_trait("Horrific Scars"))
+        if (chance(50) && girl.has_active_trait(traits::HORRIFIC_SCARS))
         {
             ss << " The customers were disgusted by her horrific scars.";
             brothel->m_Happiness -= 15;
         }
-        else if (chance(50) && girl.has_active_trait("Small Scars"))
+        else if (chance(50) && girl.has_active_trait(traits::SMALL_SCARS))
         {
             ss << " Some customers were disgusted by her scars.";
             brothel->m_Happiness -= 5;
         }
-        else if (chance(50) && girl.has_active_trait("Bruises"))
+        else if (chance(50) && girl.has_active_trait(traits::BRUISES))
         {
             ss << " The customers were disgusted by her bruises.";
             brothel->m_Happiness -= 5;
         }
 
-        if (chance(50) && girl.has_active_trait("Futanari"))
+        if (chance(50) && girl.has_active_trait(traits::FUTANARI))
         {
             ss << " The girls and some customers couldn't stop looking at her big cock.";
             brothel->m_Happiness += 2;
         }
 
-        if (chance(50) && (girl.has_active_trait("Massive Melons") || girl.has_active_trait("Abnormally Large Boobs") ||
-                                girl.has_active_trait("Titanic Tits")))
+        if (chance(50) && girl.breast_size() >= BreastSize::MASSIVE_MELONS)
         {
             ss << " Her enormous, heaving breasts drew a lot of attention from the customers.";
             brothel->m_Happiness += 15;
         }
-        else if (chance(50) && (girl.has_active_trait("Big Boobs") || girl.has_active_trait("Busty Boobs") ||
-                                     girl.has_active_trait("Giant Juggs")))
+        else if (chance(50) && (girl.breast_size() >= BreastSize::BIG_BOOBS && girl.breast_size() < BreastSize::MASSIVE_MELONS))
         {
             ss << " Her big, round breasts drew a lot of attention from the customers.";
             brothel->m_Happiness += 10;
         }
-        if (chance(50) && (girl.has_active_trait("Deluxe Derriere") || girl.has_active_trait("Great Arse")))
+        if (chance(50) && (girl.any_active_trait({traits::DELUXE_DERRIERE, traits::GREAT_ARSE})))
         {
             ss << " The customers were hypnotized by the movements of her well shaped butt.";
             brothel->m_Happiness += 15;
         }
-        if (chance(50) && (girl.has_active_trait("Great Figure") || girl.has_active_trait("Hourglass Figure")))
+        if (chance(50) && (girl.any_active_trait({traits::GREAT_FIGURE, traits::HOURGLASS_FIGURE})))
         {
             ss << " She has such a great figure that the customers couldn't stop looking at her.";
             brothel->m_Happiness += 15;
         }
-        if (chance(50) && girl.has_active_trait("Sexy Air"))
+        if (chance(50) && girl.has_active_trait(traits::SEXY_AIR))
         {
             ss << " She's so sexy that the customers couldn't stop looking at her.";
             brothel->m_Happiness += 10;
         }
-        if (chance(50) && (girl.has_active_trait("Pierced Nipples") || girl.has_active_trait("Pierced Navel") ||
-                                girl.has_active_trait("Pierced Nose")))
+        if (chance(50) && (girl.any_active_trait({traits::PIERCED_NIPPLES, traits::PIERCED_NAVEL, traits::PIERCED_NOSE})))
         {
             ss << " Her piercings catch the eye of some customers.";
             brothel->m_Happiness += 5;
@@ -368,13 +365,13 @@ sWorkJobResult BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
         imagetype = EImageBaseType::ECCHI;
     }
 
-    if (girl.has_active_trait("Optimist") && roll_b < girl.happiness() / 2) // 50% chance at best
+    if (girl.has_active_trait(traits::OPTIMIST) && roll_b < girl.happiness() / 2) // 50% chance at best
     {
         ss << "\n \nWorking with someone as cheerful as ${name} makes everybody a bit happier.";
         brothel->update_all_girls_stat(STAT_HAPPINESS, 1);
     }
 
-    if (girl.has_active_trait("Pessimist") && roll_b > 50 + girl.happiness() / 2) // 50% chance at worst
+    if (girl.has_active_trait(traits::PESSIMIST) && roll_b > 50 + girl.happiness() / 2) // 50% chance at worst
     {
         ss << "\n \nWorking with someone as pessimistic as ${name} makes everybody a little bit sadder.";
         brothel->update_all_girls_stat(STAT_HAPPINESS, -1);

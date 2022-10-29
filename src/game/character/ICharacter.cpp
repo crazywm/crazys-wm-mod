@@ -538,3 +538,7 @@ template <typename T> std::string ICharacter::generate_change_string(const std::
     return display_value;
 }
 
+bool ICharacter::any_active_trait(const std::initializer_list<const char*> trait_names) const {
+    return std::any_of(begin(trait_names), end(trait_names), [&](const char* tn){ return this->has_active_trait(tn); });
+}
+

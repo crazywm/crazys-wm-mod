@@ -171,7 +171,7 @@ void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
 
     // Improve girl
     int libido = 0;
-    if (girl.has_active_trait("Masochist")) libido += 1;
+    if (girl.has_active_trait(traits::MASOCHIST)) libido += 1;
     girl.upd_temp_stat(STAT_LIBIDO, libido);
 
     if (chance(10.f))
@@ -220,7 +220,7 @@ bool SurgeryJob::nursing_effect(sGirl& girl) {
     health_dmg -= ConsumeResource(CarePointsBasicId, health_dmg);
 
     if(health_dmg > 0) {
-        if(girl.gain_trait("Small Scars", 2)) {
+        if(girl.gain_trait(traits::SMALL_SCARS, 2)) {
             ss << "Due to a lack of care by the nurses, ${name}'s wounds have become infected. This surgery will "
                   "leave Scars.";
             girl.health(-10);
@@ -258,8 +258,8 @@ double CosmeticSurgery::GetPerformance(const sGirl& girl, bool estimate) const {
     double jobperformance = 0.0;
     if (estimate)    // for third detail string - how much do they need this?
     {
-        if (!girl.has_active_trait("Sexy Air")) jobperformance += 100;
-        if (!girl.has_active_trait("Cute"))     jobperformance += 100;
+        if (!girl.has_active_trait(traits::SEXY_AIR)) jobperformance += 100;
+        if (!girl.has_active_trait(traits::CUTE))     jobperformance += 100;
         jobperformance += (100 - girl.beauty());
     }
     return jobperformance;
@@ -271,16 +271,16 @@ void CosmeticSurgery::success(sGirl& girl) {
     girl.beauty(rng().bell(5, 12));
 
 
-    if (girl.gain_trait("Sexy Air"))
+    if (girl.gain_trait(traits::SEXY_AIR))
     {
         ss << "She gains Sexy Air trait.\n";
     }
-    else if (girl.gain_trait( "Cute"))
+    else if (girl.gain_trait( traits::CUTE))
     {
         ss << "She gains Cute trait.\n";
     }
 
-    if (girl.has_active_trait("Sexy Air") && girl.has_active_trait("Cute") && girl.beauty() > 99)
+    if (girl.has_active_trait(traits::SEXY_AIR) && girl.has_active_trait(traits::CUTE) && girl.beauty() > 99)
     {
         ss << "\n \nShe has been released from the Clinic.";
         girl.FullJobReset(JOB_RESTING);
@@ -294,7 +294,7 @@ struct Liposuction: public SurgeryJob {
 };
 
 Liposuction::Liposuction() : SurgeryJob(JOB_LIPO, "Lipo", {"${name} is in the Clinic to get fat removed.", 5,
-                                        {{"Great Figure", "${name} already has a Great Figure."}}})
+                                        {{traits::GREAT_FIGURE, "${name} already has a Great Figure."}}})
 {
     m_Info.Description = "She will undergo liposuction to \"enhance\" her figure.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
@@ -304,20 +304,20 @@ void Liposuction::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
 
     // Fat
-    if (girl.lose_trait( "Plump"))
+    if (girl.lose_trait( traits::PLUMP))
     {
         ss << "Thanks to the surgery she is no longer Plump.\n";
     }
-    else if (girl.lose_trait( "Fat"))
+    else if (girl.lose_trait( traits::FAT))
     {
         ss << "Thanks to the surgery she is no longer Fat.\n";
     }
-    else if (girl.gain_trait( "Great Figure"))
+    else if (girl.gain_trait( traits::GREAT_FIGURE))
     {
         ss << "Thanks to the surgery she now has a Great Figure.\n";
     }
 
-    if (girl.has_active_trait("Great Figure"))
+    if (girl.has_active_trait(traits::GREAT_FIGURE))
     {
         ss << "She has been released from the Clinic.\n \n";
         girl.FullJobReset(JOB_RESTING);
@@ -326,9 +326,9 @@ void Liposuction::success(sGirl& girl) {
 
 double Liposuction::GetPerformance(const sGirl& girl, bool estimate) const {
     if (girl.is_pregnant())                        return 80;        // D - not recommended while pregnant
-    if (girl.has_active_trait("Plump"))           return 400;        // I - do it
-    if (girl.has_active_trait("Fat"))             return 400;        // I - do it
-    if (girl.has_active_trait("Great Figure"))    return -1000;    // X - not needed
+    if (girl.has_active_trait(traits::PLUMP))           return 400;        // I - do it
+    if (girl.has_active_trait(traits::FAT))             return 400;        // I - do it
+    if (girl.has_active_trait(traits::GREAT_FIGURE))    return -1000;    // X - not needed
     return 200;                                                    // A - can improve
 }
 
@@ -340,7 +340,7 @@ struct BreastReduction: public SurgeryJob {
 
 BreastReduction::BreastReduction() : SurgeryJob(JOB_BREASTREDUCTION, "BRS",
                                                 {"${name} is in the Clinic to get her breasts reduced.", 1,
-                                                 {{"Flat Chest", "${name} already has a Flat Chest."}}}) {
+                                                 {{traits::FLAT_CHEST, "${name} already has a Flat Chest."}}}) {
     m_Info.Description = "She will undergo breast reduction surgery.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
@@ -349,7 +349,7 @@ void BreastReduction::success(sGirl& girl) {
 
     ss << cGirls::AdjustTraitGroupBreastSize(girl, -1, false) << "\n \n";
 
-    if (girl.has_active_trait("Flat Chest"))
+    if (girl.has_active_trait(traits::FLAT_CHEST))
     {
         ss << "${name}'s breasts are as small as they can get so she was sent to the waiting room.";
         girl.FullJobReset(JOB_RESTING);
@@ -373,7 +373,7 @@ struct BoobJob: public SurgeryJob {
 };
 
 BoobJob::BoobJob() : SurgeryJob(JOB_BOOBJOB, "BbJb", {"${name} is in the Clinic to get her breasts enlarged.", 1,
-                                 {{"Titanic Tits", "${name} already has Titanic Tits."}}}) {
+                                 {{traits::TITANIC_TITS, "${name} already has Titanic Tits."}}}) {
     m_Info.Description = "She will undergo surgery to \"enhance\" her bust.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
@@ -382,7 +382,7 @@ void BoobJob::success(sGirl& girl) {
 
     ss << cGirls::AdjustTraitGroupBreastSize(girl, 1, false) << "\n \n";
 
-    if (girl.has_active_trait("Titanic Tits"))
+    if (girl.has_active_trait(traits::TITANIC_TITS))
     {
         ss << "${name}'s breasts are as large as they can get so she was sent to the waiting room.";
         girl.FullJobReset(JOB_RESTING);
@@ -407,14 +407,14 @@ struct VaginalRejuvenation: public SurgeryJob {
 
 VaginalRejuvenation::VaginalRejuvenation() : SurgeryJob(JOB_VAGINAREJUV, "VagR",
                                                         {"${name} is in the Clinic to get her vagina tightened.", 5,
-                                                         {{"Virgin", "${name} is already a Virgin."}}}) {
+                                                         {{traits::VIRGIN, "${name} is already a Virgin."}}}) {
     m_Info.Description = "She will undergo surgery to make her a virgin again.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
 void VaginalRejuvenation::success(sGirl& girl) {
     ss << "The surgery is a success.\nShe is a 'Virgin' again.\n";
 
-    girl.gain_trait("Virgin");
+    girl.gain_trait(traits::VIRGIN);
     girl.FullJobReset(JOB_RESTING);
     ss << "\n \nShe has been released from the Clinic.";
 }
@@ -482,13 +482,13 @@ struct AssJob: public SurgeryJob {
 
 AssJob::AssJob(): SurgeryJob(JOB_ASSJOB, "AssJ",
                              {"${name} is in the Clinic to get her ass worked on.", 5,
-                              {{"Great Arse", "${name} already has a Great Arse."}}}) {
+                              {{traits::GREAT_ARSE, "${name} already has a Great Arse."}}}) {
     m_Info.Description = "She will undergo surgery to \"enhance\" her ass.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
 void AssJob::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
-    if (girl.gain_trait( "Great Arse"))
+    if (girl.gain_trait( traits::GREAT_ARSE))
     {
         ss << "Thanks to the surgery she now has a Great Arse.\n";
         ss << "\n \nShe has been released from the Clinic.";
@@ -497,7 +497,7 @@ void AssJob::success(sGirl& girl) {
 }
 
 double AssJob::GetPerformance(const sGirl& girl, bool estimate) const {
-    if (girl.has_active_trait("Great Arse")) return -1000;    // X - not needed
+    if (girl.has_active_trait(traits::GREAT_ARSE)) return -1000;    // X - not needed
     return 200;
 }
 
@@ -509,7 +509,7 @@ struct TubesTied : public SurgeryJob {
 };
 
 TubesTied::TubesTied(): SurgeryJob(JOB_TUBESTIED, "TTid", {"${name} is in the Clinic to get her tubes tied.", 5,
-                                    {{"Sterile", "${name} is already Sterile."}}}) {
+                                    {{traits::STERILE, "${name} is already Sterile."}}}) {
     m_Info.Description = "She will undergo surgery to make her sterile.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
@@ -527,10 +527,10 @@ void TubesTied::success(sGirl& girl) {
 }
 
 double TubesTied::GetPerformance(const sGirl& girl, bool estimate) const {
-    if (girl.has_active_trait("Sterile"))        return -1000;    // X - not needed
+    if (girl.has_active_trait(traits::STERILE))        return -1000;    // X - not needed
     if (girl.is_pregnant())                    return 0;        // E - needs abortion or birth first
-    if (girl.has_active_trait("Broodmother"))    return 200;        // A
-    if (girl.has_active_trait("Fertile"))        return 100;        // B
+    if (girl.has_active_trait(traits::BROODMOTHER))    return 200;        // A
+    if (girl.has_active_trait(traits::FERTILE))        return 100;        // B
     return 150;                                                    // C
 }
 
@@ -542,7 +542,7 @@ struct Fertility: public SurgeryJob {
 };
 
 Fertility::Fertility(): SurgeryJob(JOB_FERTILITY, "FrtT", {"${name} is in the Clinic to get fertility treatment.", 5,
-                                    {{"Broodmother", "${name} is already as Fertile as she can be."}}}) {
+                                    {{traits::BROODMOTHER, "${name} is already as Fertile as she can be."}}}) {
     m_Info.Description = "She will undergo surgery to make her fertile.\n*(Takes up to 5 days, less if a Nurse is on duty)";
 }
 
@@ -558,7 +558,7 @@ sJobValidResult Fertility::is_job_valid(const sGirl& girl) const {
 void Fertility::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
     ss << cGirls::AdjustTraitGroupFertility(girl, 1, false);
-    if (girl.has_active_trait("Broodmother"))
+    if (girl.has_active_trait(traits::BROODMOTHER))
     {
         ss << "\n \nShe has been released from the Clinic.";
         girl.FullJobReset(JOB_RESTING);
@@ -566,10 +566,10 @@ void Fertility::success(sGirl& girl) {
 }
 
 double Fertility::GetPerformance(const sGirl& girl, bool estimate) const {
-    if (girl.has_active_trait("Broodmother"))    return -1000;    // X - not needed
+    if (girl.has_active_trait(traits::BROODMOTHER))    return -1000;    // X - not needed
     if (girl.is_pregnant())                    return 0;        // E - needs abortion or birth first
-    if (girl.has_active_trait("Sterile"))        return 200;        // A - needs it to have a baby
-    if (girl.has_active_trait("Fertile"))        return 100;        // C - would improve chances
+    if (girl.has_active_trait(traits::STERILE))        return 200;        // A - needs it to have a baby
+    if (girl.has_active_trait(traits::FERTILE))        return 100;        // C - would improve chances
     return 150;                                                    // B - would improve chances greatly
 }
 
@@ -599,10 +599,10 @@ void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
 
     int cost = 0;
     std::vector<std::string> diseases;
-    if (girl.has_active_trait("Herpes"))        { diseases.emplace_back("Herpes"); cost += 25; }
-    if (girl.has_active_trait("Chlamydia"))    { diseases.emplace_back("Chlamydia"); cost += 50; }
-    if (girl.has_active_trait("Syphilis"))    { diseases.emplace_back("Syphilis"); cost += 75; }
-    if (girl.has_active_trait("AIDS"))        { diseases.emplace_back("AIDS"); cost += 100; }
+    if (girl.has_active_trait(traits::HERPES))        { diseases.emplace_back(traits::HERPES); cost += 25; }
+    if (girl.has_active_trait(traits::CHLAMYDIA))    { diseases.emplace_back(traits::CHLAMYDIA); cost += 50; }
+    if (girl.has_active_trait(traits::SYPHILIS))    { diseases.emplace_back(traits::SYPHILIS); cost += 75; }
+    if (girl.has_active_trait(traits::AIDS))        { diseases.emplace_back(traits::AIDS); cost += 100; }
     int num_diseases = diseases.size();
 
     if (num_diseases > 1)    ss << "${name} is in the Clinic to get her diseases treated";
@@ -668,14 +668,9 @@ void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
 }
 
 double CureDiseases::GetPerformance(const sGirl& girl, bool estimate) const {
-    int numdiseases = 0;
-    if (girl.has_active_trait("AIDS"))            numdiseases++;
-    if (girl.has_active_trait("Herpes"))            numdiseases++;
-    if (girl.has_active_trait("Chlamydia"))        numdiseases++;
-    if (girl.has_active_trait("Syphilis"))        numdiseases++;
-
-    if (numdiseases == 0)    return -1000;
-    return numdiseases * 100;
+    int diseases = num_diseases(girl);
+    if (diseases == 0)    return -1000;
+    return diseases * 100;
 }
 
 auto CureDiseases::CheckWork(sGirl& girl, bool is_night) -> eCheckWorkResult {
@@ -717,7 +712,7 @@ namespace
         {
             ss << messages[0];
             love -= 10;
-            girl.add_temporary_trait("Pessimist", 20);
+            girl.add_temporary_trait(traits::PESSIMIST, 20);
         }
         else if (happy < -25)
         {
@@ -744,7 +739,7 @@ namespace
         {
             ss << messages[6];
             love += 5;
-            girl.add_temporary_trait("Optimist", 20);
+            girl.add_temporary_trait(traits::OPTIMIST, 20);
         }
 
         ss << "\n";
@@ -806,11 +801,11 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
         love += girl.get_trait_modifier("preg.abort.love");
 
         // `J` next, check traits
-        if (girl.has_active_trait("Fragile"))        // natural adj
+        if (girl.has_active_trait(traits::FRAGILE))        // natural adj
         {
             health -= 5;
         }
-        if (girl.has_active_trait("Tough"))        // natural adj
+        if (girl.has_active_trait(traits::TOUGH))        // natural adj
         {
             health += 5;
         }
@@ -832,7 +827,7 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
         {
             // `J` adjust her happiness by her hate-love for you
             happy -= (girl.pclove() + love) / 2;
-            if (girl.has_active_trait("Your Wife"))// "Why?"
+            if (girl.has_active_trait(traits::YOUR_WIFE))// "Why?"
             {
                 happy -= 20;    spirit -= 1;    love -= 3;
             }
@@ -853,7 +848,7 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
             happy += girl.get_trait_modifier("inseminated.abort.happy");
             love += girl.get_trait_modifier("inseminated.abort.love");
 
-            if (girl.has_active_trait("Angel"))        // "DEAR GOD, WHAT WAS THAT THING?"
+            if (girl.has_active_trait(traits::ANGEL))        // "DEAR GOD, WHAT WAS THAT THING?"
             {
                 spirit -= 5;    mana -= 5;
             }
@@ -948,12 +943,12 @@ void Healing::ReceiveTreatment(sGirl& girl, bool is_night) {
     int tiredness = uniform(10, 30);    // build up as positive then apply as negative
     int happy = uniform(10, 20);
     int mana = 5 + (girl.magic() / 5);
-    int libido = (girl.has_active_trait("Nymphomaniac") ? 15 : 4);
+    int libido = (girl.has_active_trait(traits::NYMPHOMANIAC) ? 15 : 4);
 
     if (doctor)
     {
         ss << " Doctor " << doctor->FullName() << " takes care of her.";
-        if (girl.has_active_trait("Half-Construct") || girl.has_active_trait("Construct")) {
+        if (girl.has_active_trait(traits::HALF_CONSTRUCT) || girl.has_active_trait(traits::CONSTRUCT)) {
             health += 20;    // Less healing for constructs
         } else {
             health += 30;

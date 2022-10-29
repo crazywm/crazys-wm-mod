@@ -31,28 +31,28 @@ TEST_CASE("trait group gag reflex") {
     sGirl girl(true);
     SUBCASE("increase neutral") {
         cGirls::AdjustTraitGroupGagReflex(girl, 1);
-        CHECK(girl.has_active_trait("No Gag Reflex"));
+        CHECK(girl.has_active_trait(traits::NO_GAG_REFLEX));
     }
     SUBCASE("decrease neutral") {
         cGirls::AdjustTraitGroupGagReflex(girl, -1);
-        CHECK(girl.has_active_trait("Gag Reflex"));
+        CHECK(girl.has_active_trait(traits::GAG_REFLEX));
     }
 
     SUBCASE("increase no") {
-        girl.gain_trait("No Gag Reflex");
+        girl.gain_trait(traits::NO_GAG_REFLEX);
         cGirls::AdjustTraitGroupGagReflex(girl, 1);
-        CHECK(girl.has_active_trait("Deep Throat"));
-        CHECK(!girl.has_active_trait("No Gag Reflex"));
+        CHECK(girl.has_active_trait(traits::DEEP_THROAT));
+        CHECK(!girl.has_active_trait(traits::NO_GAG_REFLEX));
     }
     SUBCASE("increase gag reflex") {
-        girl.gain_trait("Gag Reflex");
+        girl.gain_trait(traits::GAG_REFLEX);
         cGirls::AdjustTraitGroupGagReflex(girl, 1);
-        CHECK(!girl.has_active_trait("Gag Reflex"));
+        CHECK(!girl.has_active_trait(traits::GAG_REFLEX));
     }
     SUBCASE("increase strong gag reflex") {
-        girl.gain_trait("Strong Gag Reflex");
+        girl.gain_trait(traits::STRONG_GAG_REFLEX);
         cGirls::AdjustTraitGroupGagReflex(girl, 1);
-        CHECK(girl.has_active_trait("Gag Reflex"));
-        CHECK(!girl.has_active_trait("Strong Gag Reflex"));
+        CHECK(girl.has_active_trait(traits::GAG_REFLEX));
+        CHECK(!girl.has_active_trait(traits::STRONG_GAG_REFLEX));
     }
 }

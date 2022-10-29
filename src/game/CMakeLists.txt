@@ -127,12 +127,29 @@ set(SRC cEvents.cpp
         images/cImageLookup.cpp
         images/ids.cpp
         images/cImageList.cpp
-        images/sImageSpec.cpp)
+        images/sImageSpec.cpp
+        )
 
 add_library(WmGameObjects OBJECT ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${MOVIES_SRC} ${SRC})
 target_link_libraries(WmGameObjects PUBLIC WMEngineObjects pthread doctest::doctest)
 set_target_properties(WmGameObjects PROPERTIES CXX_STANDARD 14)
 target_include_directories(WmGameObjects PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+
+find_package(Python3)
+set(SCRIPT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../codegen/traits.py)
+set(TRAITS_DIR ${CMAKE_SOURCE_DIR}/Resources/Data/Traits)
+set(TRAITS_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/traits.h)
+file(GLOB TRAIT_XML_FILES ${TRAITS_DIR}/*.xml)
+
+add_custom_command(
+        COMMAND Python3::Interpreter ${SCRIPT_FILE} ${TRAITS_DIR} ${TRAITS_HEADER}
+        DEPENDS ${SCRIPT_FILE} ${TRAIT_XML_FILES}
+        OUTPUT ${TRAITS_HEADER}
+        COMMENT "Generating traits header ${TRAITS_HEADER}."
+)
+target_sources(WmGameObjects PUBLIC ${TRAITS_HEADER})
+
 if (UNIX)
     target_compile_definitions(WmGameObjects PUBLIC LINUX=1)
 endif(UNIX)

@@ -228,8 +228,8 @@ sWorkJobResult PracticeJob::DoWork(sGirl& girl, bool is_night) {
                 max_gain += 1;
             }
 
-            if (girl.has_active_trait("Quick Learner"))     max_gain += 1;
-            else if (girl.has_active_trait("Slow Learner")) max_gain -= 1;
+            if (girl.has_active_trait(traits::QUICK_LEARNER))     max_gain += 1;
+            else if (girl.has_active_trait(traits::SLOW_LEARNER)) max_gain -= 1;
 
             max_gain += std::min((other_value - my_value) / 10, 3);
             int amount = uniform(min_gain, std::max(max_gain, min_gain));
@@ -431,7 +431,7 @@ void TrainingJob::OnRegularProgress(sGirl& girl, bool is_night) {
 class SoStraight : public TrainingJob {
 public:
     SoStraight() : TrainingJob(JOB_SO_STRAIGHT, "SOSt", {
-            "Straight", "${name} is already Straight.",
+            traits::STRAIGHT, "${name} is already Straight.",
             "You proceed to change ${name}'s sexual orientation to Straight.",
             "She resisted all attempts to make her Straight.",
             "Her Sexual Orientation conversion to Straight is ",
@@ -454,17 +454,17 @@ void SoStraight::HandleTraining(sGirl& girl, bool is_night) {
 
     update_progress(girl);
 
-    if (girl.has_active_trait("Lesbian"))
+    if (girl.has_active_trait(traits::LESBIAN))
     {
         ss << "Her innate disgust of balls and shaft made her pull away from you while trying to teach her to suck it.\n";
         girl.m_WorkingDay -= girl.lesbian() / 5;                    // it is hard to change something you are good at
         Tiredness += girl.lesbian() / 10;
     }
-    if (girl.has_active_trait("Bisexual")) girl.m_WorkingDay -= girl.lesbian() / 20;    // it is hard to change something you are good at
+    if (girl.has_active_trait(traits::BISEXUAL)) girl.m_WorkingDay -= girl.lesbian() / 20;    // it is hard to change something you are good at
 
     int trait = girl.get_trait_modifier("so.straight");
     girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
-    if (girl.has_active_trait("Broken Will"))        { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
+    if (girl.has_active_trait(traits::BROKEN_WILL))        { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 
     if (!brothel->is_sex_type_allowed(SKILL_NORMALSEX))      girl.m_WorkingDay -= uniform(10, 30);
 
@@ -492,13 +492,13 @@ void SoStraight::HandleTraining(sGirl& girl, bool is_night) {
 
 void SoStraight::OnComplete(sGirl& girl) {
     ss << "Her Sexual Orientation conversion is complete. She is now Straight.\n";
-    girl.lose_trait("Lesbian");    girl.gain_trait("Bisexual");    girl.lose_trait("Straight");
+    girl.lose_trait(traits::LESBIAN);    girl.gain_trait(traits::BISEXUAL);    girl.lose_trait(traits::STRAIGHT);
 }
 
 class SoLesbian : public TrainingJob {
 public:
     SoLesbian() : TrainingJob(JOB_SO_LESBIAN, "SOLe",
-                              {"Lesbian", "${name} is already a Lesbian.",
+                              {traits::LESBIAN, "${name} is already a Lesbian.",
                                "You proceed to change ${name}'s sexual orientation to Lesbian.",
                                "She resisted all attempts to make her a Lesbian.",
                                "Her Sexual Orientation conversion to Lesbian is ",
@@ -518,18 +518,18 @@ void SoLesbian::HandleTraining(sGirl& girl, bool is_night) {
     girl.m_WorkingDay += girl.oralsex() / 25;
     update_progress(girl);
 
-    if (girl.has_active_trait("Straight"))
+    if (girl.has_active_trait(traits::STRAIGHT))
     {
         ss << "Being used to working with something long and hard, she wasn't really sure what she was doing with her partner.\n";
         girl.m_WorkingDay -= girl.normalsex() / 5;                // it is hard to change something you are good at
         Tiredness += girl.normalsex() / 10;
     }
-    if (girl.has_active_trait("Bisexual")) girl.m_WorkingDay -= girl.normalsex() / 20;                    // it is hard to change something you are good at
+    if (girl.has_active_trait(traits::BISEXUAL)) girl.m_WorkingDay -= girl.normalsex() / 20;                    // it is hard to change something you are good at
 
     int trait = girl.get_trait_modifier("so.lesbian");
     girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
 
-    if (girl.has_active_trait("Broken Will"))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
+    if (girl.has_active_trait(traits::BROKEN_WILL))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 
     //    if (girl.check_virginity())                {}
 
@@ -559,13 +559,13 @@ void SoLesbian::HandleTraining(sGirl& girl, bool is_night) {
 
 void SoLesbian::OnComplete(sGirl& girl) {
     ss << "\nHer Sexual Orientation conversion is complete. She is now a Lesbian.";
-    girl.gain_trait("Lesbian");    girl.lose_trait("Bisexual");    girl.lose_trait("Straight");
+    girl.gain_trait(traits::LESBIAN);    girl.lose_trait(traits::BISEXUAL);    girl.lose_trait(traits::STRAIGHT);
 }
 
 class SoBi : public TrainingJob {
 public:
     SoBi() : TrainingJob(JOB_SO_BISEXUAL, "SOBi",
-                              {"Bisexual", "${name} is already Bisexual.",
+                              {traits::BISEXUAL, "${name} is already Bisexual.",
                                "You proceed to change ${name}'s sexual orientation to Bisexual.",
                                "She resisted all attempts to make her Bisexual.",
                                "Her Sexual Orientation conversion to Bisexual is ",
@@ -578,7 +578,7 @@ public:
 
 void SoBi::HandleTraining(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
-    if (girl.has_active_trait("Straight"))
+    if (girl.has_active_trait(traits::STRAIGHT))
     {
         girl.m_WorkingDay += girl.group() / 10;
         girl.m_WorkingDay += girl.normalsex() / 20;
@@ -587,7 +587,7 @@ void SoBi::HandleTraining(sGirl& girl, bool is_night) {
         girl.m_WorkingDay += girl.tittysex() / 20;
         girl.m_WorkingDay += girl.anal() / 20;
     }
-    else if (girl.has_active_trait("Lesbian"))
+    else if (girl.has_active_trait(traits::LESBIAN))
     {
         girl.m_WorkingDay += girl.group() / 10;
         girl.m_WorkingDay += girl.normalsex() / 5;
@@ -609,7 +609,7 @@ void SoBi::HandleTraining(sGirl& girl, bool is_night) {
 
     int trait = girl.get_trait_modifier("so.bi");
     girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
-    if (girl.has_active_trait("Broken Will"))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
+    if (girl.has_active_trait(traits::BROKEN_WILL))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 
     if (!brothel->is_sex_type_allowed(SKILL_LESBIAN))        girl.m_WorkingDay -= uniform(5, 15);
     if (!brothel->is_sex_type_allowed(SKILL_NORMALSEX))      girl.m_WorkingDay -= uniform(5, 15);
@@ -635,13 +635,13 @@ void SoBi::HandleTraining(sGirl& girl, bool is_night) {
 
 void SoBi::OnComplete(sGirl& girl) {
     ss << "\nHer Sexual Orientation conversion is complete. She is now Bisexual.";
-    girl.lose_trait("Lesbian");    girl.gain_trait("Bisexual");    girl.lose_trait("Straight");
+    girl.lose_trait(traits::LESBIAN);    girl.gain_trait(traits::BISEXUAL);    girl.lose_trait(traits::STRAIGHT);
 }
 
 class FakeOrg : public TrainingJob {
 public:
     FakeOrg() : TrainingJob(JOB_FAKEORGASM, "FOEx",
-                         {"Fake Orgasm Expert", "${name} is already a \"Fake Orgasm Expert\".",
+                         {traits::FAKE_ORGASM_EXPERT, "${name} is already a \"Fake Orgasm Expert\".",
                           "You teach ${name} how to fake her orgasms.",
                           "She resisted all attempts to make her Bisexual.",
                           "Her Sexual Orientation conversion to Bisexual is ",
@@ -666,7 +666,7 @@ void FakeOrg::HandleTraining(sGirl& girl, bool is_night) {
     update_progress(girl);
     int trait = girl.get_trait_modifier("fake-orgasm");
     girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
-    if (girl.has_active_trait("Broken Will"))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
+    if (girl.has_active_trait(traits::BROKEN_WILL))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 
     if (!brothel->is_sex_type_allowed(SKILL_NORMALSEX))      girl.m_WorkingDay -= uniform(5, 15);
 
@@ -695,17 +695,16 @@ void FakeOrg::HandleTraining(sGirl& girl, bool is_night) {
 }
 
 void FakeOrg::OnNoProgress(sGirl& girl) {
-    if (girl.has_active_trait("Slow Learner") || girl.has_active_trait("Broken Will") || girl.has_active_trait("Mind Fucked") ||
-        girl.has_active_trait("Retarded"))
+    if (girl.any_active_trait({traits::SLOW_LEARNER, traits::BROKEN_WILL, traits::MIND_FUCKED, traits::RETARDED}))
     {
         ss << "She was not mentally able to learn";
     }
-    else if (girl.has_active_trait("Bimbo") || girl.has_active_trait("Fast Orgasms") || girl.has_active_trait("Nymphomaniac"))
+    else if (girl.any_active_trait({traits::BIMBO, traits::FAST_ORGASMS, traits::NYMPHOMANIAC}))
     {
         ss << "She was too focused on the sex to learn";
         Tiredness += uniform(5, 15);
     }
-    else if (girl.has_active_trait("Blind") || girl.has_active_trait("Deaf"))
+    else if (girl.any_active_trait({traits::BLIND, traits::DEAF}))
     {
         ss << "Her handicap kept her from learning";
     }
@@ -719,7 +718,7 @@ void FakeOrg::OnNoProgress(sGirl& girl) {
 
 void FakeOrg::OnComplete(sGirl& girl) {
     ss << "With her training complete, she is now a \"Fake Orgasm Expert\".";
-    girl.lose_trait("Slow Orgasms");    girl.lose_trait("Fast Orgasms");    girl.gain_trait("Fake Orgasm Expert");
+    girl.lose_trait(traits::SLOW_ORGASMS);    girl.lose_trait(traits::FAST_ORGASMS);    girl.gain_trait(traits::FAKE_ORGASM_EXPERT);
 }
 
 void FakeOrg::OnRegularProgress(sGirl& girl, bool is_night) {

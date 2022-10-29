@@ -123,6 +123,7 @@ public:
     /// Returns whether the given trait is an active trait. It does not matter whether the trait is iherent, permanent
     /// or dynamic.
     bool has_active_trait(const char* trait_name) const;
+    bool any_active_trait(std::initializer_list<const char*> trait_names) const;
 
     std::vector<sTraitInfo> get_trait_info() const;
 

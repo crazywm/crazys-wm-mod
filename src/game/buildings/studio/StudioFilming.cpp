@@ -282,7 +282,7 @@ sWorkJobResult cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
 
 
     if(m_SexAction != SexAction::NONE) {
-        if(girl.lose_trait("Virgin")) {
+        if(girl.lose_trait(traits::VIRGIN)) {
             ss << "She is no longer a virgin.\n";
             quality += 10;
         }
@@ -306,13 +306,13 @@ sWorkJobResult cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
 
     // consequences of forcing are loss of iron will and potential gain of Mind Fucked
     if (m_IsForced) {
-        if(girl.has_active_trait("Iron Will")) {
-            if (girl.lose_trait("Iron Will", 2))
+        if(girl.has_active_trait(traits::IRON_WILL)) {
+            if (girl.lose_trait(traits::IRON_WILL, 2))
             {
                 girl.AddMessage("${name}'s unwilling degradation has shattered her iron will.", EImageBaseType::TORTURE, EVENT_GOODNEWS);
             }
         } else {
-            if (girl.gain_trait("Mind Fucked", 2))
+            if (girl.gain_trait(traits::MIND_FUCKED, 2))
             {
                 girl.AddMessage("${name} has become Mind Fucked from the forced degradation.", EImageBaseType::TORTURE, EVENT_WARNING);
             }

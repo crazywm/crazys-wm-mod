@@ -267,7 +267,7 @@ void IBuilding::EndShift(bool Day0Night1)
 
         // list increase (moved here from jobs)
         int libido = 1;
-        if (current.has_active_trait("Nymphomaniac"))    { libido += 2; }
+        if (current.has_active_trait(traits::NYMPHOMANIAC))    { libido += 2; }
         current.upd_temp_stat(STAT_LIBIDO, (g_Dice % libido) + 1, false);
 
         JOBS sw = current.get_job(Day0Night1);
@@ -1005,17 +1005,17 @@ void IBuilding::do_daily_items(sGirl& girl)
     if (girl.has_item("Pet Spider") && g_Dice.percent(15))
     {
         ss << girlName;
-        if (girl.has_active_trait("Nerd"))
+        if (girl.has_active_trait(traits::NERD))
         {
             ss << " watches her Pet Spider, studying it and occasionally jotting down notes.\n \n";
             girl.happiness(1 + g_Dice % 3);
         }
-        else if (girl.has_active_trait("Meek"))
+        else if (girl.has_active_trait(traits::MEEK))
         {
             ss << "'s Meek nature makes her cover her Pet Spiders cage so it doesn't scare her.\n \n";
             girl.happiness(1);
         }
-        else if (girl.has_active_trait("Aggressive") || girl.has_active_trait("Assassin") || girl.has_active_trait("Merciless"))
+        else if (girl.any_active_trait({traits::AGGRESSIVE, traits::ASSASSIN, traits::MERCILESS}))
         {
             ss << " throws in some food to her Pet Spider and smiles while she watchs it kill its prey.\n \n";
             girl.happiness(1 + g_Dice % 5);
@@ -1042,12 +1042,12 @@ void IBuilding::do_daily_items(sGirl& girl)
     }
     if (girl.has_item("Guard Dog") && g_Dice.percent(15))
     {
-        if (girl.has_active_trait("Meek"))
+        if (girl.has_active_trait(traits::MEEK))
         {
             ss << girlName << "'s Meek nature makes her glad she has her Guard Dog to protect her.\n \n";
             girl.pcfear(-1);
         }
-        else if (girl.has_active_trait("Aggressive"))
+        else if (girl.has_active_trait(traits::AGGRESSIVE))
         {
             ss << girlName << " seeks her Guard Dog on some random patrons and laughs while they run scared.\n \n";
         }
@@ -1143,7 +1143,7 @@ void IBuilding::do_daily_items(sGirl& girl)
             girl.happiness(-1);
             girl.tiredness(1);
         }
-        else if (girl.has_active_trait("Masochist") || girl.has_active_trait("Twisted"))    // she liked it
+        else if (girl.any_active_trait({traits::MASOCHIST, traits::TWISTED}))    // she liked it
         {
             girl.pcfear(g_Dice % 2);
             girl.happiness(g_Dice % 3);
@@ -1167,14 +1167,14 @@ void IBuilding::do_daily_items(sGirl& girl)
             if (g_Dice.percent(50))
             {
                 ss << girlName << " comes to you and tells you she had a sexy dream about you.";
-                if (g_Game->player().Gender() >= GENDER_HERMFULL && girl.lose_trait("Lesbian", girl.pclove() / 10))
+                if (g_Game->player().Gender() >= GENDER_HERMFULL && girl.lose_trait(traits::LESBIAN, girl.pclove() / 10))
                 {
-                    girl.gain_trait("Bisexual");
+                    girl.gain_trait(traits::BISEXUAL);
                     ss << "  \"Normally I don't like men but for you I'll make an exception.\"";
                 }
-                if (g_Game->player().Gender() <= GENDER_FUTAFULL && girl.lose_trait("Straight", girl.pclove() / 10) )
+                if (g_Game->player().Gender() <= GENDER_FUTAFULL && girl.lose_trait(traits::STRAIGHT, girl.pclove() / 10) )
                 {
-                    girl.gain_trait("Bisexual");
+                    girl.gain_trait(traits::BISEXUAL);
                     ss << "  \"Normally I don't like women but for you I'll make an exception.\"";
                 }
                 ss << "\n \n";
@@ -1258,13 +1258,13 @@ void IBuilding::do_daily_items(sGirl& girl)
     {
 #if 1
         int numbooks = girl.intelligence() / 30;    // how many books can she read?
-        if (girl.has_active_trait("Blind")) numbooks = 1;
+        if (girl.has_active_trait(traits::BLIND)) numbooks = 1;
         else
         {
-            if (girl.has_active_trait("Nerd")) numbooks += 1;
-            if (girl.has_active_trait("Quick Learner")) numbooks += 1;
-            if (girl.has_active_trait("Slow Learner")) numbooks -= 2;
-            if (girl.has_active_trait("Bimbo")) numbooks -= 1;
+            if (girl.has_active_trait(traits::NERD)) numbooks += 1;
+            if (girl.has_active_trait(traits::QUICK_LEARNER)) numbooks += 1;
+            if (girl.has_active_trait(traits::SLOW_LEARNER)) numbooks -= 2;
+            if (girl.has_active_trait(traits::BIMBO)) numbooks -= 1;
         }
         if (numbooks < 1)                numbooks = 1;
 
@@ -1313,9 +1313,9 @@ void IBuilding::do_daily_items(sGirl& girl)
         }
 
         // She may go to the library if she runs out of books to read
-        if (girl.has_item("Library Card") && numbooks > 0 && (g_Dice.percent(20) || (girl.has_active_trait("Nerd") && g_Dice.percent(50))))
+        if (girl.has_item("Library Card") && numbooks > 0 && (g_Dice.percent(20) || (girl.has_active_trait(traits::NERD) && g_Dice.percent(50))))
         {
-            if (girl.has_active_trait("Nymphomaniac"))
+            if (girl.has_active_trait(traits::NYMPHOMANIAC))
             {
                 ss << "She spent the day at the Library looking at porn making her become horny.\n \n";
                 girl.upd_temp_stat(STAT_LIBIDO, 15);
@@ -1345,13 +1345,13 @@ void IBuilding::do_daily_items(sGirl& girl)
     if (girl.has_item("Journal") && g_Dice.percent(15))
     {
 #if 1
-        if (girl.has_active_trait("Nerd") && g_Dice.percent(30))
+        if (girl.has_active_trait(traits::NERD) && g_Dice.percent(30))
         {
             ss << "She decide to write on her novel some today.\n \n";
             girl.happiness(g_Dice % 2);
             girl.intelligence(g_Dice % 2);
         }
-        else if (girl.has_active_trait("Bimbo") && g_Dice.percent(30))
+        else if (girl.has_active_trait(traits::BIMBO) && g_Dice.percent(30))
         {
             ss << "She doodled silly pictures in her journal.\n \n";
             girl.happiness(g_Dice % 3);
@@ -1570,7 +1570,7 @@ void IBuilding::do_daily_items(sGirl& girl)
     }
     if (girl.has_item("Computer") && g_Dice.percent(15) && girl.is_resting())
     {
-        if (girl.has_active_trait("Nymphomaniac"))
+        if (girl.has_active_trait(traits::NYMPHOMANIAC))
         {
             if (girl.libido() > 65)
             {
