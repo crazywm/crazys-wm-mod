@@ -75,7 +75,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                 ss << " reminding ${name} that she is your property and must do as you command. ";
 
                 // If headgirl likes girls... Because this will be a rare combo this is at the top, so it has some chance of being seen
-                if (headGirl->has_active_trait(traits::LESBIAN) && girl.has_active_trait(traits::LESBIAN) && effectiveness > 10)
+                if (likes_women(*headGirl) && likes_women(girl) && effectiveness > 10)
                 {
                     ss << "As ${name} continues to refuse " << headName << " suddenly kisses her, putting a hand under her underwear and pulling back to expose her ";
                     if (girl.has_active_trait(traits::PIERCED_NIPPLES)) ss << "pierced nipples";
@@ -168,7 +168,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             else // not slave
             {
                 // If headgirl likes girls. Again because rare combo, is at the top, so it has some chance of being seen - this time can fail
-                if (headGirl->has_active_trait(traits::LESBIAN) && girl.has_active_trait(traits::LESBIAN) && effectiveness > 10)
+                if (likes_women(*headGirl) && likes_women(girl) && effectiveness > 10)
                 {
                     ss << " suddenly kissing ${name} and putting a hand under her underwear, pulling back to expose her ";
                     if (girl.has_active_trait(traits::PIERCED_NIPPLES)) ss << "pierced nipples";
@@ -397,7 +397,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
                     girl.happiness(5);
                     girl.upd_Enjoyment(ACTION_WORKHAREM, 2);
                 }
-                else if (girl.any_active_trait({traits::NYMPHOMANIAC, traits::SLUT}) && effectiveness > 40)
+                else if (is_sex_crazy(girl) && effectiveness > 40)
                 {
                     ss << "Aware of her love for sex, you quickly snake your hand between her legs and start to rub on her panties. "
                         << "She doesn't try to stop you, instead just moving her panties aside and guiding your hand.\nShe is quickly naked, panting and aroused and is now happy to stay.\n";
@@ -755,7 +755,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             else
             {
                 ss << ". You decide to keep her virginity intact for now";
-                if (roll_c < 30 || girl.has_active_trait(traits::LESBIAN))
+                if (roll_c < 30 || likes_women(girl))
                 {
                     ss << ", and instead have her play around with another girl in your harem.";
                     girl.lesbian(2);
@@ -1256,7 +1256,7 @@ sWorkJobResult WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         ss << "\n${name} mentions that this reminds her of a 'coming of age' ritual back home.";
         girl.upd_Enjoyment(ACTION_WORKHAREM, 1);
     }
-    else if (rng.percent(20) && (girl.any_active_trait({traits::NYMPHOMANIAC, traits::SLUT, traits::OPEN_MINDED})))
+    else if (rng.percent(20) && get_sex_openness(girl) > 66)
     {
         ss << "\n${name} actually seems suited to this.\n\"Can I do this again";
         if (girl.is_slave()) ss << ", master?\"\n";

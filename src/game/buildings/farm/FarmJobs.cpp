@@ -1229,7 +1229,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
             ss << ", who seemed more interested in slapping ${name}'s breasts and twisting her nipples than in actually trying to get milk out.";
             volume -= (volume / 5);
         }
-        else if (milker->has_active_trait(traits::LESBIAN) && chance(40))
+        else if (likes_women(*milker) && chance(40))
         {
             ss << ", who massaged ${name}'s breasts thoroughly and was careful to thoroughly arouse the nipple with her tongue before attaching the cup. This helped with milking.";
             volume += (volume / 10);
@@ -1240,7 +1240,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
             ss << ", who did a great job milking ${name}'s breasts, but then tripped over the bucket, spilling quite a lot.";
             volume -= (volume / 4);
         }
-        else if (milker->has_active_trait(traits::STRAIGHT) && chance(40))
+        else if (!likes_women(*milker) && chance(40))
         {
             ss << ", who clearly didn't want to touch another woman's breasts. This made the milking akward and inefficient.";
             volume -= (volume / 10);
@@ -1488,8 +1488,7 @@ bool cFarmJobGetMilked::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_n
             }
             if (is_virgin(girl)) ssextra << "Thanks to you, her virginity is intact so ";
             ssextra << "${name} comes to your office after her shift";
-            if ((HateLove <= 50) || girl.has_active_trait(traits::NYMPHOMANIAC) || girl.has_active_trait(traits::CUM_ADDICT) ||
-                girl.has_active_trait(traits::SLUT))
+            if ((girl.pclove() >= 50) || is_sex_crazy(girl))
             {
                 ssextra << ", pulls down your pants, and 'thanks'";
                 extraimage = EImagePresets::BLOWJOB;

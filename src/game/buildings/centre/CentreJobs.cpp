@@ -67,7 +67,7 @@ bool CommunityService::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
 
     //try and add randomness here
     if (girl.has_active_trait(traits::NYMPHOMANIAC) && chance(30) && !is_virgin(girl)
-        && !girl.has_active_trait(traits::LESBIAN) && girl.libido() > 75
+        && likes_men(girl) && girl.libido() > 75
         && (brothel.is_sex_type_allowed(SKILL_NORMALSEX) || brothel.is_sex_type_allowed(SKILL_ANAL)))
     {
         sex = true;
@@ -171,7 +171,7 @@ bool FeedPoor::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     }
 
     if (girl.has_active_trait(traits::NYMPHOMANIAC) && chance(30) && girl.libido() > 75
-        && !girl.has_active_trait(traits::LESBIAN) && !is_virgin(girl)
+        && likes_men(girl) && !is_virgin(girl)
         && (brothel.is_sex_type_allowed(SKILL_NORMALSEX) || brothel.is_sex_type_allowed(SKILL_ANAL)))
     {
         sex = true;

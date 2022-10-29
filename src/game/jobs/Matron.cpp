@@ -118,8 +118,7 @@ int MatronJob::MatronGains(sGirl& girl, bool Day0Night1,  int conf) {
     if (girl.has_active_trait(traits::QUICK_LEARNER))        { skill += 1; xp += 5; }
     else if (girl.has_active_trait(traits::SLOW_LEARNER))    { skill -= 1; xp -= 5; }
     // TODO these constants should depend on where the girl is.
-    if (girl.has_active_trait(traits::LESBIAN)) libido += numgirls / 10;
-    else  if (!girl.has_active_trait(traits::STRAIGHT)) libido += numgirls / 20;
+    if (likes_women(girl)) libido += numgirls / 10;
     int stat_sum = girl.get_skill(SKILL_SERVICE) + girl.get_stat(STAT_CHARISMA) + girl.get_stat(STAT_INTELLIGENCE) +
                    girl.get_stat(STAT_CONFIDENCE) + girl.get_skill(SKILL_MEDICINE);
     int wages = int((100.f + (stat_sum / 50.f + 1) * numgirls));

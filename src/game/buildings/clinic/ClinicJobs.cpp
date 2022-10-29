@@ -179,8 +179,8 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         ss << "An elderly fellow managed to convince ${name} that her touch can heal! She ended up giving him a hand job!\n";
     }
 
-    if (chance(30) && !is_virgin(girl) && !girl.has_active_trait(traits::LESBIAN)
-        && (girl.any_active_trait({traits::NYMPHOMANIAC, traits::SLUT, traits::SUCCUBUS, traits::BIMBO})))
+    if (chance(30) && !is_virgin(girl) && likes_men(girl)
+        && (is_sex_crazy(girl) || girl.has_active_trait(traits::BIMBO)))
     {
         if (girl.libido() > 65 && (brothel.is_sex_type_allowed(SKILL_NORMALSEX) || brothel.is_sex_type_allowed(SKILL_ANAL)))
         {
@@ -195,7 +195,7 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
         }
     }
 
-    if (girl.has_active_trait(traits::LESBIAN) && girl.has_active_trait(traits::AGGRESSIVE) &&
+    if (likes_women(girl) && girl.has_active_trait(traits::AGGRESSIVE) &&
         girl.libido() > 65 && chance(10))
     {
         les = true;

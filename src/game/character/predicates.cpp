@@ -51,3 +51,47 @@ bool is_your_daughter(const ICharacter& character) {
 bool is_futa(const ICharacter& character) {
     return character.has_active_trait(traits::FUTANARI);
 }
+
+int get_sex_openness(const ICharacter& character) {
+    int trait = character.get_trait_modifier("sex.openness");
+    int open = trait + character.libido() / 2 - std::max(0, character.dignity() / 3);
+    // specific modifiers
+    // very high dignity or very low confidence
+    if(character.dignity() > 80)  open -= 5;
+    if(character.confidence() < 20) open -= 5;
+    // low dignity and sufficient confidence
+    if(character.dignity() < 0 && character.confidence() > 35) {
+        open += 10;
+    }
+    // virgin and sick of it
+    if(is_virgin(character) && (character.libido() > 80 || character.age() > 22)) {
+        open += 10;
+    }
+    // unhappy or unhealthy or too tired
+    if(character.health() < 25 || character.happiness() < 25 || character.tiredness() > 80) {
+        open -= 15;
+    }
+    return open;
+}
+
+bool is_sex_crazy(const ICharacter& character) {
+    return character.any_active_trait({traits::NYMPHOMANIAC, traits::SUCCUBUS, traits::SLUT});
+}
+
+bool likes_women(const ICharacter& character) {
+    return character.any_active_trait({traits::LESBIAN, traits::BISEXUAL});
+}
+
+bool dislikes_women(const ICharacter& character) {
+    if (character.has_active_trait(traits::STRAIGHT)) return true;
+    return false;
+}
+
+bool likes_men(const ICharacter& character) {
+    return !character.has_active_trait(traits::LESBIAN);
+}
+
+bool dislikes_men(const ICharacter& character) {
+    if (character.has_active_trait(traits::LESBIAN)) return true;
+    return false;
+}

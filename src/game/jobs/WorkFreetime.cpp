@@ -393,8 +393,8 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 ss << "and decide to get a \"special\" message.\n";
                 int sex = rng % 3;
 
-                if (brothel->is_sex_type_allowed(SKILL_LESBIAN) && girl.has_active_trait(traits::LESBIAN)) sex = 0;
-                if (sex == 0 && (!brothel->is_sex_type_allowed(SKILL_LESBIAN) || girl.has_active_trait(traits::STRAIGHT))) sex++;
+                if (brothel->is_sex_type_allowed(SKILL_LESBIAN) && likes_women(girl)) sex = 0;
+                if (sex == 0 && (!brothel->is_sex_type_allowed(SKILL_LESBIAN) || likes_men(girl))) sex++;
                 if (sex == 1 && !brothel->is_sex_type_allowed(SKILL_ANAL))        sex++;
                 if (sex == 2 && !brothel->is_sex_type_allowed(SKILL_NORMALSEX))    sex++;
 
@@ -1116,7 +1116,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                             {
                                 ss << " She informs him she is a Virgin and that she won't be having sex with him.";
                             }
-                            else if (girl.has_active_trait(traits::LESBIAN))
+                            else if (!likes_men(girl))
                             {
                                 ss << " She informs him she is a Lesbian and that she doesn't have sex with guys.";
                             }
@@ -1296,7 +1296,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     if (rng.percent(30) && !is_virgin(girl))
                     {
                         ss << "After talking for awhile they asked if she wanted to have sex with them. ";
-                        if (girl.libido() >= 50 && !girl.has_active_trait(traits::LESBIAN))
+                        if (girl.libido() >= 50 && likes_men(girl))
                         {
                             ss << "As she was in the mood and loved the show, she agreed and spent many hours pleasing the band.\n";
                             imagetype = EImagePresets::GANGBANG; U_Libido -= 15;
@@ -1345,7 +1345,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                     case 1:        n = SKILL_NORMALSEX;  ss << "lead guitarist.";        break;
                                     case 2:        n = SKILL_NORMALSEX;  ss << "drummer.";                break;
                                     case 3:        n = SKILL_NORMALSEX;  ss << "bass player.";            break;
-                                    case 4:        n = SKILL_NORMALSEX;     ss << "rythim guitarist.";        break;
+                                    case 4:        n = SKILL_NORMALSEX;     ss << "rhythm guitarist.";        break;
                                     default:       n = SKILL_GROUP;         ss << "whole group.";            break;
                                     }
                                     /* */if (n == SKILL_NORMALSEX)    imagetype = EImageBaseType::VAGINAL;
@@ -1454,7 +1454,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 ss << " went out looking to get laid.\n";
                 if (rng.percent(35))//finds someone
                 {
-                    if (girl.has_active_trait(traits::LESBIAN) || girl.has_active_trait(traits::BISEXUAL) && rng.percent(50))//find a woman /*FIXME not sure this will work CRAZY*/
+                    if (likes_women(girl) && rng.percent(50))//find a woman /*FIXME not sure this will work CRAZY*/
                     {
                         ss << "She goes out and finds herself a woman that she likes enough. They go back to her place and have sex.";/*FIXME needs better text and more varations CRAZY*/
                         imagetype = EImagePresets::LESBIAN; U_Libido -= 10;
@@ -1891,7 +1891,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                         {
                             ss << "didn't like at all.\n"; enjoy -= 2;
                         }
-                        else if (girl.has_active_trait(traits::SLUT))
+                        else if (is_sex_crazy(girl))
                         {
                             ss << "really liked.\n"; enjoy += 2;
                         }

@@ -34,6 +34,7 @@
 #include "cShop.h"
 #include "CLog.h"
 #include "interface/cTheme.h"
+#include "character/predicates.h"
 
 namespace settings {
     extern const char* MONEY_SELL_ITEM;
@@ -656,7 +657,7 @@ std::string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, const
         else
         {
             if (girl.has_active_trait(traits::YOUR_DAUGHTER)) message = "She is happy with the gift and gives you a big hug and a kiss on the cheek saying she loves her daddy."; //hopefully this works.. will add more
-            else if (girl.has_active_trait(traits::LESBIAN)) message = "She is happy with the gift and gives you a big hug and a kiss on the cheek and says that if you weren't a \"man\" she might have to show you how much she loved that gift.";
+            else if (!likes_men(girl)) message = "She is happy with the gift and gives you a big hug and a kiss on the cheek and says that if you weren't a \"man\" she might have to show you how much she loved that gift.";
             else /*                                   */    message = "She is happy with the gift and gives you a big hug and kisses you hard.  After the kiss she whispers to you to see her later so she can thank you \"properly\".";
         }
     }

@@ -32,6 +32,7 @@
 #include "scripting/GameEvents.h"
 #include "cJobManager.h"
 #include "cGirls.h"
+#include "character/predicates.h"
 
 namespace {
     // Match image type to the deed done
@@ -347,13 +348,13 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
             m_FuckMessage << "The female customer chooses her because she is a Lesbian.\n \n";
             acceptsGirl = true;
         }
-        else if (girl.has_active_trait(traits::STRAIGHT) && Cust.m_IsWoman && chance(10))
+        else if (!likes_women(girl) && Cust.m_IsWoman && chance(10))
         {
             m_FuckMessage << "${name} refuses to accept a female customer because she is Straight.\n \n";
             brothel.m_Fame -= 2;
             acceptsGirl = false;
         }
-        else if (girl.has_active_trait(traits::LESBIAN) && !Cust.m_IsWoman && chance(10))
+        else if (!likes_men(girl) && !Cust.m_IsWoman && chance(10))
         {
             m_FuckMessage << "${name} refuses to accept a male customer because she is a Lesbian.\n \n";
             brothel.m_Fame -= 5;
@@ -438,7 +439,7 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
                         << (Cust.m_IsWoman ? "she sees.\n" : "he sees.\n") << "\n";
             acceptsGirl = true;
         }
-        else if (chance(5) && (girl.has_active_trait(traits::SLUT) || girl.dignity() >= 70))
+        else if (chance(5) && (is_sex_crazy(girl) || girl.dignity() < 0))
         {
             m_FuckMessage << "${name} gets bored of waiting for someone to step up and starts " << (Cust.m_IsWoman ? "fingering this lady" : "giving this guy a handjob")
                         << " right there in the waiting room. The customer quickly chooses her.\n \n";

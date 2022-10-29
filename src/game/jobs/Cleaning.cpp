@@ -21,6 +21,7 @@
 #include "character/sGirl.h"
 #include "buildings/IBuilding.h"
 #include "cGirls.h"
+#include "character/predicates.h"
 
 
 namespace {
@@ -287,7 +288,7 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
     auto brothel = girl.m_Building;
 
     int choice = uniform(0, 5);
-    if (choice == 1 && (!brothel->is_sex_type_allowed(SKILL_ORALSEX) || girl.has_active_trait(traits::LESBIAN))) choice = 0;
+    if (choice == 1 && (!brothel->is_sex_type_allowed(SKILL_ORALSEX) || likes_women(girl))) choice = 0;
     if (choice != 2 && girl.tiredness() >= 80) choice = 2;
     if (choice != 1 && chance(30) && girl.has_active_trait(traits::CUM_ADDICT)) choice = 1;
 
@@ -323,8 +324,8 @@ void CleanBrothel::DoneEarly(sGirl& girl) {
         case 5:
         {
             ss << "${name} finished her cleaning early so ";
-            if (girl.has_active_trait(traits::YOUR_WIFE) || chance(30) && !girl.has_active_trait(traits::YOUR_DAUGHTER) && !girl.has_active_trait(
-                    traits::LESBIAN)) //Flipped to fix the daughter issue
+            if (girl.has_active_trait(traits::YOUR_WIFE) || chance(30) && !girl.has_active_trait(traits::YOUR_DAUGHTER) &&
+                                                                    likes_men(girl)) //Flipped to fix the daughter issue
 
             {
                 // TODO adjust tips

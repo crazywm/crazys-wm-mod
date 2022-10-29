@@ -212,6 +212,29 @@
         <Trait Name="Emprisoned Customer" Value="-5" />
     </Modifier>
 
+    <!-- Is she willing / interested in performing (possibly non-vanilla, public) sexual acts -->
+    <Modifier Name="sex.openness">
+        <Trait Name="Succubus" Value="100" />
+        <Trait Name="Nymphomaniac" Value="100" />
+        <Trait Name="Open Minded" Value="50" />
+        <Trait Name="Cum Addict" Value="50" />
+        <Trait Name="Exhibitionist" Value="33" />
+        <Trait Name="Slut" Value="33" />
+        <Trait Name="Whore" Value="20" />
+        <Trait Name="Fast Orgasm" Value="10" />
+        <Trait Name="Optimist" Value="5" />
+        <Trait Name="Pessimist" Value="-5" />
+        <Trait Name="Noble" Value="-10" />
+        <Trait Name="Chaste" Value="-50" />
+        <Trait Name="Shy" Value="-20" />
+        <Trait Name="Princess" Value="-20" />
+        <Trait Name="Priestess" Value="-20" />
+        <Trait Name="Slow Orgasms" Value="-20" />
+        <Trait Name="Queen" Value="-20" />
+        <Trait Name="Virgin" Value="-30" />
+        <Trait Name="No Clit" Value="-50" />
+    </Modifier>
+
     <Modifier Name="breast-size">
         <!-- Since no-trait means average boobs, which means breast-size==0, we need to have these partly negative -->
         <Trait Name="Flat Chest" Value="-3" />          <!-- No bra needed -->

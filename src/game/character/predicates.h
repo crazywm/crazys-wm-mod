@@ -43,4 +43,17 @@ bool is_nonhuman(const ICharacter& character);
 /// check whether the character is daughter of the player
 bool is_your_daughter(const ICharacter& character);
 
+/// gets her openness for sex, i.e. her willingness to try out things / perform sexual acts in
+/// unusual situations. Mostly trait based, but slightly influenced by libido.
+int get_sex_openness(const ICharacter& character);
+
+/// Does she have a trait that makes her "need" sex. These are nympho, succubus, and slut
+bool is_sex_crazy(const ICharacter& character);
+
+/// Does the character like to have sex with women
+bool likes_women(const ICharacter& character);
+
+/// Does the character like to have sex with men
+bool likes_men(const ICharacter& character);
+
 #endif //WM_PREDICATES_H

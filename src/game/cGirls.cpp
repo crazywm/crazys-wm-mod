@@ -340,7 +340,7 @@ string cGirls::GetGirlMood(const sGirl& girl)
         else if (HateLove <= 80)    ss << "is a great dad ";
         else                         ss << "is an awesome daddy ";
     }
-    else if (girl.has_active_trait(traits::LESBIAN))//lesbian shouldn't fall in love with you
+    else if (!likes_men(girl)) // lesbian shouldn't fall in love with you
     {
         /* */if (HateLove <= -80)    ss << "should die ";
         else if (HateLove <= -60)    ss << "is better off dead ";
@@ -1924,8 +1924,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     {
         // need to add more traits
         if (!customer->m_IsWoman && girl->has_active_trait(traits::CUM_ADDICT)) intro += 4;
-        if (customer->m_IsWoman && girl->has_active_trait(traits::LESBIAN)) intro += 3;
-        if (customer->m_IsWoman && girl->has_active_trait(traits::STRAIGHT)) intro -= 3;
+        if (customer->m_IsWoman && likes_women(*girl)) intro += 3;
+        if (customer->m_IsWoman && !likes_women(*girl)) intro -= 3;
         intro += girl->get_trait_modifier("sex.eagerness");
 
         //SIN: Fix ordering and wording - delete old if this okay
@@ -2885,7 +2885,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             if (g_Dice.percent(90))
             {
                 message += "\n \nAfterwards the woman let " + girlName + " keep the double-dildo they had shared.";
-                if (girl->has_active_trait(traits::STRAIGHT))
+                if (!likes_women(*girl))
                 {
                     message += "\nBeing straight, she had no desire to keep it and threw it out later.";
                     keep = false;
@@ -2895,7 +2895,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             else
             {
                 message += "\n \nThe woman gave " + girlName + " an expensive, illustrated book on lesbian sex.";
-                if (girl->has_active_trait(traits::STRAIGHT))
+                if (!likes_women(*girl))
                 {
                     message += "\nBeing straight, she found it kinda gross and threw it out.";
                     keep = false;
@@ -3050,7 +3050,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             break;
         }
     }
-    if (girl->has_active_trait(traits::LESBIAN))
+    if (likes_women(*girl))
     {
         switch (SexType)
         {
@@ -3068,7 +3068,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
             break;
         }
     }
-    if (girl->has_active_trait(traits::STRAIGHT))
+    if (likes_men(*girl))
     {
         switch (SexType)
         {

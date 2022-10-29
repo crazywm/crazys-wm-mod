@@ -23,6 +23,7 @@
 #include "buildings/IBuilding.h"
 #include "utils/streaming_random_selection.hpp"
 #include "IGame.h"
+#include "character/predicates.h"
 
 extern const char* const TrainingInteractionId;
 
@@ -454,7 +455,7 @@ void SoStraight::HandleTraining(sGirl& girl, bool is_night) {
 
     update_progress(girl);
 
-    if (girl.has_active_trait(traits::LESBIAN))
+    if (!likes_men(girl))
     {
         ss << "Her innate disgust of balls and shaft made her pull away from you while trying to teach her to suck it.\n";
         girl.m_WorkingDay -= girl.lesbian() / 5;                    // it is hard to change something you are good at

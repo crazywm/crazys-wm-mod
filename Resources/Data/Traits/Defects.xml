@@ -99,7 +99,8 @@
     <Trait Name="No Clit">
         <description>This girl no longer has a clit. This was probably done to help her concentrate on her work.</description>
         <Modifiers>
-            <Modifier Name="enjoy:SEX" Value="-10" />
+            <Modifier Name="stat:Libido" Value="-20" />
+            <Modifier Name="enjoy:SEX" Value="-20" />
             <Modifier Name="fetish:Freak" Value="5" />
             <Modifier Name="fetish:Sexy" Value="-10" />
         </Modifiers>
