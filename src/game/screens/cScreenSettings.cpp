@@ -50,7 +50,7 @@ void cScreenSettings::set_ids()
     for(int i = 0; i < themes.size(); ++i) {
         auto theme = themes[i].leaf().substr(0, themes[i].leaf().length() - 4);
         if(theme == cfg.theme()) {
-            AddToListBox(theme_id, 1, theme, COLOR_DARKBLUE);
+            AddToListBox(theme_id, 1, theme, COLOR_EMPHASIS);
         } else {
             AddToListBox(theme_id, 0, theme);
         }

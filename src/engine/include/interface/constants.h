@@ -24,11 +24,13 @@ class sColor;
 
 const int LISTBOX_ITEMHEIGHT = 20;        //how tall (in pixels) each list item is
 
-// Listbox Constants moved from cListBox.h
-const unsigned int COLOR_BLUE         = 0;
-const unsigned int COLOR_RED          = 1;
-const unsigned int COLOR_DARKBLUE     = 2;
-const unsigned int COLOR_GREEN        = 3;
-const unsigned int COLOR_YELLOW       = 4;    // `J` added
+// Color indices for ListBox and MessageBox
+const unsigned int COLOR_NEUTRAL      = 0;
+const unsigned int COLOR_WARNING      = 1;
+const unsigned int COLOR_EMPHASIS     = 2;
+const unsigned int COLOR_POSITIVE     = 3;
+const unsigned int COLOR_ATTENTION    = 4;
+// Only for ListBox!
+const unsigned int COLOR_NEUTRAL2     = 5;
 
 #endif //WM_INTERFACE_CONSTANTS_H

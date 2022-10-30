@@ -256,7 +256,7 @@ void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
         girl.set_default_house_percent();
 
         g_Game->push_message(girl.FullName() + ": " + item->m_Name +
-                             ": The use of this item has reset all her stats and skills to default.", COLOR_BLUE);
+                             ": The use of this item has reset all her stats and skills to default.", COLOR_NEUTRAL);
         girl.remove_item(item);
         cGirls::CalculateGirlType(girl);
         return;
@@ -569,7 +569,7 @@ void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
 
             if (pregmsg.str().length() > 0)
             {
-                g_Game->push_message(pregmsg.str(), COLOR_RED);
+                g_Game->push_message(pregmsg.str(), COLOR_WARNING);
             }
 
         }

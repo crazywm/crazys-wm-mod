@@ -545,7 +545,7 @@ void cMovieManager::run_ad_campaign(int target_movie) {
         m_PromotionPoints -= points;
         movie.TotalCost += 500;
     } else {
-        g_Game->push_message("The ad campaign costs 500 gold!", COLOR_RED);
+        g_Game->push_message("The ad campaign costs 500 gold!", COLOR_WARNING);
     }
 }
 
@@ -560,7 +560,7 @@ void cMovieManager::make_survey(int target_audience) {
         audience.Knowledge += (points * g_Dice.in_range(10, 20)) / 1000;
         m_MarketResearchPoints -= points;
     }else {
-        g_Game->push_message("The survey costs 500 gold!", COLOR_RED);
+        g_Game->push_message("The survey costs 500 gold!", COLOR_WARNING);
     }
 }
 

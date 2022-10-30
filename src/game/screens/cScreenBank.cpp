@@ -71,7 +71,7 @@ void cScreenBank::withdraw_all()
 {
     if (g_Game->GetBankMoney() <= 0)
     {
-        push_message("You have no money to withdraw", COLOR_RED);
+        push_message("You have no money to withdraw", COLOR_WARNING);
         return;
     }
     withdraw(g_Game->GetBankMoney());
@@ -81,7 +81,7 @@ void cScreenBank::deposit_all()
 {
     if (g_Game->gold().ival() <= 0)
     {
-        push_message("You have no money to deposit.", COLOR_RED);
+        push_message("You have no money to deposit.", COLOR_WARNING);
         return;
     }
     deposit(g_Game->gold().ival());
@@ -90,7 +90,7 @@ void cScreenBank::deposit_all()
 void cScreenBank::deposit(int amount)
 {
     if (g_Game->gold().misc_debit(amount)) g_Game->DepositInBank(amount);
-    else push_message("You don't have that much!", COLOR_RED);
+    else push_message("You don't have that much!", COLOR_WARNING);
 
     init(false);
 }
@@ -102,7 +102,7 @@ void cScreenBank::withdraw(int amount)
         g_Game->WithdrawFromBank(amount);
         g_Game->gold().misc_credit(amount);
     }
-    else push_message("There isn't that much in your account", COLOR_RED);
+    else push_message("There isn't that much in your account", COLOR_WARNING);
 
     init(false);
 }

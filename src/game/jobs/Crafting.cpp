@@ -160,7 +160,7 @@ void cBlacksmithJob::DoWorkEvents(sGirl& girl) {
             else if (fire < 10)    ss << " that destroyed most of the equipment she had made.";
             else /*          */    ss << " destroying everything she had made.";
 
-            if (fire > 5) g_Game->push_message(girl.FullName() + " accidentally started a large fire while working as a Blacksmith at the Arena.", COLOR_RED);
+            if (fire > 5) g_Game->push_message(girl.FullName() + " accidentally started a large fire while working as a Blacksmith at the Arena.", COLOR_WARNING);
         }
         else if (roll_b < 30)    // injury
         {
@@ -176,7 +176,7 @@ void cBlacksmithJob::DoWorkEvents(sGirl& girl) {
             if (girl.is_dead())
             {
                 ss << " It killed her.";
-                g_Game->push_message(girl.FullName() + " was killed in an accident while working as a Blacksmith at the Arena.", COLOR_RED);
+                g_Game->push_message(girl.FullName() + " was killed in an accident while working as a Blacksmith at the Arena.", COLOR_WARNING);
             }
             else ss << ".";
         }
@@ -236,7 +236,7 @@ void cCobblerJob::DoWorkEvents(sGirl& girl) {
             if (girl.is_dead())
             {
                 ss << " killing her.";
-                g_Game->push_message(girl.FullName() + " was killed in an accident while working as a Cobbler at the Arena.", COLOR_RED);
+                g_Game->push_message(girl.FullName() + " was killed in an accident while working as a Cobbler at the Arena.", COLOR_WARNING);
             }
             else ss << ".";
         }
@@ -298,7 +298,7 @@ void cMakeItemJob::DoWorkEvents(sGirl& girl) {
             if (girl.is_dead())
             {
                 ss << " killing her.";
-                g_Game->push_message(girl.FullName() + " was killed in an accident while making items at the Farm.", COLOR_RED);
+                g_Game->push_message(girl.FullName() + " was killed in an accident while making items at the Farm.", COLOR_WARNING);
             }
             else ss << ".";
         }
@@ -401,7 +401,7 @@ void cTailorJob::DoWorkEvents(sGirl& girl) {
             if (girl.is_dead())
             {
                 ss << " killing her.";
-                g_Game->push_message(girl.FullName() + " was killed in an accident while working as a Tailor at the Farm.", COLOR_RED);
+                g_Game->push_message(girl.FullName() + " was killed in an accident while working as a Tailor at the Farm.", COLOR_WARNING);
             }
             else ss << ".";
         }
@@ -469,7 +469,7 @@ void cJewelerJob::DoWorkEvents(sGirl& girl) {
             else if (fire < 10)    ss << " that destroyed most of the equipment she had made.";
             else /*          */    ss << " destroying everything she had made.";
 
-            if (fire > 5) g_Game->push_message(girl.FullName() + " accidently started a large fire while working as a Jeweler at the Arena.", COLOR_RED);
+            if (fire > 5) g_Game->push_message(girl.FullName() + " accidently started a large fire while working as a Jeweler at the Arena.", COLOR_WARNING);
         }
         else if (roll_b < 30)    // injury
         {
@@ -485,7 +485,7 @@ void cJewelerJob::DoWorkEvents(sGirl& girl) {
             if (girl.is_dead())
             {
                 ss << " killing her.";
-                g_Game->push_message(girl.FullName() + " was killed in an accident while working as a Jeweler at the Arena.", COLOR_RED);
+                g_Game->push_message(girl.FullName() + " was killed in an accident while working as a Jeweler at the Arena.", COLOR_WARNING);
             }
             else ss << ".";
         }

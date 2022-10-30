@@ -94,7 +94,7 @@ void cScreenNewGame::start_game()
     std::string s = GetEditBoxText(psname_id);
     if (b.empty() || p.empty() || s.empty())
     {
-        push_message("You must enter a name in all 3 boxes.", COLOR_RED);
+        push_message("You must enter a name in all 3 boxes.", COLOR_WARNING);
         return;
     }
     else    // ready to start the game now

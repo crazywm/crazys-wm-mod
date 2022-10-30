@@ -369,7 +369,7 @@ bool sBrothel::runaway_check(sGirl& girl)
         girl.m_RunAway = 6;
         std::stringstream smess;
         smess << girl.FullName() << " has run away.\nSend your goons after her to attempt recapture.\nShe will escape for good after 6 weeks.\n";
-        g_Game->push_message(smess.str(), COLOR_RED);
+        g_Game->push_message(smess.str(), COLOR_WARNING);
         return true;
     }
 

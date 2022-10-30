@@ -274,7 +274,7 @@ void cScreenItemManagement::init_side(sItemTransferSide& target, int owner, int 
 
     for(std::size_t i = 0; i < m_OwnerList.size(); ++i) {
         /// TODO define colors
-        target.owners_list->AddRow(i, [&](const std::string& col){ return m_OwnerList[i]->get_data(filter, col); }, COLOR_BLUE);
+        target.owners_list->AddRow(i, [&](const std::string& col){ return m_OwnerList[i]->get_data(filter, col); }, COLOR_NEUTRAL);
     }
 
     /// this works because here ID == index

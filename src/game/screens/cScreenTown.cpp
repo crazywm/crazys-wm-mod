@@ -183,7 +183,7 @@ void cScreenTown::do_walk()
 {
     if (!g_Game->CanWalkAround())
     {
-        push_message("You can only do this once per week.", COLOR_RED);
+        push_message("You can only do this once per week.", COLOR_WARNING);
         return;
     }
     // most of the time, you're not going to find anyone unless you're cheating, of course.
@@ -194,7 +194,7 @@ void cScreenTown::do_walk()
     }
     if (!found && !g_Game->allow_cheats())
     {
-        push_message(walk_no_luck(), COLOR_BLUE);
+        push_message(walk_no_luck(), COLOR_NEUTRAL);
         return;
     }
 
@@ -210,7 +210,7 @@ void cScreenTown::do_walk()
 
     if (m_MeetingGirl == nullptr)
     {
-        push_message(walk_no_luck(), COLOR_RED);
+        push_message(walk_no_luck(), COLOR_WARNING);
         return;
     }
 

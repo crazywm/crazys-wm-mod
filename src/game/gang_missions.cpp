@@ -316,7 +316,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
                 else
                 {
                     ss << "Your gang " << gang.name() << " fails to report back from their sabotage mission.\nLater you learn that they were wiped out to the last man.";
-                    g_Game->push_message(ss.str(), COLOR_RED);
+                    g_Game->push_message(ss.str(), COLOR_WARNING);
                 }
                 return false;
         }

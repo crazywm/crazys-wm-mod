@@ -149,7 +149,7 @@ void cScreenMovieMaker::init(bool back)
     // Add scene to list
     int row = 0;
     for(auto& scene: scenes) {
-        unsigned int item_color = COLOR_BLUE;
+        unsigned int item_color = COLOR_NEUTRAL;
         if(m_ScenesInMovie.count(row) > 0) {
             GetListBox(makethismovie_id)->AddRow(row, [&](const std::string& c){ return get_scene_detail(scene, c); }, item_color);
         } else {

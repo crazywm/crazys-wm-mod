@@ -175,7 +175,7 @@ void cScreenDungeon::init(bool back)
         auto* dgirl = g_Game->dungeon().GetGirl(i);         // get the i-th girl
         if (selected_girl().get() == dgirl->m_Girl.get()) selection = i;                                                            // if selected_girl is this girl, update selection
         dgirl->m_Girl->m_DayJob = dgirl->m_Girl->m_NightJob = JOB_INDUNGEON;
-        int col = ((dgirl->m_Girl->health() <= 30) || (dgirl->m_Girl->happiness() <= 30)) ? COLOR_RED : COLOR_BLUE;            // if she's low health or unhappy, flag her entry to display in red // Anon21
+        int col = ((dgirl->m_Girl->health() <= 30) || (dgirl->m_Girl->happiness() <= 30)) ? COLOR_WARNING : COLOR_NEUTRAL;            // if she's low health or unhappy, flag her entry to display in red // Anon21
         GetListBox(girllist_id)->AddRow(i, dgirl, col);
     }
     // now add the customers
@@ -183,7 +183,7 @@ void cScreenDungeon::init(bool back)
     for (int i = 0; i < g_Game->dungeon().GetNumCusts(); i++)    // add customers
     {
         sDungeonCust* cust = g_Game->dungeon().GetCust(i);
-        int col = (cust->m_Health <= 30) ? COLOR_RED : COLOR_BLUE;
+        int col = (cust->m_Health <= 30) ? COLOR_WARNING : COLOR_NEUTRAL;
         GetListBox(girllist_id)->AddRow(i + g_Game->dungeon().GetNumGirls(), cust, col);
     }
 
@@ -263,7 +263,7 @@ void cScreenDungeon::selection_change()
         sDungeonCust* cust = g_Game->dungeon().GetCust(num);
         if(cust == nullptr) {
             push_message("Could not select the target. If you encounter this error, please"
-                         "provide us a description / save game of how you managed this.", COLOR_RED);
+                         "provide us a description / save game of how you managed this.", COLOR_WARNING);
             return;
         }
         DisableWidget(viewdetails_id);
@@ -315,7 +315,7 @@ int cScreenDungeon::view_girl()
         // TODO can this happen?
         if(!girl) return Continue;
         else if(girl->is_dead()) {
-            push_message("This is a dead girl. She has ceased to be.", COLOR_RED);
+            push_message("This is a dead girl. She has ceased to be.", COLOR_WARNING);
             return Return;
         }
         // if only a single girl is selected, allow iterating over all
@@ -382,7 +382,7 @@ int cScreenDungeon::enslave()
             ss.str("");
             ss << girl->FullName() << " puts up a fight "
                << "but your goons control her as the enchanted slave tattoo is placed upon her.";
-            push_message(ss.str(), COLOR_RED);    // and queue the message
+            push_message(ss.str(), COLOR_WARNING);    // and queue the message
             break;
         case EGirlEscapeAttemptResult::STOPPED_BY_PLAYER:
             // adjust the girl's stats to reflect her new status and then evil up the player because he forced her into slavery
@@ -391,7 +391,7 @@ int cScreenDungeon::enslave()
             ss.str("");
             ss << girl->FullName()
                << " breaks free from your goons' control. You restrain her personally while the slave tattoo placed upon her.";
-            push_message(ss.str(), COLOR_RED);
+            push_message(ss.str(), COLOR_WARNING);
             break;
         case EGirlEscapeAttemptResult::SUCCESS:
             ss.str("");
@@ -401,7 +401,7 @@ int cScreenDungeon::enslave()
             numGirlsRemoved++;
             g_Game->player().suspicion(15);                    // suspicion goes up
             g_Game->player().evil(15);                        // so does evil
-            push_message(ss.str(), COLOR_RED);    // add to the message queue
+            push_message(ss.str(), COLOR_WARNING);    // add to the message queue
         }
     });
     if (deadcount > 0) push_message("There's not much point in using a slave tattoo on a dead body.", 0);
@@ -470,7 +470,7 @@ void cScreenDungeon::sell_slaves()
         sell_gold.push_back(cost);
         g_Game->girl_pool().GiveGirl(removed_girl);
     }
-    if (deadcount > 0) push_message("Nobody is currently in the market for dead girls.", COLOR_YELLOW);
+    if (deadcount > 0) push_message("Nobody is currently in the market for dead girls.", COLOR_ATTENTION);
     if (count <= 0) return;
 
     ss.str(""); ss << "You sold ";

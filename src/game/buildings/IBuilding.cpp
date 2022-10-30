@@ -113,7 +113,7 @@ void IBuilding::BeginWeek()
             m_Filthiness++; // `J` Death is messy
             ss.str(""); ss << cgirl.FullName() << " has died from her injuries, the other girls all fear and hate you a little more.";
             cgirl.AddMessage(ss.str(), EImageBaseType::DEATH, EVENT_DANGER);
-            g_Game->push_message(ss.str(), COLOR_RED);
+            g_Game->push_message(ss.str(), COLOR_WARNING);
             ss.str(""); ss << "${name} has died from her injuries.  Her body will be removed by the end of the week.";
             cgirl.AddMessage(ss.str(), EImageBaseType::DEATH, EVENT_SUMMARY);
             dead_girls.push_back(&cgirl);
@@ -1694,7 +1694,7 @@ void IBuilding::EndWeek() {
 std::shared_ptr<sGirl> IBuilding::TryEncounter() {
     if (m_HasDoneEncounter && !g_Game->allow_cheats())
     {
-        g_Game->push_message("You can only do this once per week.", COLOR_RED);
+        g_Game->push_message("You can only do this once per week.", COLOR_WARNING);
         return nullptr;
     }
 
@@ -1703,14 +1703,14 @@ std::shared_ptr<sGirl> IBuilding::TryEncounter() {
     // most of the time, you're not going to find anyone unless you're cheating, of course.
     if (!g_Dice.percent(g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_CHANCE)) && !g_Game->allow_cheats())
     {
-        g_Game->push_message(meet_no_luck(), COLOR_BLUE);
+        g_Game->push_message(meet_no_luck(), COLOR_NEUTRAL);
         return nullptr;
     }
 
     auto girl = meet_girl();
     if (girl == nullptr)                                                // if there's no girl, no meeting
     {
-        g_Game->push_message("Error: Could not generate a girl to meet.", COLOR_RED);
+        g_Game->push_message("Error: Could not generate a girl to meet.", COLOR_WARNING);
         return nullptr;
     }
 

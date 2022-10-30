@@ -23,23 +23,25 @@
     <Color Name = "ListBoxText"                         R="245" G="245" B="245"/>
     <Color Name = "ListBoxElementBorder"                R="66"  G="66"  B="66"/>
     <Color Name = "ListBoxElementBorderH"               R="97"  G="97"  B="97"/>
-    <Color Name = "ListBoxElementBackground1"           R="66"  G="66"  B="66"/>
-    <Color Name = "ListBoxElementBackground2"           R="183" G="28"  B="28"/>
-    <Color Name = "ListBoxElementBackground3"           R="26"  G="35"  B="126"/>
-    <Color Name = "ListBoxElementBackground4"           R="27"  G="94"  B="32"/>
-    <Color Name = "ListBoxElementBackground5"           R="247" G="127" B="23"/>
-    <Color Name = "ListBoxSelectedElement1"             R="117" G="117" B="117"/>
-    <Color Name = "ListBoxSelectedElement2"             R="211" G="47"  B="47"/>
-    <Color Name = "ListBoxSelectedElement3"             R="40"  G="53"  B="147"/>
-    <Color Name = "ListBoxSelectedElement4"             R="46"  G="125" B="50"/>
-    <Color Name = "ListBoxSelectedElement5"             R="249" G="168" B="37"/>
+    <Color Name = "ListBoxElementBackground-Neutral"    R="66"  G="66"  B="66"/>
+    <Color Name = "ListBoxElementBackground-Neutral2"   R="66"  G="66"  B="75"/>
+    <Color Name = "ListBoxElementBackground-Warning"    R="183" G="28"  B="28"/>
+    <Color Name = "ListBoxElementBackground-Emphasis"   R="26"  G="35"  B="126"/>
+    <Color Name = "ListBoxElementBackground-Positive"   R="27"  G="94"  B="32"/>
+    <Color Name = "ListBoxElementBackground-Attention"  R="247" G="127" B="23"/>
+    <Color Name = "ListBoxSelectedElement-Neutral"      R="117" G="117" B="117"/>
+    <Color Name = "ListBoxSelectedElement-Neutral2"     R="117" G="117" B="135"/>
+    <Color Name = "ListBoxSelectedElement-Warning"      R="211" G="47"  B="47"/>
+    <Color Name = "ListBoxSelectedElement-Emphasis"     R="40"  G="53"  B="147"/>
+    <Color Name = "ListBoxSelectedElement-Positive"     R="46"  G="125" B="50"/>
+    <Color Name = "ListBoxSelectedElement-Attention"    R="249" G="168" B="37"/>
 
     <Color Name = "MessageBoxBorder"                    R="66"  G="66"  B="66"/>
-    <Color Name = "MessageBoxBackground1"               R="33"  G="33"  B="33"/>
-    <Color Name = "MessageBoxBackground2"               R="183" G="28"  B="28"/>
-    <Color Name = "MessageBoxBackground3"               R="26"  G="35"  B="126"/>
-    <Color Name = "MessageBoxBackground4"               R="27"  G="94"  B="32"/>
-    <Color Name = "MessageBoxBackground5"               R="247" G="127" B="23"/>
+    <Color Name = "MessageBoxBackground-Neutral"               R="33"  G="33"  B="33"/>
+    <Color Name = "MessageBoxBackground-Warning"               R="183" G="28"  B="28"/>
+    <Color Name = "MessageBoxBackground-Emphasis"               R="26"  G="35"  B="126"/>
+    <Color Name = "MessageBoxBackground-Positive"               R="27"  G="94"  B="32"/>
+    <Color Name = "MessageBoxBackground-Attention"               R="247" G="127" B="23"/>
     <Color Name = "MessageBoxText"                      R="245" G="245" B="245"/>
 
     <Color Name = "TextColor"                           R="245" G="245" B="245"/>

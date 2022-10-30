@@ -292,7 +292,7 @@ int cLuaScript::Dialog(lua_State* state)
 
 int cLuaScript::GameOver(lua_State* state) {
     // TODO how do we handle this message?
-    g_Game->push_message("GAME OVER", COLOR_RED);
+    g_Game->push_message("GAME OVER", COLOR_WARNING);
     window_manager().PopAll();
     return 0;
 }
@@ -306,13 +306,13 @@ int cLuaScript::GivePlayerRandomSpecialItem(lua_State* state) {
     const sInventoryItem* item = g_Game->inventory_manager().GetRandomItem(filter);
     if(!item)
     {
-       g_Game->push_message(" There are no suitable items to be had\n", COLOR_RED);
+       g_Game->push_message(" There are no suitable items to be had\n", COLOR_WARNING);
        return 0;
     }
 
     if(!g_Game->player().inventory().add_item(item)) {
         /// TODO how to handle this message?
-        g_Game->push_message(" Your inventory is full\n", COLOR_RED);
+        g_Game->push_message(" Your inventory is full\n", COLOR_WARNING);
     }
     return 0;
 }

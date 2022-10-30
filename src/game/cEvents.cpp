@@ -97,13 +97,13 @@ unsigned int CEvent::ListboxColour() const
     //case EVENT_NIGHTSHIFT:
     //    return COLOR_BLUE;
     case EVENT_WARNING:
-        return COLOR_DARKBLUE;
+        return COLOR_EMPHASIS;
     case EVENT_DANGER:
-        return COLOR_RED;
+        return COLOR_WARNING;
     case EVENT_GOODNEWS:
-        return COLOR_GREEN;
+        return COLOR_POSITIVE;
     case EVENT_LEVELUP:
-        return COLOR_YELLOW;;
+        return COLOR_ATTENTION;;
     //case EVENT_SUMMARY:
     //    return COLOR_BLUE;
     //case EVENT_DUNGEON:
@@ -111,15 +111,15 @@ unsigned int CEvent::ListboxColour() const
     //case EVENT_MATRON:
     //    return COLOR_BLUE;
     case EVENT_DEBUG:
-        return COLOR_RED;
+        return COLOR_WARNING;
     //case EVENT_GANG:
     //    return COLOR_BLUE;
     //case EVENT_BROTHEL:
     //    return COLOR_BLUE;
     case EVENT_NOWORK:
-        return COLOR_DARKBLUE;
+        return COLOR_EMPHASIS;
     default:
-        return COLOR_BLUE;
+        return COLOR_NEUTRAL;
     }
 }
 

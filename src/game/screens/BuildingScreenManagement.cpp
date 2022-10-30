@@ -310,7 +310,7 @@ void IBuildingScreenManagement::init(bool back)
     {
         sGirl* gir = active_building().get_girl(i);
         if (selected_girl == gir) selection = i;
-        unsigned int item_color = (gir->health() <= 30 || gir->tiredness() >= 80 || gir->happiness() <= 30) ? COLOR_RED : COLOR_BLUE;
+        unsigned int item_color = (gir->health() <= 30 || gir->tiredness() >= 80 || gir->happiness() <= 30) ? COLOR_WARNING : COLOR_NEUTRAL;
         GetListBox(girllist_id)->AddRow(i, gir, item_color);
     }
 
@@ -427,7 +427,7 @@ void IBuildingScreenManagement::free_girls() {
     }
 
     ask << " Do you want to throw a Freedom Party or just get it over with quickly?";
-    g_Game->push_message(ask.str(), COLOR_BLUE);
+    g_Game->push_message(ask.str(), COLOR_NEUTRAL);
 
     input_choice("Is it party time?", std::move(options), [girls=std::move(girls)](int selected) {
         if(selected == 0) {

@@ -191,7 +191,7 @@ void sMovieStudio::Update()
     else if (GetNumScenes() > 0)
     {
         ss.str("");    ss << "You have " << GetNumScenes() << " unused scenes in the Movie Studio ready to be put into movies.";
-        g_Game->push_message(ss.str(), COLOR_GREEN);
+        g_Game->push_message(ss.str(), COLOR_POSITIVE);
     }
 
     BeginWeek();

@@ -71,7 +71,7 @@ void cObjectiveManager::UpdateObjective()
             if (!m_Objective->m_FailText.empty())        ss << "You have failed your objective:\n" << m_Objective->m_FailText;
             else if (m_Objective->m_Text.empty())    ss << "You have failed an objective.";
             else ss << "You have failed your objective to " << m_Objective->m_Text;
-            g_Game->push_message(ss.str(), COLOR_RED);
+            g_Game->push_message(ss.str(), COLOR_WARNING);
             m_Objective.reset();
         }
     }
@@ -294,7 +294,7 @@ void cObjectiveManager::CreateNewObjective()
 
         if (sst.str().length() > 0)
         {
-            g_Game->push_message(sst.str(), COLOR_DARKBLUE);
+            g_Game->push_message(sst.str(), COLOR_EMPHASIS);
             // TODO give objectives their own message category
             g_Game->buildings().get_building(0).AddMessage(sst.str(), EVENT_GOODNEWS);
         }
@@ -472,7 +472,7 @@ void cObjectiveManager::PassObjective()
 
         if (ss.str().length() > 0)
         {
-            g_Game->push_message(ss.str(), COLOR_GREEN);
+            g_Game->push_message(ss.str(), COLOR_POSITIVE);
             g_Game->buildings().get_building(0).AddMessage(ss.str(), EVENT_GOODNEWS);
         }
 

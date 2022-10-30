@@ -501,7 +501,7 @@ void cGame::NextWeek()
         int gained_gold = num_businesses_extortet * INCOME_BUSINESS;
         ss << "You gain " << gained_gold << " gold from the " << num_businesses_extortet << " businesses under your control.\n";
         gold().extortion(gained_gold);
-        push_message(ss.str(), COLOR_GREEN);
+        push_message(ss.str(), COLOR_POSITIVE);
     }
 
     ss.str("");
@@ -509,17 +509,17 @@ void cGame::NextWeek()
     if (totalProfit < 0)
     {
         ss << "Your brothel had an overall deficit of " << -totalProfit << " gold.";
-        push_message(ss.str(), COLOR_RED);
+        push_message(ss.str(), COLOR_WARNING);
     }
     else if (totalProfit > 0)
     {
         ss << "You made a overall profit of " << totalProfit << " gold.";
-        push_message(ss.str(), COLOR_GREEN);
+        push_message(ss.str(), COLOR_POSITIVE);
     }
     else
     {
         ss << "You are breaking even (made as much money as you spent)";
-        push_message(ss.str(), COLOR_DARKBLUE);
+        push_message(ss.str(), COLOR_EMPHASIS);
     }
 
     // `J` added loss of security if not enough businesses held.
@@ -650,7 +650,7 @@ void cGame::CheckRaid()
     {
         ss << "the guard captain lectures you on the importance of crime prevention, whilst also passing on the Mayor's heartfelt best wishes.";
         player().suspicion(-5);
-        push_message(ss.str(), COLOR_GREEN);
+        push_message(ss.str(), COLOR_POSITIVE);
         return;
     }
     /*
@@ -672,7 +672,7 @@ void cGame::CheckRaid()
         *        being so blatantly unfair
         */
         ss << "On his way out the captain smiles and says that the " << rival->m_Name << " send their regards.";
-        push_message(ss.str(), COLOR_RED);
+        push_message(ss.str(), COLOR_WARNING);
         return;
     }
     /*
@@ -684,7 +684,7 @@ void cGame::CheckRaid()
     {
         ss << "they pronounce your operation to be entirely in accordance with the law.";
         player().suspicion(-5);
-        push_message(ss.str(), COLOR_GREEN);
+        push_message(ss.str(), COLOR_POSITIVE);
         return;
     }
     int nPlayer_Disposition = player().disposition();
@@ -731,7 +731,7 @@ void cGame::CheckRaid()
     *    check for a drug-using girl they can arrest
     */
     check_druggy_girl(ss);
-    push_message(ss.str(), COLOR_RED);
+    push_message(ss.str(), COLOR_WARNING);
 }
 
 void cGame::HandleTaxes() {
@@ -749,7 +749,7 @@ void cGame::HandleTaxes() {
 
     if (earnings <= 0)
     {
-        push_message("You didn't earn any money so didn't get taxed.", COLOR_BLUE);
+        push_message("You didn't earn any money so didn't get taxed.", COLOR_NEUTRAL);
         return;
     }
     /*
@@ -767,7 +767,7 @@ void cGame::HandleTaxes() {
     */
     if (tax <= 0)
     {
-        push_message("Thanks to a clever accountant, none of your income turns out to be taxable", COLOR_BLUE);
+        push_message("Thanks to a clever accountant, none of your income turns out to be taxable", COLOR_NEUTRAL);
         return;
     }
     gold().tax(tax);
@@ -781,7 +781,7 @@ void cGame::HandleTaxes() {
     {
         ss << "\nConsider bribing city officials to get a lower tax rate.";
     }
-    push_message(ss.str(), COLOR_BLUE);
+    push_message(ss.str(), COLOR_NEUTRAL);
 }
 
 void cGame::UpdateBribeInfluence()
@@ -833,7 +833,7 @@ void cGame::UpdateRunaways() {
                 // girl is recaptured and returned to you
                 it = m_Runaways.erase(it);
                 dungeon().AddGirl(rgirl, DUNGEON_GIRLRUNAWAY);
-                push_message("A runnaway slave has been recaptured by the authorities and returned to you.", COLOR_GREEN);
+                push_message("A runnaway slave has been recaptured by the authorities and returned to you.", COLOR_POSITIVE);
                 continue;
             }
             rgirl->m_RunAway--;

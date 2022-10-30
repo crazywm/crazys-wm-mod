@@ -131,7 +131,7 @@ void cScreenMarketResearch::init(bool back)
     // Add scene to list
     int row = 0;
     for(auto& group: audiences) {
-        unsigned int item_color = COLOR_BLUE;
+        unsigned int item_color = COLOR_NEUTRAL;
         GetListBox(targetgroup_list_id)->AddRow(row, [&](const std::string& col){ return group.get_formatted(col, false); }, item_color);
         row++;
     }
@@ -139,7 +139,7 @@ void cScreenMarketResearch::init(bool back)
     // Add movies to list
     row = 0;
     for(auto& movie: g_Game->movie_manager().get_movies()) {
-        unsigned int item_color = COLOR_BLUE;
+        unsigned int item_color = COLOR_NEUTRAL;
         GetListBox(running_movies_id)->AddRow(row, [&](const std::string& col){ return get_movie_detail(movie, col); }, item_color);
         ++row;
     }

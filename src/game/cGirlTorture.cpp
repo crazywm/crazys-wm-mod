@@ -38,8 +38,8 @@ namespace settings {
 */
 cGirlTorture::~cGirlTorture()        // deconstructor
 {
-    int color = COLOR_BLUE;
-    if (m_Girl->m_RunAway != 0) color = COLOR_RED;
+    int color = COLOR_NEUTRAL;
+    if (m_Girl->m_RunAway != 0) color = COLOR_WARNING;
 
     // Display any outstanding messages
     if (!m_Message.empty())
@@ -393,7 +393,7 @@ bool cGirlTorture::IsGirlInjured()
     // Post any new Player messages in Red Message Box Colour 1
     if (m_TorturedByPlayer && !m_Message.empty() && m_Message != sGirlName + ": ")
     {
-        g_Game->push_message(m_Message, COLOR_RED);
+        g_Game->push_message(m_Message, COLOR_WARNING);
         m_Girl->AddMessage(m_Message, EImageBaseType::TORTURE, EVENT_DAYSHIFT);    // `J` added
 
         m_Message = sGirlName + ": ";

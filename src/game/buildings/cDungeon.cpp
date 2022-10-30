@@ -448,7 +448,7 @@ void cDungeon::Update()
             {
                 sDungeonGirl* temp = &current;
                 msg << girlName << "'s body has been removed from the dungeon since she was dead.";
-                g_Game->push_message(msg.str(), COLOR_RED);
+                g_Game->push_message(msg.str(), COLOR_WARNING);
                 RemoveGirl(temp);
                 continue;
             }
@@ -605,7 +605,7 @@ void cDungeon::Update()
 
 void cDungeon::OnGirlDead(sDungeonGirl& current) const {
     current.m_Reason = DUNGEON_DEAD;
-    g_Game->push_message("A girl has died in the dungeon.\nHer body will be removed by the end of the week.", COLOR_RED);
+    g_Game->push_message("A girl has died in the dungeon.\nHer body will be removed by the end of the week.", COLOR_WARNING);
 
     if (g_Dice.percent(10))	// only 10% of being discovered
     {
@@ -622,7 +622,7 @@ void cDungeon::OnGirlDead(sDungeonGirl& current) const {
 void cDungeon::OnCustomerDead(sDungeonCust* current) {
     m_NumberDied++;
     current->m_Reason = DUNGEON_DEAD;
-    g_Game->push_message("A customer has died in the dungeon.\nTheir body will be removed by the end of the week.", COLOR_RED);
+    g_Game->push_message("A customer has died in the dungeon.\nTheir body will be removed by the end of the week.", COLOR_WARNING);
 
     if (g_Dice.percent(10))	// only 10% chance of being found out
     {

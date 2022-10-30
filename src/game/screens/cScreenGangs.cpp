@@ -250,8 +250,8 @@ void cScreenGangs::init(bool back)
         /*
         *            add the box to the list; red highlight gangs that are low on numbers
         */
-        int color = (gang->m_Num < 6 ? COLOR_RED : COLOR_BLUE);
-        if (gang->m_Num < 6 && (gang->m_MissionID == MISS_SERVICE || gang->m_MissionID == MISS_TRAINING)) color = COLOR_YELLOW;
+        int color = (gang->m_Num < 6 ? COLOR_WARNING : COLOR_NEUTRAL);
+        if (gang->m_Num < 6 && (gang->m_MissionID == MISS_SERVICE || gang->m_MissionID == MISS_TRAINING)) color = COLOR_ATTENTION;
         AddToListBox(ganglist_id, num++, std::move(Data), color);
     }
 
@@ -276,7 +276,7 @@ void cScreenGangs::init(bool back)
         Data[9] = mk_percent(current->service());
 
         //           add the box to the list
-        int color = current->m_Num < 6 ? COLOR_RED : COLOR_BLUE;
+        int color = current->m_Num < 6 ? COLOR_WARNING : COLOR_NEUTRAL;
         AddToListBox(recruitlist_id, num++, std::move(Data), color);
     }
 

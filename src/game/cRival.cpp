@@ -938,7 +938,7 @@ void cRivalManager::check_rivals()
     if (g_Dice.percent(70)) return;                // create new random rival or not!
     peace = false;                                // flag the war as on again, (should be a field somewhere)
     CreateRandomRival();                // create a new rival and tell the player the good news
-    g_Game->push_message(new_rival_text(), COLOR_RED);
+    g_Game->push_message(new_rival_text(), COLOR_WARNING);
 }
 
 // `J` moved from cBrothel
@@ -1036,7 +1036,7 @@ void cRivalManager::peace_breaks_out()
     if (g_Game->player().m_WinGame)
     {
         ss << "The last of your challengers has been overthrown. Your domination of Crossgate is absolute.\n \nUntil the next time that is...";
-        g_Game->push_message(ss.str(), COLOR_GREEN);
+        g_Game->push_message(ss.str(), COLOR_POSITIVE);
         return;
     }
     // otherwise, the player has just won flag it as such
@@ -1044,7 +1044,7 @@ void cRivalManager::peace_breaks_out()
     // let's have a bit of chat to mark the event
     ss.str("");
     ss << "The last of your father's killers has been brought before you for judgement. None remain who would dare to oppose you. For all intents and purposes, the city is yours.\n \nWhether or not your father will rest easier for your efforts, you cannot say, but now, with the city at your feet, you feel sure he would be proud of you at this moment.\n \nBut pride comes before a fall, and in Crossgate, complacency kills. The city's slums and slave markets and the fighting pits are full of hungry young bloods burning to make their mark on the world, and any one of them could rise to challenge you at any time.\n \nYou may have seized the city, but holding on to it is never going to be easy.";
-    g_Game->push_message(ss.str(), COLOR_GREEN);
+    g_Game->push_message(ss.str(), COLOR_POSITIVE);
     return;
 }
 

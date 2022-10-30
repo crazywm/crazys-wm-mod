@@ -122,7 +122,7 @@ void cScreenBuildingSetup::buy_potions(int buypotions)
     int buynum = buypotions;
     int buysum = buynum;
     int antipregnum = 0;
-    if (!g_Game->gold().afford(g_Game->tariff().anti_preg_price(buynum)))    push_message("You don't have enough gold", COLOR_RED);
+    if (!g_Game->gold().afford(g_Game->tariff().anti_preg_price(buynum)))    push_message("You don't have enough gold", COLOR_WARNING);
     else
     {
         int MaxSupplies = g_Game->MaxSupplies();
@@ -153,7 +153,7 @@ void cScreenBuildingSetup::buy_rooms()
     {
         ss.str("");
         ss << "You Need " << g_Game->tariff().add_room_cost(5) << " gold to add 5 rooms.";
-        push_message(ss.str(), COLOR_RED);
+        push_message(ss.str(), COLOR_WARNING);
     }
     else
     {

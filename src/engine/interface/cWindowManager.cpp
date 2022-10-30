@@ -374,7 +374,7 @@ bool cWindowManager::IsShiftHeld() const {
 }
 
 void cWindowManager::PushError(std::string text) {
-    PushMessage(std::move(text), COLOR_RED);
+    PushMessage(std::move(text), COLOR_WARNING);
 }
 
 bool cWindowManager::RemoveActiveGirlFromCycle() {

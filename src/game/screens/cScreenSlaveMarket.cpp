@@ -190,11 +190,11 @@ void cScreenSlaveMarket::init(bool back)
     ClearListBox(slave_list_id);    // clear the list
 
     for(std::size_t i = 0; i < g_Game->GetSlaveMarket().num(); ++i) {
-        int col = COLOR_BLUE;
+        int col = COLOR_NEUTRAL;
         auto girl = g_Game->GetSlaveMarket().get_girl(i);
         if (girl->IsUnique())
         {
-            col = COLOR_YELLOW;
+            col = COLOR_ATTENTION;
         }
         AddToListBox(slave_list_id, i, girl->FullName(), col);
     }

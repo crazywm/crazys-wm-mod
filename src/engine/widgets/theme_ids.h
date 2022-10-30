@@ -47,25 +47,27 @@ namespace widgets_theme {
     constexpr const char* ListBoxElementBorderHColor    = "ListBoxElementBorderH";
     constexpr const char* ListBoxTextColor              = "ListBoxText";
 
-    constexpr const char* ListBoxElementBackground1     = "ListBoxElementBackground1";
-    constexpr const char* ListBoxElementBackground2     = "ListBoxElementBackground2";
-    constexpr const char* ListBoxElementBackground3     = "ListBoxElementBackground3";
-    constexpr const char* ListBoxElementBackground4     = "ListBoxElementBackground4";
-    constexpr const char* ListBoxElementBackground5     = "ListBoxElementBackground5";
+    constexpr const char* ListBoxElementBackground1     = "ListBoxElementBackground-Neutral";
+    constexpr const char* ListBoxElementBackground2     = "ListBoxElementBackground-Warning";
+    constexpr const char* ListBoxElementBackground3     = "ListBoxElementBackground-Emphasis";
+    constexpr const char* ListBoxElementBackground4     = "ListBoxElementBackground-Positive";
+    constexpr const char* ListBoxElementBackground5     = "ListBoxElementBackground-Attention";
+    constexpr const char* ListBoxElementBackground6     = "ListBoxElementBackground-Neutral2";
 
-    constexpr const char* ListBoxSelectedElement1       = "ListBoxSelectedElement1";
-    constexpr const char* ListBoxSelectedElement2       = "ListBoxSelectedElement2";
-    constexpr const char* ListBoxSelectedElement3       = "ListBoxSelectedElement3";
-    constexpr const char* ListBoxSelectedElement4       = "ListBoxSelectedElement4";
-    constexpr const char* ListBoxSelectedElement5       = "ListBoxSelectedElement5";
+    constexpr const char* ListBoxSelectedElement1       = "ListBoxSelectedElement-Neutral";
+    constexpr const char* ListBoxSelectedElement2       = "ListBoxSelectedElement-Warning";
+    constexpr const char* ListBoxSelectedElement3       = "ListBoxSelectedElement-Emphasis";
+    constexpr const char* ListBoxSelectedElement4       = "ListBoxSelectedElement-Positive";
+    constexpr const char* ListBoxSelectedElement5       = "ListBoxSelectedElement-Attention";
+    constexpr const char* ListBoxSelectedElement6       = "ListBoxSelectedElement-Neutral2";
 
     constexpr const char* MessageBoxBorderColor         = "MessageBoxBorder";
     constexpr const char* MessageBoxTextColor           = "MessageBoxText";
-    constexpr const char* MessageBoxBackgroundColor1    = "MessageBoxBackground1";
-    constexpr const char* MessageBoxBackgroundColor2    = "MessageBoxBackground2";
-    constexpr const char* MessageBoxBackgroundColor3    = "MessageBoxBackground3";
-    constexpr const char* MessageBoxBackgroundColor4    = "MessageBoxBackground4";
-    constexpr const char* MessageBoxBackgroundColor5    = "MessageBoxBackground5";
+    constexpr const char* MessageBoxBackgroundColor1    = "MessageBoxBackground-Neutral";
+    constexpr const char* MessageBoxBackgroundColor2    = "MessageBoxBackground-Warning";
+    constexpr const char* MessageBoxBackgroundColor3    = "MessageBoxBackground-Emphasis";
+    constexpr const char* MessageBoxBackgroundColor4    = "MessageBoxBackground-Positive";
+    constexpr const char* MessageBoxBackgroundColor5    = "MessageBoxBackground-Attention";
 
     constexpr const char* TextItemColor                 = "TextColor";
 

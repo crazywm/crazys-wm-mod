@@ -2301,7 +2301,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             girldiedmsg << ".";
         }
-        g_Game->push_message(girldiedmsg.str(), COLOR_RED);
+        g_Game->push_message(girldiedmsg.str(), COLOR_WARNING);
         return {false, 0, 0, 0};
     }
 

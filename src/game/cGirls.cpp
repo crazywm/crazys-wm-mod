@@ -1727,7 +1727,7 @@ void cGirls::updateHappyTraits(sGirl& girl)
             {
                 string msg = girl.FullName() + " has killed herself since she was unhappy and depressed.";
                 girl.AddMessage(msg, EImageBaseType::DEATH, EVENT_DANGER);
-                g_Game->push_message(msg, COLOR_RED);
+                g_Game->push_message(msg, COLOR_WARNING);
                 girl.health(-1000);
             }
         }
@@ -1851,7 +1851,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         girl->run_away();
 
         //Warn the user
-        g_Game->push_message(runawaymsg.str(), COLOR_RED);
+        g_Game->push_message(runawaymsg.str(), COLOR_WARNING);
         return;
     }
 
@@ -3420,7 +3420,7 @@ void cGirls::updateSTD(sGirl& girl)
     {
         string msg = "${name} has died from STDs.";
         girl.AddMessage(msg, EImageBaseType::DEATH, EVENT_DANGER);
-        g_Game->push_message(msg, COLOR_RED);
+        g_Game->push_message(msg, COLOR_WARNING);
     }
 }
 
@@ -3659,7 +3659,7 @@ bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl& girl, sCusto
     if (g_Dice.percent(0.1))    // 0.001 chance of false positive
     {
         ss << girl.FullName() << " thought she detected that her customer had a disease and refused to allow them to touch her just to be safe.";
-        g_Game->push_message(ss.str(), COLOR_RED);
+        g_Game->push_message(ss.str(), COLOR_WARNING);
         girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         return true;
     }
@@ -3695,7 +3695,7 @@ bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl& girl, sCusto
     if(found_disease) {
         ss << girl.FullName() << " detected that her customer has " << found_disease <<
             " and refused to allow them to touch her.";
-        g_Game->push_message(ss.str(), COLOR_RED);
+        g_Game->push_message(ss.str(), COLOR_WARNING);
         girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         brothel->m_RejectCustomersDisease++;
     }
@@ -3956,7 +3956,7 @@ void cGirls::FireGirls(const std::vector<sGirl*>& targets) {
     }
     ss << ".";
 
-    g_Game->push_message(ss.str(), COLOR_BLUE);
+    g_Game->push_message(ss.str(), COLOR_NEUTRAL);
 }
 
 void cGirls::FreeGirls(const std::vector<sGirl*>& targets, bool party) {
@@ -3965,7 +3965,7 @@ void cGirls::FreeGirls(const std::vector<sGirl*>& targets, bool party) {
 
     if(party) {
         if(!g_Game->gold().misc_debit(100 * targets.size())) {
-            g_Game->push_message("You cannot afford the freedom party", COLOR_RED);
+            g_Game->push_message("You cannot afford the freedom party", COLOR_WARNING);
             party = false;
         }
     }
@@ -4024,7 +4024,7 @@ void cGirls::FreeGirls(const std::vector<sGirl*>& targets, bool party) {
         ss << ".";
     }
 
-    g_Game->push_message(ss.str(), COLOR_BLUE);
+    g_Game->push_message(ss.str(), COLOR_NEUTRAL);
 }
 
 void cGirls::SellSlaves(const std::vector<sGirl*>& target) {
@@ -4062,7 +4062,7 @@ void cGirls::SellSlaves(const std::vector<sGirl*>& target) {
         g_Game->girl_pool().GiveGirl(girl->m_Building->remove_girl(girl));
     }
 
-    g_Game->push_message(ss.str(), COLOR_BLUE);
+    g_Game->push_message(ss.str(), COLOR_NEUTRAL);
 }
 
 void cGirls::SetSlaveStats(sGirl& girl) {

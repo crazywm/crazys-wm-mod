@@ -536,7 +536,7 @@ bool cGangManager::losegang(const sGang& gang)
             case MISS_SERVICE:          ss << "helping the community.";                 break;
             default:                    ss << "on a mission.";                          break;
         }
-        g_Game->push_message(ss.str(), COLOR_RED);
+        g_Game->push_message(ss.str(), COLOR_WARNING);
         return true;
     }
     return false;
@@ -586,7 +586,7 @@ void cGangManager::GangStartOfShift()
         if (gang->m_Num <= 0)    // clear dead
             {
             ss << "All of the men in gang " << gang->name() << " have died.";
-            g_Game->push_message(ss.str(), COLOR_RED);
+            g_Game->push_message(ss.str(), COLOR_WARNING);
             return true;
             }
         return false;

@@ -212,18 +212,18 @@ int cScreenTransfer::checkjobcolor(const sGirl& temp)
         || temp.m_DayJob == JOB_DOCTORE || temp.m_NightJob == JOB_DOCTORE || temp.m_DayJob == JOB_FARMMANGER || temp.m_NightJob == JOB_FARMMANGER
         || temp.m_DayJob == JOB_HEADGIRL || temp.m_NightJob == JOB_HEADGIRL || temp.m_DayJob == JOB_MATRON || temp.m_NightJob == JOB_MATRON
         || temp.m_NightJob == JOB_DIRECTOR)
-        return COLOR_RED;
+        return COLOR_WARNING;
     else if ((temp.m_DayJob == JOB_RESTING && temp.m_NightJob == JOB_RESTING))
-        return COLOR_GREEN;
+        return COLOR_POSITIVE;
     else if (temp.m_DayJob == JOB_COUNSELOR || temp.m_NightJob == JOB_COUNSELOR)
     {
-        if (temp.m_Building->num_girls_on_job(JOB_REHAB, SHIFT_NIGHT) < 1) return COLOR_YELLOW;
-        else return COLOR_RED;
+        if (temp.m_Building->num_girls_on_job(JOB_REHAB, SHIFT_NIGHT) < 1) return COLOR_ATTENTION;
+        else return COLOR_WARNING;
     }
     else if (temp.m_DayJob == JOB_DOCTOR || temp.m_NightJob == JOB_DOCTOR)
     {
-        if (GetNumberPatients(*temp.m_Building, false)  < 1 && GetNumberPatients(*temp.m_Building, false) < 1)        return COLOR_YELLOW;
-        else return COLOR_RED;
+        if (GetNumberPatients(*temp.m_Building, false)  < 1 && GetNumberPatients(*temp.m_Building, false) < 1)        return COLOR_ATTENTION;
+        else return COLOR_WARNING;
     }
     else if (temp.m_DayJob == JOB_GETABORT || temp.m_NightJob == JOB_GETABORT || temp.m_DayJob == JOB_COSMETICSURGERY || temp.m_NightJob == JOB_COSMETICSURGERY
         || temp.m_DayJob == JOB_LIPO || temp.m_NightJob == JOB_LIPO || temp.m_DayJob == JOB_BREASTREDUCTION || temp.m_NightJob == JOB_BREASTREDUCTION
@@ -231,30 +231,30 @@ int cScreenTransfer::checkjobcolor(const sGirl& temp)
         || temp.m_DayJob == JOB_FACELIFT || temp.m_NightJob == JOB_FACELIFT || temp.m_DayJob == JOB_ASSJOB || temp.m_NightJob == JOB_ASSJOB
         || temp.m_DayJob == JOB_TUBESTIED || temp.m_NightJob == JOB_TUBESTIED || temp.m_DayJob == JOB_FERTILITY || temp.m_NightJob == JOB_FERTILITY)
     {
-        if (temp.m_WorkingDay == 0) return COLOR_DARKBLUE;
-        else return COLOR_RED;
+        if (temp.m_WorkingDay == 0) return COLOR_EMPHASIS;
+        else return COLOR_WARNING;
     }
     else if (temp.m_DayJob == JOB_GETHEALING || temp.m_NightJob == JOB_GETHEALING)
     {
-        if (temp.health() > 70 && temp.tiredness() < 30) return COLOR_DARKBLUE;
-        else return COLOR_RED;
+        if (temp.health() > 70 && temp.tiredness() < 30) return COLOR_EMPHASIS;
+        else return COLOR_WARNING;
     }
     else if (temp.m_DayJob == JOB_REHAB || temp.m_NightJob == JOB_REHAB || temp.m_DayJob == JOB_SO_STRAIGHT || temp.m_NightJob == JOB_SO_STRAIGHT
         || temp.m_DayJob == JOB_SO_BISEXUAL || temp.m_NightJob == JOB_SO_BISEXUAL || temp.m_DayJob == JOB_SO_LESBIAN || temp.m_NightJob == JOB_SO_LESBIAN
         || temp.m_DayJob == JOB_FAKEORGASM || temp.m_NightJob == JOB_FAKEORGASM)
     {
-        if (temp.m_WorkingDay == 0) return COLOR_DARKBLUE;
-        else return COLOR_RED;
+        if (temp.m_WorkingDay == 0) return COLOR_EMPHASIS;
+        else return COLOR_WARNING;
     }
     else if (temp.m_NightJob == JOB_CAMERAMAGE)
     {
-        if (temp.m_Building->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) > 1) return COLOR_DARKBLUE;
-        else return COLOR_RED;
+        if (temp.m_Building->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) > 1) return COLOR_EMPHASIS;
+        else return COLOR_WARNING;
     }
     else if (temp.m_NightJob == JOB_CRYSTALPURIFIER)
     {
-        if (temp.m_Building->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) > 1) return COLOR_DARKBLUE;
-        else return COLOR_RED;
+        if (temp.m_Building->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) > 1) return COLOR_EMPHASIS;
+        else return COLOR_WARNING;
     }
-    return COLOR_BLUE;
+    return COLOR_NEUTRAL;
 }

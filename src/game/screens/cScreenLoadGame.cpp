@@ -76,7 +76,7 @@ void cScreenLoadGame::init(bool back)
             } else {
                 return mk_error(query);
             }
-        }, COLOR_BLUE);
+        }, COLOR_NEUTRAL);
         ++i;
     }
 }

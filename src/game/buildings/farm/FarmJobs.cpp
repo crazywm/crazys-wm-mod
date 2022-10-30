@@ -93,7 +93,7 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
             if (girl.is_dead())
             {
                 ss << " killing her.";
-                g_Game->push_message(girl.FullName() + " was killed in an accident at the Farm.", COLOR_RED);
+                g_Game->push_message(girl.FullName() + " was killed in an accident at the Farm.", COLOR_WARNING);
                 return false;    // not refusing, she is dead
             }
             else ss << ".";
@@ -466,7 +466,7 @@ bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
             if (girl.health() < 1)
             {
                 ss << "killed her.\n";
-                g_Game->push_message(girl.FullName() + " was killed when an animal she was milking kicked her in the head.", COLOR_RED);
+                g_Game->push_message(girl.FullName() + " was killed when an animal she was milking kicked her in the head.", COLOR_WARNING);
                 return false;    // not refusing, she is dead
             }
             else ss << (healthmod > 5 ? "" : "nearly ") << "broke her arm.\n";
@@ -587,7 +587,7 @@ bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
             if (girl.health() < 1)
             {
                 ss << "killed her.\n";
-                g_Game->push_message(girl.FullName() + " was killed when an animal she was milking kicked her in the head.", COLOR_RED);
+                g_Game->push_message(girl.FullName() + " was killed when an animal she was milking kicked her in the head.", COLOR_WARNING);
                 return false;    // not refusing, she is dead
             }
             else ss << (healthmod > 5 ? "" : "nearly ") << "broke her arm.\n";
@@ -715,7 +715,7 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
             if (girl.health() < 1)
             {
                 ss << "killed her.\n";
-                g_Game->push_message(girl.FullName() + " was killed when an animal she was milking kicked her in the head.", COLOR_RED);
+                g_Game->push_message(girl.FullName() + " was killed when an animal she was milking kicked her in the head.", COLOR_WARNING);
                 return false;    // not refusing, she is dead
             }
             else ss << (healthmod > 5 ? "" : "nearly ") << "broke her arm.\n";

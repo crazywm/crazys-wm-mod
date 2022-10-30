@@ -439,18 +439,18 @@ struct EventRating {
 EventRating default_rating(const sGirl& g) {
     if (g.GetEvents().HasDanger())
     {
-        return {3.0, COLOR_RED};
+        return {3.0, COLOR_WARNING};
     }
     else if (g.GetEvents().HasGoodNews())
     {
-        return {2.0, COLOR_GREEN};
+        return {2.0, COLOR_POSITIVE};
     }
     else if (g.GetEvents().HasWarning())
     {
-        return {1.0, COLOR_DARKBLUE};
+        return {1.0, COLOR_EMPHASIS};
     }
 
-    return {0.0, COLOR_BLUE};
+    return {0.0, COLOR_NEUTRAL};
 }
 
 bool is_sex_job(JOBS job) {
@@ -476,16 +476,16 @@ EventRating brothel_rating(const sGirl& g) {
     bool sexjob = is_sex_job((JOBS)g.m_DayJob) || is_sex_job((JOBS)g.m_NightJob);
 
     if(!g.GetEvents().HasUrgent() && sexjob) {
-        return {0.0, COLOR_BLUE};
+        return {0.0, COLOR_NEUTRAL};
     } else if (g.GetEvents().HasDanger()) {
-        return {4.0, COLOR_RED};
+        return {4.0, COLOR_WARNING};
     } else if (g.GetEvents().HasGoodNews()) {
-        return {3.0, COLOR_GREEN};
+        return {3.0, COLOR_POSITIVE};
     } else if (g.GetEvents().HasWarning()) {
-        return {2.0, COLOR_DARKBLUE};
+        return {2.0, COLOR_EMPHASIS};
     }
 
-    return {1.0, COLOR_BLUE};
+    return {1.0, COLOR_NEUTRAL};
 }
 
 
@@ -494,34 +494,34 @@ EventRating brothel_rating(const sGirl& g) {
 EventRating clinic_rating(const sGirl& g)
 {
     if (g.m_DayJob == JOB_DOCTOR || g.m_NightJob == JOB_DOCTOR) {
-        return {-1.0, COLOR_DARKBLUE};
+        return {-1.0, COLOR_EMPHASIS};
     }
 
     bool surgery_job = cJobManager::is_Surgery_Job(g.m_DayJob) ||
                        cJobManager::is_Surgery_Job(g.m_NightJob);
     if (surgery_job && g.m_WorkingDay >= 1) {
-        return {(double) g.m_WorkingDay, COLOR_YELLOW};
+        return {(double) g.m_WorkingDay, COLOR_ATTENTION};
     } else if (surgery_job || g.m_DayJob == JOB_GETHEALING || g.m_NightJob == JOB_GETHEALING) {
-        return {0.0, COLOR_BLUE};
+        return {0.0, COLOR_NEUTRAL};
     } else if (g.m_DayJob == JOB_NURSE || g.m_NightJob == JOB_NURSE) {
-        return {-2.0, COLOR_BLUE};
+        return {-2.0, COLOR_NEUTRAL};
     }
-    return {-3.0, COLOR_BLUE};
+    return {-3.0, COLOR_NEUTRAL};
 }
 
 //  studio
 EventRating studio_rating_job(const sGirl& g)
 {
     if (g.m_NightJob == JOB_DIRECTOR) {
-        return {5.0, COLOR_RED};
+        return {5.0, COLOR_WARNING};
     } else if (g.m_NightJob == JOB_CAMERAMAGE || g.m_NightJob == JOB_CRYSTALPURIFIER) {
-        return {4.0, COLOR_DARKBLUE};
+        return {4.0, COLOR_EMPHASIS};
     } else if (g.m_NightJob == JOB_PROMOTER || g.m_NightJob == JOB_FLUFFER || g.m_NightJob == JOB_STAGEHAND) {
-        return {3.0, COLOR_BLUE};
+        return {3.0, COLOR_NEUTRAL};
     } else if (g.m_NightJob == JOB_RESTING) {
-        return {0.0, COLOR_RED};
+        return {0.0, COLOR_WARNING};
     }
-    return {0.0, COLOR_GREEN};
+    return {0.0, COLOR_POSITIVE};
 }
 
 EventRating studio_rating_default(const sGirl& g)
@@ -548,12 +548,12 @@ EventRating studio_rating_default(const sGirl& g)
     }
 
     if (!g.GetEvents().HasUrgent() && sexjob)    {
-        return {1.0, COLOR_BLUE};
+        return {1.0, COLOR_NEUTRAL};
     }
-    else if (!g.GetEvents().HasUrgent())        { return {2.0, COLOR_BLUE}; }
-    else if (g.GetEvents().HasDanger())        { return {5.0, COLOR_RED}; }
-    else if (g.GetEvents().HasGoodNews())        { return {4.0, COLOR_GREEN}; }
-    else                                        { return {3.0, COLOR_DARKBLUE}; }
+    else if (!g.GetEvents().HasUrgent())        { return {2.0, COLOR_NEUTRAL}; }
+    else if (g.GetEvents().HasDanger())        { return {5.0, COLOR_WARNING}; }
+    else if (g.GetEvents().HasGoodNews())        { return {4.0, COLOR_POSITIVE}; }
+    else                                        { return {3.0, COLOR_EMPHASIS}; }
 }
 
 
