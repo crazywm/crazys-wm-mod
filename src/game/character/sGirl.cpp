@@ -435,7 +435,7 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
     int tempInt = 0;
 
     // load the name
-    m_Name = pGirl->Attribute("Name");        // the name the girl is based on, also the name of the image folder
+    m_FileName = pGirl->Attribute("Name");        // the name the girl is based on, also the name of the image folder
     m_Desc = (pGirl->Attribute("Desc") ? pGirl->Attribute("Desc") : "-");    // get the description
 
     // load the amount of days they are unhappy in a row
@@ -554,7 +554,7 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
 tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
 {
     auto& elGirl = PushNewElement(elRoot, "Girl");
-    elGirl.SetAttribute("Name", m_Name.c_str());                        // save the name
+    elGirl.SetAttribute("Name", m_FileName.c_str());                        // save the name
     elGirl.SetAttribute("Desc", m_Desc.c_str());                        // save the description
     elGirl.SetAttribute("DaysUnhappy", m_DaysUnhappy);            // save the amount of days they are unhappy
 
@@ -626,7 +626,7 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
     auto girl = std::make_shared<sGirl>(true);            // walk the XML DOM to get the girl data
     const char *pt;
     // get the simple fields
-    girl->m_Name = GetStringAttribute(root, "Name");
+    girl->m_FileName = GetStringAttribute(root, "Name");
     std::string first_name = GetDefaultedStringAttribute(root, "FirstName", "");
     std::string surname = GetDefaultedStringAttribute(root, "Surname", "");
     std::string middle_name = GetDefaultedStringAttribute(root, "MiddleName", "");
@@ -635,16 +635,16 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
     } else {
         // for girl files that don't specify the name parts, try to guess
         std::vector<std::string> parts;
-        split(parts, girl->m_Name, [](char c){ return std::isspace(c); });
+        split(parts, girl->m_FileName, [](char c){ return std::isspace(c); });
         // if there are two or three space separated parts, assume these are the parts of the name
         if (parts.size() == 2) {
             girl->SetName(parts[0], "", parts[1]);
         } else if(parts.size() == 3) {
             girl->SetName(parts[0], parts[1], parts[2]);
         } else {
-            girl->m_FullName = girl->m_Name;
+            girl->m_FullName = girl->m_FileName;
         }
-        g_LogFile.warning("girl", "Girl file for '", girl->m_Name, "' does not specify first and last name");
+        g_LogFile.warning("girl", "Girl file for '", girl->m_FileName, "' does not specify first and last name");
     }
 
     auto set_statebit = [&](int bitnum, char const* attr) {
@@ -672,7 +672,7 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
 
         if (error != tinyxml2::XML_SUCCESS)
         {
-            g_LogFile.log(ELogLevel::ERROR, "Can't find stat '", stat_name, "' for girl '", girl->m_Name,
+            g_LogFile.log(ELogLevel::ERROR, "Can't find stat '", stat_name, "' for girl '", girl->m_FileName,
                           "' - Setting it to default(", girl->m_Stats[stat].m_Value, ").");
             continue;
         }
@@ -706,7 +706,7 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
             /// TODO (traits) allow inherent / permanent / inactive
             if(trait_name == "Dependant") {
                 trait_name = traits::DEPENDENT;
-                g_LogFile.warning("traits", "Found misspelled trait `Dependant` for girl ", girl->m_Name);
+                g_LogFile.warning("traits", "Found misspelled trait `Dependant` for girl ", girl->m_FileName);
             }
             girl->raw_traits().add_inherent_trait(trait_name.c_str());
             }
@@ -803,7 +803,6 @@ sChild::sChild(bool is_players, Gender gender, int MultiBirth)
     else m_Sex = gender;
     m_MultiBirth = 1;
     m_GirlsBorn = (m_Sex == Girl ? 1 : 0);
-    m_Next = m_Prev = nullptr;
     for (int & m_Skill : m_Skills)        // Added m_Skills here to zero out any that are not specified -- PP
         m_Skill = 0;
     for (int & m_Stat : m_Stats)            // Added m_Stats here to zero out any that are not specified -- PP

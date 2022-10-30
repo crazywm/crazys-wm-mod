@@ -22,6 +22,9 @@
             <Modifier Name="fetish:Dangerous" Value="10" />
             <Modifier Name="fetish:Sexy" Value="-10" />
         </Modifiers>
+        <Properties>
+            <Setting Name="inherit:get-from-incest" Value="5" />
+        </Properties>
         <Excludes>No Nipples</Excludes>
     </Trait>
 

@@ -42,7 +42,6 @@
 ## UI
 * [ ] Per building/global anti preg setting
 * [ ] Game-Mode files
-* [ ] Active Building Widget
 * [ ] LoadGame delete button
 * [ ] Inventory screen resets
 * [ ] Restore Property Management screen

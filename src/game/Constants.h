@@ -715,4 +715,16 @@ const int CHILD07_YOUR_BOYS            = 7;
 const int CHILD08_MISCARRIAGES        = 8;
 const int CHILD09_ABORTIONS            = 9;
 const int CHILD_COUNT_TYPES            = 10; // last type+1
+
+// Additional constants for traits
+namespace traits
+{
+    namespace properties
+    {
+        constexpr const char* INHERIT_CHANCE = "inherit:chance";
+        constexpr const char* INHERIT_CHANCE_FROM_DORMANT = "inherit:chance:from_dormant";
+    }
+}
+
+
 #endif

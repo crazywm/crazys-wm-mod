@@ -96,7 +96,7 @@ void cTheme::load(std::string source) {
     try {
         DirPath dp = DirPath() << "Resources" << "Interface" << "ColorSchemes" << data.get_str("color-scheme");
         auto docInterfaceColors = LoadXMLDocument(dp.c_str());
-        g_LogFile.log(ELogLevel::NOTIFY, "Loading ", dp.str());
+        g_LogFile.log("theme", ELogLevel::NOTIFY, "Loading ", dp.str());
         const std::string& m_filename = dp.str();
         for (auto& el : IterateChildElements(*docInterfaceColors->RootElement())) {
             std::string tag = el.Value();
@@ -107,7 +107,7 @@ void cTheme::load(std::string source) {
                     GetColorAttribute(el, target);
                     m_Colors.emplace(name, target);
                 } catch(std::runtime_error& error) {
-                    g_LogFile.log(ELogLevel::ERROR, "Could not load color definition from ", m_filename,
+                    g_LogFile.log("theme", ELogLevel::ERROR, "Could not load color definition from ", m_filename,
                                   "(", el.GetLineNum(), "): ", error.what());
                     continue;
                 }
@@ -115,8 +115,8 @@ void cTheme::load(std::string source) {
             }
         }
     } catch(std::runtime_error& error) {
-        g_LogFile.log(ELogLevel::ERROR, "Could not load interface colors: ", error.what());
-        g_LogFile.log(ELogLevel::NOTIFY, "Keeping Default InterfaceColors");
+        g_LogFile.log("theme", ELogLevel::ERROR, "Could not load interface colors: ", error.what());
+        g_LogFile.log("theme", ELogLevel::NOTIFY, "Keeping Default InterfaceColors");
     }
 }
 
@@ -128,6 +128,7 @@ void cTheme::set_screen_size(int width, int height) {
 sColor cTheme::get_color(const std::string& lookup, const sColor& fallback) const {
     auto found = m_Colors.find(lookup);
     if(found == m_Colors.end()) {
+        g_LogFile.log("theme", ELogLevel::WARNING, "Color ", lookup, " missing in current theme.");
         return fallback;
     }
     return found->second;

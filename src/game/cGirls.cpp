@@ -738,7 +738,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
         else                                     { ss << "At the moment, she hasn't started any special training.\n \n"; }
     }
 
-    ss << "\n \n\nBased on:  " << girl.m_Name;
+    ss << "\n \n\nBased on:  " << girl.m_FileName;
 
     return ss.str();
 }
@@ -1167,7 +1167,7 @@ void cGirls::LoadGirlsXML(const std::string& file_path, const std::string& base_
     {
         try {
             auto girl = sGirl::LoadFromTemplate(el);
-            girl->SetImageFolder(DirPath(base_path.c_str()) << girl->m_Name);
+            girl->SetImageFolder(DirPath(base_path.c_str()) << girl->m_FileName);
 
             if (girl->age() < 18) girl->set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 
@@ -3528,7 +3528,7 @@ ostream& operator<<(ostream& os, sGirl &g)
 sGirl* cGirls::find_girl_by_name(const std::string& name)
 {
     return m_Girls->get_first_girl(
-            [&](const sGirl& girl){ return girl.m_Name == name; });
+            [&](const sGirl& girl){ return girl.m_FileName == name; });
 }
 
 void cGirls::UncontrolledPregnancies()
@@ -3900,42 +3900,6 @@ std::shared_ptr<sGirl> cGirls::GetDaughterByName(const string& name, bool player
 
     //    OK, we need to search for a random girl
     return m_RandomGirls.spawn(player_dad ? SpawnReason::PLAYER_DAUGHTER : SpawnReason::BIRTH, 18, name);
-}
-
-std::shared_ptr<sGirl> cGirls::CreateDaughter(sGirl& mom, bool player_dad) {
-    std::shared_ptr<sGirl> sprog = nullptr;
-    bool slave = mom.is_slave();
-    bool non_human = !mom.is_human();
-
-    /*
-     *    Check canonical daughters
-     */
-    while (!mom.m_Canonical_Daughters.empty()) {
-        int index = g_Dice.random(mom.m_Canonical_Daughters.size());
-        string name = mom.m_Canonical_Daughters[index];
-
-        sprog = GetDaughterByName(name, player_dad);
-        mom.m_Canonical_Daughters.erase(mom.m_Canonical_Daughters.begin() + index);
-
-        if(sprog)
-            return sprog;
-    }
-
-    // If the player is the father, check that shortlist
-    if(player_dad && GetNumYourDaughterGirls() > 0)                // this should check all your daughter girls that apply
-    {
-        sprog = GetUniqueYourDaughterGirl(non_human);                        // first try to get the same human/nonhuman as mother
-        if (!sprog && non_human)
-            sprog = GetUniqueYourDaughterGirl(false);    // next, if mom is nonhuman, try to get a human daughter
-    }
-
-    /*
-    *    Did not find a girl, so back to the random girls
-    */
-    if(player_dad) {
-        return CreateRandomGirl(SpawnReason::PLAYER_DAUGHTER, 18);
-    }
-    return CreateRandomGirl(SpawnReason::BIRTH, 18);
 }
 
 void cGirls::FireGirls(const std::vector<sGirl*>& targets) {

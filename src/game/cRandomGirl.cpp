@@ -116,7 +116,7 @@ std::shared_ptr<sGirl> cRandomGirls::create_from_template(const sRandomGirl& tem
     newGirl->SetImageFolder(template_.ImageDirectory);
 
     newGirl->m_Desc = template_.Desc;
-    newGirl->m_Name = template_.Name;
+    newGirl->m_FileName = template_.Name;
 
     // set all jobs to null
     newGirl->m_DayJob = newGirl->m_NightJob = JOB_UNSET;
@@ -233,7 +233,7 @@ std::shared_ptr<sGirl> cRandomGirls::create_from_template(const sRandomGirl& tem
     }
 
     // `J` more usefull log for rgirl
-    g_LogFile.log(ELogLevel::NOTIFY, "Random girl ", newGirl->FullName(), " created from template ", newGirl->m_Name, ".rgirlsx");
+    g_LogFile.log(ELogLevel::NOTIFY, "Random girl ", newGirl->FullName(), " created from template ", newGirl->m_FileName, ".rgirlsx");
 
     cGirls::CalculateGirlType(*newGirl);
     return newGirl;

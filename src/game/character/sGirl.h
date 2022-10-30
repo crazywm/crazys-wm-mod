@@ -45,7 +45,7 @@ class cPlayer;
 class sCustomer;
 class sGirl;
 
-typedef struct sChild
+struct sChild
 {
     int m_MultiBirth;
     std::string multibirth_str()
@@ -65,7 +65,7 @@ typedef struct sChild
     };
     Gender m_Sex;
     int m_GirlsBorn;            // if multiple births, how many are girls
-    std::string boy_girl_str()
+    std::string boy_girl_str() const
     {
         if (m_MultiBirth == 2)    return "twins";
         if (m_MultiBirth == 3)    return "triplets";
@@ -74,8 +74,8 @@ typedef struct sChild
         if (m_Sex == Girl)        return "a baby girl";
         return "a baby";
     }
-    bool is_boy()    { return m_Sex == Boy; }
-    bool is_girl()    { return m_Sex == Girl; }
+    bool is_boy() const    { return m_Sex == Boy; }
+    bool is_girl() const    { return m_Sex == Girl; }
 
     static Gender RandomGender();
 
@@ -87,16 +87,11 @@ typedef struct sChild
     int m_Stats[NUM_STATS];
     int m_Skills[NUM_SKILLS];
 
-    sChild* m_Next;
-    sChild* m_Prev;
-
-    sChild(bool is_players = false, Gender gender = None, int MultiBirth = 1);
-    ~sChild(){ m_Prev = nullptr; if (m_Next)delete m_Next; m_Next = nullptr; }
+    explicit sChild(bool is_players = false, Gender gender = None, int MultiBirth = 1);
 
     tinyxml2::XMLElement& SaveChildXML(tinyxml2::XMLElement& elRoot);
     bool LoadChildXML(const tinyxml2::XMLElement* pChild);
-
-} sChild;
+};
 
 // Represents a single girl
 struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
@@ -107,9 +102,7 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     const DirPath& GetImageFolder() const;
     void SetImageFolder(DirPath p);
 
-    std::string m_Name;                                 // The girls name
-    std::string m_MotherName;                           //    `J` added mother and father names
-    std::string m_FatherName;                           //    `J` added mother and father names
+    std::string m_FileName;                                 // The girls name
     std::string m_Desc;                                 // Short story about the girl
 
     int house() const                               { return m_HousePercent; }                /* It's NOT lupus! */
@@ -179,10 +172,10 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     }
     scripting::pEventMapping m_EventMapping;
 
-    unsigned char m_DaysUnhappy;                // used to track how many days they are really unhappy for
+    unsigned char m_DaysUnhappy;                    // used to track how many days they are really unhappy for
 
-    int m_WeeksPreg;                            // number of weeks pregnant or inseminated
-    int m_PregCooldown;                            // number of weeks until can get pregnant again
+    int m_WeeksPreg;                                // number of weeks pregnant or inseminated
+    int m_PregCooldown;                             // number of weeks until can get pregnant again
     std::vector<std::unique_ptr<sChild>> m_Children;
     int m_ChildrenCount[CHILD_COUNT_TYPES];
 

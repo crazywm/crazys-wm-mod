@@ -259,7 +259,13 @@ void cScreenGirlDetails::init(bool back)
             continue;
         ss.str(""); ss << trait.trait->display_name();
         if (trait.remaining_time > 0) ss << "   (" << trait.remaining_time << ")";
-        AddToListBox(traitlist_id, i, ss.str());
+        int color = COLOR_NEUTRAL2;
+        if(trait.type == sTraitInfo::DYNAMIC) {
+            color = COLOR_EMPHASIS;
+        } else if (trait.type == sTraitInfo::INHERENT ) {
+            color = COLOR_NEUTRAL;
+        }
+        AddToListBox(traitlist_id, i, ss.str(), color );
     }
     EditTextItem("", traitdesc_id);
 }

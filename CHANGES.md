@@ -3,10 +3,12 @@
 ## UI 
 * Added previous/next building buttons to girl management screens
 * Adjusted (increased) font size in 4:3 mode
+* Mark different Trait types in girl details UI
 
 ## Bugfixes
 * Correctly cycle through buildings when selecting previous of first building
 * Fixed 4:3 gallery screen
+* Game no longer ignores Player-Daughter girls
 
 # Version 7.2.1alpha3
 

@@ -41,14 +41,15 @@ namespace {
     sColor BackgroundColor = {217, 214, 139};
     sColor TextColor = {0, 0, 0};
 
-    constexpr const char* ElementBackgrounds[] = {ListBoxElementBackground1, ListBoxElementBackground2, ListBoxElementBackground3,
+    constexpr const int NUM_STYLES = 6;
+    constexpr const char* ElementBackgrounds[NUM_STYLES] = {ListBoxElementBackground1, ListBoxElementBackground2, ListBoxElementBackground3,
                                                   ListBoxElementBackground4, ListBoxElementBackground5, ListBoxElementBackground6};
-    constexpr sColor ElementBackgroundColors[] = {{114, 139, 217}, {200, 30, 30}, {80, 80, 250},
+    constexpr sColor ElementBackgroundColors[NUM_STYLES] = {{114, 139, 217}, {200, 30, 30}, {80, 80, 250},
                                                   {30, 190, 30}, {190, 190, 00}, {100, 120, 220}};
 
-    constexpr const char* ElementSelected[] = {ListBoxSelectedElement1, ListBoxSelectedElement2, ListBoxSelectedElement3,
+    constexpr const char* ElementSelected[NUM_STYLES] = {ListBoxSelectedElement1, ListBoxSelectedElement2, ListBoxSelectedElement3,
                                                ListBoxSelectedElement4, ListBoxSelectedElement5, ListBoxSelectedElement6};
-    constexpr sColor ElementSelectedColors[] = {{187,   90, 224}, {255, 167, 180}, {187, 190, 224},
+    constexpr sColor ElementSelectedColors[NUM_STYLES] = {{187,   90, 224}, {255, 167, 180}, {187, 190, 224},
                                                 {0, 250, 0}, {250, 250, 250}, {187, 120, 224}};
 }
 
@@ -80,7 +81,7 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
     m_eWidth = (width - (BorderSize * 2));
     m_eHeight = m_RowHeight;
 
-    for(int i = 0; i < 5; ++i) {
+    for(int i = 0; i < NUM_STYLES; ++i) {
         m_ElementBackgrounds.push_back(
                 GetGraphics().CreateSurface(m_eWidth - 2 - 16, m_eHeight - 2,
                                             GetTheme().get_color(ElementBackgrounds[i], ElementBackgroundColors[i])));

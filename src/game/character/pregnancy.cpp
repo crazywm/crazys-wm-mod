@@ -546,7 +546,7 @@ int calc_abnormal_pc(const sGirl& mom, sGirl& sprog, bool is_players)
     if (!is_players)     // the non-pc-daughter case is simpler
     {
         if (mom.has_active_trait(traits::YOUR_DAUGHTER)) return 0;        // if the mom is your daughter then any customer is a safe dad - genetically speaking, anyway
-        if (g_Dice.percent(98)) return 0;                    // so what are the odds that this customer fathered both mom and sprog. Let's say 2%
+        if (g_Dice.percent(99)) return 0;                    // so what are the odds that this customer fathered both mom and sprog. Let's say 1%
         sprog.raw_traits().add_inherent_trait(traits::INCEST);                    // that's enough to give the sprog the incest trait
         if (!mom.has_active_trait(traits::INCEST)) return 0;    // but there's only a risk of abnormality if mom is herself incestuous
         return 5;                                            // If we get past all that lot, there's a 5% chance of abnormality
@@ -558,13 +558,48 @@ int calc_abnormal_pc(const sGirl& mom, sGirl& sprog, bool is_players)
     return 5;
 }
 
+std::shared_ptr<sGirl> create_daughter(sGirl& mom, bool player_dad) {
+    bool slave = mom.is_slave();
+    bool non_human = !mom.is_human();
+
+    auto& girl_pool = g_Game->girl_pool();
+
+    // Check canonical daughters
+    while (!mom.m_Canonical_Daughters.empty()) {
+        int index = g_Dice.random(mom.m_Canonical_Daughters.size());
+        std::string name = mom.m_Canonical_Daughters[index];
+
+        auto new_girl = girl_pool.GetDaughterByName(name, player_dad);
+        mom.m_Canonical_Daughters.erase(mom.m_Canonical_Daughters.begin() + index);
+
+        if(new_girl)
+            return new_girl;
+    }
+
+    // If the player is the father, check that shortlist
+    if(player_dad && girl_pool.GetNumYourDaughterGirls() > 0)                // this should check all your daughter girls that apply
+    {
+        auto sprog = girl_pool.GetUniqueYourDaughterGirl(non_human);                        // first try to get the same human/nonhuman as mother
+        if (!sprog && non_human)
+            sprog = girl_pool.GetUniqueYourDaughterGirl(false);    // next, if mom is nonhuman, try to get a human daughter
+
+        if(sprog)
+            return sprog;
+    }
+
+    //   Did not find a girl, so back to the random girls
+    if(player_dad) {
+        return girl_pool.CreateRandomGirl(SpawnReason::PLAYER_DAUGHTER, 18);
+    }
+    return girl_pool.CreateRandomGirl(SpawnReason::BIRTH, 18);
+}
+
 void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
     std::stringstream ss;
     bool playerfather = child.m_IsPlayers;        // is 1 if father is player
-    summary += "A daughter has grown of age. ";
 
     // create a new girl for the barn
-    std::shared_ptr<sGirl> sprog = g_Game->girl_pool().CreateDaughter(mom, playerfather);
+    std::shared_ptr<sGirl> sprog = create_daughter(mom, playerfather);
 
     // check for incest, get the odds on abnormality
     int abnormal_pc = calc_abnormal_pc(mom, *sprog, child.m_IsPlayers);
@@ -572,15 +607,19 @@ void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
         if (g_Dice.percent(50)) sprog->raw_traits().add_inherent_trait(traits::MALFORMED);
         else sprog->raw_traits().add_inherent_trait(traits::RETARDED);
     }
+
     // loop through the mom's traits, inheriting where appropriate
     auto moms_traits = mom.raw_traits().get_trait_info();
     for (auto& info : moms_traits) {
         if (info.type == sTraitInfo::INHERENT) {
-            if (g_Dice.percent(info.trait->get_properties().get_percent("inherit:chance"))) {
+            const char* source = info.active ? traits::properties::INHERIT_CHANCE : traits::properties::INHERIT_CHANCE_FROM_DORMANT;
+            sPercent chance = info.trait->get_properties().get_percent(source);
+            if (g_Dice.percent(chance)) {
                 sprog->raw_traits().add_inherent_trait(info.trait);
             }
         }
     }
+
     if (playerfather) {
         sprog->raw_traits().add_inherent_trait(traits::YOUR_DAUGHTER);
     }
@@ -656,7 +695,9 @@ void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
 
     // TODO decide where to send the new girl.
     g_Game->dungeon().AddGirl(sprog, DUNGEON_KID);
+    ss << "Her daughter, " << sprog->FullName() << ", has grown of age. ";
     mom.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
+    summary += ss.str();
 }
 
 // returns false if the child is not grown up, returns true when the child grows up
