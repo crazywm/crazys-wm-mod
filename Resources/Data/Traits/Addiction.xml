@@ -5,6 +5,8 @@
         <Setting Name="inherit:chance:from_active" Value="70" />
         <Setting Name="inherit:chance:from_acquired" Value="70" />
 
+        <Setting Name="default:chance:inherent" Value="10" />
+
         <Setting Name="random:inherent" Value="10" />
         <Setting Name="random:acquired:dormant" Value="50" />
     </Default>

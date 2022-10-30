@@ -3,6 +3,7 @@
 <Traits>
     <Default>
         <Setting Name="inherit:chance:from_acquired" Value="15" />
+        <Setting Name="default:chance:inherent" Value="50" />
     </Default>
 
     <Trait InheritChance="1" Name="Aggressive" RandomChance="20" Type="Mental">

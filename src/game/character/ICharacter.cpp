@@ -386,6 +386,7 @@ bool ICharacter::gain_trait(const char *trait_name, float chance) {
             return false;
         }
     }
+    m_Traits->update();
     if(m_Traits->has_inherent_trait(trait_name) == ITraitsCollection::TRAIT_ACTIVE) {
         m_Traits->add_permanent_trait(trait_name);
         m_Traits->update();
@@ -503,6 +504,7 @@ int ICharacter::gain_attribute(StatSkill id, int min, int max, int target) {
     }
     int change = g_Dice.closed_uniform(min, max);
     update_attribute(id, change);
+    return change;
 }
 
 bool ICharacter::IsUnique() const {

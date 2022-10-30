@@ -26,6 +26,8 @@
 #include "xml/getattr.h"
 #include "xml/util.h"
 #include "character/traits/ITraitsCollection.h"
+#include "character/traits/ITraitsManager.h"
+#include "character/traits/ITraitSpec.h"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
 #include "cNameList.h"
@@ -110,6 +112,16 @@ const sRandomGirl* cRandomGirls::get_spec(SpawnReason reason, int age)
     return selector.selection();
 }
 
+namespace {
+    sPercent get_chance_with_default(float chance, const ITraitSpec* trait, const char* property) {
+        if (chance < 0) {
+            return trait->get_properties().get_percent(property);
+        } else {
+            return sPercent(chance / 100.f);
+        }
+    }
+}
+
 std::shared_ptr<sGirl> cRandomGirls::create_from_template(const sRandomGirl& template_, SpawnReason reason, int age) const {
     auto newGirl = std::make_shared<sGirl>(false);
     newGirl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_FREE);
@@ -138,11 +150,26 @@ std::shared_ptr<sGirl> cRandomGirls::create_from_template(const sRandomGirl& tem
     }
 
     // add the traits
-    for (int i = 0; i < template_.TraitNames.size(); i++)
+    for (const auto & new_trait : template_.Traits)
     {
-        std::string name = template_.TraitNames[i];
-        // TODO (traits) inherent/permanent traits
-        newGirl->gain_trait(name.c_str(), template_.TraitChance[i]);
+        std::string name = new_trait.Name;
+        if(g_Dice.percent(new_trait.SpawnChance)) {
+            const auto* trait_spec = g_Game->traits().lookup(name.c_str());
+            sPercent inherent_chance = get_chance_with_default(new_trait.InherentChance, trait_spec,
+                                                               traits::properties::DEFAULT_CHANCE_INHERENT);
+
+            if(g_Dice.percent(inherent_chance)) {
+                sPercent dormant_chance = get_chance_with_default(new_trait.DormantChance, trait_spec,
+                                                                  traits::properties::DEFAULT_CHANCE_DORMANT);
+                if(g_Dice.percent(dormant_chance)) {
+                    newGirl->raw_traits().add_inherent_trait(trait_spec, false);
+                } else {
+                    newGirl->raw_traits().add_inherent_trait(trait_spec, true);
+                }
+            } else {
+                newGirl->raw_traits().add_permanent_trait(trait_spec, true);
+            }
+        }
     }
 
     for (auto& item_candidate : template_.Inventory)
@@ -288,8 +315,17 @@ namespace {
             trait_name = traits::DEPENDENT;
             g_LogFile.warning("traits", "Found misspelled trait `Dependant` for random girl ", target.Name);
         }
-        target.TraitNames.emplace_back(trait_name);
-        target.TraitChance.emplace_back(el.IntAttribute("Percent", 100));
+        sRandomGirl::sTraitSpawnInfo info;
+        info.Name = std::move(trait_name);
+        info.SpawnChance = el.FloatAttribute("Percent", 100);
+        if(is_v0) {
+            info.InherentChance = -1;
+            info.DormantChance = -1;
+        } else {
+            info.InherentChance = el.FloatAttribute("Inherent", -1);
+            info.DormantChance = el.FloatAttribute("Dormant", -1);
+        }
+        target.Traits.emplace_back(std::move(info));
     }
 
     void process_item_xml(sRandomGirl& target, const tinyxml2::XMLElement& el)
@@ -385,8 +421,7 @@ namespace {
         set_from_attr("Your Daughter", target.SpawnWeights[static_cast<int>(SpawnReason::PLAYER_DAUGHTER)]);
 
         if(!get_yesno_attr("Human")) {
-            target.TraitNames.emplace_back(traits::NOT_HUMAN);
-            target.TraitChance.push_back(100);
+            target.Traits.emplace_back(sRandomGirl::sTraitSpawnInfo{traits::NOT_HUMAN, 100});
         }
 
         // if no spawn weights are set, make a default of 1 for each except the ones that can be set with this old code

@@ -124,6 +124,10 @@ cTraitProps::cTraitProps() : cSimpleKeyValue("Setting", "Name", "Value") {
     // incest spawning
     add_setting(INCEST_CHANCE, "Incest Chance", sPercent(0), "Chance that this trait will be generated for an incestuous girl.");
 
+    // default values if not overriden by (r)girlsx files
+    add_setting(DEFAULT_CHANCE_INHERENT, "Inherent Chance (default)", sPercent(50), "Chance that this trait will be generated as an inherent trait.");
+    add_setting(DEFAULT_CHANCE_DORMANT, "Dormant Chance (default)", sPercent(10), "Chance that this trait will be generated as dormant.");
+
     // random spawning
     add_setting("random:chance", "Random Chance", sPercent(1), "Chance for this trait to appear in a randomly generated girl if not specified in the template.");
     add_setting("random:inherent", "Inherent Chance (random)", sPercent(50), "Chance that this trait will be generated as an inherent trait.");

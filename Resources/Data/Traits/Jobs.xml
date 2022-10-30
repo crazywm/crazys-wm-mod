@@ -4,6 +4,8 @@
     <Default>
         <Setting Name="inherit:chance:from_active" Value="70" />
         <Setting Name="random:inherent" Value="0" />
+        <Setting Name="default:chance:inherent" Value="10" />
+        <Setting Name="default:chance:dormant" Value="90" />
         <Setting Name="inherit:chance:from_acquired" Value="15" />
     </Default>
 

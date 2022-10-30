@@ -53,8 +53,14 @@ struct sRandomGirl
     std::array<int, NUM_SKILLS> MinSkills; // min and max skills they may start with
     std::array<int, NUM_SKILLS> MaxSkills;
 
-    std::vector<std::string> TraitNames;
-    std::vector<int> TraitChance;
+    struct sTraitSpawnInfo {
+        std::string Name;
+        float SpawnChance;          //!< Overall chance that this trait will be spawned
+        float InherentChance;       //!< Chance that this trait will be spawned as an inherent trait, if it is spawned.
+        float DormantChance;        //!< Chance that this trait will be spawned as a dormant trait, if it is inherent.
+    };
+
+    std::vector<sTraitSpawnInfo> Traits;
 
     // `J` added starting items for random girls
     struct sItemRecord {

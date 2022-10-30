@@ -3,6 +3,7 @@
 <Traits>
     <Default>
         <Setting Name="inherit:chance:from_acquired" Value="15" />
+        <Setting Name="default:chance:inherent" Value="35" />
     </Default>
 
     <Trait InheritChance="30" Name="Agile" RandomChance="20" Type="Action">

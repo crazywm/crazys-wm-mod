@@ -13,6 +13,8 @@
         <Setting Name="inherit:chance:from_acquired" Value="0" />
         <Setting Name="incest:chance" Value="10" />
 
+        <Setting Name="default:chance:inherent" Value="10" />
+
         <Setting Name="random:chance" Value="0.5" />
         <Setting Name="random:inherent" Value="10" />
         <Setting Name="random:acquired:dormant" Value="0" />
@@ -39,6 +41,9 @@
         <Properties>
             <Setting Name="incest:chance" Value="20" />
         </Properties>
+        <Excludes>Missing Fingers</Excludes>
+        <Excludes>No Arms</Excludes>
+        <Excludes>No Hands</Excludes>
     </Trait>
 
 
@@ -50,6 +55,9 @@
         <Properties>
             <Setting Name="incest:chance" Value="10" />
         </Properties>
+        <Excludes>Missing Finger</Excludes>
+        <Excludes>No Arms</Excludes>
+        <Excludes>No Hands</Excludes>
     </Trait>
 
     <Trait Name="Missing Teeth">
@@ -75,6 +83,7 @@
         <Properties>
             <Setting Name="incest:chance" Value="20" />
         </Properties>
+        <Excludes>Missing Toes</Excludes>
     </Trait>
 
     <Trait Name="Missing Toes">
@@ -85,6 +94,7 @@
         <Properties>
             <Setting Name="incest:chance" Value="10" />
         </Properties>
+        <Excludes>Missing Toe</Excludes>
     </Trait>
 
     <Trait Name="Malformed">
@@ -120,6 +130,10 @@
         <Properties>
             <Setting Name="incest:chance" Value="10" />
         </Properties>
+        <Excludes>One Arm</Excludes>
+        <Excludes>Missing Finger</Excludes>
+        <Excludes>Missing Fingers</Excludes>
+        <Excludes>No Hands</Excludes>
     </Trait>
 
 
@@ -175,6 +189,9 @@
         <Properties>
             <Setting Name="incest:chance" Value="10" />
         </Properties>
+        <Excludes>No Arms</Excludes>
+        <Excludes>Missing Finger</Excludes>
+        <Excludes>Missing Fingers</Excludes>
     </Trait>
 
 
@@ -199,6 +216,7 @@
         <Properties>
             <Setting Name="incest:chance" Value="10" />
         </Properties>
+        <Excludes>One Leg</Excludes>
     </Trait>
 
     <Trait Name="Clipped Tendons">
@@ -273,6 +291,7 @@
         <Properties>
             <Setting Name="incest:chance" Value="10" />
         </Properties>
+        <Excludes>No Arms</Excludes>
     </Trait>
 
 
@@ -347,6 +366,7 @@
         <Properties>
             <Setting Name="incest:chance" Value="10" />
         </Properties>
+        <Excludes>No Legs</Excludes>
     </Trait>
 
     <Trait Name="No Tongue">
@@ -364,6 +384,7 @@
         <Properties>
             <Setting Name="incest:chance" Value="10" />
         </Properties>
+        <Excludes>Nimble Tongue</Excludes>
     </Trait>
 
     <Trait Name="Blind" RandomChance="5">

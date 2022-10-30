@@ -7,6 +7,8 @@
          heritable-->
         <Setting Name="inherit:chance:from_active" Value="95" />
         <Setting Name="inherit:chance:from_acquired" Value="0" />
+        <Setting Name="default:chance:inherent" Value="100" />
+        <Setting Name="default:chance:dormant" Value="0" />
         <Setting Name="random:inherent" Value="100" />
     </Default>
 
@@ -220,6 +222,8 @@
             <Modifier Name="fetish:Dangerous" Value="10" />
             <Modifier Name="fetish:NonHuman" Value="60" />
             <Modifier Name="fetish:Freak" Value="20" />
+
+            <Modifier Name="tag:sterile" Value="1" />
         </Modifiers>
 
         <Properties>

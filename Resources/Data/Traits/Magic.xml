@@ -6,6 +6,8 @@
         <!-- Magic is typically inborn and only acquired with difficulty -->
         <Setting Name="inherit:chance:from_active" Value="80" />
         <Setting Name="inherit:chance:from_acquired" Value="5" />
+        <Setting Name="default:chance:inherent" Value="80" />
+        <Setting Name="default:chance:dormant" Value="66" />
         <Setting Name="random:inherent" Value="80" />
         <Setting Name="random:chance" Value="5" />
     </Default>

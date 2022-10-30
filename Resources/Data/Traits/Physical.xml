@@ -6,6 +6,7 @@
         <!-- In general, physical traits are strongly inheritable and mostly inherent -->
         <Setting Name="inherit:chance:from_active" Value="70" />
         <Setting Name="inherit:chance:from_acquired" Value="0" />
+        <Setting Name="default:chance:inherent" Value="75" />
         <Setting Name="random:inherent" Value="80" />
     </Default>
 

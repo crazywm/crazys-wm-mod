@@ -728,6 +728,9 @@ namespace traits
         constexpr const char* INHERIT_CHANCE_FROM_ACQUIRED = "inherit:chance:from_acquired";
 
         constexpr const char* INCEST_CHANCE = "incest:chance";
+
+        constexpr const char* DEFAULT_CHANCE_INHERENT = "default:chance:inherent";
+        constexpr const char* DEFAULT_CHANCE_DORMANT = "default:chance:dormant";
     }
 }
 
