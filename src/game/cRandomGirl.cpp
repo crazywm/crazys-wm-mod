@@ -417,8 +417,7 @@ namespace {
         // DQ - new random type ...
         set_from_attr("Catacomb", target.SpawnWeights[static_cast<int>(SpawnReason::CATACOMBS)]);
         set_from_attr("Arena", target.SpawnWeights[static_cast<int>(SpawnReason::ARENA)]);
-        // is this even valid xml?
-        set_from_attr("Your Daughter", target.SpawnWeights[static_cast<int>(SpawnReason::PLAYER_DAUGHTER)]);
+        set_from_attr("YourDaughter", target.SpawnWeights[static_cast<int>(SpawnReason::PLAYER_DAUGHTER)]);
 
         if(!get_yesno_attr("Human")) {
             target.Traits.emplace_back(sRandomGirl::sTraitSpawnInfo{traits::NOT_HUMAN, 100});
