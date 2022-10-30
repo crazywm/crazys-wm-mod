@@ -120,7 +120,7 @@ std::string sColor::to_hex() const
 {
     std::string result(6, ' ');
     number_to_hex(&result.front(), r);
-    number_to_hex(&result.front() + 2, r);
-    number_to_hex(&result.front() + 4, r);
+    number_to_hex(&result.front() + 2, g);
+    number_to_hex(&result.front() + 4, b);
     return std::move(result);
 }
