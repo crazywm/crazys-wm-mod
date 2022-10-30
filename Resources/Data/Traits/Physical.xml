@@ -1,9 +1,11 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
 
     <Default>
         <!-- In general, physical traits are strongly inheritable and mostly inherent -->
-        <Setting Name="inherit:chance" Value="70" />
+        <Setting Name="inherit:chance:from_active" Value="70" />
+        <Setting Name="inherit:chance:from_acquired" Value="0" />
         <Setting Name="random:inherent" Value="80" />
     </Default>
 
@@ -21,7 +23,7 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="10" />
+            <Setting Name="inherit:chance:from_active" Value="10" />
             <Setting Name="random:chance" Value="1" />
         </Properties>
 
@@ -59,6 +61,7 @@
 
         <Properties>
             <Setting Name="random:chance" Value="5" />
+            <Setting Name="inherit:chance:from_acquired" Value="15" />
         </Properties>
     </Trait>
 
@@ -78,7 +81,7 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="10" />
+            <Setting Name="inherit:chance:from_active" Value="10" />
             <Setting Name="random:chance" Value="1" />
         </Properties>
     </Trait>
@@ -87,7 +90,7 @@
         <description>This is a child of incest.</description>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="inherit:chance:from_active" Value="50" />
             <Setting Name="random:chance" Value="1" />
         </Properties>
     </Trait>
@@ -618,6 +621,9 @@
             <Modifier Name="fetish:Lolita" Value="10" />
             <Modifier Name="skill-cap:Combat" Value="-33" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
         <Excludes>Tough</Excludes>
     </Trait>
 

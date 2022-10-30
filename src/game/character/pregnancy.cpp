@@ -29,6 +29,7 @@
 #include "CLog.h"
 #include "character/traits/ITraitsCollection.h"
 #include "character/traits/ITraitSpec.h"
+#include "character/traits/ITraitsManager.h"
 #include "cGangs.h"
 #include "cGangManager.hpp"
 #include "buildings/cDungeon.h"
@@ -60,7 +61,6 @@ namespace settings {
     extern const char* PREG_CHANCE_GIRL;
 }
 
-int calc_abnormal_pc(const sGirl& mom, sGirl& sprog, bool is_players);
 bool child_is_due(sGirl& girl, sChild& child, std::string& summary, bool PlayerControlled = true);
 void handle_son(sGirl& mom, std::string& summary, bool PlayerControlled);
 void handle_daughter(sGirl& mom, const sChild& child, std::string& summary);
@@ -541,24 +541,19 @@ void handle_son(sGirl& mom, std::string& summary, bool PlayerControlled)
     mom.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
 }
 
-int calc_abnormal_pc(const sGirl& mom, sGirl& sprog, bool is_players)
+sPercent calc_incest_chance(const sGirl& mom, const sGirl& sprog, bool is_players)
 {
-    if (!is_players)     // the non-pc-daughter case is simpler
+    if (!is_players)
     {
-        if (mom.has_active_trait(traits::YOUR_DAUGHTER)) return 0;        // if the mom is your daughter then any customer is a safe dad - genetically speaking, anyway
-        if (g_Dice.percent(99)) return 0;                    // so what are the odds that this customer fathered both mom and sprog. Let's say 1%
-        sprog.raw_traits().add_inherent_trait(traits::INCEST);                    // that's enough to give the sprog the incest trait
-        if (!mom.has_active_trait(traits::INCEST)) return 0;    // but there's only a risk of abnormality if mom is herself incestuous
-        return 5;                                            // If we get past all that lot, there's a 5% chance of abnormality
+        // if the mom is your daughter then any customer is a safe dad - genetically speaking, anyway
+        if (mom.has_active_trait(traits::YOUR_DAUGHTER)) return sPercent{0};
+        return sPercent{1};                    // so what are the odds that this customer fathered both mom and sprog. Let's say 1%
     }
-    sprog.raw_traits().add_inherent_trait(traits::YOUR_DAUGHTER);                // OK. The sprog is the player's get
-    if (!mom.has_active_trait(traits::YOUR_DAUGHTER)) return 0;    // if mom isn't the player's then there is no problem
-    sprog.raw_traits().add_inherent_trait(traits::INCEST);                        // she IS, so we add the incest trait
-    if (mom.has_active_trait(traits::INCEST)) return 10;                // if mom is also incestuous, that adds 5% to the odds
-    return 5;
+    if (!mom.has_active_trait(traits::YOUR_DAUGHTER)) return sPercent{0};    // if mom isn't the player's then there is no problem
+    return sPercent{100};
 }
 
-std::shared_ptr<sGirl> create_daughter(sGirl& mom, bool player_dad) {
+std::shared_ptr<sGirl> get_new_daughter(sGirl& mom, bool player_dad) {
     bool slave = mom.is_slave();
     bool non_human = !mom.is_human();
 
@@ -594,30 +589,119 @@ std::shared_ptr<sGirl> create_daughter(sGirl& mom, bool player_dad) {
     return girl_pool.CreateRandomGirl(SpawnReason::BIRTH, 18);
 }
 
+std::shared_ptr<sGirl> create_daughter(sGirl& mom, bool player_dad) {
+    std::shared_ptr<sGirl> base = get_new_daughter(mom, player_dad);
+    // at this point the sprog should have temporary firstname, surname, and realname
+    std::string biography;
+    if (player_dad) {
+        base->SetSurname(g_Game->player().Surname());
+        biography = "Daughter of " + mom.FullName() + " and the Brothel owner, Mr. " + g_Game->player().FullName();
+    } else {
+        if (!mom.Surname().empty()) { // mom has a surname already
+            base->SetSurname(mom.Surname());
+        }
+        biography = "Daughter of " + mom.FullName() + " and an anonymous brothel client";
+    }
+    base->m_Desc = base->m_Desc + "\n \n" + biography + ".";
+    return base;
+}
+
+void inherit_inherent(sGirl& target, sTraitInfo& info) {
+    const char* source = info.active ? traits::properties::INHERIT_CHANCE_FROM_ACTIVE : traits::properties::INHERIT_CHANCE_FROM_DORMANT;
+    sPercent chance = info.trait->get_properties().get_percent(source);
+    // Does she inherit the trait?
+    if (g_Dice.percent(chance)) {
+        const char* dormant = info.active ? traits::properties::INHERIT_DORMANT_FROM_ACTIVE : traits::properties::INHERIT_DORMANT_FROM_DORMANT;
+        if(g_Dice.percent(info.trait->get_properties().get_percent(dormant))) {
+            // If the new trait should be generated as dormant, but the same dormant trait already exists, make it active.
+            // we need to update the trait collection to ensure correct assignment of dormant traits.
+            target.raw_traits().update();
+            if(target.raw_traits().has_inherent_trait(info.trait) == ITraitsCollection::TRAIT_INACTIVE) {
+                g_LogFile.info("daughter", "  Inheriting ", info.trait->name(), " from her mother made this dormant trait active.");
+                target.raw_traits().add_inherent_trait(info.trait, true);
+            } else {
+                g_LogFile.info("daughter", "  She inherited ", info.trait->name(), " as a dormant trait from her mother.");
+                target.raw_traits().add_inherent_trait(info.trait, false);
+            }
+        } else {
+            g_LogFile.info("daughter", "  She inherited ", info.trait->name(), " as an active trait from her mother.");
+            target.raw_traits().add_inherent_trait(info.trait, true);
+        }
+    }
+}
+
+void add_incest_traits(sGirl& target, bool second_generation) {
+    // for first-generation incest, higher chance of generating the problems only in dormant state
+    sPercent dormant_chance{second_generation ? 50 : 75};
+
+    g_Game->traits().iterate([&](const ITraitSpec& trait) {
+        sPercent chance = trait.get_properties().get_percent(traits::properties::INCEST_CHANCE);
+        if(g_Dice.percent(chance)) {
+            // add as dormant
+            if(g_Dice.percent(dormant_chance)) {
+                target.raw_traits().update();
+                if(target.raw_traits().has_inherent_trait(&trait) == ITraitsCollection::TRAIT_INACTIVE) {
+                    g_LogFile.info("daughter", "  Due to incest her ", trait.name(), " trait has become active.");
+                    target.raw_traits().add_inherent_trait(&trait, true);
+                } else {
+                    g_LogFile.info("daughter", "  Due to incest she got ", trait.name(), " as a dormant trait.");
+                    target.raw_traits().add_inherent_trait(&trait, false);
+                }
+            } else {
+                g_LogFile.info("daughter", "  Due to incest she got the ", trait.name(), " trait.");
+                target.raw_traits().add_inherent_trait(&trait, true);
+            }
+        }
+    });
+}
+
+void inherit_permanent(sGirl& target, sTraitInfo& info) {
+    sPercent chance = info.trait->get_properties().get_percent(traits::properties::INHERIT_CHANCE_FROM_ACQUIRED);
+    // Does she inherit the trait?
+    if (g_Dice.percent(chance)) {
+        g_LogFile.info("daughter", "  She acquired the ", info.trait->name(), " trait from her mother.");
+        target.raw_traits().add_permanent_trait(info.trait, true);
+    }
+}
+
 void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
+    using namespace traits::properties;
+
     std::stringstream ss;
     bool playerfather = child.m_IsPlayers;        // is 1 if father is player
 
+    g_LogFile.info("daughter", "Creating new daughter:");
     // create a new girl for the barn
     std::shared_ptr<sGirl> sprog = create_daughter(mom, playerfather);
-
-    // check for incest, get the odds on abnormality
-    int abnormal_pc = calc_abnormal_pc(mom, *sprog, child.m_IsPlayers);
-    if (g_Dice.percent(abnormal_pc)) {
-        if (g_Dice.percent(50)) sprog->raw_traits().add_inherent_trait(traits::MALFORMED);
-        else sprog->raw_traits().add_inherent_trait(traits::RETARDED);
-    }
+    g_LogFile.info("daughter", "  Generated new daughter ", sprog->FullName(), " with initial settings.");
 
     // loop through the mom's traits, inheriting where appropriate
     auto moms_traits = mom.raw_traits().get_trait_info();
     for (auto& info : moms_traits) {
         if (info.type == sTraitInfo::INHERENT) {
-            const char* source = info.active ? traits::properties::INHERIT_CHANCE : traits::properties::INHERIT_CHANCE_FROM_DORMANT;
-            sPercent chance = info.trait->get_properties().get_percent(source);
-            if (g_Dice.percent(chance)) {
-                sprog->raw_traits().add_inherent_trait(info.trait);
-            }
+            inherit_inherent(*sprog, info);
+        // permanent traits can only be inherited if they are active
+        } else if(info.type == sTraitInfo::PERMANENT && info.active) {
+            inherit_permanent(*sprog, info);
         }
+    }
+
+    // incest problems
+    // Note: She might already have gotten the INCEST trait through inheritance from her mother.
+    // In this case, i.e. if there is no additional incest, we just let the normal inheritance run
+    // its course.
+    sPercent incest_chance = calc_incest_chance(mom, *sprog, child.m_IsPlayers);
+    if (g_Dice.percent(incest_chance)) {
+        sprog->raw_traits().add_inherent_trait(traits::INCEST);
+        add_incest_traits(*sprog, mom.raw_traits().has_inherent_trait(traits::INCEST) == ITraitsCollection::TRAIT_ACTIVE);
+    }
+
+    // special case: royalty
+    if(mom.has_active_trait(traits::QUEEN)) {
+        sprog->gain_trait(traits::PRINCESS);
+    }
+    if(mom.has_active_trait(traits::PRINCESS)) {
+        sprog->gain_trait(traits::NOBLE);
     }
 
     if (playerfather) {
@@ -672,23 +756,6 @@ void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
     for (auto skill : SkillsRange) {
         sprog->upd_skill(skill, 0);
     }
-
-
-    // new code to add first and last name to girls
-
-    // at this point the sprog should have temporary firstname, surname, and realname
-    std::string prevsurname = sprog->Surname();        // save the temporary surname incase it is needed later
-    std::string biography;
-    if (playerfather) {
-        sprog->SetSurname(g_Game->player().Surname());
-        biography = "Daughter of " + mom.FullName() + " and the Brothel owner, Mr. " + g_Game->player().FullName();
-    } else {
-        if (!mom.Surname().empty()) { // mom has a surname already
-            sprog->SetSurname(mom.Surname());
-        }
-        biography = "Daughter of " + mom.FullName() + " and an anonymous brothel client";
-    }
-    sprog->m_Desc = sprog->m_Desc + "\n \n" + biography + ".";
 
     // make sure slave daughters have house perc. set to 100, otherwise 60
     sprog->set_default_house_percent();

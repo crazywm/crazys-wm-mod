@@ -250,8 +250,6 @@ std::shared_ptr<sGirl> cRandomGirls::spawn(SpawnReason reason, int age) {
     auto attempt = get_spec(reason, age);
     if(!attempt) attempt = get_spec(reason);
 
-    auto new_girl = std::make_shared<sGirl>(false);
-
     // last call -- just accept any girl
     if(!attempt && !m_RandomGirls.empty()) {
         attempt = &m_RandomGirls[g_Dice.random(m_RandomGirls.size())];
@@ -259,6 +257,7 @@ std::shared_ptr<sGirl> cRandomGirls::spawn(SpawnReason reason, int age) {
     }
 
     if(!attempt) {
+        auto new_girl = std::make_shared<sGirl>(false);
         new_girl->m_Desc = "Hard Coded Random Girl\n(The game did not find a valid .rgirlsx file)";
         new_girl->SetName("Default", "", "Girl");
         g_Game->error("Could not find a valid random girl template!");

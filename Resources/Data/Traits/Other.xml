@@ -1,5 +1,21 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
+    <Default>
+        <Setting Name="inherit:chance:from_active" Value="0" />
+        <Setting Name="inherit:chance:from_dormant" Value="0" />
+        <Setting Name="inherit:chance:from_acquired" Value="0" />
+    </Default>
+
+    <Trait Name="Your Daughter" RandomChance="0" Type="Social">
+        <description>This girl is a child of your loins.</description>
+    </Trait>
+
+
+    <Trait Name="Your Wife" RandomChance="0" Type="Social">
+        <description>This girl is one of your wives.</description>
+    </Trait>
+
     <Trait InheritChance="1" Name="Out-Patient Surgery" RandomChance="0" Type="Temporary">
         <description>She recently got out of surgery and should be resting.</description>
     </Trait>

@@ -85,13 +85,13 @@ struct cRng
 
     // @{
     bool percent(int p) { return random(100) < p; }
-    bool percent(sPercent p) { return percent(100.f * p); }
+    bool percent(sPercent p) { return percent(p.as_percentage()); }
 /*
 *    `J` added percent allowing double input up to 3 decimal
 *    returns true n percent of the time.
 *    so g_Dice.percent(20.005) will return true 20.005% of the time
 */
-    bool percent(double p) { return (1 + random(100000)) < (p * 1000.0); }
+    bool percent(double p) { if(p==0.0) return false; return (1 + random(100000)) < (p * 1000.0); }
     // @}
 /*
  *    we generate d100 rolls a lot

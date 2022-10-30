@@ -107,17 +107,22 @@ void cTraitSpec::add_modifier(std::string mod, int value) {
 }
 
 cTraitProps::cTraitProps() : cSimpleKeyValue("Setting", "Name", "Value") {
+    using namespace traits::properties;
     // inheritance
-    add_setting(traits::properties::INHERIT_CHANCE, "Inherit Chance", sPercent(50), "Base chance for inheriting this trait.");
-    add_setting(traits::properties::INHERIT_CHANCE_FROM_DORMANT, "Inherit chance (from dormant)", boost::blank(),
-               "Chance that this trait will be inherited from a dormant trait.", "inherit:chance");
+    add_setting(INHERIT_CHANCE_FROM_ACTIVE, "Inherit Chance (from active)", sPercent(75),
+                "Chance that this trait will be inherited from an active trait.");
+    add_setting(INHERIT_CHANCE_FROM_DORMANT, "Inherit chance (from dormant)", sPercent(50),
+               "Chance that this trait will be inherited from a dormant trait.");
 
-    add_setting("inherit:dormant", "Dormant Chance (inherited)", boost::blank(),
-            "Chance that this trait will be dormant when inherited.", "random:inherent:dormant");
-    add_setting("inherit:dormant_from_dormant", "Dormant Chance (inherited from dormant)", sPercent(75),
-                "Chance that this trait will be dormant when inherited from dormant.");
-    add_setting("inherit:from_acquired", "Transmission Chance", sPercent(0),
+    add_setting(INHERIT_DORMANT_FROM_ACTIVE, "Dormant Chance (inherited from active)", sPercent(25),
+            "Chance that this trait will be dormant when inherited from an active trait.");
+    add_setting(INHERIT_DORMANT_FROM_DORMANT, "Dormant Chance (inherited from dormant)", sPercent(75),
+                "Chance that this trait will be dormant when inherited from a dormant trait.");
+    add_setting(INHERIT_CHANCE_FROM_ACQUIRED, "Transmission Chance", sPercent(0),
                 "Chance that an active acquired trait (such as a disease) is passed on to offspring as an acquired trait.");
+
+    // incest spawning
+    add_setting(INCEST_CHANCE, "Incest Chance", sPercent(0), "Chance that this trait will be generated for an incestuous girl.");
 
     // random spawning
     add_setting("random:chance", "Random Chance", sPercent(1), "Chance for this trait to appear in a randomly generated girl if not specified in the template.");

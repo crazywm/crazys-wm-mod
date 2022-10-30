@@ -1,9 +1,11 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
     <!-- Not inherited and not generated as inherent or dormant traits -->
     <Default>
         <Setting Name="random:chance" Value="5" />
-        <Setting Name="inherit:chance" Value="0" />
+        <Setting Name="inherit:chance:from_active" Value="0" />
+        <Setting Name="inherit:chance:from_acquired" Value="15" />
         <Setting Name="random:inherent" Value="0" />
         <Setting Name="random:acquired:dormant" Value="0" />
     </Default>
@@ -18,6 +20,7 @@
 
         <Properties>
             <Setting Name="random:chance" Value="1" />
+            <Setting Name="inherit:chance:from_acquired" Value="0" />
         </Properties>
     </Trait>
 
@@ -34,6 +37,7 @@
 
         <Properties>
             <Setting Name="random:chance" Value="1" />
+            <Setting Name="inherit:chance:from_acquired" Value="0" />
         </Properties>
     </Trait>
 
@@ -76,6 +80,7 @@
 
         <Properties>
             <Setting Name="random:chance" Value="15" />
+            <Setting Name="inherit:chance:from_acquired" Value="0" />
         </Properties>
     </Trait>
 
@@ -94,6 +99,7 @@
 
         <Properties>
             <Setting Name="random:chance" Value="15" />
+            <Setting Name="inherit:chance:from_acquired" Value="0" />
         </Properties>
     </Trait>
 
@@ -166,6 +172,9 @@
             <Modifier Name="fetish:Dangerous" Value="30" />
             <Modifier Name="fetish:Freak" Value="20" />
         </Modifiers>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="0" />
+        </Properties>
     </Trait>
 
     <Trait Name="Bruises">
@@ -179,6 +188,7 @@
         <Properties>
             <!-- This is expected to be used as a temporary trait, so do not spawn with it -->
             <Setting Name="random:chance" Value="0" />
+            <Setting Name="inherit:chance:from_acquired" Value="0" />
         </Properties>
     </Trait>
 

@@ -721,8 +721,13 @@ namespace traits
 {
     namespace properties
     {
-        constexpr const char* INHERIT_CHANCE = "inherit:chance";
+        constexpr const char* INHERIT_CHANCE_FROM_ACTIVE = "inherit:chance:from_active";
         constexpr const char* INHERIT_CHANCE_FROM_DORMANT = "inherit:chance:from_dormant";
+        constexpr const char* INHERIT_DORMANT_FROM_ACTIVE = "inherit:dormant:from_active";
+        constexpr const char* INHERIT_DORMANT_FROM_DORMANT = "inherit:dormant:from_dormant";
+        constexpr const char* INHERIT_CHANCE_FROM_ACQUIRED = "inherit:chance:from_acquired";
+
+        constexpr const char* INCEST_CHANCE = "incest:chance";
     }
 }
 

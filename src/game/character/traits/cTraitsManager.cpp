@@ -117,6 +117,12 @@ std::vector<std::string> cTraitsManager::get_all_traits() const {
     return result;
 }
 
+void cTraitsManager::iterate(std::function<void(const ITraitSpec&)> callback) const {
+    for(const auto& trait : m_Traits) {
+        callback(*trait.second);
+    }
+}
+
 cTraitsManager::cTraitsManager() = default;
 cTraitsManager::~cTraitsManager() noexcept = default;
 cTraitsManager::cTraitsManager(cTraitsManager&&) noexcept = default;

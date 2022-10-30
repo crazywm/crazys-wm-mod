@@ -1,4 +1,5 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
     <Default>
         <!--
@@ -6,9 +7,11 @@
              usually not inherent (i.e. they mostly stem from accidents etc). They cannot be spawned as acquired
              and dormant.
         -->
-        <Setting Name="inherit:chance" Value="70" />
-        <Setting Name="inherit:chance:from_dormant" Value="33" />
-        <Setting Name="inherit:dormant" Value="25" />
+        <Setting Name="inherit:chance:from_active" Value="70" />
+        <Setting Name="inherit:chance:from_dormant" Value="50" />
+        <Setting Name="inherit:dormant_from_active" Value="33" />
+        <Setting Name="inherit:chance:from_acquired" Value="0" />
+        <Setting Name="incest:chance" Value="10" />
 
         <Setting Name="random:chance" Value="0.5" />
         <Setting Name="random:inherent" Value="10" />
@@ -23,7 +26,7 @@
             <Modifier Name="fetish:Sexy" Value="-10" />
         </Modifiers>
         <Properties>
-            <Setting Name="inherit:get-from-incest" Value="5" />
+            <Setting Name="incest:chance" Value="10" />
         </Properties>
         <Excludes>No Nipples</Excludes>
     </Trait>
@@ -33,6 +36,9 @@
         <Modifiers>
             <Modifier Name="fetish:Freak" Value="5" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="20" />
+        </Properties>
     </Trait>
 
 
@@ -41,6 +47,9 @@
         <Modifiers>
             <Modifier Name="fetish:Freak" Value="10" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
     <Trait Name="Missing Teeth">
@@ -51,6 +60,9 @@
             <Modifier Name="fetish:Dangerous" Value="10" />
             <Modifier Name="fetish:Sexy" Value="-5" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
 
         <Excludes>No Teeth</Excludes>
     </Trait>
@@ -60,6 +72,9 @@
         <Modifiers>
             <Modifier Name="fetish:Freak" Value="5" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="20" />
+        </Properties>
     </Trait>
 
     <Trait Name="Missing Toes">
@@ -67,10 +82,13 @@
         <Modifiers>
             <Modifier Name="fetish:Freak" Value="10" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
     <Trait Name="Malformed">
-        <description>This girl is deformed.</description>
+        <description>This girl is deformed in some way.</description>
         <Modifiers>
             <Modifier Name="stat:Confidence" Value="-20" />
             <Modifier Name="stat:Spirit" Value="-20" />
@@ -79,6 +97,9 @@
             <Modifier Name="fetish:NonHuman" Value="10" />
             <Modifier Name="fetish:Freak" Value="50" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="25" />
+        </Properties>
     </Trait>
 
     <Trait Name="No Arms">
@@ -96,6 +117,9 @@
             <Modifier Name="fetish:Freak" Value="60" />
             <Modifier Name="fetish:Dangerous" Value="-30" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
 
@@ -107,6 +131,9 @@
             <Modifier Name="fetish:Freak" Value="5" />
             <Modifier Name="fetish:Sexy" Value="-10" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
 
@@ -124,6 +151,9 @@
             <Modifier Name="fetish:Freak" Value="40" />
             <Modifier Name="fetish:Dangerous" Value="-20" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
 
@@ -142,6 +172,9 @@
             <Modifier Name="fetish:Freak" Value="40" />
             <Modifier Name="fetish:Dangerous" Value="-20" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
 
@@ -163,6 +196,9 @@
             <Modifier Name="fetish:Tall" Value="-20" />
             <Modifier Name="fetish:Short" Value="10" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
     <Trait Name="Clipped Tendons">
@@ -177,6 +213,9 @@
             <Modifier Name="fetish:Tall" Value="-5" />
             <Modifier Name="fetish:Short" Value="5" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="0" />
+        </Properties>
     </Trait>
 
 
@@ -188,6 +227,9 @@
             <Modifier Name="fetish:Freak" Value="20" />
             <Modifier Name="fetish:NonHuman" Value="10" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
         <Excludes>Inverted Nipples</Excludes>
         <Excludes>Perky Nipples</Excludes>
         <Excludes>Puffy Nipples</Excludes>
@@ -211,6 +253,9 @@
             <Modifier Name="fetish:Dangerous" Value="-5" />
             <Modifier Name="fetish:Sexy" Value="-15" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
 
         <Excludes>Missing Teeth</Excludes>
     </Trait>
@@ -225,6 +270,9 @@
             <Modifier Name="fetish:Freak" Value="40" />
             <Modifier Name="fetish:Dangerous" Value="-20" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
 
@@ -243,6 +291,9 @@
             <Modifier Name="fetish:NiceFigure" Value="-10" />
             <Modifier Name="fetish:Freak" Value="20" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
 
         <Excludes>Cyclops</Excludes>
         <Excludes>Different Colored Eyes</Excludes>
@@ -260,6 +311,9 @@
             <Modifier Name="fetish:Freak" Value="20" />
             <Modifier Name="fetish:Dangerous" Value="-10" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
 
@@ -273,6 +327,9 @@
             <Modifier Name="fetish:Freak" Value="20" />
             <Modifier Name="fetish:Dangerous" Value="-10" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
 
@@ -287,6 +344,9 @@
             <Modifier Name="fetish:Freak" Value="40" />
             <Modifier Name="fetish:Dangerous" Value="-20" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
     <Trait Name="No Tongue">
@@ -301,6 +361,9 @@
             <Modifier Name="fetish:Freak" Value="20" />
             <Modifier Name="fetish:Dangerous" Value="-5" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
     <Trait Name="Blind" RandomChance="5">
@@ -313,6 +376,9 @@
         </Modifiers>
         <Properties>
             <Setting Name="random:inherent" Value="50" />
+        </Properties>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
         </Properties>
         <Excludes>Sharp-Eyed</Excludes>
         <Excludes>Bad Eyesight</Excludes>
@@ -331,6 +397,7 @@
         <Properties>
             <Setting Name="random:chance" Value="10" />
             <Setting Name="random:inherent" Value="75" />
+            <Setting Name="incest:chance" Value="20" />
         </Properties>
         <Excludes>Sharp-Eyed</Excludes>
         <Excludes>Blind</Excludes>
@@ -344,6 +411,7 @@
         </Modifiers>
         <Properties>
             <Setting Name="random:inherent" Value="50" />
+            <Setting Name="incest:chance" Value="10" />
         </Properties>
     </Trait>
     
@@ -358,8 +426,9 @@
             <Modifier Name="fetish:Dangerous" Value="-5" />
         </Modifiers>
         <Properties>
-            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="inherit:chance:from_active" Value="50" />
             <Setting Name="random:inherent" Value="80" />
+            <Setting Name="incest:chance" Value="15" />
         </Properties>
     </Trait>
 
@@ -372,6 +441,7 @@
         <Properties>
             <Setting Name="random:inherent" Value="80" />
             <Setting Name="random:chance" Value="5" />
+            <Setting Name="incest:chance" Value="10" />
         </Properties>
 
         <Excludes>Singer</Excludes>
@@ -388,6 +458,9 @@
             <Modifier Name="fetish:NonHuman" Value="2" />
             <Modifier Name="fetish:Freak" Value="45" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="20" />
+        </Properties>
         <Excludes>Quick Learner</Excludes>
     </Trait>
 </Traits>

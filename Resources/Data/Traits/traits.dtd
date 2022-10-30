@@ -1,0 +1,19 @@
+<!ELEMENT Traits (Default, Trait*, MutexGroup*)>
+
+
+<!ELEMENT Default (Setting*)>
+<!ELEMENT Trait (description?, Modifiers?, Properties?, Excludes*)>
+<!ATTLIST Trait Name CDATA #REQUIRED Type CDATA #IMPLIED>
+
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT Excludes (#PCDATA)>
+<!ELEMENT Modifiers (Modifier*)>
+<!ELEMENT Properties (Setting*)>
+
+<!ELEMENT Modifier EMPTY>
+<!ATTLIST Modifier Name CDATA #REQUIRED Value CDATA #REQUIRED>
+
+<!ELEMENT Setting EMPTY>
+<!ATTLIST Setting Name CDATA #REQUIRED Value CDATA #REQUIRED>
+
+<!ELEMENT MutexGroup (Trait*)>

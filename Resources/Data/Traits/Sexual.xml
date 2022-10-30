@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
     <Default>
+        <Setting Name="inherit:chance:from_acquired" Value="0" />
     </Default>
 
     <Trait InheritChance="1" Name="Bisexual" RandomChance="30" Type="Sexual">
@@ -127,6 +129,9 @@
             <Modifier Name="fetish:Freak" Value="20" />
             <Modifier Name="fetish:Elegant" Value="-5" />
         </Modifiers>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="15" />
+        </Properties>
 
         <Excludes>Chaste</Excludes>
     </Trait>
@@ -196,6 +201,10 @@
         </Modifiers>
 
         <Excludes>Nymphomaniac</Excludes>
+
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="15" />
+        </Properties>
     </Trait>
 
     <Trait InheritChance="10" Name="No Gag Reflex" RandomChance="2" Type="Sexual">
@@ -269,6 +278,9 @@
         <Modifiers>
             <Modifier Name="tag:sterile" Value="1" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
     <Trait InheritChance="30" Name="Open Minded" RandomChance="10" Type="Action">
@@ -283,6 +295,10 @@
             <Modifier Name="fetish:Cool" Value="20" />
             <Modifier Name="fetish:Elegant" Value="-10" />
         </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="33" />
+        </Properties>
     </Trait>
 
     <Trait InheritChance="20" Name="Dick-Sucking Lips" RandomChance="5" Type="Appearance">

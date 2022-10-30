@@ -1,5 +1,10 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
+    <Default>
+        <Setting Name="inherit:chance:from_acquired" Value="15" />
+    </Default>
+
     <Trait InheritChance="30" Name="Agile" RandomChance="20" Type="Action">
         <description>This girl is quick on her feet and swift with her hands. She has natural gift of dexterity.</description>
         <Modifiers>

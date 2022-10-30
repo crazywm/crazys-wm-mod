@@ -1,7 +1,9 @@
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
     <Default>
         <!-- In general, figure traits are strongly inheritable. -->
-        <Setting Name="inherit:chance" Value="70" />
+        <Setting Name="inherit:chance:from_active" Value="70" />
+        <Setting Name="inherit:chance:from_acquired" Value="0" />
         <Setting Name="random:inherent" Value="50" />
         <Setting Name="random:inherent:dormant" Value="50" />
         <Setting Name="random:chance" Value="10" />
@@ -18,6 +20,7 @@
 
         <Properties>
             <Setting Name="random:acquired:dormant" Value="25" />
+            <Setting Name="inherit:chance:from_acquired" Value="15" />
         </Properties>
     </Trait>
 
@@ -30,6 +33,9 @@
             <Modifier Name="fetish:Freak" Value="20" />
             <Modifier Name="fetish:Fat" Value="50" />
         </Modifiers>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="15" />
+        </Properties>
     </Trait>
 
     <Trait Name="Great Figure">
@@ -83,6 +89,7 @@
 
         <Properties>
             <Setting Name="random:inherent" Value="25" />
+            <Setting Name="inherit:chance:from_acquired" Value="15" />
         </Properties>
     </Trait>
 
@@ -138,6 +145,9 @@
             <Modifier Name="fetish:Tall"   Value="-75"/>
             <Modifier Name="fetish:Short"  Value="100"/>
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="10" />
+        </Properties>
     </Trait>
 
     <Trait Name="Mature Body" Type="Physical">

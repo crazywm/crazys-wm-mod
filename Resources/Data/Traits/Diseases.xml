@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
     <Default>
         <Setting Name="random:inherent" Value="0" />
-        <Setting Name="inherit:from_acquired" Value="50" />
+        <Setting Name="inherit:chance:from_acquired" Value="50" />
     </Default>
 
     <Trait Name="AIDS">
@@ -12,7 +13,7 @@
         </Modifiers>
         <Properties>
             <Setting Name="random:chance" Value="1" />
-            <Setting Name="inherit:from_acquired" Value="80" />
+            <Setting Name="inherit:chance:from_acquired" Value="80" />
         </Properties>
     </Trait>
 

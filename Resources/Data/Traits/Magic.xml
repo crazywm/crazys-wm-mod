@@ -1,9 +1,11 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
 
     <Default>
-        <!-- MAgic is typically inborn and only acquired with difficulty -->
-        <Setting Name="inherit:chance" Value="80" />
+        <!-- Magic is typically inborn and only acquired with difficulty -->
+        <Setting Name="inherit:chance:from_active" Value="80" />
+        <Setting Name="inherit:chance:from_acquired" Value="5" />
         <Setting Name="random:inherent" Value="80" />
         <Setting Name="random:chance" Value="5" />
     </Default>
@@ -33,13 +35,16 @@
     </Trait>
 
     <Trait Name="Muggle">
-    <description>This girl can barely use magic, if at all.</description>
-    <Modifiers>
-        <Modifier Name="skill-cap:Magic" Value="-30" />
-        <Modifier Name="stat:Mana" Value="-30" />
-        <Modifier Name="fetish:Dangerous" Value="-5" />
-        <Modifier Name="fetish:Nerd" Value="5" />
-    </Modifiers>
+        <description>This girl can barely use magic, if at all.</description>
+        <Modifiers>
+            <Modifier Name="skill-cap:Magic" Value="-30" />
+            <Modifier Name="stat:Mana" Value="-30" />
+            <Modifier Name="fetish:Dangerous" Value="-5" />
+            <Modifier Name="fetish:Nerd" Value="5" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="15" />
+        </Properties>
     </Trait>
 
 
@@ -69,16 +74,16 @@
 
 
     <Trait Name="Powerful Magic">
-    <description>This girl has great power within her. She may become too powerful for you to handle.</description>
-    <Modifiers>
-        <Modifier Name="skill:Magic" Value="15" />
-        <Modifier Name="skill-cap:Magic" Value="30" />
-        <Modifier Name="stat:Mana" Value="30" />
-        <Modifier Name="fetish:Dangerous" Value="25" />
-        <Modifier Name="fetish:Nerd" Value="15" />
-        <Modifier Name="fetish:NonHuman" Value="10" />
-        <Modifier Name="fetish:Freak" Value="35" />
-    </Modifiers>
+        <description>This girl has great power within her. She may become too powerful for you to handle.</description>
+        <Modifiers>
+            <Modifier Name="skill:Magic" Value="15" />
+            <Modifier Name="skill-cap:Magic" Value="30" />
+            <Modifier Name="stat:Mana" Value="30" />
+            <Modifier Name="fetish:Dangerous" Value="25" />
+            <Modifier Name="fetish:Nerd" Value="15" />
+            <Modifier Name="fetish:NonHuman" Value="10" />
+            <Modifier Name="fetish:Freak" Value="35" />
+        </Modifiers>
     </Trait>
 
     <Trait Name="Psychic">

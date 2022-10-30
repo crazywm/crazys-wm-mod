@@ -1,10 +1,12 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
 
     <Default>
         <!-- Species are always inherent - not sure about inheritance and half-breeds... for now make it almost completely
          heritable-->
-        <Setting Name="inherit:chance" Value="95" />
+        <Setting Name="inherit:chance:from_active" Value="95" />
+        <Setting Name="inherit:chance:from_acquired" Value="0" />
         <Setting Name="random:inherent" Value="100" />
     </Default>
 
@@ -182,7 +184,7 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="inherit:chance:from_active" Value="50" />
             <Setting Name="random:inherent" Value="30" />
         </Properties>
     </Trait>
@@ -221,7 +223,7 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="inherit:chance:from_active" Value="50" />
             <Setting Name="random:inherent" Value="50" />
         </Properties>
 
@@ -323,7 +325,7 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="10" />
+            <Setting Name="inherit:chance:from_active" Value="10" />
         </Properties>
     </Trait>
 
@@ -362,7 +364,7 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="10" />
+            <Setting Name="inherit:chance:from_active" Value="10" />
         </Properties>
     </Trait>
 
@@ -388,7 +390,7 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="25" />
+            <Setting Name="inherit:chance:from_active" Value="25" />
             <Setting Name="random:inherent" Value="25" />
         </Properties>
 
@@ -467,7 +469,7 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="10" />
+            <Setting Name="inherit:chance:from_active" Value="10" />
             <Setting Name="random:inherent" Value="25" />
         </Properties>
     </Trait>
@@ -514,7 +516,7 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="inherit:chance:from_active" Value="50" />
             <Setting Name="random:inherent" Value="75" />
         </Properties>
     </Trait>
@@ -528,7 +530,7 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="inherit:chance:from_active" Value="50" />
             <Setting Name="random:inherent" Value="75" />
         </Properties>
     </Trait>
@@ -541,7 +543,7 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="inherit:chance:from_active" Value="50" />
             <Setting Name="random:inherent" Value="75" />
         </Properties>
     </Trait>

@@ -32,6 +32,9 @@ struct sPercent {
     explicit sPercent(int v) : sPercent(v / 100.f) {};
 
     explicit operator float() const { return value; }
+
+    float as_ratio() const { return value; }
+    float as_percentage() const { return 100.f * value; }
 private:
     float value;
 };

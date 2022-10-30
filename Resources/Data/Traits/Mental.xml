@@ -1,5 +1,10 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
+    <Default>
+        <Setting Name="inherit:chance:from_acquired" Value="15" />
+    </Default>
+
     <Trait InheritChance="1" Name="Aggressive" RandomChance="20" Type="Mental">
         <description>This girl is much angrier than most. (may attack customers)</description>
         <Modifiers>
@@ -15,6 +20,9 @@
             <Modifier Name="fetish:Freak" Value="10" />
         </Modifiers>
         <Excludes>Meek</Excludes>
+        <Properties>
+            <Setting Name="incest:chance" Value="5" />
+        </Properties>
     </Trait>
 
     <Trait InheritChance="1" Name="Audacity" RandomChance="10" Type="Mental">
@@ -69,6 +77,10 @@
             <Modifier Name="fetish:Freak" Value="40" />
         </Modifiers>
         <Excludes>Iron Will</Excludes>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="5" />
+            <Setting Name="incest:chance" Value="2" />
+        </Properties>
     </Trait>
 
 
@@ -92,6 +104,10 @@
             <Modifier Name="fetish:Freak" Value="10" />
         </Modifiers>
         <Excludes>Audacity</Excludes>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="25" />
+            <Setting Name="incest:chance" Value="5" />
+        </Properties>
     </Trait>
 
 
@@ -139,6 +155,9 @@
             <Modifier Name="fetish:Elegant" Value="-10" />
         </Modifiers>
         <Excludes>Broken Will</Excludes>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="5" />
+        </Properties>
     </Trait>
 
 
@@ -176,6 +195,9 @@
             <Modifier Name="fetish:Elegant" Value="-10" />
             <Modifier Name="fetish:Freak" Value="30" />
         </Modifiers>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="5" />
+        </Properties>
     </Trait>
 
 
@@ -201,6 +223,9 @@
             <Modifier Name="fetish:Nerd" Value="30" />
             <Modifier Name="fetish:Lolita" Value="10" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="5" />
+        </Properties>
         <Excludes>Aggressive</Excludes>
         <Excludes>Fearless</Excludes>
         <Excludes>Audacity</Excludes>
@@ -241,6 +266,10 @@
             <Modifier Name="skill-cap:Medicine" Value="-50" />
             <Modifier Name="skill-cap:Magic" Value="-33" />
         </Modifiers>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="5" />
+            <Setting Name="incest:chance" Value="5" />
+        </Properties>
     </Trait>
 
 
@@ -258,6 +287,9 @@
             <Modifier Name="fetish:CuteGirl" Value="10" />
             <Modifier Name="fetish:Nerd" Value="15" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="5" />
+        </Properties>
         <Excludes>Fearless</Excludes>
         <Excludes>Audacity</Excludes>
     </Trait>
@@ -290,6 +322,9 @@
             <Modifier Name="fetish:Nerd" Value="30" />
         </Modifiers>
         <Excludes>Slow Learner</Excludes>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="0" />
+        </Properties>
     </Trait>
 
     <Trait InheritChance="1" Name="Sadistic" RandomChance="10" Type="Mental">
@@ -314,6 +349,10 @@
             <Modifier Name="fetish:Nerd" Value="-20" />
             <Modifier Name="fetish:CuteGirl" Value="10" />
         </Modifiers>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="0" />
+            <Setting Name="incest:chance" Value="5" />
+        </Properties>
         <Excludes>Quick Learner</Excludes>
     </Trait>
 
@@ -334,7 +373,7 @@
 
 
     <Trait InheritChance="1" Name="Tsundere" RandomChance="10" Type="Mental">
-        <description>She has a conceited, irritable, or violent personality, but becomes modest and loving with the proper triger. (may attack customers)</description>
+        <description>She has a conceited, irritable, or violent personality, but becomes modest and loving with the proper trigger. (may attack customers)</description>
         <Modifiers>
             <Modifier Name="stat:Confidence" Value="20" />
             <Modifier Name="stat:Obedience" Value="-20" />
@@ -357,6 +396,9 @@
             <Modifier Name="fetish:Sexy" Value="-20" />
             <Modifier Name="fetish:Freak" Value="40" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="2" />
+        </Properties>
     </Trait>
 
 
@@ -370,6 +412,9 @@
             <Modifier Name="fetish:Elegant" Value="-20" />
             <Modifier Name="fetish:Freak" Value="10" />
         </Modifiers>
+        <Properties>
+            <Setting Name="incest:chance" Value="2" />
+        </Properties>
     </Trait>
 
     <Trait InheritChance="1" Name="Dominatrix" RandomChance="5" Type="Sexual">
@@ -395,6 +440,9 @@
             <Modifier Name="fetish:Cool" Value="10" />
             <Modifier Name="fetish:Sexy" Value="20" />
         </Modifiers>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="0" />
+        </Properties>
     </Trait>
 
     <Trait InheritChance="10" Name="Nimble Tongue" RandomChance="5" Type="Sexual">
@@ -407,5 +455,8 @@
             <Modifier Name="skill-cap:OralSex" Value="8" />
             <Modifier Name="fetish:Sexy" Value="25" />
         </Modifiers>
+        <Properties>
+            <Setting Name="inherit:chance:from_acquired" Value="0" />
+        </Properties>
     </Trait>
 </Traits>

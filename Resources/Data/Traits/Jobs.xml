@@ -1,9 +1,10 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
     <Default>
-        <Setting Name="inherit:chance" Value="70" />
+        <Setting Name="inherit:chance:from_active" Value="70" />
         <Setting Name="random:inherent" Value="0" />
-        <Setting Name="inherit:from_acquired" Value="15" />
+        <Setting Name="inherit:chance:from_acquired" Value="15" />
     </Default>
 
 
@@ -389,7 +390,7 @@
     </Trait>
 
     <Trait Name="Assassin">
-        <description>This girl has has been trained to kill, if the price is right. (+combat skills/stats)</description>
+        <description>This girl has been trained to kill, if the price is right. (+combat skills/stats)</description>
         <Modifiers>
             <Modifier Name="stat:Morality" Value="-20" />
             <Modifier Name="skill:Combat" Value="5" />

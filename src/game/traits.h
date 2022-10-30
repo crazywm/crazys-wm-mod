@@ -162,12 +162,6 @@ namespace traits {
     /// This person is just cool to be with. (+looks)
     constexpr const char* COOL_PERSON = "Cool Person";
 
-    /// This girl is a child of your loins.
-    constexpr const char* YOUR_DAUGHTER = "Your Daughter";
-
-    /// This girl is one of your wives.
-    constexpr const char* YOUR_WIFE = "Your Wife";
-
     /// This girl is just very cute.
     constexpr const char* CUTE = "Cute";
 
@@ -258,7 +252,7 @@ namespace traits {
     constexpr const char* TOMBOY = "Tomboy";
 
     /// She has a conceited, irritable, or violent personality, but becomes modest and
-    /// loving with the proper triger. (may attack customers)
+    /// loving with the proper trigger. (may attack customers)
     constexpr const char* TSUNDERE = "Tsundere";
 
     /// Her idea of pleasure is not... ordinary. Customers without rather exotic taste
@@ -301,7 +295,7 @@ namespace traits {
     /// This girl is missing several toes.
     constexpr const char* MISSING_TOES = "Missing Toes";
 
-    /// This girl is deformed.
+    /// This girl is deformed in some way.
     constexpr const char* MALFORMED = "Malformed";
 
     /// This girl has no arms.
@@ -435,7 +429,7 @@ namespace traits {
     /// This girl loves adventure. (+combat skills/stats)
     constexpr const char* ADVENTURER = "Adventurer";
 
-    /// This girl has has been trained to kill, if the price is right. (+combat
+    /// This girl has been trained to kill, if the price is right. (+combat
     /// skills/stats)
     constexpr const char* ASSASSIN = "Assassin";
 
@@ -823,6 +817,12 @@ namespace traits {
 
 
     // Other.xml
+    /// This girl is a child of your loins.
+    constexpr const char* YOUR_DAUGHTER = "Your Daughter";
+
+    /// This girl is one of your wives.
+    constexpr const char* YOUR_WIFE = "Your Wife";
+
     /// She recently got out of surgery and should be resting.
     constexpr const char* OUT_PATIENT_SURGERY = "Out-Patient Surgery";
 

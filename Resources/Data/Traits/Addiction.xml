@@ -1,7 +1,9 @@
 <?xml version="1.0" ?>
+<!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
     <Default>
-        <Setting Name="inherit:chance" Value="70" />
+        <Setting Name="inherit:chance:from_active" Value="70" />
+        <Setting Name="inherit:chance:from_acquired" Value="70" />
 
         <Setting Name="random:inherent" Value="10" />
         <Setting Name="random:acquired:dormant" Value="50" />
@@ -172,7 +174,7 @@
     <Trait Name="Former Addict">
         <description>This girl has had an addiction in the past.</description>
         <Properties>
-            <Setting Name="inherit:chance" Value="0" />
+            <Setting Name="inherit:chance:from_active" Value="0" />
         </Properties>
     </Trait>
 </Traits>

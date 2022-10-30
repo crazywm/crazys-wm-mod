@@ -25,6 +25,7 @@ public:
     virtual const ITraitSpec* lookup(const char* name) const = 0;
 
     virtual std::vector<std::string> get_all_traits() const = 0;
+    virtual void iterate(std::function<void(const ITraitSpec&)> callback) const = 0;
 };
 
 #endif //WM_ITRAITSMANAGER_H
