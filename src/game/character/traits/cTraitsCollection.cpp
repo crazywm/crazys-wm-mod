@@ -430,3 +430,7 @@ int cTraitsCollection::get_modifier(const char* name) const {
         return 0;
     }
 }
+
+const std::unordered_map<std::string, int>& cTraitsCollection::get_all_modifiers() const {
+    return m_Modifiers;
+}

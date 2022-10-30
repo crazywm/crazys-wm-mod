@@ -67,7 +67,8 @@
         <Modifier Name="stat:Morality" Value="-10" />
         <Modifier Name="enjoy:WORKMUSIC" Value="20" />
         <Modifier Name="enjoy:WORKSTRIP" Value="30" />
-        <Modifier Name="enjoy:WORKMOVIE" Value="30" />
+        <Modifier Name="enjoy:ACTRESS" Value="15" />
+        <Modifier Name="enjoy:PORNSTAR" Value="30" />
         <Modifier Name="enjoy:SEX" Value="10" />
         <Modifier Name="enjoy:WORKCLUB" Value="10" />
         <Modifier Name="enjoy:WORKHALL" Value="10" />
@@ -103,7 +104,7 @@
         <Modifiers>
             <Modifier Name="stat:Fame" Value="25" />
             <Modifier Name="skill:Performance" Value="10" />
-            <Modifier Name="enjoy:WORKMOVIE" Value="20" />
+            <Modifier Name="enjoy:ACTRESS" Value="20" />
             <Modifier Name="enjoy:WORKMUSIC" Value="10" />
             <Modifier Name="fetish:Cool" Value="30" />
             <Modifier Name="fetish:CuteGirl" Value="10" />

@@ -1,0 +1,44 @@
+<Screen>
+    <Window     Name="Traits Info"                                    XPos="18"       YPos="20"       Width="1883"    Height="1041"    Border="1"  />
+
+    <Text       Name="TraitsListTxt"        Text="Traits"             XPos="14"       YPos="17"       Width="350"     Height="28"     FontSize="22"            />
+    <ListBox    Name="TraitsList"                                     XPos="20"       YPos="49"       Width="350"     Height="951"    FontSize="17"       RowHeight="30"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+        <Column     Name="Trait" Header="Trait" Offset="0"  />
+    </ListBox>
+
+    <Text       Name="DescrTxt"             Text="Description"        XPos="404"      YPos="49"       Width="390"     Height="28"     FontSize="22"            />
+    <Text       Name="Description"          Text=""                   XPos="410"      YPos="79"       Width="900"     Height="120"    FontSize="17" />
+
+
+    <Text       Name="TraitEffectTxt"       Text="Effects"            XPos="404"      YPos="167"      Width="390"     Height="28"     FontSize="22"            />
+    <ListBox    Name="EffectsList"                                    XPos="410"      YPos="199"      Width="390"     Height="500"    FontSize="17"       RowHeight="30"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+        <Column     Name="Type"   Header="Type"   Offset="0"  />
+        <Column     Name="Target" Header="Target" Offset="100"  />
+        <Column     Name="Amount" Header="Amount" Offset="260"  />
+    </ListBox>
+
+    <Text       Name="ExclusionsTxt"         Text="Exclusions"        XPos="404"      YPos="717"      Width="390"     Height="28"     FontSize="22"            />
+    <ListBox    Name="ExclusionList"                                  XPos="410"      YPos="759"      Width="390"     Height="241"    FontSize="17"       RowHeight="30"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+        <Column     Name="Trait"   Header="Trait"   Offset="0"  />
+    </ListBox>
+
+    <Text       Name="TraitPropTxt"       Text="Properties"           XPos="814"      YPos="167"      Width="440"     Height="28"     FontSize="22"            />
+    <ListBox    Name="PropertyList"                                   XPos="820"      YPos="199"      Width="440"     Height="500"    FontSize="17"       RowHeight="30"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+        <Column     Name="Property"   Header="Property"   Offset="0"  />
+        <Column     Name="Value"      Header="Value"      Offset="325"  />
+    </ListBox>
+
+    <Text       Name="PropExplLbl"      Text="Meaning"        XPos="814"      YPos="717"      Width="440"     Height="28"     FontSize="22"            />
+    <Text       Name="PropExplanation"  Text="-"              XPos="820"      YPos="759"      Width="440"     Height="241"    FontSize="17"            />
+
+    <Text       Name="HelpLbl"     Text="Traits: An Overview" XPos="1300"      YPos="20" Width="490" Height="28" FontSize="22" />
+    <Text       Name="HelpText"    Text="TEXT"                XPos="1306"      YPos="49" Width="490" Height="800" FontSize="17" />
+
+    <Button     Name="BackButton"           Image="Back"                        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true" PushWindow="<back>"/>
+
+</Screen>
+
+        <!--
+        CategoryArray<float> TurnOffs;      // Chance that a scene type is a turn-off to this group of people
+        CategoryArray<float> Desires;       // How much of a certain scene type is desired.
+        -->

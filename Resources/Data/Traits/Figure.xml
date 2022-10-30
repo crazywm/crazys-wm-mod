@@ -6,8 +6,6 @@
         <Setting Name="inherit:chance:from_acquired" Value="0" />
         <Setting Name="default:chance:inherent" Value="75" />
 
-        <Setting Name="random:inherent" Value="50" />
-        <Setting Name="random:inherent:dormant" Value="50" />
         <Setting Name="random:chance" Value="10" />
     </Default>
 
@@ -21,7 +19,6 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="random:acquired:dormant" Value="25" />
             <Setting Name="inherit:chance:from_acquired" Value="15" />
             <Setting Name="default:chance:inherent" Value="25" />
         </Properties>
@@ -92,7 +89,6 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="random:inherent" Value="25" />
             <Setting Name="default:chance:inherent" Value="25" />
             <Setting Name="inherit:chance:from_acquired" Value="15" />
         </Properties>
@@ -112,7 +108,6 @@
 
         <Properties>
             <Setting Name="random:chance" Value="3" />
-            <Setting Name="random:inherent" Value="100" />
             <Setting Name="default:chance:inherent" Value="95" />
         </Properties>
     </Trait>
@@ -169,7 +164,6 @@
 
         <Properties>
             <Setting Name="random:chance" Value="3" />
-            <Setting Name="random:inherent" Value="0" />
             <Setting Name="default:chance:inherent" Value="0" />
         </Properties>
     </Trait>
@@ -187,7 +181,6 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="random:inherent" Value="95" />
             <Setting Name="default:chance:inherent" Value="95" />
         </Properties>
     </Trait>
@@ -202,7 +195,6 @@
         </Modifiers>
 
         <Properties>
-            <Setting Name="random:inherent" Value="98" />
             <Setting Name="default:chance:inherent" Value="95" />
         </Properties>
     </Trait>

@@ -111,9 +111,13 @@ public:
     using cKeyValueBase::cKeyValueBase;
 
     const settings_value_t& get_value(const char* tag) const override;
+    std::string get_display_name(const char* name) const override;
+    std::string get_description(const char* name) const override;
 
     // io
     void save_xml(tinyxml2::XMLElement& target) const override;
+
+    std::vector<std::string> keys() const override;
 
 protected:
     void add_setting(const char* tag, const char* name, settings_value_t default_value,

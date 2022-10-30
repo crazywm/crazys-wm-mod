@@ -2,7 +2,6 @@
 <!DOCTYPE Traits SYSTEM "traits.dtd">
 <Traits>
     <Default>
-        <Setting Name="random:inherent" Value="0" />
         <Setting Name="default:chance:inherent" Value="0" />
         <Setting Name="inherit:chance:from_acquired" Value="50" />
     </Default>

@@ -13,7 +13,8 @@
 <ListBox    Name="JobList"                                                  XPos="847"     YPos="170"      Width="150"     Height="102"    FontSize="10" RowHeight="19" Border="1"          Events="true"  />
 <Text       Name="TraitHeader"          Text="Traits"                       XPos="847"     YPos="281"      Width="150"     Height="24"     FontSize="12"  />
 <ListBox    Name="TraitList"                                                XPos="847"     YPos="305"      Width="150"     Height="202"    FontSize="10" RowHeight="19" Border="1"          Events="true"  />
-<Text       Name="TraitDescription"     Text="Trait Description"            XPos="847"     YPos="510"      Width="150"     Height="90"     FontSize="9"  />
+<Text       Name="TraitDescription"     Text="Trait Description"            XPos="847"     YPos="510"      Width="125"     Height="90"     FontSize="9"  />
+<Button     Name="TraitInfoBtn"         Image="Asterisk"                    XPos="970"     YPos="512"      Width="28"      Height="28"     Transparency="true"  PushWindow="Info Traits"/>
 <Button     Name="InteractButton"       Image="Talk"                        XPos="862"     YPos="600"      Width="120"     Height="32"     Transparency="true"/>
 <Text       Name="InteractCount"        Text="Interactions Left: 0"         XPos="847"     YPos="632"      Width="150"     Height="15"     FontSize="10"  />
 

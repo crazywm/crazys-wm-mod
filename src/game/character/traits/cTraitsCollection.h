@@ -36,6 +36,7 @@ public:
     const std::array<int, NUM_SKILLS>& skill_cap_effects() const override { return m_SkillCapEffect; }
 
     int get_modifier(const char* name) const override;
+    const std::unordered_map<std::string, int>& get_all_modifiers() const override;
 
 private:
     const ITraitSpec* id_to_spec(sTraitID id) const;

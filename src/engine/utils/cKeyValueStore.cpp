@@ -214,6 +214,14 @@ settings_value_t& cSimpleKeyValue::get_value(const char* tag) {
     return ref.value;
 }
 
+std::string cSimpleKeyValue::get_display_name(const char* name) const {
+    return m_Settings.at(name).name;
+}
+
+std::string cSimpleKeyValue::get_description(const char* name) const {
+    return m_Settings.at(name).description;
+}
+
 void cSimpleKeyValue::save_xml(tinyxml2::XMLElement& target) const {
     for(auto& s : m_Settings) {
         auto& el = PushNewElement(target, m_ElementName);
@@ -230,6 +238,15 @@ void cSimpleKeyValue::add_setting(const char* tag, const char* name, settings_va
 void cSimpleKeyValue::add_setting(const char* tag, const char* name, const char* default_value, const char* description,
                                   const char* fallback) {
     add_setting(tag, name, std::string(default_value), description, fallback);
+}
+
+std::vector<std::string> cSimpleKeyValue::keys() const {
+    std::vector<std::string> entries;
+    entries.reserve(m_Settings.size());
+    for(auto& setting : m_Settings) {
+        entries.push_back(setting.first);
+    }
+    return entries;
 }
 
 void sIntWithBounds::assign(int new_value) noexcept(true) {

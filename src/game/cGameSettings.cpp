@@ -268,6 +268,14 @@ const settings_value_t & cGameSettings::get_value(const char* name) const
     return m_Settings.at(std::string(name)).value;
 }
 
+std::string cGameSettings::get_display_name(const char* name) const {
+    return m_Settings.at(name).name;
+}
+
+std::string cGameSettings::get_description(const char* name) const {
+    return m_Settings.at(name).description;
+}
+
 void cGameSettings::save_xml(tinyxml2::XMLElement& target) const {
     auto& root = PushNewElement(target, "Settings");
     for(auto& s : m_Settings) {
@@ -282,6 +290,14 @@ std::vector<const sKeyValueEntry*> cGameSettings::list_all_settings() const {
     result.reserve(m_Settings.size());
     for(auto& setting : m_Settings)
         result.push_back(&setting.second);
+    return std::move(result);
+}
+
+std::vector<std::string> cGameSettings::keys() const {
+    std::vector<std::string> result;
+    result.reserve(m_Settings.size());
+    for(auto& setting : m_Settings)
+        result.push_back(setting.first);
     return std::move(result);
 }
 

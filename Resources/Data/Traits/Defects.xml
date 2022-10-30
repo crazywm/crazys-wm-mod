@@ -9,15 +9,13 @@
         -->
         <Setting Name="inherit:chance:from_active" Value="70" />
         <Setting Name="inherit:chance:from_dormant" Value="50" />
-        <Setting Name="inherit:dormant_from_active" Value="33" />
+        <Setting Name="inherit:dormant:from_active" Value="33" />
         <Setting Name="inherit:chance:from_acquired" Value="0" />
         <Setting Name="incest:chance" Value="10" />
 
         <Setting Name="default:chance:inherent" Value="10" />
 
         <Setting Name="random:chance" Value="0.5" />
-        <Setting Name="random:inherent" Value="10" />
-        <Setting Name="random:acquired:dormant" Value="0" />
     </Default>
 
     <Trait Name="Missing Nipple">
@@ -396,9 +394,7 @@
             <Modifier Name="fetish:Dangerous" Value="-15" />
         </Modifiers>
         <Properties>
-            <Setting Name="random:inherent" Value="50" />
-        </Properties>
-        <Properties>
+            <Setting Name="default:chance:inherent" Value="50"/>
             <Setting Name="incest:chance" Value="10" />
         </Properties>
         <Excludes>Sharp-Eyed</Excludes>
@@ -417,7 +413,7 @@
 
         <Properties>
             <Setting Name="random:chance" Value="10" />
-            <Setting Name="random:inherent" Value="75" />
+            <Setting Name="default:chance:inherent" Value="75"/>
             <Setting Name="incest:chance" Value="20" />
         </Properties>
         <Excludes>Sharp-Eyed</Excludes>
@@ -431,7 +427,7 @@
             <Modifier Name="fetish:Dangerous" Value="-5" />
         </Modifiers>
         <Properties>
-            <Setting Name="random:inherent" Value="50" />
+            <Setting Name="default:chance:inherent" Value="50"/>
             <Setting Name="incest:chance" Value="10" />
         </Properties>
     </Trait>
@@ -448,7 +444,7 @@
         </Modifiers>
         <Properties>
             <Setting Name="inherit:chance:from_active" Value="50" />
-            <Setting Name="random:inherent" Value="80" />
+            <Setting Name="default:chance:inherent" Value="80"/>
             <Setting Name="incest:chance" Value="15" />
         </Properties>
     </Trait>
@@ -460,7 +456,7 @@
             <Modifier Name="stat:Confidence" Value="-30" />
         </Modifiers>
         <Properties>
-            <Setting Name="random:inherent" Value="80" />
+            <Setting Name="default:chance:inherent" Value="80"/>
             <Setting Name="random:chance" Value="5" />
             <Setting Name="incest:chance" Value="10" />
         </Properties>

@@ -1,0 +1,39 @@
+<Screen>
+    <Window     Name="Traits Info"                                    XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
+
+    <Text       Name="TraitsListTxt"        Text="Traits"             XPos="7"        YPos="17"       Width="200"     Height="28"     FontSize="18"            />
+    <ListBox    Name="TraitsList"                                     XPos="12"       YPos="40"       Width="200"     Height="680"    FontSize="11"       RowHeight="19"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+        <Column     Name="Trait" Header="Trait" Offset="0"  />
+    </ListBox>
+
+    <Text       Name="DescrTxt"             Text="Description"        XPos="234"      YPos="40"       Width="390"     Height="28"     FontSize="18"            />
+    <Text       Name="Description"          Text=""                   XPos="240"      YPos="79"       Width="700"     Height="80"    FontSize="11" />
+
+
+    <Text       Name="TraitEffectTxt"       Text="Effects"            XPos="234"      YPos="127"      Width="210"     Height="28"     FontSize="18"            />
+    <ListBox    Name="EffectsList"                                    XPos="240"      YPos="159"      Width="210"     Height="300"    FontSize="11"       RowHeight="19"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+        <Column     Name="Type"   Header="Type"   Offset="0"  />
+        <Column     Name="Target" Header="Target" Offset="70"  />
+        <Column     Name="Amount" Header="Amount" Offset="165"  />
+    </ListBox>
+
+    <Text       Name="ExclusionsTxt"         Text="Exclusions"        XPos="234"      YPos="477"      Width="210"     Height="28"     FontSize="18"            />
+    <ListBox    Name="ExclusionList"                                  XPos="240"      YPos="514"      Width="210"     Height="200"    FontSize="11"       RowHeight="19"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+        <Column     Name="Trait"   Header="Trait"   Offset="0"  />
+    </ListBox>
+
+    <Text       Name="TraitPropTxt"       Text="Properties"           XPos="464"      YPos="127"      Width="250"     Height="28"     FontSize="18"            />
+    <ListBox    Name="PropertyList"                                   XPos="470"      YPos="159"      Width="250"     Height="300"    FontSize="11"       RowHeight="19"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+        <Column     Name="Property"   Header="Property"   Offset="0"  />
+        <Column     Name="Value"      Header="Value"      Offset="200"  />
+    </ListBox>
+
+    <Text       Name="PropExplLbl"      Text="Meaning"        XPos="464"      YPos="477"      Width="250"     Height="28"     FontSize="18"            />
+    <Text       Name="PropExplanation"  Text="-"              XPos="470"      YPos="514"      Width="250"     Height="241"    FontSize="11"            />
+
+    <Text       Name="HelpLbl"     Text="Traits: An Overview" XPos="730"      YPos="20" Width="270" Height="28" FontSize="18" />
+    <Text       Name="HelpText"    Text="TEXT"                XPos="736"      YPos="49" Width="270" Height="800" FontSize="11" />
+
+    <Button     Name="BackButton"           Image="Back"                        XPos="847"      YPos="690"      Width="150"     Height="40"     Transparency="true"  PushWindow="<back>"/>
+
+</Screen>

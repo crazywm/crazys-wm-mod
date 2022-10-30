@@ -41,9 +41,13 @@ class cGameSettings : public cKeyValueBase {
 public:
     cGameSettings();
     const settings_value_t & get_value(const char* name) const override;
+    std::string get_display_name(const char* name) const override;
+    std::string get_description(const char* name) const override;
 
     // list all settings
     std::vector<const sKeyValueEntry*> list_all_settings() const;
+
+    std::vector<std::string> keys() const override;
 
     // io
     void save_xml(tinyxml2::XMLElement& target) const override;

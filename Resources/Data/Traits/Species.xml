@@ -9,7 +9,6 @@
         <Setting Name="inherit:chance:from_acquired" Value="0" />
         <Setting Name="default:chance:inherent" Value="100" />
         <Setting Name="default:chance:dormant" Value="0" />
-        <Setting Name="random:inherent" Value="100" />
     </Default>
 
     <Trait Name="Undead">
@@ -187,7 +186,6 @@
 
         <Properties>
             <Setting Name="inherit:chance:from_active" Value="50" />
-            <Setting Name="random:inherent" Value="30" />
         </Properties>
     </Trait>
 
@@ -228,7 +226,7 @@
 
         <Properties>
             <Setting Name="inherit:chance:from_active" Value="50" />
-            <Setting Name="random:inherent" Value="50" />
+            <Setting Name="default:chance:inherent" Value="90"/>
         </Properties>
 
         <Excludes>Half Construct</Excludes>
@@ -395,7 +393,7 @@
 
         <Properties>
             <Setting Name="inherit:chance:from_active" Value="25" />
-            <Setting Name="random:inherent" Value="25" />
+            <Setting Name="default:chance:inherent" Value="25"/>
         </Properties>
 
         <Excludes>Construct</Excludes>
@@ -441,7 +439,7 @@
             <Modifier Name="stat:Strength" Value="10" />
             <Modifier Name="stat:Constitution" Value="10" />
             <Modifier Name="skill:Performance" Value="30" />
-            <Modifier Name="enjoy:WORKMOVIE" Value="10" />
+            <Modifier Name="enjoy:ACTRESS" Value="10" />
             <Modifier Name="enjoy:WORKADVERTISING" Value="10" />
             <Modifier Name="fetish:NonHuman" Value="35" />
             <Modifier Name="fetish:Sexy" Value="20" />
@@ -474,7 +472,7 @@
 
         <Properties>
             <Setting Name="inherit:chance:from_active" Value="10" />
-            <Setting Name="random:inherent" Value="25" />
+            <Setting Name="default:chance:inherent" Value="25"/>
         </Properties>
     </Trait>
 
@@ -521,7 +519,7 @@
 
         <Properties>
             <Setting Name="inherit:chance:from_active" Value="50" />
-            <Setting Name="random:inherent" Value="75" />
+            <Setting Name="default:chance:inherent" Value="75"/>
         </Properties>
     </Trait>
 
@@ -535,7 +533,7 @@
 
         <Properties>
             <Setting Name="inherit:chance:from_active" Value="50" />
-            <Setting Name="random:inherent" Value="75" />
+            <Setting Name="default:chance:inherent" Value="75"/>
         </Properties>
     </Trait>
 
@@ -548,7 +546,7 @@
 
         <Properties>
             <Setting Name="inherit:chance:from_active" Value="50" />
-            <Setting Name="random:inherent" Value="75" />
+            <Setting Name="default:chance:inherent" Value="75"/>
         </Properties>
     </Trait>
 

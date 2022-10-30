@@ -125,16 +125,13 @@ cTraitProps::cTraitProps() : cSimpleKeyValue("Setting", "Name", "Value") {
     add_setting(INCEST_CHANCE, "Incest Chance", sPercent(0), "Chance that this trait will be generated for an incestuous girl.");
 
     // default values if not overriden by (r)girlsx files
-    add_setting(DEFAULT_CHANCE_INHERENT, "Inherent Chance (default)", sPercent(50), "Chance that this trait will be generated as an inherent trait.");
-    add_setting(DEFAULT_CHANCE_DORMANT, "Dormant Chance (default)", sPercent(10), "Chance that this trait will be generated as dormant.");
+    add_setting(DEFAULT_CHANCE_INHERENT, "Inherent Chance (default)", sPercent(50),
+                "Chance that this trait will be generated as an inherent trait. Used only when no value is specified in the girls file.");
+    add_setting(DEFAULT_CHANCE_DORMANT, "Dormant Chance (default)", sPercent(10),
+                "Chance that this trait will be generated as dormant. Used only when no value is specified in the girls file.");
 
     // random spawning
     add_setting("random:chance", "Random Chance", sPercent(1), "Chance for this trait to appear in a randomly generated girl if not specified in the template.");
-    add_setting("random:inherent", "Inherent Chance (random)", sPercent(50), "Chance that this trait will be generated as an inherent trait.");
-    add_setting("random:inherent:dormant", "Dormant Chance (random inherent)", sPercent(5),
-            "Chance that this trait will be generated dormant when randomly generated as an inherent trait.");
-    add_setting("random:acquired:dormant", "Dormant Chance (random acquired)", sPercent(0),
-            "Chance that this trait will be generated dormant when randomly generated as an acquired trait.");
 }
 
 std::unique_ptr<cTraitProps> cTraitProps::clone() const {

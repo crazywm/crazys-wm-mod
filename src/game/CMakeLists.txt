@@ -24,7 +24,7 @@ set(SCREENS_SRC
         screens/cScreenTransfer.cpp
         screens/cScreenTurnSummary.cpp
         screens/cGameWindow.cpp
-        screens/cScreenGameConfig.cpp)
+        screens/cScreenGameConfig.cpp screens/cScreenInfoTraits.cpp)
 
 set(JOBS_SRC
         jobs/WorkFreetime.cpp

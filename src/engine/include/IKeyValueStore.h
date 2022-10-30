@@ -21,6 +21,7 @@
 #define WM_IKEYVALUESTORE_H
 
 #include <string>
+#include <vector>
 #include "utils/sPercent.h"
 
 namespace tinyxml2 {
@@ -30,6 +31,14 @@ namespace tinyxml2 {
 class IKeyValueStore {
 public:
     virtual ~IKeyValueStore() = default;
+
+    /// Get a list of all keys used in this dictionary
+    virtual std::vector<std::string> keys() const = 0;
+
+    /// Metadata. If no display name is known, just returns the actual name
+    virtual std::string get_display_name(const char* name) const = 0;
+    /// Metadata. May return "" if no description is available.
+    virtual std::string get_description(const char* name) const = 0;
 
     // access
     virtual int   get_integer(const char* name) const = 0;
