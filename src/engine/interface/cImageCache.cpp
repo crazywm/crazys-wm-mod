@@ -480,12 +480,11 @@ cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, sLoadImageParams par
     g_LogFile.info("ffmpeg", "Loaded ", movie, " with ", surfaces.size(), " frames in ", dur, "ms");
     return cAnimatedSurface{std::move(movie), std::move(surfaces)};
 }
-
+#include <iostream>
 cSurface cImageCache::CreateTextSurface(TTF_Font* font, std::string text, sColor color, bool antialias)
 {
     assert(font);
-
-    std::string id = text + color.to_hex();
+    std::string id = text + color.to_hex() + std::to_string(TTF_GetFontStyle(font));
     sImageCacheKey key{id, -1, TTF_FontHeight(font), antialias};
     auto           lookup = m_SurfaceCache.find(key);
     if(lookup != m_SurfaceCache.end()) {
