@@ -106,6 +106,7 @@ namespace {
         return false;
     }
 }
+
 class cJobMoviePromoter : public cJobMovieOther {
 public:
     cJobMoviePromoter();

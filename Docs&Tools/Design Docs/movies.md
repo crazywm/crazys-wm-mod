@@ -29,9 +29,10 @@ The ticket price is compared to the groups spending power, and if it is too larg
 they will not see it. If it is equal or lower, they might come to watch the movie.
 This weighted sum is compared to the audiences quality threshold, and the percentage
 of people who would like to watch the movie is calculated. If the movie is worse than
-the expected quality, but also much cheaper than the spending power, they might still
-come (For 75% decrease in ticket price, they will accept a 20% decrease
-in quality).
+the expected quality, but also cheaper than the spending power, they might still
+come. For 25% decrease in ticket price, they will accept a 10% decrease
+in quality. However, iIf it is much less than they expect to spend (<50%), 
+they will avoid the movie, presuming it to be bad quality.
 
 The final factor is the amount of people who know about the movie, and who haven't
 seen or rejected it yet. This depends on the movies HYPE value and on how long a 
@@ -72,6 +73,18 @@ Even if you are not showing any movies at the moment, a small rate (5%) of poten
 viewers will decide that they don't want to watch a film in the near future.
 
 A promoter can be used to stimulate demand and decrease the market saturation.
+
+## Fame
+Your actresses gain fame if their movies perform well, in two different ways:
+1) While the movie is screening, they gain fame based on the number of viewers in that particular week.
+The maximum amount of fame they can reach this way is given by the square root of
+the number of viewers. Fame gain decreases if the girl only contributed few/bad 
+scenes to the movie.
+2) When the movie is taken out of circulation, the actresses gain fame based on 
+its total box office. The maximum fame that can be reached this way is the calculated
+as `SQRT(BoxOffice / 10)`. For one movie, no more than 5 points of fame can be gained.
+If the movie performs particularly bad relative to her current fame, she might lose
+fame points.
 
 ## Target Groups
 Target groups are a collection of people with similar tastes that may go and see 

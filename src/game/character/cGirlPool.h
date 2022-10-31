@@ -54,6 +54,9 @@ public:
     sGirl* get_girl(int index);
     const sGirl* get_girl(int index) const;
 
+    sGirl* find_by_id(std::uint64_t id);
+    const sGirl* find_by_id(std::uint64_t id) const;
+
     /// Gets a shared_ptr
     std::shared_ptr<sGirl> get_ref_counted(const sGirl* source);
 

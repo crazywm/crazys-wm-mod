@@ -1,3 +1,16 @@
+# Version 7.2.1alpha5
+
+## Gameplay:
+* Tweaks for movies
+  * Movie goes will avoid movies much cheaper than what they expect to spend
+  * Slightly increased spending power of rich audience classes
+  * Actresses gain fame if their movies are seen by many people. Filming a scene no longer gives fame.
+  * Decreased chance to refuse `Tease` scenes, increased chance to refuse `Extreme` scenes.
+  * Initial movie hype depends on fame of its actresses
+
+## Bugfixes
+* Make Movie button no longer overlaps prev/next buttons
+
 # Version 7.2.1alpha4
 Nothing new for image tagging; mostly UI improvements and bug fixes.
 

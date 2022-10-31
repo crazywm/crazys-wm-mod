@@ -72,6 +72,18 @@ namespace {
     float sigmoid(float v) {
         return 1.f / (std::exp(-v) + 1.f);
     }
+
+    float effective_scene_content_quality(const MovieScene& scene) {
+        return scene.ContentQuality * (0.5 + 0.5*sigmoid(scene.TechnicalQuality / 10.f));
+    }
+
+    float total_content_quality(const Movie& movie) {
+        float total_quality = 0;
+        for(const auto& scene : movie.Scenes) {
+            total_quality += effective_scene_content_quality(scene);
+        }
+        return total_quality;
+    }
 }
 
 auto cMovieManager::rate_movie_for_audience(const sTargetGroup& audience, const Movie& movie) -> RatingResult {
@@ -110,8 +122,9 @@ auto cMovieManager::rate_movie_for_audience(const sTargetGroup& audience, const 
     float price_fraction = static_cast<float>(movie.TicketPrice) / audience.SpendingPower;
     float can_afford = sigmoid(7.f * (1.f - price_fraction));
 
-    const float log_factor = std::log(0.9f) / std::log(0.5f);
-    float quality_threshold = audience.RequiredScore * std::max(std::min(1.f, std::exp(std::log(price_fraction) * log_factor)), 0.8f);
+    // 10% quality decrease at 25% price decrease
+    const float log_factor = std::log(0.9f) / std::log(0.75f);
+    float quality_threshold = audience.RequiredScore * std::max(std::min(1.f, std::pow(price_fraction, log_factor)), 0.8f);
 
     // we want a contribution from relative quality, so that for low quality movies the curves are sharp,
     // but also a contribution from absolute quality, so the curves don't become too smooth (and never reach 100%)
@@ -119,6 +132,9 @@ auto cMovieManager::rate_movie_for_audience(const sTargetGroup& audience, const 
     float relative_quality = total_score / quality_threshold - 1.f;
     float absolute_quality = (total_score - quality_threshold) / 25.f;
     float quality_factor = sigmoid(7.f * relative_quality + absolute_quality);
+
+    // If the movie is too cheap, also don't go
+    quality_factor *= 0.3f + 0.7f * sigmoid(7.f * (price_fraction - 0.33f));
 
     float base_hype = g_Game->settings().get_float(settings::MOVIES_AUDIENCE_BASE_FRACTION) * (1 + sigmoid(movie.Hype - 5));
     base_hype = std::min(base_hype, 1.f);
@@ -186,8 +202,7 @@ int cMovieManager::step(IBuilding& studio) {
         int total_viewers = 0;
         for(auto& audience : m_Audiences) {
             auto rating = rate_movie_for_audience(audience, movie);
-            float factor = rating.QualityFactor * rating.PriceFactor * rating.HypeFactor * rating.NoTurnOff;
-            int viewers = static_cast<int>((audience.Amount - audience.Saturation) * factor);
+            int viewers = get_num_viewers(audience, rating);
             income += movie.TicketPrice * viewers;
             audience.Saturation += viewers * sated_chance;
             if(rating.Satisfaction > 0.5) {
@@ -209,8 +224,38 @@ int cMovieManager::step(IBuilding& studio) {
         movie.EarningsLastWeek = income;
         total_income += income;
 
+        // Influence the actress' fame
+        float total = total_content_quality(movie);
+        std::unordered_map<sGirl*, float> success_contribution;
+        for(auto& scene : movie.Scenes) {
+            float current = effective_scene_content_quality(scene);
+            float fraction = (current + 10.f) / (total + 10.f);
+            auto actress = g_Game->FindGirlByID(scene.ActressID);
+            if(actress) {
+                if(success_contribution.count(actress.get()) != 0) {
+                    success_contribution[actress.get()] += fraction;
+                } else {
+                    success_contribution[actress.get()] = fraction;
+                }
+            }
+        }
+
+        for(auto& contrib : success_contribution) {
+            auto actress = contrib.first;
+            float fraction = std::min(0.2f, 0.33f * contrib.second);
+            int viewer_bonus = (int)std::ceil(fraction * (std::sqrt(total_viewers) - actress->fame()));
+            int fame_bonus = std::min(10, std::max(0, viewer_bonus));
+            if(fame_bonus > 0) {
+                actress->fame(fame_bonus);
+                std::stringstream ss;
+                ss << "${name}'s performance in your movie '" << movie.Name << "' has been enjoyed by "
+                   << total_viewers << " viewers. Her frame rating increased by " << fame_bonus << ".";
+                actress->AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
+            }
+        }
+
         std::stringstream movie_report;
-        movie_report << "Your movie " << movie.Name << " was seen by " <<total_viewers << " people who paid a total of "
+        movie_report << "Your movie '" << movie.Name << "' was seen by " <<total_viewers << " people who paid a total of "
                      << income << " gold for tickets. It has been in theatres for " << movie.Age << " weeks now.";
         if(hype > 0.1) {
             movie_report << " It was well received, and its hype-rating increased by " << int(hype*100) << " points. ";
@@ -226,6 +271,36 @@ int cMovieManager::step(IBuilding& studio) {
             movie_end_report << "Your movie " << m.Name << " finished its run with a total revenue of " << m.TotalEarnings
                              << " and has now been taken out of the programming. It generated a total hype of " << int(100 * m.Hype) << ".";
             studio.AddMessage(movie_end_report.str(), EVENT_GOODNEWS);
+
+            // Fame bonus for all actresses again
+            std::unordered_set<sGirl*> actresses;
+            for(auto& scene : m.Scenes) {
+                auto actress = g_Game->FindGirlByID(scene.ActressID);
+                if (actress) {
+                    actresses.insert(actress.get());
+                }
+            }
+            for(auto actress : actresses) {
+                int viewer_bonus = (int)std::ceil(std::sqrt(m.TotalEarnings / 10.f) - actress->fame());
+                int fame_bonus = std::min(5, viewer_bonus);
+                if(fame_bonus > 0) {
+                    actress->fame(fame_bonus);
+                    std::stringstream ss;
+                    ss << "${name}'s movie '" << m.Name << "' was very popular, with total ticket sales amounting to "
+                       << m.TotalEarnings << ". This leads her fame to increase by " << fame_bonus << ".";
+                    actress->AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_GOODNEWS);
+                } else {
+                    fame_bonus = std::max(-2, 1 + fame_bonus / 2);
+                    if(fame_bonus < 0) {
+                        actress->fame(fame_bonus);
+                        std::stringstream ss;
+                        ss << "${name}'s movie '" << m.Name << "' was unpopular, with total ticket sales only amounting to "
+                           << m.TotalEarnings << ". This leads her fame to decrease by " << -fame_bonus << ".";
+                        actress->AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
+                    }
+                }
+            }
+
             return true;
         }
         return false;
@@ -337,16 +412,26 @@ Movie& cMovieManager::create_movie(const std::vector<const MovieScene*>& scenes,
     mv.Name = std::move(name);
 
     int cost = 0;
+    // build up initial hype based on actress's fame
+    int total_fame = 0;
+    int max_fame = 0;
     for(const MovieScene* scene: scenes) {
         cost += scene->Budget;
+        auto actress = g_Game->FindGirlByID(scene->ActressID);
+        if(actress) {
+           total_fame += actress->fame();
+           max_fame = std::max(max_fame, actress->fame());
+        }
+
         mv.Scenes.push_back(*scene);
         // TODO check that scene really is part of the vector.
         const_cast<MovieScene*>(scene)->Category = SceneCategory::NUM_TYPES;        // mark for deletion
+
     }
     // now remove the used-up scenes
     erase_if(m_Scenes, [&](const auto& elem){ return elem.Category == SceneCategory::NUM_TYPES; });
     mv.Age = 0;
-    mv.Hype = 0;
+    mv.Hype = (float(total_fame) + 5.f * float(max_fame)) / 21.f;
     mv.TicketPrice = auto_detect_ticket_price(mv);
     mv.TotalEarnings = 0;
     mv.TotalCost = cost;
@@ -428,13 +513,13 @@ namespace {
         if(true_data.Knowledge >= sTargetGroup::KnowledgeForSpendingPower) {
             group.SpendingPower = true_data.SpendingPower;
         } else {
-            group.SpendingPower = (spec.SpendingPowerMax + spec.SpendingPowerMin) / 2;
+            group.SpendingPower = (spec.SpendingPowerMax + spec.SpendingPowerMin) / 2.f;
         }
 
         if(true_data.Knowledge >= sTargetGroup::KnowledgeForReqScore) {
             group.RequiredScore = true_data.RequiredScore;
         } else {
-            group.RequiredScore = (spec.RequiredScoreMax + spec.RequiredScoreMin) / 2;
+            group.RequiredScore = (spec.RequiredScoreMax + spec.RequiredScoreMin) / 2.f;
         }
 
         if(true_data.Knowledge >= sTargetGroup::KnowledgeForSize) {
@@ -446,7 +531,7 @@ namespace {
         if(true_data.Knowledge >= sTargetGroup::KnowledgeForSaturation) {
             group.Saturation = true_data.Saturation;
         } else {
-            group.Saturation = 0.25f * group.Amount;
+            group.Saturation = 0.25f * float(group.Amount);
         }
 
         group.ForcedIsTurnOff = spec.ForcedIsTurnOff;
@@ -455,7 +540,7 @@ namespace {
             if(true_data.Knowledge >= sTargetGroup::KnowledgeForDesires) {
                 group.Desires[i] = true_data.Desires[i];
             } else {
-                group.Desires[i] = 0.5 * (spec.DesiresMin[i] + spec.DesiresMax[i]);
+                group.Desires[i] = 0.5f * (spec.DesiresMin[i] + spec.DesiresMax[i]);
             }
         }
 
@@ -493,8 +578,7 @@ auto cMovieManager::estimate_revenue(const sTargetGroup& audience, const Movie& 
     }
     sTargetGroup tg_est = known_data(audience, *spec_iter);
     auto rating = rate_movie_for_audience(tg_est, movie);
-    float factor = rating.QualityFactor * rating.PriceFactor * rating.HypeFactor * rating.NoTurnOff;
-    int viewers = static_cast<int>((tg_est.Amount - tg_est.Saturation) * factor);
+    int viewers = get_num_viewers(tg_est, rating);
 
     return {rating, viewers, viewers * movie.TicketPrice, (int)tg_est.RequiredScore};
 }
@@ -566,5 +650,13 @@ void cMovieManager::make_survey(int target_audience) {
 
 int cMovieManager::market_research_points() const {
     return (m_MarketResearchPoints + 50) / 100;
+}
+
+int cMovieManager::get_num_viewers(const sTargetGroup& audience, const RatingResult& rating) {
+    float factor = rating.QualityFactor * rating.PriceFactor * rating.HypeFactor * rating.NoTurnOff;
+    int available_viewers = audience.Amount - audience.Saturation;
+    float effective_viewers = std::pow((float)available_viewers, 0.9f);
+    int viewers = static_cast<int>(effective_viewers * factor);
+    return viewers;
 }
 

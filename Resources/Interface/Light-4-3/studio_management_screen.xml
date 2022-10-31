@@ -1,5 +1,5 @@
 <Screen Extends="girl_management_base.xml">
-<Button     Name="CreateMovieButton"    Image="CreateMovie"         XPos="862"     YPos="650"      Width="120"     Height="32"     Transparency="true" PushWindow="Movie Maker"/>
+<Button     Name="CreateMovieButton"    Image="CreateMovie"         XPos="862"     YPos="550"      Width="120"     Height="32"     Transparency="true" PushWindow="Movie Maker"/>
 <ListBox    Name="GirlList"                                         XPos="7"       YPos="35"       Width="765"     Height="548"    FontSize="11"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column     Name="Name"              Header="Girl Name"                  Offset="0" />
 <Column     Name="Health"            Header="Health"                     Offset="150" /> 

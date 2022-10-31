@@ -54,7 +54,7 @@
     <TargetGroup Name="Perverts" ForcedIsTurnOff="0.0">
         <Amount Min="1000" Max="2000" />
         <RequiredScore Min="100" Max="180" />
-        <SpendingPower Min="20" Max="30" />
+        <SpendingPower Min="25" Max="35" />
 
         <TurnOff Category="Tease" Value="0.75" />
         <TurnOff Category="Soft" Value="0.33" />
@@ -76,7 +76,7 @@
     <TargetGroup Name="Merchants" ForcedIsTurnOff="0.9">
         <Amount Min="1000" Max="1600" />
         <RequiredScore Min="120" Max="220" />
-        <SpendingPower Min="25" Max="35" />
+        <SpendingPower Min="30" Max="40" />
 
         <TurnOff Category="Tease" Value="0.0" />
         <TurnOff Category="Soft" Value="0.0" />
@@ -92,7 +92,7 @@
     <TargetGroup Name="The Aristocracy" ForcedIsTurnOff="0.5">
         <Amount Min="450" Max="1100" />
         <RequiredScore Min="210" Max="300" />
-        <SpendingPower Min="35" Max="55" />
+        <SpendingPower Min="40" Max="70" />
 
         <TurnOff Category="Tease" Value="0.0" />
         <TurnOff Category="Soft" Value="0.0" />
@@ -108,7 +108,7 @@
     <TargetGroup Name="Sadists" ForcedIsTurnOff="0.0">
         <Amount Min="300" Max="800" />
         <RequiredScore Min="150" Max="300" />
-        <SpendingPower Min="35" Max="60" />
+        <SpendingPower Min="35" Max="70" />
 
         <TurnOff Category="Tease" Value="0.9" />
         <TurnOff Category="Soft" Value="0.2" />
@@ -130,7 +130,7 @@
     <TargetGroup Name="The 'Artistic Movies' Club" ForcedIsTurnOff="0.9">
         <Amount Min="275" Max="600" />
         <RequiredScore Min="260" Max="400" />
-        <SpendingPower Min="35" Max="65" />
+        <SpendingPower Min="40" Max="75" />
 
         <TurnOff Category="Tease" Value="0.2" />
         <TurnOff Category="Soft" Value="0.0" />

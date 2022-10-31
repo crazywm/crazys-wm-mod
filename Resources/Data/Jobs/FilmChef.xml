@@ -98,7 +98,7 @@
             ${name} created a bad cooking show.
             <Text Condition="skill:Cooking>=stat:Beauty">The little skill she had in the kitchen wasn't nearly enough to save it.</Text>
             <Text Condition="skill:Cooking<=stat:Beauty">
-                Perhaps if she'd quit breaking all the utensils and had instead taken her clothes off it'd would've been worth watching.
+                Perhaps if she'd quit breaking all the utensils and had instead taken her clothes off it would've been worth watching.
                 Perhaps.
             </Text>
         </Message>

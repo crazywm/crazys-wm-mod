@@ -166,6 +166,7 @@ public:
 
     // girls
     cGirls& girl_pool();
+    std::shared_ptr<sGirl> FindGirlByID(std::uint64_t id);
     std::shared_ptr<sGirl> GetRandomUniqueGirl(bool slave = false, bool catacomb = false, bool arena = false,
                                          bool daughter = false, bool isdaughter = false);
     std::shared_ptr<sGirl> CreateRandomGirl(SpawnReason reason, int age=-1);

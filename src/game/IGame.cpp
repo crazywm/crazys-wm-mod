@@ -304,6 +304,31 @@ IGame::GetRandomUniqueGirl(bool slave, bool catacomb, bool arena, bool daughter,
     return girl_pool().GetUniqueGirl(slave, catacomb, arena, daughter, isdaughter);
 }
 
+std::shared_ptr<sGirl> IGame::FindGirlByID(std::uint64_t id) {
+    for(auto& bld : buildings().buildings()) {
+        auto found = bld->girls().find_by_id(id);
+        if(found)
+            return found->shared_from_this();
+    }
+
+    for(auto& girl : dungeon().girls()) {
+        if(girl.m_Girl->GetID() == id) {
+            return girl.m_Girl;
+        }
+    }
+
+    for(auto& girl : m_Runaways) {
+        if(girl->GetID() == id) {
+            return girl;
+        }
+    }
+
+    auto found = m_Prison->find_by_id(id);
+    if(found) return found->shared_from_this();
+
+    return {};
+}
+
 
 cErrorContext::~cErrorContext() {
     if(m_Unstack) {

@@ -71,6 +71,7 @@ public:
     int SetBirthDay(int n);
 
     bool IsUnique() const;
+
     /// Returns an ID that uniquely identifies the character. The returned number is always positive,
     /// so an ID of 0 can be used to signify an empty value.
     std::uint64_t GetID() const { return m_CharacterID; }

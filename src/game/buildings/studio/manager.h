@@ -73,6 +73,7 @@ public:
         float NoTurnOff;
     };
     static RatingResult rate_movie_for_audience(const sTargetGroup& audience, const Movie& movie);
+    static int get_num_viewers(const sTargetGroup& audience, const RatingResult& rating);
 
     struct sRevenueEstimate {
         RatingResult Rating;

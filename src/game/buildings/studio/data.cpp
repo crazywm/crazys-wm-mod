@@ -217,7 +217,9 @@ void MovieScene::load_xml(const tinyxml2::XMLElement& root) {
     WasForced = GetBoolAttribute(root, "WasForced");
 
     Actress = GetStringAttribute(root, "Actress");
+    ActressID = GetFallbackIntAttribute(root, "ActressID", -1);
     Director = GetStringAttribute(root, "Director");
+    DirectorID = GetFallbackIntAttribute(root, "DirectorID", -1);
     CameraMage = GetStringAttribute(root, "CameraMage");
     CrystalPurifier = GetStringAttribute(root, "CrystalPurifier");
 
@@ -232,7 +234,9 @@ void MovieScene::save_xml(tinyxml2::XMLElement& target) const {
     target.SetAttribute("WasForced", WasForced);
 
     target.SetAttribute("Actress", Actress.c_str());
+    target.SetAttribute("ActressID", ActressID);
     target.SetAttribute("Director", Director.c_str());
+    target.SetAttribute("DirectorID", DirectorID);
     target.SetAttribute("CameraMage", CameraMage.c_str());
     target.SetAttribute("CrystalPurifier", CrystalPurifier.c_str());
 

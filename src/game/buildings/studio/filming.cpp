@@ -105,7 +105,8 @@ const MovieScene& film_scene(cMovieManager& mgr, sGirl& girl, int quality, Scene
 
     mgr.add_scene(MovieScene{get_category(scene_type), scene_type,
                              quality, technical_quality, forced,
-                             girl.FullName(), director.FullName(),
+                             girl.FullName(), girl.GetID(),
+                             director.FullName(), director.GetID(),
                              camera_mage.FullName(), purifier.FullName()
     });
 

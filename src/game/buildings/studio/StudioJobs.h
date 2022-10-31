@@ -54,6 +54,7 @@ public:
 
     SKILLS GetSexType() const;
     sFilmObedienceData CalcChanceToObey(const sGirl& girl) const;
+
 private:
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
     void InitWork() override;

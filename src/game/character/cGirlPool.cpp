@@ -215,6 +215,14 @@ void cGirlPool::finalize_after_iteration() {
     m_WaitingToBeAdded.clear();
 }
 
+sGirl* cGirlPool::find_by_id(std::uint64_t id) {
+    return get_first_girl([id](const sGirl& girl){ return girl.GetID() == id; });
+}
+
+const sGirl* cGirlPool::find_by_id(std::uint64_t id) const {
+    return get_first_girl([id](const sGirl& girl){ return girl.GetID() == id; });
+}
+
 cGirlPool::sIterationGuard::~sIterationGuard() {
     --(gp->m_IsIterating);
     // if no one is iterating anymore, clean up

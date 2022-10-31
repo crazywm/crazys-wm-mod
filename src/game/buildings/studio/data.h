@@ -94,9 +94,11 @@ struct MovieScene {
 
     // Cast Data
     std::string Actress;
+    std::uint64_t ActressID;
 
     // Crew Data
     std::string Director;
+    std::uint64_t DirectorID;
     std::string CameraMage;
     std::string CrystalPurifier;
 

@@ -126,9 +126,15 @@ sFilmObedienceData cFilmSceneJob::CalcChanceToObey(const sGirl& girl) const {
 
     int libido = libido_influence(m_PleasureFactor, girl);
     int enjoy = (2 * girl.get_enjoyment(m_PrimaryAction) + girl.get_enjoyment(m_SecondaryAction)) / 3;
-    int love_hate = (girl.pclove() + girl.pcfear()) / 10;
+    int love_fear = (girl.pclove() + girl.pcfear()) / 10;
 
-    return {base_chance, libido, enjoy, love_hate};
+    if(get_category(m_SceneType) == SceneCategory::TEASE) {
+        base_chance += 10;
+    } else if(get_category(m_SceneType) == SceneCategory::EXTREME) {
+        base_chance -= 10;
+    }
+
+    return {base_chance, libido, enjoy, love_fear};
 }
 
 bool cFilmSceneJob::CheckRefuseWork(sGirl& girl) {
@@ -322,16 +328,10 @@ sWorkJobResult cFilmSceneJob::DoWork(sGirl& girl, bool is_night) {
     // independent of the scene description, charisma and beauty change the rating a bit
     quality += (girl.charisma() - 50) / 10;
     quality += (girl.beauty() - 50) / 10;
-    quality += girl.fame() / 10;
     quality += girl.level();
 
     if(girl.is_unpaid()) {
         quality = quality * 90 / 100;
-    }
-
-    // TODO better fame mechanics based on how well the movie does
-    if(girl.fame() < quality / 2 && chance(50)) {
-        girl.fame(1);
     }
 
     try {
