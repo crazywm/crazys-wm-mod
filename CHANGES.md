@@ -1,4 +1,5 @@
 # Version 7.2.1alpha4
+Nothing new for image tagging; mostly UI improvements and bug fixes.
 
 ## UI 
 * Added previous/next building buttons to girl management screens
@@ -10,6 +11,7 @@
 * Correctly cycle through buildings when selecting previous of first building
 * Fixed 4:3 gallery screen
 * Game no longer ignores Player-Daughter girls
+* Fixed superfluous space in player name
 
 # Version 7.2.1alpha3
 

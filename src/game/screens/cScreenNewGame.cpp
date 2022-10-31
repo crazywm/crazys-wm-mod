@@ -101,7 +101,7 @@ void cScreenNewGame::start_game()
     {
         g_ReturnInt = 1;
         g_ReturnText = b;
-        g_Game->player().SetName(p, " ", s);
+        g_Game->player().SetName(p, "", s);
 
         replace_window("Preparing Game");
         return;
