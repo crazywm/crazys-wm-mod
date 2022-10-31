@@ -21,6 +21,6 @@
     <Text       Name="JobTypeDescription"   Text=""                     XPos="604"      YPos="844"      Width="520"     Height="45"     FontSize="14"  />
     <Text       Name="JobDescription"       Text=""                     XPos="604"      YPos="914"      Width="520"     Height="127"     FontSize="14"  />
 
-    <Button     Name="PrevButton"           Image="Prev"            XPos="1598"     YPos="914"      Width="101"     Height="45"     Transparency="true"/>
-    <Button     Name="NextButton"           Image="Next"            XPos="1748"     YPos="914"      Width="101"     Height="45"     Transparency="true"/>
+    <Button     Name="PrevButton"           Image="Prev"                XPos="1614"     YPos="914"      Width="101"     Height="45"     Transparency="true"/>
+    <Button     Name="NextButton"           Image="Next"                XPos="1743"     YPos="914"      Width="101"     Height="45"     Transparency="true"/>
 </Screen>

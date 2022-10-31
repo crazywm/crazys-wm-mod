@@ -4,6 +4,7 @@
 * Added previous/next building buttons to girl management screens
 * Adjusted (increased) font size in 4:3 mode
 * Mark different Trait types in girl details UI
+* Added a help screen with info about different traits, found by clicking the `*` button in girl details
 
 ## Bugfixes
 * Correctly cycle through buildings when selecting previous of first building

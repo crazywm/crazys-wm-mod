@@ -36,7 +36,7 @@
 <Button     Name="ReleaseDungeonButton" Image="Release"                     XPos="382"      YPos="706"      Width="90"     Height="24"     Transparency="true" Disabled=""  />
 <Button     Name="TakeGoldButton"       Image="TakeGold"                    XPos="532"      YPos="706"      Width="90"     Height="24"     Transparency="true"/>
 
-<Checkbox   Name="UseAntiPregToggle"    Text="Use Anti-Preg"                XPos="742"      YPos="670"      Width="12"      Height="16"     FontSize="19" />
+<Checkbox   Name="UseAntiPregToggle"    Text="Use Anti-Preg"                XPos="742"      YPos="670"      Width="12"      Height="16"     FontSize="10" />
 <Button     Name="InventoryButton"      Image="GiveGift"                    XPos="697"      YPos="698"      Width="120"     Height="32"     Transparency="true" />
 
 
