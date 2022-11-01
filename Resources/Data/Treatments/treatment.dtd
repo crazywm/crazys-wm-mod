@@ -1,0 +1,26 @@
+<!ELEMENT Treatment (Description, Therapy?, Surgery?, Messages?)>
+<!ATTLIST Treatment ShortName CDATA #REQUIRED>
+
+<!ELEMENT Description (#PCDATA)>
+
+<!ELEMENT Messages (Message|Include)*)>
+<!ELEMENT Message ((Text|Group)+)>
+<!ATTLIST Message Name CDATA #REQUIRED>
+<!ELEMENT Text (#PCDATA)>
+<!ATTLIST Text Condition CDATA #IMPLIED Priority CDATA #IMPLIED Chance CDATA #IMPLIED Updates CDATA #IMPLIED>
+<!ELEMENT Group ((Text|Group)+)>
+<!ATTLIST Group Condition CDATA #IMPLIED Priority CDATA #IMPLIED Chance CDATA #IMPLIED Updates CDATA #IMPLIED>
+
+<!ELEMENT Include (#PCDATA)>
+
+<!ELEMENT Therapy (RemoveTrait*)>
+<!ATTLIST Therapy Duration CDATA #REQUIRED FightChance CDATA #REQUIRED Title CDATA #REQUIRED Title CDATA #REQUIRED SuccessBonus CDATA #REQUIRED HealthDanger CDATA #REQUIRED>
+
+<!ELEMENT Surgery (TraitExclude*)>
+<!ATTLIST Surgery Duration CDATA #REQUIRED>
+
+<!ELEMENT TraitExclude (#PCDATA)>
+<!ATTLIST TraitExclude Trait CDATA #REQUIRED>
+
+<!ELEMENT RemoveTrait (#PCDATA)>
+<!ATTLIST RemoveTrait Trait CDATA #REQUIRED>

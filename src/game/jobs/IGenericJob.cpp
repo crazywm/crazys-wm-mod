@@ -79,8 +79,8 @@ int IGenericJob::uniform(int min_, int max_) const {
     return m_Rng->closed_uniform(min, max);
 }
 
-IGenericJob::IGenericJob(JOBS j, std::string xml_file) :
-    m_Info{j, get_job_name(j)}, m_XMLFile(std::move(xml_file))
+IGenericJob::IGenericJob(JOBS j, std::string xml_file, EJobClass job_class) :
+    m_Info{j, get_job_name(j)}, m_XMLFile(std::move(xml_file)) , m_JobClass(job_class)
 {
 
 }
@@ -151,12 +151,18 @@ bool IGenericJob::HasInteraction(const std::string& name) const {
 
 void IGenericJob::load_job() {
     if(m_XMLFile.empty()) return;
+    const char* base_element = "Job";
+    const char* directory = "Jobs";
+    if(m_JobClass == EJobClass::TREATMENT) {
+        base_element = "Treatment";
+        directory = "Treatments";
+    }
     try {
-        DirPath path = DirPath() << "Resources" << "Data" << "Jobs" << m_XMLFile;
+        DirPath path = DirPath() << "Resources" << "Data" << directory << m_XMLFile;
         auto doc = LoadXMLDocument(path.c_str());
-        auto job_data = doc->FirstChildElement("Job");
+        auto job_data = doc->FirstChildElement(base_element);
         if(!job_data) {
-            throw std::runtime_error("Job xml does not contain <Job> element!");
+            throw std::runtime_error(std::string("Job xml does not contain <") + base_element + "> element!");
         }
 
         // Info

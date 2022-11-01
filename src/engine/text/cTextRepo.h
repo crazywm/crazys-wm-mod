@@ -64,6 +64,7 @@ public:
 
     bool verify() const override;
 private:
+    void load_messages(const tinyxml2::XMLElement& root, bool ignore_existing);
     std::unordered_map<std::string, TextGroup> m_Texts;
 };
 

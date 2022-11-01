@@ -1,0 +1,33 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="EThr">
+    <Description>
+        She will go to extreme therapy to get over her hardcore mental problems. (Mind Fucked, Broken Will)
+    </Description>
+
+    <Therapy Duration="5" FightChance="5" Title="therapy" SuccessBonus="4" HealthDanger="4">
+        <RemoveTrait Trait="Mind Fucked">She is no longer Mind Fucked.</RemoveTrait>
+        <RemoveTrait Trait="Broken Will">She no longer has a Broken Will.</RemoveTrait>
+    </Therapy>
+
+    <Messages>
+        <Message Name="therapy">
+            <Text>${name} underwent therapy for extreme mental issues.</Text>
+        </Message>
+        <Message Name="no-need">
+            <Text>${name} doesn't need extreme therapy for anything.</Text>
+        </Message>
+        <Message Name="no-counselor">
+            <Text>${name} has no counselor to help her with her extreme mental disorders.</Text>
+        </Message>
+        <Message Name="continue-therapy">
+            <Text>She should stay in extreme therapy to treat her other disorders.</Text>
+        </Message>
+        <Message Name="death">
+            <Text>She died while receiving therapy for her extreme mental issues.
+                May she find peace in death.</Text>
+        </Message>
+        <Message Name="release">
+            <Text>She has overcome her extreme mental problems and been released from therapy.</Text>
+        </Message>
+    </Messages>
+</Treatment>

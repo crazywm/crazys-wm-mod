@@ -499,8 +499,8 @@ EventRating clinic_rating(const sGirl& g)
 
     bool surgery_job = cJobManager::is_Surgery_Job(g.m_DayJob) ||
                        cJobManager::is_Surgery_Job(g.m_NightJob);
-    if (surgery_job && g.m_WorkingDay >= 1) {
-        return {(double) g.m_WorkingDay, COLOR_ATTENTION};
+    if (surgery_job && g.get_treatment_progress() >= 1) {
+        return {(double) g.get_treatment_progress() / 100.0, COLOR_ATTENTION};
     } else if (surgery_job || g.m_DayJob == JOB_GETHEALING || g.m_NightJob == JOB_GETHEALING) {
         return {0.0, COLOR_NEUTRAL};
     } else if (g.m_DayJob == JOB_NURSE || g.m_NightJob == JOB_NURSE) {

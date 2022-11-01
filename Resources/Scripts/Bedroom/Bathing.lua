@@ -79,11 +79,11 @@ function Bathing(girl)
             else
                 wm.UpdateImage(wm.IMG.BATH)
                 if girl:breast_size() > 4 and wm.Percent(66) then
-                    Dialog("After a brief look of disappointment, ${girl} relaxes in the tub. She covers her body with foam, " ..
+                    Dialog("After a brief look of disappointment, ${name} relaxes in the tub. She covers her body with foam, " ..
                             "taking great care to lather her ample breasts with exaggerated motions. After playing with her now stiff " ..
                             "nipples for a bit, she ducks underwater to wash off the soap.")
                 else
-                    Dialog("After a brief look of disappointment, ${girl} relaxes in the tub. She washes first her hair, then the rest of her body.")
+                    Dialog("After a brief look of disappointment, ${name} relaxes in the tub. She washes first her hair, then the rest of her body.")
                 end
                 Dialog("Having cleaned herself, she closes her eyes and lets her fingers slip between her legs.")
                 wm.UpdateImage(wm.IMG.FINGER, ImageOptions.SOLO)

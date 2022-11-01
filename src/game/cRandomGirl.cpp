@@ -132,7 +132,6 @@ std::shared_ptr<sGirl> cRandomGirls::create_from_template(const sRandomGirl& tem
 
     // set all jobs to null
     newGirl->m_DayJob = newGirl->m_NightJob = JOB_UNSET;
-    newGirl->m_WorkingDay = newGirl->m_PrevWorkingDay = 0;
 
     newGirl->m_Money = g_Dice.closed_uniform(template_.MinMoney, template_.MaxMoney);
 

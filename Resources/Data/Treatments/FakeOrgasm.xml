@@ -1,0 +1,42 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="FOEx">
+    <Description>
+        She will be taught how to fake her orgasms.
+    </Description>
+
+    <Messages>
+        <Message Name="training">
+            <Text>${name} is trained to fake her orgasms.</Text>
+        </Message>
+        <Message Name="is-already">
+            <Text>${name} is already a "Fake Orgasm Expert".</Text>
+        </Message>
+        <Message Name="no-mistress">
+            <Text>There is no Mistress available to train ${name}.</Text>
+        </Message>
+        <Message Name="no-progress">
+            <Text>She did not make any progress in learning to fake an orgasm.</Text>
+            <Text Condition="Slow Learner|Broken Will|Mind Fucked|Retarded">
+                She was not mentally able to learn to fake her orgasms.
+            </Text>
+            <Text Condition="Bimbo|Fast Orgasms|Nymphomaniac">
+                She was too focused on the sex to learn to fake her orgasm.
+            </Text>
+            <Text Condition="Blind|Deaf">
+                Her handicap kept her from learning to fake her orgasm.
+            </Text>
+        </Message>
+
+        <Message Name="progress">
+            <Text>Her Sexual Orientation conversion to Bisexual is</Text>
+        </Message>
+        <Message Name="complete">
+            <Text>With her training complete, she is now a "Fake Orgasm Expert".</Text>
+        </Message>
+
+        <Message Name="broken-will">
+            <Text>She just sits there doing exactly what you tell her to do.
+                You don't think it is really getting through to her.</Text>
+        </Message>
+    </Messages>
+</Treatment>

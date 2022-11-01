@@ -1,0 +1,33 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="Thrp">
+    <Description>
+        She will go to therapy to get over her mental problems. (Nervous, Dependant, Pessimist)
+    </Description>
+
+    <Therapy Duration="4" FightChance="10" Title="therapy" SuccessBonus="4" HealthDanger="2">
+        <RemoveTrait Trait="Nervous">She is no longer Nervous all the time.</RemoveTrait>
+        <RemoveTrait Trait="Dependant">She is no longer Dependant on others.</RemoveTrait>
+        <RemoveTrait Trait="Pessimist">She is no longer a Pessimist about everything.</RemoveTrait>
+    </Therapy>
+
+    <Messages>
+        <Message Name="therapy">
+            <Text>${name} underwent therapy for mental issues.</Text>
+        </Message>
+        <Message Name="no-need">
+            <Text>${name} doesn't need therapy for anything.</Text>
+        </Message>
+        <Message Name="no-counselor">
+            <Text>${name} has no counselor to help her.</Text>
+        </Message>
+        <Message Name="continue-therapy">
+            <Text>She should stay in therapy to treat her other disorders.</Text>
+        </Message>
+        <Message Name="death">
+            <Text>She died in therapy.</Text>
+        </Message>
+        <Message Name="release">
+            <Text>Having overcome her issues, she has been released from therapy.</Text>
+        </Message>
+    </Messages>
+</Treatment>

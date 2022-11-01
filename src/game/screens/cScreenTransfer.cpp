@@ -225,25 +225,14 @@ int cScreenTransfer::checkjobcolor(const sGirl& temp)
         if (GetNumberPatients(*temp.m_Building, false)  < 1 && GetNumberPatients(*temp.m_Building, false) < 1)        return COLOR_ATTENTION;
         else return COLOR_WARNING;
     }
-    else if (temp.m_DayJob == JOB_GETABORT || temp.m_NightJob == JOB_GETABORT || temp.m_DayJob == JOB_COSMETICSURGERY || temp.m_NightJob == JOB_COSMETICSURGERY
-        || temp.m_DayJob == JOB_LIPO || temp.m_NightJob == JOB_LIPO || temp.m_DayJob == JOB_BREASTREDUCTION || temp.m_NightJob == JOB_BREASTREDUCTION
-        || temp.m_DayJob == JOB_BOOBJOB || temp.m_NightJob == JOB_BOOBJOB || temp.m_DayJob == JOB_VAGINAREJUV || temp.m_NightJob == JOB_VAGINAREJUV
-        || temp.m_DayJob == JOB_FACELIFT || temp.m_NightJob == JOB_FACELIFT || temp.m_DayJob == JOB_ASSJOB || temp.m_NightJob == JOB_ASSJOB
-        || temp.m_DayJob == JOB_TUBESTIED || temp.m_NightJob == JOB_TUBESTIED || temp.m_DayJob == JOB_FERTILITY || temp.m_NightJob == JOB_FERTILITY)
+    else if (temp.get_active_treatment() != JOBS::JOB_UNSET)
     {
-        if (temp.m_WorkingDay == 0) return COLOR_EMPHASIS;
+        if (temp.get_treatment_progress() == 0) return COLOR_EMPHASIS;
         else return COLOR_WARNING;
     }
     else if (temp.m_DayJob == JOB_GETHEALING || temp.m_NightJob == JOB_GETHEALING)
     {
         if (temp.health() > 70 && temp.tiredness() < 30) return COLOR_EMPHASIS;
-        else return COLOR_WARNING;
-    }
-    else if (temp.m_DayJob == JOB_REHAB || temp.m_NightJob == JOB_REHAB || temp.m_DayJob == JOB_SO_STRAIGHT || temp.m_NightJob == JOB_SO_STRAIGHT
-        || temp.m_DayJob == JOB_SO_BISEXUAL || temp.m_NightJob == JOB_SO_BISEXUAL || temp.m_DayJob == JOB_SO_LESBIAN || temp.m_NightJob == JOB_SO_LESBIAN
-        || temp.m_DayJob == JOB_FAKEORGASM || temp.m_NightJob == JOB_FAKEORGASM)
-    {
-        if (temp.m_WorkingDay == 0) return COLOR_EMPHASIS;
         else return COLOR_WARNING;
     }
     else if (temp.m_NightJob == JOB_CAMERAMAGE)

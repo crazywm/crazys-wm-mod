@@ -1,0 +1,28 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="VagR">
+    <Description>
+        She will undergo surgery to make her a virgin again.
+        *(Takes up to 5 turns, less if a Nurse is on duty)
+    </Description>
+
+    <Surgery Duration="5">
+        <TraitExclude Trait="Virgin">${name} is already a Virgin.</TraitExclude>
+    </Surgery>
+
+    <Messages>
+        <Message Name="surgery">
+            <Text>${name} is in the Clinic to get her vagina tightened.</Text>
+        </Message>
+
+        <Message Name="surgery.success">
+            <Text>
+            The surgery is a success.
+            She is a 'Virgin' again.
+            </Text>
+        </Message>
+        <Message Name="doctor.work">
+            <Text>Today, she worked on restoring ${name}'s vagina to its virgin state.</Text>
+        </Message>
+        <Include>DefaultSurgeryMessages.xml</Include>
+    </Messages>
+</Treatment>

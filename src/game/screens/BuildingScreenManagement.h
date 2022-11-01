@@ -58,6 +58,9 @@ protected:
     sGirl* selected_girl = nullptr;
 
     void set_ids() override;
+
+protected:
+    std::string job_change_message(const sGirl& girl, JOBS new_job);
 private:
     void OnKeyPress(SDL_Keysym keysym) override;
 

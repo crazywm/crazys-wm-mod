@@ -18,13 +18,19 @@
  */
 
 #include "jobs/IGenericJob.h"
+#include "jobs/Treatment.h"
 #include "cJobManager.h"
 #include "cGirls.h"
 #include "character/sGirl.h"
 #include "buildings/IBuilding.h"
 #include "IGame.h"
 #include <sstream>
+#include <utility>
 #include "character/predicates.h"
+#include "text/repo.h"
+#include "CLog.h"
+#include "xml/getattr.h"
+#include "xml/util.h"
 
 extern const char* const CarePointsBasicId;
 extern const char* const CarePointsGoodId;
@@ -35,63 +41,37 @@ namespace settings {
 }
 
 struct sTraitAndMessage {
-    const char* Trait;
-    const char* Message;
+    std::string Trait;
+    std::string Message;
 };
 
 struct sSurgeryData {
-    const char*  SurgeryMessage;                //!< The message used to indicate that the surgery was performed
-    int          Duration;                      //!< How many days until finished.
-    std::vector<sTraitAndMessage> TraitExcludes;   //!< If she has any trait in this list, she will not receive surgery
+    int Duration = 0;                               //!< How many days until finished.
+    std::vector<sTraitAndMessage> TraitExcludes;    //!< If she has any trait in this list, she will not receive surgery
 };
 
-struct sStatGain {
-    STATS Stat;
-    const char* Message;
-};
-
-
-struct sSurgeryDataII {
-    // Trait Gains
-    std::vector<sTraitAndMessage> GainTrait;
-    std::vector<sTraitAndMessage> LoseTrait;
-    std::vector<sStatGain> GainStat;
-};
-
-class ITreatmentJob : public IGenericJob {
+class IMedicalJob : public ITreatmentJob {
 public:
-    ITreatmentJob(JOBS job, const char* short_name) : IGenericJob(job) {
-        m_Info.ShortName = short_name;
-        m_Info.FullTime = true;
+    IMedicalJob(JOBS job, std::string xml_file) : ITreatmentJob(job, std::move(xml_file)) {
         m_Info.Consumes.emplace_back(DoctorInteractionId);
         m_Info.Consumes.emplace_back(CarePointsBasicId);
         m_Info.Consumes.emplace_back(CarePointsGoodId);
     }
-    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
     void PreShift(sGirl& girl, bool is_night, cRng& rng) const override;
-private:
-    virtual void ReceiveTreatment(sGirl& girl, bool is_night) = 0;
 };
 
-sWorkJobResult ITreatmentJob::DoWork(sGirl& girl, bool is_night) {
-    cGirls::UnequipCombat(girl);    // not for patient
-    ReceiveTreatment(girl, is_night);
-    return {false, 0, 0, 0};
-}
-
-void ITreatmentJob::PreShift(sGirl& girl, bool is_night, cRng& rng) const {
+void IMedicalJob::PreShift(sGirl& girl, bool is_night, cRng& rng) const {
     // check validity of the job
     auto valid = is_job_valid(girl);
     if (!valid) {
         girl.FullJobReset(JOB_RESTING);
-        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
         girl.AddMessage(valid.Reason + " She was sent to the waiting room.", EImageBaseType::PROFILE, EVENT_WARNING);
     }
 }
 
-struct SurgeryJob : public ITreatmentJob {
+struct SurgeryJob : public IMedicalJob {
 public:
-    explicit SurgeryJob(JOBS id, const char* short_name, sSurgeryData data) : ITreatmentJob(id, short_name), m_SurgeryData(data) {
+    explicit SurgeryJob(JOBS id, std::string xml_file) : IMedicalJob(id, std::move(xml_file)) {
     }
 
     void ReceiveTreatment(sGirl& girl, bool is_night) final;
@@ -103,20 +83,24 @@ protected:
 
     virtual void success(sGirl& girl) = 0;
 
+    const char* specific_config_element() const override { return "Surgery"; }
+    void load_from_xml_callback(const tinyxml2::XMLElement& job_element) override;
 private:
     bool nursing_effect(sGirl& girl);
 };
 
+void SurgeryJob::load_from_xml_callback(const tinyxml2::XMLElement& job_element) {
+    m_SurgeryData.Duration = GetIntAttribute(job_element, "Duration");
+    for (auto& exclude_el : IterateChildElements(job_element, "TraitExclude")) {
+        m_SurgeryData.TraitExcludes.emplace_back(sTraitAndMessage{GetStringAttribute(exclude_el, "Trait"),
+                                                                  exclude_el.GetText()});
+    }
+}
+
 void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
-    JOBS job_id = job();
-
-    sGirl* doctor = RequestInteraction(DoctorInteractionId);
-
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-    if (girl.m_YesterDayJob != job_id) { girl.m_WorkingDay = girl.m_PrevWorkingDay = 0; }
-
-    ss << " " << m_SurgeryData.SurgeryMessage << "\n \n";
+    add_text("surgery") << "\n\n";
 
     // update progress
     if (!is_night)    // the Doctor works on her during the day
@@ -126,18 +110,17 @@ void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
             if(TryConsumeResource(CarePointsBasicId, bp)) {
                 int req_gp = uniform(2, 4);
                 if(TryConsumeResource(CarePointsGoodId, req_gp)) {
-                    ss << "${name}'s health condition does not allow surgery to be performed. "
-                          "Your highly qualified nursing staff are making sure she get well enough for her treatment soon.";
+                    add_text("too-sick.quality-nurses");
                     girl.health( uniform(5, 10) );
                     girl.happiness(1);
                 } else {
-                    ss << "Your caretakers are trying to nurse ${name} back to health so that the doctor can perform the surgery.";
+                    add_text("too-sick.basic-nurses");
                     girl.health( uniform(3, 5) );
                 }
             } else {
-                ss << "${name}'s health condition does not allow surgery to be performed, and with no nurses around"
-                      " it may take a long time for her to get better. All she can do is rest.";
+                add_text("too-sick.no-nurses");
                 girl.health( uniform(1, 3) );
+                girl.make_treatment_progress( -uniform(2, 8) );
             }
             girl.tiredness(-uniform(5, 10));
             if(girl.strength() > 50) {
@@ -147,33 +130,35 @@ void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
             return;
         }
 
-        girl.m_WorkingDay++;
+        sGirl* doctor = RequestInteraction(DoctorInteractionId);
+        girl.make_treatment_progress(g_Dice.closed_uniform(90, 110) / m_SurgeryData.Duration);
         nursing_effect(girl);
-
-
+        doctor->AddMessage(girl.Interpolate(get_text("doctor.work")), EImageBaseType::NURSE, EventType::EVENT_DAYSHIFT);
+        doctor->exp(5);
     } else    // and if there are nurses on duty, they take care of her at night
     {
         int req_gp = uniform(3, 6);
         if(TryConsumeResource(CarePointsGoodId, req_gp)) {
             ConsumeResource(CarePointsBasicId, req_gp);
-            girl.m_WorkingDay++;
-            ss << "Your professional nurses ensure a speedy recovery.";
-            girl.health( uniform(3, 5) );
+            girl.make_treatment_progress(g_Dice.closed_uniform(3, 8));
+            add_text("recovery.great");
+            girl.health( g_Dice.closed_uniform(25, 50) / m_SurgeryData.Duration );
         } else {
             if(!nursing_effect(girl) && chance(50)) {
-                girl.m_WorkingDay -= 1;
-                ss << " These complications will prolong her stay in the hospital.";
+                girl.make_treatment_progress(-g_Dice.closed_uniform(5, 10));
+                add_text("recovery.complications");
             }
         }
     }
 
     // process progress
-    if (girl.m_WorkingDay < m_SurgeryData.Duration || !is_night) {
-        int wdays = (m_SurgeryData.Duration - girl.m_WorkingDay);
-        ss << "The operation is in progress" << " (" << wdays << " day remaining).\n";
-    } else {
+    if (girl.get_treatment_progress() < 100 && !is_night) {
+        ss << "\nThe operation is in progress" << " (" << girl.get_treatment_progress() << "%).\n";
+    } else if(girl.get_treatment_progress() >= 100 && is_night) {
         msgtype = EVENT_GOODNEWS;
-        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
+        girl.finish_treatment();
+        ss << "\n";
+        add_text("surgery.success") << "\n";
         success(girl);
     }
 
@@ -184,8 +169,10 @@ void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
     if (girl.has_active_trait(traits::MASOCHIST)) libido += 1;
     girl.upd_temp_stat(STAT_LIBIDO, libido);
 
-    if (chance(10.f))
-        girl.medicine(1);    // `J` she watched what the doctors and nurses were doing
+    if (chance(10.f)) {
+        // `J` she watched what the doctors and nurses were doing
+        girl.gain_attribute(SKILL_MEDICINE, 0, 2, 15);
+    }
 }
 
 IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) {
@@ -208,7 +195,7 @@ IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) 
 
 sJobValidResult SurgeryJob::is_job_valid(const sGirl& girl) const {
     for(auto& t : m_SurgeryData.TraitExcludes) {
-        if(girl.has_active_trait(t.Trait)) {
+        if(girl.has_active_trait(t.Trait.c_str())) {
             return {false, t.Message};
         }
     }
@@ -221,16 +208,14 @@ bool SurgeryJob::nursing_effect(sGirl& girl) {
 
     if(health_dmg > 0) {
         if(girl.gain_trait(traits::SMALL_SCARS, 2)) {
-            ss << "Due to a lack of care by the nurses, ${name}'s wounds have become infected. This surgery will "
-                  "leave Scars.";
+            add_text("surgery.lack-of-nurses.scars");
             girl.health(-10);
             girl.tiredness(10);
             girl.happiness(-10);
             girl.strength(-uniform(0, 5));
             girl.spirit(-2);
         } else {
-            ss << "You seem to have too few nurses that provide care for your patients after their operation. "
-                  "This has negative effects on {name}'s health.";
+            add_text("surgery.lack-of-nurses.health");
             girl.health(-health_dmg);
             girl.tiredness(2 * health_dmg);
             girl.happiness(-5);
@@ -238,6 +223,7 @@ bool SurgeryJob::nursing_effect(sGirl& girl) {
         }
         return false;
     }
+
     return true;
 }
 
@@ -249,9 +235,7 @@ struct CosmeticSurgery: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-CosmeticSurgery::CosmeticSurgery() : SurgeryJob(JOB_COSMETICSURGERY, "CosS",
-                                                {"${name} is in the Clinic to get general surgery.", 5}) {
-    m_Info.Description = "She will undergo magical surgery to \"enhance\" her appearance.\n*(Takes up to 5 days, less if a Nurse is on duty)";
+CosmeticSurgery::CosmeticSurgery() : SurgeryJob(JOB_COSMETICSURGERY, "CosmeticSurgery.xml") {
 }
 
 double CosmeticSurgery::GetPerformance(const sGirl& girl, bool estimate) const {
@@ -266,10 +250,7 @@ double CosmeticSurgery::GetPerformance(const sGirl& girl, bool estimate) const {
 }
 
 void CosmeticSurgery::success(sGirl& girl) {
-    ss << "The surgery is a success.\n";
-
     girl.beauty(rng().bell(5, 12));
-
 
     if (girl.gain_trait(traits::SEXY_AIR))
     {
@@ -293,16 +274,11 @@ struct Liposuction: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-Liposuction::Liposuction() : SurgeryJob(JOB_LIPO, "Lipo", {"${name} is in the Clinic to get fat removed.", 5,
-                                        {{traits::GREAT_FIGURE, "${name} already has a Great Figure."}}})
-{
-    m_Info.Description = "She will undergo liposuction to \"enhance\" her figure.\n*(Takes up to 5 days, less if a Nurse is on duty)";
+Liposuction::Liposuction() : SurgeryJob(JOB_LIPO, "Liposuction.xml") {
 }
 
 
 void Liposuction::success(sGirl& girl) {
-    ss << "The surgery is a success.\n";
-
     // Fat
     if (girl.lose_trait( traits::PLUMP))
     {
@@ -338,15 +314,10 @@ struct BreastReduction: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-BreastReduction::BreastReduction() : SurgeryJob(JOB_BREASTREDUCTION, "BRS",
-                                                {"${name} is in the Clinic to get her breasts reduced.", 1,
-                                                 {{traits::FLAT_CHEST, "${name} already has a Flat Chest."}}}) {
-    m_Info.Description = "She will undergo breast reduction surgery.\n*(Takes up to 5 days, less if a Nurse is on duty)";
+BreastReduction::BreastReduction() : SurgeryJob(JOB_BREASTREDUCTION, "BreastReduction.xml") {
 }
 
 void BreastReduction::success(sGirl& girl) {
-    ss << "The surgery is a success.\n";
-
     ss << cGirls::AdjustTraitGroupBreastSize(girl, -1, false) << "\n \n";
 
     if (girl.has_active_trait(traits::FLAT_CHEST))
@@ -372,14 +343,10 @@ struct BoobJob: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-BoobJob::BoobJob() : SurgeryJob(JOB_BOOBJOB, "BbJb", {"${name} is in the Clinic to get her breasts enlarged.", 1,
-                                 {{traits::TITANIC_TITS, "${name} already has Titanic Tits."}}}) {
-    m_Info.Description = "She will undergo surgery to \"enhance\" her bust.\n*(Takes up to 5 days, less if a Nurse is on duty)";
+BoobJob::BoobJob() : SurgeryJob(JOB_BOOBJOB, "BoobJob.xml") {
 }
 
 void BoobJob::success(sGirl& girl) {
-    ss << "The surgery is a success.\n";
-
     ss << cGirls::AdjustTraitGroupBreastSize(girl, 1, false) << "\n \n";
 
     if (girl.has_active_trait(traits::TITANIC_TITS))
@@ -405,15 +372,10 @@ struct VaginalRejuvenation: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-VaginalRejuvenation::VaginalRejuvenation() : SurgeryJob(JOB_VAGINAREJUV, "VagR",
-                                                        {"${name} is in the Clinic to get her vagina tightened.", 5,
-                                                         {{traits::VIRGIN, "${name} is already a Virgin."}}}) {
-    m_Info.Description = "She will undergo surgery to make her a virgin again.\n*(Takes up to 5 days, less if a Nurse is on duty)";
+VaginalRejuvenation::VaginalRejuvenation() : SurgeryJob(JOB_VAGINAREJUV, "VaginalRejuvenation.xml") {
 }
 
 void VaginalRejuvenation::success(sGirl& girl) {
-    ss << "The surgery is a success.\nShe is a 'Virgin' again.\n";
-
     girl.gain_trait(traits::VIRGIN);
     girl.FullJobReset(JOB_RESTING);
     ss << "\n \nShe has been released from the Clinic.";
@@ -432,8 +394,7 @@ struct FaceLift: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-FaceLift::FaceLift() : SurgeryJob(JOB_FACELIFT, "FLft", {"${name} is in the Clinic to get a face lift.", 5}) {
-    m_Info.Description = "She will undergo surgery to make her younger.\n*(Takes up to 5 days, less if a Nurse is on duty)";
+FaceLift::FaceLift() : SurgeryJob(JOB_FACELIFT, "FaceLift.xml") {
 }
 
 sJobValidResult FaceLift::is_job_valid(const sGirl& girl) const {
@@ -445,8 +406,6 @@ sJobValidResult FaceLift::is_job_valid(const sGirl& girl) const {
 }
 
 void FaceLift::success(sGirl& girl) {
-    ss << "The surgery is a success.\nShe looks a few years younger.\n";
-
     girl.beauty(rng().bell(4, 10));
     girl.charisma(rng().bell(-1, 1));
     girl.age(rng().bell(-2, -1));
@@ -480,15 +439,11 @@ struct AssJob: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-AssJob::AssJob(): SurgeryJob(JOB_ASSJOB, "AssJ",
-                             {"${name} is in the Clinic to get her ass worked on.", 5,
-                              {{traits::GREAT_ARSE, "${name} already has a Great Arse."}}}) {
-    m_Info.Description = "She will undergo surgery to \"enhance\" her ass.\n*(Takes up to 5 days, less if a Nurse is on duty)";
+AssJob::AssJob(): SurgeryJob(JOB_ASSJOB, "AssJob.xml") {
 }
 
 void AssJob::success(sGirl& girl) {
-    ss << "The surgery is a success.\n";
-    if (girl.gain_trait( traits::GREAT_ARSE))
+    if (girl.gain_trait(traits::GREAT_ARSE))
     {
         ss << "Thanks to the surgery she now has a Great Arse.\n";
         ss << "\n \nShe has been released from the Clinic.";
@@ -508,9 +463,7 @@ struct TubesTied : public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-TubesTied::TubesTied(): SurgeryJob(JOB_TUBESTIED, "TTid", {"${name} is in the Clinic to get her tubes tied.", 5,
-                                    {{traits::STERILE, "${name} is already Sterile."}}}) {
-    m_Info.Description = "She will undergo surgery to make her sterile.\n*(Takes up to 5 days, less if a Nurse is on duty)";
+TubesTied::TubesTied(): SurgeryJob(JOB_TUBESTIED, "TubesTied.xml") {
 }
 
 sJobValidResult TubesTied::is_job_valid(const sGirl& girl) const {
@@ -521,7 +474,6 @@ sJobValidResult TubesTied::is_job_valid(const sGirl& girl) const {
 }
 
 void TubesTied::success(sGirl& girl) {
-    ss << "The surgery is a success.\n";
     girl.FullJobReset(JOB_RESTING);
     ss << cGirls::AdjustTraitGroupFertility(girl, -10, false);
 }
@@ -541,22 +493,19 @@ struct Fertility: public SurgeryJob {
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-Fertility::Fertility(): SurgeryJob(JOB_FERTILITY, "FrtT", {"${name} is in the Clinic to get fertility treatment.", 5,
-                                    {{traits::BROODMOTHER, "${name} is already as Fertile as she can be."}}}) {
-    m_Info.Description = "She will undergo surgery to make her fertile.\n*(Takes up to 5 days, less if a Nurse is on duty)";
+Fertility::Fertility(): SurgeryJob(JOB_FERTILITY, "Fertility.xml") {
 }
 
 sJobValidResult Fertility::is_job_valid(const sGirl& girl) const {
     if (girl.is_pregnant()) {
         return {false, "${name} is pregnant.\n"
-                       "She must either have her baby or get an abortion before She can get receive any more fertility treatments."};
+                       "She must either have her baby or get an abortion before she can get receive any more fertility treatments."};
     }
 
     return SurgeryJob::is_job_valid(girl);
 }
 
 void Fertility::success(sGirl& girl) {
-    ss << "The surgery is a success.\n";
     ss << cGirls::AdjustTraitGroupFertility(girl, 1, false);
     if (girl.has_active_trait(traits::BROODMOTHER))
     {
@@ -574,7 +523,7 @@ double Fertility::GetPerformance(const sGirl& girl, bool estimate) const {
 }
 
 
-class CureDiseases : public ITreatmentJob {
+class CureDiseases : public IMedicalJob {
 public:
     CureDiseases();
 private:
@@ -584,24 +533,18 @@ private:
     void PreShift(sGirl& girl, bool is_night, cRng& rng) const final;
 };
 
-CureDiseases::CureDiseases() : ITreatmentJob(JOB_CUREDISEASES, "Cure") {
-    m_Info.Description = "She will try to get her diseases cured.";
+CureDiseases::CureDiseases() : IMedicalJob(JOB_CUREDISEASES, "CureDiseases.xml") {
 }
 
 void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 
-    // if she was not in JOB_CUREDISEASES yesterday, reset working days to 0 before proceeding
-    if (girl.m_YesterDayJob != JOB_CUREDISEASES) girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
-    if (girl.m_WorkingDay < 0) girl.m_WorkingDay = 0;
-    girl.m_DayJob = girl.m_NightJob = JOB_CUREDISEASES;    // it is a full time job
-
     auto doctor = RequestInteraction(DoctorInteractionId);
 
     int cost = 0;
     std::vector<std::string> diseases;
-    if (girl.has_active_trait(traits::HERPES))        { diseases.emplace_back(traits::HERPES); cost += 25; }
-    if (girl.has_active_trait(traits::CHLAMYDIA))    { diseases.emplace_back(traits::CHLAMYDIA); cost += 50; }
+    if (girl.has_active_trait(traits::HERPES))      { diseases.emplace_back(traits::HERPES); cost += 25; }
+    if (girl.has_active_trait(traits::CHLAMYDIA))   { diseases.emplace_back(traits::CHLAMYDIA); cost += 50; }
     if (girl.has_active_trait(traits::SYPHILIS))    { diseases.emplace_back(traits::SYPHILIS); cost += 75; }
     if (girl.has_active_trait(traits::AIDS))        { diseases.emplace_back(traits::AIDS); cost += 100; }
     int num_diseases = diseases.size();
@@ -618,8 +561,8 @@ void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
             ss << "There were no Doctors available ${name}, but you highly qualified nurses made sure that ${name}'s situation "
                   "did not deteriorate.";
         } else {
-            ss << "There were no Doctors available ${name} just lay in bed getting sicker.";
-            girl.m_WorkingDay -= uniform(1, 10);
+            ss << "There were no Doctors available, so ${name} just lay in bed getting sicker.";
+            girl.make_treatment_progress(-uniform(1, 10));
             cost = 0;    // noone to give her the medicine
         }
     } else {
@@ -631,15 +574,15 @@ void CureDiseases::ReceiveTreatment(sGirl& girl, bool is_night) {
         if(nurse_pts == 0) {
             ss << " Your clinic has not enough Nurses to provide adequate care, so her recovery will be slower.";
         }
-        girl.m_WorkingDay += doc_pts + nurse_pts;
+        girl.make_treatment_progress(doc_pts + nurse_pts);
     }
 
-    girl.m_WorkingDay += girl.constitution() / 10 + girl.get_trait_modifier(traits::modifiers::DISEASE_RECOVERY);
+    girl.make_treatment_progress(girl.constitution() / 10 + girl.get_trait_modifier(traits::modifiers::DISEASE_RECOVERY));
 
-    if (is_night && girl.m_WorkingDay >= 100)
+    if (is_night && girl.get_treatment_progress() >= 100)
     {
         msgtype = EVENT_GOODNEWS;
-        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
+        girl.finish_treatment();
 
         std::string disease_cured = diseases[uniform(0, num_diseases - 1)];
         girl.lose_trait(disease_cured.c_str());
@@ -689,13 +632,12 @@ void CureDiseases::PreShift(sGirl& girl, bool is_night, cRng& rng) const{
             new_job = JOB_GETHEALING;
         } else { ss << " so she was sent to the waiting room."; }
         girl.FullJobReset(new_job);
-        girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
     }
 }
 
 
-class Abortion : public ITreatmentJob {
+class Abortion : public IMedicalJob {
 public:
     Abortion();
 private:
@@ -705,8 +647,7 @@ private:
     void PreShift(sGirl& girl, bool is_night, cRng& rng) const final;
 };
 
-Abortion::Abortion() : ITreatmentJob(JOB_GETABORT, "Abrt") {
-    m_Info.Description = "She will get an abortion, removing pregnancy and/or insemination.";
+Abortion::Abortion() : IMedicalJob(JOB_GETABORT, "Abortion.xml") {
 }
 
 namespace
@@ -752,9 +693,6 @@ namespace
 
 void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
-    // if she was not in surgery last turn, reset working days to 0 before proceeding
-    if (girl.m_YesterDayJob != JOB_GETABORT) { girl.m_WorkingDay = girl.m_PrevWorkingDay = 0; }
-    girl.m_DayJob = girl.m_NightJob = JOB_GETABORT;    // it is a full time job
 
     sGirl* doctor = RequestInteraction(DoctorInteractionId);
     if (!doctor)
@@ -769,21 +707,21 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
 
     if (!is_night)    // the Doctor works on her durring the day
     {
-        girl.m_WorkingDay++;
+        girl.make_treatment_progress(33);
     }
     else    // and if there are nurses on duty, they take care of her at night
     {
+        // TODO Consume interactions!
         if (brothel->num_girls_on_job(JOB_NURSE, 1) > 0)
         {
-            girl.m_WorkingDay++;
+            girl.make_treatment_progress(25);
             girl.happiness(5);
             girl.mana(5);
         }
     }
 
-    if (girl.m_WorkingDay >= 2 && is_night)
+    if (girl.get_treatment_progress() >= 100 && is_night)
     {
-        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
         ss << "The girl had an abortion.\n";
         msgtype = EVENT_GOODNEWS;
 
@@ -879,7 +817,7 @@ void Abortion::ReceiveTreatment(sGirl& girl, bool is_night) {
         girl.clear_pregnancy();
         girl.m_PregCooldown = g_Game->settings().get_integer(settings::PREG_COOL_DOWN);
         girl.FullJobReset(JOB_RESTING);
-        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
+        girl.finish_treatment();
     }
     else
     {
@@ -905,7 +843,6 @@ void Abortion::PreShift(sGirl& girl, bool is_night, cRng& rng) const {
     {
         girl.AddMessage("${name} is not pregnant so she was sent to the waiting room.", EImageBaseType::PROFILE, EVENT_WARNING);
         girl.FullJobReset(JOB_RESTING);
-        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
     }
 }
 
@@ -914,7 +851,7 @@ IGenericJob::eCheckWorkResult Abortion::CheckWork(sGirl& girl, bool is_night) {
 }
 
 
-class Healing : public ITreatmentJob {
+class Healing : public IMedicalJob {
 public:
     Healing();
 private:
@@ -923,8 +860,7 @@ private:
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) final;
 };
 
-Healing::Healing() : ITreatmentJob(JOB_GETHEALING, "Heal") {
-    m_Info.Description = "She will have her wounds attended.";
+Healing::Healing() : IMedicalJob(JOB_GETHEALING, "Healing.xml") {
 }
 
 double Healing::GetPerformance(const sGirl& girl, bool estimate) const {

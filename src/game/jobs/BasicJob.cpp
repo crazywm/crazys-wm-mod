@@ -25,18 +25,25 @@
 #include "CLog.h"
 #include "utils/string.hpp"
 #include "IGame.h"
+#include "text/repo.h"
+#include "TextInterface.h"
 
 double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {
     if(m_Info.FreeOnly && girl.is_slave()) return -1000;
     return m_PerformanceData.eval(girl, estimate);
 }
 
-cBasicJob::cBasicJob(JOBS job, std::string xml_file) : IGenericJob(job, std::move(xml_file)), m_Interface(this) {
+cBasicJob::cBasicJob(JOBS job, std::string xml_file) :
+    IGenericJob(job, std::move(xml_file)),
+    m_Interface(std::make_unique<cJobTextInterface>(this))
+{
     RegisterVariable("Performance", m_Performance);
     RegisterVariable("Tips", m_Tips);
     RegisterVariable("Wages", m_Wages);
     RegisterVariable("Earnings", m_Earnings);
 }
+
+cBasicJob::~cBasicJob() = default;
 
 void cBasicJob::apply_gains(sGirl& girl, int performance) {
     m_Gains.apply(girl, performance);
@@ -85,7 +92,7 @@ void cBasicJob::load_from_xml_internal(const tinyxml2::XMLElement& job_data, con
 const std::string& cBasicJob::get_text(const std::string& prompt) const {
     assert(m_TextRepo);
     try {
-        return m_TextRepo->get_text(prompt, m_Interface);
+        return m_TextRepo->get_text(prompt, *m_Interface);
     } catch (const std::out_of_range& oor) {
         g_LogFile.error("job", "Trying to get missing text '", prompt, "\' in job ", m_Info.Name);
         throw;
@@ -113,7 +120,7 @@ std::stringstream& cBasicJob::add_text(const std::string& prompt) {
 }
 
 void cBasicJob::SetSubstitution(std::string key, std::string replace) {
-    m_Replacements[key] = replace;
+    m_Replacements[key] = std::move(replace);
 }
 
 void cBasicJob::InitWork() {
@@ -124,58 +131,11 @@ void cBasicJob::InitWork() {
 }
 
 void cBasicJob::RegisterVariable(std::string name, int& value) {
-    m_Interface.RegisterVariable(std::move(name), value);
+    m_Interface->RegisterVariable(std::move(name), value);
 }
 
 void cBasicJob::RegisterVariable(std::string name, sImagePreset& value) {
-    m_Interface.RegisterVariable(std::move(name), value);
-}
-
-bool cBasicJobTextInterface::LookupBoolean(const std::string& name) const {
-    return m_Job->active_girl().has_active_trait(name.c_str());
-}
-
-int cBasicJobTextInterface::LookupNumber(const std::string& name) const {
-    auto split_point = name.find(':');
-    auto type = name.substr(0, split_point);
-    if(type == "stat") {
-        return m_Job->active_girl().get_stat(get_stat_id(name.substr(split_point+1)));
-    } else if(type == "skill") {
-        return m_Job->active_girl().get_skill(get_skill_id(name.substr(split_point+1)));
-    } else if (type.size() == name.size()) {
-        try {
-            return *m_MappedIntValues.at(name);
-        } catch (const std::out_of_range& oor) {
-            g_LogFile.error("job", "Unknown job variable '", name, '\'');
-            BOOST_THROW_EXCEPTION(std::runtime_error("Unknown job variable: " + name));
-        }
-    } else {
-        g_LogFile.error("job", "Unknown value category ", type, " of variable ", name);
-        BOOST_THROW_EXCEPTION(std::runtime_error("Unknown value category: " + type));
-    }
-}
-
-void cBasicJobTextInterface::SetVariable(const std::string& name, int value) const {
-    int* looked_up = m_MappedIntValues.at(name);
-    *looked_up = value;
-}
-
-void cBasicJobTextInterface::SetVariable(const std::string& name, std::string value) const {
-    m_MappedStringValues.at(name)(value);
-}
-
-void cBasicJobTextInterface::TriggerEvent(const std::string& name) const {
-    throw std::logic_error("Event triggers are not implemented yet");
-}
-
-void cBasicJobTextInterface::RegisterVariable(std::string name, int& value) {
-    m_MappedIntValues[std::move(name)] = &value;
-}
-
-void cBasicJobTextInterface::RegisterVariable(std::string name, sImagePreset& value) {
-    m_MappedStringValues[std::move(name)] = [&value](std::string new_value) {
-        value = get_image_id(new_value);
-    };
+    m_Interface->RegisterVariable(std::move(name), value);
 }
 
 IGenericJob::eCheckWorkResult cBasicJob::SimpleRefusalCheck(sGirl& girl, Action_Types action) {

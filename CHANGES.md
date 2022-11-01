@@ -12,6 +12,10 @@
 * Make Movie button no longer overlaps prev/next buttons
 * Do not mix up bold and regular rendering if the same text is used
 
+## Other
+* Treatment-type jobs (Therapy, Surgery etc.) now have more unified code and some
+configuration through xml files.
+
 # Version 7.2.1alpha4
 Nothing new for image tagging; mostly UI improvements and bug fixes.
 

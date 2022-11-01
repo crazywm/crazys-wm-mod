@@ -24,37 +24,17 @@
 
 #include "IGenericJob.h"
 #include "JobData.h"
-#include "text/repo.h"
 
 
 class cBasicJob;
 class sImagePreset;
-
-class cBasicJobTextInterface : public IInteractionInterface {
-public:
-    cBasicJobTextInterface() = delete;
-    explicit cBasicJobTextInterface(cBasicJob* job) : m_Job(job) {}
-
-    bool LookupBoolean(const std::string& name) const final;
-
-    int LookupNumber(const std::string& name) const final;
-
-    void TriggerEvent(const std::string& name) const final;
-    void SetVariable(const std::string& name, int value) const final;
-    void SetVariable(const std::string& name, std::string value) const final;
-
-    void RegisterVariable(std::string name, int& value);
-    void RegisterVariable(std::string name, sImagePreset& value);
-private:
-    std::unordered_map<std::string, int*> m_MappedIntValues;
-    std::unordered_map<std::string, std::function<void(std::string)>> m_MappedStringValues;
-    cBasicJob* m_Job;
-};
-
+class ITextRepository;
+class cJobTextInterface;
 
 class cBasicJob : public IGenericJob {
 public:
     explicit cBasicJob(JOBS job, std::string xml_file = {});
+    ~cBasicJob() override;
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 
 protected:
@@ -87,9 +67,7 @@ private:
     cJobGains       m_Gains;
 
     std::unique_ptr<ITextRepository> m_TextRepo;
-    cBasicJobTextInterface m_Interface;
-
-    friend class cBasicJobTextInterface;
+    std::unique_ptr<cJobTextInterface> m_Interface;
 
     std::unordered_map<std::string, std::string> m_Replacements;
 protected:

@@ -208,9 +208,9 @@
             </Group>
             <Group Condition="skill:BDSM < 75 ^ skill:BDSM > 45">
                 <Group Condition="Tough | stat:Constitution>75">
-                    ${girl} is rather tough, and can endure an astonishing amount of physical torment.
-                    Therefore, ${mistress} decides to do something entirely different for ${girl}'s bondage training for
-                    today. "Aren't you going to tie me up?", ${girl} asks confused.
+                    ${name} is rather tough, and can endure an astonishing amount of physical torment.
+                    Therefore, ${mistress} decides to do something entirely different for ${name}'s bondage training for
+                    today. "Aren't you going to tie me up?", ${name} asks confused.
                     <Text Condition="stat:Dignity>30" Updates="stat:Dignity-=1">
                         "No, you worthless whore, " ${mistress} shouts at her. "Don't you think I have better things I
                         could be doing instead of 'teaching' you?". ${name} is taken aback: "But... but..."
@@ -233,7 +233,7 @@
                 BDSM training.
             </Text>
             <Text Condition="Masochist ^ skill:BDSM > 95" Chance="5">
-                Masochistic ${girl} begs ${mistress} to be allowed to devise her own punishments.
+                Masochistic ${name} begs ${mistress} to be allowed to devise her own punishments.
 
                 A few minutes later, she is tied spread-eagle to the floor. Not just on the hard, cold stone tiles,
                 no, she had somebody spread small pebbles there beforehand. Her original idea had been hot coals, but
@@ -242,12 +242,12 @@
                 Strong clamps are pinching her nipples, connected with twine to her big toes, and additional clothespins
                 are placed on her breasts and stomach.
 
-                ${mistress} starts by caning ${girl}'s feet, first lightly, but rapidly increasing the intensity. Soon
+                ${mistress} starts by caning ${name}'s feet, first lightly, but rapidly increasing the intensity. Soon
                 the smacks can be heard in the hallway, and her spasming feet cause sharp tugs at her nipples. Finally,
                 she foot too strongly and with a muffled scream the left nipple clamp is pulled free. "Let's get the
                 other one, too", ${mistress} announces and focuses her attention on the right foot...
 
-                After an hour, ${mistress} ends the session, worrying that any more might seriously harm ${girl}, who is
+                After an hour, ${mistress} ends the session, worrying that any more might seriously harm ${name}, who is
                 lying dazed on the floor, a mixture of agony and bliss on her face. Her boobs are covered in dried wax,
                 her stomach is shining brightly red from the flogging and her legs are covered in dark welts that the
                 whip has left. But perhaps most impressive is the large puddle between her legs, fluid still dripping

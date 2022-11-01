@@ -18,6 +18,7 @@
  */
 
 #include "jobs/BasicJob.h"
+#include "jobs/Treatment.h"
 #include "character/sGirl.h"
 #include "cGirls.h"
 #include "buildings/IBuilding.h"
@@ -28,15 +29,6 @@
 extern const char* const TrainingInteractionId;
 
 namespace {
-    struct sTrainingData {
-        const char* TargetTrait;
-        const char* HasAlreadyMessage;
-        const char* ProceedMessage;
-        const char* ResistMessage;
-        const char* ProgressMessage;
-        sImagePreset ImageType;
-    };
-
     class PracticeJob : public cBasicJob {
     public:
         PracticeJob();
@@ -272,15 +264,14 @@ IGenericJob::eCheckWorkResult PracticeJob::CheckWork(sGirl& girl, bool is_night)
     return eCheckWorkResult::ACCEPTS;
 }
 
-class TrainingJob : public IGenericJob {
+class TrainingJob : public ITreatmentJob {
 public:
-    TrainingJob(JOBS job, const char* brief, sTrainingData dat) : IGenericJob(job), m_Data(dat) {
-        m_Info.FullTime = true;
-        m_Info.ShortName = brief;
+    TrainingJob(JOBS job, std::string xml_file, const char* trait, sImagePreset image) :
+        ITreatmentJob(job, std::move(xml_file)), TargetTrait(trait), ImageType(image)
+    {
         m_Info.Consumes.emplace_back(TrainingInteractionId);
     }
 
-    sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
     double GetPerformance(const sGirl& girl, bool estimate) const override;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 
@@ -290,49 +281,45 @@ public:
     virtual void OnRegularProgress(sGirl& girl, bool is_night);
 
 protected:
-    void update_progress(sGirl& girl);
-    void CountTheDays(sGirl& girl, bool is_night);
+    int calculate_progress(const sGirl& girl) const;
+    void CountTheDays(sGirl& girl, bool is_night, int progress);
+
+    void ReceiveTreatment(sGirl& girl, bool is_night) override;
 
     EventType TypeOfEvent;
     int Tiredness;
     int Enjoyment;
-    int Wages;
 
-    sTrainingData m_Data;
+    const char* TargetTrait;
+    sImagePreset ImageType;
 
 private:
-    int m_StartProgress = 0;
 
     sGirl* m_Mistress = nullptr;
 };
 
-void TrainingJob::update_progress(sGirl& girl) {
-    girl.m_WorkingDay += uniform(10, 20);
-    girl.m_WorkingDay += girl.obedience() / 20;
-    if (girl.pcfear() > 50)                girl.m_WorkingDay +=uniform(0, girl.pcfear() / 20);        // She will do as she is told
-    if (girl.pclove() > 50)                girl.m_WorkingDay += uniform(0, girl.pclove() / 20);        // She will do what you ask
+int TrainingJob::calculate_progress(const sGirl& girl) const {
+    int progress = 0;
+    progress += uniform(10, 20);
+    progress += girl.obedience() / 20;
+    if (girl.pcfear() > 50)                progress +=uniform(0, girl.pcfear() / 20);        // She will do as she is told
+    if (girl.pclove() > 50)                progress += uniform(0, girl.pclove() / 20);       // She will do what you ask
 
     // Negative Stats/Skills
-    girl.m_WorkingDay -= girl.spirit() / 25;
-    if (girl.pclove() < -30)               girl.m_WorkingDay -= uniform(0, -girl.pclove() / 10);        // She will not do what you want
-    if (girl.happiness() < 50)             girl.m_WorkingDay -= uniform(1, 5);                        // She is not feeling like it
-    if (girl.health() < 50)                girl.m_WorkingDay -= uniform(1, 5);                        // She is feeling sick
-    if (girl.tiredness() > 50)             girl.m_WorkingDay -= uniform(1, 5);                        // She is tired
+    progress -= girl.spirit() / 25;
+    if (girl.pclove() < -30)               progress -= uniform(0, -girl.pclove() / 10);      // She will not do what you want
+    if (girl.happiness() < 50)             progress -= uniform(1, 5);                        // She is not feeling like it
+    if (girl.health() < 50)                progress -= uniform(1, 5);                        // She is feeling sick
+    if (girl.tiredness() > 50)             progress -= uniform(1, 5);                        // She is tired
+
+    return progress;
 }
 
-sWorkJobResult TrainingJob::DoWork(sGirl& girl, bool is_night) {
-    // TODO pull this up into generic job?
-    if (girl.m_YesterDayJob != job()) girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
-    if (girl.m_WorkingDay < 0) girl.m_WorkingDay = 0;
-
+void TrainingJob::ReceiveTreatment(sGirl& girl, bool is_night) {
     // Base adjustment
-    Wages = 0;
     Tiredness = uniform(5, 15);
-    m_StartProgress = girl.m_WorkingDay;
 
-    cGirls::UnequipCombat(girl);
-
-    ss << m_Data.ProceedMessage << "\n";
+    add_text("training") << "\n";
 
     TypeOfEvent = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
@@ -341,28 +328,26 @@ sWorkJobResult TrainingJob::DoWork(sGirl& girl, bool is_night) {
     girl.upd_Enjoyment(ACTION_WORKTRAINING, Enjoyment);
     girl.tiredness(Tiredness);
 
-    girl.AddMessage(ss.str(), m_Data.ImageType, TypeOfEvent);
-
-    return {false, 0, 0, Wages};
+    girl.AddMessage(ss.str(), ImageType, TypeOfEvent);
 }
 
 double TrainingJob::GetPerformance(const sGirl& girl, bool estimate) const {
-    if (girl.has_active_trait(m_Data.TargetTrait))    return -1000;
+    if (girl.has_active_trait(TargetTrait))    return -1000;
     return 250;
 }
 
 IGenericJob::eCheckWorkResult TrainingJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.has_active_trait(m_Data.TargetTrait))
+    if (girl.has_active_trait(TargetTrait))
     {
-        girl.AddMessage(m_Data.HasAlreadyMessage, EImageBaseType::PROFILE, EVENT_WARNING);
+        add_text("is-already");
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         girl.FullJobReset(JOB_RESTING);
-        girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
     m_Mistress = RequestInteraction(TrainingInteractionId);
     if(!m_Mistress) {
-        ss << "There is no Mistress available to train ${name}\n";
+        add_text("no-mistress");
         girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         return eCheckWorkResult::IMPOSSIBLE;
     }
@@ -370,74 +355,63 @@ IGenericJob::eCheckWorkResult TrainingJob::CheckWork(sGirl& girl, bool is_night)
     return eCheckWorkResult::ACCEPTS;
 }
 
-void TrainingJob::CountTheDays(sGirl& girl, bool is_night)
+void TrainingJob::CountTheDays(sGirl& girl, bool is_night, int progress)
 {
-    if (girl.disobey_check(ACTION_WORKTRAINING, job())) girl.m_WorkingDay /= 2;    // if she disobeys, half her time is wasted
+    if (girl.disobey_check(ACTION_WORKTRAINING, job())) progress /= 2;    // if she disobeys, half her time is wasted
 
-    int total = girl.m_WorkingDay - m_StartProgress;
-    if (total <= 0)                                // she lost time so more tired
+    if (progress <= 0)                                // she lost time so more tired
     {
-        Tiredness += uniform(5, 5-total);
+        Tiredness += uniform(5, 5-progress);
         Enjoyment -= uniform(0, 2);
     }
-    else if (total > 40)                        // or if she trained a lot
+    else if (progress > 33)                        // or if she trained a lot
     {
-        Tiredness += uniform(total / 4, total / 2);
+        Tiredness += uniform(progress / 4, progress / 2);
         Enjoyment += uniform(0, 2);
     }
     else                                        // otherwise just a bit tired
     {
-        Tiredness += uniform(0, total / 3);
+        Tiredness += uniform(0, progress / 3);
         Enjoyment -= uniform(-2, 2);
     }
 
-    if (girl.m_WorkingDay <= 0)
+    girl.make_treatment_progress(progress);
+
+    if (progress <= 0)
     {
-        girl.m_WorkingDay = 0;
         TypeOfEvent = EVENT_WARNING;
         OnNoProgress(girl);
     }
-    else if (girl.m_WorkingDay >= 100 && is_night)
+    else if (girl.get_treatment_progress() >= 100 && is_night)
     {
-        girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
+        girl.finish_treatment();
         TypeOfEvent = EVENT_GOODNEWS;
         OnComplete(girl);
         girl.FullJobReset(JOB_RESTING);
-        Wages = 200;
     }
-    else
-    {
+    else {
         OnRegularProgress(girl, is_night);
-        Wages = std::min(100, girl.m_WorkingDay);
     }
-
-    if (girl.is_slave()) Wages /= 2;
 }
 
 void TrainingJob::OnNoProgress(sGirl& girl) {
-    ss << m_Data.ResistMessage << "\n";
+    add_text("no-progress") << "\n";
     Tiredness += uniform(5, 15);
 }
 
 void TrainingJob::OnRegularProgress(sGirl& girl, bool is_night) {
-    ss << m_Data.ProgressMessage;
-    if (girl.m_WorkingDay >= 100)
+    add_text("progress");
+    if (girl.get_treatment_progress() >= 100)
     {
         ss << "almost complete.";
-        Tiredness -= (girl.m_WorkingDay - 100) / 2;    // her last day so she rested a bit
+        Tiredness -= (girl.get_treatment_progress() - 100) / 2;    // her last day so she rested a bit
     }
-    else ss << "in progress (" << girl.m_WorkingDay << "%).";
+    else ss << "in progress (" << girl.get_treatment_progress() << "%).";
 }
 
 class SoStraight : public TrainingJob {
 public:
-    SoStraight() : TrainingJob(JOB_SO_STRAIGHT, "SOSt", {
-            traits::STRAIGHT, "${name} is already Straight.",
-            "You proceed to change ${name}'s sexual orientation to Straight.",
-            "She resisted all attempts to make her Straight.",
-            "Her Sexual Orientation conversion to Straight is ",
-            EImageBaseType::VAGINAL}) {
-        m_Info.Description = "You will make sure she only likes having sex with men.";
+    SoStraight() : TrainingJob(JOB_SO_STRAIGHT, "SoStraight.xml", traits::STRAIGHT, EImageBaseType::VAGINAL) {
     }
     void HandleTraining(sGirl& girl, bool is_night) override;
     void OnComplete(sGirl& girl) override;
@@ -447,64 +421,52 @@ void SoStraight::HandleTraining(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 
     // Positive Stats/Skills
-    girl.m_WorkingDay += girl.normalsex() / 5;
-    girl.m_WorkingDay += girl.group() / 10;
-    girl.m_WorkingDay += girl.oralsex() / 20;
-    girl.m_WorkingDay += girl.tittysex() / 20;
-    girl.m_WorkingDay += girl.anal() / 20;
+    int progress = 0;
+    progress += girl.normalsex() / 5;
+    progress += girl.group() / 10;
+    progress += girl.oralsex() / 20;
+    progress += girl.tittysex() / 20;
+    progress += girl.anal() / 20;
 
-    update_progress(girl);
+    progress += calculate_progress(girl);
 
     if (!likes_men(girl))
     {
-        ss << "Her innate disgust of balls and shaft made her pull away from you while trying to teach her to suck it.\n";
-        girl.m_WorkingDay -= girl.lesbian() / 5;                    // it is hard to change something you are good at
+        add_text("dislikes-men") << "\n";
+        progress -= girl.lesbian() / 5;                    // it is hard to change something you are good at
         Tiredness += girl.lesbian() / 10;
     }
-    if (girl.has_active_trait(traits::BISEXUAL)) girl.m_WorkingDay -= girl.lesbian() / 20;    // it is hard to change something you are good at
+    if (girl.has_active_trait(traits::BISEXUAL)) progress -= girl.lesbian() / 20;    // it is hard to change something you are good at
 
     int trait = girl.get_trait_modifier(traits::modifiers::SO_STRAIGHT);
-    girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
-    if (girl.has_active_trait(traits::BROKEN_WILL))        { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
+    progress += uniform(trait / 2, trait + trait / 2);
+    if (girl.has_active_trait(traits::BROKEN_WILL))        {
+        add_text("broken-will") << "\n";
+    }
 
-    if (!brothel->is_sex_type_allowed(SKILL_NORMALSEX))      girl.m_WorkingDay -= uniform(10, 30);
+    if (!brothel->is_sex_type_allowed(SKILL_NORMALSEX))      progress -= uniform(10, 30);
 
-    CountTheDays(girl, is_night);
-    int xp = 1 + std::max(0, girl.m_WorkingDay / 20);
+    CountTheDays(girl, is_night, progress);
 
     // Improve girl
-    int I_lesbian = uniform(-15, -2);
-    int I_normalsex = uniform(2, 15);
-    int I_group = uniform(1, 5);
-    int I_anal = uniform(1, 5);
-    int I_oralsex = uniform(1, 5);
-    int I_handjob = uniform(1, 5);
-    int I_tittysex = uniform(1, 5);
-
-    girl.exp(xp);
-    girl.lesbian(I_lesbian);
-    girl.normalsex(I_normalsex);
-    girl.group(I_group);
-    girl.anal(I_anal);
-    girl.oralsex(I_oralsex);
-    girl.handjob(I_handjob);
-    girl.tittysex(I_tittysex);
+    girl.exp( 1 + std::max(0, progress / 20) );
+    girl.lesbian( uniform(-15, -2) );
+    girl.normalsex( uniform(2, 15) );
+    girl.group( uniform(1, 5) );
+    girl.anal( uniform(1, 5) );
+    girl.oralsex( uniform(1, 5) );
+    girl.handjob( uniform(1, 5) );
+    girl.tittysex( uniform(1, 5) );
 }
 
 void SoStraight::OnComplete(sGirl& girl) {
-    ss << "Her Sexual Orientation conversion is complete. She is now Straight.\n";
+    add_text("complete") << "\n";
     girl.lose_trait(traits::LESBIAN);    girl.gain_trait(traits::BISEXUAL);    girl.lose_trait(traits::STRAIGHT);
 }
 
 class SoLesbian : public TrainingJob {
 public:
-    SoLesbian() : TrainingJob(JOB_SO_LESBIAN, "SOLe",
-                              {traits::LESBIAN, "${name} is already a Lesbian.",
-                               "You proceed to change ${name}'s sexual orientation to Lesbian.",
-                               "She resisted all attempts to make her a Lesbian.",
-                               "Her Sexual Orientation conversion to Lesbian is ",
-                               EImageBaseType::VAGINAL}) {
-        m_Info.Description = "You will make sure she only likes having sex with women.";
+    SoLesbian() : TrainingJob(JOB_SO_LESBIAN, "SoLesbian.xml", traits::LESBIAN, EImageBaseType::VAGINAL) {
     }
     void HandleTraining(sGirl& girl, bool is_night) override;
     void OnComplete(sGirl& girl) override;
@@ -514,64 +476,52 @@ void SoLesbian::HandleTraining(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 
     // Positive Stats/Skills
-    girl.m_WorkingDay += girl.lesbian() / 5;
-    girl.m_WorkingDay += girl.group() / 20;
-    girl.m_WorkingDay += girl.oralsex() / 25;
-    update_progress(girl);
+    int progress = 0;
+    progress += girl.lesbian() / 5;
+    progress += girl.group() / 20;
+    progress += girl.oralsex() / 25;
+    progress += calculate_progress(girl);
 
     if (girl.has_active_trait(traits::STRAIGHT))
     {
-        ss << "Being used to working with something long and hard, she wasn't really sure what she was doing with her partner.\n";
-        girl.m_WorkingDay -= girl.normalsex() / 5;                // it is hard to change something you are good at
+        add_text("dislikes-women") << "\n";
+        progress -= girl.normalsex() / 5;                // it is hard to change something you are good at
         Tiredness += girl.normalsex() / 10;
     }
-    if (girl.has_active_trait(traits::BISEXUAL)) girl.m_WorkingDay -= girl.normalsex() / 20;                    // it is hard to change something you are good at
+    if (girl.has_active_trait(traits::BISEXUAL)) progress -= girl.normalsex() / 20;                    // it is hard to change something you are good at
 
     int trait = girl.get_trait_modifier(traits::modifiers::SO_LESBIAN);
-    girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
+    progress += uniform(trait / 2, trait + trait / 2);
 
-    if (girl.has_active_trait(traits::BROKEN_WILL))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
+    if (girl.has_active_trait(traits::BROKEN_WILL))    {
+        add_text("broken-will") << "\n";
+    }
 
     //    if (girl.check_virginity())                {}
 
-    if (!brothel->is_sex_type_allowed(SKILL_LESBIAN))        girl.m_WorkingDay -= uniform(10, 30);
+    if (!brothel->is_sex_type_allowed(SKILL_LESBIAN))        progress -= uniform(10, 30);
 
-    int xp = 1 + std::max(0, girl.m_WorkingDay / 20);
-    CountTheDays(girl, is_night);
+    CountTheDays(girl, is_night, progress);
 
     // Improve girl
-    int I_lesbian = uniform(2, 15);
-    int I_normalsex = uniform(-2, -15);
-    int I_group = uniform(1, -3);
-    int I_anal = uniform(-1, -5);
-    int I_oralsex = uniform(1, -3);
-    int I_handjob = uniform(1, -3);
-    int I_tittysex = uniform(-1, -5);
-
-    girl.exp(xp);
-    girl.lesbian(I_lesbian);
-    girl.normalsex(I_normalsex);
-    girl.group(I_group);
-    girl.anal(I_anal);
-    girl.oralsex(I_oralsex);
-    girl.handjob(I_handjob);
-    girl.tittysex(I_tittysex);
+    girl.exp( 1 + std::max(0, progress / 20) );
+    girl.lesbian( uniform(2, 15) );
+    girl.normalsex( uniform(-2, -15) );
+    girl.group( uniform(1, -3) );
+    girl.anal( uniform(-1, -5) );
+    girl.oralsex( uniform(1, -3) );
+    girl.handjob( uniform(1, -3) );
+    girl.tittysex( uniform(-1, -5) );
 }
 
 void SoLesbian::OnComplete(sGirl& girl) {
-    ss << "\nHer Sexual Orientation conversion is complete. She is now a Lesbian.";
+    add_text("complete");
     girl.gain_trait(traits::LESBIAN);    girl.lose_trait(traits::BISEXUAL);    girl.lose_trait(traits::STRAIGHT);
 }
 
 class SoBi : public TrainingJob {
 public:
-    SoBi() : TrainingJob(JOB_SO_BISEXUAL, "SOBi",
-                              {traits::BISEXUAL, "${name} is already Bisexual.",
-                               "You proceed to change ${name}'s sexual orientation to Bisexual.",
-                               "She resisted all attempts to make her Bisexual.",
-                               "Her Sexual Orientation conversion to Bisexual is ",
-                               EImagePresets::LESBIAN}) {
-        m_Info.Description = "You will make sure she likes having sex with both men and women.";
+    SoBi() : TrainingJob(JOB_SO_BISEXUAL, "SoBi.xml", traits::BISEXUAL, EImagePresets::LESBIAN) {
     }
     void HandleTraining(sGirl& girl, bool is_night) override;
     void OnComplete(sGirl& girl) override;
@@ -579,75 +529,65 @@ public:
 
 void SoBi::HandleTraining(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
+    int progress = 0;
     if (girl.has_active_trait(traits::STRAIGHT))
     {
-        girl.m_WorkingDay += girl.group() / 10;
-        girl.m_WorkingDay += girl.normalsex() / 20;
-        girl.m_WorkingDay += girl.lesbian() / 5;
-        girl.m_WorkingDay += girl.oralsex() / 20;
-        girl.m_WorkingDay += girl.tittysex() / 20;
-        girl.m_WorkingDay += girl.anal() / 20;
+        progress += girl.group() / 10;
+        progress += girl.normalsex() / 20;
+        progress += girl.lesbian() / 5;
+        progress += girl.oralsex() / 20;
+        progress += girl.tittysex() / 20;
+        progress += girl.anal() / 20;
     }
     else if (girl.has_active_trait(traits::LESBIAN))
     {
-        girl.m_WorkingDay += girl.group() / 10;
-        girl.m_WorkingDay += girl.normalsex() / 5;
-        girl.m_WorkingDay += girl.lesbian() / 20;
-        girl.m_WorkingDay += girl.oralsex() / 15;
-        girl.m_WorkingDay += girl.tittysex() / 15;
-        girl.m_WorkingDay += girl.anal() / 15;
+        progress += girl.group() / 10;
+        progress += girl.normalsex() / 5;
+        progress += girl.lesbian() / 20;
+        progress += girl.oralsex() / 15;
+        progress += girl.tittysex() / 15;
+        progress += girl.anal() / 15;
     }
     else
     {
-        girl.m_WorkingDay += girl.group() / 5;
-        girl.m_WorkingDay += girl.normalsex() / 10;
-        girl.m_WorkingDay += girl.lesbian() / 10;
-        girl.m_WorkingDay += girl.oralsex() / 20;
-        girl.m_WorkingDay += girl.tittysex() / 20;
-        girl.m_WorkingDay += girl.anal() / 20;
+        progress += girl.group() / 5;
+        progress += girl.normalsex() / 10;
+        progress += girl.lesbian() / 10;
+        progress += girl.oralsex() / 20;
+        progress += girl.tittysex() / 20;
+        progress += girl.anal() / 20;
     }
-    update_progress(girl);
+    progress += calculate_progress(girl);
 
     int trait = girl.get_trait_modifier(traits::modifiers::SO_BI);
-    girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
-    if (girl.has_active_trait(traits::BROKEN_WILL))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
+    progress += uniform(trait / 2, trait + trait / 2);
+    if (girl.has_active_trait(traits::BROKEN_WILL))    {
+        add_text("broken-will") << "\n";
+    }
 
-    if (!brothel->is_sex_type_allowed(SKILL_LESBIAN))        girl.m_WorkingDay -= uniform(5, 15);
-    if (!brothel->is_sex_type_allowed(SKILL_NORMALSEX))      girl.m_WorkingDay -= uniform(5, 15);
-    CountTheDays(girl, is_night);
-    int xp = 1 + std::max(0, girl.m_WorkingDay / 20);
-    int I_lesbian = uniform(1, 10);
-    int I_normalsex = uniform(1, 10);
-    int I_group = uniform(2, 15);
-    int I_anal = uniform(0, 5);
-    int I_oralsex = uniform(0, 5);
-    int I_handjob = uniform(0, 5);
-    int I_tittysex = uniform(0, 3);
+    if (!brothel->is_sex_type_allowed(SKILL_LESBIAN))        progress -= uniform(5, 15);
+    if (!brothel->is_sex_type_allowed(SKILL_NORMALSEX))      progress -= uniform(5, 15);
 
-    girl.exp(xp);
-    girl.lesbian(I_lesbian);
-    girl.normalsex(I_normalsex);
-    girl.group(I_group);
-    girl.anal(I_anal);
-    girl.oralsex(I_oralsex);
-    girl.handjob(I_handjob);
-    girl.tittysex(I_tittysex);
+    CountTheDays(girl, is_night, progress);
+
+    girl.exp( 1 + std::max(0, progress / 20) );
+    girl.lesbian( uniform(1, 10) );
+    girl.normalsex( uniform(1, 10) );
+    girl.group( uniform(2, 15) );
+    girl.anal( uniform(0, 5) );
+    girl.oralsex( uniform(0, 5) );
+    girl.handjob( uniform(0, 5) );
+    girl.tittysex( uniform(0, 3) );
 }
 
 void SoBi::OnComplete(sGirl& girl) {
-    ss << "\nHer Sexual Orientation conversion is complete. She is now Bisexual.";
+    add_text("complete") << "\n";
     girl.lose_trait(traits::LESBIAN);    girl.gain_trait(traits::BISEXUAL);    girl.lose_trait(traits::STRAIGHT);
 }
 
 class FakeOrg : public TrainingJob {
 public:
-    FakeOrg() : TrainingJob(JOB_FAKEORGASM, "FOEx",
-                         {traits::FAKE_ORGASM_EXPERT, "${name} is already a \"Fake Orgasm Expert\".",
-                          "You teach ${name} how to fake her orgasms.",
-                          "She resisted all attempts to make her Bisexual.",
-                          "Her Sexual Orientation conversion to Bisexual is ",
-                          EImagePresets::MASTURBATE}) {
-        m_Info.Description = "You will teach her how to fake her orgasms.";
+    FakeOrg() : TrainingJob(JOB_FAKEORGASM, "FakeOrgasm.xml", traits::FAKE_ORGASM_EXPERT, EImagePresets::MASTURBATE) {
     }
     void HandleTraining(sGirl& girl, bool is_night) override;
     void OnComplete(sGirl& girl) override;
@@ -659,89 +599,64 @@ void FakeOrg::HandleTraining(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
 
     // Positive Stats/Skills
-    girl.m_WorkingDay += girl.performance() / 5;
-    girl.m_WorkingDay += girl.group() / 20;
-    girl.m_WorkingDay += girl.normalsex() / 20;
-    girl.m_WorkingDay += girl.lesbian() / 20;
+    int progress = 0;
+    progress += girl.performance() / 5;
+    progress += girl.group() / 20;
+    progress += girl.normalsex() / 20;
+    progress += girl.lesbian() / 20;
+    progress += calculate_progress(girl);
 
-    update_progress(girl);
     int trait = girl.get_trait_modifier(traits::modifiers::FAKE_ORGASM);
-    girl.m_WorkingDay += uniform(trait / 2, trait + trait / 2);
-    if (girl.has_active_trait(traits::BROKEN_WILL))    { ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
+    progress += uniform(trait / 2, trait + trait / 2);
+    if (girl.has_active_trait(traits::BROKEN_WILL))    { add_text("broken-will") << "\n"; }
 
-    if (!brothel->is_sex_type_allowed(SKILL_NORMALSEX))      girl.m_WorkingDay -= uniform(5, 15);
+    if (!brothel->is_sex_type_allowed(SKILL_NORMALSEX))      progress -= uniform(5, 15);
 
-    CountTheDays(girl, is_night);
+    CountTheDays(girl, is_night, progress);
 
     // Improve girl
-    int xp = 1 + std::max(0, girl.m_WorkingDay / 20);
-    int I_performance = uniform(3, 15);
-    int I_confidence = uniform(-1, 5);
-    int I_constitution = std::max(0, uniform(-2, 1));
-    int I_spirit = uniform(-5, 5);
-    int I_lesbian = uniform(0, 5);
-    int I_normalsex = uniform(0, 5);
-    int I_group = uniform(0, 5);
-    int I_anal = std::max(0, uniform(-2, 2));
-
-    girl.exp(xp);
-    girl.lesbian(I_lesbian);
-    girl.normalsex(I_normalsex);
-    girl.group(I_group);
-    girl.anal(I_anal);
-    girl.performance(I_performance);
-    girl.confidence(I_confidence);
-    girl.constitution(I_constitution);
-    girl.spirit(I_spirit);
+    girl.exp( 1 + std::max(0, progress / 20) );
+    girl.lesbian( uniform(0, 5) );
+    girl.normalsex( uniform(0, 5) );
+    girl.group( uniform(0, 5) );
+    girl.anal( std::max(0, uniform(-2, 2)) );
+    girl.performance( uniform(3, 15) );
+    girl.confidence( uniform(-1, 5) );
+    girl.constitution( std::max(0, uniform(-2, 1)) );
+    girl.spirit( uniform(-5, 5) );
 }
 
 void FakeOrg::OnNoProgress(sGirl& girl) {
-    if (girl.any_active_trait({traits::SLOW_LEARNER, traits::BROKEN_WILL, traits::MIND_FUCKED, traits::RETARDED}))
-    {
-        ss << "She was not mentally able to learn";
-    }
-    else if (girl.any_active_trait({traits::BIMBO, traits::FAST_ORGASMS, traits::NYMPHOMANIAC}))
-    {
-        ss << "She was too focused on the sex to learn";
-        Tiredness += uniform(5, 15);
-    }
-    else if (girl.any_active_trait({traits::BLIND, traits::DEAF}))
-    {
-        ss << "Her handicap kept her from learning";
-    }
-    else
-    {
-        ss << "She resisted all attempts to teach her";
-        Tiredness += uniform(5, 15);
-    }
-    ss << " to fake her orgasms.";
+    add_text("no-progress") << "\n";
+    Tiredness += uniform(5, 15);
 }
 
 void FakeOrg::OnComplete(sGirl& girl) {
-    ss << "With her training complete, she is now a \"Fake Orgasm Expert\".";
+    add_text("complete") << "\n";
     girl.lose_trait(traits::SLOW_ORGASMS);    girl.lose_trait(traits::FAST_ORGASMS);    girl.gain_trait(traits::FAKE_ORGASM_EXPERT);
 }
 
 void FakeOrg::OnRegularProgress(sGirl& girl, bool is_night) {
-    if (girl.m_WorkingDay >= 100)        Tiredness -= (girl.m_WorkingDay - 100) / 2;    // her last day so she rested a bit
-    else    ss << "Training in progress (" << girl.m_WorkingDay << "%).\n \n";
-    if (girl.m_WorkingDay < 25)      ss << "She has no idea what she sounds like during sex but it ain't orgasmic.";
-    else if (girl.m_WorkingDay < 50) ss << "When she realizes she should finish, you can see it click in her mind and easily notice her changing things up.";
-    else if (girl.m_WorkingDay < 75) ss << "She is still not getting into rhythm with " << (chance(33) ? "you" : "her partner") << " but it still seems enjoyable.";
-    else                             ss << "She is almost there but you want her to practice a little more to get it perfect.";
+    int status = girl.get_treatment_progress();
+    if (status >= 100)    Tiredness -= (status - 100) / 2;    // her last day so she rested a bit
+    else                  ss << "Training in progress (" << status << "%).\n \n";
+    if (status < 25)      ss << "She has no idea what she sounds like during sex but it ain't orgasmic.";
+    else if (status < 50) ss << "When she realizes she should finish, you can see it click in her mind and easily notice her changing things up.";
+    else if (status < 75) ss << "She is still not getting into rhythm with her partner but it still seems enjoyable.";
+    else                  ss << "She is almost there but you want her to practice a little more to get it perfect.";
 
     if (!is_night)
     {
         ss << "\nYou tell her to take a break for lunch and ";
-        if (girl.m_WorkingDay < 50)      ss << "clear her mind, she has a lot more work to do.";
-        else if (girl.m_WorkingDay < 75) ss << "relax, she has a bit more training to do.";
-        else                             ss << "see if she can make anyone say \"I'll have what she's having\".";
+        if (status < 50)      ss << "clear her mind, she has a lot more work to do.";
+        else if (status < 75) ss << "relax, she has a bit more training to do.";
+        else                  ss << "see if she can make anyone say \"I'll have what she's having\".";
     }
     else
     {
-        ss << "\nThats all for tonight, ";
-        if (girl.m_WorkingDay < 50)    ss << "we have a lot more to do tomorrow (and probably the next few weeks).";
-        else                           ss << "we'll pick things up in the morning.";
+        ss << "\nThat's all for tonight, ";
+        if (status < 50)    ss << "we have a lot more to do tomorrow (and probably the next few weeks).";
+        else                ss << "we'll pick things up in the morning.";
     }
 }
 

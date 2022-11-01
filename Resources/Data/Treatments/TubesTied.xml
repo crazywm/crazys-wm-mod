@@ -1,0 +1,23 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="TTid">
+    <Description>
+        She will undergo surgery to make her sterile.
+        *(Takes up to 5 turns, less if a Nurse is on duty)
+    </Description>
+
+    <Surgery Duration="5">
+        <TraitExclude Trait="Sterile">${name} is already Sterile.</TraitExclude>
+    </Surgery>
+
+    <Messages>
+        <Message Name="surgery">
+            <Text>${name} is in the Clinic to get her tubes tied.</Text>
+        </Message>
+
+        <Message Name="doctor.work">
+            <Text>Today, she performed a tubal ligation on ${name}.</Text>
+        </Message>
+
+        <Include>DefaultSurgeryMessages.xml</Include>
+    </Messages>
+</Treatment>

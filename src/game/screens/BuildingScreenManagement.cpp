@@ -245,46 +245,48 @@ void IBuildingScreenManagement::assign_job(sGirl& girl, JOBS new_job, int girl_s
     SetSelectedItemText(joblist_id, old_job, jobname_with_count((JOBS)old_job, Day0Night1));
     SetSelectedItemText(joblist_id, new_job, jobname_with_count((JOBS)new_job, Day0Night1));
 
-    if (girl.m_YesterDayJob == JOB_REHAB && new_job != JOB_REHAB && (girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0))
-    {    // `J` added
-        ss.str("");    ss << job_manager().get_job_description(new_job) << "\n** This girl was in Rehab, if you send her somewhere else, she will have to start her Rehab over.";
-        EditTextItem(ss.str(), jobdesc_id);
+    std::string job_change = job_change_message(girl, new_job);
+    // are we changing the job of the active treatment to something different?
+    if(!job_change.empty()) {
+        ss.str("");
+        ss << job_manager().get_job_description(new_job) << "\n** " << job_change;
+        EditTextItem(job_change, jobdesc_id);
     }
+}
 
-    // handle surgeries
-    bool interrupted = false;    // `J` added
-    if (girl.m_YesterDayJob != day_job && cJobManager::is_Surgery_Job(girl.m_YesterDayJob) && ((girl.m_WorkingDay > 0) || girl.m_PrevWorkingDay > 0))
-        interrupted = true;
-
-    if (interrupted)
-    {    // `J` added
-        ss.str(""); ss << job_manager().get_job_description(new_job) << "\n** This girl was getting ";
-        if (girl.m_YesterDayJob == JOB_CUREDISEASES)
+std::string IBuildingScreenManagement::job_change_message(const sGirl& girl, JOBS new_job) {
+    std::stringstream ss;
+    if(girl.get_active_treatment() != JOBS::JOB_UNSET && girl.get_active_treatment() != new_job) {
+        ss.str("");
+        auto active_treatment = girl.get_active_treatment();
+        if (active_treatment == JOB_REHAB )
         {
-            ss << "her disease cured, if you send her somewhere else, she will have to start her treatment over.";
+            ss << "This girl was in Rehab, if you send her somewhere else, she will have to start her Rehab over.";
+        } else if (active_treatment == JOB_CUREDISEASES)
+        {
+            ss << "This girl was getting her disease cured, if you send her somewhere else, she will have to start her treatment over.";
         }
+            // conversions
+        else if (active_treatment == JOB_SO_STRAIGHT ||
+                 active_treatment == JOB_SO_BISEXUAL ||
+                 active_treatment == JOB_SO_LESBIAN ||
+                 active_treatment == JOB_FAKEORGASM) {
+            ss << "This girl was in training for " << job_manager().get_job_name(girl.get_active_treatment())
+               << ", if you send her somewhere else, she will have to start her training over.";
+        }
+            // surgeries
         else
         {
-            if (girl.m_YesterDayJob == JOB_BOOBJOB || girl.m_YesterDayJob == JOB_FACELIFT)        ss << "a ";
-            else if (girl.m_YesterDayJob == JOB_GETABORT || girl.m_YesterDayJob == JOB_ASSJOB)    ss << "an ";
-            else if (girl.m_YesterDayJob == JOB_TUBESTIED)/*                                          */    ss << "her ";
-            ss << job_manager().get_job_name(girl.m_YesterDayJob) << ", if you send her somewhere else, she will have to start her Surgery over.";
+            ss << "This girl was getting ";
+            if (active_treatment == JOB_BOOBJOB || active_treatment == JOB_FACELIFT)        ss << "a ";
+            else if (active_treatment == JOB_GETABORT || active_treatment == JOB_ASSJOB)    ss << "an ";
+            else if (active_treatment == JOB_TUBESTIED)                                     ss << "her ";
+            ss << job_manager().get_job_name(girl.get_active_treatment())
+               << ", if you send her somewhere else, she will have to start her Surgery over.";
         }
-        EditTextItem(ss.str(), jobdesc_id);
+        return ss.str();
     }
-
-    // conversions
-    if ((girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0) && (new_job != girl.m_YesterDayJob && (
-            girl.m_YesterDayJob == JOB_SO_STRAIGHT ||
-            girl.m_YesterDayJob == JOB_SO_BISEXUAL ||
-            girl.m_YesterDayJob == JOB_SO_LESBIAN ||
-            girl.m_YesterDayJob == JOB_FAKEORGASM)))
-    {    // `J` added
-        ss.str("");    ss << job_manager().get_job_description(new_job) <<
-                          "\n** This girl was in training for " << job_manager().get_job_name(girl.m_YesterDayJob)
-                          << ", if you send her somewhere else, she will have to start her training over.";
-        EditTextItem(ss.str(), jobdesc_id);
-    }
+    return "";
 }
 
 void IBuildingScreenManagement::init(bool back)
@@ -566,9 +568,10 @@ cScreenCentreManagement::cScreenCentreManagement() :
 
 std::string cScreenCentreManagement::update_job_description(const sGirl& girl)
 {
-    if (girl.m_YesterDayJob == JOB_REHAB && girl.m_DayJob != JOB_REHAB && (girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0))
+    std::string jc = job_change_message(girl, girl.m_DayJob);
+    if (!jc.empty())
     {
-        return "\n** This girl was in Rehab, if you send her somewhere else, she will have to start her Rehab over.";
+        return "\n** " + jc;
     }
     return "";
 }
@@ -596,25 +599,10 @@ cScreenClinicManagement::cScreenClinicManagement() :
 
 std::string cScreenClinicManagement::update_job_description(const sGirl& girl)
 {
-    if(cJobManager::is_Surgery_Job(girl.m_YesterDayJob) && girl.m_YesterDayJob != girl.m_DayJob && (girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0))
+    std::string jc = job_change_message(girl, girl.m_DayJob);
+    if (!jc.empty())
     {
-        int sel_job = girl.get_job(Day0Night1);
-        SetSelectedItemInList(joblist_id, sel_job, false);
-
-        std::stringstream ss;
-        ss  << "\n** This girl was getting ";
-        if (girl.m_YesterDayJob == JOB_CUREDISEASES)
-        {
-            ss << "her disease cured, if you send her somewhere else, she will have to start her treatment over.";
-        }
-        else
-        {
-            if (girl.m_YesterDayJob == JOB_BOOBJOB || girl.m_YesterDayJob == JOB_FACELIFT)        ss << "a ";
-            else if (girl.m_YesterDayJob == JOB_GETABORT || girl.m_YesterDayJob == JOB_ASSJOB)    ss << "an ";
-            else if (girl.m_YesterDayJob == JOB_TUBESTIED)/*                                          */    ss << "her ";
-            ss << job_manager().get_job_name(girl.m_YesterDayJob) << ", if you send her somewhere else, she will have to start her Surgery over.";
-        }
-        return ss.str();
+        return "\n** " + jc;
     }
     return "";
 }
@@ -645,16 +633,10 @@ cScreenHouseManagement::cScreenHouseManagement() :
 
 std::string cScreenHouseManagement::update_job_description(const sGirl& girl)
 {
-    if ((girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0) && (
-            (girl.m_YesterDayJob == JOB_SO_STRAIGHT    && girl.m_DayJob != JOB_SO_STRAIGHT) ||
-            (girl.m_YesterDayJob == JOB_SO_BISEXUAL    && girl.m_DayJob != JOB_SO_BISEXUAL) ||
-            (girl.m_YesterDayJob == JOB_SO_LESBIAN    && girl.m_DayJob != JOB_SO_LESBIAN) ||
-            (girl.m_YesterDayJob == JOB_FAKEORGASM    && girl.m_DayJob != JOB_FAKEORGASM)))
+    std::string jc = job_change_message(girl, girl.m_DayJob);
+    if (!jc.empty())
     {
-        std::stringstream ss;
-        ss << "\n** This girl was in training for " << job_manager().get_job_name(girl.m_YesterDayJob)
-           << ", if you send her somewhere else, she will have to start her training over.";
-        return ss.str();
+        return "\n** " + jc;
     }
     return "";
 }

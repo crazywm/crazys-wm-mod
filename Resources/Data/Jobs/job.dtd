@@ -1,4 +1,4 @@
-<!ELEMENT Job (Description, Performance, Modifiers?, Gains, Config, Messages?)>
+<!ELEMENT Job (Description, Performance, Modifiers?, Gains, Config?, Treatment?, Messages?)>
 <!ATTLIST Job ShortName CDATA #REQUIRED>
 
 <!ELEMENT Description (#PCDATA)>
@@ -38,3 +38,7 @@
 <!ATTLIST Mod Weight CDATA #IMPLIED>
 
 <!ELEMENT Include (#PCDATA)>
+
+<!-- Only for treatment-type jobs -->
+<!ELEMENT Treatment ANY>
+<!ATTLIST Treatment Duration CDATA #REQUIRED FightChance CDATA #IMPLIED Title CDATA #IMPLIED>

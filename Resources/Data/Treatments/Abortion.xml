@@ -1,0 +1,9 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="Abrt">
+    <Description>
+        She will get an abortion, removing pregnancy and/or insemination.
+    </Description>
+
+    <Messages>
+    </Messages>
+</Treatment>

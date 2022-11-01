@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jobs/IGenericJob.h"
+#include "jobs/Treatment.h"
 #include "cJobManager.h"
 #include "cGirls.h"
 #include "character/sGirl.h"
@@ -28,6 +28,8 @@
 #include "IGame.h"
 #include "cGirlGangFight.h"
 #include "buildings/cBuildingManager.h"
+#include "xml/getattr.h"
+#include "xml/util.h"
 
 extern const char* const CounselingInteractionId;
 
@@ -36,81 +38,77 @@ struct sRemoveTrait {
     const char* Message;
 };
 
-struct sTherapyData {
-    const char*  TherapyMessage;    //!< The message used to indicate that the surgery was performed
-    const char*  NoNeedMessage;     //!< The message sent when no therapy is needed
-    const char*  ContinueMessage;   //!< The message sent when further therapy is needed
-    const char*  DeathMessage;      //!< The message if she dies
-    const char*  NoCounselorMessage;//!< The message if there is no counselor
-    const char*  ReleaseMessage;    //!< The message when the therapy is finished
-    const char*  TreatmentName;     //!< Therapy or Rehab
-    int          Duration;          //!< How many days until finished.
-    int          BasicFightChance;  //!< Chance to fight with the counselor
-    int          SuccessBonus;      //!< Bonus for enjoyment and happiness once therapy was a success
-    int          HealthDanger;      //!< How much health does she lose TODO does it make sense that she loses health in therapy but not without therapy???
-    std::vector<sRemoveTrait> TraitRemove;   //!< The traits that this therapy can remove
-};
-
-
-class TherapyJob : public IGenericJob {
+class TherapyJob : public ITreatmentJob {
 public:
-    explicit TherapyJob(JOBS id, const char* short_name, const char* description, sTherapyData data) : IGenericJob(id), m_TherapyData(std::move(data)) {
-        m_Info.ShortName = short_name;
-        m_Info.Description = description;
-        m_Info.FullTime = true;
+    explicit TherapyJob(JOBS id, std::string xml_file) : ITreatmentJob(id, std::move(xml_file)) {
     }
 
-    sWorkJobResult DoWork(sGirl& girl, bool is_night) final;
+    void ReceiveTreatment(sGirl& girl, bool is_night) final;
     sJobValidResult is_job_valid(const sGirl& girl) const override;
 protected:
     // common data
-    sTherapyData m_TherapyData;
+    std::string TreatmentName;     //!< Therapy or Rehab
+    int         Duration;          //!< How many days until finished.
+    int         BasicFightChance;  //!< Chance to fight with the counselor
+    int         SuccessBonus;      //!< Bonus for enjoyment and happiness once therapy was a success
+    int         HealthDanger;      //!< How much health does she lose TODO does it make sense that she loses health in therapy but not without therapy???
+    std::vector<sRemoveTrait> TraitRemove;   //!< The traits that this therapy can remove
 
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 
     virtual void FightEvent(sGirl& girl, bool is_night);
     virtual void OnFinish(sGirl& girl) {}
     bool needs_therapy(const sGirl& girl) const;
+    const char* specific_config_element() const override { return "Therapy"; }
+    void load_from_xml_callback(const tinyxml2::XMLElement& job_element) override;
     double GetPerformance(const sGirl& girl, bool estimate) const override;
 };
 
-sWorkJobResult TherapyJob::DoWork(sGirl& girl, bool is_night) {
-    auto brothel = girl.m_Building;
-#pragma region //    Job setup                //
+void TherapyJob::load_from_xml_callback(const tinyxml2::XMLElement& job_element) {
+    Duration = GetIntAttribute(job_element, "Duration");
+    BasicFightChance = GetIntAttribute(job_element, "FightChance");
+    TreatmentName = GetStringAttribute(job_element, "Title");
+    SuccessBonus = GetIntAttribute(job_element, "SuccessBonus");
+    HealthDanger = GetIntAttribute(job_element, "HealthDanger");
+
+    for (auto& remove_el : IterateChildElements(job_element, "RemoveTrait")) {
+        TraitRemove.emplace_back(sRemoveTrait{GetStringAttribute(remove_el, "Trait"),
+                                                            remove_el.GetText()});
+    }
+}
+
+void TherapyJob::ReceiveTreatment(sGirl& girl, bool is_night) {
     Action_Types actiontype = ACTION_WORKTHERAPY;
-    // if she was not in thearpy yesterday, reset working days to 0 before proceding
-    if (girl.m_YesterDayJob != job()) { girl.m_WorkingDay = girl.m_PrevWorkingDay = 0; }
 
     sGirl* counselor = RequestInteraction(CounselingInteractionId);
 
-    if (chance(m_TherapyData.BasicFightChance) || girl.disobey_check(actiontype, job()))    // `J` - yes, OR, not and.
+    if (chance(BasicFightChance) || girl.disobey_check(actiontype, job()))    // `J` - yes, OR, not and.
     {
         FightEvent(girl, is_night);
     }
-    ss << m_TherapyData.TherapyMessage << "\n \n";
-
-    cGirls::UnequipCombat(girl);    // not for patient
+    add_text("therapy") << "\n\n";
 
     int enjoy = 0;
     auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
-#pragma endregion
 #pragma region //    Count the Days                //
 
-    if (!is_night) girl.m_WorkingDay++;
+    if (!is_night) {
+        girl.make_treatment_progress(uniform(90, 110) / Duration);
+    }
 
     girl.happiness(uniform(-20, 10));
     girl.spirit(uniform(-5, 5));
     girl.mana(uniform(-5, 5));
 
     // `J` % chance a counselor will save her if she almost dies
-    int healthmod = uniform(-m_TherapyData.HealthDanger, 2);
+    int healthmod = uniform(-HealthDanger, 2);
     if (girl.health() + healthmod < 1 && chance(95 + (girl.health() + healthmod)))
     {    // Don't kill the girl from therapy if a Counselor is on duty
         girl.set_stat(STAT_HEALTH, 1);
         girl.pcfear(5);
         girl.pclove(-20);
-        ss << "She almost died in " << m_TherapyData.TreatmentName << " but the Counselor saved her.\n";
+        ss << "She almost died in " << TreatmentName << " but the Counselor saved her.\n";
         ss << "She hates you a little more for forcing this on her.\n \n";
         msgtype = EVENT_DANGER;
         enjoy -= 2;
@@ -123,28 +121,28 @@ sWorkJobResult TherapyJob::DoWork(sGirl& girl, bool is_night) {
 
     if (girl.health() < 1)
     {
-        ss << m_TherapyData.DeathMessage;
+        add_text("death");
         msgtype = EVENT_DANGER;
     }
 
-    if (girl.m_WorkingDay >= m_TherapyData.Duration && is_night)
+    if (girl.get_treatment_progress() >= 100 && is_night)
     {
-        enjoy += uniform(0, m_TherapyData.SuccessBonus);
+        enjoy += uniform(0, SuccessBonus);
         girl.upd_Enjoyment(ACTION_WORKCOUNSELOR, uniform(-2, 4));    // `J` She may want to help others with their problems
-        girl.happiness(uniform(0, m_TherapyData.SuccessBonus));
+        girl.happiness(uniform(0, SuccessBonus));
 
-        ss << "The " << m_TherapyData.TreatmentName << " is a success.\n";
+        ss << "The " << TreatmentName << " is a success.\n";
         msgtype = EVENT_GOODNEWS;
 
         RandomSelector<sRemoveTrait> selector;
-        for(auto& t : m_TherapyData.TraitRemove) {
+        for(auto& t : TraitRemove) {
             if(girl.has_active_trait(t.Trait)) {
                 selector.process(&t);
             }
         }
 
         if(auto sel = selector.selection()) {
-            if (girl.lose_trait( sel->Trait))
+            if (girl.lose_trait(sel->Trait))
             {
                 ss << sel->Message << "\n";
             }
@@ -154,29 +152,28 @@ sWorkJobResult TherapyJob::DoWork(sGirl& girl, bool is_night) {
 
         if (needs_therapy(girl))
         {
-            ss << "\n" << m_TherapyData.ContinueMessage;
+            ss << "\n";
+            add_text("continue-therapy");
         }
         else // get out of therapy
         {
-            ss << "\n" << m_TherapyData.ReleaseMessage;
+            ss << "\n";
+            add_text("release");
             girl.FullJobReset(JOB_RESTING);
-            girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         }
     }
     else
     {
-        ss << "The " << m_TherapyData.TreatmentName << " is in progress (" << (m_TherapyData.Duration - girl.m_WorkingDay) << " day remaining).";
+        ss << "The " << TreatmentName << " is in progress (" << girl.get_treatment_progress() << "%).";
     }
 
     // Improve girl
     girl.AddMessage(ss.str(), EImageBaseType::PROFILE, msgtype);
     girl.upd_Enjoyment(actiontype, enjoy);
-
-    return {false, 0, 0, 0};
 }
 
 bool TherapyJob::needs_therapy(const sGirl& girl) const {
-    return std::any_of(begin(m_TherapyData.TraitRemove), end(m_TherapyData.TraitRemove),
+    return std::any_of(begin(TraitRemove), end(TraitRemove),
      [&](const sRemoveTrait& t){
          return girl.has_active_trait(t.Trait);
      });
@@ -186,13 +183,15 @@ void TherapyJob::FightEvent(sGirl& girl, bool is_night) {
     ss << "${name} fought with her counselor and did not make any progress this week.";
     girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
     girl.upd_Enjoyment(ACTION_WORKTHERAPY, -1);
-    if (is_night) girl.m_WorkingDay--;
+    if (is_night) {
+        girl.make_treatment_progress(-uniform(10, 20));
+    }
 }
 
 double TherapyJob::GetPerformance(const sGirl& girl, bool estimate) const {
     if(!needs_therapy(girl)) return -1000;
     double p = 100;
-    for(auto& t : m_TherapyData.TraitRemove) {
+    for(auto& t : TraitRemove) {
         if(girl.has_active_trait(t.Trait)) p += 100;
     }
     return p;
@@ -202,17 +201,17 @@ IGenericJob::eCheckWorkResult TherapyJob::CheckWork(sGirl& girl, bool is_night) 
     auto brothel = girl.m_Building;
     if (!needs_therapy(girl))
     {
-        std::stringstream msg;
-        msg << m_TherapyData.NoNeedMessage << " She was sent to the waiting room.";
-        if (!is_night)    girl.AddMessage(msg.str(), EImageBaseType::PROFILE, EVENT_WARNING);
+        add_text("no-need") << " She was sent to the waiting room.";
+        if (!is_night)    girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         girl.FullJobReset(JOB_RESTING);
-        girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
+       // girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         return eCheckWorkResult::IMPOSSIBLE; // not refusing
     }
 
     if (!brothel->HasInteraction(CounselingInteractionId))
     {
-        girl.AddMessage(m_TherapyData.NoCounselorMessage, EImageBaseType::PROFILE, EVENT_WARNING);
+        add_text("no-counselor");
+        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
         return eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
 
@@ -221,11 +220,10 @@ IGenericJob::eCheckWorkResult TherapyJob::CheckWork(sGirl& girl, bool is_night) 
 
 sJobValidResult TherapyJob::is_job_valid(const sGirl& girl) const {
     if (!needs_therapy(girl)) {
-        return {false, m_TherapyData.NoNeedMessage};
+        return {false, get_text("no-need")};
     }
     return IGenericJob::is_job_valid(girl);
 }
-
 
 struct AngerManagement : public TherapyJob {
     using TherapyJob::TherapyJob;
@@ -234,7 +232,7 @@ struct AngerManagement : public TherapyJob {
 
 void AngerManagement::FightEvent(sGirl& girl, bool is_night) {
     girl.upd_Enjoyment(ACTION_WORKTHERAPY, -1);
-    if (is_night) girl.m_WorkingDay--;
+    girl.make_treatment_progress(-uniform(10, 20));
     if (chance(10))
     {
         girl.upd_Enjoyment(ACTION_WORKTHERAPY, -5);
@@ -291,64 +289,8 @@ void Rehab::OnFinish(sGirl& girl) {
 }
 
 void RegisterTherapyJobs(cJobManager& mgr) {
-    mgr.register_job(
-            std::make_unique<AngerManagement>(JOB_ANGER, "AMng","She will go to anger management to get over her anger problems. (Aggressive, Tsundere, Yandere)",
-                                              sTherapyData {
-        "${name} underwent therapy for anger issues.",
-        "${name} doesn't need anger management.",
-        "She should stay in anger management to treat her other anger issues.",
-        "She died in anger management.",
-        "${name} has no counselor to help her on.",
-        "She has been released from therapy.",
-        "therapy",
-        3, 20, 10, 10,
-        {{traits::AGGRESSIVE, "She is no longer Aggressive."},
-         {traits::TSUNDERE, "She is no longer a Tsundere."},
-         {traits::YANDERE, "She is no longer a Yandere."}}}));
-    mgr.register_job(std::make_unique<TherapyJob>(JOB_EXTHERAPY, "EThr", "She will go to extreme therapy to get over her hardcore mental problems. (Mind Fucked, Broken Will)",
-                                                  sTherapyData{
-        "${name} underwent therapy for extreme mental issues.",
-        "${name} doesn't need extreme therapy for anything.",
-        "She should stay in extreme therapy to treat her other disorders.",
-        "She died in therapy.",
-        "${name} has no counselor to help her.",
-        "She has been released from therapy.",
-        "therapy",
-        3, 5, 5, 4,
-        {{traits::MIND_FUCKED, "She is no longer mind fucked."},
-        {traits::BROKEN_WILL, "She is no longer has a broken will."}}
-    }));
-    mgr.register_job(std::make_unique<TherapyJob>(JOB_THERAPY, "Thrp", "She will go to therapy to get over her mental problems. (Nervous, Dependant, Pessimist)",
-                                                  sTherapyData{
-        "${name} underwent therapy for mental issues.",
-        "${name} doesn't need therapy for anything.",
-        "She should stay in therapy to treat her other disorders.",
-        "She died in therapy.",
-        "${name} has no counselor to help her.",
-        "She has been released from therapy.",
-        "therapy",
-        3, 10, 5, 4,
-        {{traits::NERVOUS, "She is no longer nervous all the time."},
-         {traits::DEPENDENT, "She is no longer Dependant on others."},
-         {traits::PESSIMIST, "She is no longer a Pessimist about everything."}}
-    }));
-
-    mgr.register_job(std::make_unique<Rehab>(JOB_REHAB, "Rehb", "She will go to rehab to get over her addictions.",
-                                             sTherapyData {
-        "${name} underwent rehab for her addiction.",
-        "${name} is not addicted to anything.",
-        "She should stay in rehab to treat her other addictions.",
-        "${name} died in rehab.",
-        "${name} sits in rehab doing nothing. You must assign a counselor to treat her.",
-        "She has been released from rehab.",
-        "rehab",
-        3, 50, 10, 10,
-        {{traits::SMOKER, "She is no longer a smoker."},
-         {traits::CUM_ADDICT, "She is no longer a cum addict."},
-         {traits::ALCOHOLIC, "She is no longer an alcoholic."},
-         {traits::FAIRY_DUST_ADDICT, "She is no longer a fairy dust addict."},
-         {traits::SHROUD_ADDICT, "She is no longer a shroud addict."},
-         {traits::VIRAS_BLOOD_ADDICT, "She is no longer a viras blood addict."}
-        }
-    }));
+    mgr.register_job(std::make_unique<AngerManagement>(JOB_ANGER, "AngerManagement.xml"));
+    mgr.register_job(std::make_unique<TherapyJob>(JOB_EXTHERAPY, "ExtremeTherapy.xml"));
+    mgr.register_job(std::make_unique<TherapyJob>(JOB_THERAPY, "Therapy.xml"));
+    mgr.register_job(std::make_unique<Rehab>(JOB_REHAB, "Rehab.xml"));
 }

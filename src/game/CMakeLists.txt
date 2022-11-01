@@ -32,7 +32,7 @@ set(JOBS_SRC
         jobs/IGenericJob.cpp
         jobs/Matron.cpp
         jobs/JobData.cpp
-        jobs/Cleaning.cpp buildings/centre/CentreJobs.cpp jobs/BasicJob.cpp buildings/brothel/Escort.cpp jobs/SimpleJob.cpp jobs/SimpleJob.h buildings/brothel/Whore.cpp)
+        jobs/Cleaning.cpp buildings/centre/CentreJobs.cpp jobs/BasicJob.cpp buildings/brothel/Escort.cpp jobs/SimpleJob.cpp jobs/SimpleJob.h buildings/brothel/Whore.cpp jobs/Treatment.cpp jobs/TextInterface.cpp)
 
 set(BUILDINGS_SRC
         buildings/arena/cArena.cpp

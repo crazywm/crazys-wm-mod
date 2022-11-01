@@ -375,29 +375,6 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool
 {
     bool MadeChanges = true;  // whether a special case applies to specified job or not
 
-    /*    `J` added to reset working days only if her job actually changes
-     * m_WorkingDay is only used for full time jobs that take more than 1 day to complete
-     * such as getting surgerys or rehab
-    */
-    if (Girl.m_WorkingDay > 0)    // `J` Save it and reset it to 0 so it is only backed up once...
-    {
-        if ((Girl.m_WorkingDay < 2 && (Girl.m_YesterDayJob == JOB_GETABORT )) ||
-            (Girl.m_WorkingDay < 3 && (Girl.m_YesterDayJob == JOB_REHAB)) ||
-            (Girl.m_WorkingDay < 5 && Girl.m_YesterDayJob != JOB_GETABORT && cJobManager::is_Surgery_Job(Girl.m_YesterDayJob)) ||
-            // `J` training jobs use m_WorkingDay as a percent learned
-            (Girl.m_YesterDayJob == JOB_FAKEORGASM || Girl.m_YesterDayJob == JOB_SO_STRAIGHT || Girl.m_YesterDayJob == JOB_SO_BISEXUAL || Girl.m_YesterDayJob == JOB_SO_LESBIAN)
-            )
-        {
-            Girl.m_PrevWorkingDay = Girl.m_WorkingDay;
-        }
-        Girl.m_WorkingDay = 0;
-    }
-    if (Girl.m_YesterDayJob == JobID)    // `J` ...so that if you decide to put her back onto the job...
-    {
-        Girl.m_WorkingDay = Girl.m_PrevWorkingDay;    // `J` ...it will restore the previous days
-    }
-
-
     assert(m_OOPJobs[JobID] != nullptr);
     auto check = m_OOPJobs[JobID]->is_job_valid(Girl);
     if(!check) {

@@ -58,7 +58,10 @@ struct sJobValidResult {
 
 class IGenericJob {
 public:
-    explicit IGenericJob(JOBS j, std::string xml_file = {});
+    enum class EJobClass {
+        REGULAR_JOB, TREATMENT
+    };
+    explicit IGenericJob(JOBS j, std::string xml_file = {}, EJobClass job_class = EJobClass::REGULAR_JOB);
     virtual ~IGenericJob() noexcept = default;
 
     // queries
@@ -143,9 +146,11 @@ private:
     void load_job();
     virtual void load_from_xml_internal(const tinyxml2::XMLElement& source, const std::string& file_name) { };
     std::string m_XMLFile;
-
+    EJobClass m_JobClass;
 protected:
     sJobInfo m_Info;
+
+    friend class cJobTextInterface;
 };
 
 #endif //WM_IGENERICJOB_H

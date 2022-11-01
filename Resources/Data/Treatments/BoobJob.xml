@@ -1,0 +1,23 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="BbJb">
+    <Description>
+        She will undergo surgery to "enhance" her bust.
+        *(Takes up to 3 turns per level, less if a Nurse is on duty)
+    </Description>
+
+    <Surgery Duration="3">
+        <TraitExclude Trait="Titanic Tits">${name} already has Titanic Tits.</TraitExclude>
+    </Surgery>
+
+    <Messages>
+        <Message Name="surgery">
+            <Text>${name} is in the Clinic to get her breasts enlarged.</Text>
+        </Message>
+
+        <Message Name="doctor.work">
+            <Text>Today, she enhanced ${name}'s boobs.</Text>
+        </Message>
+
+        <Include>DefaultSurgeryMessages.xml</Include>
+    </Messages>
+</Treatment>

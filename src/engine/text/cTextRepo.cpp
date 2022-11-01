@@ -267,8 +267,18 @@ namespace {
 
 
 void cTextRepository::load(const tinyxml2::XMLElement& root) {
+    load_messages(root, false);
+}
+
+void cTextRepository::load_messages(const tinyxml2::XMLElement& root, bool ignore_existing) {
     for(auto& entry : IterateChildElements(root, "Message")) {
         std::string name = GetStringAttribute(entry, "Name");
+        bool exists = m_Texts.count(name);
+        if(exists) {
+            if(!ignore_existing)
+                g_LogFile.error("text", "Duplicate Message with name '", name, "'");
+            continue;
+        }
 
         auto result = m_Texts.emplace(name, TextGroup(std::unique_ptr<ICondition>{},std::unique_ptr<IAction>{},
                                                       0, 100));
@@ -279,7 +289,7 @@ void cTextRepository::load(const tinyxml2::XMLElement& root) {
         DirPath source;
         source << "Resources" << "Data" << "Include" << incl.GetText();
         auto doc = LoadXMLDocument(source.str());
-        load(*doc->RootElement());
+        load_messages(*doc->RootElement(), true);
     }
 }
 

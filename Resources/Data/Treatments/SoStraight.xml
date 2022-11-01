@@ -1,0 +1,35 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="SOSt">
+    <Description>
+        You will make sure she only likes having sex with men.
+    </Description>
+
+    <Messages>
+        <Message Name="training">
+            <Text>You proceed to change ${name}'s sexual orientation to Straight.</Text>
+        </Message>
+        <Message Name="is-already">
+            <Text>${name} is already Straight.</Text>
+        </Message>
+        <Message Name="no-mistress">
+            <Text>There is no Mistress available to train ${name}.</Text>
+        </Message>
+        <Message Name="no-progress">
+            <Text>She resisted all attempts to make her Straight.</Text>
+        </Message>
+        <Message Name="progress">
+            <Text>Her Sexual Orientation conversion to Straight is</Text>
+        </Message>
+        <Message Name="complete">
+            <Text>Her Sexual Orientation conversion is complete. She is now Straight.</Text>
+        </Message>
+
+        <Message Name="dislikes-men">
+            <Text>Her innate disgust of balls and shaft made her pull away from you while trying to teach her to suck it.</Text>
+        </Message>
+        <Message Name="broken-will">
+            <Text>She just sits there doing exactly what you tell her to do.
+                You don't think it is really getting through to her.</Text>
+        </Message>
+    </Messages>
+</Treatment>

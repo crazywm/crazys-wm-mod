@@ -1,0 +1,9 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="Heal">
+    <Description>
+        She will have her wounds attended.
+    </Description>
+
+    <Messages>
+    </Messages>
+</Treatment>

@@ -413,6 +413,9 @@ enum JOBS {
 
     JOB_UNSET = 255
 };// End JOBS enum
+
+static_assert(JOB_UNSET > NUM_JOBS, "");
+
 #if 0
 // - Community Centre
 const unsigned int JOBFILTER_COMMUNITYCENTRE = ;

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Messages>
+    <Message Name="surgery.success">
+        <Text>The surgery was a success.</Text>
+    </Message>
+    <Message Name="surgery.lack-of-nurses.scars">
+        <Text>
+        Due to a lack of care by the nurses, ${name}'s wounds have become infected. This surgery will leave Scars.
+        </Text>
+    </Message>
+    <Message Name="surgery.lack-of-nurses.health">
+        <Text>
+        You seem to have too few nurses that provide care for your patients after their operation.
+        This has negative effects on ${name}'s health.
+        </Text>
+    </Message>
+    <Message Name="too-sick.quality-nurses">
+        <Text>
+            ${name}'s health condition does not allow surgery to be performed.
+            Your highly qualified nursing staff are making sure she gets well enough for her treatment soon.
+        </Text>
+    </Message>
+    <Message Name="too-sick.basic-nurses">
+        <Text>
+            Your caretakers are trying to nurse ${name} back to health so that the doctor can perform the surgery.
+        </Text>
+    </Message>
+    <Message Name="too-sick.no-nurses">
+        <Text>
+            ${name}'s health condition does not allow surgery to be performed, and with no nurses around
+            it may take a long time for her to get better. All she can do is rest.
+        </Text>
+    </Message>
+    <Message Name="recovery.great">
+        <Text>Your professional nurses ensure a speedy recovery.</Text>
+    </Message>
+    <Message Name="recovery.complications">
+        <Text>
+            These complications will prolong her stay in the hospital.
+        </Text>
+    </Message>
+    <Message Name="surgery.success">
+        <Text>
+            The surgery is a success.
+        </Text>
+    </Message>
+</Messages>

@@ -108,8 +108,8 @@ public:
     /// Removes a trait from the list of permanent traits.
     /// If hide==true, then the trait is only disabled.
     /// If the trait is inborn (inherent), then it is not removed but only disabled.
-    bool lose_trait(const char* trait_name, int chance) { return lose_trait(trait_name, false, chance); }
-    bool lose_trait(const char* trait_name, bool hide=false, int chance=100);
+    bool lose_trait(const char* trait_name, int chance) { return lose_trait(trait_name, true, chance); }
+    bool lose_trait(const char* trait_name, bool hide=true, int chance=100);
 
     /// gains a trait only temporarily.
     void add_temporary_trait(const char* trait_name, int duration);
@@ -136,7 +136,7 @@ public:
     // -----------------------------------------------------------------------------------------------------------------
     int get_attribute(StatSkill id) const;
     int update_attribute(StatSkill id, int amount);
-    /// Updates the attribute with an amount between min and max, if its current value is less than target.
+    /// Updates the attribute with an amount between min and max (inclusive), if its current value is less than target.
     /// If the current value exceeds target, the update amount is decreased.
     /// In the future, this is the function that should be used for most stat/skill gains
     int gain_attribute(StatSkill id, int min, int max, int target);

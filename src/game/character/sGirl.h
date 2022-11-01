@@ -182,8 +182,7 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     std::vector<std::string> m_Canonical_Daughters;
 
     IBuilding* m_Building = nullptr;
-    int m_PrevWorkingDay;                        // `J` save the last count of the number of working days
-    int m_WorkingDay;                            // count the number of working day
+
     bool m_Refused_To_Work_Day;                    // `J` to track better if she refused to work her assigned job
     bool m_Refused_To_Work_Night;                // `J` to track better if she refused to work her assigned job
 
@@ -292,10 +291,21 @@ public:
     bool has_status(STATUS stat) const;
     void remove_status(STATUS stat);
 
+    int get_treatment_progress() const { return m_TreatmentProgress.Progress; }
+    void make_treatment_progress(int amount) { m_TreatmentProgress.Progress = std::max(0, m_TreatmentProgress.Progress + amount); }
+    JOBS get_active_treatment() const { return m_TreatmentProgress.Treatment; }
+    void start_treatment(JOBS job) { m_TreatmentProgress.Treatment = job; m_TreatmentProgress.Progress = 0; }
+    void finish_treatment() { m_TreatmentProgress.Treatment = JOBS::JOB_UNSET; m_TreatmentProgress.Progress = 0; }
 private:
     int m_States = 0;                                // Holds the states the girl has
 
     DirPath m_ImageFolder;
+
+    struct sTreatmentProgress {
+        JOBS Treatment = JOBS::JOB_UNSET;
+        int Progress = 0;
+    };
+    sTreatmentProgress m_TreatmentProgress;
 };
 
 #endif //CRAZYS_WM_MOD_SGIRL_HPP

@@ -61,7 +61,6 @@ namespace {
         FightTraining();
 
         bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-        bool CheckCanWork(sGirl& girl, bool is_night) override;
         double GetPerformance(const sGirl& girl, bool estimate) const override;
         void PreShift(sGirl& girl, bool is_night, cRng& rng) const override;
     };

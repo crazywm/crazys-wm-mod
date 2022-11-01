@@ -1,0 +1,36 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="Rehb">
+    <Description>
+        She will go to rehab to get over her addictions.
+    </Description>
+
+    <Therapy Duration="6" FightChance="25" Title="rehab" SuccessBonus="8" HealthDanger="10">
+        <RemoveTrait Trait="Smoker">She is no longer a Smoker.</RemoveTrait>
+        <RemoveTrait Trait="Cum Addict">She is no longer a Cum Addict.</RemoveTrait>
+        <RemoveTrait Trait="Alcoholic">She is no longer an Alcoholic.</RemoveTrait>
+        <RemoveTrait Trait="Fairy Dust Addict">She is no longer a Fairy Dust Addict.</RemoveTrait>
+        <RemoveTrait Trait="Shroud Addict">She is no longer a Shroud Addict.</RemoveTrait>
+        <RemoveTrait Trait="Viras Blood Addict">She is no longer a Viras Blood Addict.</RemoveTrait>
+    </Therapy>
+
+    <Messages>
+        <Message Name="therapy">
+            <Text>${name} was in rehab to get over her addiction.</Text>
+        </Message>
+        <Message Name="no-need">
+            <Text>${name} is not addicted to anything.</Text>
+        </Message>
+        <Message Name="no-counselor">
+            <Text>${name} sits in rehab doing nothing. You must assign a counselor to treat her.</Text>
+        </Message>
+        <Message Name="continue-therapy">
+            <Text>She should stay in rehab to treat her other addictions.</Text>
+        </Message>
+        <Message Name="death">
+            <Text>${name} died in rehab.</Text>
+        </Message>
+        <Message Name="release">
+            <Text>She has mastered her addiction. She has been released from rehab.</Text>
+        </Message>
+    </Messages>
+</Treatment>

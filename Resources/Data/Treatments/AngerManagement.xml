@@ -1,0 +1,33 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="AMng">
+    <Description>
+        She will go to anger management to get over her anger problems. (Aggressive, Tsundere, Yandere)
+    </Description>
+
+    <Therapy Duration="4" FightChance="20" Title="therapy" SuccessBonus="3" HealthDanger="5">
+        <RemoveTrait Trait="Aggressive">She is no longer Aggressive.</RemoveTrait>
+        <RemoveTrait Trait="Tsundere">She is no longer a Tsundere.</RemoveTrait>
+        <RemoveTrait Trait="Yandere">She is no longer a Yandere.</RemoveTrait>
+    </Therapy>
+
+    <Messages>
+        <Message Name="therapy">
+            <Text>${name} underwent therapy for anger issues.</Text>
+        </Message>
+        <Message Name="no-need">
+            <Text>${name} doesn't need anger management.</Text>
+        </Message>
+        <Message Name="no-counselor">
+            <Text>${name} has no counselor to help her with her anger issues.</Text>
+        </Message>
+        <Message Name="continue-therapy">
+            <Text>She should stay in anger management to treat her other anger issues.</Text>
+        </Message>
+        <Message Name="death">
+            <Text>She died in anger management.</Text>
+        </Message>
+        <Message Name="release">
+            <Text>Her anger issues have been resolved, and she has been released from therapy.</Text>
+        </Message>
+    </Messages>
+</Treatment>

@@ -68,7 +68,6 @@ sGirl::sGirl(bool unique) : ICharacter( g_Game->create_traits_collection(), uniq
 
     // Jobs and money
     m_DayJob = m_NightJob = JOB_UNSET;
-    m_WorkingDay = m_PrevWorkingDay = 0;
 
     m_Refused_To_Work_Day = m_Refused_To_Work_Night = false;
     m_Money = 0;
@@ -466,10 +465,11 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
     pGirl->QueryIntAttribute("Money", &m_Money);
 
     // load working day counter
-    pGirl->QueryIntAttribute("WorkingDay", &m_WorkingDay);
-    pGirl->QueryIntAttribute("PrevWorkingDay", &m_PrevWorkingDay);    // `J` added
-    if (m_WorkingDay < 0)        m_WorkingDay = 0;
-    if (m_PrevWorkingDay < 0)    m_PrevWorkingDay = 0;
+    pGirl->QueryIntAttribute("TreatmentProgress", &m_TreatmentProgress.Progress);
+    std::string treatment_job = GetDefaultedStringAttribute(*pGirl, "TreatmentKind", "");
+    if(!treatment_job.empty()) {
+        m_TreatmentProgress.Treatment = get_job_id(treatment_job);
+    }
 
     // load acom level
     pGirl->QueryIntAttribute("AccLevel", &m_AccLevel);
@@ -568,12 +568,14 @@ tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
     elGirl.SetAttribute("HousePercent", m_HousePercent);                // save acom level
 
     // save working day counter
-    elGirl.SetAttribute("WorkingDay", m_WorkingDay);
-    elGirl.SetAttribute("PrevWorkingDay", m_PrevWorkingDay);    // `J` added
+    if(m_TreatmentProgress.Treatment != JOBS::JOB_UNSET) {
+        elGirl.SetAttribute("TreatmentProgress", m_TreatmentProgress.Progress);
+        elGirl.SetAttribute("TreatmentKind", get_job_name(m_TreatmentProgress.Treatment));
+    }
 
     elGirl.SetAttribute("ImagePath", GetImageFolder().c_str());
 
-    // `J` changed jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
+    // `J` changed jobs to save as quick codes instead of numbers so if new jobs are added they don't shift jobs
     // save jobs
     auto save_job = [&elGirl](const char* attribute, JOBS job){
         if (job < 0 || job > NUM_JOBS) elGirl.SetAttribute(attribute, "255");
@@ -1149,9 +1151,7 @@ FormattedCellData sGirl::GetDetail(const std::string& detailName) const
 FormattedCellData sGirl::GetDetail_Job(std::string const& detailName) const
 {
    bool interrupted = false;    // `J` added
-   if (m_YesterDayJob != m_DayJob &&
-       (cJobManager::is_Surgery_Job(m_YesterDayJob) || m_YesterDayJob == JOB_REHAB) &&
-       ((m_WorkingDay > 0) || m_PrevWorkingDay > 0))
+   if (get_active_treatment() != JOBS::JOB_UNSET && get_active_treatment() != m_DayJob && get_treatment_progress() > 0)
       interrupted = true;
 
    std::ostringstream ss;
@@ -1165,76 +1165,9 @@ FormattedCellData sGirl::GetDetail_Job(std::string const& detailName) const
    {
       ss << "None";
    }
-   else if (DN_Job == JOB_FAKEORGASM || DN_Job == JOB_SO_STRAIGHT || DN_Job == JOB_SO_BISEXUAL || DN_Job == JOB_SO_LESBIAN)
+   else if (DN_Job == get_active_treatment() && get_treatment_progress() > 0)
    {
-      ss << job_name << " (" << m_WorkingDay << "%)";
-   }
-   else if (DN_Job == JOB_CUREDISEASES)
-   {
-      if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
-      {
-         ss << job_name << " (" << m_WorkingDay << "%)";
-      }
-      else
-      {
-         ss << job_name << " (" << m_WorkingDay << "%) **";
-      }
-   }
-   else if (DN_Job == JOB_REHAB || DN_Job == JOB_ANGER || DN_Job == JOB_EXTHERAPY || DN_Job == JOB_THERAPY)
-   {
-      if (m_Building->num_girls_on_job(JOB_COUNSELOR, DN_Day) > 0)
-      {
-         ss << job_name << " (" << 3 - m_WorkingDay << ")";
-      }
-      else
-      {
-         ss << job_name << " (?)***";
-      }
-   }
-   else if (DN_Job == JOB_GETHEALING)
-   {
-      if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
-      {
-         ss << job_name;
-      }
-      else
-      {
-         ss << job_name << " ***";
-      }
-   }
-   else if (DN_Job == JOB_GETABORT)
-   {
-      int wdays = (2 - (this)->m_WorkingDay);
-      if (m_Building->num_girls_on_job(JOB_NURSE, DN_Day) > 0)
-      {
-         wdays = 1;
-      }
-      if (m_Building->num_girls_on_job( JOB_DOCTOR, DN_Day) > 0)
-      {
-         ss << job_name << " (" << wdays << ")*";
-      }
-      else
-      {
-         ss << job_name << " (?)***";
-      }
-   }
-   else if (cJobManager::is_Surgery_Job(DN_Job))
-   {
-      int wdays = (5 - (this)->m_WorkingDay);
-      if (m_Building->num_girls_on_job(JOB_NURSE, DN_Day) > 0)
-      {
-         if (wdays >= 3)        { wdays = 3; }
-         else if (wdays > 1)    { wdays = 2; }
-         else                { wdays = 1; }
-      }
-      if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
-      {
-         ss << job_name << " (" << wdays << ")*";
-      }
-      else
-      {
-         ss << job_name << " (?)***";
-      }
+      ss << job_name << " (" << get_treatment_progress() << "%)";
    }
    else if (is_Actress_Job(DN_Job) && CrewNeeded(*m_Building))
    {

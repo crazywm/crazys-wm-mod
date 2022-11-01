@@ -1,0 +1,32 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="SOBi">
+    <Description>
+        You will make sure she likes having sex with both men and women.
+    </Description>
+
+    <Messages>
+        <Message Name="training">
+            <Text>You proceed to change ${name}'s sexual orientation to Bisexual.</Text>
+        </Message>
+        <Message Name="is-already">
+            <Text>${name} is already Bisexual.</Text>
+        </Message>
+        <Message Name="no-mistress">
+            <Text>There is no Mistress available to train ${name}.</Text>
+        </Message>
+        <Message Name="no-progress">
+            <Text>She resisted all attempts to make her Bisexual.</Text>
+        </Message>
+        <Message Name="progress">
+            <Text>Her Sexual Orientation conversion to Bisexual is</Text>
+        </Message>
+        <Message Name="complete">
+            <Text>Her Sexual Orientation conversion is complete. She is now Bisexual.</Text>
+        </Message>
+
+        <Message Name="broken-will">
+            <Text>She just sits there doing exactly what you tell her to do.
+                You don't think it is really getting through to her.</Text>
+        </Message>
+    </Messages>
+</Treatment>

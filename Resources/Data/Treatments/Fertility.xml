@@ -1,0 +1,23 @@
+<!DOCTYPE Treatment SYSTEM "treatment.dtd">
+<Treatment ShortName="FrtT">
+    <Description>
+        She will undergo surgery to make her fertile.
+        *(Takes up to 5 turns, less if a Nurse is on duty)
+    </Description>
+
+    <Surgery Duration="5">
+        <TraitExclude Trait="Fertile">${name} is already as Fertile as she can be.</TraitExclude>
+    </Surgery>
+
+    <Messages>
+        <Message Name="surgery">
+            <Text>${name} is in the Clinic to get fertility treatment.</Text>
+        </Message>
+
+        <Message Name="doctor.work">
+            <Text>Today, she worked on improving ${name}'s fertility.</Text>
+        </Message>
+
+        <Include>DefaultSurgeryMessages.xml</Include>
+    </Messages>
+</Treatment>
