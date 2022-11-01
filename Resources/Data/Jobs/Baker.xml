@@ -37,6 +37,9 @@
         <Message Name="work">
             <Text>${name} worked as a baker on the farm.</Text>
         </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to bake during the ${shift} shift.</Text>
+        </Message>
         <Message Name="repair">
             <Text>She spent some of her time repairing the Farm's equipment instead of making new stuff.</Text>
         </Message>

@@ -119,16 +119,6 @@ void GenericCraftingJob::performance_msg() {
     add_performance_text();
 }
 
-IGenericJob::eCheckWorkResult GenericCraftingJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.disobey_check(m_Data.Action, job()))            // they refuse to work
-    {
-        ss << "${name} refused to work during the " << (is_night ? "night" : "day") << " shift.";
-        girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
-    }
-    return eCheckWorkResult::ACCEPTS;
-}
-
 struct cBlacksmithJob : GenericCraftingJob {
     cBlacksmithJob();
     void DoWorkEvents(sGirl& girl) override;

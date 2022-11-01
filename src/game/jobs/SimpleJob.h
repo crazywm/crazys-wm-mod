@@ -42,6 +42,12 @@ public:
 
 protected:
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+
+    /// This function should check if `girl` is, in principle, available to do this job.
+    /// It should return false if she could not work even if she wanted to, due to external circumstances.
+    /// In that case a message should be attached to girl.
+    virtual bool CheckCanWork(sGirl& girl, bool is_night) { return true; };
+
     void InitWork() override;
     void HandleGains(sGirl& girl, int fame);
     sSimpleJobData m_Data;

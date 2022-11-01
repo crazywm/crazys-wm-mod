@@ -34,4 +34,13 @@
             ${name} has had to heal from so many injuries you can't say she is Fragile anymore.
         </LoseTrait>
     </Gains>
+
+    <Messages>
+        <Message Name="refuse">
+            <Text>${name} refused to fight beasts today.</Text>
+        </Message>
+        <Message Name="no-beasts">
+            <Text>${name} had no beasts to fight.</Text>
+        </Message>
+    </Messages>
 </Job>

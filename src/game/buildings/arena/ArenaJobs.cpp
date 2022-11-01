@@ -47,7 +47,7 @@ namespace {
         FightBeasts();
 
         bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-        eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+        bool CheckCanWork(sGirl& girl, bool is_night) override;
     };
 
     class FightGirls : public cSimpleJob {
@@ -61,7 +61,7 @@ namespace {
         FightTraining();
 
         bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-        eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+        bool CheckCanWork(sGirl& girl, bool is_night) override;
         double GetPerformance(const sGirl& girl, bool estimate) const override;
     };
 }
@@ -146,21 +146,16 @@ FightBeasts::FightBeasts() : cSimpleJob(JOB_FIGHTBEASTS, "FightBeasts.xml", {ACT
 
 }
 
-IGenericJob::eCheckWorkResult FightBeasts::CheckWork(sGirl& girl, bool is_night) {
+bool FightBeasts::CheckCanWork(sGirl& girl, bool is_night) {
     if (g_Game->storage().beasts() < 1)
     {
-        ss << "${name} had no beasts to fight.";
+        add_text("no-beasts");
         girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-        return eCheckWorkResult::IMPOSSIBLE;    // not refusing
+        return false;    // not refusing
     }
-    if (girl.disobey_check(ACTION_COMBAT, JOB_FIGHTBEASTS))
-    {
-        ss << "${name} refused to fight beasts today.\n";
-        girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
-        return eCheckWorkResult::REFUSES;
-    }
-    return eCheckWorkResult::ACCEPTS;
+    return true;
 }
+
 
 bool FightBeasts::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     bool has_armor = girl.get_num_item_equiped(sInventoryItem::Armor);
@@ -450,15 +445,14 @@ double FightTraining::GetPerformance(const sGirl& girl, bool estimate) const {
     return 0.0;
 }
 
-IGenericJob::eCheckWorkResult FightTraining::CheckWork(sGirl& girl, bool is_night) {
+bool FightTraining::CheckCanWork(sGirl& girl, bool is_night) {
     if (girl.combat() + girl.magic() + girl.agility() +
         girl.constitution() + girl.strength() >= 500)
     {
         ss << "There is nothing more she can learn here so ${name} takes the rest of the day off.";
         girl.m_NightJob = girl.m_DayJob = JOB_RESTING;
-        return eCheckWorkResult::IMPOSSIBLE;    // not refusing
+        return false;    // not refusing
     }
-    return SimpleRefusalCheck(girl, ACTION_COMBAT);
 }
 
 bool FightTraining::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {

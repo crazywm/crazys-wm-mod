@@ -28,6 +28,9 @@
         <Message Name="work">
             <Text>${name} worked as a blacksmith at the arena.</Text>
         </Message>
+        <Message Name="refuse">
+            <Text>${name} refused to work in the smithy during the ${shift} shift.</Text>
+        </Message>
         <Message Name="repair">
             <Text>She spent some of her time repairing the Arena's equipment instead of making new stuff.</Text>
         </Message>

@@ -63,6 +63,9 @@ void cSimpleJob::HandleGains(sGirl& girl, int fame) {
 }
 
 IGenericJob::eCheckWorkResult cSimpleJob::CheckWork(sGirl& girl, bool is_night) {
+    if(!CheckCanWork(girl, is_night)) {
+        return eCheckWorkResult::IMPOSSIBLE;
+    }
     return SimpleRefusalCheck(girl, m_Data.Action);
 }
 

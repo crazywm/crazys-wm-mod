@@ -63,22 +63,21 @@ public:
 
 };
 
-cCrewJob::eCheckWorkResult cCrewJob::CheckWork(sGirl& girl, bool is_night) {
+bool cCrewJob::CheckCanWork(sGirl& girl, bool is_night) {
     auto brothel = girl.m_Building;
     if (brothel->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || brothel->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
     {
         add_text("no-crew");
         girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
-        return eCheckWorkResult::IMPOSSIBLE;    // not refusing
+        return false;    // not refusing
     }
     else if (GetNumberActresses(*brothel) < 1)
     {
         add_text("no-actress");
         girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_NOWORK);
-        return eCheckWorkResult::IMPOSSIBLE;    // not refusing
+        return false;    // not refusing
     }
-
-    return cSimpleJob::CheckWork(girl, is_night);
+    return true;
 }
 
 bool cCrewJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {

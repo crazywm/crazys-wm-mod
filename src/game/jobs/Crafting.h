@@ -34,7 +34,6 @@ public:
 
 protected:
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
 
     // shift processing data
     int craftpoints;

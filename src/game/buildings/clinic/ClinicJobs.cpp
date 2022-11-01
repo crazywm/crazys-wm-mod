@@ -43,8 +43,6 @@ DoctorJob::DoctorJob() : cSimpleJob(JOB_DOCTOR, "Doctor.xml", {ACTION_WORKDOCTOR
 
 bool DoctorJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     // this will be added to the clinic's code eventually - for now it is just used for her pay
-    // Doctor is a full time job now
-    girl.m_DayJob = girl.m_NightJob = JOB_DOCTOR;
 
     ProvideInteraction(DoctorInteractionId, 1);
 
