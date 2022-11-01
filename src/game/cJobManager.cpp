@@ -1483,6 +1483,14 @@ sWorkJobResult cJobManager::do_job(JOBS job_id, sGirl& girl, bool is_night)
     return result;
 }
 
+void cJobManager::handle_pre_shift(sGirl& girl, bool is_night) {
+    auto job_id = girl.get_job(is_night);
+    auto ctx{g_Game->push_error_context("pre@job: " + get_job_name(job_id))};
+    assert(m_OOPJobs[job_id] != nullptr);
+    m_OOPJobs[job_id]->PreShift(girl, is_night, g_Dice);
+}
+
+
 // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cClinic.cpp >> is_Surgery_Job
 bool cJobManager::is_Surgery_Job(int testjob) {
     if (testjob == JOB_CUREDISEASES ||

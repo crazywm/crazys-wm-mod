@@ -22,7 +22,7 @@
 #include "buildings/IBuilding.h"
 #include "buildings/queries.h"
 #include "cGirls.h"
-#include "jobs/GenericJob.h"
+#include "jobs/IGenericJob.h"
 #include "StudioJobs.h"
 
 extern const char* const FluffPointsId;

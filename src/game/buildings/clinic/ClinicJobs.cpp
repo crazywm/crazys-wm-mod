@@ -29,16 +29,47 @@ extern const char* const CarePointsBasicId;
 extern const char* const CarePointsGoodId;
 extern const char* const DoctorInteractionId;
 
+namespace {
+    void HandleAids(sGirl& girl) {
+        if (girl.has_active_trait(traits::AIDS)) {
+            girl.AddMessage(
+                    "Health laws prohibit anyone with AIDS from working in the Medical profession, so ${name} was sent to get treated.",
+                    EImageBaseType::PROFILE, EVENT_WARNING);
+            girl.m_DayJob = girl.m_NightJob = JOB_CUREDISEASES;
+            return;
+        }
+    }
+}
+
 struct DoctorJob : public cSimpleJob {
     DoctorJob();
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-    eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+    void PreShift(sGirl& girl, bool is_night, cRng& rng) const override;
 };
 
 DoctorJob::DoctorJob() : cSimpleJob(JOB_DOCTOR, "Doctor.xml", {ACTION_WORKDOCTOR, 100, EImageBaseType::NURSE}) {
     m_Info.FullTime = true;
     m_Info.FreeOnly = true;
     m_Info.Provides.emplace_back(DoctorInteractionId);
+}
+
+
+void DoctorJob::PreShift(sGirl& girl, bool is_night, cRng& rng) const {
+    HandleAids(girl);
+    if (girl.is_slave())
+    {
+        girl.AddMessage("Slaves are not allowed to be Doctors, so ${name} was reassigned to being a Nurse.",
+                        EImageBaseType::NURSE, EVENT_WARNING);
+        girl.m_DayJob = girl.m_NightJob = JOB_NURSE;
+        return;
+    }
+    if (girl.medicine() < 50 || girl.intelligence() < 50)
+    {
+        girl.AddMessage("${name} does not have enough training to work as a Doctor. She has been reassigned to Internship so she can learn what she needs.",
+                        EImageBaseType::NURSE, EVENT_WARNING);
+        girl.m_DayJob = girl.m_NightJob = JOB_INTERN;
+        return;
+    }
 }
 
 bool DoctorJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
@@ -74,36 +105,31 @@ bool DoctorJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     return false;
 }
 
-IGenericJob::eCheckWorkResult DoctorJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.has_active_trait(traits::AIDS))
-    {
-        ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to get treated.";
-        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
-        girl.m_DayJob = girl.m_NightJob = JOB_CUREDISEASES;
-        return eCheckWorkResult::IMPOSSIBLE;
-    }
-    if (girl.is_slave())
-    {
-        ss << "Slaves are not allowed to be Doctors so ${name} was reassigned to being a Nurse.";
-        girl.AddMessage(ss.str(), EImageBaseType::NURSE, EVENT_WARNING);
-        girl.m_DayJob = girl.m_NightJob = JOB_NURSE;
-        return eCheckWorkResult::IMPOSSIBLE;
-    }
-    if (girl.medicine() < 50 || girl.intelligence() < 50)
-    {
-        ss << "${name} does not have enough training to work as a Doctor. She has been reassigned to Internship so she can learn what she needs.";
-        girl.AddMessage(ss.str(), EImageBaseType::NURSE, EVENT_WARNING);
-        girl.m_DayJob = girl.m_NightJob = JOB_INTERN;
-        return eCheckWorkResult::IMPOSSIBLE;
-    }
-    return eCheckWorkResult::ACCEPTS;
-}
-
 struct NurseJob : public cSimpleJob {
     NurseJob();
     bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+    void PreShift(sGirl& girl, bool is_night, cRng& rng) const override;
 };
+
+void NurseJob::PreShift(sGirl& girl, bool is_night, cRng& rng) const {
+    HandleAids(girl);
+}
+
+IGenericJob::eCheckWorkResult NurseJob::CheckWork(sGirl& girl, bool is_night) {
+    if (girl.disobey_check(ACTION_WORKNURSE, JOB_NURSE))            // they refuse to work
+    {
+        ss << "${name} refused to see any patients during the " << (is_night ? "night" : "day") << " shift.";
+        if (girl.tiredness() > 50 && chance(girl.tiredness() - 30))
+        {
+            ss << "\nShe was found sleeping " << rng().select_text({"in a supply closet.", "in an empty patient bed."});
+            girl.tiredness(-uniform(0, 40));
+        }
+        girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
+        return IGenericJob::eCheckWorkResult::REFUSES;
+    }
+    return IGenericJob::eCheckWorkResult::ACCEPTS;
+}
 
 NurseJob::NurseJob() : cSimpleJob(JOB_NURSE, "Nurse.xml", {ACTION_WORKNURSE, 0, EImageBaseType::NURSE}) {
     m_Info.FullTime = true;
@@ -288,40 +314,20 @@ bool NurseJob::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) {
     return false;
 }
 
-IGenericJob::eCheckWorkResult NurseJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.has_active_trait(traits::AIDS))
-    {
-        ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
-        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
-        girl.FullJobReset(JOB_RESTING);
-        return IGenericJob::eCheckWorkResult::IMPOSSIBLE;
-    }
-
-    if (girl.disobey_check(ACTION_WORKNURSE, JOB_NURSE))            // they refuse to work
-    {
-        ss << "${name} refused to see any patients during the " << (is_night ? "night" : "day") << " shift.";
-        if (girl.tiredness() > 50 && chance(girl.tiredness() - 30))
-        {
-            ss << "\nShe was found sleeping " << rng().select_text({"in a supply closet.", "in an empty patient bed."});
-            girl.tiredness(-uniform(0, 40));
-        }
-        girl.AddMessage(ss.str(), EImageBaseType::REFUSE, EVENT_NOWORK);
-        return IGenericJob::eCheckWorkResult::REFUSES;
-    }
-    return IGenericJob::eCheckWorkResult::ACCEPTS;
-}
-
 struct InternJob : public cBasicJob {
     InternJob();
     sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
     double GetPerformance(const sGirl& girl, bool estimate) const override;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) override;
+    void PreShift(sGirl& girl, bool is_night, cRng& rng) const override;
 };
 
 InternJob::InternJob() : cBasicJob(JOB_INTERN, "Intern.xml") {
     m_Info.Provides.emplace_back(CarePointsBasicId);
 }
-
+void InternJob::PreShift(sGirl& girl, bool is_night, cRng& rng) const {
+    HandleAids(girl);
+}
 double InternJob::GetPerformance(const sGirl& girl, bool estimate) const {
     if (estimate)// for third detail string
     {
@@ -364,12 +370,12 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
     int roll_c = d100();                                    // roll for enjoyment
 
 
-    /* */if (roll_a <= 5)    skill = 7;
+    if (roll_a <= 5)          skill = 7;
     else if (roll_a <= 15)    skill = 6;
     else if (roll_a <= 30)    skill = 5;
     else if (roll_a <= 60)    skill = 4;
-    else /*             */    skill = 3;
-    /* */if (girl.has_active_trait(traits::QUICK_LEARNER))    { skill += 1; }
+    else                      skill = 3;
+    if (girl.has_active_trait(traits::QUICK_LEARNER))        { skill += 1; }
     else if (girl.has_active_trait(traits::SLOW_LEARNER))    { skill -= 1; }
     skill -= dirtyloss;
     ss << "The Clinic is ";
@@ -429,14 +435,8 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
                 }
                 break;
             case 4:
-                break;
             case 5:
-
-                break;
             case 6:
-
-                break;
-
             default:    break;    // no trait gained
         }
     }
@@ -470,9 +470,9 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
 
 
     //enjoyed the work or not
-    /* */if (roll_c <= 10)    { enjoy -= uniform(1, 3);    ss << "Some of the patrons abused her during the shift."; }
+    if (roll_c <= 10)         { enjoy -= uniform(1, 3);    ss << "Some of the patrons abused her during the shift."; }
     else if (roll_c >= 90)    { enjoy += uniform(1, 3);    ss << "She had a pleasant time working."; }
-    else /*             */    { enjoy += uniform(0, 1);        ss << "Otherwise, the shift passed uneventfully."; }
+    else                      { enjoy += uniform(0, 1);    ss << "Otherwise, the shift passed uneventfully."; }
     girl.upd_Enjoyment(actiontype, enjoy);
 
     girl.AddMessage(ss.str(), EImageBaseType::PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
@@ -493,13 +493,6 @@ sWorkJobResult InternJob::DoWork(sGirl& girl, bool is_night) {
 }
 
 IGenericJob::eCheckWorkResult InternJob::CheckWork(sGirl& girl, bool is_night) {
-    if (girl.has_active_trait(traits::AIDS))
-    {
-        ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
-        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
-        girl.FullJobReset(JOB_RESTING);
-        return IGenericJob::eCheckWorkResult::IMPOSSIBLE;
-    }
     if (girl.medicine() + girl.intelligence() + girl.charisma() >= 300)
     {
         ss << "There is nothing more she can learn here so she is promoted to ";

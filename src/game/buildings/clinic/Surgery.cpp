@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jobs/GenericJob.h"
+#include "jobs/IGenericJob.h"
 #include "cJobManager.h"
 #include "cGirls.h"
 #include "character/sGirl.h"
@@ -68,7 +68,7 @@ public:
         m_Info.Consumes.emplace_back(CarePointsGoodId);
     }
     sWorkJobResult DoWork(sGirl& girl, bool is_night) override;
-
+    void PreShift(sGirl& girl, bool is_night, cRng& rng) const override;
 private:
     virtual void ReceiveTreatment(sGirl& girl, bool is_night) = 0;
 };
@@ -77,6 +77,16 @@ sWorkJobResult ITreatmentJob::DoWork(sGirl& girl, bool is_night) {
     cGirls::UnequipCombat(girl);    // not for patient
     ReceiveTreatment(girl, is_night);
     return {false, 0, 0, 0};
+}
+
+void ITreatmentJob::PreShift(sGirl& girl, bool is_night, cRng& rng) const {
+    // check validity of the job
+    auto valid = is_job_valid(girl);
+    if (!valid) {
+        girl.FullJobReset(JOB_RESTING);
+        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
+        girl.AddMessage(valid.Reason + " She was sent to the waiting room.", EImageBaseType::PROFILE, EVENT_WARNING);
+    }
 }
 
 struct SurgeryJob : public ITreatmentJob {
@@ -179,16 +189,6 @@ void SurgeryJob::ReceiveTreatment(sGirl& girl, bool is_night) {
 }
 
 IGenericJob::eCheckWorkResult SurgeryJob::CheckWork(sGirl& girl, bool is_night) {
-    // check validity of the job
-    auto valid = is_job_valid(girl);
-    if (!valid) {
-        girl.FullJobReset(JOB_RESTING);
-        girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
-        ss << valid.Reason << " She was sent to the waiting room.";
-        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
-        return IGenericJob::eCheckWorkResult::IMPOSSIBLE;    // not refusing
-    }
-
     if (!HasInteraction(DoctorInteractionId)) {
         // calling request-interaction because we still want to count how many interactions where requested.
         RequestInteraction(DoctorInteractionId);
@@ -581,6 +581,7 @@ private:
     void ReceiveTreatment(sGirl& girl, bool is_night) final;
     double GetPerformance(const sGirl& girl, bool estimate) const final;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) final;
+    void PreShift(sGirl& girl, bool is_night, cRng& rng) const final;
 };
 
 CureDiseases::CureDiseases() : ITreatmentJob(JOB_CUREDISEASES, "Cure") {
@@ -674,7 +675,12 @@ double CureDiseases::GetPerformance(const sGirl& girl, bool estimate) const {
 }
 
 auto CureDiseases::CheckWork(sGirl& girl, bool is_night) -> eCheckWorkResult {
+    return IGenericJob::eCheckWorkResult::ACCEPTS;
+}
+
+void CureDiseases::PreShift(sGirl& girl, bool is_night, cRng& rng) const{
     if (!has_disease(girl)) {
+        std::stringstream ss;
         ss << "${name} has no diseases";
         JOBS new_job = JOB_RESTING;
         if (girl.health() < 80 || girl.tiredness() > 20)
@@ -685,10 +691,7 @@ auto CureDiseases::CheckWork(sGirl& girl, bool is_night) -> eCheckWorkResult {
         girl.FullJobReset(new_job);
         girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
         girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
-        return IGenericJob::eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
-
-    return IGenericJob::eCheckWorkResult::ACCEPTS;
 }
 
 
@@ -699,6 +702,7 @@ private:
     void ReceiveTreatment(sGirl& girl, bool is_night) final;
     double GetPerformance(const sGirl& girl, bool estimate) const final;
     eCheckWorkResult CheckWork(sGirl& girl, bool is_night) final;
+    void PreShift(sGirl& girl, bool is_night, cRng& rng) const final;
 };
 
 Abortion::Abortion() : ITreatmentJob(JOB_GETABORT, "Abrt") {
@@ -896,15 +900,16 @@ double Abortion::GetPerformance(const sGirl& girl, bool estimate) const {
     return 100;                                            // C - customer's child
 }
 
-IGenericJob::eCheckWorkResult Abortion::CheckWork(sGirl& girl, bool is_night) {
+void Abortion::PreShift(sGirl& girl, bool is_night, cRng& rng) const {
     if (!girl.is_pregnant())
     {
-        ss << "${name} is not pregnant so she was sent to the waiting room.";
-        girl.AddMessage(ss.str(), EImageBaseType::PROFILE, EVENT_WARNING);
+        girl.AddMessage("${name} is not pregnant so she was sent to the waiting room.", EImageBaseType::PROFILE, EVENT_WARNING);
         girl.FullJobReset(JOB_RESTING);
         girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
-        return eCheckWorkResult::IMPOSSIBLE;    // not refusing
     }
+}
+
+IGenericJob::eCheckWorkResult Abortion::CheckWork(sGirl& girl, bool is_night) {
     return eCheckWorkResult::ACCEPTS;
 }
 

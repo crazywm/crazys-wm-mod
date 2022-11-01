@@ -22,7 +22,7 @@
 
 #include <unordered_map>
 
-#include "GenericJob.h"
+#include "IGenericJob.h"
 #include "JobData.h"
 #include "text/repo.h"
 

@@ -63,6 +63,7 @@ namespace {
         bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
         bool CheckCanWork(sGirl& girl, bool is_night) override;
         double GetPerformance(const sGirl& girl, bool estimate) const override;
+        void PreShift(sGirl& girl, bool is_night, cRng& rng) const override;
     };
 }
 
@@ -445,13 +446,13 @@ double FightTraining::GetPerformance(const sGirl& girl, bool estimate) const {
     return 0.0;
 }
 
-bool FightTraining::CheckCanWork(sGirl& girl, bool is_night) {
+void FightTraining::PreShift(sGirl& girl, bool is_night, cRng& rng) const {
     if (girl.combat() + girl.magic() + girl.agility() +
         girl.constitution() + girl.strength() >= 500)
     {
-        ss << "There is nothing more she can learn here so ${name} takes the rest of the day off.";
         girl.m_NightJob = girl.m_DayJob = JOB_RESTING;
-        return false;    // not refusing
+        girl.AddMessage("There is nothing more she can learn here so ${name} takes the rest of the day off.",
+                        EImageBaseType::PROFILE, EVENT_WARNING);
     }
 }
 
@@ -467,7 +468,7 @@ bool FightTraining::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night
     int skill = 0;                                                // gian for main skill trained
     int dirtyloss = brothel.m_Filthiness / 100;                // training time wasted with bad equipment
     int sgCmb = 0, sgMag = 0, sgAgi = 0, sgCns = 0, sgStr = 0;    // gains per skill
-    int roll_a = d100();                                    // roll for main skill gain
+    int roll_a = d100();                                     // roll for main skill gain
     int roll_b = d100();                                    // roll for main skill trained
     int roll_c = d100();                                    // roll for enjoyment
 

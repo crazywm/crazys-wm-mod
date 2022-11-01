@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WM_GENERICJOB_H
-#define WM_GENERICJOB_H
+#ifndef WM_IGENERICJOB_H
+#define WM_IGENERICJOB_H
 
 #include <vector>
 #include <memory>
@@ -53,7 +53,7 @@ struct sJobInfo {
 struct sJobValidResult {
     bool IsValid;
     std::string Reason;
-    operator bool() const { return IsValid; }
+    explicit operator bool() const { return IsValid; }
 };
 
 class IGenericJob {
@@ -70,6 +70,12 @@ public:
 
     /// Checks whether the given girl can do this job.
     virtual sJobValidResult is_job_valid(const sGirl& girl) const;
+
+    /// Handles simple pre-shift setup, before any actual jobs are run.
+    /// Note: This function cannot handle any
+    /// stateful job processing. Multiple `PreShift` calls for different
+    /// girls might happen before the corresponding `Work` calls.
+    virtual void PreShift(sGirl& girl, bool is_night, cRng& rng) const {};
 
     /// Lets the girl do the job
     sWorkJobResult Work(sGirl& girl, bool is_night, cRng& rng);
@@ -142,4 +148,4 @@ protected:
     sJobInfo m_Info;
 };
 
-#endif //WM_GENERICJOB_H
+#endif //WM_IGENERICJOB_H

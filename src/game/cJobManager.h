@@ -86,6 +86,9 @@ public:
 
     bool is_free_only(JOBS job) const;
 
+    /// does the pre-shift setup part of the job processing
+    void handle_pre_shift(sGirl& girl, bool is_night);
+
     // does the whole package of job processing: Runs the job, in case of refusal creates an event, and processes
     // pay for the building.
     void handle_simple_job(sGirl& girl, bool is_night);

@@ -1729,6 +1729,7 @@ void IBuilding::GirlBeginShift(sGirl& girl, bool is_night) {
     cGirls::UseItems(girl);
     cGirls::CalculateGirlType(girl);        // update the fetish traits
     cGirls::UpdateAskPrice(girl, true);    // Calculate the girls asking price
+    g_Game->job_manager().handle_pre_shift(girl, is_night);
 }
 
 void IBuilding::declare_resource(const std::string& name) {

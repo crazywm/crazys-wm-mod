@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "GenericJob.h"
+#include "IGenericJob.h"
 #include <functional>
 #include <boost/throw_exception.hpp>
 #include "CLog.h"

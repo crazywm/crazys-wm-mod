@@ -20,7 +20,7 @@
 #include "traits/ITraitsCollection.h"
 #include "predicates.h"
 #include "pregnancy.h"
-#include "jobs/GenericJob.h"
+#include "jobs/IGenericJob.h"
 #include "buildings/cDungeon.h"
 
 extern cRng g_Dice;
