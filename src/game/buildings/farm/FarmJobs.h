@@ -30,4 +30,70 @@ protected:
     void HandleGains(sGirl& girl);
 };
 
+class cFarmJobFarmer : public cFarmJob {
+public:
+    cFarmJobFarmer();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+};
+
+class cFarmJobMarketer : public cFarmJob {
+public:
+    cFarmJobMarketer();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+    double GetPerformance(const sGirl& girl, bool estimate) const override;
+};
+
+class cFarmJobVeterinarian : public cFarmJob {
+public:
+    cFarmJobVeterinarian();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+private:
+};
+
+class cFarmJobShepherd : public cFarmJob {
+public:
+    cFarmJobShepherd();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+};
+
+class cFarmJobRancher : public cFarmJob {
+public:
+    cFarmJobRancher();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+};
+
+class cFarmJobMilker : public cFarmJob {
+public:
+    cFarmJobMilker();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night);
+};
+
+class cFarmJobGetMilked : public cFarmJob {
+public:
+    cFarmJobGetMilked();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+    double GetPerformance(const sGirl& girl, bool estimate) const override;
+private:
+    double toOz(int ml)            { return (0.0338 * ml); }
+};
+
+class cFarmJobCatacombRancher : public cFarmJob {
+public:
+    cFarmJobCatacombRancher();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+};
+
+class cFarmJobBeastCapture : public cFarmJob {
+public:
+    cFarmJobBeastCapture();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night);
+};
+
+class cFarmJobResearch : public cFarmJob {
+public:
+    cFarmJobResearch();
+    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
+    double GetPerformance(const sGirl& girl, bool estimate) const override;
+};
+
 #endif //WM_FARMJOBS_H

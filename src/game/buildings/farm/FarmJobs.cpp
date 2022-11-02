@@ -42,12 +42,6 @@ void cFarmJob::HandleGains(sGirl& girl) {
     apply_gains(girl, m_Performance);
 }
 
-class cFarmJobFarmer : public cFarmJob {
-public:
-    cFarmJobFarmer();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-};
-
 cFarmJobFarmer::cFarmJobFarmer() : cFarmJob(
         JOB_FARMER, "Farmer.xml", {ACTION_WORKFARM, 20, EImageBaseType::FARM}) {
 }
@@ -190,13 +184,6 @@ bool cFarmJobFarmer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
 
     return false;
 }
-
-class cFarmJobMarketer : public cFarmJob {
-public:
-    cFarmJobMarketer();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-    double GetPerformance(const sGirl& girl, bool estimate) const override;
-};
 
 cFarmJobMarketer::cFarmJobMarketer() : cFarmJob(JOB_MARKETER, "Marketer.xml",
     {ACTION_WORKCUSTSERV, 20, EImageBaseType::PROFILE}) {
@@ -368,14 +355,6 @@ bool cFarmJobMarketer::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     return false;
 }
 
-
-class cFarmJobVeterinarian : public cFarmJob {
-public:
-    cFarmJobVeterinarian();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-private:
-};
-
 cFarmJobVeterinarian::cFarmJobVeterinarian() : cFarmJob(
         JOB_VETERINARIAN, "Veterinarian.xml", {ACTION_WORKFARM, 20}) {
 }
@@ -415,12 +394,6 @@ bool cFarmJobVeterinarian::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
 
     return false;
 }
-
-class cFarmJobShepherd : public cFarmJob {
-public:
-    cFarmJobShepherd();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-};
 
 cFarmJobShepherd::cFarmJobShepherd() : cFarmJob(
         JOB_SHEPHERD, "Shepherd.xml", {ACTION_WORKFARM, 20, EImageBaseType::HERD}) {
@@ -536,12 +509,6 @@ bool cFarmJobShepherd::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_ni
     return false;
 }
 
-class cFarmJobRancher : public cFarmJob {
-public:
-    cFarmJobRancher();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-};
-
 cFarmJobRancher::cFarmJobRancher() : cFarmJob(
         JOB_RANCHER, "Rancher.xml", {ACTION_WORKFARM, 20, EImageBaseType::FARM}) {
 }
@@ -654,13 +621,6 @@ bool cFarmJobRancher::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nig
     HandleGains(girl);
     return false;
 }
-
-
-class cFarmJobMilker : public cFarmJob {
-public:
-    cFarmJobMilker();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night);
-};
 
 cFarmJobMilker::cFarmJobMilker() : cFarmJob(
         JOB_MILKER, "Milker.xml", {ACTION_WORKFARM, 20, EImageBaseType::FARM}) {
@@ -816,12 +776,6 @@ bool cFarmJobMilker::JobProcessing(sGirl& girl, IBuilding& brothel, bool is_nigh
     return false;
 }
 
-
-class cFarmJobBeastCapture : public cFarmJob {
-public:
-    cFarmJobBeastCapture();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night);
-};
 
 cFarmJobBeastCapture::cFarmJobBeastCapture() : cFarmJob(
         JOB_BEASTCAPTURE, "BeastCapture.xml", {ACTION_COMBAT, 40, EImageBaseType::COMBAT, true}) {
@@ -1026,15 +980,6 @@ bool cFarmJobBeastCapture::JobProcessing(sGirl& girl, IBuilding& brothel, bool i
     return false;
 }
 
-
-class cFarmJobGetMilked : public cFarmJob { 
-public:
-    cFarmJobGetMilked();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-    double GetPerformance(const sGirl& girl, bool estimate) const override;
-private:
-    double toOz(int ml)            { return (0.0338 * ml); }
-};
 
 cFarmJobGetMilked::cFarmJobGetMilked() : cFarmJob(
         JOB_MILK, "GetMilked.xml", {ACTION_WORKMILK}) {
@@ -1555,13 +1500,6 @@ double cFarmJobGetMilked::GetPerformance(const sGirl& girl, bool estimate) const
     return jobperformance;
 }
 
-class cFarmJobCatacombRancher : public cFarmJob {
-public:
-    cFarmJobCatacombRancher();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-private:
-};
-
 cFarmJobCatacombRancher::cFarmJobCatacombRancher() : cFarmJob(
         JOB_CATACOMBRANCHER, "CatacombRancher.xml", {ACTION_WORKFARM, 20}) {
 }
@@ -1587,12 +1525,6 @@ bool cFarmJobCatacombRancher::JobProcessing(sGirl& girl, IBuilding& brothel, boo
     return false;
 }
 
-class cFarmJobResearch : public cFarmJob {
-public:
-    cFarmJobResearch();
-    bool JobProcessing(sGirl& girl, IBuilding& brothel, bool is_night) override;
-    double GetPerformance(const sGirl& girl, bool estimate) const override;
-};
 
 cFarmJobResearch::cFarmJobResearch() : cFarmJob(JOB_RESEARCH, "FarmResearch.xml", {ACTION_WORKTRAINING, 40}) {
 }
