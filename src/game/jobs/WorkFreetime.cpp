@@ -158,6 +158,9 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 case FT_WindowShopping:
                 case FT_ClinicVisit:
                 case FT_WorkOut:
+                case FT_VisitBar:
+                case FT_Club:
+                case FT_Hobby:
                     choicemade = true;    // ready so continue
                     break;
 
@@ -249,10 +252,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 
                     // These are not ready so reroll.
                 case FT_Picnic:
-                case FT_VisitBar:
-                case FT_Club:
                 case FT_Quest:
-                case FT_Hobby:
                     //case FT_Counseling:
                 case FT_StrollInCity:
                 case FT_Casino:
@@ -1174,7 +1174,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             // `CRAZY` The type of music at the concert
             /*default*/     std::string song_type_text = "Death Metal";
-            /* */if (roll_c <= 14)    { song_type_text = "Goth Rock"; }
+            /* */if (roll_c <= 14)    { song_type_text = "Rap"; }
             else if (roll_c <= 28)    { song_type_text = "Classical"; }
             else if (roll_c <= 42)    { song_type_text = "Metal"; }
             else if (roll_c <= 56)    { song_type_text = "Rock"; }
@@ -1185,8 +1185,10 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             ss << "${name} decides to go to a concert.";
             ss << "They were playing " << song_type_text << " music.\n";
             U_Money -= 50;
-            if (roll_c <= 14) //goth rock
+            //to get this added ill just try and get some kind of text in and events and trait based stuff can be added later CRAZY
+            if (roll_c <= 14) //rap
             {
+                ss << "${name} listened as the rappers sung for a few hours.\n";
             }
             else if (roll_c <= 28) //classical
             {
@@ -1198,9 +1200,16 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else if (roll_c <= 42) //metal
             {
+                if (girl.has_active_trait(traits::AGGRESSIVE))
+                {
+                    ss << "${name} likes this type of music it gets her blood pumping.\n";
+                    U_Happiness += 5;
+                }
+
             }
             else if (roll_c <= 56) //rock
             {
+                ss << "${name} listened as the band played for a few hours.\n";
             }
             else if (roll_c <= 70) //country
             {
@@ -1209,6 +1218,10 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     ss << "${name} loves this type of music as she grew up listen to it.\n";
                     U_Happiness += 5;  roll = 96;
                 }
+                else
+                {
+                    ss << "${name} listened as the band played for a few hours.\n";
+                }
             }
             else if (roll_c <= 87) //death metal
             {
@@ -1216,6 +1229,15 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     ss << "${name} loves this type of music it gets her blood pumping.\n";
                     U_Happiness += 5;  roll = 96;
+                }
+                else if (girl.has_active_trait(traits::MEEK))
+                {
+                    ss << "${name} finds this music to angry to enjoy.\n";
+                    U_Happiness -= 2;  roll = 4;
+                }
+                else
+                {
+                    ss << "${name} listened as the band played for a few hours.\n";
                 }
             }
             else //pop
@@ -1233,6 +1255,15 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     {
                         ss << "She declines not wanting to sing tonight instead wanting to just enjoy the show.\n";
                     }
+                }
+                else if (girl.has_active_trait(traits::AGGRESSIVE))
+                {
+                    ss << "${name} hates this kind of music. She thinks its for pussy's.\n";
+                    U_Happiness -= 2;  roll = 4;
+                }
+                else
+                {
+                    ss << "${name} listened as the band sung for a few hours.\n";
                 }
             }
 
@@ -1434,7 +1465,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else if (clubwaitonduty)
             {
-                ss << clubwaitname << " took her order then she talked to some of the people around her before heading home.";
+                ss << clubwaitname << " took her order then ${name} talked to some of the people around her before heading home.";
             }
             else
             {
@@ -1504,15 +1535,26 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             else if (girl.has_active_trait(traits::HEROINE))
             {
-                ss << ".";
+                ss << " went looking for crime to stop.";
+                if (rng.percent(50))
+                {
+                    ss << " Found and put a stop to some low level crimes.";//this could be expaned to have much more
+                    imagetype = EImageBaseType::COMBAT;
+                    girl.combat(1);
+                    girl.fame(1);
+                }
+                else
+                {
+                    ss << " But didn't find anything to help with.\n";
+                }
             }
             else if (girl.has_active_trait(traits::IDOL))
             {
-                ss << ".";
+                ss << " went out to meet and talk with her fans.";
             }
             else if (girl.has_active_trait(traits::ADVENTURER))
             {
-                ss << ".";
+                ss << " went out looking for some adventuer.";
             }
             else
             {
