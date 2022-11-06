@@ -141,7 +141,7 @@ void register_int_table(const char* table, cLuaInterpreter& state, std::array<co
 cLuaScript::cLuaScript()
 {
     auto L = m_State.get_state();
-    luaL_newlib(m_State.get_state(), funx);
+    luaL_newlib(L, funx);
     lua_pushstring(L, "STATS");
     lua_newtable(L);
     for(auto stat: StatsRange) {
@@ -190,6 +190,12 @@ cLuaScript::cLuaScript()
 
 sLuaThread* cLuaScript::RunAsync(const std::string& event_name, std::initializer_list<sLuaParameter> params) {
     g_LogFile.info("lua", "Running function '", event_name, "'");
+
+    if(lua_gettop(m_State.get_state()) != 0) {
+        g_LogFile.error("scripting", "Lua stack is not empty! Found ", lua_gettop(m_State.get_state()), " entries.",
+                        " Element at the top is of type ", lua_typename(m_State.get_state(), 0));
+    }
+
     // create new thread
     auto thread = sLuaThread::create(m_State.get_state());
     auto ts = cLuaState(thread->InterpreterState);
@@ -201,7 +207,6 @@ sLuaThread* cLuaScript::RunAsync(const std::string& event_name, std::initializer
 
     // If the first parameter is a girl, we generate a girl context.
     if(params.size() > 0) {
-
         if (params.begin()->get_type() == sLuaParameter::GIRL) {
             lua_pushstring(ts.get_state(), "_active_girl");
             params.begin()->push(ts);
@@ -220,10 +225,18 @@ sLuaThread* cLuaScript::RunAsync(const std::string& event_name, std::initializer
 
 sScriptValue cLuaScript::RunSynchronous(const std::string& event_name, std::initializer_list<sLuaParameter> params) {
     g_LogFile.info("lua", "Running sync function '", event_name, "'");
+    lua_State* s = m_State.get_state();
+
+    if(lua_gettop(s) != 0) {
+        g_LogFile.error("scripting", "Lua stack is not empty! Found ", lua_gettop(s), " entries.",
+                        " Element at the top is of type ", lua_typename(s, 0));
+
+    }
+
     // find function
     if(!m_State.get_function(event_name)) {
         g_LogFile.error("scripting", "Could not find lua function '", event_name, "'");
-        throw std::runtime_error("Could not find lua function");
+        throw std::runtime_error("Could not find lua function '" + event_name + "'");
     }
 
     for(auto& arg : params) {
@@ -231,18 +244,21 @@ sScriptValue cLuaScript::RunSynchronous(const std::string& event_name, std::init
     }
 
     // run thread
-    lua_State* s = m_State.get_state();
+
     if(lua_pcall(s, params.size(), 1, 0)) {
         std::string error = m_State.get_error();
         g_LogFile.error("scripting", error);
         throw std::runtime_error(error);
     } else {
         int top = lua_gettop(s);
-        if(top > 0) {
+        if(top == 1) {
             return get_value(s, top);
+        } else if (top == 0) {
+            return boost::blank{};
         }
+        g_LogFile.error("scripting", "Function '", event_name, "' did return ", top , " values. ");
+        throw std::runtime_error("Function '" + event_name + "' returned multiple values");
     }
-    return boost::blank{};
 }
 
 

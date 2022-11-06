@@ -35,7 +35,7 @@ void cLuaState::load(const std::string &file) {
         throw std::runtime_error("Could not load lua file: " + file + ": " + get_error());
     }
 
-    if (pcall(0, 1)) {
+    if (pcall(0, 0)) {
         throw std::runtime_error("Error running lua file " + file + ": " + get_error());
     }
 }
@@ -72,6 +72,10 @@ void cLuaState::settable(int index, const char* key, const std::string& value) {
     lua_pushstring(m_State, key);
     lua_pushstring(m_State, value.c_str());
     lua_settable(m_State, index - 2);
+}
+
+int cLuaState::get_top() const {
+    return lua_gettop(m_State);
 }
 
 

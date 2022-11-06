@@ -149,6 +149,9 @@ void sLuaGirl::init(lua_State* L) {
         lua_pushcclosure(L, up_getset_skill, 1);
         lua_settable(L, -3);
     }
+
+    // clean up the stack -- remove the new meta-table
+    lua_pop(L, 1);
 }
 
 using LuaGirlRecord = std::shared_ptr<sGirl>;
@@ -664,6 +667,9 @@ void sLuaCustomer::init(lua_State* L) {
         lua_pushcclosure(L, up_getset_skill, 1);
         lua_settable(L, -3);
     }
+
+    // clean up the stack -- remove the new meta-table
+    lua_pop(L, 1);
 }
 
 void sLuaCustomer::create(lua_State* L, sCustomer* cust) {

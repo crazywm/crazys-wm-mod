@@ -58,6 +58,7 @@ namespace scripting {
         // common operations
         bool get_function(const std::string& name);
         bool has_function(const std::string& name) const;
+        int get_top() const;
 
         lua_State* get_state() { return m_State; }
         std::string get_error();
