@@ -25,7 +25,7 @@
 #include "IGame.h"
 #include "sStorage.h"
 #include "cJobManager.h"
-#include "scripting/GameEvents.h"
+#include "events.h"
 #include "cGirls.h"
 
 extern cRng             g_Dice;
@@ -37,7 +37,7 @@ sArena::sArena() : IBuilding(BuildingType::ARENA, "Arena")
     m_LastJob = JOB_CLEANARENA;
     m_MatronJob = JOB_DOCTORE;
     m_MeetGirlData.Spawn = SpawnReason::ARENA;
-    m_MeetGirlData.Event = EDefaultEvent::MEET_GIRL_ARENA;
+    m_MeetGirlData.Event = events::GIRL_MEET_ARENA;
 }
 
 sArena::~sArena() = default;

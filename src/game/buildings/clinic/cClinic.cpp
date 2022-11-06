@@ -24,7 +24,7 @@
 #include "cJobManager.h"
 #include "utils/algorithms.hpp"
 #include "character/predicates.h"
-#include "scripting/GameEvents.h"
+#include "events.h"
 #include "cGirls.h"
 
 
@@ -41,7 +41,7 @@ sClinic::sClinic() : IBuilding(BuildingType::CLINIC, "Clinic")
     m_LastJob = JOB_JANITOR;
     m_MatronJob = JOB_CHAIRMAN;
     m_MeetGirlData.Spawn = SpawnReason::CLINIC;
-    m_MeetGirlData.Event = EDefaultEvent::MEET_GIRL_CLINIC;
+    m_MeetGirlData.Event = events::GIRL_MEET_CLINIC;
 
     declare_resource(CarePointsBasicId);
     declare_resource(CarePointsGoodId);

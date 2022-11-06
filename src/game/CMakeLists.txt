@@ -145,7 +145,20 @@ add_custom_command(
         BYPRODUCTS ${LUA_DOC_FILE}
         COMMENT "Generating traits header ${TRAITS_HEADER}."
 )
-target_sources(WmGameObjects PUBLIC ${TRAITS_HEADER})
+
+set(SCRIPT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/../codegen/events.py)
+set(EVENTS_DIR ${RESOURCE_DIR}/Scripts)
+set(EVENTS_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/events.h)
+file(GLOB EVENTS_XML_FILES ${EVENTS_DIR}/*.xml)
+add_custom_command(
+        COMMAND Python3::Interpreter ${SCRIPT_FILE} ${EVENTS_DIR} ${EVENTS_HEADER}
+        DEPENDS ${SCRIPT_FILE} ${EVENTS_XML_FILES}
+        OUTPUT ${EVENTS_HEADER}
+        COMMENT "Generating events header ${EVENTS_HEADER}."
+)
+
+
+target_sources(WmGameObjects PUBLIC ${TRAITS_HEADER} ${EVENTS_HEADER})
 
 if (UNIX)
     target_compile_definitions(WmGameObjects PUBLIC LINUX=1)

@@ -20,7 +20,6 @@
 #include "cEventMapping.h"
 #include "utils/string.hpp"
 #include "scripting.h"
-#include "GameEvents.h"
 #include "cScriptManager.h"
 #include <tinyxml2.h>
 #include "CLog.h"
@@ -47,67 +46,6 @@ sEventID::sEventID(const char* n) : name(n)
 
 sEventID::sEventID(std::string n) : name(std::move(n))
 {
-}
-
-std::string GetEventID(EDefaultEvent e) {
-    switch(e) {
-    case EDefaultEvent::CUSTOMER_GAMBLING_CHEAT:
-        return "customer:gambling-cheat";
-    case EDefaultEvent::CUSTOMER_NOPAY:
-        return "customer:no-pay";
-    case EDefaultEvent::NEXT_WEEK:
-        return "next-week.*";
-    case EDefaultEvent::RIVAL_LOST:
-        return "rival-lost";
-    case EDefaultEvent::GIRL_LOST_OWN_GAMBLING:
-        return "girl:gambling-lost.own";
-    case EDefaultEvent::GIRL_LOST_RIVAL_GAMBLING:
-        return "girl:gambling-lost.rival";
-    case EDefaultEvent::GIRL_SEX_ANAL:
-        return "girl:sex:anal";
-    case EDefaultEvent::GIRL_SEX_GROUP:
-        return "girl:sex:group";
-    case EDefaultEvent::GIRL_SEX_HAND:
-        return "girl:sex:hand";
-    case EDefaultEvent::GIRL_SEX_BDSM:
-        return "girl:sex:bdsm";
-    case EDefaultEvent::GIRL_SEX_NORMAL:
-        return "girl:sex:normal";
-    case EDefaultEvent::GIRL_SEX_ORAL:
-        return "girl:sex:oral";
-    case EDefaultEvent::GIRL_SEX_FOOT:
-        return "girl:sex:foot";
-    case EDefaultEvent::GIRL_SEX_BEAST:
-        return "girl:sex:beast";
-    case EDefaultEvent::GIRL_SEX_LESBIAN:
-        return "girl:sex:lesbian";
-    case EDefaultEvent::GIRL_SEX_STRIP:
-        return "girl:sex:strip";
-    case EDefaultEvent::GIRL_SEX_TITTY:
-        return "girl:sex:titty";
-    case EDefaultEvent::GIRL_INTERACT_BROTHEL:
-        return "girl:interact:brothel";
-    case EDefaultEvent::GIRL_INTERACT_DUNGEON:
-        return "girl:interact:dungeon";
-    case EDefaultEvent::MEET_GIRL_ARENA:
-        return "girl:meet:arena";
-    case EDefaultEvent::MEET_GIRL_TOWN:
-        return "girl:meet:town";
-    case EDefaultEvent::MEET_GIRL_CLINIC:
-        return "girl:meet:clinic";
-    case EDefaultEvent::MEET_GIRL_STUDIO:
-        return "girl:meet:studio";
-    case EDefaultEvent::FREE_TIME_BATH:
-        return "girl:free-time:bath";
-        case EDefaultEvent::FREE_TIME_BED:
-        return "girl:free-time:bed";
-    }
-    throw std::logic_error("GetEventID - Unknown event: " + std::to_string((int) e));
-}
-
-sEventID::sEventID(EDefaultEvent event) : name(GetEventID(event))
-{
-
 }
 
 bool cEventMapping::HasEvent(const sEventID& event) const

@@ -27,7 +27,6 @@
 #include "cGirlTorture.h"
 #include "cObjectiveManager.hpp"
 #include "IGame.h"
-#include "scripting/GameEvents.h"
 #include "CLog.h"
 #include "xml/util.h"
 #include "cGirlGangFight.h"

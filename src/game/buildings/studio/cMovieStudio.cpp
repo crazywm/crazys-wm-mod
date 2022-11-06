@@ -28,7 +28,7 @@
 #include "IGame.h"
 #include "xml/util.h"
 #include "interface/constants.h"
-#include "scripting/GameEvents.h"
+#include "events.h"
 #include "cGirls.h"
 #include "manager.h"
 
@@ -51,7 +51,7 @@ sMovieStudio::sMovieStudio() : IBuilding(BuildingType::STUDIO, "Studio")
     m_LastJob = JOB_FILMRANDOM;
     m_MatronJob = JOB_EXECUTIVE;
     m_MeetGirlData.Spawn = SpawnReason::STUDIO;
-    m_MeetGirlData.Event = EDefaultEvent::MEET_GIRL_STUDIO;
+    m_MeetGirlData.Event = events::GIRL_MEET_STUDIO;
     declare_resource(FluffPointsId);
     declare_resource(StageHandPtsId);
     declare_interaction(DirectorInteractionId);

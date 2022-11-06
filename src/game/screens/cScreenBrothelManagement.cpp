@@ -24,7 +24,6 @@
 #include "utils/FileList.h"
 #include "IGame.h"
 #include "sStorage.h"
-#include "scripting/GameEvents.h"
 #include <sstream>
 
 namespace settings {

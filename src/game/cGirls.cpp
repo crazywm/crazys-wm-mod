@@ -32,7 +32,7 @@
 #include "cInventory.h"
 #include "CLog.h"
 #include "xml/util.h"
-#include "scripting/GameEvents.h"
+#include "events.h"
 #include "cNameList.h"
 #include "buildings/cDungeon.h"
 #include "cJobManager.h"
@@ -2394,20 +2394,20 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         //else she doesn't refuse - so move along, nothing to see here
     }
 
-    EDefaultEvent event = EDefaultEvent::GIRL_SEX_STRIP;
+    const char* event = events::GIRL_SEX_STRIP;
     switch (SexType)
     {
-    case SKILL_ANAL:        event = EDefaultEvent::GIRL_SEX_ANAL; break;
-    case SKILL_BDSM:        event = EDefaultEvent::GIRL_SEX_BDSM; break;
-    case SKILL_NORMALSEX:   event = EDefaultEvent::GIRL_SEX_NORMAL; break;
-    case SKILL_ORALSEX:     event = EDefaultEvent::GIRL_SEX_ORAL; break;
-    case SKILL_TITTYSEX:    event = EDefaultEvent::GIRL_SEX_TITTY; break;
-    case SKILL_HANDJOB:     event = EDefaultEvent::GIRL_SEX_HAND; break;
-    case SKILL_FOOTJOB:     event = EDefaultEvent::GIRL_SEX_FOOT; break;
-    case SKILL_BEASTIALITY: event = EDefaultEvent::GIRL_SEX_BEAST; break;
-    case SKILL_GROUP:       event = EDefaultEvent::GIRL_SEX_GROUP; break;
-    case SKILL_LESBIAN:     event = EDefaultEvent::GIRL_SEX_LESBIAN; break;
-    case SKILL_STRIP:       event = EDefaultEvent::GIRL_SEX_STRIP; break;
+    case SKILL_ANAL:        event = events::GIRL_SEX_ANAL; break;
+    case SKILL_BDSM:        event = events::GIRL_SEX_BDSM; break;
+    case SKILL_NORMALSEX:   event = events::GIRL_SEX_NORMAL; break;
+    case SKILL_ORALSEX:     event = events::GIRL_SEX_ORAL; break;
+    case SKILL_TITTYSEX:    event = events::GIRL_SEX_TITTY; break;
+    case SKILL_HANDJOB:     event = events::GIRL_SEX_HAND; break;
+    case SKILL_FOOTJOB:     event = events::GIRL_SEX_FOOT; break;
+    case SKILL_BEASTIALITY: event = events::GIRL_SEX_BEAST; break;
+    case SKILL_GROUP:       event = events::GIRL_SEX_GROUP; break;
+    case SKILL_LESBIAN:     event = events::GIRL_SEX_LESBIAN; break;
+    case SKILL_STRIP:       event = events::GIRL_SEX_STRIP; break;
     default: /* did some non-sex skill sneak in? */ break;
     }    //end switch
 

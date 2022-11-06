@@ -17,7 +17,7 @@
 #include "cShop.h"
 #include "cGameSettings.h"
 #include "scripting/IScriptManager.h"
-#include "scripting/GameEvents.h"
+#include "events.h"
 #include "xml/util.h"
 #include "character/traits/ITraitsCollection.h"
 #include "character/cGirlPool.h"
@@ -270,9 +270,9 @@ void IGame::TalkToGirl(sGirl &target) {
     }
 
     if(target.m_Building != nullptr) {
-        target.TriggerEvent(EDefaultEvent::GIRL_INTERACT_BROTHEL);
+        target.TriggerEvent(events::GIRL_INTERACT_BROTHEL);
     } else {
-        target.TriggerEvent(EDefaultEvent::GIRL_INTERACT_DUNGEON);
+        target.TriggerEvent(events::GIRL_INTERACT_DUNGEON);
     }
     if (!allow_cheats()) m_TalkCount--;
 

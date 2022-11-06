@@ -215,7 +215,7 @@ protected:
 
     struct sMeetGirlData {
         SpawnReason Spawn = SpawnReason::COUNT;
-        EDefaultEvent Event;
+        std::string Event;
     } m_MeetGirlData;
 
     // resource management

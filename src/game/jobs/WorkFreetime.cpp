@@ -20,7 +20,7 @@
 #include "cRng.h"
 #include "cInventory.h"
 #include <sstream>
-#include "scripting/GameEvents.h"
+#include "events.h"
 
 #include "IGame.h"
 #include "cGirls.h"
@@ -284,7 +284,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             // TODO use full image spec
             sImageSpec spec;
             scripting::sLuaEventResult er{&spec};
-            girl.CallScriptFunction(EDefaultEvent::FREE_TIME_BATH, er);
+            girl.CallScriptFunction(events::GIRL_FREE_TIME_BATH, er);
             ss << er.Text << "\n";
             imagetype = spec.BasicImage;
         }
@@ -296,7 +296,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             sImageSpec spec;
             scripting::sLuaEventResult er{&spec};
-            girl.CallScriptFunction(EDefaultEvent::FREE_TIME_BED, er);
+            girl.CallScriptFunction(events::GIRL_FREE_TIME_BED, er);
             ss << er.Text << "\n";
             imagetype = spec.BasicImage;
         }
@@ -1686,7 +1686,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     if (girl.m_Money < gamble)
                     {
                         ss << "She didn't have enough to pay them so they brought her to you to see if you would.";
-                        girl.TriggerEvent(EDefaultEvent::GIRL_LOST_RIVAL_GAMBLING);
+                        girl.TriggerEvent(events::GIRL_GAMBLING_LOST_RIVAL);
                     }
                     else
                     {
@@ -1707,7 +1707,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                         if (girl.m_Money < gamble)
                         {
                             ss << "She didn't have enough to pay so they brought her to you to decide her fate.";
-                            girl.TriggerEvent(EDefaultEvent::GIRL_LOST_OWN_GAMBLING);
+                            girl.TriggerEvent(events::GIRL_GAMBLING_LOST_OWN);
                         }
                         else
                         {

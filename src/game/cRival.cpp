@@ -18,7 +18,7 @@
 */
 #include "cRival.h"
 #include <sstream>
-#include "scripting/GameEvents.h"
+#include "events.h"
 #include "IGame.h"
 #include "utils/algorithms.hpp"
 #include "character/cPlayer.h"
@@ -76,7 +76,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 
     // first, remove killed rivals
     if(erase_if(m_Rivals, [](auto& rival){ return rival->is_defeated(); })) {
-        g_Game->PushEvent(EDefaultEvent::RIVAL_LOST);
+        g_Game->PushEvent(events::RIVAL_LOST);
     }
 
     for(auto& curr : m_Rivals)

@@ -26,7 +26,6 @@
 #include <functional>
 #include <boost/variant/variant_fwd.hpp>
 
-enum class EDefaultEvent : int;
 class sGirl;
 class sImageSpec;
 namespace tinyxml2
@@ -56,7 +55,6 @@ namespace scripting {
     struct sEventID {
         sEventID(const char* n);
         sEventID(std::string n);
-        sEventID(EDefaultEvent event);
 
         std::string name;
 

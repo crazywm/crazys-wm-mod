@@ -29,7 +29,7 @@
 #include "cGangManager.hpp"
 #include <algorithm>
 #include "IGame.h"
-#include "scripting/GameEvents.h"
+#include "events.h"
 #include "cJobManager.h"
 #include "cGirls.h"
 #include "character/predicates.h"
@@ -700,7 +700,7 @@ void cWhoreJob::HandleCustomer(sGirl& girl, IBuilding& brothel, bool is_night) {
 
     if (custout)
     {
-        g_Game->PushEvent(EDefaultEvent::CUSTOMER_NOPAY);    // male customers use the old code
+        g_Game->PushEvent(events::CUSTOMER_NO_PAY);    // male customers use the old code
     }
     else if (femalecustcaught)
     {
