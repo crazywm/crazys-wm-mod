@@ -53,6 +53,7 @@
     <Event Name="girl:quest:streets" Script="Quests.lua" Function="StreetsQuest" />
 
     <!-- Free Time -->
-    <Event Name="girl:free-time:bath" Script="FreeTime.lua" Function="FreeTimeBath" />
-    <Event Name="girl:free-time:bed" Script="FreeTime.lua" Function="FreeTimeBed" />
+    <Event Name="girl:free-time:bath" Script="FreeTime.lua" Function="TakeBath" />
+    <Event Name="girl:free-time:bed" Script="FreeTime.lua" Function="StayInBed" />
+    <Event Name="girl:free-time:church" Script="FreeTime.lua" Function="GoToChurch" />
 </EventMapping>

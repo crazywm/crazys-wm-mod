@@ -165,10 +165,13 @@ namespace events {
     // Quests.lua: StreetsQuest
     constexpr const char* GIRL_QUEST_STREETS = "girl:quest:streets";
 
-    // FreeTime.lua: FreeTimeBath
+    // FreeTime.lua: TakeBath
     constexpr const char* GIRL_FREE_TIME_BATH = "girl:free-time:bath";
 
-    // FreeTime.lua: FreeTimeBed
+    // FreeTime.lua: StayInBed
     constexpr const char* GIRL_FREE_TIME_BED = "girl:free-time:bed";
+
+    // FreeTime.lua: GoToChurch
+    constexpr const char* GIRL_FREE_TIME_CHURCH = "girl:free-time:church";
 
 }

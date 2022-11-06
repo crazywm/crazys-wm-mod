@@ -113,6 +113,7 @@ enum class EImageBaseType {
     MAGIC,                          // performing a spell
     BED,                            // On a bed. (Used e.g. for bedroom interactions)
     REST,                           // free time resting
+    PRAY,                           // free time going to church
     BATH,                           // taking a bath
     SWIM,                           // going swimming or dressed in a swimsuit
     SHOP,                           // free time going shopping

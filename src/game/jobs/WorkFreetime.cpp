@@ -275,7 +275,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
         // `J` Finally, let her do what she chooses.
-        choice = FT_Bath;
+        choice = FT_Church;
         switch (choice)
         {
         case FT_Bath:
@@ -283,6 +283,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             // TODO use full image spec
             sImageSpec spec;
+            spec.BasicImage = EImageBaseType::PROFILE;
             scripting::sLuaEventResult er{&spec};
             girl.CallScriptFunction(events::GIRL_FREE_TIME_BATH, er);
             ss << er.Text << "\n";
@@ -292,16 +293,25 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
         break;    // end FT_Bath
 
         case FT_Bed:
-#if 1
         {
             sImageSpec spec;
+            spec.BasicImage = EImageBaseType::PROFILE;
             scripting::sLuaEventResult er{&spec};
             girl.CallScriptFunction(events::GIRL_FREE_TIME_BED, er);
             ss << er.Text << "\n";
             imagetype = spec.BasicImage;
         }
-#endif
         break;    // end FT_Bed
+
+        case FT_Church: {
+            sImageSpec spec;
+            spec.BasicImage = EImageBaseType::PROFILE;
+            scripting::sLuaEventResult er{&spec};
+            girl.CallScriptFunction(events::GIRL_FREE_TIME_CHURCH, er);
+            ss << er.Text << "\n";
+            imagetype = spec.BasicImage;
+        }
+        break;    // end FT_Church
 
         case FT_Salon:
 #if 1
@@ -378,157 +388,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
         }
 #endif
         break;    // end FT_Salon
-
-        case FT_Church:
-#if 1
-        {
-            ss << "${name} had some free time so she went to the local temple.\n";
-            /* `J` use U_Morality to increase or decrease Morality
-            *    Try to make multiple options that either increase or decrease morality
-            *    right now there is not much done with morality so anything that can be added would be good.
-            *    for each morality span (<-80, <-60 ... >80) make atleast one of each "add", "no change" and "reduce" option.
-            //*/
-            if (girl.morality() >= 80)
-            {
-                if (roll <= 33)
-                {
-                    ss << "${name} prayed for a couple of hours just to actively participate in the mass. Afterwards she helped clean up the temple grounds.\n";
-                    U_Morality += 5;
-                }
-                else if (roll <= 66)
-                {
-                    ss << "She spent almost her entire free time praying! But from her line of work, she got used to being on her knees for long hours.\n";
-                }
-                else
-                {
-                    ss << "Being at the sanctuary for her whole free time, she could swear that she noticed a presence of some sort of holy being.\n";
-                }
-            }
-            else if (girl.morality() >= 60)
-            {
-                if (roll <= 33)
-                {
-                    ss << "${name} confessed her shameful actions that she did at work, asking for the God's forgiveness.\n";
-                    U_Morality += 2;
-                }
-                else if (roll <= 66)
-                {
-                    ss << "She humbly sat in the last row. Focused and with a lot of interest, she listened to the whole mass.\n";
-                }
-                else
-                {
-                    ss << "Today she cleaned up a road side shrine and decorated it with fresh flowers.\n";
-                }
-            }
-            else if (girl.morality() >= 40)
-            {
-                if (roll <= 33)
-                {
-                    ss << "${name} starts to find this way of spending free time interesting. Wanting to know more, she listens intently to the preacher.\n";
-                }
-                else if (roll <= 66)
-                {
-                    ss << "After participating in today's ceremony she felt happier.\n";
-                    U_Happiness += 5;
-                }
-                else
-                {
-                    ss << "Being late, she tried to find a place to sit. Happily, she noticed some free seats on the other side of the church. Unfortunately her high heels were knocking pretty loudly while walking on the church's stone floor, disturbing the silent prayers of the congregation.\n";
-                }
-            }
-            else if (girl.morality() >= 20)
-            {
-                if (roll <= 33)
-                {
-                    ss << "${name} made a quick stop at the local temple for a short prayer before heading further into town.\n";
-                }
-                else if (roll <= 66)
-                {
-                    ss << "On her way back, she gave a short prayer in front of a road side shrine.\n";
-                }
-                else
-                {
-                    ss << "After eavesdropping on a couple of girls at work talking about a nearby temple, she decided to visit this holy place. Listening to the preacher she felt that the girls were right about this place.\n";
-                }
-            }
-            else if (girl.morality() <= -20)
-            {
-                if (roll <= 33)
-                {
-                    ss << "${name} tried to listen to the preachers lecture, but she fell asleep halfway thru!\n";
-                }
-                else if (roll <= 66)
-                {
-                    ss << "She was about to enter the sanctuary but she noticed a really cute kitten. She spent the time playing with the cat.\n";
-                }
-                else
-                {
-                    ss << "After eavesdropping couple girls at work talking about a nearby temple, she decided to visit this holy place. Listening to the preacher she felt that the girls were wrong about this place. Being bored, she left in the middle of the mass.\n";
-                }
-            }
-            else if (girl.morality() <= -40)
-            {
-                if (roll <= 33)
-                {
-                    ss << "${name} threw some special weeds from your farm into a goblet of fire, standing in front of one of the side altars. Later on, most of praying at the altar swear that they saw angels!\n";
-                }
-                else if (roll <= 66)
-                {
-                    ss << "At the church, she noticed a really young priest hearing to today's confessions. Feeling mischievous she entered the confessional. After confessing her sins in great detail, she proposed to recreate them with him! The abashed youngster gave her a couple of prayers as penance and left right after.\n";
-                }
-                else
-                {
-                    ss << "Getting bored at the mass, she started to whisper things to a man sitting next to her, not bothering with the fact that his wife was sitting next to him!\n";
-                }
-            }
-            else if (girl.morality() <= -60)
-            {
-                if (roll <= 33)
-                {
-                    ss << "${name} entered the confessional. Whispering sensually of her job experiences, all in great detail, she made the priest have a heart attack! When the man was squirming in pain on the floor, she left the temple laughing.\n";
-                }
-                else if (roll <= 66)
-                {
-                    ss << "Dressed really slutty, she strode down the center aisle of the church, her high heals echoing throughout the place. She took a seat in the first row and sat in a pose to best expose her pussy to all priests on the altar performing their Holy Mass.\n";
-                }
-                else
-                {
-                    ss << "In front of a temple she approached a young monk. After a brief chat about god, faith and salvation she gave him a proposal. Claiming that it was such waste for such young and handsome man to live in chastity, she proposed he could spend some quality, fun time with her. The man quickly ran inside whispering some kind of mantra, while ${name} went her own way laughing.\n";
-                }
-            }
-            else if (girl.morality() <= -80)
-            {
-                if (roll <= 33)
-                {
-                    ss << "${name} came to the temple with one of girls working for you, but her companion flew right after seeing what kind place of worship this was. No human sacrifice provided by ${name} today, sorry.\n";
-                }
-                else if (roll <= 66)
-                {
-                    ss << "Scheming against the church, she came with a brilliant idea. Promising local young thugs to repay a favor with her body, she made them to assault and beat up a group of priests. Not waiting for the outcome of the brawl, she disappeared not holding up her end of the deal.\n";
-                }
-                else
-                {
-                    ss << "Not liking the architectural style of the temple she decided to do something about it. Unfortunately for her, the fire was extinguished fairly quickly.\n";
-                }
-            }
-            else
-            {
-                if (roll <= 33)
-                {
-                    ss << "${name} was on her way to pray in the local temple, but on the way there, she saw a beautiful bag on display. After entering the shop, she spent several hours, picking out the perfect bag for herself before returning.\n";
-                }
-                else if (roll <= 66)
-                {
-                    ss << "Attending the mass, she felt somewhat bored and not focused on the topic. She even yawned a couple of times, fighting not to fell asleep.\n";
-                }
-                else
-                {
-                    ss << "She visited the local church feeling somehow down. Listening to the preacher didn't have much impact on improving her mood.\n";
-                }
-            }
-        }
-#endif
-        break;    // end FT_Church
 
         case FT_Pool:
 #if 1
@@ -2243,7 +2102,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             case FT_Salon:                    girldiedmsg << "at the salon";    break;
             case FT_Pool:                    girldiedmsg << "at the pool";    break;
             case FT_Cook:                    girldiedmsg << "while cooking";    break;
-            case FT_ClinicCheckup:            girldiedmsg << "in the clinic";    break;
+            case FT_ClinicCheckup:
             case FT_ClinicVisit:            girldiedmsg << "in the clinic";    break;
             case FT_WorkOut:                girldiedmsg << "working out";    break;
             case FT_HasTraining:            girldiedmsg << "while puppy training";    break;
@@ -2254,7 +2113,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             case FT_Club:                    girldiedmsg << "at a club";    break;
             case FT_Quest:                    girldiedmsg << "on a quest";    break;
             case FT_Hobby:                    girldiedmsg << "working on her hobby";    break;
-            case FT_Counseling:                girldiedmsg << "in counceling";    break;
+            case FT_Counseling:                girldiedmsg << "in counseling";    break;
             case FT_WatchFights:            girldiedmsg << "watching fights";    break;
             case FT_StrollInCity:            girldiedmsg << "in the city";    break;
             case FT_Casino:                    girldiedmsg << "in a casino";    break;

@@ -30,7 +30,7 @@ const std::array<const char*, (int)EImageBaseType::NUM_TYPES>& get_imgtype_names
             "maid", "sing", "wait", "card", "nurse", "piano", "music", "stagehand",
             "crystalpurifier", "director", "cameramage", "studiocrew", "security", "cook", "bake",
             "farm", "herd", "advertise",
-            "sport", "study", "teacher", "combat", "magic", "bed", "rest", "bath", "swim",
+            "sport", "study", "teacher", "combat", "magic", "bed", "rest", "pray", "bath", "swim",
             "shop", "craft", "dance", "dinner", "drinks",
             "birthhuman", "birthbeast",
             "refuse", "death", "profile", "portrait", "jail", "torture", "formal", "presented",

@@ -564,6 +564,13 @@ will be assigned the associated image type -->
         <TiedUp>no</TiedUp>
     </FileType>
     <FileType>
+        <Pattern>pray.*</Pattern>
+        <Type>pray</Type>
+        <Pregnant>no</Pregnant>
+        <Futa>no</Futa>
+        <TiedUp>no</TiedUp>
+    </FileType>
+    <FileType>
         <Pattern>swim.*</Pattern>
         <Type>swim</Type>
         <Pregnant>no</Pregnant>

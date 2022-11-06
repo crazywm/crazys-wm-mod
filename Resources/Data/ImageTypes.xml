@@ -440,9 +440,13 @@
         <Fallback Cost="100">profile</Fallback>
     </Type>
     <Type Name="bath">
-        <Display>bath</Display>
+        <Display>Bath</Display>
         <Fallback>nude</Fallback>
         <Fallback Cost="150">swim</Fallback>
+    </Type>
+    <Type Name="pray">
+        <Display>Pray</Display>
+        <Fallback>profile</Fallback>
     </Type>
     <Type Name="swim">
         <Display>swim</Display>

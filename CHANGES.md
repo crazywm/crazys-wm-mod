@@ -8,13 +8,22 @@
   * Decreased chance to refuse `Tease` scenes, increased chance to refuse `Extreme` scenes.
   * Initial movie hype depends on fame of its actresses
 
+* Some extensions to free time events by @crazywm
+
+## Images
+* Added `Pray` image type to be used for the "Visit Church" free time event.
+
 ## Bugfixes
 * Make Movie button no longer overlaps prev/next buttons
 * Do not mix up bold and regular rendering if the same text is used
+* Fixed image selection Turn Summary screen -- no longer reuses wrong images 
+* Fixed stack corruption in lua script handling
 
 ## Other
 * Treatment-type jobs (Therapy, Surgery etc.) now have more unified code and some
 configuration through xml files.
+* Some Free Time events are now handled by lua scripts 
+* Some more functions available in lua scripts
 
 # Version 7.2.1alpha4
 Nothing new for image tagging; mostly UI improvements and bug fixes.
