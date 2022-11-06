@@ -52,8 +52,10 @@ bool is_sex_crazy(const ICharacter& character);
 
 /// Does the character like to have sex with women
 bool likes_women(const ICharacter& character);
+bool dislikes_women(const ICharacter& character);
 
 /// Does the character like to have sex with men
 bool likes_men(const ICharacter& character);
+bool dislikes_men(const ICharacter& character);
 
 #endif //WM_PREDICATES_H

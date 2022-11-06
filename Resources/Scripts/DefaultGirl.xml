@@ -51,4 +51,7 @@
     <Event Name="girl:quest:tavern" Script="Quests.lua" Function="TavernQuest" />
     <Event Name="girl:quest:church" Script="Quests.lua" Function="ChurchQuest" />
     <Event Name="girl:quest:streets" Script="Quests.lua" Function="StreetsQuest" />
+
+    <!-- Free Time -->
+    <Event Name="girl:free-time:bath" Script="FreeTime.lua" Function="FreeTimeBath" />
 </EventMapping>

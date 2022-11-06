@@ -234,7 +234,7 @@ sScriptValue cLuaScript::RunSynchronous(const std::string& event_name, std::init
     lua_State* s = m_State.get_state();
     if(lua_pcall(s, params.size(), 1, 0)) {
         std::string error = m_State.get_error();
-        g_LogFile.error("scripting", m_State.get_error());
+        g_LogFile.error("scripting", error);
         throw std::runtime_error(error);
     } else {
         int top = lua_gettop(s);

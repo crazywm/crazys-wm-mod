@@ -5,6 +5,7 @@ extern "C" {
 }
 
 #include <algorithm>
+#include <type_traits>
 #include "character/pregnancy.h"
 #include "character/cCustomers.h"
 #include "character/cPlayer.h"
@@ -22,6 +23,38 @@ extern "C" {
 
 // to get the currently active building
 #include "interface/cWindowManager.h"
+
+namespace {
+    template<class T>
+    constexpr bool is_bool_type(T&& v) {
+        return std::is_same<std::decay_t<T>, bool>::value;
+    }
+}
+
+#define MAKE_LUA_PREDICATE(NAME)                \
+int NAME(lua_State *L) {                        \
+    auto& girl = sLuaGirl::check_type(L, 1);    \
+    auto value = ::NAME(girl);                  \
+    static_assert(is_bool_type(value),          \
+        "Predicate must return bool");          \
+    lua_pushboolean(L, value);                  \
+    return 1;                                   \
+}
+
+namespace {
+    namespace lp {
+        MAKE_LUA_PREDICATE(is_addict);
+        MAKE_LUA_PREDICATE(has_disease);
+        MAKE_LUA_PREDICATE(is_futa);
+        MAKE_LUA_PREDICATE(is_virgin);
+        MAKE_LUA_PREDICATE(is_nonhuman);
+        MAKE_LUA_PREDICATE(is_your_daughter);
+        MAKE_LUA_PREDICATE(likes_women);
+        MAKE_LUA_PREDICATE(likes_men);
+        MAKE_LUA_PREDICATE(dislikes_men);
+        MAKE_LUA_PREDICATE(dislikes_women);
+    }
+}
 
 using namespace scripting;
 
@@ -49,6 +82,18 @@ void sLuaGirl::init(lua_State* L) {
             {"name", sLuaGirl::get_name},
             {"firstname", sLuaGirl::get_first_name},
             {"is_slave", sLuaGirl::is_slave},
+
+            {"is_addict", lp::is_addict},
+            {"has_disease", lp::has_disease},
+            {"is_futa", lp::is_futa},
+            {"is_virgin", lp::is_virgin},
+            {"is_nonhuman", lp::is_nonhuman},
+            {"is_your_daughter", lp::is_your_daughter},
+            {"likes_women", lp::likes_women},
+            {"likes_men", lp::likes_men},
+            {"dislikes_men", lp::dislikes_men},
+            {"dislikes_women", lp::dislikes_women},
+
             {"calc_player_pregnancy", sLuaGirl::calc_player_pregnancy},
             {"calc_group_pregnancy", sLuaGirl::calc_group_pregnancy},
             {"clear_pregnancy", sLuaGirl::clear_pregnancy},
