@@ -202,3 +202,55 @@ function GoToChurch(girl, result)
         end
     end
 end
+
+
+---@param girl wm.Girl
+---@param result wm.EventResult
+function FreeTimeCooking(girl, result)
+    result:set_image(wm.IMG.COOK)
+    result:add_text("${name} decided to cook a meal.\nThe meal she cooked was ")
+    if girl:cooking() >= 85 then
+        result:add_text("amazing. She really knows how to cook.")
+        girl:health(2)
+        girl:happiness(3)
+        girl:enjoyment(wm.ACTIONS.ACTION_WORKCOOKING, 1)
+    elseif girl:cooking() >= 50 then
+        result:add_text("pretty good. She isn't the best but with some work she could be.")
+        girl:health(1)
+        girl:happiness(1)
+    elseif girl:cooking() > 15 then
+        result:add_text("plain. She really needs some practice at this.")
+        girl:cooking(1)
+    else
+        result:add_text("awful. It can't really be called food it was so bad.")
+        girl:enjoyment(wm.ACTIONS.COOKING, -1)
+        girl:cooking(1)
+    end
+
+    if girl:pclove() >= 80 and wm.Percent(10) then
+        result:add_text("She invites you to eat with her.")
+        result:set_image(wm.IMG.DINNER)
+        -- //FIXME add in different things here
+    end
+end
+
+
+---@param girl wm.Girl
+---@param result wm.EventResult
+function WindowShopping(girl, result)
+    result:set_image(wm.IMG.SHOP)
+    local hap = wm.Range(-4, 6)
+    girl:happiness(hap)
+    result:add_text("${name} wandered around the shops trying things on that she knew she could not afford." ..
+            " Though she wasted the shop girl's time, ")
+    if hap > 0 then
+        result:add_text("she enjoyed herself a ")
+        if hap > 3 then
+            result:add_text("lot.")
+        else
+            result:add_text("bit.")
+        end
+    else
+        result:add_text("she was sad because she didn't find what she liked for a price she could afford.")
+    end
+end
