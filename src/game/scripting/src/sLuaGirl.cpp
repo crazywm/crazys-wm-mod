@@ -101,6 +101,7 @@ void sLuaGirl::init(lua_State* L) {
             {"name", sLuaGirl::get_name},
             {"firstname", sLuaGirl::get_first_name},
             {"is_slave", sLuaGirl::is_slave},
+            {"is_sex_type_allowed", sLuaGirl::is_sex_type_allowed},
 
             {"is_addict", lp::is_addict},
             {"has_disease", lp::has_disease},
@@ -126,7 +127,9 @@ void sLuaGirl::init(lua_State* L) {
             {"skill_check", sLuaGirl::skill_check},
             {"add_message", sLuaGirl::add_message},
             {"format", sLuaGirl::format},
+            {"money", sLuaGirl::money},
             {"give_money", sLuaGirl::give_money},
+            {"take_money", sLuaGirl::take_money},
             {"torture", sLuaGirl::torture},
             {"trigger", sLuaGirl::trigger_event},
             {"clean_building", sLuaGirl::clean_building},
@@ -447,6 +450,14 @@ int sLuaGirl::is_slave(lua_State *L) {
     return 1;
 }
 
+int sLuaGirl::is_sex_type_allowed(lua_State *L) {
+    auto& girl = check_type(L, 1);
+    auto skill = (SKILLS)luaL_checkinteger(L, 2);
+    bool allowed = girl.m_Building->is_sex_type_allowed(skill);
+    lua_pushboolean(L, allowed);
+    return 1;
+}
+
 int sLuaGirl::has_item(lua_State *L) {
     auto& girl = check_type(L, 1);
     const char* item = luaL_checkstring(L, 2);
@@ -610,6 +621,13 @@ int sLuaGirl::trigger_event(lua_State* L) {
     return 0;
 }
 
+int sLuaGirl::money(lua_State * L)
+{
+    auto& girl = check_type(L, 1);
+    lua_pushinteger(L, girl.m_Money);
+    return 1;
+}
+
 int sLuaGirl::give_money(lua_State * L)
 {
     auto& girl = check_type(L, 1);
@@ -619,6 +637,17 @@ int sLuaGirl::give_money(lua_State * L)
 
     girl.m_Money += gold;
     g_Game->gold().misc_credit(-gold);
+    return 0;
+}
+
+int sLuaGirl::take_money(lua_State * L)
+{
+    auto& girl = check_type(L, 1);
+    int gold = luaL_checkinteger(L, 2);
+    if(gold < 0)
+        luaL_error(L, "Use `give_money` function if you want to give money to a girl.");
+
+    girl.m_Money = std::max(0, girl.m_Money - gold);
     return 0;
 }
 

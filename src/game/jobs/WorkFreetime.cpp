@@ -83,6 +83,8 @@ const char* event_from_ft(freetimechoice choice) {
         case FT_Church: return events::GIRL_FREE_TIME_CHURCH;
         case FT_Cook:   return events::GIRL_FREE_TIME_COOKING;
         case FT_WindowShopping:   return events::GIRL_FREE_TIME_WINDOW_SHOPPING;
+        case FT_Salon:  return events::GIRL_FREE_TIME_SALON;
+        case FT_Picnic: return events::GIRL_FREE_TIME_PICNIC;
         default:        return nullptr;
     }
 }
@@ -268,7 +270,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 
         // `J` Finally, let her do what she chooses.
         /// uncomment this to debug one specific event
-        /// choice = FT_Cook;
+        choice = FT_Salon;
 
         // Check if it is a Lua-based event.
         const char* event_ft = event_from_ft(choice);
@@ -282,70 +284,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
         } else {
             // no - ok, go the full C++ route
             switch (choice) {
-                case FT_Salon:
-#if 1
-                {
-                    // add more options for more money
-                    ss << "${name} went to the salon ";
-                    if (girl.libido() > 70 && girl.m_Money >= 100 && !is_virgin(girl)
-                        && (brothel->is_sex_type_allowed(SKILL_LESBIAN) ||
-                            brothel->is_sex_type_allowed(SKILL_ANAL) ||
-                            brothel->is_sex_type_allowed(SKILL_NORMALSEX))
-                            ) {
-                        ss << "and decide to get a \"special\" message.\n";
-                        int sex = rng % 3;
-
-                        if (brothel->is_sex_type_allowed(SKILL_LESBIAN) && likes_women(girl)) sex = 0;
-                        if (sex == 0 && (!brothel->is_sex_type_allowed(SKILL_LESBIAN) || likes_men(girl))) sex++;
-                        if (sex == 1 && !brothel->is_sex_type_allowed(SKILL_ANAL)) sex++;
-                        if (sex == 2 && !brothel->is_sex_type_allowed(SKILL_NORMALSEX)) sex++;
-
-                        switch (sex) {
-                            case 0:
-                                imagetype = EImagePresets::LESBIAN;
-                                ss << "She paid the woman masseuse to intensely lick her clit until she got off.\n";
-                                break;
-                            case 1:
-                                imagetype = EImageBaseType::ANAL;
-                                ss << "She had the masseuse oil up her ass and fuck her.\n";
-                                break;
-                            case 2:
-                                imagetype = EImageBaseType::VAGINAL;
-                                ss << "She told the masseuse to fuck her silly.\n";
-                                break;
-                            default:
-                                imagetype = EImagePresets::MASTURBATE;
-                                ss << "She told the masseuse to just focus on her pussy until she cums.\n";
-                                break;
-                        }
-                        U_Money -= 100;
-                        U_Libido -= 25;
-                        U_Happiness += 5;
-                    } else if (girl.m_Money >= 35 && girl.tiredness() > 60) {
-                        ss << "and decide to get a message. She is now feeling relaxed.\n";
-                        U_Money -= 35;
-                        U_Tiredness -= 10;
-                    } else if (girl.m_Money >= 25) {
-                        ss << "and had her nails and hair done. She is going look better for a few days.\n";
-                        U_Beauty += 8;
-                        U_Money -= 25;
-                    } else if (girl.m_Money >= 20) {
-                        ss << "and worked on getting a tan. She is going look better for a few days.\n";
-                        U_Beauty += 6;
-                        U_Money -= 20;
-                    } else if (girl.m_Money >= 15) {
-                        ss << "and had her hair done. She is going look better for a few days.\n";
-                        U_Beauty += 4;
-                        U_Money -= 15;
-                    } else {
-                        ss << "and had her nails done. She is going look better for a few days.\n";
-                        U_Beauty += 2;
-                        U_Money -= 10;
-                    }
-                }
-#endif
-                    break;    // end FT_Salon
-
                 case FT_Pool:
 #if 1
                 {
@@ -1087,14 +1025,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
 #endif
                     break;    // end FT_Concert
-
-                case FT_Picnic:
-#if 1
-                {
-                    ss << "${name} decides to go on a picnic.\n";
-                }
-#endif
-                    break;    // end FT_Picnic
 
                 case FT_VisitBar:
 #if 1

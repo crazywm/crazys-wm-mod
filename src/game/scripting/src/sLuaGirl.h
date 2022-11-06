@@ -65,9 +65,13 @@ struct sLuaGirl : public sCharacter<sLuaGirl>{
     static int get_name(lua_State* L);
     static int get_first_name(lua_State* L);
     static int is_slave(lua_State* L);
+    static int is_sex_type_allowed(lua_State* L);
 
     static int has_item(lua_State* L);
+    /// TODO separate functions for Player gives money and Girl gets money
+    static int money(lua_State* L);
     static int give_money(lua_State* L);
+    static int take_money(lua_State* L);
     static int clean_building(lua_State* L);
 
     static int add_message(lua_State* L);

@@ -254,3 +254,75 @@ function WindowShopping(girl, result)
         result:add_text("she was sad because she didn't find what she liked for a price she could afford.")
     end
 end
+
+---@param girl wm.Girl
+---@param result wm.EventResult
+function Salon(girl, result)
+    result:add_text("${name} went to the salon")
+
+    -- add more options for more money
+    if is_horny(girl) and girl:money() >= 100 and not girl:is_virgin() and (
+            girl:is_sex_type_allowed(wm.SKILLS.LESBIAN) or girl:is_sex_type_allowed(wm.SKILLS.ANAL) or
+            girl:is_sex_type_allowed(wm.SKILLS.NORMALSEX)
+    ) then
+        result.add_text("and decide to get a \"special\" message.")
+        local sex_type = wm.Range(0, 2)
+        if girl:is_sex_type_allowed(wm.SKILLS.LESBIAN) and girl:dislikes_men() then
+            sex_type = 0
+        end
+        if sex_type == 0 and (not girl:is_sex_type_allowed(wm.SKILLS.LESBIAN) or girl:dislikes_women()) then
+            sex_type = 1
+        end
+        if sex_type == 1 and not girl:is_sex_type_allowed(wm.SKILLS.ANAL)  then
+            sex_type = 2
+        end
+        if sex_type == 2 and not girl:is_sex_type_allowed(wm.SKILLS.NORMALSEX)  then
+            sex_type = 3
+        end
+
+        if sex_type == 0 then
+            result.add_text("She paid the woman masseuse to intensely lick her clit until she got off.")
+            result.set_image(wm.IMG.LESBIAN)
+        elseif sex_type == 1 then
+            result.add_text("She had the masseuse oil up her ass and fuck her.")
+            result.set_image(wm.IMG.ANAL)
+        elseif sex_type == 2 then
+            result.add_text("She told the masseuse to fuck her silly.")
+            result.set_image(wm.IMG.SEX)
+        else
+            result.add_text("She told the masseuse to just focus on her pussy until she cums.")
+            result.set_image(wm.IMG.FINGER)
+        end
+        SheJustCame(girl, 5)
+        girl:take_money(100)
+    elseif girl:money() >= 35 and girl:tiredness() > 60 then
+        result.add_text("and decide to get a message. She is now feeling relaxed.")
+        girl:take_money(35)
+        girl:tiredness(-10)
+        result.set_image(wm.IMG.MASSAGE)
+    elseif girl:money() >= 25 then
+        result.add_text("and had her nails and hair done. She is going look better for a few days.")
+        girl:take_money(25)
+        girl:stat(wm.STATS.BEAUTY, 8, true)
+    elseif girl:money() >= 20 then
+        result.add_text("and worked on getting a tan. She is going look better for a few days.")
+        girl:take_money(20)
+        girl:stat(wm.STATS.BEAUTY, 6, true)
+    elseif girl:money() >= 15 then
+        result.add_text("and had her hair done. She is going look better for a few days.")
+        girl:take_money(15)
+        girl:stat(wm.STATS.BEAUTY, 4, true)
+    else
+        result.add_text("and had her nails done. She is going look better for a few days.")
+        girl:take_money(10)
+        girl:stat(wm.STATS.BEAUTY, 2, true)
+    end
+end
+
+
+---@param girl wm.Girl
+---@param result wm.EventResult
+function Picnic(girl, result)
+    result:add_text("${name} decides to go on a picnic.")
+    -- FIXME
+end

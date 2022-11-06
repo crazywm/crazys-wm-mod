@@ -180,4 +180,10 @@ namespace events {
     // FreeTime.lua: WindowShopping
     constexpr const char* GIRL_FREE_TIME_WINDOW_SHOPPING = "girl:free-time:window-shopping";
 
+    // FreeTime.lua: Salon
+    constexpr const char* GIRL_FREE_TIME_SALON = "girl:free-time:salon";
+
+    // FreeTime.lua: Picnic
+    constexpr const char* GIRL_FREE_TIME_PICNIC = "girl:free-time:picnic";
+
 }

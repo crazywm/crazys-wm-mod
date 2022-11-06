@@ -62,7 +62,9 @@ function g:name() end
 function g:firstname() end
 function g:breast_size() end
 function g:torture() end
+function g:money() end
 function g:give_money() end
+function g:take_money() end
 function g:trigger(event) end
 
 function g:obey_check(action) end
