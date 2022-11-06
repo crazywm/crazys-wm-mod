@@ -84,6 +84,7 @@ private:
     // Tracking recently presented images
     struct sRecent {
         const CEvent* Event;
+        int Week;
         std::string Image;
     };
     std::deque<sRecent> m_RecentImages;

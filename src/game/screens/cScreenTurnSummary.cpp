@@ -640,11 +640,11 @@ void cScreenTurnSummary::set_backdrop(const std::string& bd) {
 
 void cScreenTurnSummary::present_image(const CEvent& event) {
     cImageItem* image_item = GetImage(image_id);
-    std::uint64_t seed = reinterpret_cast<std::intptr_t>(&event);
+    std::uint64_t seed = reinterpret_cast<std::intptr_t>(&event) + g_Game->get_weeks_played();
 
     std::string image_file;
     auto found_recent = std::find_if(begin(m_RecentImages), end(m_RecentImages), [&](const sRecent& r){
-        return r.Event == &event;
+        return r.Event == &event && r.Week == g_Game->get_weeks_played();
     });
     if(found_recent != m_RecentImages.end()) {
         image_file = found_recent->Image;
@@ -660,7 +660,7 @@ void cScreenTurnSummary::present_image(const CEvent& event) {
                 break;
             }
         }
-        m_RecentImages.push_back({&event, image_file});
+        m_RecentImages.push_back({&event, (int)g_Game->get_weeks_played(), image_file});
         // add the image to the recently-used list, and trim the list
         if(m_RecentImages.size() > 100) {
             m_RecentImages.pop_front();
