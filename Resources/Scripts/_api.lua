@@ -211,3 +211,17 @@ function g:strength(change) end
 g.ACTIONS = {}
 
 wm.Girl = g
+
+
+---@class wm.EventResult
+local er = {}
+
+---@overload fun(text: string): void
+function er:add_text(text) end
+---@overload fun(text: string): void
+function er:set_text(text) end
+---@overload fun(image: number): void
+---@overload fun(image: number, options: table): void
+function er:set_image(image, options) end
+
+wm.EventResult = er

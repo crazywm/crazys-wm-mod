@@ -54,4 +54,5 @@
 
     <!-- Free Time -->
     <Event Name="girl:free-time:bath" Script="FreeTime.lua" Function="FreeTimeBath" />
+    <Event Name="girl:free-time:bed" Script="FreeTime.lua" Function="FreeTimeBed" />
 </EventMapping>

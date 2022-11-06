@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2022, The Pink Petal Development Team.
+ * Copyright 2022 The Pink Petal Development Team.
  * The Pink Petal Development Team are defined as the game's coders
  * who meet on http://pinkpetal.org
  *
@@ -17,37 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CRAZYS_WM_MOD_GAMEEVENTS_H
-#define CRAZYS_WM_MOD_GAMEEVENTS_H
+#ifndef WM_SLUAEVENTRESULT_H
+#define WM_SLUAEVENTRESULT_H
 
-enum class EDefaultEvent : int {
-    NEXT_WEEK,
-    CUSTOMER_NOPAY,
-    CUSTOMER_GAMBLING_CHEAT,
-    RIVAL_LOST,
-    GIRL_LOST_RIVAL_GAMBLING,
-    GIRL_LOST_OWN_GAMBLING,
-    GIRL_SEX_ANAL,
-    GIRL_SEX_BDSM,
-    GIRL_SEX_BEAST,
-    GIRL_SEX_FOOT,
-    GIRL_SEX_GROUP,
-    GIRL_SEX_HAND,
-    GIRL_SEX_LESBIAN,
-    GIRL_SEX_NORMAL,
-    GIRL_SEX_ORAL,
-    GIRL_SEX_STRIP,
-    GIRL_SEX_TITTY,
-    GIRL_INTERACT_BROTHEL,
-    GIRL_INTERACT_DUNGEON,
-    // Meet scripts
-    MEET_GIRL_ARENA,
-    MEET_GIRL_TOWN,
-    MEET_GIRL_CLINIC,
-    MEET_GIRL_STUDIO,
+#include "scripting.h"
+#include "lua.hpp"
 
-    FREE_TIME_BATH,
-    FREE_TIME_BED,
-};
+namespace scripting {
+    void create_event_result(lua_State* L, sLuaEventResult* result);
+    void init_event_result(lua_State* L);
+}
 
-#endif //CRAZYS_WM_MOD_GAMEEVENTS_H
+#endif //WM_SLUAEVENTRESULT_H

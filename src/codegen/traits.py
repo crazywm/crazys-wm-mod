@@ -117,7 +117,12 @@ def main():
             out_text += f"        constexpr const char* {name_as_identifier(mod)} = \"{mod}\";\n"
 
     out_text += "    }\n}\n"
-    result_path.write_text(out_text)
+    # only write to the file if anything actually changes.
+    if result_path.read_text() != out_text:
+        result_path.write_text(out_text)
+
+    # for some reason, this helps to improve the autocomplete
+    lua_text += "local t = {}\nwm.TRAITS = t"
 
     lua_path = Path(sys.argv[3])
     lua_path.write_text(lua_text)

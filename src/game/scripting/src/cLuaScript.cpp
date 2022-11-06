@@ -43,6 +43,7 @@
 #include "cLuaState.h"
 #include "sLuaGirl.h"
 #include "sLuaParameter.h"
+#include "sLuaEventResult.h"
 
 
 extern cRng g_Dice;
@@ -183,9 +184,10 @@ cLuaScript::cLuaScript()
     }
     lua_settable(m_State.get_state(), -3);
 
-    lua_setglobal(m_State.get_state(), "wm");
-    sLuaGirl::init(m_State.get_state());
-    sLuaCustomer::init(m_State.get_state());
+    lua_setglobal(L, "wm");
+    sLuaGirl::init(L);
+    sLuaCustomer::init(L);
+    init_event_result(L);
 }
 
 sLuaThread* cLuaScript::RunAsync(const std::string& event_name, std::initializer_list<sLuaParameter> params) {
@@ -252,11 +254,14 @@ sScriptValue cLuaScript::RunSynchronous(const std::string& event_name, std::init
     } else {
         int top = lua_gettop(s);
         if(top == 1) {
-            return get_value(s, top);
+            auto result = get_value(s, top);
+            lua_pop(s, 1);
+            return result;
         } else if (top == 0) {
             return boost::blank{};
         }
         g_LogFile.error("scripting", "Function '", event_name, "' did return ", top , " values. ");
+        lua_settop(s, 0);   // so we don't interfere with the next function call.
         throw std::runtime_error("Function '" + event_name + "' returned multiple values");
     }
 }

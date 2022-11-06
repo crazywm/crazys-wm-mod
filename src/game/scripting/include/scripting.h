@@ -28,6 +28,7 @@
 
 enum class EDefaultEvent : int;
 class sGirl;
+class sImageSpec;
 namespace tinyxml2
 {
     class XMLElement;
@@ -35,6 +36,7 @@ namespace tinyxml2
 
 namespace scripting {
     class sLuaParameter;
+
     class IScriptManager;
     using sScriptValue = boost::variant<boost::blank, bool, float, std::string>;
 
@@ -42,6 +44,12 @@ namespace scripting {
     struct sEventTarget {
         std::string script;
         std::string function;
+    };
+
+    struct sLuaEventResult {
+        explicit sLuaEventResult(sImageSpec* img) : Image(img) {}
+        std::string Text;
+        sImageSpec* Image;
     };
 
     /// An identifier for an event.

@@ -275,61 +275,18 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
         // `J` Finally, let her do what she chooses.
+        choice = FT_Bath;
         switch (choice)
         {
         case FT_Bath:
 #if 1
         {
-            ss << "${name} took a bath.\n";
-            imagetype = EImageBaseType::BATH;
-            U_Happiness += 5;
-            U_Health += 5;
-            if (HateLove >= 80 && rng.percent(10))//loves you
-            {
-                ss << "She invites you to join her in the tub.\n";//will get around to adding sex options later
-            }
-            else if (girl.libido() > 70 || (girl.has_active_trait(traits::NYMPHOMANIAC) && girl.libido() > 30))
-            {
-                ss << "While in the tub the mood hit her and she proceed to pleasure herself with ";
-                if (girl.has_item("Compelling Dildo"))
-                {
-                    U_Libido -= 10;
-                    ss << "her Compelling Dildo helping her get off much easier.\n";
-                }
-                else
-                {
-                    ss << "her fingers.\n";
-                }
-                imagetype = EImagePresets::MASTURBATE;
-                U_Libido -= 15;
-                U_Happiness += 5;
-            }
-            else if (girl.tiredness() > 80)
-            {
-                if (rng.percent(3) && girl.tiredness() > 95 && !girl.any_active_trait({
-                    traits::INCORPOREAL, traits::UNDEAD, traits::ZOMBIE, traits::SKELETON}))    // 'MUTE' this is meant to kill the girl
-                {
-                    girldiedmsg << girl.FullName();
-                    if (is_addict(girl, true))    girldiedmsg << " took an overdose of drugs and drowned in the tub.\n";
-                    else girldiedmsg << " fell asleep in the tub and no one came to check on her so she drowned.\n";
-                    girl.health(-500);
-                    ss << girldiedmsg.str();
-                }
-                else
-                {
-                    ss << "She fell asleep in the tub and woke up in the cold water.\n";
-                    U_Health -= 2;
-                }
-            }
-            else if (rng.percent(5) && (girl.any_active_trait({traits::ZOMBIE, traits::SKELETON})))
-            {
-                ss << "Someone knocks on the door, \"Are you cooking in there? something smells good.\"   \"What? No, I'm taking a bath.\"   \"Oh, Sorry. Wait, What? EWwwwwwwwwwwwwwwwwwwwww.\"";
-            }
-            else
-            {
-                ss << "She enjoyed a nice long soak.\n";
-                U_Tiredness -= 5;
-            }
+            // TODO use full image spec
+            sImageSpec spec;
+            scripting::sLuaEventResult er{&spec};
+            girl.CallScriptFunction(EDefaultEvent::FREE_TIME_BATH, er);
+            ss << er.Text << "\n";
+            imagetype = spec.BasicImage;
         }
 #endif
         break;    // end FT_Bath
@@ -337,44 +294,11 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
         case FT_Bed:
 #if 1
         {
-            ss << "${name}";
-            imagetype = EImageBaseType::BED;
-            if (girl.has_item("Chrono Bed"))
-            {
-                ss << " took a nap in her Chrono Bed woke up feeling wonderful";
-                U_Health += 50;
-                U_Tiredness -= 50;
-            }
-            else if (girl.has_item("Rejuvenation Bed"))
-            {
-                ss << " took a nap in her Rejuvenation Bed and woke up feeling better";
-                U_Health += 25;
-                U_Tiredness -= 25;
-            }
-            else
-            {
-                ss << " stayed in bed most of the day";
-                U_Health += 10;
-                U_Tiredness -= 10;
-                if (girl.libido() > 70 || (girl.has_active_trait(traits::NYMPHOMANIAC) && girl.libido() > 30))
-                {
-                    ss << "While in bed the mood hit her and she proceed to pleasure herself with ";
-                    if (girl.has_item("Compelling Dildo"))
-                    {
-                        U_Libido -= 10;
-                        ss << "her Compelling Dildo helping her get off much easier";
-                    }
-                    else
-                    {
-                        ss << "her fingers";
-                    }
-                    imagetype = EImagePresets::MASTURBATE;
-                    U_Libido -= 15;
-                    U_Happiness += 5;
-                }
-            }
-            ss << ".\n";
-
+            sImageSpec spec;
+            scripting::sLuaEventResult er{&spec};
+            girl.CallScriptFunction(EDefaultEvent::FREE_TIME_BED, er);
+            ss << er.Text << "\n";
+            imagetype = spec.BasicImage;
         }
 #endif
         break;    // end FT_Bed
@@ -2298,7 +2222,8 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
     // `J` only add a new message if something new was done.
     if (ss.str().length() > 0) girl.AddMessage(ss.str(), imagetype, messagetype);
 
-  girl.upd_base_stat(STAT_HEALTH, U_Health, false);        // do health first in case she dies
+    if(!girl.is_dead())
+      girl.upd_base_stat(STAT_HEALTH, U_Health, false);        // do health first in case she dies
   girl.upd_base_stat(STAT_TIREDNESS, U_Tiredness, false);
     girl.happiness(U_Happiness);
 

@@ -97,6 +97,10 @@ std::string GetEventID(EDefaultEvent e) {
         return "girl:meet:clinic";
     case EDefaultEvent::MEET_GIRL_STUDIO:
         return "girl:meet:studio";
+    case EDefaultEvent::FREE_TIME_BATH:
+        return "girl:free-time:bath";
+        case EDefaultEvent::FREE_TIME_BED:
+        return "girl:free-time:bed";
     }
     throw std::logic_error("GetEventID - Unknown event: " + std::to_string((int) e));
 }

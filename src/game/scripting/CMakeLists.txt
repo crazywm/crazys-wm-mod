@@ -5,6 +5,7 @@ set(SCRIPTING_SRC
         src/cScriptManager.cpp
         src/sLuaGirl.cpp
         src/sLuaParameter.cpp
+        src/sLuaEventResult.cpp
         )
 
 

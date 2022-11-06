@@ -19,6 +19,7 @@
 #include "sLuaParameter.h"
 #include "sLuaGirl.h"
 #include "cLuaState.h"
+#include "sLuaEventResult.h"
 
 void scripting::sLuaParameter::push(scripting::cLuaState& target) const
 {
@@ -28,6 +29,9 @@ void scripting::sLuaParameter::push(scripting::cLuaState& target) const
         return;
     case CUSTOMER:
         sLuaCustomer::create(target.get_state(), data.customer);
+        return;
+    case RESULT:
+        create_event_result(target.get_state(), data.result);
         return;
     }
 }
@@ -44,7 +48,11 @@ scripting::sLuaParameter::sLuaParameter(sCustomer* cust) : type(CUSTOMER), data{
 {
 }
 
+scripting::sLuaParameter::sLuaParameter(scripting::sLuaEventResult& res) : type(RESULT), data{.result=&res} {
+
+}
+
+
 scripting::sLuaParameter::sLuaParameter(sCustomer& cust) : sLuaParameter(&cust)
 {
-
 }

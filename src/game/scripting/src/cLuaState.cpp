@@ -86,9 +86,11 @@ sScriptValue scripting::get_value(lua_State* interpreter, int index) {
         return sScriptValue(std::string(lua_tostring(interpreter, index)));
     } else if(lua_isboolean(interpreter, index)) {
         return sScriptValue((bool)lua_toboolean(interpreter, index));
+    } else if(lua_isnil(interpreter, index)) {
+        return boost::blank{};
     } else {
         const char* top_as_str = lua_tostring(interpreter, index);
-        g_LogFile.warning("lua", "Could not convert lua return value to C++ value: ", top_as_str);
+        g_LogFile.error("lua", "Could not convert lua return value to C++ value: ", top_as_str);
         return boost::blank{};
     }
 }
