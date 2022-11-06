@@ -19,12 +19,12 @@
 
 #include "cEventMapping.h"
 #include "utils/string.hpp"
-#include "fwd.hpp"
+#include "scripting.h"
 #include "GameEvents.h"
 #include "cScriptManager.h"
 #include <tinyxml2.h>
 #include "CLog.h"
-#include "sLuaParameter.hpp"
+#include "sLuaParameter.h"
 #include "utils/string.hpp"
 #include "xml/util.h"
 

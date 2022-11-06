@@ -21,7 +21,7 @@
 #define CRAZYS_WM_MOD_CEVENTMAPPING_H
 
 #include <unordered_map>
-#include "fwd.hpp"
+#include "scripting.h"
 
 namespace tinyxml2 {
 

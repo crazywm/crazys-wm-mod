@@ -27,7 +27,7 @@
 #include <unordered_set>
 #include "Constants.h"
 #include <vector>
-#include "scripting/fwd.hpp"
+#include "scripting.h"
 #include "interface/constants.h"
 #include "IKeyValueStore.h"
 
@@ -184,7 +184,7 @@ public:
 
     cJobManager& job_manager();
 
-    scripting::cScriptManager& script_manager();
+    scripting::IScriptManager& script_manager();
     virtual void PushEvent(const scripting::sEventID& event) = 0;
 
     // time keeping
@@ -249,7 +249,7 @@ private:
     std::unique_ptr<cTariff> m_Tariff;
     std::unique_ptr<cShop> m_Shop;
     std::unique_ptr<IKeyValueStore> m_GameSettings;
-    std::unique_ptr<scripting::cScriptManager> m_ScriptManager;
+    std::unique_ptr<scripting::IScriptManager> m_ScriptManager;
     std::unique_ptr<cMovieManager> m_MovieManager;
     // TODO should this be here or in the interface code?
     std::unique_ptr<cImageLookup> m_ImageLookup;

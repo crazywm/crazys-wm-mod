@@ -16,7 +16,7 @@
 #include "cTariff.h"
 #include "cShop.h"
 #include "cGameSettings.h"
-#include "scripting/cScriptManager.h"
+#include "scripting/IScriptManager.h"
 #include "scripting/GameEvents.h"
 #include "xml/util.h"
 #include "character/traits/ITraitsCollection.h"
@@ -54,7 +54,7 @@ IGame::IGame() :
     m_Girls(new cGirls()),
     m_Traits( std::make_unique<cTraitsManager>() ),
     m_Shop( new cShop(NUM_SHOPITEMS) ),
-    m_ScriptManager( new scripting::cScriptManager() ),
+    m_ScriptManager( scripting::IScriptManager::createScriptManager() ),
     m_GameSettings(new cGameSettings()),
     m_MarketGirls( new cGirlPool() ),
     m_Prison( new cGirlPool() ),
@@ -250,7 +250,7 @@ cShop &IGame::shop() {
     return *m_Shop;
 }
 
-scripting::cScriptManager &IGame::script_manager() {
+scripting::IScriptManager &IGame::script_manager() {
     return *m_ScriptManager;
 }
 

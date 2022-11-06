@@ -42,7 +42,7 @@
 #include "cLuaScript.h"
 #include "cLuaState.h"
 #include "sLuaGirl.h"
-#include "sLuaParameter.hpp"
+#include "sLuaParameter.h"
 
 
 extern cRng g_Dice;

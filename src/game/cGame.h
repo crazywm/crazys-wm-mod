@@ -29,7 +29,7 @@
 #include <unordered_set>
 #include "Constants.h"
 #include <vector>
-#include "scripting/fwd.hpp"
+#include "scripting.h"
 #include "interface/constants.h"
 #include "IKeyValueStore.h"
 

@@ -18,7 +18,6 @@
 */
 #include "InterfaceProcesses.h"
 #include "buildings/IBuilding.h"
-#include "scripting/cScriptManager.h"
 #include "interface/cWindowManager.h"
 #include "character/cPlayer.h"
 #include "cScreenBrothelManagement.h"

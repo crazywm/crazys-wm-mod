@@ -30,7 +30,6 @@
 #include "cGangManager.hpp"
 #include "CLog.h"
 #include "xml/util.h"
-#include "scripting/cScriptManager.h"
 #include "cGirls.h"
 #include "cGirlGangFight.h"
 #include "utils/streaming_random_selection.hpp"

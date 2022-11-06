@@ -35,6 +35,7 @@ namespace tinyxml2
 
 namespace scripting {
     class sLuaParameter;
+    class IScriptManager;
     using sScriptValue = boost::variant<boost::blank, bool, float, std::string>;
 
     /// Specifies what to execute for a given event: The name of the target script (lua file) and the function's name.
@@ -120,8 +121,6 @@ namespace scripting {
     };
 
     using pEventMapping = std::shared_ptr<IEventMapping>;
-
-    class cScriptManager;
 }
 
 #endif //CRAZYS_WM_MOD_SCRIPTING_FWD_HPP

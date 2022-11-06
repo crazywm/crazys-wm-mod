@@ -29,8 +29,8 @@
 #include "cEvents.h"
 #include "Constants.h"
 #include "ICharacter.h"
-#include "scripting/fwd.hpp"
-#include "scripting/sLuaParameter.hpp"
+#include "scripting.h"
+#include "scripting/sLuaParameter.h"
 #include "pregnancy.h"
 #include "utils/DirPath.h"
 

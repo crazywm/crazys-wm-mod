@@ -12,7 +12,7 @@
 #include "cInventory.h"
 #include "character/cPlayer.h"
 #include "buildings/cBuildingManager.h"
-#include "scripting/cScriptManager.h"
+#include "scripting/IScriptManager.h"
 #include "xml/util.h"
 #include "xml/getattr.h"
 #include "utils/string.hpp"

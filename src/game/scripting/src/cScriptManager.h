@@ -22,42 +22,40 @@
 
 #include <unordered_map>
 #include <memory>
-#include "fwd.hpp"
+#include "IScriptManager.h"
 
 class sGirl;
 
 namespace scripting {
-    class cLuaScript;
-    class sLuaParameter;
 
-    class cScriptManager {
+    class cScriptManager : public IScriptManager {
     public:
         cScriptManager();
-        ~cScriptManager();
+        ~cScriptManager() override;
 
         /// Runs an event in async mode.
-        sAsyncScriptHandle RunEventAsync(const sEventTarget& event, std::initializer_list<sLuaParameter> params) const;
+        sAsyncScriptHandle RunEventAsync(const sEventTarget& event, LuaParamsList params) const override;
 
         /// Runs an event in synchronous mode
-        sScriptValue RunEventSync(const sEventTarget& event, std::initializer_list<sLuaParameter> params) const;
+        sScriptValue RunEventSync(const sEventTarget& event, LuaParamsList params) const override;
 
         // registering
         /// Load the script from `file` and save under the name `name`.
-        void LoadScript(std::string name, const std::string& file);
+        void LoadScript(std::string name, const std::string& file) override;
 
         /// Ensures that `script` is loaded and checks that `function` exists. Generates error messages if
         /// that is not the case, and also returns whether the script was valid.
-        bool VerifyScript(const std::string& script, const std::string& function);
+        bool VerifyScript(const std::string& script, const std::string& function) override;
 
-        pEventMapping CreateEventMapping(std::string name, const std::string& fallback);
-        void RegisterEventMapping(pEventMapping mapping);
+        pEventMapping CreateEventMapping(std::string name, const std::string& fallback) override;
+        void RegisterEventMapping(pEventMapping mapping) override;
 
         // global event mapping
-        const pEventMapping& GetGlobalEventMapping();
-        const sEventTarget& GetGlobalEvent(const sEventID& event) const;
+        const pEventMapping& GetGlobalEventMapping() override;
+        const sEventTarget& GetGlobalEvent(const sEventID& event) const override;
 
-        void LoadEventMapping(IEventMapping& ev, const tinyxml2::XMLElement& source);
-        void LoadEventMapping(IEventMapping& ev, const std::string& source_file);
+        void LoadEventMapping(IEventMapping& ev, const tinyxml2::XMLElement& source) override;
+        void LoadEventMapping(IEventMapping& ev, const std::string& source_file) override;
     private:
         std::unordered_map<std::string, std::unique_ptr<cLuaScript>> m_Scripts;
         std::unordered_map<std::string, pEventMapping> m_EventMappings;

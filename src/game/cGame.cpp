@@ -35,7 +35,7 @@
 #include "character/cCustomers.h"
 #include "character/traits/ITraitsManager.h"
 #include "buildings/studio/manager.h"
-#include "scripting/cScriptManager.h"
+#include "scripting/IScriptManager.h"
 #include "utils/DirPath.h"
 #include "utils/FileList.h"
 #include "xml/util.h"

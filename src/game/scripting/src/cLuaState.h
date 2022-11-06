@@ -22,7 +22,7 @@
 
 #include <string>
 #include <functional>
-#include "fwd.hpp"
+#include "scripting.h"
 
 class lua_State;
 

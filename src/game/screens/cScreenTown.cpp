@@ -19,7 +19,6 @@
 #include "buildings/cBuildingManager.h"
 #include "cScreenTown.h"
 #include "interface/cWindowManager.h"
-#include "scripting/cScriptManager.h"
 #include <iostream>
 #include "cGangs.h"
 #include "cGangManager.hpp"

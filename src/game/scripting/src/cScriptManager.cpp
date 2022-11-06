@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "fwd.hpp"
+#include "scripting.h"
 #include "utils/DirPath.h"
 #include "cScriptManager.h"
 #include "cEventMapping.h"
@@ -26,7 +26,7 @@
 #include "xml/util.h"
 #include "xml/getattr.h"
 #include "CLog.h"
-#include "sLuaParameter.hpp"
+#include "sLuaParameter.h"
 
 
 using namespace scripting;
@@ -161,3 +161,6 @@ bool cScriptManager::VerifyScript(const std::string& script, const std::string& 
 
 cScriptManager::~cScriptManager() = default;
 
+std::unique_ptr<IScriptManager> IScriptManager::createScriptManager() {
+    return std::make_unique<cScriptManager>();
+}

@@ -1,3 +1,6 @@
+add_subdirectory(scripting)
+
+
 set(SCREENS_SRC
         screens/BuildingScreenManagement.cpp
         screens/cScreenBank.cpp
@@ -79,15 +82,6 @@ set(CHARACTER_SRC
         character/cGirlPool.cpp
         )
 
-set(SCRIPTING_SRC
-        scripting/cEventMapping.cpp
-        scripting/cLuaScript.cpp
-        scripting/cLuaState.cpp
-        scripting/cScriptManager.cpp
-        scripting/sLuaGirl.cpp
-        scripting/sLuaParameter.cpp
-        )
-
 set(MOVIES_SRC
         buildings/studio/manager.cpp
         buildings/studio/data.cpp
@@ -131,7 +125,7 @@ set(SRC cEvents.cpp
         )
 
 add_library(WmGameObjects OBJECT ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${MOVIES_SRC} ${SRC})
-target_link_libraries(WmGameObjects PUBLIC WMEngineObjects pthread doctest::doctest)
+target_link_libraries(WmGameObjects PUBLIC WMEngineObjects pthread doctest::doctest WmScriptingObjects)
 set_target_properties(WmGameObjects PROPERTIES CXX_STANDARD 14)
 target_include_directories(WmGameObjects PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -157,13 +151,15 @@ if (UNIX)
     target_compile_definitions(WmGameObjects PUBLIC LINUX=1)
 endif(UNIX)
 
-add_executable(WhoreMaster $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> main.cpp)
+set(AllWmObjects $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WmScriptingObjects> $<TARGET_OBJECTS:WMEngineObjects>)
+
+add_executable(WhoreMaster ${AllWmObjects} main.cpp)
 target_link_libraries(WhoreMaster PUBLIC WmGameObjects)
 
-add_executable(WhoreMasterFuzz EXCLUDE_FROM_ALL $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> fuzzmain.cpp )
+add_executable(WhoreMasterFuzz EXCLUDE_FROM_ALL ${AllWmObjects} fuzzmain.cpp )
 target_link_libraries(WhoreMasterFuzz PUBLIC WmGameObjects)
 
-add_executable(WhoreMasterTest EXCLUDE_FROM_ALL $<TARGET_OBJECTS:WmGameObjects> $<TARGET_OBJECTS:WMEngineObjects> unittest.cpp ../engine/text/conditions_tests.cpp
+add_executable(WhoreMasterTest EXCLUDE_FROM_ALL ${AllWmObjects} unittest.cpp ../engine/text/conditions_tests.cpp
         cGirlsTests.cpp
         )
 target_link_libraries(WhoreMasterTest PUBLIC WmGameObjects)
