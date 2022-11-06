@@ -1,6 +1,6 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders
+ * Copyright 2019-2022, The Pink Petal Development Team.
+ * The Pink Petal Development Team are defined as the game's coders
  * who meet on http://pinkpetal.org
  *
  * This program is free software: you can redistribute it and/or modify
