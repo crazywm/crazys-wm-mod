@@ -1188,7 +1188,14 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             //to get this added ill just try and get some kind of text in and events and trait based stuff can be added later CRAZY
             if (roll_c <= 14) //rap
             {
-                ss << "${name} listened as the rappers sung for a few hours.\n";
+                if (girl.has_active_trait(traits::FARMERS_DAUGHTER) || girl.has_active_trait(traits::COUNTRY_GAL))
+                {
+                    ss << "${name}'s country upbring makes her not care for this music to much.\n";
+                }
+                else
+                {
+                    ss << "${name} listened as the rappers sung for a few hours.\n";
+                }
             }
             else if (roll_c <= 28) //classical
             {
@@ -1196,6 +1203,10 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     ss << "${name} seems to really enjoy this type of music.\n";
                     U_Happiness += 5;  roll = 96;
+                }
+                else
+                {
+                  ss << "${name} listened to the band play music for a few hours.\n";  
                 }
             }
             else if (roll_c <= 42) //metal
@@ -1205,7 +1216,10 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     ss << "${name} likes this type of music it gets her blood pumping.\n";
                     U_Happiness += 5;
                 }
-
+                else
+                {
+                  ss << "${name} listened to the band play music for a few hours.\n";  
+                }
             }
             else if (roll_c <= 56) //rock
             {
@@ -1406,6 +1420,26 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #if 1
         {
             ss << "${name} decides to go on a picnic.\n";
+            if (rng.percent(75))
+                {
+                    ss << "She enjoyed her time, the picnic basket she prepared ";
+                if (girl.cooking() > 60)
+                    {
+                        ss << "was excellent she is a great cook.\n";
+                    }
+                else if (girl.cooking() > 30)
+                    {
+                        ss << "was pretty good.";
+                    }
+                else
+                    {
+                        ss << "was awful. It can't really be called food it was so bad.\n";
+                    }
+                }
+                else
+                {
+                    ss << "Ants ruined it for her.\n";// need to add more to this
+                }
         }
 #endif
         break;    // end FT_Picnic
@@ -2265,15 +2299,89 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
         case FT_Quest:
+ #if 1
+        {
+            ss << "${name} decides to take on a quest from the local guild ";
+            //this one i think she will take a quest from some kind of local guild
+        }
+#endif
             break;    // end FT_Quest
+
         case FT_StrollInCity:
+#if 1
+        {
+            // `CRAZY` This is things that can happen in the city
+            /*default*/    std::string city_type_text = "She enjoyed her time.";
+            /* */if (roll_c <= 20)    { city_type_text = "rape"; }//comes across a rape?
+            else if (roll_c <= 40)    { city_type_text = "dog"; }// dog
+            else if (roll_c <= 60)    { city_type_text = ""; }//city guard
+            else if (roll_c >= 80)    { city_type_text = ""; }//
+            ss << "${name} decides to take a stroll thru the city.\n";
+            //walk in the city try and come up with some diffrent thing that could happen in city
+            if (roll_c <= 20)//rape
+            {
+                ss << "While walking around she came upon a " << city_type_text << " attempt in an ally. ";
+                //now lets figure out what she does about it
+                if (girl.has_active_trait(traits::NYMPHOMANIAC) && girl.libido() > 80)
+                {
+                    ss << "${name} walks into the ally horny and tells them to let the girl go and they can have a turn with her. ${name} gets to fuck and suck till she is happy. She is really quite the nympho.";
+                    imagetype = EImagePresets::GANGBANG;
+                    U_Libido -= 25;
+                    girl.group(2);
+                }
+                else if (girl.has_active_trait(traits::HEROINE))
+                {
+                    ss << "As a crime fighter she decides to save the girl.";
+                    girl.fame(1);
+                }
+                else
+                {
+                    ss << "${name} decided that she shouldn't get involved with it.";
+                }
+            }
+            else if (roll_c <= 40)//dog
+            {
+                ss << "While walking around the city ${name} comes across a ";
+                if (rng.percent(50))
+                {
+                    ss << "cute dog.";
+                }
+                else
+                {
+                    ss << "sick looking dog.";
+                }
+            }
+            else if (roll_c <= 60)
+            {
+
+            }
+            else if (roll_c >= 80)
+            {
+
+            }
+            else
+            {
+              ss << city_type_text << " \n";  
+            }
+        }
+#endif
             break;    // end FT_StrollInCity
+
         case FT_CountrySide:
+#if 1
+        {
+            ss << "${name} decides to take a walk thru the country side ";
+            //like city but with stuff that can happen in the country side
+        }
+#endif
             break;    // end FT_CountrySide
+
+
         case FT_MakeExtraMoney:
 #if 1
         {
             ss << "${name} decides to make some extra money so she ";
+            //probably do a roll and skill check her to see what she does if she isnt good at it she wont make money
         }
 #endif
         break;    // end FT_MakeExtraMoney

@@ -151,7 +151,7 @@ function InteractOffice(girl)
             return InteractOffice(girl)
         end
     elseif choice == 7 then
-        Dialog("Go Back")
+        return girl:trigger("girl:interact:brothel")
     end
 end
 

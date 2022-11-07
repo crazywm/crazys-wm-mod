@@ -53,55 +53,103 @@ function DungeonInteractChoice(girl)
                 Dialog("She refuses to sleep with you.")
             end
         elseif choice == 1 then
-            if girl:obey_check(wm.ACTIONS.SEX) then
+            if girl:pclove() > 90 then
+                girl:happiness(2)
+                girl:libido(1)
+                girl:experience(2)
+                girl:tiredness(1)
+                girl:obedience(1)
+                girl:pcfear(-1)
+                girl:pclove(1)
+                wm.UpdateImage(wm.IMG.LESBIAN)
+                Dialog("She enjoys it all the more knowing you are watching while another girl fucks her.")
+            elseif if girl:obey_check(wm.ACTIONS.SEX) then
                 girl:happiness(1)
                 girl:libido(1)
                 girl:tiredness(1)
                 wm.UpdateImage(wm.IMG.LESBIAN)
-                Dialog("She enjoy you watching her while another girl fucks her.")
+                Dialog("You enjoy watching while another girl fucks her.")
             else
                 Dialog("She refused to have sex with another girl.")
             end
         elseif choice == 2 then
-            if girl:obey_check(wm.ACTIONS.SEX) then
+            if girl:pclove() > 90 then
+                girl:happiness(2)
+                girl:libido(1)
+                girl:experience(2)
+                girl:tiredness(1)
+                girl:obedience(1)
+                girl:pclove(1)
+                wm.UpdateImage(wm.IMG.BEAST)
+                Dialog("She enjoys it all the more knowing you are watching while a beast fucks her.")
+            elseif girl:obey_check(wm.ACTIONS.SEX) then
                 girl:happiness(1)
                 girl:libido(1)
                 girl:tiredness(1)
                 wm.UpdateImage(wm.IMG.BEAST)
-                Dialog("She enjoys you watching her being fucked by all sorts of tentacled sex fiends.")
+                Dialog("You enjoy watching her being fucked by all sorts of tentacled sex fiends.")
             else
                 Dialog("She refused to have sex with creatures.")
             end
         elseif choice == 3 then
-            if girl:obey_check(wm.ACTIONS.SEX) then
+            if girl:pclove() > 90 then
+                girl:happiness(2)
+                girl:libido(1)
+                girl:experience(2)
+                girl:tiredness(1)
+                girl:obedience(1)
+                girl:pclove(1)
+                wm.UpdateImage(wm.IMG.BDSM)
+                Dialog("She loves begin tied up and having you pour hot wax across her body then spank her hard while fucking her.")
+                local preg = girl:calc_player_pregnancy(false, 1.0);
+                if preg then Dialog("${firstname} has gotten pregnant") end
+            elseif girl:obey_check(wm.ACTIONS.SEX) then
                 girl:happiness(1)
                 girl:libido(1)
                 girl:tiredness(1)
                 wm.UpdateImage(wm.IMG.BDSM)
-                Dialog("She allows you to tie her up and spank her while you both cum hard.")
+                Dialog("She allows you to tie her up and spank her while you fuck her.")
                 local preg = girl:calc_player_pregnancy(false, 1.0);
                 if preg then Dialog("${firstname} has gotten pregnant") end
             else
-                Dialog("She refused to do this.")
+                Dialog("She refused to do anything extreme.")
             end
         elseif choice == 4 then
             choice = ChoiceBox("", "Deepthroat", "Regular", "Go Back")
             if choice == 0 then
-                if girl:obey_check(wm.ACTIONS.SEX) then
+                if girl:pclove() > 90 then
+                    girl:happiness(2)
+                    girl:libido(1)
+                    girl:experience(2)
+                    girl:tiredness(1)
+                    girl:obedience(1)
+                    girl:pclove(1)
+                    wm.UpdateImage(wm.IMG.DEEPTHROAT)
+                    Dialog("She loves the feeling of your cock slaming away in her throat until you cum down it. She makes sure not to waste any of your seed.")
+                elseif girl:obey_check(wm.ACTIONS.SEX) then
                     girl:dignity(-1)
                     wm.UpdateImage(wm.IMG.DEEPTHROAT)
-                    Dialog("She lets you shove your cock deep down the back of her throat until you cum into her head.")
+                    Dialog("She lets you shove your cock deep down the back of her throat until you cum into it.")
                 else
-                    Dialog("She refuses to do this.")
+                    Dialog("She refuses to let you shover your dick down her throat.")
                     return
                 end
             elseif choice == 1 then
-                if girl:obey_check(wm.ACTIONS.SEX) then
+                if girl:pclove() > 90 then
+                    girl:happiness(2)
+                    girl:libido(1)
+                    girl:experience(2)
+                    girl:tiredness(1)
+                    girl:obedience(1)
+                    girl:pclove(1)
+                    wm.UpdateImage(wm.IMG.ORAL)
+                    Dialog("She loves sucking on your amazing cock. She sucks on it with all her skill until you cum into her mouth taking care not to let your seed spill out.")
+                elseif girl:obey_check(wm.ACTIONS.SEX) then
                     girl:dignity(-1)
                     wm.UpdateImage(wm.IMG.ORAL)
                     Dialog("She sucks your cock until you cum in her mouth.")
                 else
-                    Dialog("She refuses to do this.")
+                    Dialog("She refuses to suck your dick.")
                     return
                 end
             else
@@ -113,7 +161,17 @@ function DungeonInteractChoice(girl)
             girl:spirit(-1)
             girl:anal(1)
         elseif choice == 5 then
-            if girl:obey_check(wm.ACTIONS.SEX) then
+            if girl:pclove() > 90 then
+                girl:happiness(5)
+                girl:libido(1)
+                girl:experience(2)
+                girl:tiredness(1)
+                girl:obedience(1)
+                girl:pcfear(-1)
+                girl:pclove(3)
+                wm.UpdateImage(wm.IMG.ANAL)
+                Dialog("She loves the feeling of your cock in her tight little ass. You fuck her hard until you both cum.")
+            elseif girl:obey_check(wm.ACTIONS.SEX) then
                 girl:happiness(1)
                 girl:libido(1)
                 girl:tiredness(1)
@@ -142,14 +200,14 @@ function DungeonInteractChoice(girl)
         end
     elseif choice == 4 then -- FORCE
         choice = ChoiceBox("", "To have sex with you", "To have sex with another girl", "To have sex with a beast",
-                "To be in a bondage session", "For a blowjob", "For some anal sex", "For a threesome (not yet working)",
+                "To be in a bondage session", "For a blowjob", "For some anal sex", "For a threesome with you and another",
                 "To join in with a group session", "Go Back")
         if choice == 0 then
             PlayerRapeGirl(girl)
             Dialog("She stuggles to no avail as you force yourself inside her, you fuck her roughly until you unload yourself into her.")
         elseif choice == 1 then
             wm.UpdateImage(wm.IMG.LESBIAN)
-            Dialog("You call a female customer who fuck the poor girl with dildo.")
+            Dialog("You call a female customer to fuck the poor girl with dildo.")
         elseif choice == 2 then
             wm.UpdateImage(wm.IMG.BEAST)
             Dialog("You forcefully tie her down and let in a tentacle creature followed by several other creatures to have their way with her.")
@@ -178,10 +236,18 @@ function DungeonInteractChoice(girl)
             Dialog("Although she tries to keep her ass closed you manage to get inside her and proceed to fuck her painfully.")
         elseif choice == 6 then
            -- threesome (placeholder)
-            return DungeonInteractChoice(girl)
+           choice = ChoiceBox("", "Guy", "Girl", "Go Back")
+            if choice == 0 then
+                wm.UpdateImage(wm.IMG.GROUP)
+                Dialog("You bring in another guy and procced to shove your dick in her pussy while the other guy takes her ass. You switch a few times while fucking the girl raw.")
+            elseif choice == 1 then
+                wm.UpdateImage(wm.IMG.GROUP)
+                Dialog("You bring in one of your girls and procced to shove your dick in her ass while the girl licks her pussy. You each exploer the girl as much as you want.")
+            else
+                return DungeonInteractChoice(girl)
         elseif choice == 7 then
             wm.UpdateImage(wm.IMG.GROUP)
-            Dialog("One of your servant holds his head in his hands while your sperm spreads his face. All your servants are happy to unload on her pretty face")
+            Dialog("One of your servant holds her head in his hands while your sperm spreads across her face. All your servants are happy to unload on her pretty face")
             girl:dignity(-1)
         else
             return DungeonInteractChoice(girl)

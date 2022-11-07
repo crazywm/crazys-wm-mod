@@ -16,7 +16,7 @@ function RepayLick(girl)
     if girl:skill_check(wm.SKILLS.ORAL, 40) then
         wm.UpdateImage(wm.IMG.SUCKBALLS, ImageOptions.HETERO)
         Dialog("She begins by gently licking and kissing the tip of your cock. Her tongue then traces down the length of your shaft and draws circles around your balls.")
-        Dialog("She gently sucks each ball into her mouth in turn. She turns her head and slides her lips back forth on your shaft. She kisses the tip again and slowly slides you into her mouth.")
+        Dialog("She gently sucks each ball into her mouth in turn. She turns her head and slides her lips back and forth on your shaft. She then kisses the tip again and slowly slides you into her mouth.")
         wm.UpdateImage(wm.IMG.ORAL, ImageOptions.HETERO)
         Dialog("You're not sure how long this pleasure lasted, but soon you feel the volcano about to erupt. She senses it too and pulls your cock from her mouth and gently strokes it with her hands until you explode all over her face.")
         wm.UpdateImage(wm.IMG.CUMSHOT, ImageOptions.HETERO)
@@ -37,7 +37,7 @@ function HornyHateActionFinger(girl)
                 "You continue your mockery as you show her your fingers, dripping wet. \"Well, I'll give you what you want!\"\n" ..
                 "And with that, you start finger-fucking her in earnest.")
     else
-        Dialog("You start inserting one finger. She is so wet that you decide she is ready for more, and add two more fingers. " ..
+        Dialog("You start by inserting one finger. She is so wet that you decide she is ready for more, and add two more fingers. " ..
                 "Now, the finger-fucking begins in earnest.")
     end
 end
@@ -127,14 +127,12 @@ It is a good thing that to your ears they sound just a good as moans of pleasure
     },
     neural_neutral_action = {
         lick=[[
+It takes you a while, but she seems to slowly starting warming up to your work.
+]],
+        finger=[[
 It takes you a while, but after a few minutes she is breathing heavily. You decide it she is ready for your fingers.
 With a good does of spit for additional lubrication, you start slowly probing her with your index finger.
 ]],
-        finger=[[
-She doesn't seem responsive to your stimulation, but you came here to finger-fuck, so you are
-going to finger-fuck her, no matter what. You shove three fingers into her dry pussy, and are rewarded with a cry of pain.
-It is a good thing that to your ears they sound just a good as moans of pleasure -- well, maybe not good for her.
-]]
     },
     neural_neutral_orgasm = {
         lick=[[
@@ -168,7 +166,7 @@ function PleaseHer_Horny(girl, kind)
     if wm.Percent(50) then
         wm.UpdateImage(wm.IMG.REST)
         Dialog("At the end of your session, ${firstname} seems barely coherent. She mumbles something that appears to " ..
-                "contain the words 'amazing' and 'thank you', rests her head on her pillow and is asleep before you even have a chance respond. " ..
+                "contain the words 'amazing' and 'thank you', she rests her head on her pillow and is asleep before you even have a chance respond. " ..
                 "You leave the room with a self-satisfied smile.")
         girl:pclove(3)
         SheJustCame(girl, 20)
@@ -207,6 +205,7 @@ function PleaseHer_Neutral(girl, kind)
     else
         wm.UpdateImage(wm.IMG.REST)
         Dialog("She collapses on her bed, tired but content. Satisfied with your work, you bid her a good night.")
+        SheJustCame(girl, 10)
         girl:happiness(2)
         girl:tiredness(1)
     end
@@ -237,11 +236,11 @@ function PleaseHer_HornyHate(girl, kind)
                     " your nails in, as strongly as you dare without causing permanent injury. This at least gets a reaction. Her cry of pain gets swept "..
                     " away as she explodes in moans of pleasure.")
             wm.UpdateImage(wm.IMG.FINGER, ImageOptions.HETERO)
-            Dialog("By now, you cock is almost painfully hard and throbbing, so you decide to take care of yourself. While you masturbate, you continue " ..
+            Dialog("By now, your cock is almost painfully hard and throbbing, so you decide to take care of yourself. While you masturbate, you continue " ..
                     " to massage her pussy and manage to elicit two more orgasms. Finally, you deposit your load across her stomach. At this point, ${firstname}" ..
                     " is in an almost catatonic state, so you decide that she's had enough. ")
             wm.UpdateImage(wm.IMG.BED)
-            Dialog("You clean yourself up, pull up your pants, and leave her room, making a mental note to send of of your other girls to check on her later.")
+            Dialog("You clean yourself up, pull up your pants, and leave her room, making a mental note to send one of your other girls to check on her later.")
             girl:pclove(-35)
             girl:happiness(-35)
             girl:tiredness(15)
@@ -309,7 +308,7 @@ function PleaseHer_NoHornyEvil(girl, kind)
         wm.UpdateImage(PleaseData.image[kind], ImageOptions.HETERO)
         Dialog(girl:format(PleaseData.nohorny_evil_action[kind]))
         wm.UpdateImage(wm.IMG.BED)
-        Dialog("When you are done, ${name} is a sobbing mess on her bed, and you imagine her pussy will feel sore for the next days. " ..
+        Dialog("When you are done, ${name} is a sobbing mess on her bed, and you imagine her pussy will feel sore for the next few days. " ..
                 " She really is going to hate you!")
         girl:pclove(-20)
         girl:happiness(-20)
