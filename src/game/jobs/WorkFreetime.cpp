@@ -85,6 +85,8 @@ const char* event_from_ft(freetimechoice choice) {
         case FT_WindowShopping:   return events::GIRL_FREE_TIME_WINDOW_SHOPPING;
         case FT_Salon:  return events::GIRL_FREE_TIME_SALON;
         case FT_Picnic: return events::GIRL_FREE_TIME_PICNIC;
+        case FT_Concert: return events::GIRL_FREE_TIME_CONCERT;
+        case FT_WorkOut: return events::GIRL_FREE_TIME_WORK_OUT;
         default:        return nullptr;
     }
 }
@@ -133,7 +135,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 
 #if 0    // change this to 1 and add your choice to debug a choice
 
-        choice = FT_ClinicVisit;
+        choice = FT_WorkOut;
         choicemade = true;
 #endif
 
@@ -269,8 +271,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
         // `J` Finally, let her do what she chooses.
-        /// uncomment this to debug one specific event
-        choice = FT_Salon;
 
         // Check if it is a Lua-based event.
         const char* event_ft = event_from_ft(choice);
@@ -810,222 +810,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #endif
                     break;    // end FT_WatchMovie
 
-                case FT_Concert:
-#if 1
-                {
-                    // `CRAZY` The type of music at the concert
-                    /*default*/     std::string song_type_text = "Death Metal";
-                    /* */if (roll_c <= 14) { song_type_text = "Rap"; }
-                    else if (roll_c <= 28) { song_type_text = "Classical"; }
-                    else if (roll_c <= 42) { song_type_text = "Metal"; }
-                    else if (roll_c <= 56) { song_type_text = "Rock"; }
-                    else if (roll_c <= 70) { song_type_text = "Country"; }
-                    else if (roll_c >= 88) { song_type_text = "Pop"; }
-                    bool invite = false;
-
-                    ss << "${name} decides to go to a concert.";
-                    ss << "They were playing " << song_type_text << " music.\n";
-                    U_Money -= 50;
-                    //to get this added ill just try and get some kind of text in and events and trait based stuff can be added later CRAZY
-                    if (roll_c <= 14) //rap
-                    {
-                        ss << "${name} listened as the rappers sung for a few hours.\n";
-                    } else if (roll_c <= 28) //classical
-                    {
-                        if (girl.has_active_trait(traits::ELEGANT)) {
-                            ss << "${name} seems to really enjoy this type of music.\n";
-                            U_Happiness += 5;
-                            roll = 96;
-                        }
-                    } else if (roll_c <= 42) //metal
-                    {
-                        if (girl.has_active_trait(traits::AGGRESSIVE)) {
-                            ss << "${name} likes this type of music it gets her blood pumping.\n";
-                            U_Happiness += 5;
-                        }
-
-                    } else if (roll_c <= 56) //rock
-                    {
-                        ss << "${name} listened as the band played for a few hours.\n";
-                    } else if (roll_c <= 70) //country
-                    {
-                        if (girl.has_active_trait(traits::FARMERS_DAUGHTER) ||
-                            girl.has_active_trait(traits::COUNTRY_GAL)) {
-                            ss << "${name} loves this type of music as she grew up listen to it.\n";
-                            U_Happiness += 5;
-                            roll = 96;
-                        } else {
-                            ss << "${name} listened as the band played for a few hours.\n";
-                        }
-                    } else if (roll_c <= 87) //death metal
-                    {
-                        if (girl.has_active_trait(traits::AGGRESSIVE)) {
-                            ss << "${name} loves this type of music it gets her blood pumping.\n";
-                            U_Happiness += 5;
-                            roll = 96;
-                        } else if (girl.has_active_trait(traits::MEEK)) {
-                            ss << "${name} finds this music to angry to enjoy.\n";
-                            U_Happiness -= 2;
-                            roll = 4;
-                        } else {
-                            ss << "${name} listened as the band played for a few hours.\n";
-                        }
-                    } else //pop
-                    {
-                        if (girl.has_active_trait(traits::IDOL)) {
-                            ss << "The crowd keep chanting ${name} wanting her to take the stage and sing for them.\n";
-                            U_Happiness += 5;
-                            roll = 96; /*could add a way for her to make gold off this, and need to add if she takes the stage or not*/
-                            if (rng.percent(50)) {
-                                ss
-                                        << "She agrees and took to the stage putting on a show for the crowd. They threw some gold on stage for her performance.\n";
-                                U_Money += 100;
-                            } else {
-                                ss
-                                        << "She declines not wanting to sing tonight instead wanting to just enjoy the show.\n";
-                            }
-                        } else if (girl.has_active_trait(traits::AGGRESSIVE)) {
-                            ss << "${name} hates this kind of music. She thinks its for pussy's.\n";
-                            U_Happiness -= 2;
-                            roll = 4;
-                        } else {
-                            ss << "${name} listened as the band sung for a few hours.\n";
-                        }
-                    }
-
-                    //random things that can happen at any show type
-                    if (girl.has_active_trait(traits::EXHIBITIONIST) && rng.percent(30)) {
-                        ss
-                                << "Before the show was over ${name} had thrown all her clothes on stage and was now walking around naked.\n";
-                        imagetype = EImageBaseType::NUDE;
-                        invite = true;
-                    }
-                    if (is_addict(girl, true) && rng.percent(
-                            20)) //may have to change this to the traits instead of the addict as only those 3 should trigger it.  zzzzz FIXME CRAZY
-                    {
-                        ss
-                                << "\nNoticing her addiction, someone offered her some drugs. She accepted, and got baked for the concert.\n";
-                        if (girl.has_active_trait(traits::SHROUD_ADDICT)) {
-                            girl.add_item(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
-                        }
-                        if (girl.has_active_trait(traits::FAIRY_DUST_ADDICT)) {
-                            girl.add_item(g_Game->inventory_manager().GetItem("Fairy Dust"));
-                        }
-                        if (girl.has_active_trait(traits::VIRAS_BLOOD_ADDICT)) {
-                            girl.add_item(g_Game->inventory_manager().GetItem("Vira Blood"));
-                        }
-                        /* May added in a sex event here where they try to take advatage of the high girl*/
-                        if (rng.percent(10) && girl.beauty() > 85 && !is_virgin(girl)) {
-                            ss
-                                    << "After noticing her great beauty and the fact that she is baked, a group of guys take her off alone somewhere and have their way with her.\n";
-                            imagetype = EImagePresets::GANGBANG;
-                        }
-                    }
-
-                    if (roll <= 5)//did she enjoy it or not?
-                    {
-                        ss << "${name} thought the conert was crap.\n";
-                    } else if (roll >= 95) {
-                        ss << "${name} thought the concert was amazing she had a really great time.\n";
-                    } else {
-                        ss
-                                << "${name} enjoyed herself. The concert wasn't the best she ever been to but she had a good time.\n";
-                    }
-
-                    if (invite) {
-                        ss
-                                << "Having seen her walking around naked the band invites her to come backstage and meet them.\n";
-                    } else if (girl.beauty() >= 85) {
-                        ss << "Having seen her amazing beauty the band invites her to come backstage and meet them.\n";
-                        if (roll <= 5) {
-                            ss << "${name} declined as she thought they sucked.\n";
-                        }/*nothing needed she goes home*/
-                        else if (roll >= 95) {
-                            ss << "${name} accepted with great joy.\n";
-                            U_Happiness += 5;
-                            /* add anything from them trying to have sex with her to just talking*/
-                            if (rng.percent(30) && !is_virgin(girl)) {
-                                ss << "After talking for awhile they asked if she wanted to have sex with them. ";
-                                if (girl.libido() >= 50 && likes_men(girl)) {
-                                    ss
-                                            << "As she was in the mood and loved the show, she agreed and spent many hours pleasing the band.\n";
-                                    imagetype = EImagePresets::GANGBANG;
-                                    U_Libido -= 15;
-                                    girl.group(1);
-                                } else {
-                                    ss << "Not in the mood she declined and returned home.\n";
-                                }
-
-                            } else {
-                                ss
-                                        << "They talked for a few hours about many things. She left late then she normally would have very happy with the show.\n";
-                            }
-                        } else {
-                            if (roll <= 50) {
-                                ss << "${name} told them she had a good time but had to be going.\n";
-                            }/*nothing needed she goes home*/
-                            else {
-                                ss << "${name} enjoyed herself so she accepted.\n";
-                                /* add anything from them trying to have sex with her to just talking*/
-                                if (rng.percent(20) && !is_virgin(girl)) {
-                                    ss << "After talking for awhile they asked if she wanted to have sex with them. ";
-                                    if (girl.libido() >= 70) {
-                                        ss
-                                                << "As she was in the mood and enjoyed the show, she agreed to have sex with the ";
-                                        if (girl.has_active_trait(traits::LESBIAN)) {
-                                            ss << "only female member of the band.";
-                                            imagetype = EImagePresets::LESBIAN;
-                                            girl.lesbian(1);
-                                        }
-                                            /*This should work better then what I had before*/
-                                        else {
-                                            int n;
-                                            switch (rng % 10) {
-                                                case 0:
-                                                    n = SKILL_NORMALSEX;
-                                                    ss << "lead singer.";
-                                                    break;
-                                                case 1:
-                                                    n = SKILL_NORMALSEX;
-                                                    ss << "lead guitarist.";
-                                                    break;
-                                                case 2:
-                                                    n = SKILL_NORMALSEX;
-                                                    ss << "drummer.";
-                                                    break;
-                                                case 3:
-                                                    n = SKILL_NORMALSEX;
-                                                    ss << "bass player.";
-                                                    break;
-                                                case 4:
-                                                    n = SKILL_NORMALSEX;
-                                                    ss << "rhythm guitarist.";
-                                                    break;
-                                                default:
-                                                    n = SKILL_GROUP;
-                                                    ss << "whole group.";
-                                                    break;
-                                            }
-                                            /* */if (n == SKILL_NORMALSEX) imagetype = EImageBaseType::VAGINAL;
-                                            else if (n == SKILL_GROUP) imagetype = EImagePresets::GANGBANG;
-                                            girl.upd_skill(n, 1);
-                                        }
-                                        U_Libido -= 10;
-                                    } else {
-                                        ss << "Not in the mood she declined and returned home.\n";
-                                    }
-
-                                } else {
-                                    ss
-                                            << "They talked for a few hours about many things. She left later then she normally would have, very happy with the show.\n";
-                                }
-                            }
-                        }
-                    }
-                }
-#endif
-                    break;    // end FT_Concert
-
                 case FT_VisitBar:
 #if 1
                 {
@@ -1357,83 +1141,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
 #endif
                     break;    // end FT_Casino
-
-                case FT_WorkOut:
-#if 1
-                {
-                    int workout = 0;
-                    bool ass = false, str = false, flex = false, jog = false;
-                    ss << "${name} decided to workout today. She ";
-                    /*add different types of workouts.. the type she does will affect the stat gain and maybe give a trait gain*/
-                    switch (rng % 10) {
-                        case 0:
-                            ss << "did crunches working on her abs";
-                            jog = true;
-                            break;
-                        case 1:
-                            ss << "did squats working on her ass";
-                            ass = true;
-                            break;
-                        case 2:
-                            ss << "did push ups working her chest out";
-                            str = true;
-                            break;
-                        case 3:
-                            ss << "went for a run";
-                            jog = true;
-                            break;
-                        case 4:
-                            ss << "did some pull ups working her biceps";
-                            str = true;
-                            break;
-                        default:
-                            ss << "did some yoga working on her flexibility";
-                            flex = true;
-                            break;
-                    }
-                    ///* */if (roll_c <= 14)    { ss << "did crunches working on her abs";            jog = true; }
-                    //else if (roll_c <= 28)    { ss << "did squats working on her ass";            ass = true; }
-                    //else if (roll_c <= 42)    { ss << "did push ups working her chest out";        str = true; }
-                    //else if (roll_c <= 56)    { ss << "went for a run";                            jog = true; }
-                    //else if (roll_c <= 70)    { ss << "did some pull ups working her biceps";        str = true; }
-                    //else if (roll_c >= 88)    { ss << "did some yoga working on her flexibility";    flex = true; }
-                    if (girl.has_item("Free Weights")) {
-                        ss << " and with the help of her Free Weights she got a better workout.\n";
-                        workout += 2;
-                    } else if (girl.has_active_trait(traits::CLUMSY) && rng.percent(50)) {
-                        ss << " but somehow she ended up hurting herself.\n";
-                        workout -= 2;
-                        roll = 4;
-                    } else if (roll <= 5)//did she get a good work out?
-                    {
-                        ss << "\nHer workout went really poorly.\n";
-                        workout -= 2;
-                    } else if (roll >= 95) {
-                        ss << "\nHer workout went greatly.\n";
-                        workout += 2;
-                    } else {
-                        ss << "\nHer workout was nothing special.\n";
-                        workout += 1;
-                    }
-                    if (workout >= 2) {
-                        if (jog && girl.gain_trait(traits::GREAT_FIGURE, 5)) {
-                            ss << "With the help of her workouts she has got quite a Great Figure now.";
-                        } else if (ass && girl.gain_trait(traits::GREAT_ARSE, 5)) {
-                            ss << "With the help of crunches her ass has become a sight to behold.";
-                        } else if (str && girl.gain_trait("Strong", 5)) {
-                            ss << "With the help of her work out she has become Strong.";
-                        } else if (flex && girl.gain_trait(traits::FLEXIBLE, 15)) {
-                            ss << "With the help of yoga she has become quite Flexible.";
-                        }
-                    }
-                    if (workout < 0) workout = 0;
-                    imagetype = EImageBaseType::SPORT;
-                    girl.constitution(rng % workout);
-                    girl.agility(rng % workout);
-                    girl.beauty(rng % workout);
-                }
-#endif
-                    break;    // end FT_WorkOut
 
                 case FT_GoOnDate:
 #if 1
@@ -1785,7 +1492,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 
     if(!girl.is_dead())
       girl.upd_base_stat(STAT_HEALTH, U_Health, false);        // do health first in case she dies
-  girl.upd_base_stat(STAT_TIREDNESS, U_Tiredness, false);
+    girl.upd_base_stat(STAT_TIREDNESS, U_Tiredness, false);
     girl.happiness(U_Happiness);
 
     if (girl.health() <= 0)

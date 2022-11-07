@@ -18,6 +18,7 @@
 * Do not mix up bold and regular rendering if the same text is used
 * Fixed image selection Turn Summary screen -- no longer reuses wrong images 
 * Fixed stack corruption in lua script handling
+* Run production jobs in arena
 
 ## Other
 * Treatment-type jobs (Therapy, Surgery etc.) now have more unified code and some

@@ -48,7 +48,8 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
     //  Handle the start of shift stuff for all girls.  //
     BeginShift(is_night);
 
-    IterateGirls(is_night, {JOB_CLEANARENA, JOB_FIGHTBEASTS, JOB_FIGHTARENAGIRLS, JOB_FIGHTTRAIN, JOB_CITYGUARD, JOB_DOCTORE},
+    IterateGirls(is_night, {JOB_FIGHTBEASTS, JOB_FIGHTARENAGIRLS, JOB_FIGHTTRAIN, JOB_CITYGUARD,
+                            JOB_BLACKSMITH, JOB_COBBLER, JOB_JEWELER, JOB_CLEANARENA},
                  [&](auto& current) {
         g_Game->job_manager().handle_simple_job(current, is_night);
     });

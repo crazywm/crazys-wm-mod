@@ -13,6 +13,9 @@ function c:happiness(change) end
 
 function wm.ChoiceBox(question, ...) end
 function wm.Dialog(text) end
+---@param text string
+---@return string
+function wm.InterpolateString(text) end
 function wm.UpdateImage(image_type, ...) end
 function wm.SelectImage(girl, image_type, ...) end
 function wm.SetPlayerDisposition(change) end
@@ -220,6 +223,11 @@ local er = {}
 
 ---@overload fun(text: string): void
 function er:add_text(text) end
+---@overload fun(text: string): void
+function er:add_para(text) end
+---@overload fun(text: string): void
+function er:next_para(text) end
+
 ---@overload fun(text: string): void
 function er:set_text(text) end
 ---@overload fun(image: number): void

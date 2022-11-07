@@ -263,10 +263,12 @@ int sLuaGirl::add_trait(lua_State *L) {
     }
     if(temp_time > 0) {
         girl.add_temporary_trait(trait, temp_time);
+        lua_pushboolean(L, true);
     } else {
-        girl.gain_trait(trait);
+        bool added = girl.gain_trait(trait);
+        lua_pushboolean(L, added);
     }
-    return 0;
+    return 1;
 }
 
 int sLuaGirl::has_trait(lua_State *L) {

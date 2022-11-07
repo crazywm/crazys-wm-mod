@@ -109,7 +109,7 @@ static const luaL_Reg funx [] = {
         // rng
         { "Range",                       cLuaScript::Range},
         { "Percent",                     cLuaScript::Percent},
-        { "RandName",                     cLuaScript::RandomName},
+        { "RandName",                    cLuaScript::RandomName},
         // girl
         {"AcquireGirl",                  sLuaGirl::acquire_girl},
         {"CreateRandomGirl",             sLuaGirl::create_random_girl},

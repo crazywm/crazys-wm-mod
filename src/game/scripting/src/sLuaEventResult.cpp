@@ -45,12 +45,30 @@ namespace scripting {
     int event_result_add_text(lua_State* L) {
         auto& res = check_event_result(L, 1);
         const char* text = luaL_checkstring(L, 2);
-        if(!res.Text.empty() && !std::isspace(res.Text.back()) ) {
+        if(!res.Text.empty() && !std::isspace(res.Text.back()) && std::isalnum(text[0])) {
             res.Text.push_back(' ');
         }
         res.Text += text;
         return 0;
     }
+
+    int event_result_next_paragraph(lua_State* L) {
+        auto& res = check_event_result(L, 1);
+        if(!res.Text.empty() && !(res.Text.back() == '\n') ) {
+            res.Text.push_back('\n');
+        }
+        return 0;
+    }
+
+    int event_result_add_paragraph(lua_State* L) {
+        auto& res = check_event_result(L, 1);
+        const char* text = luaL_checkstring(L, 2);
+        event_result_next_paragraph(L);
+        res.Text += text;
+        event_result_next_paragraph(L);
+        return 0;
+    }
+
 
     int event_result_set_text(lua_State* L) {
         auto& res = check_event_result(L, 1);
@@ -106,6 +124,8 @@ namespace scripting {
         // fill in the metatable
         luaL_Reg methods[] = {
                 {"add_text", event_result_add_text},
+                {"add_para", event_result_add_paragraph},
+                {"next_para", event_result_next_paragraph},
                 {"set_text", event_result_set_text},
                 {"set_image", event_result_set_image},
                 {nullptr, nullptr}

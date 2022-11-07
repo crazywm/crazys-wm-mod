@@ -265,8 +265,8 @@ function Salon(girl, result)
             girl:is_sex_type_allowed(wm.SKILLS.LESBIAN) or girl:is_sex_type_allowed(wm.SKILLS.ANAL) or
             girl:is_sex_type_allowed(wm.SKILLS.NORMALSEX)
     ) then
-        result.add_text("and decide to get a \"special\" message.")
-        local sex_type = wm.Range(0, 2)
+        result:add_text("and decide to get a \"special\" message.")
+        local sex_type = wm.Range(0, 3)
         if girl:is_sex_type_allowed(wm.SKILLS.LESBIAN) and girl:dislikes_men() then
             sex_type = 0
         end
@@ -281,39 +281,39 @@ function Salon(girl, result)
         end
 
         if sex_type == 0 then
-            result.add_text("She paid the woman masseuse to intensely lick her clit until she got off.")
-            result.set_image(wm.IMG.LESBIAN)
+            result:add_text("She paid the woman masseuse to intensely lick her clit until she got off.")
+            result:set_image(wm.IMG.LESBIAN)
         elseif sex_type == 1 then
-            result.add_text("She had the masseuse oil up her ass and fuck her.")
-            result.set_image(wm.IMG.ANAL)
+            result:add_text("She had the masseuse oil up her ass and fuck her.")
+            result:set_image(wm.IMG.ANAL)
         elseif sex_type == 2 then
-            result.add_text("She told the masseuse to fuck her silly.")
-            result.set_image(wm.IMG.SEX)
+            result:add_text("She told the masseuse to fuck her silly.")
+            result:set_image(wm.IMG.SEX)
         else
-            result.add_text("She told the masseuse to just focus on her pussy until she cums.")
-            result.set_image(wm.IMG.FINGER)
+            result:add_text("She told the masseuse to just focus on her pussy until she cums.")
+            result:set_image(wm.IMG.FINGER)
         end
         SheJustCame(girl, 5)
         girl:take_money(100)
     elseif girl:money() >= 35 and girl:tiredness() > 60 then
-        result.add_text("and decide to get a message. She is now feeling relaxed.")
+        result:add_text("and decide to get a message. She is now feeling relaxed.")
         girl:take_money(35)
         girl:tiredness(-10)
-        result.set_image(wm.IMG.MASSAGE)
+        result:set_image(wm.IMG.MASSAGE)
     elseif girl:money() >= 25 then
-        result.add_text("and had her nails and hair done. She is going look better for a few days.")
+        result:add_text("and had her nails and hair done. She is going look better for a few days.")
         girl:take_money(25)
         girl:stat(wm.STATS.BEAUTY, 8, true)
     elseif girl:money() >= 20 then
-        result.add_text("and worked on getting a tan. She is going look better for a few days.")
+        result:add_text("and worked on getting a tan. She is going look better for a few days.")
         girl:take_money(20)
         girl:stat(wm.STATS.BEAUTY, 6, true)
     elseif girl:money() >= 15 then
-        result.add_text("and had her hair done. She is going look better for a few days.")
+        result:add_text("and had her hair done. She is going look better for a few days.")
         girl:take_money(15)
         girl:stat(wm.STATS.BEAUTY, 4, true)
     else
-        result.add_text("and had her nails done. She is going look better for a few days.")
+        result:add_text("and had her nails done. She is going look better for a few days.")
         girl:take_money(10)
         girl:stat(wm.STATS.BEAUTY, 2, true)
     end
@@ -325,4 +325,290 @@ end
 function Picnic(girl, result)
     result:add_text("${name} decides to go on a picnic.")
     -- FIXME
+end
+
+
+---@param girl wm.Girl
+---@param result wm.EventResult
+function Concert(girl, result)
+    local genre_id = wm.Range(0, 7)
+    local invite = false
+    local enjoy = wm.Range(0, 25)
+    -- if she has more money, she buys more expensive tickets
+    if girl:money() > 100 then
+        girl:take_money(50)
+        enjoy = enjoy + wm.Range(0, 25)
+    else
+        girl:take_money(25)
+    end
+
+    result:add_text("${name} decides to go to a concert.")
+
+    -- to get this added ill just try and get some kind of text in and events and trait based stuff can be added later CRAZY
+    if genre_id == 0 then
+        result:add_text("They were performing Rap music.\n")
+        result:add_text("${name} listened as the rappers sung for a few hours.")
+    elseif genre_id == 1 then
+        result:add_text("They were playing Classical music.\n")
+        if girl:has_trait(wm.TRAITS.ELEGANT) then
+            result:add_text("${name} seems to really enjoy this type of music.")
+            girl:happiness(5)
+            enjoy = 96
+        else
+            result:add_text("${name} listened as the orchestra played for a few hours.")
+        end
+    elseif genre_id == 2 then
+        result:add_text("They were playing Metal music.\n")
+        if girl:has_trait(wm.TRAITS.AGGRESSIVE, wm.TRAITS.BRAWLER, wm.TRAITS.TOUGH) then
+            result:add_text("${name} likes this type of music. It gets her blood pumping.")
+            girl:happiness(5)
+            girl:tiredness(3)
+            enjoy = 96
+        else
+            result:add_text("${name} listened as the band played for a few hours.")
+        end
+    elseif genre_id == 3 then
+        result:add_text("They were playing Rock music.\n")
+        result:add_text("${name} listened as the band played for a few hours.")
+    elseif genre_id == 4 then
+        result:add_text("They were playing Country music.\n")
+        if girl:has_trait(wm.TRAITS.FARMERS_DAUGHTER, wm.TRAITS.COUNTRY_GAL) then
+            result:add_text("${name} loves this type of music as she grew up listen to it.\n")
+            girl:happiness(5)
+            enjoy = 96
+        else
+            result:add_text("${name} listened as the band played for a few hours.")
+        end
+    elseif genre_id == 5 then
+        result:add_text("They were playing Death Metal.\n")
+        if girl:has_trait(wm.TRAITS.AGGRESSIVE, wm.TRAITS.BRAWLER, wm.TRAITS.TOUGH,
+                wm.TRAITS.DEMON, wm.TRAITS.DEMON_POSSESSED) then
+            result:add_text("${name} loves this type of music. It gets her blood pumping!")
+            girl:happiness(5)
+            enjoy = 96
+            girl:tiredness(5)
+        elseif girl:has_trait(wm.TRAITS.MEEK, wm.TRAITS.FRAGILE) then
+            result:add_text("${name} finds this music too angry to enjoy.")
+            girl:happiness(-2)
+            enjoy = 4
+        else
+            girl:tiredness(3)
+            result:add_text("${name} listened as the band played for a few hours.")
+        end
+    elseif genre_id == 6 then
+        result:add_text("They were playing Pop music.\n")
+        if girl:has_trait(wm.TRAITS.IDOL) then
+            result:add_text("The crowd keep chanting ${name} wanting her to take the stage and sing for them.\n")
+            girl:happiness(5)
+            enjoy = 96 -- could add a way for her to make gold off this, and need to add if she takes the stage or not
+            if wm.Percent(50) and not girl:has_trait(wm.TRAITS.SHY) then
+                result:add_text("She agrees and took to the stage putting on a show for the crowd." ..
+                        "They threw some gold on stage for her performance.")
+                -- TODO I think give_money subtracts from player, check/fix this!
+                girl:give_money( wm.Range(33, 90))
+            else
+                result:add_text("She declines, not wanting to sing tonight. She is just here to enjoy the show.")
+            end
+        elseif girl:has_trait(wm.TRAITS.AGGRESSIVE, wm.TRAITS.BRAWLER, wm.TRAITS.DEMON_POSSESSED, wm.TRAITS.DEMON) then
+            result:add_text("${name} hates this kind of music. She thinks its for pussy's.")
+            girl:happiness(-2)
+            enjoy = 4
+        else
+            result:add_text("${name} listened as the band sung for a few hours.\n")
+        end
+    end
+
+    if girl:tiredness() > 66 then
+        enjoy = enjoy - 15
+        if wm.Percent(25 + girl:tiredness() / 4) then
+            result:add_para("She was so tired that she fell asleep during the show.")
+            girl:tiredness(-5)
+            return
+        else
+            result:add_para("She might have enjoyed the concert more, had she not been so tired.")
+        end
+    end
+
+    -- random things that can happen at any show type
+    if girl:has_trait(wm.TRAITS.EXHIBITIONIST) and wm.Percent(30) then
+        result:add_text("Before the show was over ${name} had thrown all her clothes on stage and was now walking around naked.\n")
+        result:set_image(wm.IMG.NUDE)
+        if girl:beauty() > 50 then
+            invite = true
+        end
+    end
+
+    if girl:is_addict() and wm.Percent(20) then
+        result:add_text("Noticing her addiction, someone offered her some drugs. She accepted, and got baked for the concert.\n")
+        -- I've removed adding the drugs to the inventory: It makes the script much more complicated, and she is supposed to consume them
+        -- on the spot anyway
+        if wm.Percent(10) and girl:beauty() > 85 and not girl:is_virgin() then
+            result:add_para("After noticing her great beauty and the fact that she is baked, " ..
+                    "a group of guys take her off alone somewhere and have their way with her.")
+            result:set_image(wm.IMG.GANGBANG)
+        end
+    end
+
+    if invite and wm.Percent(50) then
+        enjoy = enjoy + 15
+    end
+
+    -- did she enjoy it or not?
+    if enjoy <= 5 then
+        result:add_text("${name} thought the concert was crap.")
+        girl:happiness(-1)
+    elseif enjoy >= 95 then
+        result:add_text("${name} thought the concert was amazing. She had a really great time.")
+        girl:happiness(5)
+    else
+        result:add_text("${name} enjoyed herself. The concert wasn't the best she ever been to, but she had a good time.")
+        girl:happiness(3)
+    end
+
+    if invite then
+        result:add_para("Having seen her walking around naked, the band invites her to come backstage and meet them.")
+    elseif girl:beauty() > 85 and wm.Percent(girl:beauty() - 50) then
+        result:add_para("Having seen her amazing beauty the band invites her to come backstage and meet them.")
+    else
+        return
+    end
+
+    if enjoy < 5 then
+        result:add_para("${name} declined as she thought they sucked.")
+        return
+    elseif enjoy < 50 then
+        result:add_para("${name} told them she had a good time but had to be going.")
+        return
+    elseif enjoy > 90 then
+        result:add_para("${name} accepted with great joy.")
+        girl:happiness(5)
+        -- add anything from them trying to have sex with her to just talking
+        if wm.Percent(30) and not girl:is_virgin() then
+            result:add_para("After talking for a while, they asked if she wanted to have sex with them.")
+            Concert_FuckBand(girl, result, enjoy)
+        else
+            result:add_para("They talked for a few hours about many things. " ..
+                    "She left later then she normally would have, very happy with the show.")
+        end
+    else
+        result:add_para("${name} enjoyed herself so she accepted.")
+        -- add anything from them trying to have sex with her to just talking
+        if wm.Percent(20) and not girl:is_virgin() then
+            result:add_para("After talking for a while, they asked if she wanted to have sex with them.")
+            Concert_FuckBand(girl, result, enjoy)
+        else
+            result:add_para("They talked for a few hours about many things. She left later then she normally would have, happy with the show.")
+        end
+    end
+end
+
+function Concert_FuckBand(girl, result, enjoy)
+    local min_libido = 100 - enjoy / 2
+
+
+    if girl:libido() > min_libido then
+        if enjoy > 90 then
+            result:add_text("As she was in the mood and loved the show, she agreed and spent many hours pleasing the ")
+        else
+            result:add_text("As she was in the mood and enjoyed the show, she agreed to have sex with the ")
+        end
+        if girl:dislikes_men() then
+            result:add_text("only female member of the band.")
+            result:set_image(wm.IMG.LESBIAN)
+            girl:lesbian(1)
+        else
+            if wm.Percent(20 + enjoy / 3) then
+                result:set_image(wm.IMG.GANGBANG)
+                result:add_text("$[whole group|band].")
+                girl:group(1)
+                SheJustCame(girl, 15)
+            else
+                result:add_text("$[lead singer|lead guitarist|drummer|bass player|rhythm guitarist].")
+                result:set_image(wm.IMG.SEX)
+                girl:normalsex(1)
+                SheJustCame(girl, 10)
+            end
+
+        end
+    else
+        result:add_para("Not in the mood she declined and returned home.")
+    end
+end
+
+
+---@param girl wm.Girl
+---@param result wm.EventResult
+function WorkOut(girl, result)
+    local workout = 0
+    local kind = ""
+    local quality = wm.Range(0, 100)
+    result:add_text("${name} decided to workout today. She")
+    local type = wm.Range(1, 10)
+    -- add different types of workouts.. the type she does will affect the stat gain and maybe give a trait gain
+    if type == 0 then
+        result:add_text("did crunches working on her abs")
+        kind = "str"
+    elseif type == 1 then
+        result:add_text("did squats working on her ass")
+        kind = "ass"
+    elseif type == 2 then
+        result:add_text("did push ups working out her chest")
+        kind = "str"
+    elseif type == 3 then
+        result:add_text("went for a run")
+        kind = "job"
+    elseif type == 4 then
+        result:add_text("did some pull ups working her biceps")
+        kind = "str"
+    else
+        result:add_text("did some yoga, working on her flexibility")
+        kind = "flex"
+    end
+
+    if girl:has_item("Free Weights") and kind == "str" then
+        result:add_text("and with the help of her Free Weights she got a better workout.")
+        workout = workout + 2
+    elseif girl:has_trait(wm.TRAITS.CLUMSY) and wm.Percent(50) then
+        result:add_text(" but in her Clumsiness somehow she ended up hurting herself.")
+        workout = workout - 2
+        quality = 4
+    else
+        result:add_text(".")
+    end
+
+    if quality < 10 then
+        result:add_para("Her workout went really poorly.")
+        workout = workout - 2
+    elseif quality > 90 then
+        result:add_para("Her workout went really great.")
+        workout = workout + 2
+    else
+        result:add_para("Her workout was nothing special.")
+        workout = workout + 1
+    end
+
+    if workout >= 2 then
+        if kind == "jog" and wm.Percent(5) and girl:add_trait(wm.TRAITS.GREAT_FIGURE) then
+            result:add_para("With the help of her workouts she has got quite a Great Figure now.")
+        elseif kind == "ass" and wm.Percent(5) and girl:add_trait(wm.TRAITS.GREAT_ARSE) then
+            result:add_para("With the help of crunches her ass has become a sight to behold.")
+        elseif kind == "str" and wm.Percent(5) and girl:add_trait(wm.TRAITS.STRONG) then
+            result:add_para("With the help of her workout she has become Strong.")
+        elseif kind == "flex" and wm.Percent(10) and girl:add_trait(wm.TRAITS.FLEXIBLE) then
+            result:add_para("With the help of yoga she has become quite Flexible.")
+
+        end
+    end
+
+    if workout < 0 then
+        workout = 0
+    end
+    result:set_image(wm.IMG.SPORT)
+    if kind == "str" then
+        girl:strength(wm.Range(0, workout))
+    elseif kind == "jog" then
+        girl:constitution(wm.Range(0, workout))
+    elseif kind == "flex" then
+        girl:agility(wm.Range(0, workout))
+    end
 end
