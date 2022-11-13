@@ -78,16 +78,17 @@ enum freetimechoice
 const char* event_from_ft(freetimechoice choice) {
     switch (choice)
     {
-        case FT_Bath:   return events::GIRL_FREE_TIME_BATH;
-        case FT_Bed:    return events::GIRL_FREE_TIME_BED;
-        case FT_Church: return events::GIRL_FREE_TIME_CHURCH;
-        case FT_Cook:   return events::GIRL_FREE_TIME_COOKING;
+        case FT_Bath:    return events::GIRL_FREE_TIME_BATH;
+        case FT_Bed:     return events::GIRL_FREE_TIME_BED;
+        case FT_Church:  return events::GIRL_FREE_TIME_CHURCH;
+        case FT_Cook:    return events::GIRL_FREE_TIME_COOKING;
         case FT_WindowShopping:   return events::GIRL_FREE_TIME_WINDOW_SHOPPING;
-        case FT_Salon:  return events::GIRL_FREE_TIME_SALON;
-        case FT_Picnic: return events::GIRL_FREE_TIME_PICNIC;
+        case FT_Salon:   return events::GIRL_FREE_TIME_SALON;
+        case FT_Picnic:  return events::GIRL_FREE_TIME_PICNIC;
         case FT_Concert: return events::GIRL_FREE_TIME_CONCERT;
         case FT_WorkOut: return events::GIRL_FREE_TIME_WORK_OUT;
-        default:        return nullptr;
+        case FT_Hobby:   return events::GIRL_FREE_TIME_HOBBY;
+        default:         return nullptr;
     }
 }
 
@@ -219,7 +220,7 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                         // if she can not afford it, reroll.
                         break;
                     case FT_Concert:
-                        if (girl.m_Money >= 50) {
+                        if (girl.m_Money >= 25) {
                             choicemade = true;    // She has enough money for it, so continue
                         }
                         // if she can not afford it, reroll.
@@ -871,74 +872,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
 #endif
                     break;    // end FT_Club
-
-                case FT_Hobby:
-#if 1
-                {
-                    ss << "${name} decided to do something she really enjoys so she ";
-                    if (girl.has_active_trait(traits::NYMPHOMANIAC) && girl.libido() > 80 && !is_virgin(girl)) {
-                        ss << " went out looking to get laid.\n";
-                        if (rng.percent(35))//finds someone
-                        {
-                            if (likes_women(girl) &&
-                                rng.percent(50))//find a woman /*FIXME not sure this will work CRAZY*/
-                            {
-                                ss
-                                        << "She goes out and finds herself a woman that she likes enough. They go back to her place and have sex.";/*FIXME needs better text and more varations CRAZY*/
-                                imagetype = EImagePresets::LESBIAN;
-                                U_Libido -= 10;
-                                girl.lesbian(1);
-                            } else//finds man
-                            {
-                                ss
-                                        << "She goes out and finds herself a man that she likes enough. They go back to her place and have sex.";/*FIXME needs better text and more varations CRAZY*/
-                                imagetype = EImageBaseType::VAGINAL;
-                                U_Libido -= 10;
-                                girl.normalsex(1);
-                            }
-                        } else//doesnt find anyone
-                        {
-                            ss << " couldn't find anyone she wanted to have sex with.\n";
-                        }
-                    } else if (girl.has_active_trait(traits::NERD)) {
-                        if (rng.percent(50)) {
-                            ss << " stays home and plays some video games.";
-                        } else {
-                            ss << " stayed inside and read a book.\n";
-                            imagetype = EImageBaseType::STUDY;
-                        }
-                    } else if (girl.is_fighter()) {
-                        if (rng.percent(75)) {
-                            ss << " practiced her combat skills.";
-                            imagetype = EImageBaseType::COMBAT;
-                            girl.combat(1);
-                        } else {
-                            ss << " decide to go out and look for a fight.\n";// need to add more to this
-                        }
-                    } else if (girl.has_active_trait(traits::ACTRESS)) {
-                        ss << " practiced her acting skills.";
-                        girl.performance(1);
-                    } else if (girl.has_active_trait(traits::HEROINE)) {
-                        ss << " went looking for crime to stop.";
-                        if (rng.percent(50)) {
-                            ss
-                                    << " Found and put a stop to some low level crimes.";//this could be expaned to have much more
-                            imagetype = EImageBaseType::COMBAT;
-                            girl.combat(1);
-                            girl.fame(1);
-                        } else {
-                            ss << " But didn't find anything to help with.\n";
-                        }
-                    } else if (girl.has_active_trait(traits::IDOL)) {
-                        ss << " went out to meet and talk with her fans.";
-                    } else if (girl.has_active_trait(traits::ADVENTURER)) {
-                        ss << " went out looking for some adventuer.";
-                    } else {
-                        ss << " spent the day doing varouis things she enjoys.";
-                    }
-                }
-#endif
-                    break;    // end FT_Hobby
 
                 case FT_Counseling:
 #if 1

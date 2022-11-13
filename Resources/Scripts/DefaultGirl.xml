@@ -62,4 +62,5 @@
     <Event Name="girl:free-time:picnic" Script="FreeTime.lua" Function="Picnic" />
     <Event Name="girl:free-time:concert" Script="FreeTime.lua" Function="Concert" />
     <Event Name="girl:free-time:work-out" Script="FreeTime.lua" Function="WorkOut" />
+    <Event Name="girl:free-time:hobby" Script="FreeTime.lua" Function="Hobby" />
 </EventMapping>

@@ -612,3 +612,63 @@ function WorkOut(girl, result)
         girl:agility(wm.Range(0, workout))
     end
 end
+
+
+---@param girl wm.Girl
+---@param result wm.EventResult
+function Hobby(girl, result)
+    result:add_text("${name} decided to do something she really enjoys so she ")
+    if girl:has_trait(wm.TRAITS.NYMPHOMANIAC) and girl:libido() > 80 and not girl:is_virgin() then
+        result:add_text("went out looking to get laid.")
+        result:next_para()
+        if wm.Percent(35) then -- finds someone
+            if (girl:likes_women() and wm.Percent(50)) or girl:dislikes_men() then  -- FIXME not sure this will work CRAZY
+                result:add_para("She goes out and finds herself a woman that she likes enough. They go back to her place and have sex.")  -- FIXME needs better text and more varations CRAZY
+                result:set_image(wm.IMG.LESBIAN)
+                girl:lesbian(1)
+                SheJustCame(girl, 5)
+            else
+                result:add_para("She goes out and finds herself a man that she likes enough. They go back to her place and have sex.")  -- FIXME needs better text and more varations CRAZY
+                result:set_image(wm.IMG.SEX)
+                girl:normalsex(1)
+                SheJustCame(girl, 5)
+            end
+        else
+            result:add_para("She couldn't find anyone she wanted to have sex with.")
+        end
+    elseif girl:has_trait(wm.TRAITS.NERD) then
+        if wm.Percent(50) then
+            result:add_text("stays home and plays some video games.")
+        else
+            result:add_text("stayed inside and read a book.")
+            result:set_image(wm.IMG.STUDY)
+        end
+    elseif girl:is_slave() then
+        if wm.Percent(75) then
+            result:add_text("practiced her combat skills.")
+            result:set_image(wm.IMG.COMBAT)
+            girl:combat(1)
+        else
+            result:add_text("decided to go out and look for a fight.")  -- FIXME need to add more to this
+        end
+    elseif girl:has_trait(wm.TRAITS.ACTRESS) then
+        result:add_text("practiced her acting skills.")
+        girl:performance(1)
+    elseif girl:has_trait(wm.TRAITS.HEROINE) then
+        result:add_text("went looking for crime to stop.")
+        if wm.Percent(50) then
+            result:add_para("She found and put a stop some low level crimes.")  -- FIXME this could be expaned to have much more
+            result:set_image(wm.IMG.COMBAT)
+            girl:combat(1)
+            girl:fame(1)
+        else
+            result:add_para("But she didn't find anything to help with.")
+        end
+    elseif girl:has_trait(wm.TRAITS.IDOL) then
+        result:add_text("went out to meet and talk with her fans.")
+    elseif girl:has_trait(wm.TRAITS.ADVENTURER) then
+        result:add_text("went out looking for some adventure.")
+    else
+        result:add_text("spent the day doing various things she enjoys.")
+    end
+end

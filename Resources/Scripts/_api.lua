@@ -225,8 +225,8 @@ local er = {}
 function er:add_text(text) end
 ---@overload fun(text: string): void
 function er:add_para(text) end
----@overload fun(text: string): void
-function er:next_para(text) end
+---@overload fun(): void
+function er:next_para() end
 
 ---@overload fun(text: string): void
 function er:set_text(text) end

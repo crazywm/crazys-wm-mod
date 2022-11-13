@@ -192,4 +192,7 @@ namespace events {
     // FreeTime.lua: WorkOut
     constexpr const char* GIRL_FREE_TIME_WORK_OUT = "girl:free-time:work-out";
 
+    // FreeTime.lua: Hobby
+    constexpr const char* GIRL_FREE_TIME_HOBBY = "girl:free-time:hobby";
+
 }
