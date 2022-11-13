@@ -405,7 +405,7 @@ function Concert(girl, result)
                 result:add_text("She agrees and took to the stage putting on a show for the crowd." ..
                         "They threw some gold on stage for her performance.")
                 -- TODO I think give_money subtracts from player, check/fix this!
-                girl:give_money( wm.Range(33, 90))
+                girl:give_money(wm.Range(33, 90))
             else
                 result:add_text("She declines, not wanting to sing tonight. She is just here to enjoy the show.")
             end
@@ -455,13 +455,13 @@ function Concert(girl, result)
 
     -- did she enjoy it or not?
     if enjoy <= 5 then
-        result:add_text("${name} thought the concert was crap.")
+        result:add_para("${firstname} thought the concert was crap.")
         girl:happiness(-1)
     elseif enjoy >= 95 then
-        result:add_text("${name} thought the concert was amazing. She had a really great time.")
+        result:add_para("${firstname} thought the concert was amazing. She had a really great time.")
         girl:happiness(5)
     else
-        result:add_text("${name} enjoyed herself. The concert wasn't the best she ever been to, but she had a good time.")
+        result:add_para("${firstname} enjoyed herself. The concert wasn't the best she ever been to, but she had a good time.")
         girl:happiness(3)
     end
 
@@ -671,4 +671,112 @@ function Hobby(girl, result)
     else
         result:add_text("spent the day doing various things she enjoys.")
     end
+end
+
+---@param girl wm.Girl
+---@param result wm.EventResult
+function Movie(girl, result)
+    result:add_para("${name} decides to go watch a movie.")
+    -- May add different ways for the girl to get into the movie CRAZY
+    if wm.Percent(20) and girl:oralsex() >= 50 then
+        result:add_para("Instead of paying for her ticket she slides under the ticket booth and sucks off the guy selling the tickets to get in for free.")
+        result:set_image(wm.IMG.BLOWJOB)
+        girl:oralsex(1)
+    else
+        result:add_para("She buys her ticket and goes in.")
+        girl:take_money(10)
+    end
+
+    local mov_type = wm.Range(0, 5)
+    local enjoy = wm.Range(0, 100)
+    if mov_type == 0 then  -- romance
+        result:add_para("They were playing a romance movie.")
+        if girl:has_trait(wm.TRAITS.PESSIMIST) then
+            if girl:pclove() >= 80 then
+                result:add_para("Even though ${name} loves you greatly, this kind of movie always make her Pessimistic nature show up." ..
+                        " She thinks the two of you will never get a happy ending like in this movie.")
+            else
+                result:add_para("Being the Pessimist she, is she hates sappy love movies as she don't believe she will ever find her true love.")
+            end
+            enjoy = 4
+        elseif girl:has_trait(wm.TRAITS.OPTIMIST) then
+            if girl:pclove() >= 80 then
+                result:add_para("${name} loves you greatly, and her Optimistic nature makes her know that " ..
+                        "one day the two of you will have a happy ending just like in this movie.")
+            else
+                result:add_para("Being the Optimist she is, she loves this kind of movie. She knows one day she will find her true love.")
+            end
+            enjoy = 96
+        end
+    elseif mov_type == 1 then
+        result:add_para("They were playing a comedy.")
+        if girl:has_trait(wm.TRAITS.AGGRESSIVE) then
+            result:add_para("${name}'s Aggressive nature makes her wish the movie would have been an action flick.")
+            enjoy = 4
+        end
+    elseif mov_type == 2 then -- horror
+        result:add_para("They were playing a $[scary|horror] movie.")
+        if girl:has_trait(wm.TRAITS.MEEK) then
+            result:add_para("${name} Meekly ran from the theater crying. Seems she shouldn't have watched this kind of movie.")
+            enjoy = 4
+        end
+    elseif mov_type == 3 then -- porno
+        result:add_para("They were playing a porno.")
+        if girl:has_trait(wm.TRAITS.CHASTE) then
+            result:add_para("${name} face turned blood red when the movie got going. She snuck out of the movie and ran home.")
+            enjoy = 4
+        elseif girl:has_trait(wm.TRAITS.NYMPHOMANIAC) then
+            result:add_para("${name} loves everything to do with sex, so this is her type of movie.")
+            girl:stat(wm.STATS.LIBIDO, 5, true)
+            enjoy = 96
+            if girl:libido() >= 70 then
+                result:add_text("The movie started to turn her on so she started to pleasure herself.")
+                if wm.Percent(20) then
+                    result:add_text("A man noticed and approached her, asking if she wanted the real thing instead of her fingers.")
+                    result:next_para()
+                    if girl:is_virgin() then
+                        result:add_para("She informs him she is a Virgin and that she won't be having sex with him.")
+                        result:set_image(wm.IMG.MASTURBATE)
+                    elseif girl:dislikes_men() then
+                        result:add_para("She informs him she is a Lesbian and that she doesn't have sex with guys.")
+                        result:set_image(wm.IMG.MASTURBATE)
+                    elseif girl:pclove() >= 80 and girl:libido() > 99 then
+                        result:add_para("Despite the fact that she is in love with you," ..
+                                " she couldn't help herself her lust is to great and she agrees.")
+                        result:set_image(wm.IMG.SEX)
+                        girl:normalsex(1)
+                    elseif girl:pclove() >= 80 and girl:libido() <= 99 then
+                        result:add_para("She tells him she is in love and that he can't compare to her love. " ..
+                                "She finishes herself off then leaves with a smile on her face.")
+                        result:set_image(wm.IMG.MASTURBATE)
+                    else
+                        result:add_para("She takes him up on the offer.")
+                        result:set_image(wm.IMG.SEX)
+                        girl:normalsex(1)
+                    end
+                else
+                    result:set_image(wm.IMG.MASTURBATE)
+                end
+                SheJustCame(girl, 10)
+            end
+        end
+    else
+        result:add_para("They were playing an action  movie.")
+        if girl:has_trait(wm.TRAITS.AGGRESSIVE, wm.TRAITS.BRAWLER, wm.TRAITS.ADVENTURER) then
+            result:add_para("${name}'s loves this type of movie. With all the action it gets her blood pumping.")
+            enjoy = 96
+        end
+    end
+
+    if enjoy <= 10 then
+        result:add_para("${firstname} thought the movie was crap.")
+        girl:happiness(-3)
+    elseif enjoy >= 90 then
+        result:add_para("${firstname} thought the movie was amazing. She had a really great time.")
+        girl:happiness(5)
+    else
+        girl:happiness(2)
+        result:add_para("${name} enjoyed herself. The movie wasn't the best she ever seen but she had a good time.")
+    end
+
 end

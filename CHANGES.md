@@ -9,6 +9,7 @@
   * Initial movie hype depends on fame of its actresses
 
 * Some extensions to free time events by @crazywm
+* Movie and Concert events can now also be triggered as rewards in the interaction menu
 
 ## Images
 * Added `Pray` image type to be used for the "Visit Church" free time event.

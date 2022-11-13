@@ -208,10 +208,22 @@ function BrothelInteractChoice(girl)
     )
 
     if choice == 0 then
-        Dialog("You give ${firstname} some spending money to cheer her up.")
-        girl:give_money(100)
-        girl:happiness(2)
-        girl:pclove(2)
+        local reward = ChoiceBox("What?", "Money (100G)",
+                "Let her go to a concert (50G)", "Sent her to see a movie (10G)")
+        if reward == 0 then
+            Dialog("You give ${firstname} some spending money to cheer her up.")
+            girl:give_money(100)
+            girl:happiness(2)
+            girl:pclove(2)
+        elseif reward == 1 then
+            girl:give_money(50)
+            local text, image = girl:run_event("girl:free-time:concert")
+            Dialog(text)
+        elseif reward == 2 then
+            girl:give_money(10)
+            local text, image = girl:run_event("girl:free-time:movie")
+            Dialog(text)
+        end
     elseif choice == 1 then
         return girl:trigger("girl:chat:brothel")
     elseif choice == 2 then

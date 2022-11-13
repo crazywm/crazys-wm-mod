@@ -88,6 +88,7 @@ const char* event_from_ft(freetimechoice choice) {
         case FT_Concert: return events::GIRL_FREE_TIME_CONCERT;
         case FT_WorkOut: return events::GIRL_FREE_TIME_WORK_OUT;
         case FT_Hobby:   return events::GIRL_FREE_TIME_HOBBY;
+        case FT_WatchMovie:   return events::GIRL_FREE_TIME_MOVIE;
         default:         return nullptr;
     }
 }
@@ -682,134 +683,6 @@ sWorkJobResult WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
 #endif
                     break;    // end FT_ClinicCheckup
-
-                case FT_WatchMovie:
-#if 1
-                {
-                    // `CRAZY` This is movies she can watch
-                    /*default*/    std::string mov_type_text = "a porno";
-                    /* */if (roll_c <= 20) { mov_type_text = "a romance movie"; }
-                    else if (roll_c <= 40) { mov_type_text = "a comedy"; }
-                    else if (roll_c <= 60) { mov_type_text = "a scary movie"; }
-                    else if (roll_c >= 80) { mov_type_text = "an action film"; }
-
-                    ss << "${name} decides to go watch a movie.";
-                    /*May add different ways for the girl to get into the movie CRAZY*/
-                    if (rng.percent(20) && girl.oralsex() >= 50) {
-                        ss
-                                << " Instead of paying for her ticket she slides under the ticket booth and sucks off the guy selling the tickets to get in for free.";
-                        imagetype = EImagePresets::BLOWJOB;
-                        girl.oralsex(1);
-                    } else {
-                        ss << " She buys her ticket and goes in.";
-                        U_Money -= 10;
-                    }
-                    ss << " They were playing " << mov_type_text << ".\n";
-                    if (roll_c <= 20) //romance
-                    {
-                        if (girl.has_active_trait(traits::PESSIMIST)) {
-                            if (HateLove >= 80) //loves you
-                            {
-                                ss
-                                        << "Even though ${name} loves you greatly this kind of movie always make her Pessiistic nature show up. She thinks the two of you will never get a happy ending like in this movie.\n";
-                            } else {
-                                ss
-                                        << "Being the Pessimist she is she hates sappy love movies as she don't believe she will ever find her true love.\n";
-                            }
-                            U_Happiness -= 5;
-                            roll = 4;
-                        } else if (girl.has_active_trait(traits::OPTIMIST)) {
-                            if (HateLove >= 80) //loves you
-                            {
-                                ss
-                                        << "${name} loves you greatly and her Optimistic nature makes her know that one day the two of you will have a happy ending just like in this movie.\n";
-                            } else {
-                                ss
-                                        << "Being the Optimist she is she loves this kind of movie. She knows one day she will find her true love.\n";
-                            }
-                            U_Happiness += 5;
-                            roll = 96;
-                        }
-                    } else if (roll_c <= 40) //comedy
-                    {
-                        if (girl.has_active_trait(traits::AGGRESSIVE)) {
-                            ss
-                                    << "${name}'s aggressive nature makes her wish the movie would have been an action flick.\n";
-                            U_Happiness -= 5;
-                            roll = 4;
-                        }
-                    } else if (roll_c <= 60) //scary
-                    {
-                        if (girl.has_active_trait(traits::MEEK)) {
-                            ss
-                                    << "${name} Meekly ran from the theater crying. Seems she shouldn't have watched this kind of movie.\n";
-                            U_Happiness -= 5;
-                            roll = 4;
-                        }
-                    } else if (roll_c <= 80) //porno
-                    {
-                        if (girl.has_active_trait(traits::SHY)) {
-                            ss
-                                    << "${name} face turned blood red when the movie got going. She snuck out of the movie and ran home.\n";
-                            U_Happiness -= 5;
-                            roll = 4;
-                        } else if (girl.has_active_trait(traits::NYMPHOMANIAC)) {
-                            ss << "${name} loves everything to do with sex so this is her type of movie.\n";
-                            U_Libido += 5;
-                            roll = 96;
-                            if (girl.libido() >= 70) {
-                                ss << "The movie started to turn her on so she started to pleasure herself. ";
-                                if (roll_d <= 20) {
-                                    ss
-                                            << "A man noticed and approched her asking if she wanted the real thing instead of her fingers.";
-                                    if (is_virgin(girl)) {
-                                        ss
-                                                << " She informs him she is a Virgin and that she won't be having sex with him.";
-                                    } else if (!likes_men(girl)) {
-                                        ss
-                                                << " She informs him she is a Lesbian and that she doesn't have sex with guys.";
-                                    } else if (HateLove >= 80 && girl.libido() > 99) {
-                                        ss
-                                                << " Despite the fact that she is in love with you she couldn't help herself her lust is to great and she agrees. ";
-                                        imagetype = EImageBaseType::VAGINAL;
-                                        U_Libido -= 15;
-                                        girl.normalsex(1);
-                                    } else if (HateLove >= 80 && girl.libido() <= 99) {
-                                        ss
-                                                << " She tells him she is in love and that he can't compare to her love. She finishes herself off then leaves with a smile on her face.";
-                                        imagetype = EImagePresets::MASTURBATE;
-                                        U_Libido -= 15;
-                                    } else {
-                                        ss << " She takes him up on the offer as she prefers the real thing.";
-                                        imagetype = EImageBaseType::VAGINAL;
-                                        U_Libido -= 15;
-                                        girl.normalsex(1);
-                                    }
-                                } else {
-                                    imagetype = EImagePresets::MASTURBATE;
-                                    U_Libido -= 15;
-                                }
-                            }
-                        }
-                    } else //action
-                    {
-                        if (girl.has_active_trait(traits::AGGRESSIVE)) {
-                            ss << "${name}'s loves this type of movie with all the action it gets her blood pumping.\n";
-                            U_Happiness += 5;
-                            roll = 96;
-                        }
-                    }
-                    if (roll <= 5) {
-                        ss << "${name} thought the movie was crap.\n";
-                    } else if (roll >= 95) {
-                        ss << "${name} thought the movie was amazing she had a really great time.\n";
-                    } else {
-                        ss
-                                << "${name} enjoyed herself. The movie wasn't the best she ever seen but she had a good time.\n";
-                    }
-                }
-#endif
-                    break;    // end FT_WatchMovie
 
                 case FT_VisitBar:
 #if 1

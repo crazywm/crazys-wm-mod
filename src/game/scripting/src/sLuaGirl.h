@@ -50,6 +50,7 @@ struct sLuaGirl : public sCharacter<sLuaGirl>{
 
     static int obey_check(lua_State* L);
     static int trigger_event(lua_State* L);
+    static int trigger_sync(lua_State* L);
 
     static int calc_player_pregnancy(lua_State* L);
     static int calc_group_pregnancy(lua_State* L);

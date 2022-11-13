@@ -132,6 +132,7 @@ void sLuaGirl::init(lua_State* L) {
             {"take_money", sLuaGirl::take_money},
             {"torture", sLuaGirl::torture},
             {"trigger", sLuaGirl::trigger_event},
+            {"run_event", sLuaGirl::trigger_sync},
             {"clean_building", sLuaGirl::clean_building},
             {"__gc", sLuaGirl::finalize},
             {nullptr, nullptr}
@@ -621,6 +622,20 @@ int sLuaGirl::trigger_event(lua_State* L) {
     });
     lua_yield(L, 0);
     return 0;
+}
+
+
+int sLuaGirl::trigger_sync(lua_State* L) {
+    auto& girl = check_type(L, 1);
+    const char* event = luaL_checkstring(L, 2);
+    sImageSpec spec;
+    spec.BasicImage = EImageBaseType::PROFILE;
+    scripting::sLuaEventResult er{&spec};
+    girl.CallScriptFunction(event, er);
+    lua_pushstring(L, er.Text.c_str());
+    // TODO use the actual image spec!
+    lua_pushinteger(L, (int)er.Image->BasicImage);
+    return 2;
 }
 
 int sLuaGirl::money(lua_State * L)
